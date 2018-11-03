@@ -1,4 +1,3 @@
-// @flow
 import trim from "trim-trailing-lines";
 
 const C_NEWLINE = "\n";
