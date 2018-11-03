@@ -1,5 +1,3 @@
-// @flow
-
 import inlinePlugin from "./inline.js";
 import blockPlugin from "./block.js";
 
