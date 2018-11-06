@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, Record, RecordOf } from "immutable";
+import { Record } from "immutable";
 import * as v4 from "./v4";
 import * as v3 from "./v3";
 import { ImmutableNotebook, JSONType } from "./types";
@@ -25,16 +25,15 @@ export {
 } from "./structures";
 
 // v4
+export { StreamOutput, Output, createImmutableOutput } from "./v4";
+
 export {
-  StreamOutput,
-  Output,
   createImmutableMimeBundle,
-  createImmutableOutput,
   makeDisplayData,
   makeErrorOutput,
   makeStreamOutput,
   makeExecuteResult
-} from "./v4";
+} from "./outputs";
 
 // general
 

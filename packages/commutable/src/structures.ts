@@ -1,23 +1,17 @@
 import uuid from "uuid/v4";
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Record,
-  RecordOf
-} from "immutable";
+import { Map as ImmutableMap, List as ImmutableList } from "immutable";
 
 import {
   makeNotebookRecord,
-  ImmutableOutput,
   ImmutableCell,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableNotebook,
   ImmutableCellOrder,
-  ImmutableCellMap,
-  ImmutableJSONType,
-  ExecutionCount
+  ImmutableCellMap
 } from "./types";
+
+import { ExecutionCount, ImmutableOutput } from "./outputs";
 
 interface CodeCell {
   cell_type: "code";
