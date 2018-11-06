@@ -18,7 +18,9 @@ import {
   Map as ImmutableMap,
   fromJS as immutableFromJS,
   List as ImmutableList,
-  Set as ImmutableSet
+  Set as ImmutableSet,
+  Record,
+  RecordOf
 } from "immutable";
 
 import {
@@ -27,7 +29,6 @@ import {
   ImmutableMarkdownCell,
   ImmutableRawCell,
   ImmutableCell,
-  ImmutableOutput,
   ImmutableMimeBundle,
   ExecutionCount,
   JSONObject,
@@ -175,12 +176,39 @@ export const createImmutableMimeBundle = (
     ImmutableMap()
   );
 
+const makeExecuteResult = Record({
+  output_type: "execute_result",
+  execution_count: null,
+  data: ImmutableMap(),
+  metadata: ImmutableMap()
+});
+
+type ExecuteResultParams = {
+  output_type: "execute_result";
+  execution_count: ExecutionCount;
+  data: ImmutableMimeBundle;
+  metadata?: any;
+};
+
+type ImmutableExecuteResult = RecordOf<ExecuteResultParams>;
+
 export const sanitize = (o: ExecuteResult | DisplayData) =>
   o.metadata ? { metadata: immutableFromJS(o.metadata) } : {};
+
+type ImmutableOutput = ImmutableExecuteResult | any;
 
 export const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "execute_result":
+      /*
+    WISH
+      return makeExecuteResult({
+        execution_count: output.execution_count,
+        data: createImmutableMimeBundle(output.data),
+        metadata: immutableFromJS(output.metadata)
+      });
+     */
+
       return ImmutableMap({
         output_type: output.output_type,
         execution_count: output.execution_count,
