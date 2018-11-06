@@ -1,6 +1,4 @@
-// @flow
-
-function locator(value, fromIndex) {
+function locator(value: string, fromIndex: number) {
   return value.indexOf("$", fromIndex);
 }
 
@@ -9,8 +7,8 @@ const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/;
 const INLINE_MATH_DOUBLE = /^\$\$((?:\\\$|[^$])+)\$\$/;
 
 // eslint-disable-next-line no-unused-vars
-export function inlinePlugin(opts: Object) {
-  function inlineTokenizer(eat, value, silent) {
+export function inlinePlugin(this: any, opts: object) {
+  function inlineTokenizer(eat: any, value: string, silent: boolean) {
     let isDouble = true;
     let match = INLINE_MATH_DOUBLE.exec(value);
     if (!match) {
@@ -107,7 +105,7 @@ export function inlinePlugin(opts: Object) {
   // Stringify for math inline
   if (Compiler != null) {
     const visitors = Compiler.prototype.visitors;
-    visitors.inlineMath = function(node) {
+    visitors.inlineMath = function(node: any) {
       return "$" + node.value + "$";
     };
   }

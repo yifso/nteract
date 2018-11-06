@@ -1,4 +1,3 @@
-// @flow
 import trim from "trim-trailing-lines";
 
 const C_NEWLINE = "\n";
@@ -10,8 +9,8 @@ const MIN_FENCE_COUNT = 2;
 const CODE_INDENT_COUNT = 4;
 
 // eslint-disable-next-line no-unused-vars
-export function blockPlugin(opts: Object) {
-  function blockTokenizer(eat, value, silent) {
+export function blockPlugin(this: any, opts: Object) {
+  function blockTokenizer(eat: any, value: string, silent: boolean) {
     const length = value.length + 1;
     let index = 0;
     let subvalue = "";
@@ -216,7 +215,7 @@ export function blockPlugin(opts: Object) {
   // Stringify for math block
   if (Compiler != null) {
     const visitors = Compiler.prototype.visitors;
-    visitors.math = function(node) {
+    visitors.math = function(node: any) {
       return "$$\n" + node.value + "\n$$";
     };
   }
