@@ -1,7 +1,7 @@
-import inlinePlugin from "./inline.js";
-import blockPlugin from "./block.js";
+import inlinePlugin from "./inline";
+import blockPlugin from "./block";
 
-export function mathPlugin(opts: object = {}) {
+export function mathPlugin(this: any, opts: object = {}) {
   blockPlugin.call(this, opts);
   inlinePlugin.call(this, opts);
 }
