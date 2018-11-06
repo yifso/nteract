@@ -29,7 +29,11 @@ export {
   StreamOutput,
   Output,
   createImmutableMimeBundle,
-  createImmutableOutput
+  createImmutableOutput,
+  makeDisplayData,
+  makeErrorOutput,
+  makeStreamOutput,
+  makeExecuteResult
 } from "./v4";
 
 // general

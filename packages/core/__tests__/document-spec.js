@@ -6,7 +6,9 @@ import {
   emptyCodeCell,
   emptyMarkdownCell,
   appendCellToNotebook,
-  emptyNotebook
+  emptyNotebook,
+  makeDisplayData,
+  makeStreamOutput
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
 
@@ -96,9 +98,7 @@ describe("reduceOutputs", () => {
     expect(
       Immutable.is(
         outputs,
-        Immutable.fromJS([
-          { name: "stdout", text: "hello", output_type: "stream" }
-        ])
+        Immutable.fromJS([makeStreamOutput({ name: "stdout", text: "hello" })])
       )
     ).toBe(true);
 
@@ -111,7 +111,7 @@ describe("reduceOutputs", () => {
       Immutable.is(
         outputs,
         Immutable.fromJS([
-          { name: "stdout", text: "hello world", output_type: "stream" }
+          makeStreamOutput({ name: "stdout", text: "hello world" })
         ])
       )
     ).toBe(true);
@@ -797,10 +797,10 @@ describe("appendOutput", () => {
       Immutable.is(
         state.getIn(["notebook", "cellMap", id, "outputs"]),
         Immutable.fromJS([
-          {
+          makeDisplayData({
             output_type: "display_data",
-            data: { "text/html": "<marquee>wee</marquee>" }
-          }
+            data: Immutable.Map({ "text/html": "<marquee>wee</marquee>" })
+          })
         ])
       )
     ).toBe(true);
@@ -824,17 +824,14 @@ describe("appendOutput", () => {
     });
 
     const state = reducers(originalState, action);
-    expect(
-      Immutable.is(
-        state.getIn(["notebook", "cellMap", id, "outputs"]),
-        Immutable.fromJS([
-          {
-            output_type: "display_data",
-            data: { "text/html": "<marquee>wee</marquee>" }
-          }
-        ])
-      )
-    ).toBe(true);
+    expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
+      Immutable.fromJS([
+        makeDisplayData({
+          data: Immutable.Map({ "text/html": "<marquee>wee</marquee>" })
+        })
+      ])
+    );
+
     expect(
       Immutable.is(
         state.getIn(["transient", "keyPathsForDisplays", "1234"]),
@@ -874,12 +871,12 @@ describe("updateDisplay", () => {
     );
 
     expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
-      Immutable.fromJS([
-        {
+      Immutable.List([
+        makeDisplayData({
           output_type: "display_data",
-          data: { "text/html": "<marquee>WOO</marquee>" },
-          metadata: {}
-        }
+          data: Immutable.Map({ "text/html": "<marquee>WOO</marquee>" }),
+          metadata: Immutable.Map({})
+        })
       ])
     );
   });

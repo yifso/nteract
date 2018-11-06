@@ -189,7 +189,7 @@ type ExecuteResultParams = {
   metadata?: any;
 };
 
-const makeExecuteResult = Record<ExecuteResultParams>({
+export const makeExecuteResult = Record<ExecuteResultParams>({
   output_type: "execute_result",
   execution_count: null,
   data: ImmutableMap(),
@@ -206,7 +206,7 @@ type DisplayDataParams = {
   metadata?: any;
 };
 
-const makeDisplayData = Record<DisplayDataParams>({
+export const makeDisplayData = Record<DisplayDataParams>({
   output_type: "display_data",
   data: ImmutableMap(),
   metadata: ImmutableMap()
@@ -222,7 +222,7 @@ type StreamOutputParams = {
   text: string;
 };
 
-const makeStreamOutput = Record<StreamOutputParams>({
+export const makeStreamOutput = Record<StreamOutputParams>({
   output_type: "stream",
   name: "stdout",
   text: ""
@@ -239,7 +239,7 @@ type ErrorOutputParams = {
   traceback: ImmutableList<string>;
 };
 
-const makeErrorOutput = Record<ErrorOutputParams>({
+export const makeErrorOutput = Record<ErrorOutputParams>({
   output_type: "error",
   ename: "",
   evalue: "",
