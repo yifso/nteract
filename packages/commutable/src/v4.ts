@@ -147,13 +147,6 @@ export const cleanMimeData = (
   );
 };
 
-export const cleanMimeAtKey = (
-  mimeBundle: MimeBundle,
-  previous: ImmutableMimeBundle,
-  key: string
-): ImmutableMimeBundle =>
-  previous.set(key, cleanMimeData(key, mimeBundle[key]));
-
 // Map over all the mimetypes, turning them into our in-memory format
 //
 // {
@@ -170,6 +163,13 @@ export const cleanMimeAtKey = (
 //   "text/plain": "Hey"
 // }
 //
+export const cleanMimeAtKey = (
+  mimeBundle: MimeBundle,
+  previous: ImmutableMimeBundle,
+  key: string
+): ImmutableMimeBundle =>
+  previous.set(key, cleanMimeData(key, mimeBundle[key]));
+
 export const createImmutableMimeBundle = (
   mimeBundle: MimeBundle
 ): ImmutableMimeBundle =>
@@ -178,13 +178,10 @@ export const createImmutableMimeBundle = (
     ImmutableMap()
   );
 
-const makeExecuteResult = Record({
-  output_type: "execute_result",
-  execution_count: null,
-  data: ImmutableMap(),
-  metadata: ImmutableMap()
-});
+export const sanitize = (o: ExecuteResult | DisplayData) =>
+  o.metadata ? { metadata: immutableFromJS(o.metadata) } : {};
 
+/** ExecuteResult Record Boilerplate */
 type ExecuteResultParams = {
   output_type: "execute_result";
   execution_count: ExecutionCount;
@@ -192,45 +189,93 @@ type ExecuteResultParams = {
   metadata?: any;
 };
 
+const makeExecuteResult = Record<ExecuteResultParams>({
+  output_type: "execute_result",
+  execution_count: null,
+  data: ImmutableMap(),
+  metadata: ImmutableMap()
+});
+
 type ImmutableExecuteResult = RecordOf<ExecuteResultParams>;
 
-export const sanitize = (o: ExecuteResult | DisplayData) =>
-  o.metadata ? { metadata: immutableFromJS(o.metadata) } : {};
+/** DisplayData Record Boilerplate */
 
-type ImmutableOutput = ImmutableExecuteResult | any;
+type DisplayDataParams = {
+  output_type: "display_data";
+  data: ImmutableMimeBundle;
+  metadata?: any;
+};
+
+const makeDisplayData = Record<DisplayDataParams>({
+  output_type: "display_data",
+  data: ImmutableMap(),
+  metadata: ImmutableMap()
+});
+
+type ImmutableDisplayData = RecordOf<DisplayDataParams>;
+
+/** StreamOutput Record Boilerplate */
+
+type StreamOutputParams = {
+  output_type: "stream";
+  name: "stdout" | "stderr";
+  text: string;
+};
+
+const makeStreamOutput = Record<StreamOutputParams>({
+  output_type: "stream",
+  name: "stdout",
+  text: ""
+});
+
+type ImmutableStreamOutput = RecordOf<StreamOutputParams>;
+
+/** ErrorOutput Record Boilerplate */
+
+type ErrorOutputParams = {
+  output_type: "error";
+  ename: string;
+  evalue: string;
+  traceback: ImmutableList<string>;
+};
+
+const makeErrorOutput = Record<ErrorOutputParams>({
+  output_type: "error",
+  ename: "",
+  evalue: "",
+  traceback: ImmutableList()
+});
+
+type ImmutableErrorOutput = RecordOf<ErrorOutputParams>;
+
+//////////////
+
+type ImmutableOutput =
+  | ImmutableExecuteResult
+  | ImmutableDisplayData
+  | ImmutableStreamOutput
+  | ImmutableErrorOutput;
 
 export const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "execute_result":
-      /*
-    WISH
       return makeExecuteResult({
         execution_count: output.execution_count,
         data: createImmutableMimeBundle(output.data),
         metadata: immutableFromJS(output.metadata)
       });
-     */
-
-      return ImmutableMap({
-        output_type: output.output_type,
-        execution_count: output.execution_count,
-        data: createImmutableMimeBundle(output.data),
-        ...sanitize(output)
-      });
     case "display_data":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeDisplayData({
         data: createImmutableMimeBundle(output.data),
-        ...sanitize(output)
+        metadata: immutableFromJS(output.metadata)
       });
     case "stream":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeStreamOutput({
         name: output.name,
         text: demultiline(output.text)
       });
     case "error":
-      return ImmutableMap({
+      return makeErrorOutput({
         output_type: "error",
         ename: output.ename,
         evalue: output.evalue,
@@ -358,10 +403,7 @@ const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
   return bundle;
 };
 
-const outputToJS = (immOutput: ImmutableOutput): Output => {
-  // Technically this is an intermediate output with Immutables inside
-  const output = immOutput.toObject();
-
+const outputToJS = (output: ImmutableOutput): Output => {
   switch (output.output_type) {
     case "execute_result":
       return {
@@ -383,11 +425,14 @@ const outputToJS = (immOutput: ImmutableOutput): Output => {
         text: remultiline(output.text)
       };
     case "error":
-      // Note: this is one of the cases where the Array of strings (for
-      // traceback) is part of the format, not a multiline string
-      return immOutput.toJS() as any;
-    default:
-      throw new TypeError(`Output type ${output.output_type} not recognized`);
+      return {
+        output_type: output.output_type,
+        ename: output.ename,
+        evalue: output.evalue,
+        // Note: this is one of the cases where the Array of strings (for
+        // traceback) is part of the format, not a multiline string
+        traceback: output.traceback.toJS()
+      };
   }
 };
 

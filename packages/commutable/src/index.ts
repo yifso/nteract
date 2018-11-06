@@ -54,9 +54,6 @@ export const fromJS = (
       `commutable was passed an Immutable.Record structure that is not a notebook`
     );
   }
-  if (notebook.nbformat === 4) {
-    console.log(notebook);
-  }
 
   if (notebook.nbformat === 4 && notebook.nbformat_minor >= 0) {
     var v4Notebook = notebook as v4.Notebook;
