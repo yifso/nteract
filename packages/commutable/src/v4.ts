@@ -24,7 +24,9 @@ import {
 } from "immutable";
 
 import {
+  makeNotebookRecord,
   ImmutableNotebook,
+  NotebookRecordParams,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
@@ -107,12 +109,12 @@ export interface RawCell {
 
 export type Cell = CodeCell | MarkdownCell | RawCell;
 
-export interface Notebook {
+export type Notebook = {
   cells: Array<Cell>;
   metadata: Object;
   nbformat: 4;
   nbformat_minor: number;
-}
+};
 
 export const demultiline = (s: string | string[]) =>
   Array.isArray(s) ? s.join("") : s;
@@ -293,7 +295,7 @@ const createImmutableCell = (cell: Cell): ImmutableCell => {
   }
 };
 
-export const fromJS = (notebook: Notebook): ImmutableNotebook => {
+export const fromJS = (notebook: Notebook) => {
   if (notebook.nbformat !== 4 || notebook.nbformat_minor < 0) {
     throw new TypeError(
       `Notebook is not a valid v4 notebook. v4 notebooks must be of form 4.x
@@ -313,7 +315,7 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     starterCellStructure as CellStructure
   );
 
-  return ImmutableMap({
+  return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
     nbformat_minor: notebook.nbformat_minor,
@@ -321,14 +323,6 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     metadata: immutableFromJS(notebook.metadata)
   });
 };
-
-interface PlainNotebook {
-  cellOrder: ImmutableList<string>;
-  cellMap: ImmutableMap<string, ImmutableCell>;
-  metadata: ImmutableMap<string, any>;
-  nbformat: 4;
-  nbformat_minor: number;
-}
 
 const metadataToJS = (immMetadata: ImmutableMap<string, any>) =>
   immMetadata.toJS() as JSONObject;
@@ -441,7 +435,7 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
 };
 
 export const toJS = (immnb: ImmutableNotebook): Notebook => {
-  const plainNotebook = immnb.toObject() as PlainNotebook;
+  const plainNotebook = immnb.toObject() as NotebookRecordParams;
   const plainCellOrder: string[] = plainNotebook.cellOrder.toArray();
   const plainCellMap: {
     [key: string]: ImmutableCell;
@@ -454,7 +448,7 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
   return {
     cells,
     metadata: plainNotebook.metadata.toJS(),
-    nbformat: plainNotebook.nbformat,
+    nbformat: 4,
     nbformat_minor: plainNotebook.nbformat_minor
   };
 };

@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from "immutable";
+import { Map as ImmutableMap, Record, RecordOf } from "immutable";
 import * as v4 from "./v4";
 import * as v3 from "./v3";
 import { ImmutableNotebook, JSONType } from "./types";
@@ -34,36 +34,41 @@ export {
 
 // general
 
-export type Notebook = v4.Notebook | v3.Notebook;
-
 const freezeReviver = <T extends JSONType>(k: string, v: T) =>
   Object.freeze(v) as T;
+
+export type Notebook = v4.Notebook | v3.Notebook;
 
 // Expected usage of below is fromJS(parseNotebook(string|buffer))
 export const parseNotebook = (notebookString: string): Notebook =>
   JSON.parse(notebookString, freezeReviver);
 
 export const fromJS = (
-  notebook: Notebook | ImmutableNotebook
-): ImmutableNotebook => {
-  if (ImmutableMap.isMap(notebook)) {
+  notebook: v4.Notebook | v3.Notebook | ImmutableNotebook
+) => {
+  if (Record.isRecord(notebook)) {
     if (notebook.has("cellOrder") && notebook.has("cellMap")) {
       return notebook;
     }
     throw new TypeError(
-      `commutable was passed an Immutable.Map structure that is not a notebook`
+      `commutable was passed an Immutable.Record structure that is not a notebook`
     );
+  }
+  if (notebook.nbformat === 4) {
+    console.log(notebook);
   }
 
   if (notebook.nbformat === 4 && notebook.nbformat_minor >= 0) {
+    var v4Notebook = notebook as v4.Notebook;
+
     if (
-      Array.isArray(notebook.cells) &&
+      Array.isArray(v4Notebook.cells) &&
       typeof notebook.metadata === "object"
     ) {
-      return v4.fromJS(notebook);
+      return v4.fromJS(v4Notebook);
     }
   } else if (notebook.nbformat === 3 && notebook.nbformat_minor >= 0) {
-    return v3.fromJS(notebook);
+    return v3.fromJS(notebook as v3.Notebook);
   }
 
   if (notebook.nbformat) {

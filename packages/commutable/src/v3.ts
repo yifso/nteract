@@ -5,6 +5,7 @@ import {
 } from "immutable";
 
 import {
+  makeNotebookRecord,
   ImmutableNotebook,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
@@ -78,12 +79,12 @@ export interface Worksheet {
   metadata: object;
 }
 
-export interface Notebook {
+export type Notebook = {
   worksheets: Worksheet[];
   metadata: object;
   nbformat: 3;
   nbformat_minor: number;
-}
+};
 
 const createImmutableMarkdownCell = (
   cell: MarkdownCell
@@ -191,7 +192,7 @@ const createImmutableCell = (cell: Cell) => {
   }
 };
 
-export const fromJS = (notebook: Notebook): ImmutableNotebook => {
+export const fromJS = (notebook: Notebook) => {
   if (notebook.nbformat !== 3 || notebook.nbformat_minor < 0) {
     throw new TypeError(
       `Notebook is not a valid v3 notebook. v3 notebooks must be of form 3.x
@@ -214,7 +215,7 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     )
   )[0];
 
-  return ImmutableMap({
+  return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
     nbformat_minor: notebook.nbformat_minor,
