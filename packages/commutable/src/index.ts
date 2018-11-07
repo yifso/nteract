@@ -37,7 +37,7 @@ export {
 
 // general
 
-const freezeReviver = <T extends JSONType>(k: string, v: T) =>
+const freezeReviver = <T extends JSONType>(_k: string, v: T) =>
   Object.freeze(v) as T;
 
 export type Notebook = v4.Notebook | v3.Notebook;
