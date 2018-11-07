@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 
 // TODO: This could all be one logo that works from the core palettes as the
@@ -9,10 +8,10 @@ const letteringColor = {
   dark: "#edf1f7"
 };
 
-type LogoProps = {
-  theme: "light" | "dark",
-  height?: number,
-  width?: number
+interface LogoProps {
+  theme: "light" | "dark";
+  height?: number;
+  width?: number;
 };
 
 const defaultWidth = 940;
