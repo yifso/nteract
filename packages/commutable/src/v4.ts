@@ -22,31 +22,34 @@ import {
 } from "immutable";
 
 import {
+  makeNotebookRecord,
   ImmutableNotebook,
+  NotebookRecordParams,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
   ImmutableCell,
-  ImmutableOutput,
-  ImmutableMimeBundle,
-  ExecutionCount,
   JSONObject,
   JSONType,
   MultiLineString
 } from "./types";
 
-import { appendCell, CellStructure } from "./structures";
+import {
+  createImmutableMimeBundle,
+  ImmutableOutput,
+  makeExecuteResult,
+  makeDisplayData,
+  makeStreamOutput,
+  makeErrorOutput,
+  demultiline,
+  remultiline,
+  isJSONKey,
+  MimeBundle,
+  ImmutableMimeBundle,
+  ExecutionCount
+} from "./outputs";
 
-//
-// MimeBundle example (disk format)
-//
-// {
-//   "application/json": {"a": 3, "b": 2},
-//   "text/html": ["<p>\n", "Hey\n", "</p>"],
-//   "text/plain": "Hey"
-// }
-//
-export type MimeBundle = { [key: string]: string | string[] | Object };
+import { appendCell, CellStructure } from "./structures";
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                             Output Types
@@ -106,101 +109,33 @@ export interface RawCell {
 
 export type Cell = CodeCell | MarkdownCell | RawCell;
 
-export interface Notebook {
+export type Notebook = {
   cells: Array<Cell>;
   metadata: Object;
   nbformat: 4;
   nbformat_minor: number;
-}
-
-export const demultiline = (s: string | string[]) =>
-  Array.isArray(s) ? s.join("") : s;
-
-/**
- * Split string into a list of strings delimited by newlines
- */
-export const remultiline = (s: string | string[]): string[] =>
-  Array.isArray(s) ? s : s.split(/(.+?(?:\r\n|\n))/g).filter(x => x !== "");
-
-export const isJSONKey = (key: string) =>
-  /^application\/(.*\+)?json$/.test(key);
-
-export const cleanMimeData = (
-  key: string,
-  data: string | string[] | object
-) => {
-  // See https://github.com/jupyter/nbformat/blob/62d6eb8803616d198eaa2024604d1fe923f2a7b3/nbformat/v4/nbformat.v4.schema.json#L368
-  if (isJSONKey(key)) {
-    // Data stays as is for JSON types
-    return data;
-  }
-
-  if (typeof data === "string" || Array.isArray(data)) {
-    return demultiline(data);
-  }
-
-  throw new TypeError(
-    `Data for ${key} is expected to be a string or an Array of strings`
-  );
 };
-
-export const cleanMimeAtKey = (
-  mimeBundle: MimeBundle,
-  previous: ImmutableMimeBundle,
-  key: string
-): ImmutableMimeBundle =>
-  previous.set(key, cleanMimeData(key, mimeBundle[key]));
-
-// Map over all the mimetypes, turning them into our in-memory format
-//
-// {
-//   "application/json": {"a": 3, "b": 2},
-//   "text/html": ["<p>\n", "Hey\n", "</p>"],
-//   "text/plain": "Hey"
-// }
-//
-// to
-//
-// {
-//   "application/json": {"a": 3, "b": 2},
-//   "text/html": "<p>\nHey\n</p>",
-//   "text/plain": "Hey"
-// }
-//
-export const createImmutableMimeBundle = (
-  mimeBundle: MimeBundle
-): ImmutableMimeBundle =>
-  Object.keys(mimeBundle).reduce(
-    cleanMimeAtKey.bind(null, mimeBundle),
-    ImmutableMap()
-  );
-
-export const sanitize = (o: ExecuteResult | DisplayData) =>
-  o.metadata ? { metadata: immutableFromJS(o.metadata) } : {};
 
 export const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "execute_result":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeExecuteResult({
         execution_count: output.execution_count,
         data: createImmutableMimeBundle(output.data),
-        ...sanitize(output)
+        metadata: immutableFromJS(output.metadata)
       });
     case "display_data":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeDisplayData({
         data: createImmutableMimeBundle(output.data),
-        ...sanitize(output)
+        metadata: immutableFromJS(output.metadata)
       });
     case "stream":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeStreamOutput({
         name: output.name,
         text: demultiline(output.text)
       });
     case "error":
-      return ImmutableMap({
+      return makeErrorOutput({
         output_type: "error",
         ename: output.ename,
         evalue: output.evalue,
@@ -265,7 +200,7 @@ const createImmutableCell = (cell: Cell): ImmutableCell => {
   }
 };
 
-export const fromJS = (notebook: Notebook): ImmutableNotebook => {
+export const fromJS = (notebook: Notebook) => {
   if (notebook.nbformat !== 4 || notebook.nbformat_minor < 0) {
     throw new TypeError(
       `Notebook is not a valid v4 notebook. v4 notebooks must be of form 4.x
@@ -285,7 +220,7 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     starterCellStructure as CellStructure
   );
 
-  return ImmutableMap({
+  return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
     nbformat_minor: notebook.nbformat_minor,
@@ -293,14 +228,6 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     metadata: immutableFromJS(notebook.metadata)
   });
 };
-
-interface PlainNotebook {
-  cellOrder: ImmutableList<string>;
-  cellMap: ImmutableMap<string, ImmutableCell>;
-  metadata: ImmutableMap<string, any>;
-  nbformat: 4;
-  nbformat_minor: number;
-}
 
 const metadataToJS = (immMetadata: ImmutableMap<string, any>) =>
   immMetadata.toJS() as JSONObject;
@@ -336,10 +263,7 @@ const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
   return bundle;
 };
 
-const outputToJS = (immOutput: ImmutableOutput): Output => {
-  // Technically this is an intermediate output with Immutables inside
-  const output = immOutput.toObject();
-
+const outputToJS = (output: ImmutableOutput): Output => {
   switch (output.output_type) {
     case "execute_result":
       return {
@@ -361,11 +285,14 @@ const outputToJS = (immOutput: ImmutableOutput): Output => {
         text: remultiline(output.text)
       };
     case "error":
-      // Note: this is one of the cases where the Array of strings (for
-      // traceback) is part of the format, not a multiline string
-      return immOutput.toJS() as any;
-    default:
-      throw new TypeError(`Output type ${output.output_type} not recognized`);
+      return {
+        output_type: output.output_type,
+        ename: output.ename,
+        evalue: output.evalue,
+        // Note: this is one of the cases where the Array of strings (for
+        // traceback) is part of the format, not a multiline string
+        traceback: output.traceback.toJS()
+      };
   }
 };
 
@@ -413,7 +340,7 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
 };
 
 export const toJS = (immnb: ImmutableNotebook): Notebook => {
-  const plainNotebook = immnb.toObject() as PlainNotebook;
+  const plainNotebook = immnb.toObject() as NotebookRecordParams;
   const plainCellOrder: string[] = plainNotebook.cellOrder.toArray();
   const plainCellMap: {
     [key: string]: ImmutableCell;
@@ -426,7 +353,7 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
   return {
     cells,
     metadata: plainNotebook.metadata.toJS(),
-    nbformat: plainNotebook.nbformat,
+    nbformat: 4,
     nbformat_minor: plainNotebook.nbformat_minor
   };
 };

@@ -2,25 +2,16 @@ import uuid from "uuid/v4";
 import { Map as ImmutableMap, List as ImmutableList } from "immutable";
 
 import {
-  ImmutableOutput,
+  makeNotebookRecord,
   ImmutableCell,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableNotebook,
   ImmutableCellOrder,
-  ImmutableCellMap,
-  ImmutableJSONType,
-  ExecutionCount
+  ImmutableCellMap
 } from "./types";
 
-// We're hardset to nbformat v4.4 for what we use in-memory
-interface Notebook {
-  nbformat: 4;
-  nbformat_minor: 4;
-  metadata: ImmutableMap<string, ImmutableJSONType>;
-  cellOrder: ImmutableList<string>;
-  cellMap: ImmutableMap<string, ImmutableCell>;
-}
+import { ExecutionCount, ImmutableOutput } from "./outputs";
 
 interface CodeCell {
   cell_type: "code";
@@ -64,18 +55,12 @@ export const createMarkdownCell = (
 export const emptyCodeCell = createCodeCell();
 export const emptyMarkdownCell = createMarkdownCell();
 
-export const defaultNotebook = Object.freeze({
-  nbformat: 4,
-  nbformat_minor: 4,
-  metadata: ImmutableMap(),
-  cellOrder: ImmutableList(),
-  cellMap: ImmutableMap()
-}) as Notebook;
-
-export const createNotebook = (notebook = defaultNotebook): ImmutableNotebook =>
-  ImmutableMap(notebook);
-
-export const emptyNotebook = createNotebook();
+// These are all kind of duplicative now that we're on records
+// Since we export these though, they're left for
+// backwards compatiblity
+export const defaultNotebook = makeNotebookRecord();
+export const createNotebook = makeNotebookRecord;
+export const emptyNotebook = makeNotebookRecord();
 
 export type CellStructure = {
   cellOrder: ImmutableCellOrder;
@@ -98,10 +83,8 @@ export const appendCellToNotebook = (
   immCell: ImmutableCell
 ): ImmutableNotebook =>
   immnb.withMutations(nb => {
-    // $FlowFixMe: Fixed by making ImmutableNotebook a typed Record.
     const cellStructure: CellStructure = {
       cellOrder: nb.get("cellOrder"),
-      // $FlowFixMe: Fixed by making ImmutableNotebook a typed Record.
       cellMap: nb.get("cellMap")
     };
     const { cellOrder, cellMap } = appendCell(cellStructure, immCell);

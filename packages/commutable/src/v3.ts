@@ -5,23 +5,27 @@ import {
 } from "immutable";
 
 import {
-  ImmutableNotebook,
+  makeNotebookRecord,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
-  ImmutableOutput,
-  ImmutableMimeBundle,
   MultiLineString,
   JSONObject
 } from "./types";
-import { CellStructure, appendCell } from "./structures";
+
 import {
+  ImmutableOutput,
+  ImmutableMimeBundle,
+  makeExecuteResult,
+  makeDisplayData,
+  makeStreamOutput,
+  makeErrorOutput,
   demultiline,
-  cleanMimeAtKey,
-  ErrorOutput,
-  RawCell,
-  MarkdownCell
-} from "./v4";
+  cleanMimeAtKey
+} from "./outputs";
+
+import { CellStructure, appendCell } from "./structures";
+import { ErrorOutput, RawCell, MarkdownCell } from "./v4";
 
 const VALID_MIMETYPES = {
   text: "text/plain",
@@ -78,12 +82,12 @@ export interface Worksheet {
   metadata: object;
 }
 
-export interface Notebook {
+export type Notebook = {
   worksheets: Worksheet[];
   metadata: object;
   nbformat: 3;
   nbformat_minor: number;
-}
+};
 
 const createImmutableMarkdownCell = (
   cell: MarkdownCell
@@ -97,6 +101,7 @@ const createImmutableMarkdownCell = (
 const createImmutableMimeBundle = (output: MimeOutput): ImmutableMimeBundle => {
   const mimeBundle: { [key: string]: MultiLineString | undefined } = {};
   for (const key of Object.keys(output)) {
+    // v3 had non-media types for rich media
     if (key in VALID_MIMETYPES) {
       mimeBundle[VALID_MIMETYPES[key as MimeTypeKey]] =
         output[key as keyof MimePayload];
@@ -108,33 +113,30 @@ const createImmutableMimeBundle = (output: MimeOutput): ImmutableMimeBundle => {
   );
 };
 
-export const sanitize = (o: ExecuteResult | DisplayData) =>
-  o.metadata ? { metadata: immutableFromJS(o.metadata) } : {};
-
 const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "pyout":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeExecuteResult({
         execution_count: output.prompt_number,
+        // Note strangeness with v4 API
         data: createImmutableMimeBundle(output),
-        ...sanitize(output)
+        metadata: immutableFromJS(output.metadata)
       });
     case "display_data":
-      return ImmutableMap({
-        output_type: output.output_type,
+      return makeDisplayData({
         data: createImmutableMimeBundle(output),
-        ...sanitize(output)
+        metadata: immutableFromJS(output.metadata)
       });
     case "stream":
-      return ImmutableMap({
-        output_type: output.output_type,
-        name: output.stream,
+      // Default to stdout in all cases unless it's stderr
+      const name = output.stream === "stderr" ? "stderr" : "stdout";
+
+      return makeStreamOutput({
+        name,
         text: demultiline(output.text)
       });
     case "pyerr":
-      return ImmutableMap({
-        output_type: "error",
+      return makeErrorOutput({
         ename: output.ename,
         evalue: output.evalue,
         traceback: ImmutableList(output.traceback)
@@ -191,7 +193,7 @@ const createImmutableCell = (cell: Cell) => {
   }
 };
 
-export const fromJS = (notebook: Notebook): ImmutableNotebook => {
+export const fromJS = (notebook: Notebook) => {
   if (notebook.nbformat !== 3 || notebook.nbformat_minor < 0) {
     throw new TypeError(
       `Notebook is not a valid v3 notebook. v3 notebooks must be of form 3.x
@@ -214,7 +216,7 @@ export const fromJS = (notebook: Notebook): ImmutableNotebook => {
     )
   )[0];
 
-  return ImmutableMap({
+  return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
     nbformat_minor: notebook.nbformat_minor,
