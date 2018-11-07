@@ -1,56 +1,17 @@
 import uuid from "uuid/v4";
-import { Map as ImmutableMap, List as ImmutableList } from "immutable";
 
 import {
   makeNotebookRecord,
-  ImmutableCell,
-  ImmutableCodeCell,
-  ImmutableMarkdownCell,
   ImmutableNotebook,
   ImmutableCellOrder,
   ImmutableCellMap
 } from "./types";
 
-import { ExecutionCount, ImmutableOutput } from "./outputs";
+import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
 
-interface CodeCell {
-  cell_type: "code";
-  metadata: ImmutableMap<string, any>;
-  execution_count: ExecutionCount;
-  source: string;
-  outputs: ImmutableList<ImmutableOutput>;
-}
-
-interface MarkdownCell {
-  cell_type: "markdown";
-  source: string;
-  metadata: ImmutableMap<string, any>;
-}
-
-const defaultCodeCell = Object.freeze({
-  cell_type: "code",
-  execution_count: null,
-  metadata: ImmutableMap({
-    collapsed: false,
-    outputHidden: false,
-    inputHidden: false
-  }),
-  source: "",
-  outputs: ImmutableList()
-}) as CodeCell;
-
-const defaultMarkdownCell = Object.freeze({
-  cell_type: "markdown",
-  metadata: ImmutableMap(),
-  source: ""
-}) as MarkdownCell;
-
-export const createCodeCell = (cell = defaultCodeCell): ImmutableCodeCell =>
-  ImmutableMap(cell);
-
-export const createMarkdownCell = (
-  cell = defaultMarkdownCell
-): ImmutableMarkdownCell => ImmutableMap(cell);
+// The cell creators here are a bit duplicative
+export const createCodeCell = makeCodeCell;
+export const createMarkdownCell = makeMarkdownCell;
 
 export const emptyCodeCell = createCodeCell();
 export const emptyMarkdownCell = createMarkdownCell();

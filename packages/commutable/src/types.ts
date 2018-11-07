@@ -2,6 +2,8 @@ import { Map as ImmutableMap, List as ImmutableList, Record } from "immutable";
 
 import { ImmutableOutput } from "./outputs";
 
+import { ImmutableCell } from "./cells";
+
 // Mutable JSON types
 export type PrimitiveImmutable = string | number | boolean | null;
 export type JSONType = PrimitiveImmutable | JSONObject | JSONArray;
@@ -42,10 +44,6 @@ export const makeNotebookRecord = Record<NotebookRecordParams>({
 export type ImmutableNotebook = Record<NotebookRecordParams> &
   Readonly<NotebookRecordParams>;
 
-export type ImmutableCodeCell = ImmutableMap<string, any>;
-export type ImmutableMarkdownCell = ImmutableMap<string, any>;
-export type ImmutableRawCell = ImmutableMap<string, any>;
-export type ImmutableCell = ImmutableCodeCell | ImmutableMarkdownCell;
 export type ImmutableOutputs = ImmutableList<ImmutableOutput>;
 
 export type ImmutableCellOrder = ImmutableList<CellID>;
