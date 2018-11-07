@@ -1,1 +1,3 @@
-export { default as WideLogo } from "./wide.js";
+import { WideLogo } from './wide';
+
+export { WideLogo };
