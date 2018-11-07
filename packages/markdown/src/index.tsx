@@ -8,7 +8,7 @@ const math = (props: { value: string }): React.ReactNode => (
   <MathJax.Node>{props.value}</MathJax.Node>
 );
 
-const inlineMath  = (props: { value: string }): React.ReactNode => (
+const inlineMath = (props: { value: string }): React.ReactNode => (
   <MathJax.Node inline>{props.value}</MathJax.Node>
 );
 

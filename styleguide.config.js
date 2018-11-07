@@ -35,6 +35,10 @@ module.exports = {
       components: "packages/directory-listing/src/components/*.js"
     },
     {
+      name: "MarkdownRender",
+      content: "packages/markdown/examples.md"
+    },
+    {
       name: "Maths",
       content: "packages/mathjax/examples.md"
     }
