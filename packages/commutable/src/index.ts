@@ -35,6 +35,8 @@ export {
   makeExecuteResult
 } from "./outputs";
 
+export { makeRawCell, makeCodeCell, makeMarkdownCell } from "./cells";
+
 // general
 
 const freezeReviver = <T extends JSONType>(_k: string, v: T) =>

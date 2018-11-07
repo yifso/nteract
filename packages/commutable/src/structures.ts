@@ -61,7 +61,6 @@ export const insertCellAt = (
   notebook.withMutations(nb =>
     nb
       .setIn(["cellMap", cellID], cell)
-      // $FlowFixMe: Fixed by making ImmutableNotebook a typed record.
       .set("cellOrder", nb.get("cellOrder").insert(index, cellID))
   );
 
@@ -75,7 +74,6 @@ export const insertCellAfter = (
     notebook,
     cell,
     cellID,
-    // $FlowFixMe: Fixed by making ImmutableNotebook a typed record.
     notebook.get("cellOrder").indexOf(priorCellID) + 1
   );
 
@@ -89,11 +87,8 @@ export const removeCell = (
   console.log(
     "Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead"
   );
-  return notebook
-    .removeIn(["cellMap", cellID])
-    .update("cellOrder", (cellOrder: ImmutableCellOrder) =>
-      cellOrder.filterNot(id => id === cellID)
-    );
+
+  return deleteCell(notebook, cellID);
 };
 
 export const deleteCell = (
