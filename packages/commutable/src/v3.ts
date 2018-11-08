@@ -4,14 +4,18 @@ import {
   List as ImmutableList
 } from "immutable";
 
+import { MultiLineString, JSONObject } from "./primitives";
+
+import { makeNotebookRecord } from "./notebook";
+
 import {
-  makeNotebookRecord,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
-  MultiLineString,
-  JSONObject
-} from "./types";
+  makeCodeCell,
+  makeRawCell,
+  makeMarkdownCell
+} from "./cells";
 
 import {
   ImmutableOutput,
@@ -92,7 +96,7 @@ export type Notebook = {
 const createImmutableMarkdownCell = (
   cell: MarkdownCell
 ): ImmutableMarkdownCell =>
-  ImmutableMap({
+  makeMarkdownCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
@@ -147,7 +151,7 @@ const createImmutableOutput = (output: Output): ImmutableOutput => {
 };
 
 const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
-  ImmutableMap({
+  makeCodeCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.input),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
@@ -156,14 +160,15 @@ const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
   });
 
 const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
-  ImmutableMap({
+  makeRawCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
   });
 
 const createImmutableHeadingCell = (cell: HeadingCell): ImmutableMarkdownCell =>
-  ImmutableMap({
+  // v3 heading cells are just markdown cells in v4+
+  makeMarkdownCell({
     cell_type: "markdown",
     source: Array.isArray(cell.source)
       ? demultiline(

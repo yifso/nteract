@@ -747,8 +747,11 @@ describe("changeCellType", () => {
       originalState,
       actions.changeCellType({ id, to: "code" })
     );
-    expect(state.getIn(["notebook", "cellMap", id, "cell_type"])).toBe("code");
-    expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toBeDefined();
+
+    const cell = state.getIn(["notebook", "cellMap", id]);
+
+    expect(cell.cell_type).toBe("code");
+    expect(cell.outputs).toEqual(Immutable.List());
   });
   test("does nothing if cell type is same", () => {
     const originalState = monocellDocument;

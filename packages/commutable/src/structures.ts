@@ -1,61 +1,19 @@
 import uuid from "uuid/v4";
+
+import { CellID, makeNotebookRecord, ImmutableNotebook } from "./notebook";
+
+import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
+
 import { Map as ImmutableMap, List as ImmutableList } from "immutable";
 
-import {
-  makeNotebookRecord,
-  ImmutableCell,
-  ImmutableCodeCell,
-  ImmutableMarkdownCell,
-  ImmutableNotebook,
-  ImmutableCellOrder,
-  ImmutableCellMap
-} from "./types";
-
-import { ExecutionCount, ImmutableOutput } from "./outputs";
-
-interface CodeCell {
-  cell_type: "code";
-  metadata: ImmutableMap<string, any>;
-  execution_count: ExecutionCount;
-  source: string;
-  outputs: ImmutableList<ImmutableOutput>;
-}
-
-interface MarkdownCell {
-  cell_type: "markdown";
-  source: string;
-  metadata: ImmutableMap<string, any>;
-}
-
-const defaultCodeCell = Object.freeze({
-  cell_type: "code",
-  execution_count: null,
-  metadata: ImmutableMap({
-    collapsed: false,
-    outputHidden: false,
-    inputHidden: false
-  }),
-  source: "",
-  outputs: ImmutableList()
-}) as CodeCell;
-
-const defaultMarkdownCell = Object.freeze({
-  cell_type: "markdown",
-  metadata: ImmutableMap(),
-  source: ""
-}) as MarkdownCell;
-
-export const createCodeCell = (cell = defaultCodeCell): ImmutableCodeCell =>
-  ImmutableMap(cell);
-
-export const createMarkdownCell = (
-  cell = defaultMarkdownCell
-): ImmutableMarkdownCell => ImmutableMap(cell);
+// The cell creators here are a bit duplicative
+export const createCodeCell = makeCodeCell;
+export const createMarkdownCell = makeMarkdownCell;
 
 export const emptyCodeCell = createCodeCell();
 export const emptyMarkdownCell = createMarkdownCell();
 
-// These are all kind of duplicative now that we're on records
+// These are all kind of duplicative now that we're on records.
 // Since we export these though, they're left for
 // backwards compatiblity
 export const defaultNotebook = makeNotebookRecord();
@@ -63,8 +21,8 @@ export const createNotebook = makeNotebookRecord;
 export const emptyNotebook = makeNotebookRecord();
 
 export type CellStructure = {
-  cellOrder: ImmutableCellOrder;
-  cellMap: ImmutableCellMap;
+  cellOrder: ImmutableList<CellID>;
+  cellMap: ImmutableMap<CellID, ImmutableCell>;
 };
 
 // Intended to make it easy to use this with (temporary mutable cellOrder +
@@ -100,7 +58,6 @@ export const insertCellAt = (
   notebook.withMutations(nb =>
     nb
       .setIn(["cellMap", cellID], cell)
-      // $FlowFixMe: Fixed by making ImmutableNotebook a typed record.
       .set("cellOrder", nb.get("cellOrder").insert(index, cellID))
   );
 
@@ -114,7 +71,6 @@ export const insertCellAfter = (
     notebook,
     cell,
     cellID,
-    // $FlowFixMe: Fixed by making ImmutableNotebook a typed record.
     notebook.get("cellOrder").indexOf(priorCellID) + 1
   );
 
@@ -128,11 +84,8 @@ export const removeCell = (
   console.log(
     "Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead"
   );
-  return notebook
-    .removeIn(["cellMap", cellID])
-    .update("cellOrder", (cellOrder: ImmutableCellOrder) =>
-      cellOrder.filterNot(id => id === cellID)
-    );
+
+  return deleteCell(notebook, cellID);
 };
 
 export const deleteCell = (
@@ -141,9 +94,7 @@ export const deleteCell = (
 ): ImmutableNotebook =>
   notebook
     .removeIn(["cellMap", cellID])
-    .update("cellOrder", (cellOrder: ImmutableCellOrder) =>
-      cellOrder.filterNot(id => id === cellID)
-    );
+    .update("cellOrder", cellOrder => cellOrder.filterNot(id => id === cellID));
 
 export const monocellNotebook = appendCellToNotebook(
   emptyNotebook,

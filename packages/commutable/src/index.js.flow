@@ -257,3 +257,7 @@ declare export function toJS(immnb: ImmutableNotebook): v4Notebook;
 
 // Expected usage is stringifyNotebook(toJS(immutableNotebook))
 declare export function stringifyNotebook(notebook: v4Notebook): string;
+
+declare export function makeCodeCell(cell: any): ImmutableCodeCell;
+declare export function makeMarkdownCell(cell: any): ImmutableMarkdownCell;
+declare export function makeRawCell(cell: any): ImmutableRawCell;

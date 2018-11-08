@@ -9,9 +9,6 @@
  * contained in here (non Immutable ones) are constrained to the disk based
  * notebook format.
  *
- * To assist in the developer experience, types are included through the use of
- * flow.
- *
  */
 
 import {
@@ -24,15 +21,20 @@ import {
 import {
   makeNotebookRecord,
   ImmutableNotebook,
-  NotebookRecordParams,
+  NotebookRecordParams
+} from "./notebook";
+
+import { JSONObject, MultiLineString, ExecutionCount } from "./primitives";
+
+import {
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
   ImmutableCell,
-  JSONObject,
-  JSONType,
-  MultiLineString
-} from "./types";
+  makeCodeCell,
+  makeRawCell,
+  makeMarkdownCell
+} from "./cells";
 
 import {
   createImmutableMimeBundle,
@@ -45,8 +47,7 @@ import {
   remultiline,
   isJSONKey,
   MimeBundle,
-  ImmutableMimeBundle,
-  ExecutionCount
+  ImmutableMimeBundle
 } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";
@@ -163,7 +164,7 @@ const createImmutableMetadata = (metadata: JSONObject) =>
   });
 
 const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
-  ImmutableMap({
+  makeRawCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
@@ -172,14 +173,14 @@ const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
 const createImmutableMarkdownCell = (
   cell: MarkdownCell
 ): ImmutableMarkdownCell =>
-  ImmutableMap({
+  makeMarkdownCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
   });
 
 const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
-  ImmutableMap({
+  makeCodeCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
@@ -231,12 +232,6 @@ export const fromJS = (notebook: Notebook) => {
 
 const metadataToJS = (immMetadata: ImmutableMap<string, any>) =>
   immMetadata.toJS() as JSONObject;
-
-const markdownCellToJS = (immCell: ImmutableCell): MarkdownCell => ({
-  cell_type: "markdown",
-  source: remultiline(immCell.get("source", "")),
-  metadata: metadataToJS(immCell.get("metadata", ImmutableMap()))
-});
 
 const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
   const bundle = immMimeBundle.toObject();
@@ -296,38 +291,32 @@ const outputToJS = (output: ImmutableOutput): Output => {
   }
 };
 
-interface IntermediateCodeCell {
-  cell_type: "code";
-  metadata: ImmutableMap<string, JSONType>;
-  execution_count: ExecutionCount;
-  source: string;
-  outputs: ImmutableList<ImmutableOutput>;
-}
+const markdownCellToJS = (immCell: ImmutableMarkdownCell): MarkdownCell => ({
+  cell_type: "markdown",
+  source: remultiline(immCell.source),
+  metadata: metadataToJS(immCell.metadata)
+});
 
-const codeCellToJS = (immCell: ImmutableCell): CodeCell => {
-  const cell = immCell.toObject() as IntermediateCodeCell;
-
+const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
   return {
     cell_type: "code",
-    source: remultiline(cell.source),
-    outputs: cell.outputs.map(outputToJS).toArray(),
-    execution_count: cell.execution_count,
-    metadata: metadataToJS(immCell.get("metadata", ImmutableMap()))
+    source: remultiline(immCell.source),
+    outputs: immCell.outputs.map(outputToJS).toArray(),
+    execution_count: immCell.execution_count,
+    metadata: metadataToJS(immCell.metadata)
   };
 };
 
-const rawCellToJS = (immCell: ImmutableCell): RawCell => {
-  const cell = immCell.toObject() as Cell;
+const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
   return {
     cell_type: "raw",
-    source: remultiline(cell.source),
+    source: remultiline(immCell.source),
     metadata: metadataToJS(immCell.get("metadata", ImmutableMap()))
   };
 };
 
 const cellToJS = (immCell: ImmutableCell): Cell => {
-  const cellType: "markdown" | "raw" | "code" = immCell.get("cell_type");
-  switch (cellType) {
+  switch (immCell.cell_type) {
     case "markdown":
       return markdownCellToJS(immCell);
     case "code":
@@ -335,7 +324,7 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
     case "raw":
       return rawCellToJS(immCell);
     default:
-      throw new TypeError(`Cell type ${cellType} unknown`);
+      throw new TypeError(`Cell type unknown at runtime`);
   }
 };
 
