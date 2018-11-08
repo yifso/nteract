@@ -1,6 +1,6 @@
 import { ImmutableOutput } from "./outputs";
 
-import { ExecutionCount } from "./types";
+import { ExecutionCount } from "./primitives";
 
 import {
   Map as ImmutableMap,

@@ -25,7 +25,7 @@ import {
   JSONObject,
   MultiLineString,
   ExecutionCount
-} from "./types";
+} from "./primitives";
 
 import {
   ImmutableCodeCell,

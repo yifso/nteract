@@ -1,11 +1,12 @@
 import uuid from "uuid/v4";
 
 import {
+  CellID,
   makeNotebookRecord,
   ImmutableNotebook,
   ImmutableCellOrder,
   ImmutableCellMap
-} from "./types";
+} from "./primitives";
 
 import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
 
@@ -98,7 +99,7 @@ export const deleteCell = (
   notebook
     .removeIn(["cellMap", cellID])
     .update("cellOrder", (cellOrder: ImmutableCellOrder) =>
-      cellOrder.filterNot(id => id === cellID)
+      cellOrder.filterNot((id: CellID) => id === cellID)
     );
 
 export const monocellNotebook = appendCellToNotebook(

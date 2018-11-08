@@ -5,7 +5,7 @@ import {
   RecordOf
 } from "immutable";
 
-import { ExecutionCount } from "./types";
+import { ExecutionCount } from "./primitives";
 
 export type ImmutableMimeBundle = ImmutableMap<string, any>;
 

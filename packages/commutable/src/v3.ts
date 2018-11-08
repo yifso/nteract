@@ -4,7 +4,7 @@ import {
   List as ImmutableList
 } from "immutable";
 
-import { makeNotebookRecord, MultiLineString, JSONObject } from "./types";
+import { makeNotebookRecord, MultiLineString, JSONObject } from "./primitives";
 
 import {
   ImmutableCodeCell,

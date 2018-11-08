@@ -1,7 +1,7 @@
 import { Record } from "immutable";
 import * as v4 from "./v4";
 import * as v3 from "./v3";
-import { ImmutableNotebook, JSONType } from "./types";
+import { ImmutableNotebook, JSONType } from "./primitives";
 
 // .....................................
 // API Exports
@@ -9,7 +9,7 @@ import { ImmutableNotebook, JSONType } from "./types";
 //
 
 // from types
-export * from "./types";
+export * from "./primitives";
 
 // from structures
 export {
