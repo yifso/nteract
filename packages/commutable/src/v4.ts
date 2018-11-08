@@ -21,11 +21,10 @@ import {
 import {
   makeNotebookRecord,
   ImmutableNotebook,
-  NotebookRecordParams,
-  JSONObject,
-  MultiLineString,
-  ExecutionCount
-} from "./primitives";
+  NotebookRecordParams
+} from "./notebook";
+
+import { JSONObject, MultiLineString, ExecutionCount } from "./primitives";
 
 import {
   ImmutableCodeCell,

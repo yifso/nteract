@@ -1,14 +1,10 @@
 import uuid from "uuid/v4";
 
-import {
-  CellID,
-  makeNotebookRecord,
-  ImmutableNotebook,
-  ImmutableCellOrder,
-  ImmutableCellMap
-} from "./primitives";
+import { CellID, makeNotebookRecord, ImmutableNotebook } from "./notebook";
 
 import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
+
+import { Map as ImmutableMap, List as ImmutableList } from "immutable";
 
 // The cell creators here are a bit duplicative
 export const createCodeCell = makeCodeCell;
@@ -17,7 +13,7 @@ export const createMarkdownCell = makeMarkdownCell;
 export const emptyCodeCell = createCodeCell();
 export const emptyMarkdownCell = createMarkdownCell();
 
-// These are all kind of duplicative now that we're on records
+// These are all kind of duplicative now that we're on records.
 // Since we export these though, they're left for
 // backwards compatiblity
 export const defaultNotebook = makeNotebookRecord();
@@ -25,8 +21,8 @@ export const createNotebook = makeNotebookRecord;
 export const emptyNotebook = makeNotebookRecord();
 
 export type CellStructure = {
-  cellOrder: ImmutableCellOrder;
-  cellMap: ImmutableCellMap;
+  cellOrder: ImmutableList<CellID>;
+  cellMap: ImmutableMap<CellID, ImmutableCell>;
 };
 
 // Intended to make it easy to use this with (temporary mutable cellOrder +
@@ -98,9 +94,7 @@ export const deleteCell = (
 ): ImmutableNotebook =>
   notebook
     .removeIn(["cellMap", cellID])
-    .update("cellOrder", (cellOrder: ImmutableCellOrder) =>
-      cellOrder.filterNot((id: CellID) => id === cellID)
-    );
+    .update("cellOrder", cellOrder => cellOrder.filterNot(id => id === cellID));
 
 export const monocellNotebook = appendCellToNotebook(
   emptyNotebook,
