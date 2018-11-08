@@ -745,6 +745,7 @@ function changeCellType(
 
   const { to } = action.payload;
 
+  // $FlowFixMe: flow types in immutable need to be updated
   const cell = state.getIn(["notebook", "cellMap", id]);
 
   const from = cell.cell_type;
