@@ -1,8 +1,9 @@
 import { Map as ImmutableMap, List as ImmutableList, Record } from "immutable";
 
 import { ImmutableOutput } from "./outputs";
-
 import { ImmutableCell } from "./cells";
+
+export type ExecutionCount = number | null;
 
 // Mutable JSON types
 export type PrimitiveImmutable = string | number | boolean | null;
@@ -12,17 +13,6 @@ export interface JSONObject {
 }
 export interface JSONArray extends Array<JSONType> {}
 
-// Immutable.js Wrapped JSON types
-export type ImmutableJSONType =
-  | PrimitiveImmutable
-  | ImmutableJSONMap
-  | ImmutableJSONList;
-interface ImmutableJSONMap extends ImmutableMap<string, ImmutableJSONType> {}
-interface ImmutableJSONList extends ImmutableList<ImmutableJSONType> {}
-
-export type MimeBundle = JSONObject;
-
-export type CellType = "markdown" | "code";
 export type CellID = string;
 
 export type NotebookRecordParams = {

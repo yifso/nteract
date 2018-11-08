@@ -1,5 +1,6 @@
-// TODO: Relocate ExecutionCount to ./types or some common.ts file (?)
-import { ExecutionCount, ImmutableOutput } from "./outputs";
+import { ImmutableOutput } from "./outputs";
+
+import { ExecutionCount } from "./types";
 
 import {
   Map as ImmutableMap,

@@ -9,9 +9,6 @@
  * contained in here (non Immutable ones) are constrained to the disk based
  * notebook format.
  *
- * To assist in the developer experience, types are included through the use of
- * flow.
- *
  */
 
 import {
@@ -26,7 +23,8 @@ import {
   ImmutableNotebook,
   NotebookRecordParams,
   JSONObject,
-  MultiLineString
+  MultiLineString,
+  ExecutionCount
 } from "./types";
 
 import {
@@ -50,8 +48,7 @@ import {
   remultiline,
   isJSONKey,
   MimeBundle,
-  ImmutableMimeBundle,
-  ExecutionCount
+  ImmutableMimeBundle
 } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";
