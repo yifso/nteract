@@ -28,7 +28,7 @@ module.exports = {
     },
     {
       name: "Binder Hosts and Kernels",
-      components: "packages/host-cache/src/components/*.js"
+      components: "packages/host-cache/src/components/*.ts"
     },
     {
       name: "Directory Listing",
