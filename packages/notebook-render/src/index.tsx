@@ -17,7 +17,7 @@ import {
   appendCellToNotebook,
   fromJS,
   createCodeCell,
-  Notebook,
+  ImmutableCodeCell,
   ImmutableNotebook
 } from "@nteract/commutable";
 import {
@@ -32,13 +32,13 @@ import {
 
 interface Props  {
   displayOrder: string[];
-  notebook: Notebook | ImmutableNotebook;
+  notebook: ImmutableNotebook;
   transforms: object;
   theme: "light" | "dark";
 };
 
 interface State {
-  notebook: any;
+  notebook: ImmutableNotebook;
 };
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
@@ -70,15 +70,13 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     const notebook = this.state.notebook;
 
     // Propagated from the hide_(all)_input nbextension
-    const allSourceHidden = notebook.getIn(["metadata", "hide_input"], false);
+    const allSourceHidden = notebook.getIn(["metadata", "hide_input"]) || false;
 
     const language = notebook.getIn(
-      ["metadata", "language_info", "codemirror_mode", "name"],
-      notebook.getIn(
-        ["metadata", "language_info", "codemirror_mode"],
-        notebook.getIn(["metadata", "language_info", "name"], "text")
-      )
-    );
+      ["metadata", "language_info", "codemirror_mode", "name"]
+    ) || notebook.getIn(
+      ["metadata", "language_info", "codemirror_mode"]
+    ) || notebook.getIn(["metadata", "language_info", "name"]) || "text";
 
     const cellOrder = notebook.get("cellOrder");
     const cellMap = notebook.get("cellMap");
@@ -86,39 +84,38 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     return (
       <div className="notebook-render">
         <Cells>
-          {cellOrder.map((cellID: number) => {
+          {cellOrder.map((cellID: string) => {
             const cell = cellMap.get(cellID);
-            const cellType = cell.get("cell_type");
-            const source = cell.get("source");
+            const cellType = cell!.get("cell_type");
+            const source = cell!.get("source");
 
             switch (cellType) {
               case "code":
                 const sourceHidden =
                   allSourceHidden ||
-                  cell.getIn(["metadata", "inputHidden"]) ||
-                  cell.getIn(["metadata", "hide_input"]);
+                  cell!.getIn(["metadata", "inputHidden"]) ||
+                  cell!.getIn(["metadata", "hide_input"]);
 
                 const outputHidden =
-                  cell.get("outputs").size === 0 ||
-                  cell.getIn(["metadata", "outputHidden"]);
+                  (cell as ImmutableCodeCell).get("outputs").size === 0 ||
+                  cell!.getIn(["metadata", "outputHidden"]);
 
                 return (
                   <Cell key={cellID}>
                     <Input hidden={sourceHidden}>
-                      <Prompt counter={cell.get("execution_count")} />
+                      <Prompt counter={(cell as ImmutableCodeCell).get("execution_count")} />
                       <Source language={language} theme={this.props.theme}>
                         {source}
                       </Source>
                     </Input>
                     <Outputs
                       hidden={outputHidden}
-                      expanded={cell.getIn(
-                        ["metadata", "outputExpanded"],
-                        true
-                      )}
+                      expanded={cell!.getIn(
+                        ["metadata", "outputExpanded"]
+                      ) || true}
                     >
                       <Display
-                        outputs={cell.get("outputs").toJS()}
+                        outputs={(cell as ImmutableCodeCell).get("outputs").toJS()}
                         transforms={this.props.transforms}
                         displayOrder={this.props.displayOrder}
                       />
