@@ -1,5 +1,10 @@
 // @format
+
 const path = require("path");
+
+const reactDocgenTypescript = require("react-docgen-typescript").withCustomConfig(
+  "./tsconfig.base.json"
+);
 
 const babelFlowConfig = require("./babel.flow.config");
 const babelTypescriptConfig = require("./babel.typescript.config");
@@ -7,6 +12,8 @@ var {
   exclude,
   mergeDefaultAliases
 } = require("./packages/webpack-configurator");
+
+const typescriptPropsParser = reactDocgenTypescript.parse;
 
 module.exports = {
   title: "nteract components",
@@ -28,7 +35,8 @@ module.exports = {
     },
     {
       name: "Binder Hosts and Kernels",
-      components: "packages/host-cache/src/components/*.ts"
+      components: "packages/host-cache/src/components/*.ts",
+      propsParser: typescriptPropsParser
     },
     {
       name: "Directory Listing",
