@@ -17,6 +17,8 @@ import {
   appendCellToNotebook,
   fromJS,
   createCodeCell,
+  Notebook,
+  ImmutableNotebook
 } from "@nteract/commutable";
 import {
   themes,
@@ -30,7 +32,7 @@ import {
 
 interface Props  {
   displayOrder: string[];
-  notebook: any;
+  notebook: Notebook | ImmutableNotebook;
   transforms: object;
   theme: "light" | "dark";
 };
