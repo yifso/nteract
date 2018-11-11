@@ -1,5 +1,3 @@
-/* @flow */
-
 /**
  * The original copy of this comes from
  * https://github.com/remarkablemark/REON/blob/1f126e71c17f96daad518abffdb2c53b66b8b792/lib/object-to-react.js
@@ -35,16 +33,22 @@
 
 const React = require("react");
 
-type VDOMEl = {
-  tagName: string, // Could be an enum honestly
-  children: VDOMNode,
-  attributes: Object,
-  key: number | string | null
+interface Attributes {
+  style: object;
+  key: number;
+}
+
+export interface VDOMEl {
+  tagName: string; // Could be an enum honestly
+  children: VDOMNode;
+  attributes: Attributes;
+  key: number | string | null;
 };
 
-type ReactArray = Array<React$Element<any> | ReactArray | string>;
+interface ReactArray extends ConcatArray<React.ReactElement<any> | string | ReactArray> {};
 
-type VDOMNode = VDOMEl | string | Array<VDOMNode>;
+type VDOMNode = VDOMEl | string | any;
+
 
 /**
  * Convert an object to React element(s).
@@ -55,7 +59,7 @@ type VDOMNode = VDOMEl | string | Array<VDOMNode>;
  * @param  {Object}       obj - The element object.
  * @return {ReactElement}
  */
-export function objectToReactElement(obj: VDOMEl): React$Element<any> {
+export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
   // Pack args for React.createElement
   var args = [];
 
@@ -95,7 +99,7 @@ export function objectToReactElement(obj: VDOMEl): React$Element<any> {
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(children));
+      args = args.concat(arrayToReactChildren(children) as any);
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {
