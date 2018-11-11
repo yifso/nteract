@@ -1595,6 +1595,11 @@
   resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.1.tgz#506d5781b9bcab81bd9a878b198aec7dee2a6033"
   integrity sha512-kSkVAvWmMZiCYtvqjqQEwOmvKwcH+V4uiv3qPQ8pAh1Xl39xggGEo8gHUqV4waYGHezdFw0rKBR8Jt0CrQSDZA==
 
+"@types/geojson@*":
+  version "7946.0.4"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.4.tgz#4e049756383c3f055dd8f3d24e63fb543e98eb07"
+  integrity sha512-MHmwBtCb7OCv1DSivz2UNJXPGU/1btAWRKlqJ2saEhVJkpkvqHMMaOpKg0v4sAbDWSQekHGvPVMM8nQ+Jen03Q==
+
 "@types/immutable@^3.8.7":
   version "3.8.7"
   resolved "https://registry.yarnpkg.com/@types/immutable/-/immutable-3.8.7.tgz#536d33d30f3f3d9a6d4642a219419fd82af633fb"
@@ -1616,6 +1621,13 @@
   version "1.0.32"
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.32.tgz#121f6917c4389db3923640b2e68de5fa64dda88e"
   integrity sha512-q9Q6+eUEGwQkv4Sbst3J4PNgDOvpuVuKj79Hl/qnmBMEIPzB5QoFRUtjcgcg2xNUZyYUGXBk5wYIBKHt0A+Mxw==
+
+"@types/leaflet@^1.2.14":
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.2.14.tgz#912bcacdc2cfa62787573a27ca617ffb67f89614"
+  integrity sha512-acP2w5DygY0V7bwmjFmaen5I2iBl8RkWx9kon1IJA7k9mNFgBb6702WApjZSrM4AG1ucJVxFcTlS6nr4HvahEw==
+  dependencies:
+    "@types/geojson" "*"
 
 "@types/lodash@^4.14.117":
   version "4.14.117"
