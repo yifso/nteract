@@ -1,8 +1,7 @@
 // @flow
 import * as React from "react";
 
-import { LocalHostStorage } from "../host-storage.js";
-import { ServerConfig } from "../host-storage";
+import { ServerConfig, LocalHostStorage } from "../host-storage";
 
 const { Provider, Consumer } = React.createContext<ServerConfig | null>(null);
 

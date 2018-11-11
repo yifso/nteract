@@ -1,5 +1,5 @@
-import Kernel from "./components/kernel.js";
-import Host from "./components/host.js";
-import { LocalHostStorage } from "./host-storage.js";
+import Kernel from "./components/kernel";
+import Host from "./components/host";
+import { LocalHostStorage } from "./host-storage";
 
 export { Host, LocalHostStorage, Kernel };
