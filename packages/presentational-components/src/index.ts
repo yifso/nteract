@@ -1,4 +1,3 @@
-// @flow
 
 import { Input } from "./components/input.js";
 import { Outputs } from "./components/outputs.js";

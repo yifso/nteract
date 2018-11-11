@@ -1,11 +1,10 @@
-// @flow
 import * as React from "react";
 
 import Highlighter from "../syntax-highlighter";
 
 export type SourceProps = {
   language: string,
-  children: React.Node,
+  children: React.ReactNode[],
   className?: string,
   theme: "light" | "dark"
 };
@@ -27,7 +26,7 @@ export class Source extends React.Component<SourceProps> {
       return (
         <Highlighter
           language={this.props.language}
-          className={this.props.className}
+          className={this.props.className != null ? this.props.className : ''}
         >
           {this.props.children}
         </Highlighter>

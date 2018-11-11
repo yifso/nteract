@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 import {
   H1,
@@ -6,7 +5,8 @@ import {
   EditableText,
   Button,
   Position,
-  Tooltip
+  Tooltip,
+  ITagProps,
 } from "@blueprintjs/core";
 import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
@@ -48,7 +48,7 @@ export type HeaderEditorProps = {
   /**
    * An event handler to run whenever header fields are modified.
    */
-  onChange: HeaderDataProps => void,
+  onChange: (props?: HeaderDataProps) => void,
   /**
    * The theme of the header.
    */
@@ -114,7 +114,7 @@ export class HeaderEditor extends React.Component<
                 style={authorStyle}
                 onRemove={
                   editable
-                    ? () => {
+                    ? (evt: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
                         onChange({
                           ...headerData,
                           authors: headerData.authors.filter(
@@ -122,7 +122,7 @@ export class HeaderEditor extends React.Component<
                           )
                         });
                       }
-                    : null
+                    : undefined
                 }
               >
                 {t.name}
@@ -170,13 +170,13 @@ export class HeaderEditor extends React.Component<
                 style={tagStyle}
                 onRemove={
                   editable
-                    ? () => {
+                    ? (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
                         onChange({
                           ...headerData,
                           tags: headerData.tags.filter(p => p !== t)
                         });
                       }
-                    : null
+                    : undefined
                 }
               >
                 {t}

@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 
 import { Outputs } from "./outputs";
@@ -7,8 +6,8 @@ import { Outputs } from "./outputs";
  * Description
  */
 
-export type PagersProps = {
-  children: React.Node,
+interface PagersProps {
+  children: React.ReactNode[],
   hidden: boolean
 };
 
@@ -18,7 +17,7 @@ export class Pagers extends React.Component<PagersProps> {
     hidden: false
   };
 
-  render(): React.Node {
+  render() {
     if (
       this.props.hidden ||
       this.props.children === null ||
