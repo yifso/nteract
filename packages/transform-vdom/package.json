@@ -2,8 +2,9 @@
   "name": "@nteract/transform-vdom",
   "version": "3.0.0-alpha.0",
   "description": "VDOM Transform for jupyter outputs",
-  "main": "lib/",
-  "nteractDesktop": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "nteractDesktop": "src/index.tsx",
   "scripts": {
     "prepare": "npm run build",
     "prepublishOnly": "npm run:build",
