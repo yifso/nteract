@@ -35,7 +35,7 @@ module.exports = {
     },
     {
       name: "Binder Hosts and Kernels",
-      components: "packages/host-cache/src/components/*.ts",
+      components: "packages/host-cache/src/components/*.tsx",
       propsParser: typescriptPropsParser
     },
     {
