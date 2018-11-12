@@ -1,22 +1,21 @@
 // @flow
 import * as React from "react";
 
-import { LocalHostStorage } from "../host-storage.js";
-import type { ServerConfig } from "../host-storage";
+import { ServerConfig, LocalHostStorage } from "../host-storage";
 
-const { Provider, Consumer } = React.createContext(null);
+const { Provider, Consumer } = React.createContext<ServerConfig | null>(null);
 
 export { Consumer };
 
 type HostProps = {
-  children?: React.Node,
-  repo: string,
-  gitRef?: string,
-  binderURL?: string
+  children?: React.ReactNode;
+  repo: string;
+  gitRef?: string;
+  binderURL?: string;
 };
 
 class Host extends React.Component<HostProps, ServerConfig> {
-  lhs: LocalHostStorage;
+  private lhs?: LocalHostStorage;
 
   static Consumer = Consumer;
 
@@ -27,6 +26,10 @@ class Host extends React.Component<HostProps, ServerConfig> {
   };
 
   allocate = () => {
+    if (!this.lhs) {
+      return;
+    }
+
     const binderOpts = {
       repo: this.props.repo,
       gitRef: this.props.gitRef,
@@ -49,11 +52,11 @@ class Host extends React.Component<HostProps, ServerConfig> {
   }
 
   componentWillUnmount() {
-    this.lhs.close();
+    this.lhs!.close();
   }
 
   render() {
-    if (!this.props.children) {
+    if (!this.props.children || this.state === null) {
       return null;
     }
     return <Provider value={this.state}>{this.props.children}</Provider>;

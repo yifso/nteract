@@ -1,42 +1,51 @@
-// @flow
-
 import { binder } from "rx-binder";
 import { kernels } from "rx-jupyter";
 import { of } from "rxjs";
 import { tap, map, catchError, filter } from "rxjs/operators";
 
-export opaque type BinderKey = string;
+// NOTE: The old flow type for BinderKey was an opaque type so that you couldn't use _any_ string,
+// it had to use our special Binder key type from this module.
+//
+// export opaque type BinderKey = string;
+
+// For TypeScript we can get the same behavior with the unknown type
+type BinderKey = string;
 
 type BinderOptions = {
-  repo: string,
-  ref?: string,
-  binderURL?: string
+  repo: string;
+  ref?: string;
+  binderURL?: string;
 };
 
 export type ServerConfig = {
-  endpoint: string,
-  token: string,
+  endpoint: string;
+  token: string;
   // Assume always cross domain
-  crossDomain: true
+  crossDomain: true;
 };
 
 export const PROVISIONING = "PROVISIONING";
 type IsItUpHost = {
-  type: "PROVISIONING"
+  type: "PROVISIONING";
 };
 
 export const UP = "HOST_UP";
 type UpHost = {
-  type: "HOST_UP",
-  config: ServerConfig
+  type: "HOST_UP";
+  config: ServerConfig;
+};
+
+export const NOHOST = "NOHOST";
+type NoHost = {
+  type: "NOHOST";
 };
 
 function makeHost({
   endpoint,
   token
 }: {
-  endpoint: string,
-  token: string
+  endpoint: string;
+  token: string;
 }): UpHost {
   return {
     type: UP,
@@ -48,17 +57,7 @@ function makeHost({
   };
 }
 
-type HostRecord = UpHost | IsItUpHost;
-
-class LocalForage<K: string, V> {
-  set(key: K, value: V) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-
-  get(key: K, default_?: ?V = null): ?V {
-    return JSON.parse(localStorage.getItem(key) || JSON.stringify(default_));
-  }
-}
+type HostRecord = UpHost | IsItUpHost | NoHost;
 
 const prefix = "@BinderKey@";
 
@@ -69,10 +68,9 @@ function sleep(duration: number) {
 }
 
 export class LocalHostStorage {
-  localForage: LocalForage<BinderKey, HostRecord>;
-
   constructor() {
-    this.localForage = new LocalForage();
+    this.handleStorageEvent = this.handleStorageEvent.bind(this);
+
     window.addEventListener("storage", this.handleStorageEvent);
   }
 
@@ -82,15 +80,15 @@ export class LocalHostStorage {
   }
 
   // TODO: Not yet implemented
-  handleStorageEvent(event: {
-    key: string,
-    oldValue: string,
-    newValue: string
-  }) {
+  handleStorageEvent(event: StorageEvent) {
     const { key, newValue } = event;
 
+    if (typeof key !== "string") {
+      return;
+    }
+
     // It must be our local storage data if it has our prefix
-    if (event.key.startsWith(prefix)) {
+    if (key.startsWith(prefix)) {
       console.warn(
         "Handling storage updates is not implemented. It would be super fantastic to let subscribers know about changes."
       );
@@ -112,7 +110,7 @@ export class LocalHostStorage {
   }
 
   async checkUp(host: HostRecord): Promise<boolean> {
-    if (host.type === PROVISIONING) {
+    if (host.type !== UP) {
       return false;
     }
 
@@ -134,28 +132,31 @@ export class LocalHostStorage {
   async allocate(binderOpts: BinderOptions): Promise<ServerConfig> {
     let original = this.get(binderOpts);
 
-    if (!original || !original.config) {
-      original = { type: PROVISIONING };
-      this.set(binderOpts, original);
-      // Fall through, don't return as we allocate below
-    } else if (original.type === UP) {
-      // TODO: Check if really up
-      const isUp = await this.checkUp(original);
-      if (isUp) {
-        return original.config;
-      }
-      // If it wasn't up, launch a new one
-    } else if (original.type === PROVISIONING) {
-      // TODO: Do we wait on a prior to eventually come up or kick off a new one
-      // Could do coordination here by recording timestamps in the GETTING_UP type
+    switch (original.type) {
+      case UP:
+        // cache hit with an UP server, check if it's really up
+        const isUp = await this.checkUp(original);
+        if (isUp) {
+          // It is so we can plow forward
+          return original.config;
+        }
+        // Otherwise we need to make a new server
+        break;
+      case NOHOST:
+        // Definitely need to launch
+        break;
+      case PROVISIONING:
+        // Wait for the provisioning server to get up
+        while (original.type !== UP) {
+          await sleep(1000);
+          // NOTE: Could do coordination here by recording timestamps in the PROVISIONING type
+          // At the very least there should come a point we time out at
+          original = this.get(binderOpts);
+        }
 
-      while (!original && original.type !== UP) {
-        await sleep(1000);
-        original = this.get(binderOpts);
         if (original && original.type === UP) {
           return original.config;
         }
-      }
     }
 
     const host = await binder(binderOpts)
@@ -184,13 +185,17 @@ export class LocalHostStorage {
     return host.config;
   }
 
-  get(opts: BinderOptions): ?HostRecord {
+  get(opts: BinderOptions): HostRecord {
+    const default_ = {
+      type: "NOHOST"
+    };
     const key = this.createKey(opts);
-    return this.localForage.get(key);
+
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(default_));
   }
 
   set(opts: BinderOptions, host: HostRecord) {
     const key = this.createKey(opts);
-    this.localForage.set(key, host);
+    localStorage.setItem(key, JSON.stringify(host));
   }
 }
