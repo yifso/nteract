@@ -10,7 +10,7 @@ import {
 interface HighlighterProps {
   language: string,
   className: string,
-  children?: React.ReactNode[],
+  children?: React.ReactNode,
   theme?: "light" | "dark",
 };
 

@@ -15,7 +15,7 @@ interface PromptProps {
    * ```
    *
   */
-  counter: number | null,
+  counter: ?number,
   running: boolean,
   /**
    * Show that execution is queued up

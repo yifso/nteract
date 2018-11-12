@@ -122,7 +122,7 @@ export class HeaderEditor extends React.Component<
                           )
                         });
                       }
-                    : undefined
+                    : null
                 }
               >
                 {t.name}
@@ -176,7 +176,7 @@ export class HeaderEditor extends React.Component<
                           tags: headerData.tags.filter(p => p !== t)
                         });
                       }
-                    : undefined
+                    : null
                 }
               >
                 {t}
