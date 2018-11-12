@@ -5,7 +5,7 @@ import Highlighter from "../syntax-highlighter";
 export type SourceProps = {
   language: string,
   children: React.ReactNode[],
-  className?: string,
+  className: string,
   theme: "light" | "dark"
 };
 
@@ -26,7 +26,7 @@ export class Source extends React.Component<SourceProps> {
       return (
         <Highlighter
           language={this.props.language}
-          className={this.props.className != null ? this.props.className : ''}
+          className={this.props.className}
         >
           {this.props.children}
         </Highlighter>
