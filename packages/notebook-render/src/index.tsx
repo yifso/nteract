@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import math from "remark-math";
@@ -17,7 +16,9 @@ import {
   emptyNotebook,
   appendCellToNotebook,
   fromJS,
-  createCodeCell
+  createCodeCell,
+  ImmutableCodeCell,
+  ImmutableNotebook
 } from "@nteract/commutable";
 import {
   themes,
@@ -29,15 +30,15 @@ import {
   Cells
 } from "@nteract/presentational-components";
 
-type Props = {
-  displayOrder: Array<string>,
-  notebook: any,
-  transforms: Object,
-  theme: "light" | "dark"
+interface Props  {
+  displayOrder: string[];
+  notebook: ImmutableNotebook;
+  transforms: object;
+  theme: "light" | "dark";
 };
 
-type State = {
-  notebook: any
+interface State {
+  notebook: ImmutableNotebook;
 };
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
@@ -65,19 +66,17 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     }
   }
 
-  render(): ?React$Element<any> {
+  render() {
     const notebook = this.state.notebook;
 
     // Propagated from the hide_(all)_input nbextension
-    const allSourceHidden = notebook.getIn(["metadata", "hide_input"], false);
+    const allSourceHidden = notebook.getIn(["metadata", "hide_input"]) || false;
 
     const language = notebook.getIn(
-      ["metadata", "language_info", "codemirror_mode", "name"],
-      notebook.getIn(
-        ["metadata", "language_info", "codemirror_mode"],
-        notebook.getIn(["metadata", "language_info", "name"], "text")
-      )
-    );
+      ["metadata", "language_info", "codemirror_mode", "name"]
+    ) || notebook.getIn(
+      ["metadata", "language_info", "codemirror_mode"]
+    ) || notebook.getIn(["metadata", "language_info", "name"]) || "text";
 
     const cellOrder = notebook.get("cellOrder");
     const cellMap = notebook.get("cellMap");
@@ -85,39 +84,38 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     return (
       <div className="notebook-render">
         <Cells>
-          {cellOrder.map(cellID => {
+          {cellOrder.map((cellID: string) => {
             const cell = cellMap.get(cellID);
-            const cellType = cell.get("cell_type");
-            const source = cell.get("source");
+            const cellType: string = cell!.get("cell_type");
+            const source = cell!.get("source");
 
             switch (cellType) {
               case "code":
                 const sourceHidden =
                   allSourceHidden ||
-                  cell.getIn(["metadata", "inputHidden"]) ||
-                  cell.getIn(["metadata", "hide_input"]);
+                  cell!.getIn(["metadata", "inputHidden"]) ||
+                  cell!.getIn(["metadata", "hide_input"]);
 
                 const outputHidden =
-                  cell.get("outputs").size === 0 ||
-                  cell.getIn(["metadata", "outputHidden"]);
+                  (cell as ImmutableCodeCell).get("outputs").size === 0 ||
+                  cell!.getIn(["metadata", "outputHidden"]);
 
                 return (
                   <Cell key={cellID}>
                     <Input hidden={sourceHidden}>
-                      <Prompt counter={cell.get("execution_count")} />
+                      <Prompt counter={(cell as ImmutableCodeCell).get("execution_count")} />
                       <Source language={language} theme={this.props.theme}>
                         {source}
                       </Source>
                     </Input>
                     <Outputs
                       hidden={outputHidden}
-                      expanded={cell.getIn(
-                        ["metadata", "outputExpanded"],
-                        true
-                      )}
+                      expanded={cell!.getIn(
+                        ["metadata", "outputExpanded"]
+                      ) || true}
                     >
                       <Display
-                        outputs={cell.get("outputs").toJS()}
+                        outputs={(cell as ImmutableCodeCell).get("outputs").toJS()}
                         transforms={this.props.transforms}
                         displayOrder={this.props.displayOrder}
                       />
@@ -127,13 +125,13 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
               case "markdown":
                 const remarkPlugins = [math, remark2rehype, katex, stringify];
                 const remarkRenderers = {
-                  math: function blockMath(node) {
+                  math: function blockMath(node: { value: string }) {
                     return <BlockMath>{node.value}</BlockMath>;
                   },
-                  inlineMath: function inlineMath(node) {
+                  inlineMath: function inlineMath(node: { value: string}) {
                     return <InlineMath>{node.value}</InlineMath>;
                   }
-                };
+                } as any;
                 return (
                   <Cell key={cellID}>
                     <div className="content-margin">
