@@ -1,12 +1,11 @@
-/* @flow */
 import * as React from "react";
 import { cloneDeep } from "lodash";
 
-import { objectToReactElement } from "./object-to-react";
+import { objectToReactElement, VDOMEl } from "./object-to-react";
 
-type Props = {
-  mediaType: "application/vdom.v1+json",
-  data: Object
+interface Props {
+  mediaType: "application/vdom.v1+json";
+  data: VDOMEl;
 };
 
 // Provide object-to-react as an available helper on the library
@@ -25,7 +24,7 @@ export default class VDOM extends React.Component<Props> {
     return nextProps.data !== this.props.data;
   }
 
-  render(): React$Element<any> {
+  render(): React.ReactElement<any> {
     try {
       // objectToReactElement is mutatitve so we'll clone our object
       var obj = cloneDeep(this.props.data);
@@ -37,7 +36,7 @@ export default class VDOM extends React.Component<Props> {
             style={{
               backgroundColor: "ghostwhite",
               color: "black",
-              fontWeight: "600",
+              fontWeight: 600,
               display: "block",
               padding: "10px",
               marginBottom: "20px"
