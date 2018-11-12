@@ -1,5 +1,5 @@
 // @flow
-import dark from "./dark.js";
-import light from "./light.js";
+import dark from "./dark";
+import light from "./light";
 
 export { dark, light };

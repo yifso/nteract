@@ -82,7 +82,8 @@ export class HeaderEditor extends React.Component<
       description: "",
       tags: []
     },
-    onChange: () => {}
+    onChange: () => {},
+    onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {}
   };
 
   render() {
@@ -112,18 +113,17 @@ export class HeaderEditor extends React.Component<
                 large={true}
                 minimal={true}
                 style={authorStyle}
-                onRemove={
-                  editable
-                    ? (evt: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
-                        onChange({
+                onRemove={(evt: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
+                  if (editable === true) {
+                    onChange({
                           ...headerData,
                           authors: headerData.authors.filter(
                             p => p.name !== t.name
                           )
                         });
-                      }
-                    : null
-                }
+                    return;
+                  } return;
+                }}
               >
                 {t.name}
               </Tag>
@@ -169,14 +169,15 @@ export class HeaderEditor extends React.Component<
                 key={t}
                 style={tagStyle}
                 onRemove={
-                  editable
-                    ? (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
-                        onChange({
-                          ...headerData,
-                          tags: headerData.tags.filter(p => p !== t)
-                        });
-                      }
-                    : null
+                  (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
+                    if (editable) {
+                      onChange({
+                        ...headerData,
+                        tags: headerData.tags.filter(p => p !== t)
+                      });
+                      return;
+                    } return 
+                  }
                 }
               >
                 {t}
