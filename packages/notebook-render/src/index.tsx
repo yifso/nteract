@@ -86,7 +86,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
         <Cells>
           {cellOrder.map((cellID: string) => {
             const cell = cellMap.get(cellID);
-            const cellType = cell!.get("cell_type");
+            const cellType: string = cell!.get("cell_type");
             const source = cell!.get("source");
 
             switch (cellType) {
