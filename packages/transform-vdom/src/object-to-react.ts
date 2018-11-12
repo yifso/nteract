@@ -40,15 +40,10 @@ interface Attributes {
 
 export interface VDOMEl {
   tagName: string; // Could be an enum honestly
-  children: VDOMNode;
+  children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
   attributes: Attributes;
   key: number | string | null;
 };
-
-interface ReactArray extends ConcatArray<React.ReactElement<any> | string | ReactArray> {};
-
-type VDOMNode = VDOMEl | string | any;
-
 
 /**
  * Convert an object to React element(s).
@@ -99,11 +94,11 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(children) as any);
+      args = args.concat(arrayToReactChildren(children as VDOMEl[]) as any);
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {
-      args[2] = objectToReactElement(children);
+      args[2] = objectToReactElement(children as VDOMEl);
     } else {
       throw new Error(
         "children of a vdom element must be a string, object, null, or array of vdom nodes"
@@ -121,7 +116,7 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
  * @param  {Array} arr - The array.
  * @return {Array}     - The array of mixed values.
  */
-export function arrayToReactChildren(arr: Array<VDOMNode>): ReactArray {
+export function arrayToReactChildren(arr: Array<VDOMEl>): React.ReactNodeArray {
   var result = [];
 
   // iterate through the `children`
