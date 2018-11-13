@@ -1,12 +1,11 @@
-// @flow
 import * as React from "react";
 
 import Highlighter from "../syntax-highlighter";
 
 export type SourceProps = {
   language: string,
-  children: React.Node,
-  className?: string,
+  children: React.ReactNode[],
+  className: string,
   theme: "light" | "dark"
 };
 

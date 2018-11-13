@@ -1,4 +1,3 @@
-// @flow
 import SyntaxHighlighter from "react-syntax-highlighter/prism";
 import * as React from "react";
 import {
@@ -8,11 +7,11 @@ import {
 
 // import syntax from "./theme";
 
-type HighlighterProps = {
+interface HighlighterProps {
   language: string,
   className: string,
-  children: React.Node,
-  theme: "light" | "dark"
+  children?: React.ReactNode,
+  theme?: "light" | "dark",
 };
 
 const Highlighter = (props: HighlighterProps) => {
@@ -26,7 +25,6 @@ const Highlighter = (props: HighlighterProps) => {
     // Strip off the language from the mimetype
     language = language.slice("text/x-".length);
   }
-
   return (
     <SyntaxHighlighter
       style={props.theme === "light" ? lightTheme : darkTheme}

@@ -1,8 +1,7 @@
-// @flow
 import * as React from "react";
 
-export type InputProps = {
-  children: React.Node,
+interface InputProps {
+  children: React.ReactNode,
   /**
    * Whether or not to render the children.
    */

@@ -1,8 +1,6 @@
-// @flow
-
 import * as React from "react";
 
-type CellProps = {
+interface CellProps {
   /**
    * Indicates if a cell is selected
    */
@@ -14,16 +12,15 @@ type CellProps = {
   /**
    * Style children when a cell is selected or hovered over
    */
-  children?: React.Node
+  children?: React.ReactNode
 };
 
 /** @component */
-export const Cell = (props: CellProps) => {
+export const Cell = (props: CellProps): React.ReactNode => {
   const children = props.children;
 
   return (
-    <div
-      className={`cell ${props.isSelected ? "focused" : ""} ${
+    <div className={`cell ${props.isSelected ? "focused" : ""} ${
         props._hovered ? "overrideHover" : ""
       }`}
     >
