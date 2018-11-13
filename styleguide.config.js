@@ -21,7 +21,7 @@ module.exports = {
   sections: [
     {
       name: "Presentational Components",
-      components: "packages/presentational-components/src/components/*.js"
+      components: "packages/presentational-components/src/components/*.tsx"
     },
     {
       name: "Outputs",
