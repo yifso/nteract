@@ -16,6 +16,9 @@ interface PromptProps {
    *
   */
   counter: number | null,
+  /**
+   * Show that execution is currently happening related to this prompt
+   */
   running: boolean,
   /**
    * Show that execution is queued up
@@ -25,9 +28,6 @@ interface PromptProps {
    * Create a prompt without the `[]`. Used with markdown cells.
    */
   blank: boolean,
-  /**
-   * Show that execution is currently happening related to this prompt
-   */
 };
 
 /**
