@@ -7,12 +7,9 @@ type Props = {
   mediaType: "text/markdown"
 };
 
-export class MarkdownDisplay extends React.Component<Props> {
+export default class MarkdownDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "text/markdown";
 
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
-  }
   static defaultProps = {
     data: "",
     mediaType: "text/markdown"
@@ -22,5 +19,3 @@ export class MarkdownDisplay extends React.Component<Props> {
     return <Markdown source={this.props.data} />;
   }
 }
-
-export default MarkdownDisplay;

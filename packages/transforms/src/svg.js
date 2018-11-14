@@ -6,7 +6,7 @@ type Props = {
   mediaType: "image/svg+xml"
 };
 
-export default class SVGDisplay extends React.Component<Props> {
+export default class SVGDisplay extends React.PureComponent<Props> {
   el: ?HTMLElement;
   static MIMETYPE = "image/svg+xml";
 
@@ -19,10 +19,6 @@ export default class SVGDisplay extends React.Component<Props> {
     if (this.el) {
       this.el.insertAdjacentHTML("beforeend", this.props.data);
     }
-  }
-
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
   }
 
   componentDidUpdate(): void {

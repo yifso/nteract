@@ -31,23 +31,13 @@ type Props = {
 };
 
 /** @component */
-export class Json extends React.Component<Props> {
+export class Json extends React.PureComponent<Props> {
   static defaultProps = {
     mediaType: "application/json",
     data: {},
     theme: "light",
     metadata: { expanded: true }
   };
-
-  shouldComponentUpdate(nextProps: Props): boolean {
-    if (
-      nextProps.theme !== this.props.theme ||
-      nextProps.data !== this.props.data
-    ) {
-      return true;
-    }
-    return false;
-  }
 
   //   #3435
   shouldExpandNode = () => {

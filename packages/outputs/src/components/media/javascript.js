@@ -32,7 +32,7 @@ export function runCodeHere(el: ?HTMLElement, code: string): any {
   }
 }
 
-export class JavaScript extends React.Component<Props> {
+export class JavaScript extends React.PureComponent<Props> {
   el: ?HTMLElement;
   static defaultProps = {
     mediaType: "application/javascript",
@@ -41,10 +41,6 @@ export class JavaScript extends React.Component<Props> {
 
   componentDidMount(): void {
     runCodeHere(this.el, this.props.data);
-  }
-
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
   }
 
   componentDidUpdate(): void {

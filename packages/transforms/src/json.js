@@ -50,7 +50,7 @@ type Props = {
   metadata: Object
 };
 
-export default class JsonDisplay extends React.Component<Props> {
+export default class JsonDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "application/json";
 
   static handles(mimetype: string) {
@@ -68,15 +68,6 @@ export default class JsonDisplay extends React.Component<Props> {
     super(props);
     (this: any).shouldExpandNode = this.shouldExpandNode.bind(this);
   }
-
-  shouldComponentUpdate(nextProps: Props): boolean {
-    if (
-      nextProps.theme !== this.props.theme ||
-      nextProps.data !== this.props.data
-    ) {
-      return true;
-    }
-    return false;
   }
 
   shouldExpandNode(): boolean {

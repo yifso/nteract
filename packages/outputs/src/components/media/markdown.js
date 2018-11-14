@@ -14,15 +14,11 @@ type Props = {
   mediaType: string
 };
 
-export class Markdown extends React.Component<Props> {
+export class Markdown extends React.PureComponent<Props> {
   static defaultProps = {
     mediaType: "text/markdown",
     data: null
   };
-
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
-  }
 
   render(): ?React$Element<any> {
     return <MarkdownComponent source={this.props.data} />;

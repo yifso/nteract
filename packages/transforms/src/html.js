@@ -20,7 +20,7 @@ export function createFragment(html: string): Node {
   return fragment;
 }
 
-export default class HTMLDisplay extends React.Component<Props> {
+export default class HTMLDisplay extends React.PureComponent<Props> {
   el: ?HTMLElement;
   static MIMETYPE = "text/html";
 
@@ -43,9 +43,6 @@ export default class HTMLDisplay extends React.Component<Props> {
     this.el.appendChild(createFragment(this.props.data));
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
-  }
   componentDidUpdate(): void {
     if (!this.el) return;
     // clear out all DOM element children

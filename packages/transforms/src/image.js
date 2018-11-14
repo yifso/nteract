@@ -25,7 +25,7 @@ export default function ImageDisplay(props: TopProps): ?React$Element<any> {
   );
 }
 
-export class PNGDisplay extends React.Component<ImageProps> {
+export class PNGDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "image/png";
 
   static defaultProps = {
@@ -38,7 +38,7 @@ export class PNGDisplay extends React.Component<ImageProps> {
   }
 }
 
-export class JPEGDisplay extends React.Component<ImageProps> {
+export class JPEGDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "image/jpeg";
 
   static defaultProps = {
@@ -51,7 +51,7 @@ export class JPEGDisplay extends React.Component<ImageProps> {
   }
 }
 
-export class GIFDisplay extends React.Component<ImageProps> {
+export class GIFDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "image/gif";
 
   static defaultProps = {
