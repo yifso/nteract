@@ -45,6 +45,7 @@ function getTheme(themeName: string): Object {
 
 type Props = {
   data: Object,
+  mediaType: "application/json",
   theme: string,
   metadata: Object
 };
@@ -58,6 +59,7 @@ export default class JsonDisplay extends React.Component<Props> {
 
   static defaultProps = {
     data: {},
+    mediaType: "application/json",
     theme: "light",
     metadata: {}
   };

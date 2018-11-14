@@ -2,7 +2,8 @@
 import React from "react";
 
 type Props = {
-  data: string
+  data: string,
+  mediaType: "text/html"
 };
 
 // Note: createRange and Range must be polyfilled on older browsers with
@@ -22,6 +23,11 @@ export function createFragment(html: string): Node {
 export default class HTMLDisplay extends React.Component<Props> {
   el: ?HTMLElement;
   static MIMETYPE = "text/html";
+
+  static defaultProps = {
+    data: "",
+    mediaType: "text/html"
+  };
 
   componentDidMount(): void {
     // clear out all DOM element children

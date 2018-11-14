@@ -4,7 +4,8 @@ import React from "react";
 import Ansi from "ansi-to-react";
 
 type Props = {
-  data: string
+  data: string,
+  mediaType: "text/plain"
 };
 
 export default class TextDisplay extends React.Component<Props, null> {
@@ -15,6 +16,10 @@ export default class TextDisplay extends React.Component<Props, null> {
     // on the plaintext transform
     return nextProps.data !== this.props.data;
   }
+  static defaultProps = {
+    data: "",
+    mediaType: "text/plain"
+  };
 
   render(): ?React$Element<any> {
     return (

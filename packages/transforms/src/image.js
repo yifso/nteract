@@ -27,6 +27,12 @@ export default function ImageDisplay(props: TopProps): ?React$Element<any> {
 
 export class PNGDisplay extends React.Component<ImageProps> {
   static MIMETYPE = "image/png";
+
+  static defaultProps = {
+    data: "",
+    mediaType: "image/png"
+  };
+
   render() {
     return <ImageDisplay mimetype="image/png" {...this.props} />;
   }
@@ -34,6 +40,12 @@ export class PNGDisplay extends React.Component<ImageProps> {
 
 export class JPEGDisplay extends React.Component<ImageProps> {
   static MIMETYPE = "image/jpeg";
+
+  static defaultProps = {
+    data: "",
+    mediaType: "image/jpeg"
+  };
+
   render() {
     return <ImageDisplay mimetype="image/jpeg" {...this.props} />;
   }
@@ -41,6 +53,12 @@ export class JPEGDisplay extends React.Component<ImageProps> {
 
 export class GIFDisplay extends React.Component<ImageProps> {
   static MIMETYPE = "image/gif";
+
+  static defaultProps = {
+    data: "",
+    mediaType: "image/gif"
+  };
+
   render() {
     return <ImageDisplay mimetype="image/gif" {...this.props} />;
   }
