@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.0.0",
-    "ansi-to-react": "^4.0.0-alpha.0"
+    "ansi-to-react": "^4.0.0-alpha.0",
+    "styled-jsx": "^3.1.0"
   },
   "peerDependencies": {
     "react": "^16.3.2"
