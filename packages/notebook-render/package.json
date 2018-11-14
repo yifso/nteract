@@ -30,12 +30,12 @@
     "rehype-stringify": "^4.0.0",
     "remark": "^9.0.0",
     "remark-math": "^1.0.4",
-    "remark-rehype": "^3.0.0"
+    "remark-rehype": "^3.0.0",
+    "styled-jsx": "^3.1.0"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.9",
-    "react": "^16.3.2",
-    "styled-jsx": "^3.1.0"
+    "react": "^16.3.2"
   },
   "author": "Benjamin Abel <dev.abel@laposte.net>",
   "license": "BSD-3-Clause"
