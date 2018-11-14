@@ -57,7 +57,7 @@ export default class JsonDisplay extends React.PureComponent<Props> {
     data: {},
     mediaType: "application/json",
     theme: "light",
-    metadata: { expanded: true }
+    metadata: {}
   };
 
   static handles(mimetype: string) {

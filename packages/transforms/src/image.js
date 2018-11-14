@@ -7,7 +7,13 @@ type Props = {
   mediaType: "image/png" | "image/jpeg" | "image/gif"
 };
 
-export default function ImageDisplay(props: Props): ?React$Element<any> {
+type ImageDisplayProps = Props & {
+  mimetype?: "image/png" | "image/jpeg" | "image/gif"
+};
+
+export default function ImageDisplay(
+  props: ImageDisplayProps
+): ?React$Element<any> {
   let size = {};
 
   if (props.metadata) {
@@ -15,11 +21,13 @@ export default function ImageDisplay(props: Props): ?React$Element<any> {
     size = { width, height };
   }
 
+  const mediaType = props.mediaType || props.mimetype;
+
   return (
     <React.Fragment>
       <img
         alt=""
-        src={`data:${props.mediaType};base64,${props.data}`}
+        src={`data:${mediaType};base64,${props.data}`}
         {...size}
       />
       <style jsx>{`
@@ -41,7 +49,7 @@ export class PNGDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mediaType="image/png" {...this.props} />;
+    return <ImageDisplay {...this.props} />;
   }
 }
 
@@ -54,7 +62,7 @@ export class JPEGDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mediaType="image/jpeg" {...this.props} />;
+    return <ImageDisplay {...this.props} />;
   }
 }
 
@@ -67,6 +75,6 @@ export class GIFDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mediaType="image/gif" {...this.props} />;
+    return <ImageDisplay {...this.props} />;
   }
 }
