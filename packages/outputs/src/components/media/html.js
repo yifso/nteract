@@ -29,10 +29,12 @@ export function createFragment(html: string): Node {
 
 export class HTML extends React.PureComponent<Props> {
   el: ?HTMLElement;
+
   static defaultProps = {
-    mediaType: "text/html",
-    data: null
+    data: '',
+    mediaType: "text/html"
   };
+
   componentDidMount(): void {
     // clear out all DOM element children
     // This matters on server side render otherwise we'll get both the `innerHTML`ed

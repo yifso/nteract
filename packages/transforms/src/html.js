@@ -22,6 +22,7 @@ export function createFragment(html: string): Node {
 
 export default class HTMLDisplay extends React.PureComponent<Props> {
   el: ?HTMLElement;
+
   static MIMETYPE = "text/html";
 
   static defaultProps = {

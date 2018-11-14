@@ -53,31 +53,25 @@ type Props = {
 export default class JsonDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "application/json";
 
-  static handles(mimetype: string) {
-    return mimetype.startsWith("application/json");
-  }
-
   static defaultProps = {
     data: {},
     mediaType: "application/json",
     theme: "light",
-    metadata: {}
+    metadata: { expanded: true }
   };
 
-  constructor(props: Props): void {
-    super(props);
-    (this: any).shouldExpandNode = this.shouldExpandNode.bind(this);
-  }
+  static handles(mimetype: string) {
+    return mimetype.startsWith("application/json");
   }
 
-  shouldExpandNode(): boolean {
+  shouldExpandNode = (): boolean => {
     if (this.props.metadata && this.props.metadata.expanded) {
       return true;
     }
     return false;
-  }
+  };
 
-  render(): ?React$Element<any> {
+  render() {
     const theme = getTheme(this.props.theme);
     return (
       <JSONTree

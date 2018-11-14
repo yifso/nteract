@@ -1,18 +1,13 @@
 /* @flow */
 import React from "react";
 
-type TopProps = {
+type Props = {
   data: string,
-  mimetype: string,
-  metadata: any
+  metadata: any,
+  mediaType: "image/png" | "image/jpeg" | "image/gif"
 };
 
-type ImageProps = {
-  data: string,
-  metadata: string
-};
-
-export default function ImageDisplay(props: TopProps): ?React$Element<any> {
+export default function ImageDisplay(props: Props): ?React$Element<any> {
   let size = {};
 
   if (props.metadata) {
@@ -21,7 +16,19 @@ export default function ImageDisplay(props: TopProps): ?React$Element<any> {
   }
 
   return (
-    <img alt="" src={`data:${props.mimetype};base64,${props.data}`} {...size} />
+    <React.Fragment>
+      <img
+        alt=""
+        src={`data:${props.mediaType};base64,${props.data}`}
+        {...size}
+      />
+      <style jsx>{`
+        img {
+          display: block;
+          max-width: 100%;
+        }
+      `}</style>
+    </React.Fragment>
   );
 }
 
@@ -34,7 +41,7 @@ export class PNGDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mimetype="image/png" {...this.props} />;
+    return <ImageDisplay mediaType="image/png" {...this.props} />;
   }
 }
 
@@ -47,7 +54,7 @@ export class JPEGDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mimetype="image/jpeg" {...this.props} />;
+    return <ImageDisplay mediaType="image/jpeg" {...this.props} />;
   }
 }
 
@@ -60,6 +67,6 @@ export class GIFDisplay extends React.PureComponent<Props> {
   };
 
   render() {
-    return <ImageDisplay mimetype="image/gif" {...this.props} />;
+    return <ImageDisplay mediaType="image/gif" {...this.props} />;
   }
 }

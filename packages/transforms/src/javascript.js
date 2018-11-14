@@ -27,6 +27,7 @@ export function runCodeHere(el: ?HTMLElement, code: string): any {
 
 export default class JavaScript extends React.PureComponent<Props> {
   el: ?HTMLElement;
+
   static MIMETYPE = "application/javascript";
 
   static defaultProps = {

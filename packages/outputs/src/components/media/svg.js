@@ -2,15 +2,16 @@
 import React from "react";
 
 type Props = {
-  mediaType: string,
-  data: string
+  data: string,
+  mediaType: "image/svg+xml",
 };
 
 export class SVG extends React.PureComponent<Props> {
   el: ?HTMLElement;
+
   static defaultProps = {
+    data: '',
     mediaType: "image/svg+xml",
-    data: ""
   };
 
   componentDidMount(): void {

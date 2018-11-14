@@ -11,13 +11,13 @@ type Props = {
    * Media type. Defaults to `text/markdown`.
    * For more on media types, see: https://www.w3.org/TR/CSS21/media.html%23media-types.
    */
-  mediaType: string
+  mediaType: "text/markdown"
 };
 
 export class Markdown extends React.PureComponent<Props> {
   static defaultProps = {
-    mediaType: "text/markdown",
-    data: null
+    data: '',
+    mediaType: "text/markdown"
   };
 
   render(): ?React$Element<any> {

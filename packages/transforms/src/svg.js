@@ -8,6 +8,7 @@ type Props = {
 
 export default class SVGDisplay extends React.PureComponent<Props> {
   el: ?HTMLElement;
+
   static MIMETYPE = "image/svg+xml";
 
   static defaultProps = {
