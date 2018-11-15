@@ -227,7 +227,6 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
         mediaType="application/vnd.dataresource+json"
         metadata={Object {}}
         models={Object {}}
-        onMetadataChange={[Function]}
         theme="light"
       />
     </div>
