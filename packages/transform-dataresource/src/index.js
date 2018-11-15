@@ -11,53 +11,6 @@ import { Toolbar } from "./components/Toolbar";
 
 const mediaType = "application/vnd.dataresource+json";
 
-const defaultMetadataFn = newMetadata => {
-  console.log("NEW METADATA FROM YOUR SETTINGS: ", newMetadata);
-};
-
-//For testing purposes
-const defaultDXSettings = {
-  view: "scatter",
-  lineType: "line",
-  areaType: "hexbin",
-  selectedDimensions: [],
-  selectedMetrics: [],
-  pieceType: "bar",
-  summaryType: "violin",
-  networkType: "force",
-  hierarchyType: "dendrogram",
-  colors: [
-    "#DA752E",
-    "#E5C209",
-    "#1441A0",
-    "#B86117",
-    "#4D430C",
-    "#1DB390",
-    "#B3331D",
-    "#088EB2",
-    "#417505",
-    "#E479A8",
-    "#F9F39E",
-    "#5782DC",
-    "#EBA97B",
-    "#A2AB60",
-    "#B291CF",
-    "#8DD2C2",
-    "#E6A19F",
-    "#3DC7E0",
-    "#98CE5B"
-  ],
-  chart: {
-    metric1: "Happiness Rank",
-    metric2: "Standard Error",
-    metric3: "Happiness Score",
-    dim1: "Region",
-    dim2: "Country",
-    dim3: "none",
-    timeseriesSort: "array-order"
-  }
-};
-
 type dataProps = {
   schema: {
     fields: Array<{ name: string, type: string }>,
@@ -67,17 +20,17 @@ type dataProps = {
   data: Array<Object>
 };
 
-type Props = {
-  data: dataProps,
-  metadata: Object,
-  theme?: string,
-  expanded?: boolean,
-  height?: number,
-  mediaType: "application/vnd.dataresource+json",
-  onMetadataChange: Function
-};
-
 type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
+
+type AreaType = "hexbin" | "heatmap" | "contour";
+
+type SummaryType = "violin" | "joy" | "histogram" | "heatmap" | "boxplot";
+
+type PieceType = "bar" | "point" | "swarm" | "clusterbar";
+
+type HierarchyType = "dendrogram" | "treemap" | "partition";
+
+type NetworkType = "force" | "sankey" | "arc" | "matrix";
 
 export type View =
   | "line"
@@ -90,6 +43,38 @@ export type View =
   | "parallel"
   | "hierarchy";
 
+type dxMetaProps = {
+  view?: View,
+  lineType?: LineType,
+  areaType?: AreaType,
+  selectedDimensions?: Array<string>,
+  selectedMetrics?: Array<string>,
+  pieceType?: PieceType,
+  summaryType?: SummaryType,
+  networkType?: NetworkType,
+  hierarchyType?: HierarchyType,
+  colors?: Array<string>,
+  chart?: {
+    metric1?: string,
+    metric2?: string,
+    metric3?: string,
+    dim1?: string,
+    dim2?: string,
+    dim3?: string,
+    timeseriesSort?: string
+  }
+};
+
+type Props = {
+  data: dataProps,
+  metadata: { dx: dxMetaProps },
+  theme?: string,
+  expanded?: boolean,
+  height?: number,
+  mediaType: "application/vnd.dataresource+json",
+  onMetadataChange?: Function
+};
+
 type State = {
   view: View,
   colors: Array<string>,
@@ -97,11 +82,12 @@ type State = {
   dimensions: Array<Object>,
   selectedMetrics: Array<string>,
   selectedDimensions: Array<string>,
-  networkType: "force" | "sankey",
-  hierarchyType: "dendrogram" | "treemap" | "partition",
-  pieceType: "bar" | "point" | "swarm" | "clusterbar",
-  summaryType: "violin" | "joy" | "histogram" | "heatmap" | "boxplot",
+  networkType: NetworkType,
+  hierarchyType: HierarchyType,
+  pieceType: PieceType,
+  summaryType: SummaryType,
   lineType: LineType,
+  areaType: AreaType,
   chart: Object,
   displayChart: Object,
   primaryKey: Array<string>,
@@ -169,17 +155,14 @@ class DataResourceTransform extends React.Component<Props, State> {
 
   static defaultProps = {
     metadata: {
-      dx: defaultDXSettings
+      dx: {}
     },
     height: 500,
-    mediaType,
-    onMetadataChange: defaultMetadataFn
+    mediaType
   };
 
   constructor(props: Props) {
     super(props);
-
-    console.log("props", props);
 
     const { metadata } = props;
 
@@ -247,21 +230,11 @@ class DataResourceTransform extends React.Component<Props, State> {
     };
   }
 
-  //SET STATE WHENEVER CHANGES
-
-  //HELD IN STATE LIKE SO
-  //UI CHOICES
-  //CHART CHOICES
-  //DERIVED DATA
-
   componentWillMount() {
+    // This is necessary to render any charts based on passed metadata because the grid doesn't result from the updateChart function but any other view does
     if (this.state.view !== "grid") {
       this.updateChart(this.state);
     }
-  }
-
-  shouldComponentUpdate(): boolean {
-    return true;
   }
 
   updateChart = (updatedState: Object) => {
@@ -346,21 +319,23 @@ class DataResourceTransform extends React.Component<Props, State> {
       </div>
     );
 
-    onMetadataChange({
-      dx: {
-        view,
-        lineType,
-        areaType,
-        selectedDimensions,
-        selectedMetrics,
-        pieceType,
-        summaryType,
-        networkType,
-        hierarchyType,
-        colors,
-        chart
-      }
-    });
+    //If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
+    onMetadataChange &&
+      onMetadataChange({
+        dx: {
+          view,
+          lineType,
+          areaType,
+          selectedDimensions,
+          selectedMetrics,
+          pieceType,
+          summaryType,
+          networkType,
+          hierarchyType,
+          colors,
+          chart
+        }
+      });
 
     this.setState(() => {
       return {
