@@ -35,7 +35,7 @@
     "@nteract/transforms": "^5.0.0-alpha.0",
     "babel-runtime": "^6.26.0",
     "lodash": "^4.17.4",
-    "monaco-editor": "^0.14.0",
+    "monaco-editor": "^0.15.0",
     "monaco-editor-webpack-plugin": "^1.5.1",
     "rxjs": "^6.3.3"
   },
