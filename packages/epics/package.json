@@ -1,0 +1,40 @@
+{
+  "name": "@nteract/epics",
+  "version": "1.0.0",
+  "description": "Epics for interfacing with the Jupyter ecosystem",
+  "keywords": [
+    "jupyter",
+    "epics",
+    "rxjs"
+  ],
+  "author": "Safia Abdalla <safia@safia.rocks>",
+  "homepage": "https://github.com/nteract/nteract/tree/master/packages/epics#readme",
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nteract/nteract.git"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
+    "build": "npm run build:clean && npm run build:lib",
+    "build:clean": "tsc -b --clean",
+    "build:lib": "tsc -b",
+    "build:lib:watch": "tsc -b --watch",
+    "build:watch": "npm run build:clean && npm run build:lib:watch"
+  },
+  "bugs": {
+    "url": "https://github.com/nteract/nteract/issues"
+  }
+}
