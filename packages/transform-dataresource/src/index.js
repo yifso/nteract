@@ -1,24 +1,13 @@
 /* @flow */
 import { hot } from "react-hot-loader";
 import * as React from "react";
-import { DatabaseOcticon } from "@nteract/octicons";
 
 import { colors } from "./settings";
 import { semioticSettings } from "./charts/settings";
 import { DataResourceTransformGrid } from "./charts/grid";
 import VizControls from "./VizControls";
 import semioticStyle from "./css/semiotic";
-import {
-  TreeIcon,
-  NetworkIcon,
-  BoxplotIcon,
-  ScatterplotIcon,
-  LineChartIcon,
-  BarChartIcon,
-  HexbinIcon,
-  ParallelCoordinatesIcon
-} from "./icons";
-import { chartHelpText } from "./docs/chart-docs";
+import { Toolbar } from "./components/Toolbar";
 
 const mediaType = "application/vnd.dataresource+json";
 
@@ -42,17 +31,19 @@ type Props = {
 
 type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
 
+export type View =
+  | "line"
+  | "bar"
+  | "scatter"
+  | "grid"
+  | "network"
+  | "summary"
+  | "hexbin"
+  | "parallel"
+  | "hierarchy";
+
 type State = {
-  view:
-    | "line"
-    | "bar"
-    | "scatter"
-    | "grid"
-    | "network"
-    | "summary"
-    | "hexbin"
-    | "parallel"
-    | "hierarchy",
+  view: View,
   colors: Array<string>,
   metrics: Array<Object>,
   dimensions: Array<Object>,
@@ -407,139 +398,14 @@ class DataResourceTransform extends React.Component<Props, State> {
           >
             {display}
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexFlow: "column nowrap",
-              zIndex: 1,
-              padding: "5px"
-            }}
-          >
-            <IconButton
-              title={chartHelpText.grid}
-              onClick={this.setGrid}
-              message={"Data Table"}
-              selected={false}
-            >
-              <DatabaseOcticon />
-            </IconButton>
-            {dimensions.length > 0 && (
-              <IconButton
-                title={chartHelpText.bar}
-                onClick={() => this.setView("bar")}
-                selected={view === "bar"}
-                message={"Bar Graph"}
-              >
-                <BarChartIcon />
-              </IconButton>
-            )}
-            <IconButton
-              title={chartHelpText.summary}
-              onClick={() => this.setView("summary")}
-              selected={view === "summary"}
-              message={"Summary"}
-            >
-              <BoxplotIcon />
-            </IconButton>
-            <IconButton
-              title={chartHelpText.scatter}
-              onClick={() => this.setView("scatter")}
-              selected={view === "scatter"}
-              message={"Scatter Plot"}
-            >
-              <ScatterplotIcon />
-            </IconButton>
-            <IconButton
-              title={chartHelpText.hexbin}
-              onClick={() => this.setView("hexbin")}
-              selected={view === "hexbin"}
-              message={"Area Plot"}
-            >
-              <HexbinIcon />
-            </IconButton>
-            {dimensions.length > 1 && (
-              <IconButton
-                title={chartHelpText.network}
-                onClick={() => this.setView("network")}
-                selected={view === "network"}
-                message={"Network"}
-              >
-                <NetworkIcon />
-              </IconButton>
-            )}
-            {dimensions.length > 0 && (
-              <IconButton
-                title={chartHelpText.hierarchy}
-                onClick={() => this.setView("hierarchy")}
-                selected={view === "hierarchy"}
-                message={"Hierarchy"}
-              >
-                <TreeIcon />
-              </IconButton>
-            )}
-            {dimensions.length > 0 && (
-              <IconButton
-                title={chartHelpText.parallel}
-                onClick={() => this.setView("parallel")}
-                selected={view === "parallel"}
-                message={"Parallel Coordinates"}
-              >
-                <ParallelCoordinatesIcon />
-              </IconButton>
-            )}
-            <IconButton
-              title={chartHelpText.line}
-              onClick={() => this.setView("line")}
-              selected={view === "line"}
-              message={"Line Graph"}
-            >
-              <LineChartIcon />
-            </IconButton>
-          </div>
+          <Toolbar
+            dimensions={dimensions}
+            setGrid={this.setGrid}
+            setView={this.setView}
+            currentView={view}
+          />
         </div>
       </div>
-    );
-  }
-}
-
-/////////////////////////////
-
-type IconButtonProps = {
-  message: string,
-  onClick: () => void,
-  children?: React.Node,
-  title: string,
-  selected: boolean
-};
-
-export class IconButton extends React.Component<IconButtonProps> {
-  render() {
-    const {
-      message,
-      onClick,
-      children,
-      selected,
-      title = message
-    } = this.props;
-
-    let style: Object = {
-      width: "32px",
-      height: "32px",
-      cursor: "pointer",
-      color: "var(--theme-app-fg)",
-      border: "1px solid var(--theme-app-fg)",
-      backgroundColor: "var(--theme-app-bg)"
-    };
-
-    if (selected) {
-      style.border = "1px outset #666";
-      style.backgroundColor = "#aaa";
-    }
-
-    return (
-      <button onClick={onClick} key={message} title={title} style={style}>
-        {children}
-      </button>
     );
   }
 }
