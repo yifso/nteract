@@ -1,4 +1,4 @@
-import { ContentRef, KernelRef } from "./refs";
+import { ContentRef, KernelRef } from "../refs";
 
 export const LAUNCH_KERNEL_SUCCESSFUL = "LAUNCH_KERNEL_SUCCESSFUL";
 export interface NewKernelAction {

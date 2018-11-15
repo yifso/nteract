@@ -1,7 +1,7 @@
 import {
     COMM_OPEN,
     COMM_MESSAGE
-} from "../types/actions";
+} from "../types/actions/kernel";
 
 /**
  * Action creator for comm_open messages

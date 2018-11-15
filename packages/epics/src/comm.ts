@@ -5,7 +5,7 @@ import { createMessage, ofMessageType } from "@nteract/messaging";
 import { ActionsObservable } from "redux-observable";
 
 import { commOpenAction, commMessageAction } from "./actions/comm";
-import { LAUNCH_KERNEL_SUCCESSFUL, NewKernelAction } from "./types/actions";
+import { LAUNCH_KERNEL_SUCCESSFUL, NewKernelAction } from "./types/actions/kernel";
 
 /**
  * creates a comm open message

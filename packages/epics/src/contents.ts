@@ -3,18 +3,19 @@ import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
 import FileSaver from "file-saver";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
-import type { Notebook } from "@nteract/commutable";
+import { Notebook } from "@nteract/commutable";
 
-import * as actions from "../actions";
+import * as actions from "../actions/contents";
 import * as actionTypes from "../actionTypes";
 import * as selectors from "../selectors";
-import type { ContentRef, AppState } from "../state";
+import { ContentRef, AppState } from "../state";
+import { Action } from "redux";
 
 export function fetchContentEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -119,7 +120,7 @@ const someArbitraryPrimesAround30k = [
 ];
 
 export function autoSaveCurrentContentEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) {
   // Pick an autosave duration that won't have the exact same cycle as another open tab
@@ -183,7 +184,7 @@ export function autoSaveCurrentContentEpic(
 }
 
 export function saveContentEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
