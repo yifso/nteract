@@ -72,7 +72,8 @@ type Props = {
   expanded?: boolean,
   height?: number,
   mediaType: "application/vnd.dataresource+json",
-  onMetadataChange?: Function
+  initialView: View,
+  onMetadataChange?: ({ dx: dxMetaProps }) => void
 };
 
 type State = {
@@ -158,13 +159,14 @@ class DataResourceTransform extends React.Component<Props, State> {
       dx: {}
     },
     height: 500,
-    mediaType
+    mediaType,
+    initialView: "grid"
   };
 
   constructor(props: Props) {
     super(props);
 
-    const { metadata } = props;
+    const { metadata, initialView } = props;
 
     const { dx: baseDX = {} } = metadata;
 
@@ -200,7 +202,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       .filter(field => !primaryKey.find(pkey => pkey === field.name));
 
     this.state = {
-      view: "grid",
+      view: initialView,
       lineType: "line",
       areaType: "hexbin",
       selectedDimensions: [],
