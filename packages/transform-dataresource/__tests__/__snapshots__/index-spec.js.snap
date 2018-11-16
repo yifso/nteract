@@ -224,6 +224,7 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
           }
         }
         height={500}
+        initialView="grid"
         mediaType="application/vnd.dataresource+json"
         metadata={Object {}}
         models={Object {}}
