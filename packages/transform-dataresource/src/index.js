@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { colors } from "./settings";
 import { semioticSettings } from "./charts/settings";
-import { DataResourceTransformGrid } from "./charts/grid";
+import DataResourceTransformGrid from "./charts/grid";
 import VizControls from "./VizControls";
 import semioticStyle from "./css/semiotic";
 import { Toolbar } from "./components/Toolbar";
@@ -404,6 +404,8 @@ class DataResourceTransform extends React.Component<Props, State> {
 
     if (view === "grid") {
       display = <DataResourceTransformGrid {...this.props} />;
+      console.log("DataResourceTransformGrid", DataResourceTransformGrid);
+      console.log("display", display);
     } else if (
       [
         "line",
