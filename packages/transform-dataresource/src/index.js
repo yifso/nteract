@@ -20,16 +20,17 @@ type dataProps = {
   data: Array<Object>
 };
 
-type Props = {
-  data: dataProps,
-  metadata: Object,
-  theme?: string,
-  expanded?: boolean,
-  height?: number,
-  mediaType: "application/vnd.dataresource+json"
-};
-
 type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
+
+type AreaType = "hexbin" | "heatmap" | "contour";
+
+type SummaryType = "violin" | "joy" | "histogram" | "heatmap" | "boxplot";
+
+type PieceType = "bar" | "point" | "swarm" | "clusterbar";
+
+type HierarchyType = "dendrogram" | "treemap" | "partition";
+
+type NetworkType = "force" | "sankey" | "arc" | "matrix";
 
 export type View =
   | "line"
@@ -42,6 +43,39 @@ export type View =
   | "parallel"
   | "hierarchy";
 
+type dxMetaProps = {
+  view?: View,
+  lineType?: LineType,
+  areaType?: AreaType,
+  selectedDimensions?: Array<string>,
+  selectedMetrics?: Array<string>,
+  pieceType?: PieceType,
+  summaryType?: SummaryType,
+  networkType?: NetworkType,
+  hierarchyType?: HierarchyType,
+  colors?: Array<string>,
+  chart?: {
+    metric1?: string,
+    metric2?: string,
+    metric3?: string,
+    dim1?: string,
+    dim2?: string,
+    dim3?: string,
+    timeseriesSort?: string
+  }
+};
+
+type Props = {
+  data: dataProps,
+  metadata: { dx: dxMetaProps },
+  theme?: string,
+  expanded?: boolean,
+  height?: number,
+  mediaType: "application/vnd.dataresource+json",
+  initialView: View,
+  onMetadataChange?: ({ dx: dxMetaProps }) => void
+};
+
 type State = {
   view: View,
   colors: Array<string>,
@@ -49,18 +83,12 @@ type State = {
   dimensions: Array<Object>,
   selectedMetrics: Array<string>,
   selectedDimensions: Array<string>,
-  networkType: "force" | "sankey",
-  hierarchyType: "dendrogram" | "treemap" | "partition",
-  pieceType: "bar" | "point" | "swarm" | "clusterbar",
-  colorValue: string,
-  sizeValue: string,
-  xValue: string,
-  yValue: string,
-  targetDimension: string,
-  sourceDimension: string,
-  labelValue: string,
-  summaryType: "violin" | "joy" | "histogram" | "heatmap" | "boxplot",
+  networkType: NetworkType,
+  hierarchyType: HierarchyType,
+  pieceType: PieceType,
+  summaryType: SummaryType,
   lineType: LineType,
+  areaType: AreaType,
   chart: Object,
   displayChart: Object,
   primaryKey: Array<string>,
@@ -124,14 +152,25 @@ const MetadataWarning = ({ metadata }) => {
 class DataResourceTransform extends React.Component<Props, State> {
   static MIMETYPE = mediaType;
 
+  //FOR TESTING PURPOSES ONLY THE METADATA HAS SAMPLE SETTINGS FOR A GRADUATED SYMBOL PLOT
+
   static defaultProps = {
-    metadata: {},
+    metadata: {
+      dx: {}
+    },
     height: 500,
-    mediaType
+    mediaType,
+    initialView: "grid"
   };
 
   constructor(props: Props) {
     super(props);
+
+    const { metadata, initialView } = props;
+
+    const { dx: baseDX = {} } = metadata;
+
+    const { chart = {}, ...dx } = baseDX;
 
     const { fields = [], primaryKey = [] } = props.data.schema;
 
@@ -163,7 +202,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       .filter(field => !primaryKey.find(pkey => pkey === field.name));
 
     this.state = {
-      view: "grid",
+      view: initialView,
       lineType: "line",
       areaType: "hexbin",
       selectedDimensions: [],
@@ -172,13 +211,6 @@ class DataResourceTransform extends React.Component<Props, State> {
       summaryType: "violin",
       networkType: "force",
       hierarchyType: "dendrogram",
-      colorValue: "none",
-      labelValue: "none",
-      sizeValue: "none",
-      sourceDimension: "none",
-      targetDimension: "none",
-      xValue: "none",
-      yValue: "none",
       dimensions,
       metrics,
       colors,
@@ -190,23 +222,21 @@ class DataResourceTransform extends React.Component<Props, State> {
         dim1: (dimensions[0] && dimensions[0].name) || "none",
         dim2: (dimensions[1] && dimensions[1].name) || "none",
         dim3: "none",
-        timeseriesSort: "array-order"
+        timeseriesSort: "array-order",
+        ...chart
       },
       displayChart: {},
       primaryKey,
-      data
+      data,
+      ...dx
     };
   }
 
-  //SET STATE WHENEVER CHANGES
-
-  //HELD IN STATE LIKE SO
-  //UI CHOICES
-  //CHART CHOICES
-  //DERIVED DATA
-
-  shouldComponentUpdate(): boolean {
-    return true;
+  componentWillMount() {
+    // This is necessary to render any charts based on passed metadata because the grid doesn't result from the updateChart function but any other view does
+    if (this.state.view !== "grid") {
+      this.updateChart(this.state);
+    }
   }
 
   updateChart = (updatedState: Object) => {
@@ -228,7 +258,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       data: stateData
     } = { ...this.state, ...updatedState };
 
-    const { data, height } = this.props;
+    const { data, height, onMetadataChange } = this.props;
 
     const { Frame, chartGenerator } = semioticSettings[view];
 
@@ -291,6 +321,35 @@ class DataResourceTransform extends React.Component<Props, State> {
       </div>
     );
 
+    //If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
+    onMetadataChange &&
+      onMetadataChange({
+        dx: {
+          view,
+          lineType,
+          areaType,
+          selectedDimensions,
+          selectedMetrics,
+          pieceType,
+          summaryType,
+          networkType,
+          hierarchyType,
+          colors,
+          chart
+        }
+      });
+
+    this.setState(() => {
+      return {
+        ...updatedState,
+        displayChart: {
+          ...this.state.displayChart,
+          [chartKey]: display
+        }
+      };
+    });
+
+    /*
     this.setState({
       displayChart: {
         ...this.state.displayChart,
@@ -298,6 +357,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       },
       ...updatedState
     });
+    */
   };
   setView = view => {
     this.updateChart({ view });
