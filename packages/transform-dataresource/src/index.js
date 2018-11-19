@@ -232,7 +232,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // This is necessary to render any charts based on passed metadata because the grid doesn't result from the updateChart function but any other view does
     if (this.state.view !== "grid") {
       this.updateChart(this.state);
@@ -348,16 +348,6 @@ class DataResourceTransform extends React.Component<Props, State> {
         }
       };
     });
-
-    /*
-    this.setState({
-      displayChart: {
-        ...this.state.displayChart,
-        [chartKey]: display
-      },
-      ...updatedState
-    });
-    */
   };
   setView = view => {
     this.updateChart({ view });
