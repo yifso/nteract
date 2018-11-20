@@ -11,8 +11,12 @@ steps:
     inputs:
       versionSpec: "10.x"
     displayName: "Install Node.js"
-
   - script: |
       yarn
       yarn test
     displayName: "yarn install and test"
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFiles: '**junit*.xml'
+      testRunTitle: TestRun ${{ parameters.name }} $(node_version)
