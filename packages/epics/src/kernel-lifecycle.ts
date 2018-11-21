@@ -1,4 +1,4 @@
-import { Observable, of, empty, merge } from "rxjs";
+import { Observable, Observer, of, empty, merge } from "rxjs";
 import { createMessage, childOf, ofMessageType } from "@nteract/messaging";
 import { Channels } from "@nteract/messaging";
 import { ImmutableNotebook } from "@nteract/commutable";
@@ -16,11 +16,11 @@ import {
 import { ActionsObservable, ofType } from "redux-observable";
 import { Action } from "redux";
 
-import { ContentRef, KernelRef } from "../state/refs";
+import { ContentRef, KernelRef } from "./types/refs";
 import { createKernelRef } from "../state/refs";
 import * as selectors from "../selectors";
 import * as actions from "../actions";
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from "./types/actions/kernel";
 import { AppState, KernelInfo } from "../state";
 
 const path = require("path");
@@ -31,7 +31,7 @@ const path = require("path");
  * @oaram  {ActionObservable}  action$ ActionObservable for LAUNCH_KERNEL_SUCCESSFUL action
  */
 export const watchExecutionStateEpic = (
-  action$: ActionsObservable<redux$Action>
+  action$: ActionsObservable<Action<actionTypes.NewKernelAction>>
 ) =>
   action$.pipe(
     ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
@@ -100,7 +100,7 @@ export function acquireKernelInfo(
     })
   );
 
-  return Observable.create(observer => {
+  return Observable.create((observer: Observer<any>) => {
     const subscription = obs.subscribe(observer);
     channels.next(message);
     return subscription;
@@ -113,7 +113,7 @@ export function acquireKernelInfo(
  * @param  {ActionObservable}  The action type
  */
 export const acquireKernelInfoEpic = (
-  action$: ActionsObservable<Action>
+  action$: ActionsObservable<Action<actionTypes.NewKernelAction>>
 ) =>
   action$.pipe(
     ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
@@ -135,10 +135,8 @@ export const extractNewKernel = (
 ) => {
   const cwd = (filepath && path.dirname(filepath)) || "/";
 
-  const kernelSpecName = notebook.getIn(
-    ["metadata", "kernelspec", "name"],
-    notebook.getIn(["metadata", "language_info", "name"], "python3")
-  );
+  const kernelSpecName = notebook.getIn(["metadata", "kernelspec", "name"]) || 
+    notebook.getIn(["metadata", "language_info", "name"]) || "python3";
 
   return {
     cwd,
@@ -154,7 +152,7 @@ export const extractNewKernel = (
  *       We could always inject those dependencies separately...
  */
 export const launchKernelWhenNotebookSetEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: any
 ) =>
   action$.pipe(
