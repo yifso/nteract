@@ -7,8 +7,8 @@ import {
   kernelStatuses,
   executionCounts
 } from "@nteract/messaging";
-import { Channels, ExecuteRequest, JupyterMessage } from "@nteract/messaging";
-import { Observable, of, merge, empty, throwError } from "rxjs";
+import { Channels, ExecuteRequest, JupyterMessage, MessageType } from "@nteract/messaging";
+import { Observable, Observer, of, merge, empty, throwError } from "rxjs";
 import {
   groupBy,
   filter,
@@ -67,7 +67,7 @@ export function executeCellStream(
   const executeRequest = message;
 
   // All the streams intended for all frontends
-  const cellMessages = channels.pipe(
+  const cellMessages: Observable<JupyterMessage<MessageType, any>> = channels.pipe(
     childOf(executeRequest),
     share()
   );
@@ -106,7 +106,7 @@ export function executeCellStream(
   );
 
   // On subscription, send the message
-  return Observable.create(observer => {
+  return Observable.create((observer: Observer<any>) => {
     const subscription = cellAction$.subscribe(observer);
     channels.next(executeRequest);
     return subscription;
