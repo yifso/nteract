@@ -38,6 +38,7 @@ Our current flavor of nteract web runs on top of the jupyter server. Install it 
 
 ```
 pip install nteract_on_jupyter
+jupyter serverextension enable nteract_on_jupyter
 ```
 
 Now, run `jupyter nteract` and you're running nteract on jupyter!
