@@ -12,7 +12,8 @@
     "build:clean": "tsc -b --clean",
     "build:lib": "tsc -b",
     "build:lib:watch": "tsc -b --watch",
-    "build:watch": "npm run build:clean && npm run build:lib:watch"
+    "build:watch": "npm run build:clean && npm run build:lib:watch",
+    "docs": "typedoc --out docs src/"
   },
   "keywords": [],
   "author": "Safia Abdalla <safia@safia.rocks>",
