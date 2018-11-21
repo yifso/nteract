@@ -6,6 +6,13 @@ import { createSelector } from "reselect";
 // All these selectors expect a NotebookModel as the top level state
 import { NotebookModel } from "@nteract/core";
 
+/**
+ * Returns the cellMap within a given NotebookModel. Returns an empty
+ * Immutable.Map if no cellMap exists in the NotebookModel.
+ * 
+ * @param model {NotebookModel}
+ * @returns {Immutable.Map}
+ */
 export const cellMap = (model: NotebookModel) =>
   model.notebook.get("cellMap", Immutable.Map());
 
@@ -91,8 +98,12 @@ export const asJSON = createSelector([notebook], notebook => {
   return commutable.toJS(notebook);
 });
 
-// NOTE: This is called asString instead of toString so that REPLs
-//       don't think of this as the representation of this module
+/**
+ * Returns the stringified version of a notebook. Returns an empty string
+ * if no notebookJS exists. Note that this is called asString instead of 
+ * toString so that REPLs don't think of this as the representation of this
+ * module.
+ */
 export const asString = createSelector([asJSON], notebookJS => {
   if (notebookJS) {
     return commutable.stringifyNotebook(notebookJS);

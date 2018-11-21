@@ -17,6 +17,12 @@ function identity<T>(thing: T): T {
   return thing;
 }
 
+
+/**
+ * Creates
+ * @param host 
+ * @returns {ServerConfig}
+ */
 export const serverConfig = (host: JupyterHostRecord) => {
   return {
     endpoint: host.origin + host.basePath,
@@ -25,6 +31,10 @@ export const serverConfig = (host: JupyterHostRecord) => {
   };
 };
 
+/**
+ * 
+ * @param state {AppState}
+ */
 export const userTheme = (state: AppState): string =>
   state.config.get("theme", "light");
 
