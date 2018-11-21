@@ -8,10 +8,12 @@ import { contents } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 
-import * as actions from "../actions/contents";
-import * as actionTypes from "../actionTypes";
+import * as actions from "./actions/contents";
+import * as contentActionTypes from "./types/actions/contents";
+import * as saveActionTypes from "./types/actions/save";
 import * as selectors from "../selectors";
-import { ContentRef, AppState } from "../state";
+import { ContentRef } from "./types/refs";
+import { AppState } from "../state";
 import { Action } from "redux";
 
 export function fetchContentEpic(
@@ -19,8 +21,8 @@ export function fetchContentEpic(
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(actionTypes.FETCH_CONTENT),
-    switchMap((action: actionTypes.FetchContent) => {
+    ofType(contentActionTypes.FETCH_CONTENT),
+    switchMap((action: contentActionTypes.FetchContent) => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
         return of({
           type: "ERROR",
@@ -188,8 +190,8 @@ export function saveContentEpic(
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(actionTypes.SAVE, actionTypes.DOWNLOAD_CONTENT),
-    mergeMap((action: actionTypes.Save | actionTypes.DownloadContent) => {
+    ofType(saveActionTypes.SAVE, contentActionTypes.DOWNLOAD_CONTENT),
+    mergeMap((action: saveActionTypes.Save | contentActionTypes.DownloadContent) => {
       const state = state$.value;
 
       const host = selectors.currentHost(state);
@@ -209,7 +211,7 @@ export function saveContentEpic(
           error: new Error("Content was not set."),
           contentRef: action.payload.contentRef
         };
-        if (action.type === actionTypes.DOWNLOAD_CONTENT) {
+        if (action.type === contentActionTypes.DOWNLOAD_CONTENT) {
           return of(actions.downloadContentFailed(errorPayload));
         }
         return of(actions.saveFailed(errorPayload));
@@ -254,7 +256,7 @@ export function saveContentEpic(
       }
 
       switch (action.type) {
-        case actionTypes.DOWNLOAD_CONTENT: {
+        case contentActionTypes.DOWNLOAD_CONTENT: {
           // FIXME: Convert this to downloadString, so it works for both files & notebooks
           if (
             content.type === "notebook" &&
@@ -284,7 +286,7 @@ export function saveContentEpic(
             })
           );
         }
-        case actionTypes.SAVE: {
+        case saveActionTypes.SAVE: {
           const serverConfig = selectors.serverConfig(host);
 
           // Check to see if the file was modified since the last time we saved
@@ -299,9 +301,9 @@ export function saveContentEpic(
               }
               const model = xhr.response;
 
-              const diskDate = new Date(model.last_modified);
+              const diskDate = new Date(model.last_modified).getTime();
               const inMemoryDate = content.lastSaved
-                ? new Date(content.lastSaved)
+                ? new Date(content.lastSaved).getTime()
                 : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
                   diskDate;
 

@@ -7,7 +7,7 @@ import {
   kernelStatuses,
   executionCounts
 } from "@nteract/messaging";
-import type { Channels, ExecuteRequest } from "@nteract/messaging";
+import { Channels, ExecuteRequest, JupyterMessage } from "@nteract/messaging";
 import { Observable, of, merge, empty, throwError } from "rxjs";
 import {
   groupBy,
@@ -24,14 +24,15 @@ import {
   share
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
+import { Action } from "redux";
 
-import type { ContentRef } from "../state/refs";
-import type { AppState } from "../state";
+import { ContentRef } from "../state/refs";
+import { AppState } from "../state";
 import * as actions from "../actions";
 import * as actionTypes from "../actionTypes";
 import * as selectors from "../selectors";
-import type {
+import {
   NewKernelAction,
   ExecuteCell,
   ExecuteFocusedCell,
@@ -113,7 +114,7 @@ export function executeCellStream(
 }
 
 export function createExecuteCellStream(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state: any,
   message: ExecuteRequest,
   id: string,
@@ -167,7 +168,7 @@ export function createExecuteCellStream(
 }
 
 export function executeAllCellsEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -190,7 +191,7 @@ export function executeAllCellsEpic(
         codeCellIds = selectors.notebook.codeCellIdsBelow(model);
       }
       return of(
-        ...codeCellIds.map(id =>
+        ...codeCellIds.map((id: string) =>
           actions.executeCell({ id, contentRef: action.payload.contentRef })
         )
       );
@@ -203,7 +204,7 @@ export function executeAllCellsEpic(
  * inner observable streams of the running execution responses
  */
 export function executeCellEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: any
 ) {
   return action$.pipe(
@@ -301,14 +302,14 @@ export function executeCellEpic(
   );
 }
 
-export const updateDisplayEpic = (action$: ActionsObservable<redux$Action>) =>
+export const updateDisplayEpic = (action$: ActionsObservable<Action>) =>
   // Global message watcher so we need to set up a feed for each new kernel
   action$.pipe(
     ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
     switchMap((action: NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         ofMessageType("update_display_data"),
-        map(msg =>
+        map((msg: JupyterMessage) =>
           actions.updateDisplay({
             content: msg.content,
             contentRef: action.payload.contentRef

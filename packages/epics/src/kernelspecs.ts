@@ -2,15 +2,16 @@ import { empty, of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 import { kernelspecs } from "rx-jupyter";
 import { ofType } from "redux-observable";
-import type { ActionsObservable } from "redux-observable";
+import { ActionsObservable } from "redux-observable";
+import { Action } from "redux";
 
 import * as actions from "../actions";
 import * as actionTypes from "../actionTypes";
-import type { FetchKernelspecs } from "../actionTypes";
+import { FetchKernelspecs } from "../actionTypes";
 import * as selectors from "../selectors";
 
 export const fetchKernelspecsEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: any
 ) =>
   action$.pipe(

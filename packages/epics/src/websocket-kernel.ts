@@ -1,5 +1,6 @@
 import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
+import { Action } from "redux";
 import {
   catchError,
   map,
@@ -17,13 +18,13 @@ import * as selectors from "../selectors";
 import * as actionTypes from "../actionTypes";
 import { castToSessionId } from "../state/ids";
 import { createKernelRef } from "../state/refs";
-import type { AppState } from "../state";
-import type { RemoteKernelProps } from "../state/entities/kernels";
+import { AppState } from "../state";
+import { RemoteKernelProps } from "../state/entities/kernels";
 
 import { extractNewKernel } from "./kernel-lifecycle";
 
 export const launchWebSocketKernelEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -99,7 +100,7 @@ export const launchWebSocketKernelEpic = (
   );
 
 export const changeWebSocketKernelEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -196,7 +197,7 @@ export const changeWebSocketKernelEpic = (
   );
 
 export const interruptKernelEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -256,7 +257,7 @@ export const interruptKernelEpic = (
 
 // NB: This epic kills the *current* kernel. ZMQ killKernelEpic kills a *specified* kernel.
 export const killKernelEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) =>
   // TODO: Use the sessions API for this

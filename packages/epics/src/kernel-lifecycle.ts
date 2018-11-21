@@ -14,6 +14,7 @@ import {
   timeout
 } from "rxjs/operators";
 import { ActionsObservable, ofType } from "redux-observable";
+import { Action } from "redux";
 
 import { ContentRef, KernelRef } from "../state/refs";
 import { createKernelRef } from "../state/refs";
@@ -112,7 +113,7 @@ export function acquireKernelInfo(
  * @param  {ActionObservable}  The action type
  */
 export const acquireKernelInfoEpic = (
-  action$: ActionsObservable<redux$Action>
+  action$: ActionsObservable<Action>
 ) =>
   action$.pipe(
     ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
@@ -129,7 +130,7 @@ export const acquireKernelInfoEpic = (
   );
 
 export const extractNewKernel = (
-  filepath: ?string,
+  filepath: string | null,
   notebook: ImmutableNotebook
 ) => {
   const cwd = (filepath && path.dirname(filepath)) || "/";
@@ -192,7 +193,7 @@ export const launchKernelWhenNotebookSetEpic = (
   );
 
 export const restartKernelEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Action>,
   state$: any,
   kernelRefGenerator: () => KernelRef = createKernelRef
 ) =>
