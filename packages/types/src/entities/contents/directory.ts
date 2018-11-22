@@ -8,12 +8,10 @@ export type DirectoryModelRecordProps = {
   groupedBy?: "type" | "mimetype",
   items: Immutable.List<ContentRef>
 };
-export const makeDirectoryModel: Immutable.Record.Factory<
-  DirectoryModelRecordProps
-> = Immutable.Record({
+export const makeDirectoryModel = Immutable.Record<DirectoryModelRecordProps>({
   type: "directory",
   items: Immutable.List()
-} as DirectoryModelRecordProps);
+});
 export type DirectoryModelRecord = Immutable.RecordOf<
   DirectoryModelRecordProps
 >;
@@ -27,9 +25,7 @@ export type DirectoryContentRecordProps = {
   filepath: string,
   model: DirectoryModelRecord
 };
-export const makeDirectoryContentRecord: Immutable.Record.Factory<
-  DirectoryContentRecordProps
-> = Immutable.Record({
+export const makeDirectoryContentRecord = Immutable.Record<DirectoryContentRecordProps>({
   mimetype: null,
   type: "directory",
   created: null,
@@ -37,7 +33,7 @@ export const makeDirectoryContentRecord: Immutable.Record.Factory<
   lastSaved: null,
   filepath: "",
   model: makeDirectoryModel()
-} as DirectoryContentRecordProps);
+});
 export type DirectoryContentRecord = Immutable.RecordOf<
   DirectoryContentRecordProps
 >;

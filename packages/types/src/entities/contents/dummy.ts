@@ -4,11 +4,9 @@ export type EmptyModelRecordProps = {
   type: "unknown"
 };
 
-export const makeEmptyModel: Immutable.Record.Factory<
-  EmptyModelRecordProps
-> = Immutable.Record({
+export const makeEmptyModel = Immutable.Record<EmptyModelRecordProps>({
   type: "unknown"
-} as EmptyModelRecordProps);
+});
 export type EmptyModelRecord = Immutable.RecordOf<EmptyModelRecordProps>;
 
 type NotebookTypes = "unknown" | "directory" | "notebook" | "file";
@@ -21,14 +19,12 @@ export type DummyContentRecordProps = {
   filepath: string,
   model: EmptyModelRecord
 };
-export const makeDummyContentRecord: Immutable.Record.Factory<
-  DummyContentRecordProps
-> = Immutable.Record({
+export const makeDummyContentRecord = Immutable.Record<DummyContentRecordProps>({
   type: "dummy",
   mimetype: null,
   assumedType: "unknown",
   lastSaved: null,
   filepath: "",
   model: makeEmptyModel()
-} as DummyContentRecordProps);
+});
 export type DummyContentRecord = Immutable.RecordOf<DummyContentRecordProps>;

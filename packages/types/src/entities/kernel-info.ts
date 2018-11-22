@@ -5,9 +5,7 @@ export type HelpLink = {
   text: string,
   url: string
 };
-export const makeHelpLinkRecord: Immutable.Record.Factory<
-  HelpLink
-> = Immutable.Record({
+export const makeHelpLinkRecord = Immutable.Record<HelpLink>({
   text: "",
   url: "#"
 });
@@ -97,9 +95,7 @@ export type KernelInfoRecord = Immutable.RecordOf<KernelInfo>;
 //       don't have nullables and can rely on the proper types. The developer is
 //       required to pass a fully instantiated KernelInfo into
 //       makeKernelInfoRecord below.
-const kernelInfoRecordMaker: Immutable.Record.Factory<
-  KernelInfo
-> = Immutable.Record({
+const kernelInfoRecordMaker = Immutable.Record<KernelInfo>({
   protocolVersion: "0.0.0", // E.g. 1.2.3
   implementation: "",
   implementationVersion: "",
@@ -112,7 +108,7 @@ const kernelInfoRecordMaker: Immutable.Record.Factory<
   pygmentsLexer: "",
   codemirrorMode: "text/plain",
   nbconvertExporter: ""
-} as KernelInfo);
+});
 
 export function makeKernelInfoRecord(kernelInfo: KernelInfo): KernelInfoRecord {
   return kernelInfoRecordMaker(kernelInfo);

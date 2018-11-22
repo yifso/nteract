@@ -75,9 +75,7 @@ export type StateRecordProps = {
   entities: Immutable.RecordOf<EntitiesRecordProps>
 };
 
-export const makeStateRecord: Immutable.Record.Factory<
-  StateRecordProps
-> = Immutable.Record({
+export const makeStateRecord = Immutable.Record<StateRecordProps>({
   kernelRef: null,
   currentKernelspecsRef: null,
   communication: makeCommunicationRecord(),
@@ -96,9 +94,7 @@ export type AppRecordProps = {
   version: string
 };
 
-export const makeAppRecord: Immutable.Record.Factory<
-  AppRecordProps
-> = Immutable.Record({
+export const makeAppRecord = Immutable.Record<AppRecordProps>({
   host: makeEmptyHostRecord(),
   gitHubToken: null,
   notificationSystem: {

@@ -7,12 +7,10 @@ export type KernelCommunicationRecordProps = {
   error?: object | null
 };
 
-export const makeKernelCommunicationRecord: Immutable.Record.Factory<
-  KernelCommunicationRecordProps
-> = Immutable.Record({
+export const makeKernelCommunicationRecord = Immutable.Record<KernelCommunicationRecordProps>({
   loading: false,
   error: null
-} as KernelCommunicationRecordProps);
+});
 
 export type KernelsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -21,8 +19,6 @@ export type KernelsCommunicationRecordProps = {
   >
 };
 
-export const makeKernelsCommunicationRecord: Immutable.Record.Factory<
-  KernelsCommunicationRecordProps
-> = Immutable.Record({
+export const makeKernelsCommunicationRecord = Immutable.Record<KernelsCommunicationRecordProps>({
   byRef: Immutable.Map()
-} as KernelsCommunicationRecordProps);
+});

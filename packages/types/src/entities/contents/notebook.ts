@@ -18,9 +18,7 @@ export type DocumentRecordProps = {
   copied: Immutable.Map<any, any>,
   kernelRef?: KernelRef | null
 };
-export const makeDocumentRecord: Immutable.Record.Factory<
-  DocumentRecordProps
-> = Immutable.Record({
+export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   type: "notebook",
   notebook: emptyNotebook,
   savedNotebook: emptyNotebook,
@@ -32,7 +30,7 @@ export const makeDocumentRecord: Immutable.Record.Factory<
   cellFocused: null,
   copied: Immutable.Map(),
   kernelRef: null
-} as DocumentRecordProps);
+});
 export type NotebookModel = Immutable.RecordOf<DocumentRecordProps>;
 
 export type NotebookContentRecordProps = {
@@ -46,9 +44,7 @@ export type NotebookContentRecordProps = {
   writable: boolean
 };
 
-export const makeNotebookContentRecord: Immutable.Record.Factory<
-  NotebookContentRecordProps
-> = Immutable.Record({
+export const makeNotebookContentRecord = Immutable.Record<NotebookContentRecordProps>({
   mimetype: null,
   created: null,
   format: "json",
@@ -57,7 +53,7 @@ export const makeNotebookContentRecord: Immutable.Record.Factory<
   filepath: "",
   type: "notebook",
   writable: true
-} as NotebookContentRecordProps);
+});
 
 export type NotebookContentRecord = Immutable.RecordOf<
   NotebookContentRecordProps

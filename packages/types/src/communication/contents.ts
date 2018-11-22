@@ -8,13 +8,11 @@ export type ContentCommunicationRecordProps = {
   error?: object | null;
 };
 
-export const makeContentCommunicationRecord: Immutable.Record.Factory<
-  ContentCommunicationRecordProps
-> = Immutable.Record({
+export const makeContentCommunicationRecord = Immutable.Record<ContentCommunicationRecordProps>({
   loading: false,
   saving: false,
   error: null
-} as ContentCommunicationRecordProps);
+});
 
 export type ContentsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -23,8 +21,6 @@ export type ContentsCommunicationRecordProps = {
   >
 };
 
-export const makeContentsCommunicationRecord: Immutable.Record.Factory<
-  ContentsCommunicationRecordProps
-> = Immutable.Record({
+export const makeContentsCommunicationRecord = Immutable.Record<ContentsCommunicationRecordProps>({
   byRef: Immutable.Map()
-} as ContentsCommunicationRecordProps);
+});

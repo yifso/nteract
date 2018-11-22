@@ -28,8 +28,6 @@ export type ContentsRecordProps = {
   byRef: Immutable.Map<ContentRef, ContentRecord>
 };
 
-export const makeContentsRecord: Immutable.Record.Factory<
-  ContentsRecordProps
-> = Immutable.Record({
+export const makeContentsRecord = Immutable.Record<ContentsRecordProps>({
   byRef: Immutable.Map()
-} as ContentsRecordProps);
+});

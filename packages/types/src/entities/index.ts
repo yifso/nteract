@@ -27,9 +27,7 @@ export type EntitiesRecordProps = {
 
 export type EntitiesRecord = Immutable.RecordOf<EntitiesRecordProps>;
 
-export const makeEntitiesRecord: Immutable.Record.Factory<
-  EntitiesRecordProps
-> = Immutable.Record({
+export const makeEntitiesRecord = Immutable.Record<EntitiesRecordProps>({
   contents: makeContentsRecord(),
   hosts: makeHostsRecord(),
   kernels: makeKernelsRecord(),

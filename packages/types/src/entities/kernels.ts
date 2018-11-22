@@ -28,16 +28,14 @@ export type KernelNotStartedProps = {
 
 export type KernelNotStartedRecord = Immutable.RecordOf<KernelNotStartedProps>;
 
-export const makeKernelNotStartedRecord: Immutable.Record.Factory<
-  KernelNotStartedProps
-> = Immutable.Record({
+export const makeKernelNotStartedRecord = Immutable.Record<KernelNotStartedProps>({
   kernelSpecName: null,
   status: null,
   type: "unknown",
   cwd: ".",
   channels: new Subject(),
   info: null
-} as KernelNotStartedProps);
+});
 
 export type LocalKernelProps = {
   kernelSpecName?: string | null,
@@ -57,9 +55,7 @@ export type LocalKernelProps = {
   connectionFile?: string | null
 };
 
-export const makeLocalKernelRecord: Immutable.Record.Factory<
-  LocalKernelProps
-> = Immutable.Record({
+export const makeLocalKernelRecord = Immutable.Record<LocalKernelProps>({
   type: "zeromq",
   cwd: ".",
   info: null,
@@ -70,7 +66,7 @@ export const makeLocalKernelRecord: Immutable.Record.Factory<
   status: null,
   spawn: null,
   connectionFile: null
-} as LocalKernelProps);
+});
 
 export type LocalKernelRecord = Immutable.RecordOf<LocalKernelProps>;
 
@@ -92,9 +88,7 @@ export type RemoteKernelProps = {
   id?: KernelId | null
 };
 
-export const makeRemoteKernelRecord: Immutable.Record.Factory<
-  RemoteKernelProps
-> = Immutable.Record({
+export const makeRemoteKernelRecord = Immutable.Record<RemoteKernelProps>({
   type: "websocket",
   info: null,
   cwd: ".",
@@ -105,7 +99,7 @@ export const makeRemoteKernelRecord: Immutable.Record.Factory<
   channels: new Subject(),
   sessionId: null,
   status: null
-} as RemoteKernelProps);
+});
 
 export type RemoteKernelRecord = Immutable.RecordOf<RemoteKernelProps>;
 
@@ -118,8 +112,6 @@ export type KernelsRecordProps = {
   byRef: Immutable.Map<KernelRef, KernelRecord>
 };
 
-export const makeKernelsRecord: Immutable.Record.Factory<
-  KernelsRecordProps
-> = Immutable.Record({
+export const makeKernelsRecord = Immutable.Record<KernelsRecordProps>({
   byRef: Immutable.Map()
-} as KernelsRecordProps);
+});

@@ -7,11 +7,9 @@ export type EmptyHost = {
   type: "empty"
 };
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
-export const makeEmptyHostRecord: Immutable.Record.Factory<
-  EmptyHost
-> = Immutable.Record({
+export const makeEmptyHostRecord  = Immutable.Record<EmptyHost>({
   type: "empty"
-} as EmptyHost);
+});
 
 export type BaseHostProps = {
   id?: HostId | null,
@@ -26,9 +24,7 @@ export type JupyterHostRecordProps = BaseHostProps & {
   crossDomain?: boolean | null
 };
 
-export const makeJupyterHostRecord: Immutable.Record.Factory<
-  JupyterHostRecordProps
-> = Immutable.Record({
+export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   type: "jupyter",
   id: null,
   defaultKernelName: "python",
@@ -36,7 +32,7 @@ export const makeJupyterHostRecord: Immutable.Record.Factory<
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
   crossDomain: false
-} as JupyterHostRecordProps);
+});
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
 
@@ -44,13 +40,11 @@ export type LocalHostRecordProps = BaseHostProps & {
   type: "local"
 };
 
-export const makeLocalHostRecord: Immutable.Record.Factory<
-  LocalHostRecordProps
-> = Immutable.Record({
+export const makeLocalHostRecord = Immutable.Record<LocalHostRecordProps>({
   type: "local",
   id: null,
   defaultKernelName: "python"
-} as LocalHostRecordProps);
+});
 
 export type LocalHostRecord = Immutable.RecordOf<LocalHostRecordProps>;
 
@@ -63,9 +57,7 @@ export type HostsRecordProps = {
   refs: Immutable.List<HostRef>
 };
 
-export const makeHostsRecord: Immutable.Record.Factory<
-  HostsRecordProps
-> = Immutable.Record({
+export const makeHostsRecord = Immutable.Record<HostsRecordProps>({
   byRef: Immutable.Map(),
   refs: Immutable.List()
-} as HostsRecordProps);
+});
