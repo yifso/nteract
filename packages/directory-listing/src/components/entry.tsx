@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 import { areComponentsEqual } from "react-hot-loader";
 
@@ -7,10 +6,10 @@ import { Name } from "./name";
 import { LastSaved } from "./lastsaved";
 
 type EntryProps = {
-  children: React.Node
+  children: React.ReactNode
 };
 
-export class Entry extends React.Component<EntryProps, null> {
+export class Entry extends React.Component<EntryProps> {
   static defaultProps = {
     children: null
   };
@@ -18,17 +17,18 @@ export class Entry extends React.Component<EntryProps, null> {
   render() {
     return (
       <tr className="directory-entry">
-        {React.Children.map(this.props.children, child => {
+        {React.Children.map(this.props.children, (child) => {
+          const childElement = child as React.ReactElement<any>;
           if (
-            areComponentsEqual(child.type, Icon) ||
-            areComponentsEqual(child.type, Name) ||
-            areComponentsEqual(child.type, LastSaved)
+            areComponentsEqual(childElement.type as React.ComponentType<any>, Icon) ||
+            areComponentsEqual(childElement.type as React.ComponentType<any>, Name) ||
+            areComponentsEqual(childElement.type as React.ComponentType<any>, LastSaved)
           ) {
-            return React.cloneElement(child, {
+            return React.cloneElement(childElement, {
               className:
-                typeof child.props.className === String &&
-                child.props.className !== ""
-                  ? child.props.className + " directory-entry-field"
+                typeof childElement.props.className === "string" &&
+                childElement.props.className !== ""
+                  ? childElement.props.className + " directory-entry-field"
                   : "directory-entry-field"
             });
           } else {

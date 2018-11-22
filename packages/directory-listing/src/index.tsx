@@ -1,4 +1,3 @@
-// @flow
 import { Entry } from "./components/entry";
 import { Listing } from "./components/listing";
 import { Icon } from "./components/icon";

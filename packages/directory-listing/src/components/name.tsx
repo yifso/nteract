@@ -1,12 +1,10 @@
-// @flow
-
 import * as React from "react";
 
 type NameProps = {
-  children: React.Node
+  children: React.ReactNode
 };
 
-export class Name extends React.Component<NameProps, null> {
+export class Name extends React.Component<NameProps> {
   static defaultProps = {
     children: null
   };
