@@ -1,10 +1,9 @@
-/* @flow */
 import * as React from "react";
 
 type Props = {
   data: string,
   mediaType: "application/x-nteract-model-debug+json",
-  models: Object,
+  models: { [modelID: string ]: Object},
   modelID: string
 };
 
@@ -21,7 +20,7 @@ class ModelDebug extends React.Component<Props> {
     return true;
   }
 
-  render(): ?React$Element<any> {
+  render() {
     const { models, data, modelID } = this.props; // eslint-disable-line no-unused-vars
     // TODO: Provide model IDs on transient field
     // For now, if modelID is not provided (or model does not exist),
