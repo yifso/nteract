@@ -13,7 +13,7 @@ export const makeDirectoryModel: Immutable.Record.Factory<
 > = Immutable.Record({
   type: "directory",
   items: Immutable.List()
-});
+} as DirectoryModelRecordProps);
 export type DirectoryModelRecord = Immutable.RecordOf<
   DirectoryModelRecordProps
 >;
@@ -21,9 +21,9 @@ export type DirectoryModelRecord = Immutable.RecordOf<
 export type DirectoryContentRecordProps = {
   mimetype: null,
   type: "directory",
-  created?: Date | null,
+  created: Date | null,
   format: "json",
-  lastSaved: null,
+  lastSaved: Date | null,
   filepath: string,
   model: DirectoryModelRecord
 };
@@ -37,7 +37,7 @@ export const makeDirectoryContentRecord: Immutable.Record.Factory<
   lastSaved: null,
   filepath: "",
   model: makeDirectoryModel()
-});
+} as DirectoryContentRecordProps);
 export type DirectoryContentRecord = Immutable.RecordOf<
   DirectoryContentRecordProps
 >;

@@ -32,4 +32,4 @@ export const makeContentsRecord: Immutable.Record.Factory<
   ContentsRecordProps
 > = Immutable.Record({
   byRef: Immutable.Map()
-});
+} as ContentsRecordProps);

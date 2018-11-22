@@ -1,6 +1,5 @@
 
 import * as Immutable from "immutable";
-import { ImmutableJSONMap } from "@nteract/commutable";
 
 import { CommunicationRecordProps } from "./communication";
 import { EntitiesRecordProps } from "./entities";
@@ -28,7 +27,7 @@ export type KernelspecInfo = {
 
 export type LanguageInfoMetadata = {
   name: string,
-  codemirror_mode?: string | ImmutableJSONMap,
+  codemirror_mode?: string | Immutable.Map<string, any>,
   file_extension?: string,
   mimetype?: string,
   pygments_lexer?: string
@@ -59,9 +58,9 @@ export type CommsRecordProps = {
 export type CommsRecord = Immutable.RecordOf<CommsRecordProps>;
 
 export const makeCommsRecord = Immutable.Record({
-  targets: new Immutable.Map(),
-  info: new Immutable.Map(),
-  models: new Immutable.Map()
+  targets: Immutable.Map(),
+  info: Immutable.Map(),
+  models: Immutable.Map()
 });
 
 // Pull version from our package.json
@@ -83,12 +82,12 @@ export const makeStateRecord: Immutable.Record.Factory<
   currentKernelspecsRef: null,
   communication: makeCommunicationRecord(),
   entities: makeEntitiesRecord()
-});
+} as StateRecordProps);
 
 export type AppRecordProps = {
   host: HostRecord,
   githubToken?: string | null,
-  notificationSystem: { addNotification: Function },
+  notificationSystem: { addNotification: (msg: { level?: "error" | "warning" }) => void },
   isSaving: boolean,
   lastSaved?: Date | null,
   configLastSaved?: Date | null,
@@ -101,7 +100,7 @@ export const makeAppRecord: Immutable.Record.Factory<
   AppRecordProps
 > = Immutable.Record({
   host: makeEmptyHostRecord(),
-  githubToken: null,
+  gitHubToken: null,
   notificationSystem: {
     addNotification: (msg: { level?: "error" | "warning" }) => {
       let logger = console.log.bind(console);
@@ -122,7 +121,7 @@ export const makeAppRecord: Immutable.Record.Factory<
   error: null,
   // set the default version to @nteract/core's version
   version: `@nteract/core@${version}`
-});
+} as AppRecordProps);
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;

@@ -5,7 +5,7 @@ import { ContentRef } from "../refs";
 export type ContentCommunicationRecordProps = {
   loading: boolean,
   saving: boolean,
-  error?: Object | null
+  error?: object | null;
 };
 
 export const makeContentCommunicationRecord: Immutable.Record.Factory<
@@ -14,7 +14,7 @@ export const makeContentCommunicationRecord: Immutable.Record.Factory<
   loading: false,
   saving: false,
   error: null
-});
+} as ContentCommunicationRecordProps);
 
 export type ContentsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -27,4 +27,4 @@ export const makeContentsCommunicationRecord: Immutable.Record.Factory<
   ContentsCommunicationRecordProps
 > = Immutable.Record({
   byRef: Immutable.Map()
-});
+} as ContentsCommunicationRecordProps);

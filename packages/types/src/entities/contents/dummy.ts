@@ -8,7 +8,7 @@ export const makeEmptyModel: Immutable.Record.Factory<
   EmptyModelRecordProps
 > = Immutable.Record({
   type: "unknown"
-});
+} as EmptyModelRecordProps);
 export type EmptyModelRecord = Immutable.RecordOf<EmptyModelRecordProps>;
 
 type NotebookTypes = "unknown" | "directory" | "notebook" | "file";
@@ -30,5 +30,5 @@ export const makeDummyContentRecord: Immutable.Record.Factory<
   lastSaved: null,
   filepath: "",
   model: makeEmptyModel()
-});
+} as DummyContentRecordProps);
 export type DummyContentRecord = Immutable.RecordOf<DummyContentRecordProps>;

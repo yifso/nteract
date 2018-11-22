@@ -9,7 +9,7 @@ export const makeFileModelRecord: Immutable.Record.Factory<
 > = Immutable.Record({
   type: "file",
   text: ""
-});
+} as FileModelRecordProps);
 export type FileModelRecord = Immutable.RecordOf<FileModelRecordProps>;
 
 export type FileContentRecordProps = {
@@ -31,6 +31,6 @@ export const makeFileContentRecord: Immutable.Record.Factory<
   lastSaved: null,
   filepath: "",
   model: makeFileModelRecord()
-});
+} as FileContentRecordProps);
 
 export type FileContentRecord = Immutable.RecordOf<FileContentRecordProps>;

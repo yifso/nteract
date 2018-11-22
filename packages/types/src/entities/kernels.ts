@@ -28,7 +28,7 @@ export type KernelNotStartedProps = {
 
 export type KernelNotStartedRecord = Immutable.RecordOf<KernelNotStartedProps>;
 
-export const makeKernelNotStartedRecord: Immutable.RecordFactory<
+export const makeKernelNotStartedRecord: Immutable.Record.Factory<
   KernelNotStartedProps
 > = Immutable.Record({
   kernelSpecName: null,
@@ -37,7 +37,7 @@ export const makeKernelNotStartedRecord: Immutable.RecordFactory<
   cwd: ".",
   channels: new Subject(),
   info: null
-});
+} as KernelNotStartedProps);
 
 export type LocalKernelProps = {
   kernelSpecName?: string | null,
@@ -70,7 +70,7 @@ export const makeLocalKernelRecord: Immutable.Record.Factory<
   status: null,
   spawn: null,
   connectionFile: null
-});
+} as LocalKernelProps);
 
 export type LocalKernelRecord = Immutable.RecordOf<LocalKernelProps>;
 
@@ -105,7 +105,7 @@ export const makeRemoteKernelRecord: Immutable.Record.Factory<
   channels: new Subject(),
   sessionId: null,
   status: null
-});
+} as RemoteKernelProps);
 
 export type RemoteKernelRecord = Immutable.RecordOf<RemoteKernelProps>;
 
@@ -118,8 +118,8 @@ export type KernelsRecordProps = {
   byRef: Immutable.Map<KernelRef, KernelRecord>
 };
 
-export const makeKernelsRecord: Immutable.RecordFactory<
+export const makeKernelsRecord: Immutable.Record.Factory<
   KernelsRecordProps
 > = Immutable.Record({
   byRef: Immutable.Map()
-});
+} as KernelsRecordProps);

@@ -112,7 +112,7 @@ const kernelInfoRecordMaker: Immutable.Record.Factory<
   pygmentsLexer: "",
   codemirrorMode: "text/plain",
   nbconvertExporter: ""
-});
+} as KernelInfo);
 
 export function makeKernelInfoRecord(kernelInfo: KernelInfo): KernelInfoRecord {
   return kernelInfoRecordMaker(kernelInfo);

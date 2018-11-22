@@ -1,8 +1,8 @@
 import * as Immutable from "immutable";
 import { emptyNotebook } from "@nteract/commutable";
-import { CellID, ImmutableNotebook } from "@nteract/commutable";
+import { ImmutableNotebook } from "@nteract/commutable";
 
-import { KernelRef } from "../..";
+import { KernelRef, CellId } from "../..";
 
 export type DocumentRecordProps = {
   type: "notebook",
@@ -13,8 +13,8 @@ export type DocumentRecordProps = {
   // right now it's keypaths and then it looks like it's able to handle any per
   // cell transient data that will be deleted when the kernel is restarted
   cellPagers: any,
-  editorFocused?: CellID | null,
-  cellFocused?: CellID | null,
+  editorFocused?: CellId | null,
+  cellFocused?: CellId | null,
   copied: Immutable.Map<any, any>,
   kernelRef?: KernelRef | null
 };
@@ -32,7 +32,7 @@ export const makeDocumentRecord: Immutable.Record.Factory<
   cellFocused: null,
   copied: Immutable.Map(),
   kernelRef: null
-});
+} as DocumentRecordProps);
 export type NotebookModel = Immutable.RecordOf<DocumentRecordProps>;
 
 export type NotebookContentRecordProps = {
@@ -57,7 +57,7 @@ export const makeNotebookContentRecord: Immutable.Record.Factory<
   filepath: "",
   type: "notebook",
   writable: true
-});
+} as NotebookContentRecordProps);
 
 export type NotebookContentRecord = Immutable.RecordOf<
   NotebookContentRecordProps

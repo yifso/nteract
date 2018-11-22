@@ -23,7 +23,7 @@ export const makeKernelspec: Record.Factory<KernelspecProps> = Record({
   displayName: "",
   metadata: Map(),
   resources: Map()
-});
+} as KernelspecProps);
 
 export type KernelspecRecord = RecordOf<KernelspecProps>;
 
@@ -41,7 +41,7 @@ export const makeKernelspecsByRefRecord: Record.Factory<
   hostRef: null,
   defaultKernelName: "python",
   byName: Map()
-});
+} as KernelspecsByRefRecordProps);
 
 export type KernelspecsRecordProps = {
   byRef: Map<KernelspecsRef, RecordOf<KernelspecsByRefRecordProps>>,
@@ -53,6 +53,6 @@ export const makeKernelspecsRecord: Record.Factory<
 > = Record({
   byRef: Map(),
   refs: List()
-});
+} as KernelspecsRecordProps);
 
 export type KernelSpecsRecord = RecordOf<KernelspecsRecordProps>;

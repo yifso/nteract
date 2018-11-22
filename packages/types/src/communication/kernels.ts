@@ -12,7 +12,7 @@ export const makeKernelCommunicationRecord: Immutable.Record.Factory<
 > = Immutable.Record({
   loading: false,
   error: null
-});
+} as KernelCommunicationRecordProps);
 
 export type KernelsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -25,4 +25,4 @@ export const makeKernelsCommunicationRecord: Immutable.Record.Factory<
   KernelsCommunicationRecordProps
 > = Immutable.Record({
   byRef: Immutable.Map()
-});
+} as KernelsCommunicationRecordProps);
