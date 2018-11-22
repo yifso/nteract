@@ -6,7 +6,6 @@ import { KernelRef } from "../..";
 
 export type DocumentRecordProps = {
   type: "notebook",
-  // TODO: This _needs_ to become a Record
   notebook: ImmutableNotebook,
   savedNotebook: ImmutableNotebook,
   transient: Immutable.Map<string, any>, // has the keypaths for updating displays

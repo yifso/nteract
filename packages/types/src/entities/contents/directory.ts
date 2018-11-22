@@ -4,15 +4,8 @@ import { ContentRef } from "../../refs";
 
 export type DirectoryModelRecordProps = {
   type: "directory",
-  // TODO: when we want the directory "app" to show how they're sorted,
-  //       reflect that with a property like "sortedBy". For example:
-  //
-  //         sortedBy: "created" | "lastSaved" | "type" | "name"
-  //
-  //       could also group them by type, etc.
-  //
-  //         groupedBy: "type" | "mimetype"
-  //
+  sortedBy?: "created" | "lastSaved" | "type" | "name",
+  groupedBy?: "type" | "mimetype",
   items: Immutable.List<ContentRef>
 };
 export const makeDirectoryModel: Immutable.Record.Factory<
