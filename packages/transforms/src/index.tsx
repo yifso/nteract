@@ -10,10 +10,11 @@ import SVGDisplay from "./svg";
 import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
 
 type Transform = {
-  MIMETYPE: string
-};
+  MIMETYPE: string;
+}
 
-export type Transforms = { [transform: string]: Transform };
+type ObjectType = object;
+export interface Transforms extends ObjectType { [transform: string]: Transform };
 type DisplayOrder = Array<string>;
 
 export type TransformRegister = {

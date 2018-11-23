@@ -10,7 +10,8 @@ import flush from "styled-jsx/server";
 import { Display } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms
+  transforms as defaultTransforms,
+  Transforms
 } from "@nteract/transforms";
 import {
   emptyNotebook,
@@ -116,7 +117,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                     >
                       <Display
                         outputs={(cell as ImmutableCodeCell).get("outputs").toJS()}
-                        transforms={this.props.transforms}
+                        transforms={this.props.transforms as Transforms}
                         displayOrder={this.props.displayOrder}
                       />
                     </Outputs>

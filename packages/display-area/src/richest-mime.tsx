@@ -5,11 +5,11 @@ import { Subject } from "rxjs";
 
 type Props = {
   displayOrder: string[];
-  transforms: Transforms;
-  bundle: Object;
-  metadata: Object;
+  transforms: object;
+  bundle: object;
+  metadata: object;
   theme: string;
-  models?: Object;
+  models?: object;
   channels?: Subject<any>;
 };
 
@@ -81,7 +81,7 @@ export default class RichestMime extends React.Component<Props, State> {
     const mimetype = richestMimetype(
       this.props.bundle,
       this.props.displayOrder,
-      this.props.transforms
+      this.props.transforms as Transforms
     );
 
     if (!mimetype) {
