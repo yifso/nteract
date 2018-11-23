@@ -1687,6 +1687,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-timeago@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-timeago/-/react-timeago-4.1.0.tgz#e8ebc0add9de6d768fda610922879382bdc2f327"
+  integrity sha512-rQihM3unIJ2i3gxJhoM9hktqrMsrqv2OVyz4zWG7T6hUdmt4V5IGs6B65EJgo+4Rt9Z5pscc0H9YcZX4hPuLkA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.1.0", "@types/react@^16.4.18":
   version "16.7.6"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.6.tgz#80e4bab0d0731ad3ae51f320c4b08bdca5f03040"
@@ -8207,6 +8214,17 @@ jest-jasmine2@^23.6.0:
     jest-util "^23.4.0"
     pretty-format "^23.6.0"
 
+jest-junit@^5.0.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-5.2.0.tgz#980401db7aa69999cf117c6d740a8135c22ae379"
+  integrity sha512-Mdg0Qpdh1Xm/FA1B/mcLlmEmlr3XzH5pZg7MvcAwZhjHijPRd1z/UwYwkwNHmCV7o4ZOWCf77nLu7ZkhHHrtJg==
+  dependencies:
+    jest-config "^23.6.0"
+    jest-validate "^23.0.1"
+    mkdirp "^0.5.1"
+    strip-ansi "^4.0.0"
+    xml "^1.0.1"
+
 jest-leak-detector@^23.6.0:
   version "23.6.0"
   resolved "https://registry.yarnpkg.com/jest-leak-detector/-/jest-leak-detector-23.6.0.tgz#e4230fd42cf381a1a1971237ad56897de7e171de"
@@ -8342,7 +8360,7 @@ jest-util@^23.4.0:
     slash "^1.0.0"
     source-map "^0.6.0"
 
-jest-validate@^23.5.0, jest-validate@^23.6.0:
+jest-validate@^23.0.1, jest-validate@^23.5.0, jest-validate@^23.6.0:
   version "23.6.0"
   resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-23.6.0.tgz#36761f99d1ed33fcd425b4e4c5595d62b6597474"
   integrity sha512-OFKapYxe72yz7agrDAWi8v2WL8GIfVqcbKRCLbRG9PAxtzF9b1SEDdTpytNDN12z2fJynoBwpMpvj2R39plI2A==
@@ -11834,6 +11852,11 @@ react-test-renderer@^16.0.0-0, react-test-renderer@^16.2.0:
     prop-types "^15.6.2"
     react-is "^16.6.3"
     scheduler "^0.11.2"
+
+react-timeago@^4.1.9:
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-4.1.9.tgz#a5dee4ac072299a9a5ca5a61f56177a80f83c1fb"
+  integrity sha512-MKucv9nU65BOPqIrClAFxqvpGCC4RdRpqp0P1YIb7C3yT6TQVdcoOlr0k4TDHvLQhbkwd3nbTxiDQMa3iDlZxg==
 
 react-transition-group@^2.2.1:
   version "2.5.0"
@@ -15436,6 +15459,11 @@ xml2js@0.4.19:
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~9.0.1"
+
+xml@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
+  integrity sha1-eLpyAgApxbyHuKgaPPzXS0ovweU=
 
 xmlbuilder@^9.0.7, xmlbuilder@~9.0.1:
   version "9.0.7"

@@ -1,12 +1,11 @@
-/* @flow strict */
 import * as React from "react";
-import TimeAgo from "@nteract/timeago";
+import TimeAgo from "react-timeago"
 
 type LastSavedProps = {
-  lastModified: ?Date
+  lastModified?: Date | null
 };
 
-export class LastSaved extends React.Component<LastSavedProps, null> {
+export class LastSaved extends React.Component<LastSavedProps> {
   static defaultProps = {
     lastModified: null
   };

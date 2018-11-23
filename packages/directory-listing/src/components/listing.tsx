@@ -1,11 +1,10 @@
-// @flow
 import * as React from "react";
 
 type ListingProps = {
-  children: React.Node
+  children: React.ReactNode
 };
 
-export class Listing extends React.Component<ListingProps, null> {
+export class Listing extends React.Component<ListingProps> {
   static defaultProps = {
     children: null
   };
