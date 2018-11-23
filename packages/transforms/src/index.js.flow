@@ -2,6 +2,7 @@
 
 declare export var transforms: any;
 declare export var displayOrder: any;
+declare export var Transforms: any;
 declare export var TextTransform: (props: any) => any;
 declare export var JSONTransform: (props: any) => any;
 declare export var JavaScriptTransform: (props: any) => any;

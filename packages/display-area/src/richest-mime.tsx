@@ -1,11 +1,11 @@
 import * as React from "react";
-import { richestMimetype, transforms, displayOrder } from "@nteract/transforms";
+import { richestMimetype, transforms, displayOrder, Transforms } from "@nteract/transforms";
 
 import { Subject } from "rxjs";
 
 type Props = {
   displayOrder: string[];
-  transforms: Object;
+  transforms: Transforms;
   bundle: Object;
   metadata: Object;
   theme: string;

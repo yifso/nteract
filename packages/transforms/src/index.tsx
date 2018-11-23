@@ -13,7 +13,7 @@ type Transform = {
   MIMETYPE: string
 };
 
-type Transforms = { [transform: string]: Transform };
+export type Transforms = { [transform: string]: Transform };
 type DisplayOrder = Array<string>;
 
 export type TransformRegister = {
