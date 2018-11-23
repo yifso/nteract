@@ -1,0 +1,9 @@
+// @flow
+/* eslint-disable */
+
+declare class PlotlyTransform extends React.Component {
+    static MIMETYPE: string;
+}
+
+export default PlotlyTransform;
+declare export var PlotlyNullTransform:  () => null;
