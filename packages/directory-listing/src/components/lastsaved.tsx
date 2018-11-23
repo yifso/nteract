@@ -1,5 +1,5 @@
 import * as React from "react";
-import TimeAgo from "@nteract/timeago";
+import TimeAgo from "react-timeago"
 
 type LastSavedProps = {
   lastModified?: Date | null
