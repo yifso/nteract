@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -13,7 +12,7 @@ type ImageDisplayProps = Props & {
 
 export default function ImageDisplay(
   props: ImageDisplayProps
-): ?React$Element<any> {
+) {
   let size = {};
 
   if (props.metadata) {

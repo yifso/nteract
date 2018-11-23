@@ -1673,6 +1673,13 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.5.1.tgz#a38f69c62528d56ba7bd1f91335a8004988d72f7"
   integrity sha512-mNhVdZHdtKHMMxbqzNK3RzkBcN1cux3AvuCYGTvjEIQT2uheH3eCAyYsbMbh2Bq8nXkeOWs1kyDiF7geWRFQ4Q==
 
+"@types/react-json-tree@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@types/react-json-tree/-/react-json-tree-0.6.8.tgz#5a2f5848ac9175cb3c2a3294cdda5d3d3bd2a37d"
+  integrity sha512-OyCFv5pHZXVULzjbNXBz+Il+vcYz8RzHl1BXQ297XMBTu4+oqVdZUVgU/PMmndSO05met1KqtKVJaj2K5K79+g==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-syntax-highlighter@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-0.0.8.tgz#ed44e2ead992c513327bcf2ede5eda7daa981421"

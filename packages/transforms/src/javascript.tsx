@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -6,7 +5,7 @@ type Props = {
   mediaType: "text/javascript"
 };
 
-export function runCodeHere(el: ?HTMLElement, code: string): any {
+export function runCodeHere(el: HTMLElement | null, code: string): any {
   if (!el) return;
   // Compatibility with Jupyter/notebook JS evaluation.  Set element so
   // the user has a handle on the context of the current output.
@@ -26,7 +25,7 @@ export function runCodeHere(el: ?HTMLElement, code: string): any {
 }
 
 export default class JavaScript extends React.PureComponent<Props> {
-  el: ?HTMLElement;
+  el!: HTMLElement | null;
 
   static MIMETYPE = "application/javascript";
 
@@ -51,7 +50,7 @@ export default class JavaScript extends React.PureComponent<Props> {
     runCodeHere(this.el, this.props.data);
   }
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <div
         ref={el => {

@@ -1,6 +1,4 @@
-/* @flow */
 import React from "react";
-// $FlowFixMe
 import Ansi from "ansi-to-react";
 
 type Props = {
@@ -16,7 +14,7 @@ export default class TextDisplay extends React.PureComponent<Props, null> {
     mediaType: "text/plain"
   };
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <pre>
         <Ansi linkify={false}>{this.props.data}</Ansi>
