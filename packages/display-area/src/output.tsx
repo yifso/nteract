@@ -1,6 +1,6 @@
 import * as React from "react";
 import Ansi from "ansi-to-react";
-import { transforms, displayOrder } from "@nteract/transforms";
+import { transforms, displayOrder, Transforms } from "@nteract/transforms";
 import { isImmutable } from "immutable";
 
 import { Subject } from "rxjs";
@@ -10,7 +10,7 @@ import RichestMime from "./richest-mime";
 type Props = {
   displayOrder: Array<string>;
   output: any;
-  transforms: Object;
+  transforms: Transforms;
   theme: string;
   models: Object;
   channels?: Subject<any>;
