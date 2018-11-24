@@ -1,9 +1,8 @@
-// @flow
 /* eslint-disable class-methods-use-this */
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { empty, of, fromEvent, merge, Subject } from "rxjs";
-import type { Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import {
   catchError,
   debounceTime,
@@ -16,6 +15,7 @@ import {
 // $FlowFixMe
 import { RichestMime } from "@nteract/display-area";
 import { debounce } from "lodash";
+import CodeMirror from "codemirror";
 
 import excludedIntelliSenseTriggerKeys from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
@@ -23,11 +23,11 @@ import { tool } from "./jupyter/tooltip";
 import styles from "./styles";
 import codemirrorStyles from "./vendored/codemirror";
 import showHintStyles from "./vendored/show-hint";
-import type { Options, EditorChange, CMI, CMDoc } from "./types";
+import { Options, EditorChange, CMI, CMDoc } from "./types";
 
-export type { EditorChange, Options };
+export { EditorChange, Options };
 
-function normalizeLineEndings(str) {
+function normalizeLineEndings(str: string) {
   if (!str) return str;
   return str.replace(/\r\n|\r/g, "\n");
 }
@@ -39,13 +39,13 @@ export type CodeMirrorEditorProps = {
   focusAbove?: () => void,
   focusBelow?: () => void,
   theme: string,
-  channels?: ?any,
+  channels?: any,
   // TODO: We only check if this is idle, so the completion provider should only
   //       care about this when kernelStatus === idle _and_ we're the active cell
   //       could instead call it `canTriggerCompletion` and reduce our current re-renders
   kernelStatus: string,
   onChange: (value: string, change: EditorChange) => void,
-  onFocusChange: ?(focused: boolean) => void,
+  onFocusChange?: (focused: boolean) => void,
   value: string,
   defaultValue?: string,
   options: Options
@@ -53,11 +53,11 @@ export type CodeMirrorEditorProps = {
 
 type CodeMirrorEditorState = {
   isFocused: boolean,
-  tipElement: ?any
+  tipElement?: any
 };
 
 type CodeCompletionEvent = {
-  editor: Object,
+  editor: CodeMirror.Editor,
   callback: Function,
   debounce: boolean
 };
@@ -66,12 +66,12 @@ class CodeMirrorEditor extends React.Component<
   CodeMirrorEditorProps,
   CodeMirrorEditorState
 > {
-  textarea: ?HTMLTextAreaElement;
+  textarea?: HTMLTextAreaElement | null;
   cm: CMI;
   defaultOptions: Object;
-  keyupEventsSubscriber: Subscription;
-  completionSubject: Subject<CodeCompletionEvent>;
-  completionEventsSubscriber: Subscription;
+  keyupEventsSubscriber!: Subscription;
+  completionSubject!: Subject<CodeCompletionEvent>;
+  completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
 
   static defaultProps = {
@@ -86,11 +86,11 @@ class CodeMirrorEditor extends React.Component<
     channels: null
   };
 
-  constructor(props: CodeMirrorEditorProps): void {
+  constructor(props: CodeMirrorEditorProps) {
     super(props);
-    (this: any).hint = this.completions.bind(this);
-    (this: any).tips = this.tips.bind(this);
-    (this: any).deleteTip = this.deleteTip.bind(this);
+    this.hint = this.completions.bind(this);
+    this.tips = this.tips.bind(this);
+    this.deleteTip = this.deleteTip.bind(this);
     // $FlowFixMe: weirdness in the codemirror API
     this.hint.async = true;
     this.debounceNextCompletionRequest = true;
@@ -112,12 +112,12 @@ class CodeMirrorEditor extends React.Component<
           }
         },
         extraKeys: {
-          "Ctrl-Space": editor => {
+          "Ctrl-Space": (editor: CodeMirror.Editor) => {
             this.debounceNextCompletionRequest = false;
             return editor.execCommand("autocomplete");
           },
           Tab: this.executeTab,
-          "Shift-Tab": editor => editor.execCommand("indentLess"),
+          "Shift-Tab": (editor: CodeMirror.Editor) => editor.execCommand("indentLess"),
           Up: this.goLineUpOrEmit,
           Down: this.goLineDownOrEmit,
           "Cmd-/": "toggleComment",
@@ -133,7 +133,7 @@ class CodeMirrorEditor extends React.Component<
   }
 
   componentWillMount() {
-    (this: any).componentWillReceiveProps = debounce(
+    this.componentWillReceiveProps = debounce(
       this.componentWillReceiveProps,
       0
     );
@@ -233,10 +233,11 @@ class CodeMirrorEditor extends React.Component<
     const completionResults = mergedCompletionEvents.pipe(
       switchMap((ev: CodeCompletionEvent) => {
         const { channels } = this.props;
-        if (!channels)
+        if (!channels) {
           throw new Error(
             "Unexpectedly received a completion event when channels were unset"
           );
+        }
         return codeComplete(channels, ev.editor).pipe(
           map(completionResult => () => ev.callback(completionResult)),
           takeUntil(this.completionSubject), // Complete immediately upon next event, even if it's a debounced one - https://blog.strongbrew.io/building-a-safe-autocomplete-operator-with-rxjs/
@@ -248,7 +249,7 @@ class CodeMirrorEditor extends React.Component<
       })
     );
 
-    this.completionEventsSubscriber = completionResults.subscribe(callback =>
+    this.completionEventsSubscriber = completionResults.subscribe((callback: Function) =>
       callback()
     );
   }
@@ -325,7 +326,7 @@ class CodeMirrorEditor extends React.Component<
     this.props.onFocusChange && this.props.onFocusChange(focused);
   }
 
-  completions(editor: Object, callback: Function): void {
+  completions(editor: CodeMirror.Editor, callback: Function): void {
     const { completion, channels } = this.props;
     const debounceThisCompletionRequest = this.debounceNextCompletionRequest;
     this.debounceNextCompletionRequest = true;
@@ -344,22 +345,22 @@ class CodeMirrorEditor extends React.Component<
   }
 
   // TODO: Rely on ReactDOM.createPortal, create a space for tooltips to go
-  tips(editor: Object): void {
+  tips(editor: CodeMirror.Editor & CodeMirror.Doc): void {
     const { tip, channels } = this.props;
 
     if (tip) {
-      tool(channels, editor).subscribe(resp => {
+      tool(channels, editor).subscribe((resp: {[dict: string]: any}) => {
         const bundle = resp.dict;
 
         if (Object.keys(bundle).length === 0) {
           return;
         }
 
-        const node = document.getElementsByClassName("tip-holder")[0];
+        const node = document.getElementsByClassName("tip-holder")[0] as HTMLElement;
 
         const tipElement = ReactDOM.createPortal(
           <div className="CodeMirror-hint tip">
-            <RichestMime bundle={bundle} expanded />
+            <RichestMime bundle={bundle} metadata={{expanded: true}} />
             <button className="bt" onClick={this.deleteTip}>{`\u2715`}</button>
             <style jsx>{`
               .bt {
@@ -398,7 +399,7 @@ class CodeMirrorEditor extends React.Component<
     }
   }
 
-  goLineDownOrEmit(editor: Object): void {
+  goLineDownOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
     const cursor = editor.getCursor();
     const lastLineNumber = editor.lastLine();
     const lastLine = editor.getLine(lastLineNumber);
@@ -414,7 +415,7 @@ class CodeMirrorEditor extends React.Component<
     }
   }
 
-  goLineUpOrEmit(editor: Object): void {
+  goLineUpOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
     const cursor = editor.getCursor();
     if (cursor.line === 0 && cursor.ch === 0 && !editor.somethingSelected()) {
       const CM = require("codemirror");
@@ -424,7 +425,7 @@ class CodeMirrorEditor extends React.Component<
     }
   }
 
-  executeTab(editor: Object): void {
+  executeTab(editor: CodeMirror.Doc & CodeMirror.Editor): void {
     editor.somethingSelected()
       ? editor.execCommand("indentMore")
       : editor.execCommand("insertSoftTab");
@@ -440,7 +441,7 @@ class CodeMirrorEditor extends React.Component<
     }
   }
 
-  render(): React$Element<any> {
+  render() {
     return (
       <div className="CodeMirror cm-s-composition ">
         <div className="tip-holder" />

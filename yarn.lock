@@ -1590,6 +1590,11 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@types/codemirror@^0.0.69":
+  version "0.0.69"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.69.tgz#a40ead562be9173dc18c0816c7f54c1fc272f937"
+  integrity sha512-NtAjeJ5vqEry4w/UtKrpbPf/yViBCGB0MYTKk8/GKEEBEc8p592dg28UzDBFtUpw1+F002crt15w5hZo0zHgFw==
+
 "@types/concat-stream@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@types/concat-stream/-/concat-stream-1.6.0.tgz#394dbe0bb5fee46b38d896735e8b68ef2390d00d"
@@ -1722,6 +1727,7 @@
     "@types/node" "*"
     "@types/react" "*"
 
+<<<<<<< HEAD
 "@types/react-json-tree@^0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@types/react-json-tree/-/react-json-tree-0.6.8.tgz#5a2f5848ac9175cb3c2a3294cdda5d3d3bd2a37d"
@@ -1737,6 +1743,8 @@
     "@types/react" "*"
     redux "^4.0.0"
 
+=======
+>>>>>>> Add types on components
 "@types/react-syntax-highlighter@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-0.0.8.tgz#ed44e2ead992c513327bcf2ede5eda7daa981421"

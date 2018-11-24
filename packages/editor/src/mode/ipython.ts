@@ -1,4 +1,3 @@
-// @flow
 // https://github.com/nteract/nteract/issues/389
 import CodeMirror from "codemirror";
 
@@ -7,7 +6,7 @@ import "codemirror/mode/python/python";
 
 CodeMirror.defineMode(
   "ipython",
-  (conf, parserConf) => {
+  (conf: CodeMirror.EditorConfiguration, parserConf: any): CodeMirror.Mode<any> => {
     const ipythonConf = Object.assign({}, parserConf, {
       name: "python",
       singleOperators: new RegExp("^[\\+\\-\\*/%&|@\\^~<>!\\?]"),

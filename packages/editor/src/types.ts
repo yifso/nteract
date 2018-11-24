@@ -18,21 +18,21 @@ export type TextMarkerOptions = {
 export type LineHandle = any;
 
 // eslint-disable-next-line no-unused-vars
-declare class CMDoc {
+export declare class CMDoc {
   size: number; // undocumented (number of lines)
   clearHistory(): void;
   eachLine(f: (l: LineHandle) => void): void;
   getCursor(start?: "anchor" | "from" | "to" | "head"): Position;
   markClean(): void;
   isClean(generation?: number): boolean;
-  setValue(string): void;
+  setValue(value: string): void;
   getValue(separator?: string): string;
   markText(
     from: Position,
     to: Position,
     options?: TextMarkerOptions
   ): TextMarker;
-}
+};
 
 export type EditorChange = {
   /** Position (in the pre-change coordinate system) where the change started. */
@@ -64,5 +64,6 @@ export type Position = {
 export type Options = {
   cursorBlinkRate?: number,
   mode?: string,
-  preserveScrollPosition?: boolean
+  preserveScrollPosition?: boolean,
+  [key: string]: any,
 };

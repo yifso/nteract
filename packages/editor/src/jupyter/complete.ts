@@ -1,10 +1,10 @@
-// @flow
-import { Observable } from "rxjs";
+import { Doc, Position } from "codemirror";
+import { Observable, Observer } from "rxjs";
 import { first, map, timeout } from "rxjs/operators";
-import { createMessage, childOf, ofMessageType } from "@nteract/messaging";
-import type { Channels } from "@nteract/messaging";
+import { createMessage, childOf, ofMessageType, JupyterMessage } from "@nteract/messaging";
+import { Channels } from "@nteract/messaging";
 
-import type { EditorChange, CMI } from "../types";
+import { EditorChange, CMI } from "../types";
 
 import { js_idx_to_char_idx, char_idx_to_js_idx } from "./surrogate";
 
@@ -31,15 +31,15 @@ export function formChangeObject(cm: CMI, change: EditorChange) {
 //  <li class="CodeMirror-hint"></li>
 // </ul>
 // with each <li/> passed as the first argument of render.
-const _expand_experimental_completions = (editor, matches, cursor) => ({
+const _expand_experimental_completions = (editor: Doc, matches: any, cursor: Position) => ({
   to: cursor,
   from: cursor,
-  list: matches.map(completion => ({
+  list: matches.map((completion: any) => ({
     text: completion.text,
     to: editor.posFromIndex(completion.end),
     from: editor.posFromIndex(completion.start),
     type: completion.type,
-    render: (elt, data, completion) => {
+    render: (elt: HTMLElement, data: any, completion: any) => {
       const span = document.createElement("span");
       const text = document.createTextNode(completion.text);
       span.className += "completion-type completion-type-" + completion.type;
@@ -90,9 +90,9 @@ export const expand_completions = (editor: any) => (results: any) => {
   }
 
   return {
-    list: results.matches.map(match => ({
+    list: results.matches.map((match: string) => ({
       text: match,
-      render: (elt, data, current) =>
+      render: (elt: HTMLElement, data: any, current: any) =>
         elt.appendChild(document.createTextNode(current.text))
     })),
     from: editor.posFromIndex(start),
@@ -103,7 +103,7 @@ export const expand_completions = (editor: any) => (results: any) => {
 export function codeCompleteObservable(
   channels: Channels,
   editor: CMI,
-  message: Object
+  message: JupyterMessage
 ) {
   const completion$ = channels.pipe(
     childOf(message),
@@ -115,7 +115,7 @@ export function codeCompleteObservable(
   );
 
   // On subscription, send the message
-  return Observable.create(observer => {
+  return Observable.create((observer: Observer<any>) => {
     const subscription = completion$.subscribe(observer);
     channels.next(message);
     return subscription;
