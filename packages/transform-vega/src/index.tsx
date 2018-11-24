@@ -1,8 +1,8 @@
-/* @flow */
 import * as React from "react";
 import { merge } from "lodash";
 import vegaEmbed2 from "@nteract/vega-embed-v2";
 import vegaEmbed3 from "vega-embed";
+import { Spec } from "vega";
 
 const MIMETYPE_VEGA2 = "application/vnd.vega.v2+json";
 const MIMETYPE_VEGA3 = "application/vnd.vega.v3+json";
@@ -12,9 +12,13 @@ const MIMETYPE_VEGALITE2 = "application/vnd.vegalite.v2+json";
 const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = DEFAULT_WIDTH / 1.5;
 
+interface EmbedData extends Spec {
+  config: object;
+}
+
 type EmbedProps = {
-  data: Object,
-  embedMode: string,
+  data: EmbedData,
+  embedMode?: "vega" | "vega-lite",
   version: string,
   renderedCallback: (err: any, result: any) => any
 };
@@ -23,10 +27,10 @@ const defaultCallback = (): any => {};
 
 function embed(
   el: HTMLElement,
-  spec: Object,
-  mode: string,
+  spec: EmbedData,
+  mode: "vega" | "vega-lite" | undefined,
   version: string,
-  cb: (err: any, result: any) => any
+  cb: (err?: any, result?: any) => any
 ) {
   if (version == "vega2") {
     const embedSpec = {
@@ -71,7 +75,7 @@ function embed(
 }
 
 export class VegaEmbed extends React.Component<EmbedProps> {
-  el: ?HTMLElement;
+  el?: HTMLElement | null;
 
   static defaultProps = {
     renderedCallback: defaultCallback,
@@ -107,7 +111,7 @@ export class VegaEmbed extends React.Component<EmbedProps> {
     }
   }
 
-  render(): ?React$Element<any> {
+  render() {
     // Note: We hide vega-actions since they won't work in our environment
     // (this is only needed for vega2, since vega-embed v3 supports hiding
     // actions via options)
@@ -125,7 +129,7 @@ export class VegaEmbed extends React.Component<EmbedProps> {
 }
 
 type Props<MediaType> = {
-  data: Object,
+  data: EmbedData,
   mediaType: MediaType
 };
 
