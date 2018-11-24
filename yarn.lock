@@ -1719,6 +1719,12 @@
   resolved "https://registry.yarnpkg.com/@types/react-json-tree/-/react-json-tree-0.6.8.tgz#5a2f5848ac9175cb3c2a3294cdda5d3d3bd2a37d"
   integrity sha512-OyCFv5pHZXVULzjbNXBz+Il+vcYz8RzHl1BXQ297XMBTu4+oqVdZUVgU/PMmndSO05met1KqtKVJaj2K5K79+g==
   dependencies:
+"@types/react-dom@^16.0.10":
+  version "16.0.10"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.10.tgz#0c8980a639fa1d92a8547c8b6d0cf47af96c8966"
+  integrity sha512-CsUWfZBpj7SGBX/05bnvnsOUx+Uo6n7DoRVP7vYB5NWsanjHi60NWGZac8DstuXhdc7rasxI/j4D3hxgNSWlzg==
+  dependencies:
+    "@types/node" "*"
     "@types/react" "*"
 
 "@types/react-syntax-highlighter@^0.0.8":

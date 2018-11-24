@@ -1,11 +1,30 @@
-const crypto = require(`crypto`);
-const React = require(`react`);
-const ReactDOMServer = require(`react-dom/server`);
-const NotebookRender = require(`@nteract/notebook-render`).default;
+import crypto from "crypto";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import NotebookRender from "@nteract/notebook-render";
+
+export type Node = {
+  extension: string;
+  absolutePath: string;
+  id: string;
+  json: { [key: string]: any};
+  html: string;
+  children: any[];
+  content: string;
+  parent: string;
+  fileAbsolutePath: string;
+  metadata: { [key: string]: any};
+  internal: {
+    content?: string,
+    contentDigest?: string,
+    type?: string,
+
+  }
+}
 
 module.exports = async function onCreateNode(
-  { node, loadNodeContent, boundActionCreators },
-  pluginOptions // eslint-disable-line no-unused-vars
+  {node, loadNodeContent, boundActionCreators} : { node: Node, loadNodeContent: (node: Node) => string, boundActionCreators: {createNode: Function, createParentChildLink: Function} },
+  pluginOptions: object // eslint-disable-line no-unused-vars
 ) {
   const { createNode, createParentChildLink } = boundActionCreators;
 
@@ -21,9 +40,9 @@ module.exports = async function onCreateNode(
   //   return
   // }
 
-  const content = await loadNodeContent(node);
+  const content: string = await loadNodeContent(node);
 
-  const jupyterNode = {
+  const jupyterNode: Partial<Node> = {
     id: `${node.id} >>> JupyterNotebook`,
     children: [],
     parent: node.id,
@@ -35,11 +54,11 @@ module.exports = async function onCreateNode(
 
   jupyterNode.json = JSON.parse(content);
 
-  jupyterNode.metadata = jupyterNode.json.metadata;
+  jupyterNode.metadata = jupyterNode.json!.metadata;
 
   // render statically html with @nteract/notebook-render element
   const reactComponent = React.createElement(
-    NotebookRender,
+    NotebookRender as any,
     {
       notebook: jupyterNode.json
     },
@@ -52,7 +71,7 @@ module.exports = async function onCreateNode(
     jupyterNode.fileAbsolutePath = node.absolutePath;
   }
 
-  jupyterNode.internal.contentDigest = crypto
+  jupyterNode.internal!.contentDigest = crypto
     .createHash(`md5`)
     .update(JSON.stringify(jupyterNode))
     .digest(`hex`);
