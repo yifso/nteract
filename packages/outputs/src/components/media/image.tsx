@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
   metadata: any
 };
 
-export function Image(props: Props): ?React$Element<any> {
+export function Image(props: Props) {
   let size = {};
 
   if (props.metadata) {

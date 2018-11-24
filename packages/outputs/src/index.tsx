@@ -1,4 +1,3 @@
-// @flow strict
 export { RichMedia } from "./components/rich-media";
 export { Output } from "./components/output";
 export { KernelOutputError } from "./components/kernel-output-error";

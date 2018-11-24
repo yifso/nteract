@@ -1,6 +1,5 @@
-// @flow strict
 import * as React from "react";
-import type { MediaBundle } from "@nteract/records";
+import { MediaBundle } from "@nteract/records";
 
 import { RichMedia } from "./rich-media";
 
@@ -32,7 +31,7 @@ type Props = {
   /**
    * React elements that accept mimebundle data, will get passed data[mimetype]
    */
-  children: React.Node
+  children: React.ReactNode
 };
 
 export const ExecuteResult = (props: Props) => {
