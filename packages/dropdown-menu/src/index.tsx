@@ -1,4 +1,3 @@
-// @flow
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 
@@ -9,7 +8,7 @@ import { areComponentsEqual } from "react-hot-loader";
 import * as React from "react";
 
 type DropdownMenuProps = {
-  children: React.ChildrenArray<React.Element<*>>
+  children: React.ReactNode
 };
 
 type DropdownMenuState = {
@@ -20,7 +19,7 @@ export class DropdownMenu extends React.Component<
   DropdownMenuProps,
   DropdownMenuState
 > {
-  constructor(props: *) {
+  constructor(props: DropdownMenuProps) {
     super(props);
     this.state = {
       menuHidden: true
@@ -31,19 +30,20 @@ export class DropdownMenu extends React.Component<
     return (
       <div className="dropdown">
         {React.Children.map(this.props.children, child => {
-          if (areComponentsEqual(child.type, DropdownTrigger)) {
-            return React.cloneElement(child, {
+          const childElement = child as React.ReactElement<any>;
+          if (areComponentsEqual(childElement.type  as React.ComponentType<any>, DropdownTrigger)) {
+            return React.cloneElement(childElement, {
               onClick: () => {
                 this.setState({ menuHidden: !this.state.menuHidden });
               }
             });
-          } else if (areComponentsEqual(child.type, DropdownContent)) {
+          } else if (areComponentsEqual(childElement.type as React.ComponentType<any>, DropdownContent)) {
             if (this.state.menuHidden) {
               return null;
             } else {
               // DropdownContent child will pass down an onItemClick so that
               // the menu will collapse
-              return React.cloneElement(child, {
+              return React.cloneElement(childElement, {
                 onItemClick: () => {
                   this.setState({ menuHidden: true });
                 }
@@ -66,8 +66,8 @@ export class DropdownMenu extends React.Component<
 }
 
 export class DropdownTrigger extends React.Component<{
-  children: React.ChildrenArray<React.Element<*>>,
-  onClick?: (ev: SyntheticEvent<*>) => void
+  children: React.ReactNode,
+  onClick?: (ev: React.MouseEvent<HTMLElement>) => void
 }> {
   render() {
     return (
@@ -86,8 +86,8 @@ export class DropdownTrigger extends React.Component<{
 }
 
 export class DropdownContent extends React.Component<{
-  children: React.ChildrenArray<React.Element<*>>,
-  onItemClick: (ev: SyntheticEvent<*>) => void
+  children: React.ReactNode,
+  onItemClick: (ev: React.MouseEvent<HTMLElement>) => void
 }> {
   static defaultProps = {
     // Completely silly standalone, because DropdownMenu injects the onItemClick handler
@@ -99,9 +99,10 @@ export class DropdownContent extends React.Component<{
       <div>
         <ul>
           {React.Children.map(this.props.children, child => {
-            return React.cloneElement(child, {
-              onClick: ev => {
-                child.props.onClick(ev);
+            const childElement = child as React.ReactElement<any>;
+            return React.cloneElement(childElement, {
+              onClick: (ev: React.MouseEvent<HTMLElement>) => {
+                childElement.props.onClick(ev);
                 // Hide the menu
                 this.props.onItemClick(ev);
               }

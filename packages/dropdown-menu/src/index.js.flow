@@ -1,0 +1,5 @@
+// @flow
+
+declare export var DropdownContent: (props: any) => JSX.Element;
+declare export var DropdownTrigger: (props: any) => JSX.Element;
+declare export var DropdownMenu: (props: any) => JSX.Element;
