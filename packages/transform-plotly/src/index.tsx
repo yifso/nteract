@@ -1,16 +1,28 @@
-/* @flow */
 /* eslint class-methods-use-this: 0 */
 import React from "react";
 import { cloneDeep } from "lodash";
 
 type Props = {
-  data: string | Object,
+  data: string | object,
   mediaType: "application/vnd.plotly.v1+json"
 };
 
-declare class PlotlyHTMLElement extends HTMLElement {
-  data: Object;
-  layout: Object;
+
+type ObjectType = object;
+
+interface FigureLayout extends ObjectType {
+  height?: string,
+  autosize?: boolean,
+}
+
+interface Figure extends ObjectType {
+  data: object,
+  layout: FigureLayout,
+}
+
+declare class PlotlyHTMLElement extends HTMLDivElement {
+  data: object;
+  layout: object;
   newPlot: () => void;
   redraw: () => void;
 }
@@ -30,8 +42,8 @@ PlotlyNullTransform.defaultProps = {
 };
 
 export class PlotlyTransform extends React.Component<Props> {
-  plotDiv: ?PlotlyHTMLElement;
-  Plotly: Object;
+  plotDiv?: PlotlyHTMLElement | null;
+  Plotly!: { newPlot: Function, redraw: Function };
 
   static MIMETYPE = MIMETYPE;
 
@@ -62,7 +74,7 @@ export class PlotlyTransform extends React.Component<Props> {
     this.plotDiv = plotDiv;
   };
 
-  getFigure = (): Object => {
+  getFigure = (): Figure => {
     const figure = this.props.data;
     if (typeof figure === "string") {
       return JSON.parse(figure);
@@ -71,17 +83,17 @@ export class PlotlyTransform extends React.Component<Props> {
     // The Plotly API *mutates* the figure to include a UID, which means
     // they won't take our frozen objects
     if (Object.isFrozen(figure)) {
-      return cloneDeep(figure);
+      return cloneDeep(figure) as Figure;
     }
 
-    const { data = {}, layout = {} } = figure;
+    const { data = {}, layout = {} } = figure as Figure;
 
     return { data, layout };
   };
 
-  render(): ?React$Element<any> {
+  render() {
     const { layout } = this.getFigure();
-    const style = {};
+    const style: React.CSSProperties = {};
     if (layout && layout.height && !layout.autosize) {
       style.height = layout.height;
     }
