@@ -1,42 +1,43 @@
-/* @flow */
-
 import produce from "immer";
 import uuid from "uuid/v4";
 
-import type { NbformatCell } from "./cells";
-import type { NbformatOutput } from "./outputs";
-import type {
+import { NbformatCell, NbformatCodeCell, CodeCellType, MarkdownCellType, NbformatMarkdownCell, CODECELL, MARKDOWNCELL } from "./cells";
+import { NbformatOutput } from "./outputs";
+import {
   ImmutableNotebook,
   ImmutableCellOrder,
   ImmutableCellMap,
   ExecutionCount
 } from "./types";
 
+export type v4NotebookVersionType = 4;
+export const v4NotebookVersion: v4NotebookVersionType = 4;
+
 // We're hardset to nbformat v4.4 for what we use in-memory
-export type Notebook = {|
-  nbformat: 4,
-  nbformat_minor: 4,
-  metadata: Object,
-  cellOrder: Array<string>,
-  cellMap: Object
-|};
+export interface Notebook {
+  nbformat: v4NotebookVersionType;
+  nbformat_minor: v4NotebookVersionType;
+  metadata: object;
+  cellOrder: Array<string>;
+  cellMap: object;
+};
 
-export type CodeCell = {|
-  cell_type: "code",
-  metadata: Object,
-  execution_count: ExecutionCount,
-  source: string,
-  outputs: Array<NbformatOutput>
-|};
+export interface CodeCell {
+  cell_type: CodeCellType;
+  metadata: object;
+  execution_count: ExecutionCount;
+  source: string;
+  outputs: Array<NbformatOutput>;
+};
 
-export type MarkdownCell = {|
-  cell_type: "markdown",
-  source: string,
-  metadata: Object
-|};
+export interface MarkdownCell {
+  cell_type: MarkdownCellType;
+  source: string;
+  metadata: object;
+};
 
 const defaultCodeCell = {
-  cell_type: "code",
+  cell_type: CODECELL,
   execution_count: null,
   metadata: {
     collapsed: false,
@@ -48,18 +49,18 @@ const defaultCodeCell = {
 };
 
 const defaultMarkdownCell = {
-  cell_type: "markdown",
+  cell_type: MARKDOWNCELL,
   metadata: {},
   source: ""
 };
 
-export function createCodeCell(cell: CodeCell = defaultCodeCell): NbformatCell {
+export function createCodeCell(cell: CodeCell = defaultCodeCell): NbformatCodeCell {
   return produce(defaultCodeCell, draft => Object.assign(draft, cell));
 }
 
 export function createMarkdownCell(
   cell: MarkdownCell = defaultMarkdownCell
-): NbformatCell {
+): NbformatMarkdownCell {
   return produce(defaultMarkdownCell, draft => Object.assign(draft, cell));
 }
 
@@ -67,8 +68,8 @@ export const emptyCodeCell = createCodeCell();
 export const emptyMarkdownCell = createMarkdownCell();
 
 export const defaultNotebook = {
-  nbformat: 4,
-  nbformat_minor: 4,
+  nbformat: v4NotebookVersion,
+  nbformat_minor: v4NotebookVersion,
   metadata: new Object(),
   cellOrder: [],
   cellMap: new Object()
@@ -82,9 +83,9 @@ export function createNotebook(
 
 export const emptyNotebook = createNotebook();
 
-export type CellStructure = {
-  cellOrder: ImmutableCellOrder,
-  cellMap: ImmutableCellMap
+export interface CellStructure {
+  cellOrder: ImmutableCellOrder;
+  cellMap: ImmutableCellMap;
 };
 
 // Intended to make it easy to use this with (temporary mutable cellOrder + cellMap)
@@ -145,13 +146,13 @@ export function removeCell(notebook: ImmutableNotebook, cellID: string) {
     "Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead"
   );
   delete notebook["cellMap"][cellID];
-  notebook["cellOrder"] = notebook["cellOrder"].filter(id => id !== cellID);
+  notebook["cellOrder"] = notebook["cellOrder"].filter((id: string) => id !== cellID);
   return notebook;
 }
 
 export function deleteCell(notebook: ImmutableNotebook, cellID: string) {
   delete notebook["cellMap"][cellID];
-  notebook["cellOrder"] = notebook["cellOrder"].filter(id => id !== cellID);
+  notebook["cellOrder"] = notebook["cellOrder"].filter((id: string) => id !== cellID);
   return notebook;
 }
 

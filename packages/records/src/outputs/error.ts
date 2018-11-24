@@ -1,5 +1,3 @@
-// @flow strict
-
 /**
  * Let this declare the way for well typed records for outputs
  *
@@ -15,14 +13,14 @@
 
 export type ErrorType = "error";
 
-export const ERROR = "error";
+export const ERROR: ErrorType = "error";
 
 // In-memory version
 export type ErrorOutput = {
   outputType: ErrorType,
   ename: string,
   evalue: string,
-  traceback: Array<string>
+  traceback: Array<string> |  ReadonlyArray<string>
 };
 
 // On disk
@@ -33,7 +31,7 @@ export type NbformatErrorOutput = {
   traceback: Array<string>
 };
 
-type ErrorMessage = {
+export type ErrorMessage = {
   header: {
     msg_type: "error" | "pyerr"
   },
@@ -45,12 +43,12 @@ type ErrorMessage = {
 };
 
 export function errorOutput(
-  eOut: $ReadOnly<{
+  eOut: {
     ename?: string,
     evalue?: string,
     traceback?: Array<string>
-  }>
-): ErrorOutput {
+  }
+): Readonly<ErrorOutput> {
   return Object.freeze({
     outputType: ERROR,
     ename: eOut.ename || "",

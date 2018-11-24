@@ -1,4 +1,3 @@
-// @flow strict
 import appendOutput, { mutate } from "../src/outputs/append-output";
 
 describe("appendOutput", () => {

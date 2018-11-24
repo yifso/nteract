@@ -1,5 +1,3 @@
-// @flow strict
-
 import produce from "immer";
 
 import * as common from "../common";
@@ -18,9 +16,9 @@ import * as common from "../common";
  */
 
 type ExecuteResultType = "execute_result";
-export type ExecutionCount = ?number;
+export type ExecutionCount = number | null | undefined;
 
-export const EXECUTE_RESULT = "execute_result";
+export const EXECUTE_RESULT: ExecuteResultType = "execute_result";
 
 // In-memory version
 export type ExecuteResultOutput = {
@@ -38,7 +36,7 @@ export type NbformatExecuteResult = {
   metadata: {}
 };
 
-type ExecuteResultMessage = {
+export type ExecuteResultMessage = {
   header: {
     msg_type: ExecuteResultType
   },
@@ -50,7 +48,7 @@ type ExecuteResultMessage = {
 };
 
 export function executeResult(
-  executeResultOutput?: $ReadOnly<{
+  executeResultOutput?: Readonly<{
     executionCount?: ExecutionCount,
     data?: common.MimeBundle,
     metadata?: {}

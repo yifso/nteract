@@ -1,5 +1,3 @@
-// @flow
-
 import * as codeCell from "./code-cell";
 import * as markdownCell from "./markdown-cell";
 import * as rawCell from "./raw-cell";
@@ -30,6 +28,6 @@ export function cellFromNbformat(cell: NbformatCell): CellRecord {
     case rawCell.RAWCELL:
       return rawCell.rawCellRecordFromNbformat(cell);
     default:
-      throw new TypeError(`Cell type ${cell.cell_type} unknown`);
+      throw new TypeError(`Cell type unknown`);
   }
 }

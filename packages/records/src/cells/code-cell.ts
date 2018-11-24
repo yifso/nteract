@@ -1,23 +1,22 @@
-// @flow
 import produce from "immer";
 
 import { outputFromNbformat } from "../outputs";
-import type { JSONObject } from "../types";
-import type { MultilineString } from "../common";
-import type { OutputType, NbformatOutput } from "../outputs";
-import type { ExecutionCount } from "../outputs/execute-result";
+import { JSONObject } from "../types";
+import { MultilineString } from "../common";
+import { OutputType, NbformatOutput } from "../outputs";
+import { ExecutionCount } from "../outputs/execute-result";
 
 export type CodeCellType = "code";
-export const CODECELL = "code";
+export const CODECELL: CodeCellType = "code";
 
 // In-memory version
-type CodeCell = {|
+type CodeCell = {
   cellType: CodeCellType,
   metadata: JSONObject,
   executionCount: ExecutionCount,
   source: string,
   outputs: Array<OutputType>
-|};
+};
 
 // On disk
 export type NbformatCodeCell = {

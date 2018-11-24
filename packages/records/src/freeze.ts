@@ -1,6 +1,4 @@
-/* @flow strict */
-
-export function deepFreeze(object: *) {
+export function deepFreeze(object: string | {[key: string]: any}) {
   if (typeof object === "string") {
     return Object.freeze(object);
   }
