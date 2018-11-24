@@ -6,7 +6,7 @@ import {
   ContentRef,
   KernelRef,
   KernelspecsByRefRecord
-} from "@nteract/core";
+} from "@nteract/types";
 
 import * as notebook from "./notebook";
 
@@ -74,7 +74,7 @@ export const model = (
 export const kernelRefByContentRef = (
   state: AppState,
   ownProps: { contentRef: ContentRef }
-): KernelRef | null => {
+): KernelRef | null | undefined => {
   const c = content(state, ownProps);
   // TODO: When kernels can be associated on other content types, we'll
   //      allow those too. For now, because of how flow works we have to
@@ -95,7 +95,7 @@ export const kernelspecsByRef = (state: AppState) =>
 
 export const currentKernelspecs: (
   state: AppState
-) => KernelspecsByRefRecord | null = createSelector(
+) => KernelspecsByRefRecord | null | undefined = createSelector(
   currentKernelspecsRef,
   kernelspecsByRef,
   (ref, byRef) => (ref ? byRef.get(ref) : null)

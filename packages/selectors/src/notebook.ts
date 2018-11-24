@@ -1,10 +1,8 @@
 import * as Immutable from "immutable";
 import * as commutable from "@nteract/commutable";
-import { CellID } from "@nteract/commutable";
-import { createSelector } from "reselect";
-
 // All these selectors expect a NotebookModel as the top level state
-import { NotebookModel } from "@nteract/core";
+import { NotebookModel, CellId } from "@nteract/types";
+import { createSelector } from "reselect";
 
 /**
  * Returns the cellMap within a given NotebookModel. Returns an empty
@@ -16,14 +14,14 @@ import { NotebookModel } from "@nteract/core";
 export const cellMap = (model: NotebookModel) =>
   model.notebook.get("cellMap", Immutable.Map());
 
-export const cellById = (model: NotebookModel, { id }: { id: CellID }) =>
+export const cellById = (model: NotebookModel, { id }: { id: CellId }) =>
   cellMap(model).get(id);
 
-export const cellOrder = (model: NotebookModel): Immutable.List<CellID> =>
+export const cellOrder = (model: NotebookModel): Immutable.List<CellId> =>
   model.notebook.get("cellOrder", Immutable.List());
 
-export const cellFocused = (model: NotebookModel): CellID | null => model.cellFocused;
-export const editorFocusedId = (model: NotebookModel): CellID | null =>
+export const cellFocused = (model: NotebookModel): CellId | null | undefined => model.cellFocused;
+export const editorFocusedId = (model: NotebookModel): CellId | null | undefined =>
   model.editorFocused;
 
 export const codeCellIdsBelow = (model: NotebookModel) => {
@@ -58,8 +56,8 @@ export const idsOfHiddenOutputs = createSelector(
       return Immutable.List();
     }
 
-    return cellOrder.filter(cellId =>
-      cellMap.getIn([cellId, "metadata", "outputHidden"])
+    return cellOrder.filter(CellId =>
+      cellMap.getIn([CellId, "metadata", "outputHidden"])
     );
   }
 );
