@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
 };
 
 export default class SVGDisplay extends React.PureComponent<Props> {
-  el: ?HTMLElement;
+  el?: HTMLElement | null;
 
   static MIMETYPE = "image/svg+xml";
 
@@ -31,7 +30,7 @@ export default class SVGDisplay extends React.PureComponent<Props> {
     this.el.insertAdjacentHTML("beforeend", this.props.data);
   }
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <div
         ref={el => {

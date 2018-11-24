@@ -1,5 +1,5 @@
 import * as React from "react";
-import { transforms, displayOrder } from "@nteract/transforms";
+import { transforms, displayOrder, Transforms } from "@nteract/transforms";
 import { Map as ImmutableMap } from "immutable";
 
 import Output from "./output";
@@ -7,7 +7,7 @@ import Output from "./output";
 type Props = {
   displayOrder: string[];
   outputs: any[];
-  transforms: Object;
+  transforms: Transforms;
   theme: string;
   expanded: boolean;
   isHidden: boolean;

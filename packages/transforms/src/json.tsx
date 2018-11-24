@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import JSONTree from "react-json-tree";
 
@@ -44,10 +43,10 @@ function getTheme(themeName: string): Object {
 }
 
 type Props = {
-  data: Object,
+  data: object,
   mediaType: "application/json",
   theme: string,
-  metadata: Object
+  metadata: { [expanded: string]: boolean }
 };
 
 export default class JsonDisplay extends React.PureComponent<Props> {

@@ -1,21 +1,20 @@
-/* @flow */
-
 import VDOMDisplay from "@nteract/transform-vdom";
 
-import TextDisplay from "./text.js";
-import JsonDisplay from "./json.js";
-import JavaScriptDisplay from "./javascript.js";
-import HTMLDisplay from "./html.js";
-import MarkdownDisplay from "./markdown.js";
-import LaTeXDisplay from "./latex.js";
-import SVGDisplay from "./svg.js";
-import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image.js";
+import TextDisplay from "./text";
+import JsonDisplay from "./json";
+import JavaScriptDisplay from "./javascript";
+import HTMLDisplay from "./html";
+import MarkdownDisplay from "./markdown";
+import LaTeXDisplay from "./latex";
+import SVGDisplay from "./svg";
+import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
 
 type Transform = {
-  MIMETYPE: string
-};
+  MIMETYPE: string;
+}
 
-type Transforms = { [string]: Transform };
+type ObjectType = object;
+export interface Transforms extends ObjectType { [transform: string]: Transform };
 type DisplayOrder = Array<string>;
 
 export type TransformRegister = {
@@ -72,7 +71,7 @@ export function richestMimetype(
   bundle: Object,
   order: DisplayOrder = standardDisplayOrder,
   tf: Transforms = standardTransforms
-): ?string {
+): string | undefined | null {
   return (
     [...Object.keys(bundle)]
       // we can only use those we have a transform for

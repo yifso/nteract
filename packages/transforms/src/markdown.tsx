@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from "react";
 import Markdown from "@nteract/markdown";
 
@@ -15,7 +14,7 @@ export default class MarkdownDisplay extends React.PureComponent<Props> {
     mediaType: "text/markdown"
   };
 
-  render(): ?React$Element<any> {
+  render() {
     return <Markdown source={this.props.data} />;
   }
 }

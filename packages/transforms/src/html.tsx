@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -21,7 +20,7 @@ export function createFragment(html: string): Node {
 }
 
 export default class HTMLDisplay extends React.PureComponent<Props> {
-  el: ?HTMLElement;
+  el?: HTMLElement | null;
 
   static MIMETYPE = "text/html";
 
@@ -53,7 +52,7 @@ export default class HTMLDisplay extends React.PureComponent<Props> {
     this.el.appendChild(createFragment(this.props.data));
   }
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <div
         dangerouslySetInnerHTML={{ __html: this.props.data }}
