@@ -1,4 +1,3 @@
-// @flow strict
 import * as React from "react";
 
 type Props = {
@@ -28,7 +27,7 @@ export function createFragment(html: string): Node {
 }
 
 export class HTML extends React.PureComponent<Props> {
-  el: ?HTMLElement;
+  el?: HTMLElement | null;
 
   static defaultProps = {
     data: '',

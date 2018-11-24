@@ -1,14 +1,12 @@
-// @flow strict
-
 import * as React from "react";
 // We might only need this as a devDependency as it is only here for flow
-import type OutputType from "@nteract/records";
+import { OutputType } from "@nteract/records";
 
 type Props = {
   /**
    * React elements that accept Output
    */
-  children: React.Node,
+  children: React.ReactNode,
   /**
    * The raw output, as expected from @nteract/records
    */
@@ -24,7 +22,7 @@ export class Output extends React.Component<Props, State> {
 
   render() {
     // We must pick only one child to render
-    let chosenOne = null;
+    let chosenOne: React.ReactChild | null = null;
 
     if (this.props.output == null) {
       return null;
@@ -34,16 +32,17 @@ export class Output extends React.Component<Props, State> {
 
     // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
+      const childElement = child as React.ReactElement<any>;
       if (chosenOne) {
         // Already have a selection
         return;
       }
       if (
-        child.props &&
-        child.props.outputType &&
-        child.props.outputType === outputType
+        childElement.props &&
+        childElement.props.outputType &&
+        childElement.props.outputType === outputType
       ) {
-        chosenOne = child;
+        chosenOne = childElement;
         return;
       }
     });

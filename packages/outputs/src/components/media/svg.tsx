@@ -1,4 +1,3 @@
-/* @flow */
 import React from "react";
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
 };
 
 export class SVG extends React.PureComponent<Props> {
-  el: ?HTMLElement;
+  el?: HTMLElement | null;
 
   static defaultProps = {
     data: '',
@@ -29,7 +28,7 @@ export class SVG extends React.PureComponent<Props> {
     this.el.insertAdjacentHTML("beforeend", this.props.data);
   }
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <div
         ref={el => {
