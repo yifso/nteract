@@ -1,3 +1,6 @@
+/**
+ * @module rx-jupyter
+ */
 import { ajax } from "rxjs/ajax";
 import querystring from "querystring";
 import urljoin from "url-join";

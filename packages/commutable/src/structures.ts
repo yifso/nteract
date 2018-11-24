@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 import uuid from "uuid/v4";
 
 import { CellID, makeNotebookRecord, ImmutableNotebook } from "./notebook";

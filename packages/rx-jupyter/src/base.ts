@@ -1,3 +1,6 @@
+/**
+ * @module rx-jupyter
+ */
 import Cookies from "js-cookie";
 import { AjaxRequest } from "rxjs/ajax";
 

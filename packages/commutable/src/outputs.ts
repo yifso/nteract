@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 import {
   Map as ImmutableMap,
   List as ImmutableList,

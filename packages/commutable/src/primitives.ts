@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 export type ExecutionCount = number | null;
 
 // Mutable JSON types
