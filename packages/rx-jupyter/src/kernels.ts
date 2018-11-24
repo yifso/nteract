@@ -1,3 +1,6 @@
+/**
+ * @module rx-jupyter
+ */
 import { ajax } from "rxjs/ajax";
 import { webSocket } from "rxjs/webSocket";
 import { Subject, Subscriber } from "rxjs";

@@ -1,4 +1,7 @@
 /**
+ * @module commutable
+ */
+/**
  *
  * This is the top level data structure for in memory data structures,
  * and allows converting from on-disk v4 and v3 Jupyter Notebooks

@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 /*
  * Functions in this module are provided for converting from Jupyter Notebook
  * Format v4 to nteract's in-memory format, affectionately referred to as
