@@ -1,4 +1,3 @@
-// @flow
 import css from "styled-jsx/css";
 
 const TOP_OFFSET = "20px";

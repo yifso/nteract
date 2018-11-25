@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 import { connect } from "react-redux";
 import { selectors } from "@nteract/core";
@@ -6,7 +5,11 @@ import { selectors } from "@nteract/core";
 import { MODAL_TYPES } from "./constants";
 import AboutModal from "./about-modal";
 
-class ModalController extends React.Component<*, *> {
+interface Props {
+  modalType: string;
+}
+
+class ModalController extends React.Component<Props> {
   getModal = () => {
     const { modalType } = this.props;
     switch (modalType) {

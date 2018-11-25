@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from "react";
 
 /**
@@ -24,15 +22,16 @@ import * as React from "react";
  * is to add another logo in a PR. 🎉
  */
 
-type WrapperProps<T> = {
-  children: React.ChildrenArray<T>,
-  outerProps: any,
+type WrapperProps = {
+  children: React.ReactNode,
+  outerProps?: any,
   width?: number | string,
   height?: number | string,
+  preserveAspectRatio?: string,
   viewBox: string
 };
 
-export const SVGWrapper = (props: WrapperProps<*>) => {
+export const SVGWrapper = (props: WrapperProps) => {
   return (
     <span>
       <svg

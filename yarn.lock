@@ -1714,11 +1714,6 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.5.1.tgz#a38f69c62528d56ba7bd1f91335a8004988d72f7"
   integrity sha512-mNhVdZHdtKHMMxbqzNK3RzkBcN1cux3AvuCYGTvjEIQT2uheH3eCAyYsbMbh2Bq8nXkeOWs1kyDiF7geWRFQ4Q==
 
-"@types/react-json-tree@^0.6.8":
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/@types/react-json-tree/-/react-json-tree-0.6.8.tgz#5a2f5848ac9175cb3c2a3294cdda5d3d3bd2a37d"
-  integrity sha512-OyCFv5pHZXVULzjbNXBz+Il+vcYz8RzHl1BXQ297XMBTu4+oqVdZUVgU/PMmndSO05met1KqtKVJaj2K5K79+g==
-  dependencies:
 "@types/react-dom@^16.0.10":
   version "16.0.10"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.10.tgz#0c8980a639fa1d92a8547c8b6d0cf47af96c8966"
@@ -1726,6 +1721,21 @@
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
+
+"@types/react-json-tree@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@types/react-json-tree/-/react-json-tree-0.6.8.tgz#5a2f5848ac9175cb3c2a3294cdda5d3d3bd2a37d"
+  integrity sha512-OyCFv5pHZXVULzjbNXBz+Il+vcYz8RzHl1BXQ297XMBTu4+oqVdZUVgU/PMmndSO05met1KqtKVJaj2K5K79+g==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-redux@^6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-6.0.10.tgz#80a3003a7d50112c65692a8b41752f623217a17c"
+  integrity sha512-+0Qfks+ODOtOpRB99E7W/w+IO2Nz4II19+sYErtlix/b3ok85SCgDcQzXUeH0z0VDvkKdKPPB2DCSls4jpQ/OA==
+  dependencies:
+    "@types/react" "*"
+    redux "^4.0.0"
 
 "@types/react-syntax-highlighter@^0.0.8":
   version "0.0.8"
