@@ -31,17 +31,21 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const React = require("react");
+import * as React from "react";
 
-interface Attributes {
-  style: object;
-  key: number;
+export interface Attributes {
+  [key: string]: any;
+}
+
+export interface EventHandlers {
+  [key: string]: string;
 }
 
 export interface VDOMEl {
   tagName: string; // Could be an enum honestly
   children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
   attributes: Attributes;
+  eventHandlers?: EventHandlers;
   key: number | string | null;
 }
 
@@ -56,7 +60,7 @@ export interface VDOMEl {
  */
 export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
   // Pack args for React.createElement
-  var args = [];
+  let args = [];
 
   if (!obj.tagName || typeof obj.tagName !== "string") {
     throw new Error(`Invalid tagName on ${JSON.stringify(obj, null, 2)}`);
@@ -117,10 +121,10 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
  * @return {Array}     - The array of mixed values.
  */
 export function arrayToReactChildren(arr: Array<VDOMEl>): React.ReactNodeArray {
-  var result = [];
+  let result = [];
 
   // iterate through the `children`
-  for (var i = 0, len = arr.length; i < len; i++) {
+  for (let i = 0, len = arr.length; i < len; i++) {
     // child can have mixed values: text, React element, or array
     const item = arr[i];
     if (item === null) {

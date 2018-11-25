@@ -1,33 +1,30 @@
 import * as React from "react";
 import { cloneDeep } from "lodash";
 
-import { objectToReactElement, VDOMEl } from "./object-to-react";
+import { objectToReactElement, VDOMEl, Attributes } from "./object-to-react";
+import { serializeEvent } from "./event-to-object";
 
 interface Props {
   mediaType: "application/vdom.v1+json";
   data: VDOMEl;
+  onVDOMEvent: (targetName: string, event: Attributes) => void;
 }
 
 // Provide object-to-react as an available helper on the library
-export { objectToReactElement };
+export { objectToReactElement, serializeEvent, VDOMEl, Attributes };
 
 const mediaType = "application/vdom.v1+json";
 
-export default class VDOM extends React.Component<Props> {
+export default class VDOM extends React.PureComponent<Props> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
     mediaType
   };
 
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.data !== this.props.data;
-  }
-
   render(): React.ReactElement<any> {
     try {
-      // objectToReactElement is mutatitve so we'll clone our object
-      var obj = cloneDeep(this.props.data);
+      const obj = this.mergeEventHandlers(cloneDeep(this.props.data));
       return objectToReactElement(obj);
     } catch (err) {
       return (
@@ -49,4 +46,21 @@ export default class VDOM extends React.Component<Props> {
       );
     }
   }
+
+  // Merge event handlers (if any) into attributes as callback functions that
+  // serialize the event object and call `this.props.onVDOMEvent` with the
+  // comm target name and serialized event so that the Jupyter client can
+  // send a comm message for the kernel to handle the event.
+  mergeEventHandlers = (obj: VDOMEl): VDOMEl => {
+    if (obj.eventHandlers) {
+      for (let eventType in obj.eventHandlers) {
+        const targetName = obj.eventHandlers[eventType];
+        obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
+          const serializedEvent = serializeEvent(event);
+          this.props.onVDOMEvent(targetName, serializedEvent);
+        };
+      }
+    }
+    return obj;
+  };
 }
