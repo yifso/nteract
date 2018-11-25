@@ -171,7 +171,7 @@ export const PureNewNotebookNavigation = (props: {
     <div className="banner">
       <div>Start a new notebook</div>
       <NotebookCollection>
-        {props.availableNotebooks.map((an: AvailableNotebook) => (
+        {(props.availableNotebooks as Array<AvailableNotebook>).map((an: AvailableNotebook) => (
           <NewNotebook
             kernelspec={an.kernelspec}
             key={an.kernelspec.name}

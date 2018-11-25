@@ -62,31 +62,6 @@ type State = {
 };
 
 class PureNotebookMenu extends React.Component<Props, State> {
-  static defaultProps = {
-    cellFocused: null,
-    saveNotebook: null,
-    downloadNotebook: null,
-    currentKernelRef: null,
-    executeCell: null,
-    executeAllCells: null,
-    executeAllCellsBelow: null,
-    clearAllOutputs: null,
-    unhideAll: null,
-    cutCell: null,
-    copyCell: null,
-    pasteCell: null,
-    createCellBelow: null,
-    setCellTypeCode: null,
-    setCellTypeMarkdown: null,
-    setTheme: null,
-    openAboutModal: null,
-    changeKernelByName: null,
-    restartKernel: null,
-    killKernel: null,
-    interruptKernel: null,
-    currentKernelspecsRef: null,
-    currentKernelspecs: null
-  };
   state: State = {};
   handleClick = ({ key }: { key: string }) => {
     const {
