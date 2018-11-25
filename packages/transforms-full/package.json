@@ -39,6 +39,7 @@
     "@nteract/transform-model-debug": "^4.0.0-alpha.0",
     "@nteract/transform-plotly": "^4.0.0-alpha.0",
     "@nteract/transform-vega": "^4.0.0-alpha.0",
-    "@nteract/transforms": "^5.0.0-alpha.0"
+    "@nteract/transforms": "^5.0.0-alpha.0",
+    "vega": "^4.3.0"
   }
 }
