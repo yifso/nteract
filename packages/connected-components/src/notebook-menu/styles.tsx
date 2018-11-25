@@ -1,8 +1,7 @@
-// @flow
 import * as React from "react";
 
 type Props = {
-  children: *
+  children: React.ReactNode
 };
 
 const Wrapper = (props: Props) => (

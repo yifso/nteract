@@ -1,5 +1,3 @@
-// @flow
-
 // We need to allow to allow escape from the modal from an inner element.
 /* eslint jsx-a11y/no-noninteractive-tabindex: 0 */
 
@@ -10,22 +8,23 @@
 import React from "react";
 import { connect } from "react-redux";
 import { actions, selectors } from "@nteract/core";
+import { AppState } from "@nteract/types";
 
 import { modalCss } from "./styles";
 
 type Props = {
   appVersion?: string,
   hostType?: string,
-  closeModal: ?() => void
+  closeModal?: () => void
 };
 
 // We need to do this so that you can immediately `Escape` out of the dialog.
 // Otherwise, we'd need to (a) put an event listener on the document or (b)
 // require that the user clicks the content first before attempting to escape.
-const focusOnRender = el => el && el.focus();
+const focusOnRender = (el: HTMLDialogElement) => el && el.focus();
 
 class PureAboutModal extends React.Component<Props> {
-  handleKeyDown = (event: KeyboardEvent) => {
+  handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { closeModal } = this.props;
     const { key, metaKey, altKey, ctrlKey, repeat, shiftKey } = event;
     if (
@@ -36,7 +35,7 @@ class PureAboutModal extends React.Component<Props> {
       closeModal();
     }
   };
-  handleOverlayClick = (event: Event) => {
+  handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const { closeModal } = this.props;
     if (closeModal && event.target && event.target === event.currentTarget) {
       closeModal();
@@ -77,7 +76,7 @@ class PureAboutModal extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   appVersion: selectors.appVersion(state),
   hostType: selectors.currentHostType(state)
 });

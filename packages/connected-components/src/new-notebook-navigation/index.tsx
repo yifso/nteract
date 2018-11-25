@@ -1,5 +1,3 @@
-// @flow
-
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-noninteractive-tabindex: 0 */
@@ -16,11 +14,11 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import type {
+import {
   AppState,
   KernelspecRecord,
   KernelspecProps
-} from "@nteract/core";
+} from "@nteract/types";
 import * as Immutable from "immutable";
 
 import { default as Logo } from "./logos";
@@ -29,9 +27,7 @@ export type AvailableNotebook = {
   kernelspec: KernelspecRecord | KernelspecProps
 };
 
-export type AvailableNotebooks =
-  | Immutable.List<AvailableNotebook>
-  | Array<AvailableNotebook>;
+export type AvailableNotebooks = Array<AvailableNotebook>| Immutable.List<AvailableNotebook>;
 
 export const NewNotebook = (
   props: AvailableNotebook & {
@@ -148,7 +144,7 @@ NewNotebook.defaultProps = {
   onClick: () => {}
 };
 
-const NotebookCollection = (props: { children: React.Node }) => (
+const NotebookCollection = (props: { children: React.ReactNode }) => (
   <div className="collection">
     {props.children}
     <style jsx>{`
@@ -175,7 +171,7 @@ export const PureNewNotebookNavigation = (props: {
     <div className="banner">
       <div>Start a new notebook</div>
       <NotebookCollection>
-        {props.availableNotebooks.map(an => (
+        {props.availableNotebooks.map((an: AvailableNotebook) => (
           <NewNotebook
             kernelspec={an.kernelspec}
             key={an.kernelspec.name}

@@ -1,15 +1,14 @@
-// @flow
 import * as Immutable from "immutable";
 import * as React from "react";
 import Menu, { SubMenu, Divider, MenuItem } from "rc-menu";
 import { actions, selectors } from "@nteract/core";
-import type {
+import {
   AppState,
   ContentRef,
   KernelRef,
   KernelspecsRef,
   KernelspecsByRefRecord
-} from "@nteract/core";
+} from "@nteract/types";
 import { connect } from "react-redux";
 
 import { MODAL_TYPES } from "../modal-controller";
@@ -20,42 +19,42 @@ import StyleWrapper from "./styles";
 // To allow actions that can take dynamic arguments (like selecting a kernel
 // based on the host's kernelspecs), we have some simple utility functions to
 // stringify/parse actions/arguments.
-const createActionKey = (action, ...args) => [action, ...args].join(":");
-const parseActionKey = key => key.split(":");
+const createActionKey = (action: string, ...args: any[]) => [action, ...args].join(":");
+const parseActionKey = (key: string) => key.split(":");
 
 type Props = {
   persistAfterClick?: boolean,
   defaultOpenKeys?: Array<string>,
   openKeys?: Array<string>,
-  currentKernelRef: ?KernelRef,
-  saveNotebook: ?(payload: *) => void,
-  downloadNotebook: ?(payload: *) => void,
-  executeCell: ?(payload: *) => void,
-  executeAllCells: ?(payload: *) => void,
-  executeAllCellsBelow: ?(payload: *) => void,
-  clearAllOutputs: ?(payload: *) => void,
-  unhideAll: ?(*) => void,
-  cutCell: ?(payload: *) => void,
-  copyCell: ?(payload: *) => void,
-  notebook: Immutable.Map<string, *>,
-  pasteCell: ?(payload: *) => void,
-  createCellBelow: ?(payload: *) => void,
-  changeCellType: ?(payload: *) => void,
-  setTheme: ?(theme: ?string) => void,
-  openAboutModal: ?() => void,
-  changeKernelByName: ?(payload: {
+  currentKernelRef?: KernelRef,
+  saveNotebook?: (payload: object) => void,
+  downloadNotebook?: (payload: object) => void,
+  executeCell?: (payload: object) => void,
+  executeAllCells?: (payload: object) => void,
+  executeAllCellsBelow?: (payload: object) => void,
+  clearAllOutputs?: (payload: object) => void,
+  unhideAll?: (payload: object) => void,
+  cutCell?: (payload: object) => void,
+  copyCell?: (payload: object) => void,
+  notebook: Immutable.Map<string, any>,
+  pasteCell?: (payload: object) => void,
+  createCellBelow?: (payload: object) => void,
+  changeCellType?: (payload: object) => void,
+  setTheme?: (theme?: string) => void,
+  openAboutModal?: () => void,
+  changeKernelByName?: (payload: {
     kernelSpecName: string,
-    oldKernelRef: ?KernelRef,
+    oldKernelRef?: KernelRef,
     contentRef: ContentRef
   }) => void,
-  restartKernel: ?(payload: *) => void,
-  restartKernelAndClearOutputs: ?(payload: *) => void,
-  restartKernelAndRunAllOutputs: ?(payload: *) => void,
-  killKernel: ?(payload: *) => void,
-  interruptKernel: ?(payload: *) => void,
+  restartKernel?: (payload: object) => void,
+  restartKernelAndClearOutputs?: (payload: object) => void,
+  restartKernelAndRunAllOutputs?: (payload: object) => void,
+  killKernel?: (payload: object) => void,
+  interruptKernel?: (payload: object) => void,
   currentContentRef: ContentRef,
-  currentKernelspecsRef: ?KernelspecsRef,
-  currentKernelspecs: ?KernelspecsByRefRecord
+  currentKernelspecsRef?: KernelspecsRef,
+  currentKernelspecs?: KernelspecsByRefRecord
 };
 
 type State = {
@@ -88,7 +87,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
     currentKernelspecsRef: null,
     currentKernelspecs: null
   };
-  state = {};
+  state: State = {};
   handleClick = ({ key }: { key: string }) => {
     const {
       persistAfterClick,
@@ -282,7 +281,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
       persistAfterClick
     } = this.props;
     const { openKeys } = this.state;
-    const menuProps: Object = {
+    const menuProps: {[key: string]: any} = {
       mode: "horizontal",
       onClick: this.handleClick,
       onOpenChange: this.handleOpenChange,
@@ -472,33 +471,33 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  saveNotebook: (payload: *) => dispatch(actions.save(payload)),
-  downloadNotebook: (payload: *) => dispatch(actions.downloadContent(payload)),
-  executeCell: (payload: *) => dispatch(actions.executeCell(payload)),
-  executeAllCells: (payload: *) => dispatch(actions.executeAllCells(payload)),
-  executeAllCellsBelow: (payload: *) =>
+const mapDispatchToProps = (dispatch: any) => ({
+  saveNotebook: (payload: object) => dispatch(actions.save(payload)),
+  downloadNotebook: (payload: object) => dispatch(actions.downloadContent(payload)),
+  executeCell: (payload: object) => dispatch(actions.executeCell(payload)),
+  executeAllCells: (payload: object) => dispatch(actions.executeAllCells(payload)),
+  executeAllCellsBelow: (payload: object) =>
     dispatch(actions.executeAllCellsBelow(payload)),
-  clearAllOutputs: (payload: *) => dispatch(actions.clearAllOutputs(payload)),
-  unhideAll: payload => dispatch(actions.unhideAll(payload)),
-  cutCell: (payload: *) => dispatch(actions.cutCell(payload)),
-  copyCell: (payload: *) => dispatch(actions.copyCell(payload)),
-  pasteCell: (payload: *) => dispatch(actions.pasteCell(payload)),
-  createCellBelow: (payload: *) => dispatch(actions.createCellBelow(payload)),
-  changeCellType: (payload: *) => dispatch(actions.changeCellType(payload)),
-  setTheme: theme => dispatch(actions.setTheme(theme)),
+  clearAllOutputs: (payload: object) => dispatch(actions.clearAllOutputs(payload)),
+  unhideAll: (payload: object) => dispatch(actions.unhideAll(payload)),
+  cutCell: (payload: object) => dispatch(actions.cutCell(payload)),
+  copyCell: (payload: object) => dispatch(actions.copyCell(payload)),
+  pasteCell: (payload: object) => dispatch(actions.pasteCell(payload)),
+  createCellBelow: (payload: object) => dispatch(actions.createCellBelow(payload)),
+  changeCellType: (payload: object) => dispatch(actions.changeCellType(payload)),
+  setTheme: (theme: string) => dispatch(actions.setTheme(theme)),
   openAboutModal: () =>
     dispatch(actions.openModal({ modalType: MODAL_TYPES.ABOUT })),
-  changeKernelByName: payload => dispatch(actions.changeKernelByName(payload)),
-  restartKernel: payload => dispatch(actions.restartKernel(payload)),
-  restartKernelAndClearOutputs: payload =>
+  changeKernelByName: (payload: object) => dispatch(actions.changeKernelByName(payload)),
+  restartKernel: (payload: object) => dispatch(actions.restartKernel(payload)),
+  restartKernelAndClearOutputs: (payload: object) =>
     dispatch(
       actions.restartKernel({ ...payload, outputHandling: "Clear All" })
     ),
-  restartKernelAndRunAllOutputs: payload =>
+  restartKernelAndRunAllOutputs: (payload: object) =>
     dispatch(actions.restartKernel({ ...payload, outputHandling: "Run All" })),
-  killKernel: payload => dispatch(actions.killKernel(payload)),
-  interruptKernel: payload => dispatch(actions.interruptKernel(payload))
+  killKernel: (payload: object) => dispatch(actions.killKernel(payload)),
+  interruptKernel: (payload: object) => dispatch(actions.interruptKernel(payload))
 });
 
 // $FlowFixMe: react-redux
