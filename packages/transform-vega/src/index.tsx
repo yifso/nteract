@@ -2,7 +2,6 @@ import * as React from "react";
 import { merge } from "lodash";
 import vegaEmbed2 from "@nteract/vega-embed-v2";
 import vegaEmbed3 from "vega-embed";
-import { Spec } from "vega";
 
 const MIMETYPE_VEGA2 = "application/vnd.vega.v2+json";
 const MIMETYPE_VEGA3 = "application/vnd.vega.v3+json";
@@ -12,7 +11,7 @@ const MIMETYPE_VEGALITE2 = "application/vnd.vegalite.v2+json";
 const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = DEFAULT_WIDTH / 1.5;
 
-interface EmbedData extends Spec {
+interface EmbedData {
   config: object;
 }
 
