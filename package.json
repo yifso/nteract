@@ -231,9 +231,6 @@
       "**/nteract/**"
     ]
   },
-  "resolutions": {
-    "node-fetch": "2.1.2"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
