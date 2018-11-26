@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
-import { blueprintCSS, blueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import ReactTableStyles from "../css/react-table";
 
@@ -18,7 +18,7 @@ const switchMode = currentMode => {
 };
 
 const NumberFilter = props => {
-  const { filterState, filterName, updateFunction, filter, onChange } = props;
+  const { filterState, filterName, updateFunction, onChange } = props;
   const mode = filterState[filterName] || "=";
 
   const lockButton = (
@@ -47,10 +47,7 @@ const NumberFilter = props => {
   );
 };
 
-const stringFilter = (filterState, filterName, updateFunction) => ({
-  filter,
-  onChange
-}) => (
+const stringFilter = () => ({ onChange }) => (
   <InputGroup
     large={true}
     placeholder="string"
@@ -89,7 +86,7 @@ const filterNumbers = (mode = "=") => (filter, row) => {
   return row[filter.id];
 };
 
-const filterStrings = mode => (filter, row) => {
+const filterStrings = () => (filter, row) => {
   return (
     row[filter.id].toLowerCase().indexOf(filter.value.toLowerCase()) !== -1
   );
