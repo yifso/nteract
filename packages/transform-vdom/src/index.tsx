@@ -2,16 +2,16 @@ import * as React from "react";
 import { cloneDeep } from "lodash";
 
 import { objectToReactElement, VDOMEl, Attributes } from "./object-to-react";
-import { serializeEvent } from "./event-to-object";
+import { serializeEvent, SerializedEvent } from "./event-to-object";
 
 interface Props {
   mediaType: "application/vdom.v1+json";
   data: VDOMEl;
-  onVDOMEvent: (targetName: string, event: Attributes) => void;
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void;
 }
 
 // Provide object-to-react as an available helper on the library
-export { objectToReactElement, serializeEvent, VDOMEl, Attributes };
+export { objectToReactElement, serializeEvent, VDOMEl, Attributes, SerializedEvent };
 
 const mediaType = "application/vdom.v1+json";
 

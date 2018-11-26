@@ -1,8 +1,22 @@
 import * as React from "react";
 
-import { Attributes } from "./object-to-react";
+export type SerializedEvent<T> =
+  | Partial<React.ClipboardEvent<T>>
+  | Partial<React.CompositionEvent<T>>
+  | Partial<React.KeyboardEvent<T>>
+  | Partial<React.ChangeEvent<T>>
+  | Partial<React.MouseEvent<T>>
+  | Partial<React.PointerEvent<T>>
+  | Partial<React.TouchEvent<T>>
+  | Partial<React.UIEvent<T>>
+  | Partial<React.WheelEvent<T>>
+  | Partial<React.AnimationEvent<T>>
+  | Partial<React.TransitionEvent<T>>
+  | {};
 
-export function serializeEvent<T>(event: React.SyntheticEvent<T>): Attributes {
+export function serializeEvent<T>(
+  event: React.SyntheticEvent<T>
+): SerializedEvent<T> {
   switch (event.type) {
     // Clipboard events
     case "copy":
