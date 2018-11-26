@@ -4,12 +4,12 @@ type Props = {
   /**
    * The HTML string that will be rendered.
    */
-  data: string,
+  data: string;
   /**
    * The media type associated with the HTML
    * string. This defaults to text/html.
    */
-  mediaType: "text/html"
+  mediaType: "text/html";
 };
 
 // Note: createRange and Range must be polyfilled on older browsers with
@@ -30,7 +30,7 @@ export class HTML extends React.PureComponent<Props> {
   el?: HTMLElement | null;
 
   static defaultProps = {
-    data: '',
+    data: "",
     mediaType: "text/html"
   };
 

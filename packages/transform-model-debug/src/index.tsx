@@ -1,10 +1,10 @@
 import * as React from "react";
 
 type Props = {
-  data: string,
-  mediaType: "application/x-nteract-model-debug+json",
-  models: { [modelID: string ]: Object},
-  modelID: string
+  data: string;
+  mediaType: "application/x-nteract-model-debug+json";
+  models: { [modelID: string]: Object };
+  modelID: string;
 };
 
 const mediaType = "application/x-nteract-model-debug+json";

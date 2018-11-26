@@ -1,18 +1,16 @@
 import React from "react";
 
 type Props = {
-  data: string,
-  metadata: any,
-  mediaType: "image/png" | "image/jpeg" | "image/gif"
+  data: string;
+  metadata: any;
+  mediaType: "image/png" | "image/jpeg" | "image/gif";
 };
 
 type ImageDisplayProps = Props & {
-  mimetype?: "image/png" | "image/jpeg" | "image/gif"
+  mimetype?: "image/png" | "image/jpeg" | "image/gif";
 };
 
-export default function ImageDisplay(
-  props: ImageDisplayProps
-) {
+export default function ImageDisplay(props: ImageDisplayProps) {
   let size = {};
 
   if (props.metadata) {
@@ -24,11 +22,7 @@ export default function ImageDisplay(
 
   return (
     <React.Fragment>
-      <img
-        alt=""
-        src={`data:${mediaType};base64,${props.data}`}
-        {...size}
-      />
+      <img alt="" src={`data:${mediaType};base64,${props.data}`} {...size} />
       <style jsx>{`
         img {
           display: block;

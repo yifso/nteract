@@ -3,12 +3,12 @@ import { MediaBundle } from "@nteract/records";
 
 /** Error handling types */
 type ReactErrorInfo = {
-  componentStack: string
+  componentStack: string;
 };
 
 type Caught = {
-  error: Error,
-  info: ReactErrorInfo
+  error: Error;
+  info: ReactErrorInfo;
 };
 
 type RichMediaProps = {
@@ -27,28 +27,28 @@ type RichMediaProps = {
    * for more detail.
    *
    */
-  data: MediaBundle,
+  data: MediaBundle;
   /**
    * custom settings, typically keyed by media type
    */
-  metadata: { [mediaType: string]: object },
+  metadata: { [mediaType: string]: object };
   /**
    * React elements that accept mimebundle data, will get passed data[mimetype]
    */
-  children: React.ReactNode,
+  children: React.ReactNode;
 
   renderError(param: {
-    error: Error,
-    info: ReactErrorInfo,
-    data: MediaBundle,
-    metadata: object,
-    children: React.ReactNode
-  }): React.ReactElement<any>
+    error: Error;
+    info: ReactErrorInfo;
+    data: MediaBundle;
+    metadata: object;
+    children: React.ReactNode;
+  }): React.ReactElement<any>;
 };
 
 /* We make the RichMedia component an error boundary in case of any <Media /> component erroring */
 type State = {
-  caughtError?: Caught | null
+  caughtError?: Caught | null;
 };
 
 const ErrorFallback = (caught: Caught) => (

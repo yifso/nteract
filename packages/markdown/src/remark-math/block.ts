@@ -103,8 +103,8 @@ export function blockPlugin(this: any, opts: Object) {
       }
 
       /* Add the newline to `subvalue` if its the first
-      * character.  Otherwise, add it to the `closing`
-      * queue. */
+       * character.  Otherwise, add it to the `closing`
+       * queue. */
       if (content) {
         closing += character;
         exdentedClosing += character;

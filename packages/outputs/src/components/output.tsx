@@ -6,11 +6,11 @@ type Props = {
   /**
    * React elements that accept Output
    */
-  children: React.ReactNode,
+  children: React.ReactNode;
   /**
    * The raw output, as expected from @nteract/records
    */
-  output: OutputType
+  output: OutputType;
 };
 
 type State = {};

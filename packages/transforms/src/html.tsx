@@ -1,8 +1,8 @@
 import React from "react";
 
 type Props = {
-  data: string,
-  mediaType: "text/html"
+  data: string;
+  mediaType: "text/html";
 };
 
 // Note: createRange and Range must be polyfilled on older browsers with

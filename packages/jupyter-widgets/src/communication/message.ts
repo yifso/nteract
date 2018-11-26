@@ -1,16 +1,16 @@
-export const POST_MESSAGE_IDENTIFIER = 'jupter-widgets';
+export const POST_MESSAGE_IDENTIFIER = "jupter-widgets";
 
 export enum PostMessageType {
-  ERROR_MESSAGE = 'error',
-  REGULAR_MESSAGE = 'message',
-  COMPLETE_MESSAGE = 'complete',
+  ERROR_MESSAGE = "error",
+  REGULAR_MESSAGE = "message",
+  COMPLETE_MESSAGE = "complete"
 }
 
 /**
  * Format of a post message between the widget iframe and nteract app.
  */
 export interface Message<T> {
-  id: 'jupter-widgets';
+  id: "jupter-widgets";
   type: PostMessageType;
 
   /**

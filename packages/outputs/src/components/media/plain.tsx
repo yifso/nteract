@@ -2,8 +2,8 @@ import * as React from "react";
 import Ansi from "ansi-to-react";
 
 type Props = {
-  data: string,
-  mediaType: "text/plain"
+  data: string;
+  mediaType: "text/plain";
 };
 
 export const Plain = (props: Props) => (
@@ -13,6 +13,6 @@ export const Plain = (props: Props) => (
 );
 
 Plain.defaultProps = {
-  data: '',
+  data: "",
   mediaType: "text/plain"
 };

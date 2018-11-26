@@ -1,4 +1,3 @@
-
 import { Input } from "./components/input";
 import { Outputs } from "./components/outputs";
 import { Pagers } from "./components/pagers";

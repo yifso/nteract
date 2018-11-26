@@ -28,12 +28,12 @@ export type EntitiesRecordProps = {
 
 export type EntitiesRecord = Immutable.RecordOf<EntitiesRecordProps>;
 
-export const makeEntitiesRecord: Immutable.RecordFactory<
-  EntitiesRecordProps
-> = Immutable.Record({
-  contents: makeContentsRecord(),
-  hosts: makeHostsRecord(),
-  kernels: makeKernelsRecord(),
-  kernelspecs: makeKernelspecsRecord(),
-  modals: makeModalsRecord()
-});
+export const makeEntitiesRecord: Immutable.RecordFactory<EntitiesRecordProps> = Immutable.Record(
+  {
+    contents: makeContentsRecord(),
+    hosts: makeHostsRecord(),
+    kernels: makeKernelsRecord(),
+    kernelspecs: makeKernelspecsRecord(),
+    modals: makeModalsRecord()
+  }
+);

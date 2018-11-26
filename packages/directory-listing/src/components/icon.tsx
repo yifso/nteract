@@ -2,8 +2,8 @@ import * as React from "react";
 import { Book, FileText, FileDirectory } from "@nteract/octicons";
 
 type IconProps = {
-  color: string,
-  fileType: "unknown" | "notebook" | "directory" | "file" | "dummy"
+  color: string;
+  fileType: "unknown" | "notebook" | "directory" | "file" | "dummy";
 };
 
 export class Icon extends React.Component<IconProps> {

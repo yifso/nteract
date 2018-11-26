@@ -7,23 +7,33 @@ export type Node = {
   extension: string;
   absolutePath: string;
   id: string;
-  json: { [key: string]: any};
+  json: { [key: string]: any };
   html: string;
   children: any[];
   content: string;
   parent: string;
   fileAbsolutePath: string;
-  metadata: { [key: string]: any};
+  metadata: { [key: string]: any };
   internal: {
-    content?: string,
-    contentDigest?: string,
-    type?: string,
-
-  }
-}
+    content?: string;
+    contentDigest?: string;
+    type?: string;
+  };
+};
 
 module.exports = async function onCreateNode(
-  {node, loadNodeContent, boundActionCreators} : { node: Node, loadNodeContent: (node: Node) => string, boundActionCreators: {createNode: Function, createParentChildLink: Function} },
+  {
+    node,
+    loadNodeContent,
+    boundActionCreators
+  }: {
+    node: Node;
+    loadNodeContent: (node: Node) => string;
+    boundActionCreators: {
+      createNode: Function;
+      createParentChildLink: Function;
+    };
+  },
   pluginOptions: object // eslint-disable-line no-unused-vars
 ) {
   const { createNode, createParentChildLink } = boundActionCreators;

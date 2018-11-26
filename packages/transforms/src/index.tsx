@@ -11,15 +11,17 @@ import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
 
 type Transform = {
   MIMETYPE: string;
-}
+};
 
 type ObjectType = object;
-export interface Transforms extends ObjectType { [transform: string]: Transform };
+export interface Transforms extends ObjectType {
+  [transform: string]: Transform;
+}
 type DisplayOrder = Array<string>;
 
 export type TransformRegister = {
-  transforms: Transforms,
-  displayOrder: DisplayOrder
+  transforms: Transforms;
+  displayOrder: DisplayOrder;
 };
 
 const tfs = [

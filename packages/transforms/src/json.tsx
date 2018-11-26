@@ -43,10 +43,10 @@ function getTheme(themeName: string): Object {
 }
 
 type Props = {
-  data: object,
-  mediaType: "application/json",
-  theme: string,
-  metadata: { [expanded: string]: boolean }
+  data: object;
+  mediaType: "application/json";
+  theme: string;
+  metadata: { [expanded: string]: boolean };
 };
 
 export default class JsonDisplay extends React.PureComponent<Props> {

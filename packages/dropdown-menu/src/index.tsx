@@ -8,11 +8,11 @@ import { areComponentsEqual } from "react-hot-loader";
 import * as React from "react";
 
 type DropdownMenuProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
 };
 
 type DropdownMenuState = {
-  menuHidden: boolean
+  menuHidden: boolean;
 };
 
 export class DropdownMenu extends React.Component<
@@ -31,13 +31,23 @@ export class DropdownMenu extends React.Component<
       <div className="dropdown">
         {React.Children.map(this.props.children, child => {
           const childElement = child as React.ReactElement<any>;
-          if (areComponentsEqual(childElement.type  as React.ComponentType<any>, DropdownTrigger)) {
+          if (
+            areComponentsEqual(
+              childElement.type as React.ComponentType<any>,
+              DropdownTrigger
+            )
+          ) {
             return React.cloneElement(childElement, {
               onClick: () => {
                 this.setState({ menuHidden: !this.state.menuHidden });
               }
             });
-          } else if (areComponentsEqual(childElement.type as React.ComponentType<any>, DropdownContent)) {
+          } else if (
+            areComponentsEqual(
+              childElement.type as React.ComponentType<any>,
+              DropdownContent
+            )
+          ) {
             if (this.state.menuHidden) {
               return null;
             } else {
@@ -66,8 +76,8 @@ export class DropdownMenu extends React.Component<
 }
 
 export class DropdownTrigger extends React.Component<{
-  children: React.ReactNode,
-  onClick?: (ev: React.MouseEvent<HTMLElement>) => void
+  children: React.ReactNode;
+  onClick?: (ev: React.MouseEvent<HTMLElement>) => void;
 }> {
   render() {
     return (
@@ -86,8 +96,8 @@ export class DropdownTrigger extends React.Component<{
 }
 
 export class DropdownContent extends React.Component<{
-  children: React.ReactNode,
-  onItemClick: (ev: React.MouseEvent<HTMLElement>) => void
+  children: React.ReactNode;
+  onItemClick: (ev: React.MouseEvent<HTMLElement>) => void;
 }> {
   static defaultProps = {
     // Completely silly standalone, because DropdownMenu injects the onItemClick handler

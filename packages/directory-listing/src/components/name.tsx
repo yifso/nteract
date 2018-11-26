@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type NameProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
 };
 
 export class Name extends React.Component<NameProps> {

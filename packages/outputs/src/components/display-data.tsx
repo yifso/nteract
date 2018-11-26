@@ -7,7 +7,7 @@ type Props = {
   /**
    * The literal type of output, used for routing with the `<Output />` element
    */
-  outputType: "display_data",
+  outputType: "display_data";
   /**
    * Object of media type → data
    *
@@ -23,15 +23,15 @@ type Props = {
    * for more detail.
    *
    */
-  data: MediaBundle,
+  data: MediaBundle;
   /**
    * custom settings, typically keyed by media type
    */
-  metadata: {},
+  metadata: {};
   /**
    * React elements that accept mimebundle data, will get passed data[mimetype]
    */
-  children: React.ReactNode
+  children: React.ReactNode;
 };
 
 export const DisplayData = (props: Props) => {

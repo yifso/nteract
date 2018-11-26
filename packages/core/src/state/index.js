@@ -76,14 +76,14 @@ export type StateRecordProps = {
   entities: Immutable.RecordOf<EntitiesRecordProps>
 };
 
-export const makeStateRecord: Immutable.RecordFactory<
-  StateRecordProps
-> = Immutable.Record({
-  kernelRef: null,
-  currentKernelspecsRef: null,
-  communication: makeCommunicationRecord(),
-  entities: makeEntitiesRecord()
-});
+export const makeStateRecord: Immutable.RecordFactory<StateRecordProps> = Immutable.Record(
+  {
+    kernelRef: null,
+    currentKernelspecsRef: null,
+    communication: makeCommunicationRecord(),
+    entities: makeEntitiesRecord()
+  }
+);
 
 export type AppRecordProps = {
   host: HostRecord,
@@ -97,32 +97,32 @@ export type AppRecordProps = {
   version: string
 };
 
-export const makeAppRecord: Immutable.RecordFactory<
-  AppRecordProps
-> = Immutable.Record({
-  host: makeEmptyHostRecord(),
-  githubToken: null,
-  notificationSystem: {
-    addNotification: (msg: { level?: "error" | "warning" }) => {
-      let logger = console.log.bind(console);
-      switch (msg.level) {
-        case "error":
-          logger = console.error.bind(console);
-          break;
-        case "warning":
-          logger = console.warn.bind(console);
-          break;
+export const makeAppRecord: Immutable.RecordFactory<AppRecordProps> = Immutable.Record(
+  {
+    host: makeEmptyHostRecord(),
+    githubToken: null,
+    notificationSystem: {
+      addNotification: (msg: { level?: "error" | "warning" }) => {
+        let logger = console.log.bind(console);
+        switch (msg.level) {
+          case "error":
+            logger = console.error.bind(console);
+            break;
+          case "warning":
+            logger = console.warn.bind(console);
+            break;
+        }
+        logger(msg);
       }
-      logger(msg);
-    }
-  },
-  isSaving: false,
-  lastSaved: null,
-  configLastSaved: null,
-  error: null,
-  // set the default version to @nteract/core's version
-  version: `@nteract/core@${version}`
-});
+    },
+    isSaving: false,
+    lastSaved: null,
+    configLastSaved: null,
+    error: null,
+    // set the default version to @nteract/core's version
+    version: `@nteract/core@${version}`
+  }
+);
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;

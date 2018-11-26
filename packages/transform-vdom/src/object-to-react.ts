@@ -43,7 +43,7 @@ export interface VDOMEl {
   children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
   attributes: Attributes;
   key: number | string | null;
-};
+}
 
 /**
  * Convert an object to React element(s).

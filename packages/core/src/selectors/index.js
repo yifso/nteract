@@ -109,26 +109,35 @@ export const currentKernel = createSelector(
   (kernelRef, byRef) => (kernelRef ? byRef.get(kernelRef) : null)
 );
 
-export const currentKernelType = createSelector([currentKernel], kernel => {
-  if (kernel && kernel.type) {
-    return kernel.type;
+export const currentKernelType = createSelector(
+  [currentKernel],
+  kernel => {
+    if (kernel && kernel.type) {
+      return kernel.type;
+    }
+    return null;
   }
-  return null;
-});
+);
 
-export const currentKernelStatus = createSelector([currentKernel], kernel => {
-  if (kernel && kernel.status) {
-    return kernel.status;
+export const currentKernelStatus = createSelector(
+  [currentKernel],
+  kernel => {
+    if (kernel && kernel.status) {
+      return kernel.status;
+    }
+    return "not connected";
   }
-  return "not connected";
-});
+);
 
-export const currentHostType = createSelector([currentHost], host => {
-  if (host && host.type) {
-    return host.type;
+export const currentHostType = createSelector(
+  [currentHost],
+  host => {
+    if (host && host.type) {
+      return host.type;
+    }
+    return null;
   }
-  return null;
-});
+);
 
 export const isCurrentKernelZeroMQ = createSelector(
   [currentHostType, currentKernelType],
@@ -149,10 +158,16 @@ export const isCurrentKernelJupyterWebsocket = createSelector(
   }
 );
 
-export const comms = createSelector((state: AppState) => state.comms, identity);
+export const comms = createSelector(
+  (state: AppState) => state.comms,
+  identity
+);
 
 // NOTE: These are comm models, not contents models
-export const models = createSelector([comms], comms => comms.get("models"));
+export const models = createSelector(
+  [comms],
+  comms => comms.get("models")
+);
 
 export const filepath = (
   state: *,

@@ -6,7 +6,7 @@ import {
   Button,
   Position,
   Tooltip,
-  ITagProps,
+  ITagProps
 } from "@blueprintjs/core";
 import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
@@ -27,36 +27,36 @@ const authorStyle = {
 const authorStyleBlack = { ...authorStyle, color: "black" };
 
 export type AuthorObject = {
-  name: string
+  name: string;
 };
 export type HeaderDataProps = {
-  authors: Array<AuthorObject>,
-  title: string,
-  description: string,
-  tags: Array<string>
+  authors: Array<AuthorObject>;
+  title: string;
+  description: string;
+  tags: Array<string>;
 };
 
 export type HeaderEditorProps = {
   /**
    * The data that the header should be populated with.
    */
-  headerData: HeaderDataProps,
+  headerData: HeaderDataProps;
   /**
    * Whether or not the fields of the header can be edited.
    */
-  editable: boolean,
+  editable: boolean;
   /**
    * An event handler to run whenever header fields are modified.
    */
-  onChange: (props?: HeaderDataProps) => void,
+  onChange: (props?: HeaderDataProps) => void;
   /**
    * The theme of the header.
    */
-  theme: "light" | "dark"
+  theme: "light" | "dark";
 };
 
 export type HeaderEditorState = {
-  editMode: "none" | "author" | "tag"
+  editMode: "none" | "author" | "tag";
 };
 
 const addTagMessage = <span>Add a tag</span>;
@@ -113,16 +113,18 @@ export class HeaderEditor extends React.Component<
                 large={true}
                 minimal={true}
                 style={authorStyle}
-                onRemove={(evt: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
+                onRemove={(
+                  evt: React.MouseEvent<HTMLButtonElement>,
+                  props: ITagProps
+                ) => {
                   if (editable === true) {
                     onChange({
-                          ...headerData,
-                          authors: headerData.authors.filter(
-                            p => p.name !== t.name
-                          )
-                        });
+                      ...headerData,
+                      authors: headerData.authors.filter(p => p.name !== t.name)
+                    });
                     return;
-                  } return;
+                  }
+                  return;
                 }}
               >
                 {t.name}
@@ -168,17 +170,19 @@ export class HeaderEditor extends React.Component<
               <Tag
                 key={t}
                 style={tagStyle}
-                onRemove={
-                  (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {
-                    if (editable) {
-                      onChange({
-                        ...headerData,
-                        tags: headerData.tags.filter(p => p !== t)
-                      });
-                      return;
-                    } return 
+                onRemove={(
+                  e: React.MouseEvent<HTMLButtonElement>,
+                  props: ITagProps
+                ) => {
+                  if (editable) {
+                    onChange({
+                      ...headerData,
+                      tags: headerData.tags.filter(p => p !== t)
+                    });
+                    return;
                   }
-                }
+                  return;
+                }}
               >
                 {t}
               </Tag>

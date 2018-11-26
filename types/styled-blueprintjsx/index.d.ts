@@ -1,3 +1,3 @@
 declare module "@nteract/styled-blueprintjsx" {
-    export function blueprintCSS(args: any): any;
+  export function blueprintCSS(args: any): any;
 }

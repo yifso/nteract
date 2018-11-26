@@ -4,11 +4,11 @@ type Props = {
   /**
    * The JavaScript code that we would like to execute.
    */
-  data: string,
+  data: string;
   /**
    * The media type associated with our component.
    */
-  mediaType: "text/javascript"
+  mediaType: "text/javascript";
 };
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {
@@ -35,7 +35,7 @@ export class JavaScript extends React.PureComponent<Props> {
   el!: HTMLElement | null;
 
   static defaultProps = {
-    data: '',
+    data: "",
     mediaType: "application/javascript"
   };
 

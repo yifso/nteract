@@ -15,20 +15,22 @@ export { KernelInfo };
 // Local or RemoteKernelProps as our initial representation of the kernel,
 // deriving local-vs-remote from known sources of truth about kernels.
 export type KernelNotStartedProps = {
-  kernelSpecName?: string | null,
-  status?: string | null,
+  kernelSpecName?: string | null;
+  status?: string | null;
   // The following properties are not known immediately at the start of
   // launch; they are just included to keep Flow happy and minimize the
   // impact of this likely-to-be-deleted type.
-  type: "unknown",
-  cwd: ".",
-  channels: Subject<any>,
-  info?: KernelInfo | null
+  type: "unknown";
+  cwd: ".";
+  channels: Subject<any>;
+  info?: KernelInfo | null;
 };
 
 export type KernelNotStartedRecord = Immutable.RecordOf<KernelNotStartedProps>;
 
-export const makeKernelNotStartedRecord = Immutable.Record<KernelNotStartedProps>({
+export const makeKernelNotStartedRecord = Immutable.Record<
+  KernelNotStartedProps
+>({
   kernelSpecName: null,
   status: null,
   type: "unknown",
@@ -38,21 +40,21 @@ export const makeKernelNotStartedRecord = Immutable.Record<KernelNotStartedProps
 });
 
 export type LocalKernelProps = {
-  kernelSpecName?: string | null,
-  info?: KernelInfo | null,
-  hostRef?: HostRef | null,
-  lastActivity?: Date | null,
-  channels: Subject<any>,
-  cwd: string,
+  kernelSpecName?: string | null;
+  info?: KernelInfo | null;
+  hostRef?: HostRef | null;
+  lastActivity?: Date | null;
+  channels: Subject<any>;
+  cwd: string;
   // Canonically: idle, busy, starting
   // Xref: http://jupyter-client.readthedocs.io/en/stable/messaging.html#kernel-status
   //
   // We also use this for other bits of lifecycle, including: launching,
   //   shutting down, not connected.
-  status?: string | null,
-  type: "zeromq",
-  spawn?: ChildProcess | null,
-  connectionFile?: string | null
+  status?: string | null;
+  type: "zeromq";
+  spawn?: ChildProcess | null;
+  connectionFile?: string | null;
 };
 
 export const makeLocalKernelRecord = Immutable.Record<LocalKernelProps>({
@@ -71,21 +73,21 @@ export const makeLocalKernelRecord = Immutable.Record<LocalKernelProps>({
 export type LocalKernelRecord = Immutable.RecordOf<LocalKernelProps>;
 
 export type RemoteKernelProps = {
-  kernelSpecName?: string | null,
-  info?: KernelInfo | null,
-  hostRef?: HostRef | null,
-  lastActivity?: Date | null,
-  channels: Subject<any>,
-  cwd: string,
+  kernelSpecName?: string | null;
+  info?: KernelInfo | null;
+  hostRef?: HostRef | null;
+  lastActivity?: Date | null;
+  channels: Subject<any>;
+  cwd: string;
   // Canonically: idle, busy, starting
   // Xref: http://jupyter-client.readthedocs.io/en/stable/messaging.html#kernel-status
   //
   // We also use this for other bits of lifecycle, including: launching,
   //   shutting down, not connected.
-  status?: string | null,
-  type: "websocket",
-  sessionId?: SessionId | null,
-  id?: KernelId | null
+  status?: string | null;
+  type: "websocket";
+  sessionId?: SessionId | null;
+  id?: KernelId | null;
 };
 
 export const makeRemoteKernelRecord = Immutable.Record<RemoteKernelProps>({
@@ -109,7 +111,7 @@ export type KernelRecord =
   | RemoteKernelRecord;
 
 export type KernelsRecordProps = {
-  byRef: Immutable.Map<KernelRef, KernelRecord>
+  byRef: Immutable.Map<KernelRef, KernelRecord>;
 };
 
 export const makeKernelsRecord = Immutable.Record<KernelsRecordProps>({

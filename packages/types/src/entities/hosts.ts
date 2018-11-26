@@ -4,24 +4,24 @@ import { HostId } from "../ids";
 import { HostRef } from "../refs";
 
 export type EmptyHost = {
-  type: "empty"
+  type: "empty";
 };
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
-export const makeEmptyHostRecord  = Immutable.Record<EmptyHost>({
+export const makeEmptyHostRecord = Immutable.Record<EmptyHost>({
   type: "empty"
 });
 
 export type BaseHostProps = {
-  id?: HostId | null,
-  defaultKernelName: string
+  id?: HostId | null;
+  defaultKernelName: string;
 };
 
 export type JupyterHostRecordProps = BaseHostProps & {
-  type: "jupyter",
-  token?: string | null,
-  origin: string,
-  basePath: string,
-  crossDomain?: boolean | null
+  type: "jupyter";
+  token?: string | null;
+  origin: string;
+  basePath: string;
+  crossDomain?: boolean | null;
 };
 
 export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
@@ -37,7 +37,7 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
 
 export type LocalHostRecordProps = BaseHostProps & {
-  type: "local"
+  type: "local";
 };
 
 export const makeLocalHostRecord = Immutable.Record<LocalHostRecordProps>({
@@ -53,8 +53,8 @@ export type HostRecordProps = LocalHostRecordProps | JupyterHostRecordProps;
 export type HostRecord = LocalHostRecord | JupyterHostRecord | EmptyHostRecord;
 
 export type HostsRecordProps = {
-  byRef: Immutable.Map<HostRef, HostRecord>,
-  refs: Immutable.List<HostRef>
+  byRef: Immutable.Map<HostRef, HostRecord>;
+  refs: Immutable.List<HostRef>;
 };
 
 export const makeHostsRecord = Immutable.Record<HostsRecordProps>({

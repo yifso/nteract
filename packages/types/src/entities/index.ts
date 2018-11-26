@@ -18,11 +18,11 @@ export * from "./kernelspecs";
 export * from "./modals";
 
 export type EntitiesRecordProps = {
-  contents: Immutable.RecordOf<ContentsRecordProps>,
-  hosts: Immutable.RecordOf<HostsRecordProps>,
-  kernels: Immutable.RecordOf<KernelsRecordProps>,
-  kernelspecs: Immutable.RecordOf<KernelspecsRecordProps>,
-  modals: Immutable.RecordOf<ModalsRecordProps>
+  contents: Immutable.RecordOf<ContentsRecordProps>;
+  hosts: Immutable.RecordOf<HostsRecordProps>;
+  kernels: Immutable.RecordOf<KernelsRecordProps>;
+  kernelspecs: Immutable.RecordOf<KernelspecsRecordProps>;
+  modals: Immutable.RecordOf<ModalsRecordProps>;
 };
 
 export type EntitiesRecord = Immutable.RecordOf<EntitiesRecordProps>;

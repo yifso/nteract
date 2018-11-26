@@ -26,5 +26,4 @@ describe("JsonDisplay", () => {
     const instance = component.instance();
     expect(instance.shouldExpandNode()).toBeTruthy();
   });
-
 });

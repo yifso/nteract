@@ -18,10 +18,10 @@ export type CommunicationRecordProps = {
   kernelspecs: Immutable.RecordOf<KernelspecsCommunicationRecordProps>
 };
 
-export const makeCommunicationRecord: Immutable.RecordFactory<
-  CommunicationRecordProps
-> = Immutable.Record({
-  contents: makeContentsCommunicationRecord(),
-  kernels: makeKernelsCommunicationRecord(),
-  kernelspecs: makeKernelspecsCommunicationRecord()
-});
+export const makeCommunicationRecord: Immutable.RecordFactory<CommunicationRecordProps> = Immutable.Record(
+  {
+    contents: makeContentsCommunicationRecord(),
+    kernels: makeKernelsCommunicationRecord(),
+    kernelspecs: makeKernelspecsCommunicationRecord()
+  }
+);

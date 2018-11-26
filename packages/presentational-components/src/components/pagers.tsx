@@ -7,9 +7,9 @@ import { Outputs } from "./outputs";
  */
 
 interface PagersProps {
-  children: React.ReactNode[],
-  hidden: boolean
-};
+  children: React.ReactNode[];
+  hidden: boolean;
+}
 
 export class Pagers extends React.Component<PagersProps> {
   static defaultProps = {

@@ -193,7 +193,10 @@ const styles = `
 }
 `;
 
-class CSSVariables extends React.Component<{ children: React.ReactNode[] }, null> {
+class CSSVariables extends React.Component<
+  { children: React.ReactNode[] },
+  null
+> {
   render() {
     return (
       <React.Fragment>

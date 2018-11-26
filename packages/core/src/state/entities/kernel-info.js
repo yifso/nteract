@@ -7,12 +7,12 @@ export type HelpLink = {
   text: string,
   url: string
 };
-export const makeHelpLinkRecord: Immutable.RecordFactory<
-  HelpLink
-> = Immutable.Record({
-  text: "",
-  url: "#"
-});
+export const makeHelpLinkRecord: Immutable.RecordFactory<HelpLink> = Immutable.Record(
+  {
+    text: "",
+    url: "#"
+  }
+);
 export type HelpLinkRecord = Immutable.RecordOf<HelpLink>;
 
 //
@@ -99,22 +99,22 @@ export type KernelInfoRecord = Immutable.RecordOf<KernelInfo>;
 //       don't have nullables and can rely on the proper types. The developer is
 //       required to pass a fully instantiated KernelInfo into
 //       makeKernelInfoRecord below.
-const kernelInfoRecordMaker: Immutable.RecordFactory<
-  KernelInfo
-> = Immutable.Record({
-  protocolVersion: "0.0.0", // E.g. 1.2.3
-  implementation: "",
-  implementationVersion: "",
-  banner: "",
-  helpLinks: Immutable.List(),
-  languageName: "",
-  languageVersion: "",
-  mimetype: "",
-  fileExtension: "",
-  pygmentsLexer: "",
-  codemirrorMode: "text/plain",
-  nbconvertExporter: ""
-});
+const kernelInfoRecordMaker: Immutable.RecordFactory<KernelInfo> = Immutable.Record(
+  {
+    protocolVersion: "0.0.0", // E.g. 1.2.3
+    implementation: "",
+    implementationVersion: "",
+    banner: "",
+    helpLinks: Immutable.List(),
+    languageName: "",
+    languageVersion: "",
+    mimetype: "",
+    fileExtension: "",
+    pygmentsLexer: "",
+    codemirrorMode: "text/plain",
+    nbconvertExporter: ""
+  }
+);
 
 export function makeKernelInfoRecord(kernelInfo: KernelInfo): KernelInfoRecord {
   return kernelInfoRecordMaker(kernelInfo);

@@ -98,8 +98,7 @@ export const semioticScatterplot = (
         <p>
           {metric2}: {hoveredDatapoint[metric2]}
         </p>
-        {metric3 &&
-          metric3 !== "none" && (
+        {metric3 && metric3 !== "none" && (
           <p>
             {metric3}: {hoveredDatapoint[metric3]}
           </p>

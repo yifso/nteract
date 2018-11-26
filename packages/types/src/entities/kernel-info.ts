@@ -2,8 +2,8 @@ import * as Immutable from "immutable";
 import { JSONType } from "@nteract/commutable";
 
 export type HelpLink = {
-  text: string,
-  url: string
+  text: string;
+  url: string;
 };
 export const makeHelpLinkRecord = Immutable.Record<HelpLink>({
   text: "",
@@ -26,21 +26,21 @@ export type KernelInfo = {
   // The second integer indicates minor version.  It is incremented when
   // there is any backward compatible change.
   // SPEC: protocol_version
-  protocolVersion: string, // E.g. 1.2.3
+  protocolVersion: string; // E.g. 1.2.3
 
   // The kernel implementation name
   // (e.g. 'ipython' for the IPython kernel)
-  implementation: string,
+  implementation: string;
 
   // Implementation version number.
   // The version number of the kernel's implementation
   // (e.g. IPython.__version__ for the IPython kernel)
   // SPEC: implementation_version
-  implementationVersion: string,
+  implementationVersion: string;
 
   // A banner of information about the kernel,
   // which may be displayed in console environments.
-  banner: string,
+  banner: string;
 
   // Optional: A list of dictionaries, each with keys 'text' and 'url'.
   // These can be displayed in the help menu for the UI.
@@ -48,7 +48,7 @@ export type KernelInfo = {
   //       actions, we allow this type to be an array of plain objects or the
   //       fully immutable variety
   // SPEC: help_links
-  helpLinks?: Array<HelpLink> | Immutable.List<HelpLinkRecord>,
+  helpLinks?: Array<HelpLink> | Immutable.List<HelpLinkRecord>;
 
   // This section is all from the language_info object, flattened to the top
   // level here
@@ -56,37 +56,37 @@ export type KernelInfo = {
   // Name of the programming language that the kernel implements.
   //  Kernel included in IPython returns 'python'.
   // SPEC: language_info.name
-  languageName: string, // language_info.name on the spec
+  languageName: string; // language_info.name on the spec
 
   // Language version number.
   // It is Python version number (e.g., '2.7.3') for the kernel
   // included in IPython.
   // SPEC: language_info.version
-  languageVersion: string,
+  languageVersion: string;
 
   // mimetype for script files in this language
   // SPEC: language_info.mimetype
-  mimetype: string,
+  mimetype: string;
 
   // Extension including the dot, e.g. '.py'
   // SPEC: language_info.file_extension
-  fileExtension: string,
+  fileExtension: string;
 
   // Pygments lexer, for highlighting
   // Only needed if it differs from the 'name' field.
   // SPEC: language_info.pygments_lexer
-  pygmentsLexer: string,
+  pygmentsLexer: string;
 
   // Codemirror mode, for for highlighting in the notebook.
   // Only needed if it differs from the 'name' field.
   // SPEC: language_info.codemirror_mode
-  codemirrorMode: string | Object | Immutable.Map<string, JSONType>,
+  codemirrorMode: string | Object | Immutable.Map<string, JSONType>;
 
   // Nbconvert exporter, if notebooks written with this kernel should
   // be exported with something other than the general 'script'
   // exporter.
   // SPEC: language_info.nbconvert_exporter
-  nbconvertExporter: string
+  nbconvertExporter: string;
 };
 
 export type KernelInfoRecord = Immutable.RecordOf<KernelInfo>;

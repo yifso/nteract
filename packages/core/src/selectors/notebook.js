@@ -71,12 +71,14 @@ export const codeCellIds = createSelector(
 export const metadata = (model: NotebookModel) =>
   model.notebook.get("metadata", Immutable.Map());
 
-export const githubUsername = createSelector([metadata], metadata =>
-  metadata.get("github_username", null)
+export const githubUsername = createSelector(
+  [metadata],
+  metadata => metadata.get("github_username", null)
 );
 
-export const gistId = createSelector([metadata], metadata =>
-  metadata.get("gist_id", null)
+export const gistId = createSelector(
+  [metadata],
+  metadata => metadata.get("gist_id", null)
 );
 
 export const notebook = (model: NotebookModel) => model.notebook;
@@ -88,18 +90,24 @@ export const isDirty = createSelector(
   (original, disk) => !Immutable.is(original, disk)
 );
 
-export const asJSON = createSelector([notebook], notebook => {
-  return commutable.toJS(notebook);
-});
+export const asJSON = createSelector(
+  [notebook],
+  notebook => {
+    return commutable.toJS(notebook);
+  }
+);
 
 // NOTE: This is called asString instead of toString so that REPLs
 //       don't think of this as the representation of this module
-export const asString = createSelector([asJSON], notebookJS => {
-  if (notebookJS) {
-    return commutable.stringifyNotebook(notebookJS);
+export const asString = createSelector(
+  [asJSON],
+  notebookJS => {
+    if (notebookJS) {
+      return commutable.stringifyNotebook(notebookJS);
+    }
+    return "";
   }
-  return "";
-});
+);
 
 const CODE_MIRROR_MODE_DEFAULT = "text";
 
@@ -112,6 +120,7 @@ export const codeMirrorMode = createSelector(
     CODE_MIRROR_MODE_DEFAULT
 );
 
-export const displayName = createSelector([metadata], metadata =>
-  metadata.getIn(["kernelspec", "display_name"], "")
+export const displayName = createSelector(
+  [metadata],
+  metadata => metadata.getIn(["kernelspec", "display_name"], "")
 );

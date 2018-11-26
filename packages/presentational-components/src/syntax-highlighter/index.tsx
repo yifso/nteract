@@ -8,11 +8,11 @@ import {
 // import syntax from "./theme";
 
 interface HighlighterProps {
-  language: string,
-  className: string,
-  children?: React.ReactNode,
-  theme?: "light" | "dark",
-};
+  language: string;
+  className: string;
+  children?: React.ReactNode;
+  theme?: "light" | "dark";
+}
 
 const Highlighter = (props: HighlighterProps) => {
   let language = props.language;

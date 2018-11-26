@@ -4,14 +4,14 @@ import { List, Map, Record } from "immutable";
 import { HostRef, KernelspecsRef } from "../refs";
 
 export type KernelspecProps = {
-  name: string,
-  argv: List<string>,
-  env: Map<string, any>,
-  interruptMode?: string | null,
-  language: string,
-  displayName: string,
-  resources: Map<string, any>,
-  metadata: Map<string, any>
+  name: string;
+  argv: List<string>;
+  env: Map<string, any>;
+  interruptMode?: string | null;
+  language: string;
+  displayName: string;
+  resources: Map<string, any>;
+  metadata: Map<string, any>;
 };
 
 export const makeKernelspec = Record<KernelspecProps>({
@@ -28,9 +28,9 @@ export const makeKernelspec = Record<KernelspecProps>({
 export type KernelspecRecord = RecordOf<KernelspecProps>;
 
 export type KernelspecsByRefRecordProps = {
-  hostRef?: HostRef | null,
-  defaultKernelName: string,
-  byName: Map<string, KernelspecRecord>
+  hostRef?: HostRef | null;
+  defaultKernelName: string;
+  byName: Map<string, KernelspecRecord>;
 };
 
 export type KernelspecsByRefRecord = RecordOf<KernelspecsByRefRecordProps>;
@@ -42,8 +42,8 @@ export const makeKernelspecsByRefRecord = Record<KernelspecsByRefRecordProps>({
 });
 
 export type KernelspecsRecordProps = {
-  byRef: Map<KernelspecsRef, RecordOf<KernelspecsByRefRecordProps>>,
-  refs: List<KernelspecsRef>
+  byRef: Map<KernelspecsRef, RecordOf<KernelspecsByRefRecordProps>>;
+  refs: List<KernelspecsRef>;
 };
 
 export const makeKernelspecsRecord = Record<KernelspecsRecordProps>({

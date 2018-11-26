@@ -173,8 +173,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                   return (
                     <Cell key={cellID}>
                       <Outputs>
-                        <pre
-                        >{`Cell Type "${cellType}" is not implemented`}</pre>
+                        <pre>{`Cell Type "${cellType}" is not implemented`}</pre>
                       </Outputs>
                     </Cell>
                   );
