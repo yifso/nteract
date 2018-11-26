@@ -1,4 +1,3 @@
-
 import * as Immutable from "immutable";
 
 import { CommunicationRecordProps } from "./communication";
@@ -14,28 +13,28 @@ export * from "./ids";
 export * from "./refs";
 
 type KernelspecMetadata = {
-  name: string,
-  display_name: string,
-  language: string
+  name: string;
+  display_name: string;
+  language: string;
 };
 
 // Note: this is the kernelspec as formed by spawnteract and jupyter kernelspecs --json
 export type KernelspecInfo = {
-  name: string,
-  spec: KernelspecMetadata
+  name: string;
+  spec: KernelspecMetadata;
 };
 
 export type LanguageInfoMetadata = {
-  name: string,
-  codemirror_mode?: string | Immutable.Map<string, any>,
-  file_extension?: string,
-  mimetype?: string,
-  pygments_lexer?: string
+  name: string;
+  codemirror_mode?: string | Immutable.Map<string, any>;
+  file_extension?: string;
+  mimetype?: string;
+  pygments_lexer?: string;
 };
 
 export type NotebookMetadata = {
-  kernelspec: KernelspecMetadata,
-  language_info: LanguageInfoMetadata
+  kernelspec: KernelspecMetadata;
+  language_info: LanguageInfoMetadata;
   // NOTE: We're not currently using orig_nbformat in nteract. Based on the comment
   // in the schema, we won't:
   //
@@ -50,9 +49,9 @@ export type NotebookMetadata = {
 };
 
 export type CommsRecordProps = {
-  targets: Immutable.Map<any, any>,
-  info: Immutable.Map<any, any>,
-  models: Immutable.Map<any, any>
+  targets: Immutable.Map<any, any>;
+  info: Immutable.Map<any, any>;
+  models: Immutable.Map<any, any>;
 };
 
 export type CommsRecord = Immutable.RecordOf<CommsRecordProps>;
@@ -69,10 +68,10 @@ const version: string = require("../package.json").version;
 export type ConfigState = Immutable.Map<string, any>;
 
 export type StateRecordProps = {
-  kernelRef?: KernelRef | null,
-  currentKernelspecsRef?: KernelspecsRef | null,
-  communication: Immutable.RecordOf<CommunicationRecordProps>,
-  entities: Immutable.RecordOf<EntitiesRecordProps>
+  kernelRef?: KernelRef | null;
+  currentKernelspecsRef?: KernelspecsRef | null;
+  communication: Immutable.RecordOf<CommunicationRecordProps>;
+  entities: Immutable.RecordOf<EntitiesRecordProps>;
 };
 
 export const makeStateRecord = Immutable.Record<StateRecordProps>({
@@ -83,15 +82,17 @@ export const makeStateRecord = Immutable.Record<StateRecordProps>({
 } as StateRecordProps);
 
 export type AppRecordProps = {
-  host: HostRecord,
-  githubToken?: string | null,
-  notificationSystem: { addNotification: (msg: { level?: "error" | "warning" }) => void },
-  isSaving: boolean,
-  lastSaved?: Date | null,
-  configLastSaved?: Date | null,
-  error: any,
+  host: HostRecord;
+  githubToken?: string | null;
+  notificationSystem: {
+    addNotification: (msg: { level?: "error" | "warning" }) => void;
+  };
+  isSaving: boolean;
+  lastSaved?: Date | null;
+  configLastSaved?: Date | null;
+  error: any;
   // The version number should be provided by an app on boot
-  version: string
+  version: string;
 };
 
 export const makeAppRecord = Immutable.Record<AppRecordProps>({
@@ -123,8 +124,8 @@ export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 
 export type AppState = {
-  app: AppRecord,
-  comms: CommsRecord,
-  config: ConfigState,
-  core: CoreRecord
+  app: AppRecord;
+  comms: CommsRecord;
+  config: ConfigState;
+  core: CoreRecord;
 };

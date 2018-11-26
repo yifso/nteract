@@ -10,16 +10,20 @@ import { MakePostMessageSubject } from "../../src/communication/message-subject"
  */
 function mockWindow(): Window {
   class MockWindow extends EventEmitter {
-    postMessage(message: any, targetOrigin: string, transfer: Transferable []): void {
-      this.emit('message', message);
+    postMessage(
+      message: any,
+      targetOrigin: string,
+      transfer: Transferable[]
+    ): void {
+      this.emit("message", message);
     }
   }
   // Unsafely cast the mock window to the Window type, so that we can use it
   // in functions which require a window.
-  return (new MockWindow()) as any as Window;
+  return (new MockWindow() as any) as Window;
 }
 
-describe('MakeMessageSubject', () => {
+describe("MakeMessageSubject", () => {
   // These subjects communicate with each other.
   let messageSubject1: Subject<string>;
   let messageSubject2: Subject<string>;
@@ -31,25 +35,25 @@ describe('MakeMessageSubject', () => {
     messageSubject2 = MakePostMessageSubject(window2, window1);
   });
 
-  it('communicates messages', async () => {
+  it("communicates messages", async () => {
     const receiver = messageSubject2.pipe(first()).toPromise();
-    messageSubject1.next('test');
-    expect(await receiver).toEqual('test');
+    messageSubject1.next("test");
+    expect(await receiver).toEqual("test");
   });
 
-  it('communicates closure', async () => {
-    const completionPromise = new Promise<Boolean>((resolve) => {
-      messageSubject2.subscribe({complete: () => resolve(true)});
+  it("communicates closure", async () => {
+    const completionPromise = new Promise<Boolean>(resolve => {
+      messageSubject2.subscribe({ complete: () => resolve(true) });
     });
     messageSubject1.complete();
     expect(await completionPromise).toEqual(true);
   });
 
-  it('communicates failure', async () => {
-    const errorPromise = new Promise<string>((resolve) => {
-      messageSubject2.subscribe({error: resolve});
+  it("communicates failure", async () => {
+    const errorPromise = new Promise<string>(resolve => {
+      messageSubject2.subscribe({ error: resolve });
     });
-    messageSubject1.error('error text');
-    expect(await errorPromise).toEqual(new Error('error text'));
+    messageSubject1.error("error text");
+    expect(await errorPromise).toEqual(new Error("error text"));
   });
 });

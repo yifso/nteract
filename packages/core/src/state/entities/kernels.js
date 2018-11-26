@@ -29,16 +29,16 @@ export type KernelNotStartedProps = {
 
 export type KernelNotStartedRecord = Immutable.RecordOf<KernelNotStartedProps>;
 
-export const makeKernelNotStartedRecord: Immutable.RecordFactory<
-  KernelNotStartedProps
-> = Immutable.Record({
-  kernelSpecName: null,
-  status: null,
-  type: "unknown",
-  cwd: ".",
-  channels: new Subject(),
-  info: null
-});
+export const makeKernelNotStartedRecord: Immutable.RecordFactory<KernelNotStartedProps> = Immutable.Record(
+  {
+    kernelSpecName: null,
+    status: null,
+    type: "unknown",
+    cwd: ".",
+    channels: new Subject(),
+    info: null
+  }
+);
 
 export type LocalKernelProps = {
   kernelSpecName: ?string,
@@ -58,20 +58,20 @@ export type LocalKernelProps = {
   connectionFile: ?string
 };
 
-export const makeLocalKernelRecord: Immutable.RecordFactory<
-  LocalKernelProps
-> = Immutable.Record({
-  type: "zeromq",
-  cwd: ".",
-  info: null,
-  kernelSpecName: null,
-  hostRef: null,
-  lastActivity: null,
-  channels: new Subject(),
-  status: null,
-  spawn: null,
-  connectionFile: null
-});
+export const makeLocalKernelRecord: Immutable.RecordFactory<LocalKernelProps> = Immutable.Record(
+  {
+    type: "zeromq",
+    cwd: ".",
+    info: null,
+    kernelSpecName: null,
+    hostRef: null,
+    lastActivity: null,
+    channels: new Subject(),
+    status: null,
+    spawn: null,
+    connectionFile: null
+  }
+);
 
 export type LocalKernelRecord = Immutable.RecordOf<LocalKernelProps>;
 
@@ -93,20 +93,20 @@ export type RemoteKernelProps = {
   id: ?KernelId
 };
 
-export const makeRemoteKernelRecord: Immutable.RecordFactory<
-  RemoteKernelProps
-> = Immutable.Record({
-  type: "websocket",
-  info: null,
-  cwd: ".",
-  id: null,
-  kernelSpecName: null,
-  hostRef: null,
-  lastActivity: null,
-  channels: new Subject(),
-  sessionId: null,
-  status: null
-});
+export const makeRemoteKernelRecord: Immutable.RecordFactory<RemoteKernelProps> = Immutable.Record(
+  {
+    type: "websocket",
+    info: null,
+    cwd: ".",
+    id: null,
+    kernelSpecName: null,
+    hostRef: null,
+    lastActivity: null,
+    channels: new Subject(),
+    sessionId: null,
+    status: null
+  }
+);
 
 export type RemoteKernelRecord = Immutable.RecordOf<RemoteKernelProps>;
 
@@ -119,8 +119,8 @@ export type KernelsRecordProps = {
   byRef: Immutable.Map<KernelRef, KernelRecord>
 };
 
-export const makeKernelsRecord: Immutable.RecordFactory<
-  KernelsRecordProps
-> = Immutable.Record({
-  byRef: Immutable.Map()
-});
+export const makeKernelsRecord: Immutable.RecordFactory<KernelsRecordProps> = Immutable.Record(
+  {
+    byRef: Immutable.Map()
+  }
+);

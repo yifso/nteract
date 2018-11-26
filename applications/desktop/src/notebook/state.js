@@ -21,11 +21,11 @@ export type DesktopNotebookProps = {
 
 export type DesktopNotebookRecord = Immutable.RecordOf<DesktopNotebookProps>;
 
-export const makeDesktopNotebookRecord: Immutable.RecordFactory<
-  DesktopNotebookProps
-> = Immutable.Record({
-  closingState: DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED
-});
+export const makeDesktopNotebookRecord: Immutable.RecordFactory<DesktopNotebookProps> = Immutable.Record(
+  {
+    closingState: DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED
+  }
+);
 
 export type DesktopNotebookAppState = AppState & {
   desktopNotebook: DesktopNotebookRecord

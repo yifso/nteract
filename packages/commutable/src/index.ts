@@ -33,7 +33,12 @@ export {
   makeExecuteResult
 } from "./outputs";
 
-export { makeRawCell, makeCodeCell, makeMarkdownCell, ImmutableCodeCell } from "./cells";
+export {
+  makeRawCell,
+  makeCodeCell,
+  makeMarkdownCell,
+  ImmutableCodeCell
+} from "./cells";
 
 export {
   toJS,

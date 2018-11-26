@@ -14,21 +14,21 @@ interface PromptProps {
    * Out[2]: 'woohoo'
    * ```
    *
-  */
-  counter: number | null,
+   */
+  counter: number | null;
   /**
    * Show that execution is currently happening related to this prompt
    */
-  running: boolean,
+  running: boolean;
   /**
    * Show that execution is queued up
    */
-  queued: boolean,
+  queued: boolean;
   /**
    * Create a prompt without the `[]`. Used with markdown cells.
    */
-  blank: boolean,
-};
+  blank: boolean;
+}
 
 /**
  * Generate what text goes inside the prompt based on the props to the prompt
@@ -45,7 +45,6 @@ export function promptText(props: PromptProps): string {
   }
   return "[ ]";
 }
-
 
 export class Prompt extends React.Component<PromptProps, {}> {
   static defaultProps = {

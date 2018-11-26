@@ -12,7 +12,7 @@ interface LogoProps {
   theme: "light" | "dark";
   height?: number;
   width?: number;
-};
+}
 
 const defaultWidth = 940;
 const defaultHeight = 274;

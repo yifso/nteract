@@ -12,10 +12,10 @@ interface Props {
   metadata: Metadata;
   mediaType: "application/geo+json";
   theme: string;
-};
+}
 
 type TileTheme = "dark" | "light";
-type TileLayer = { urlTemplate: string, layerOptions: object };
+type TileLayer = { urlTemplate: string; layerOptions: object };
 
 const MIMETYPE = "application/geo+json";
 
@@ -24,8 +24,8 @@ L.Icon.Default.imagePath = "../node_modules/leaflet/dist/images/";
 export function getLuma(el: HTMLElement): number {
   // https://en.wikipedia.org/wiki/Luma_(video)
   const style = window.getComputedStyle(el);
-  const [r, g, b] = style.backgroundColor!
-    .replace(/^(rgb|rgba)\(/, "")
+  const [r, g, b] = style
+    .backgroundColor!.replace(/^(rgb|rgba)\(/, "")
     .replace(/\)$/, "")
     .replace(/\s/g, "")
     .split(",");
@@ -65,7 +65,10 @@ export class GeoJSONTransform extends React.Component<Props> {
     this.map = L.map(this.el!);
     this.map.scrollWheelZoom.disable();
     const tileLayerOptions = this.getTileLayer();
-    this.tileLayer = L.tileLayer(tileLayerOptions!.urlTemplate, tileLayerOptions!.layerOptions).addTo(this.map);
+    this.tileLayer = L.tileLayer(
+      tileLayerOptions!.urlTemplate,
+      tileLayerOptions!.layerOptions
+    ).addTo(this.map);
     const geoJSON = this.props.data;
     this.geoJSONLayer = L.geoJSON(geoJSON).addTo(this.map);
     this.map.fitBounds(this.geoJSONLayer.getBounds());
@@ -85,7 +88,10 @@ export class GeoJSONTransform extends React.Component<Props> {
     if (prevProps.theme !== this.props.theme) {
       this.map.removeLayer(this.tileLayer);
       const tileLayerOptions = this.getTileLayer();
-      this.tileLayer = L.tileLayer(tileLayerOptions!.urlTemplate, tileLayerOptions!.layerOptions).addTo(this.map);
+      this.tileLayer = L.tileLayer(
+        tileLayerOptions!.urlTemplate,
+        tileLayerOptions!.layerOptions
+      ).addTo(this.map);
     }
     if (prevProps.data !== this.props.data) {
       const geoJSON = this.props.data;

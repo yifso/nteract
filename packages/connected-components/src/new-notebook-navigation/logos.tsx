@@ -23,12 +23,12 @@ import * as React from "react";
  */
 
 type WrapperProps = {
-  children: React.ReactNode,
-  outerProps?: any,
-  width?: number | string,
-  height?: number | string,
-  preserveAspectRatio?: string,
-  viewBox: string
+  children: React.ReactNode;
+  outerProps?: any;
+  width?: number | string;
+  height?: number | string;
+  preserveAspectRatio?: string;
+  viewBox: string;
 };
 
 export const SVGWrapper = (props: WrapperProps) => {

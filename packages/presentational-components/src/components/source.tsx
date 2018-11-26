@@ -3,10 +3,10 @@ import * as React from "react";
 import Highlighter from "../syntax-highlighter";
 
 export type SourceProps = {
-  language: string,
-  children: React.ReactNode[],
-  className: string,
-  theme: "light" | "dark"
+  language: string;
+  children: React.ReactNode[];
+  className: string;
+  theme: "light" | "dark";
 };
 
 export class Source extends React.Component<SourceProps> {

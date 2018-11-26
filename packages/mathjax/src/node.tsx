@@ -12,7 +12,7 @@ interface Props {
   inline: boolean;
   children: string;
   onRender?: Function;
-};
+}
 
 class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
   script?: HTMLScriptElement;
@@ -122,7 +122,7 @@ class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
       return;
     }
 
-    this.script.text  = text;
+    this.script.text = text;
   }
 
   render() {

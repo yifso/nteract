@@ -6,7 +6,7 @@ import { objectToReactElement, VDOMEl } from "./object-to-react";
 interface Props {
   mediaType: "application/vdom.v1+json";
   data: VDOMEl;
-};
+}
 
 // Provide object-to-react as an available helper on the library
 export { objectToReactElement };

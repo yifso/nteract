@@ -9,13 +9,13 @@ export type ContentCommunicationRecordProps = {
   error: ?Object
 };
 
-export const makeContentCommunicationRecord: Immutable.RecordFactory<
-  ContentCommunicationRecordProps
-> = Immutable.Record({
-  loading: false,
-  saving: false,
-  error: null
-});
+export const makeContentCommunicationRecord: Immutable.RecordFactory<ContentCommunicationRecordProps> = Immutable.Record(
+  {
+    loading: false,
+    saving: false,
+    error: null
+  }
+);
 
 export type ContentsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -24,8 +24,8 @@ export type ContentsCommunicationRecordProps = {
   >
 };
 
-export const makeContentsCommunicationRecord: Immutable.RecordFactory<
-  ContentsCommunicationRecordProps
-> = Immutable.Record({
-  byRef: Immutable.Map()
-});
+export const makeContentsCommunicationRecord: Immutable.RecordFactory<ContentsCommunicationRecordProps> = Immutable.Record(
+  {
+    byRef: Immutable.Map()
+  }
+);

@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface CellsProps {
   children: React.ReactNode;
-};
+}
 
 export const Cells = (props: CellsProps) => {
   return (

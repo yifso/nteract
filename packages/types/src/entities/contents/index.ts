@@ -25,7 +25,7 @@ export type ContentRecord =
   | DirectoryContentRecord;
 
 export type ContentsRecordProps = {
-  byRef: Immutable.Map<ContentRef, ContentRecord>
+  byRef: Immutable.Map<ContentRef, ContentRecord>;
 };
 
 export const makeContentsRecord = Immutable.Record<ContentsRecordProps>({

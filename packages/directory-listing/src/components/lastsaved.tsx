@@ -1,8 +1,8 @@
 import * as React from "react";
-import TimeAgo from "react-timeago"
+import TimeAgo from "react-timeago";
 
 type LastSavedProps = {
-  lastModified?: Date | null
+  lastModified?: Date | null;
 };
 
 export class LastSaved extends React.Component<LastSavedProps> {

@@ -17,7 +17,7 @@ const TooltipContent = (props: {
     x < 100
       ? ""
       : y < 100
-        ? `.tooltip-content:before {
+      ? `.tooltip-content:before {
     border-left: inherit;
     border-top: inherit;
     top: -8px;
@@ -31,7 +31,7 @@ const TooltipContent = (props: {
     position: absolute;
     z-index: 99;
   }`
-        : `.tooltip-content:before {
+      : `.tooltip-content:before {
     border-right: inherit;
     border-bottom: inherit;
     bottom: -8px;

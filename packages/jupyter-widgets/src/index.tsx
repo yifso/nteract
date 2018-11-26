@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Subject} from "rxjs";
+import { Subject } from "rxjs";
 
 // import { OuterShim } from "./outer-shim";
 
 type Props = {
-  data: { model_id: string },
-  channels: Subject<any>
+  data: { model_id: string };
+  channels: Subject<any>;
 };
 
 /**

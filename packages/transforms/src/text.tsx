@@ -2,8 +2,8 @@ import React from "react";
 import Ansi from "ansi-to-react";
 
 type Props = {
-  data: string,
-  mediaType: "text/plain"
+  data: string;
+  mediaType: "text/plain";
 };
 
 export default class TextDisplay extends React.PureComponent<Props, null> {

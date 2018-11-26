@@ -36,24 +36,24 @@ export type KernelspecsByRefRecordProps = {
 
 export type KernelspecsByRefRecord = RecordOf<KernelspecsByRefRecordProps>;
 
-export const makeKernelspecsByRefRecord: RecordFactory<
-  KernelspecsByRefRecordProps
-> = Record({
-  hostRef: null,
-  defaultKernelName: "python",
-  byName: Map()
-});
+export const makeKernelspecsByRefRecord: RecordFactory<KernelspecsByRefRecordProps> = Record(
+  {
+    hostRef: null,
+    defaultKernelName: "python",
+    byName: Map()
+  }
+);
 
 export type KernelspecsRecordProps = {
   byRef: Map<KernelspecsRef, RecordOf<KernelspecsByRefRecordProps>>,
   refs: List<KernelspecsRef>
 };
 
-export const makeKernelspecsRecord: RecordFactory<
-  KernelspecsRecordProps
-> = Record({
-  byRef: Map(),
-  refs: List()
-});
+export const makeKernelspecsRecord: RecordFactory<KernelspecsRecordProps> = Record(
+  {
+    byRef: Map(),
+    refs: List()
+  }
+);
 
 export type KernelSpecsRecord = RecordOf<KernelspecsRecordProps>;

@@ -2,8 +2,8 @@ import React from "react";
 import * as MathJax from "@nteract/mathjax";
 
 type Props = {
-  data: string,
-  mediaType: "text/latex"
+  data: string;
+  mediaType: "text/latex";
 };
 
 export default class LaTeX extends React.PureComponent<Props> {

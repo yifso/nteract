@@ -12,7 +12,7 @@ declare var MathJax: MathJaxObject | undefined;
 interface Props {
   src?: string;
   children: React.ReactNode;
-  didFinishTypeset?():void;
+  didFinishTypeset?(): void;
   onLoad?(): void;
   input: "ascii" | "tex";
   delay: number;
@@ -20,7 +20,7 @@ interface Props {
   loading: React.ReactNode;
   noGate: boolean;
   onError(err: Error): void;
-};
+}
 
 type State = MathJaxContextValue;
 
@@ -99,11 +99,14 @@ class Provider extends React.Component<Props, State> {
       }
     });
 
-    MathJax.Hub.Register.MessageHook("Math Processing Error", (message: string) => {
-      if (this.props.onError) {
-        this.props.onError(new Error(message));
+    MathJax.Hub.Register.MessageHook(
+      "Math Processing Error",
+      (message: string) => {
+        if (this.props.onError) {
+          this.props.onError(new Error(message));
+        }
       }
-    });
+    );
 
     if (this.props.onLoad) {
       this.props.onLoad();

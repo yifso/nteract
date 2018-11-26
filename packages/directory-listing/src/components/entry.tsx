@@ -6,7 +6,7 @@ import { Name } from "./name";
 import { LastSaved } from "./lastsaved";
 
 type EntryProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
 };
 
 export class Entry extends React.Component<EntryProps> {
@@ -17,12 +17,21 @@ export class Entry extends React.Component<EntryProps> {
   render() {
     return (
       <tr className="directory-entry">
-        {React.Children.map(this.props.children, (child) => {
+        {React.Children.map(this.props.children, child => {
           const childElement = child as React.ReactElement<any>;
           if (
-            areComponentsEqual(childElement.type as React.ComponentType<any>, Icon) ||
-            areComponentsEqual(childElement.type as React.ComponentType<any>, Name) ||
-            areComponentsEqual(childElement.type as React.ComponentType<any>, LastSaved)
+            areComponentsEqual(
+              childElement.type as React.ComponentType<any>,
+              Icon
+            ) ||
+            areComponentsEqual(
+              childElement.type as React.ComponentType<any>,
+              Name
+            ) ||
+            areComponentsEqual(
+              childElement.type as React.ComponentType<any>,
+              LastSaved
+            )
           ) {
             return React.cloneElement(childElement, {
               className:

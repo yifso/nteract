@@ -8,7 +8,7 @@ import { makeDocumentRecord } from "@nteract/core";
 describe("codeMirrorMode", () => {
   test("determines the right mode from the notebook metadata", () => {
     const mode = selectors.notebook.codeMirrorMode(
-        makeDocumentRecord({
+      makeDocumentRecord({
         notebook: dummyCommutable
       })
     );

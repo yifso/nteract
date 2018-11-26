@@ -3,21 +3,20 @@ import React from "react";
 import { cloneDeep } from "lodash";
 
 type Props = {
-  data: string | object,
-  mediaType: "application/vnd.plotly.v1+json"
+  data: string | object;
+  mediaType: "application/vnd.plotly.v1+json";
 };
-
 
 type ObjectType = object;
 
 interface FigureLayout extends ObjectType {
-  height?: string,
-  autosize?: boolean,
+  height?: string;
+  autosize?: boolean;
 }
 
 interface Figure extends ObjectType {
-  data: object,
-  layout: FigureLayout,
+  data: object;
+  layout: FigureLayout;
 }
 
 declare class PlotlyHTMLElement extends HTMLDivElement {
@@ -43,7 +42,7 @@ PlotlyNullTransform.defaultProps = {
 
 export class PlotlyTransform extends React.Component<Props> {
   plotDiv?: PlotlyHTMLElement | null;
-  Plotly!: { newPlot: Function, redraw: Function };
+  Plotly!: { newPlot: Function; redraw: Function };
 
   static MIMETYPE = MIMETYPE;
 

@@ -1,12 +1,12 @@
 import * as React from "react";
 
 interface InputProps {
-  children: React.ReactNode,
+  children: React.ReactNode;
   /**
    * Whether or not to render the children.
    */
-  hidden: boolean
-};
+  hidden: boolean;
+}
 
 export class Input extends React.Component<InputProps> {
   static defaultProps = {

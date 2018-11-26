@@ -13,9 +13,9 @@ import { AppState } from "@nteract/types";
 import { modalCss } from "./styles";
 
 type Props = {
-  appVersion?: string,
-  hostType?: string,
-  closeModal?: () => void
+  appVersion?: string;
+  hostType?: string;
+  closeModal?: () => void;
 };
 
 // We need to do this so that you can immediately `Escape` out of the dialog.

@@ -2,8 +2,8 @@ import * as React from "react";
 import Markdown from "@nteract/markdown";
 
 type Props = {
-  data: string,
-  mediaType: "text/markdown"
+  data: string;
+  mediaType: "text/markdown";
 };
 
 export default class MarkdownDisplay extends React.PureComponent<Props> {

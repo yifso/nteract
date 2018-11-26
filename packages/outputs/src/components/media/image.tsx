@@ -1,9 +1,9 @@
 import React from "react";
 
 type Props = {
-  data: string,
-  mediaType: "image/png" | "image/jpeg" | "image/gif",
-  metadata: any
+  data: string;
+  mediaType: "image/png" | "image/jpeg" | "image/gif";
+  metadata: any;
 };
 
 export function Image(props: Props) {
@@ -32,6 +32,6 @@ export function Image(props: Props) {
 }
 
 Image.defaultProps = {
-  data: '',
+  data: "",
   mediaType: "image/jpeg"
-}
+};

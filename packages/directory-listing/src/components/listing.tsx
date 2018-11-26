@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type ListingProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
 };
 
 export class Listing extends React.Component<ListingProps> {

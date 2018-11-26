@@ -82,12 +82,11 @@ export const semioticBarChart = (
             <p>
               {rAccessor}: {hoveredDatapoint[rAccessor]}
             </p>
-            {metric3 &&
-              metric3 !== "none" && (
-                <p>
-                  {metric3}: {hoveredDatapoint[metric3]}
-                </p>
-              )}
+            {metric3 && metric3 !== "none" && (
+              <p>
+                {metric3}: {hoveredDatapoint[metric3]}
+              </p>
+            )}
           </TooltipContent>
         );
       };
@@ -146,15 +145,14 @@ export const semioticBarChart = (
               .map(piece => piece[rAccessor])
               .reduce((total, value) => total + value, 0)}
           </p>
-          {metric3 &&
-            metric3 !== "none" && (
-              <p>
-                {metric3}:{" "}
-                {hoveredDatapoint.pieces
-                  .map(piece => piece[metric3])
-                  .reduce((total, value) => total + value, 0)}
-              </p>
-            )}
+          {metric3 && metric3 !== "none" && (
+            <p>
+              {metric3}:{" "}
+              {hoveredDatapoint.pieces
+                .map(piece => piece[metric3])
+                .reduce((total, value) => total + value, 0)}
+            </p>
+          )}
         </TooltipContent>
       );
     },

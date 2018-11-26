@@ -1,8 +1,8 @@
 import React from "react";
 
 type Props = {
-  data: string,
-  mediaType: "text/javascript"
+  data: string;
+  mediaType: "text/javascript";
 };
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {

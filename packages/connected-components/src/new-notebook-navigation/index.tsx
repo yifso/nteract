@@ -14,25 +14,23 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-  AppState,
-  KernelspecRecord,
-  KernelspecProps
-} from "@nteract/types";
+import { AppState, KernelspecRecord, KernelspecProps } from "@nteract/types";
 import * as Immutable from "immutable";
 
 import { default as Logo } from "./logos";
 
 export type AvailableNotebook = {
-  kernelspec: KernelspecRecord | KernelspecProps
+  kernelspec: KernelspecRecord | KernelspecProps;
 };
 
-export type AvailableNotebooks = Array<AvailableNotebook>| Immutable.List<AvailableNotebook>;
+export type AvailableNotebooks =
+  | Array<AvailableNotebook>
+  | Immutable.List<AvailableNotebook>;
 
 export const NewNotebook = (
   props: AvailableNotebook & {
-    href?: string,
-    onClick?: (ks: KernelspecRecord | KernelspecProps) => void
+    href?: string;
+    onClick?: (ks: KernelspecRecord | KernelspecProps) => void;
   }
 ) => {
   const onClick = () => {
@@ -164,20 +162,22 @@ const NotebookCollection = (props: { children: React.ReactNode }) => (
 );
 
 export const PureNewNotebookNavigation = (props: {
-  availableNotebooks: AvailableNotebooks,
-  onClick?: (ks: KernelspecRecord | KernelspecProps) => void
+  availableNotebooks: AvailableNotebooks;
+  onClick?: (ks: KernelspecRecord | KernelspecProps) => void;
 }) => (
   <React.Fragment>
     <div className="banner">
       <div>Start a new notebook</div>
       <NotebookCollection>
-        {(props.availableNotebooks as Array<AvailableNotebook>).map((an: AvailableNotebook) => (
-          <NewNotebook
-            kernelspec={an.kernelspec}
-            key={an.kernelspec.name}
-            onClick={props.onClick}
-          />
-        ))}
+        {(props.availableNotebooks as Array<AvailableNotebook>).map(
+          (an: AvailableNotebook) => (
+            <NewNotebook
+              kernelspec={an.kernelspec}
+              key={an.kernelspec.name}
+              onClick={props.onClick}
+            />
+          )
+        )}
       </NotebookCollection>
     </div>
     <style jsx>{`

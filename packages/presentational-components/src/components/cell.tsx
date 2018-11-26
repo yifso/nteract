@@ -4,23 +4,24 @@ interface CellProps {
   /**
    * Indicates if a cell is selected
    */
-  isSelected: boolean,
+  isSelected: boolean;
   /**
    * Indicates if hovering over a cell
    */
-  _hovered: boolean,
+  _hovered: boolean;
   /**
    * Style children when a cell is selected or hovered over
    */
-  children?: React.ReactNode
-};
+  children?: React.ReactNode;
+}
 
 /** @component */
 export const Cell = (props: CellProps): React.ReactNode => {
   const children = props.children;
 
   return (
-    <div className={`cell ${props.isSelected ? "focused" : ""} ${
+    <div
+      className={`cell ${props.isSelected ? "focused" : ""} ${
         props._hovered ? "overrideHover" : ""
       }`}
     >
