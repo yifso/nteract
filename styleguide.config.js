@@ -20,6 +20,10 @@ module.exports = {
   defaultExample: false,
   sections: [
     {
+      name: "Introduction",
+      content: "doc/components.md"
+    },
+    {
       name: "@nteract/presentational-components",
       components: "packages/presentational-components/src/components/*.tsx",
       propsParser: typescriptPropsParser
