@@ -41,7 +41,13 @@ const freezeReviver = <T extends JSONType>(_k: string, v: T) =>
 
 export type Notebook = v4.Notebook | v3.Notebook;
 
-// Expected usage of below is fromJS(parseNotebook(string|buffer))
+/**
+ * Converts a string representation of a notebook into a JSON representation.
+ * 
+ * @param notebookString A string representation of a notebook.
+ * 
+ * @returns A JSON representation of the same notebook.
+ */
 export const parseNotebook = (notebookString: string): Notebook =>
   JSON.parse(notebookString, freezeReviver);
 
@@ -78,7 +84,14 @@ export const fromJS = (
 
   throw new TypeError("This notebook format is not supported");
 };
-
+/**
+ * Converts an immutable representation of a notebook to a JSON representation of the
+ * notebook using the v4 of the nbformat specification.
+ * 
+ * @param immnb The immutable representation of a notebook.
+ * 
+ * @returns The JSON representation of a notebook.
+ */
 export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
   const minorVersion: null | number = immnb.get("nbformat_minor", null);
 
@@ -92,6 +105,12 @@ export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
   throw new TypeError("Only notebook formats 3 and 4 are supported!");
 };
 
-// Expected usage is stringifyNotebook(toJS(immutableNotebook))
+/**
+ * Converts a JSON representation of a notebook into a string representation.
+ * 
+ * @param notebook The JSON representation of a notebook.
+ * 
+ * @returns A string containing the notebook data.
+ */
 export const stringifyNotebook = (notebook: v4.Notebook) =>
   JSON.stringify(notebook, null, 2);
