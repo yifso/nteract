@@ -1,7 +1,6 @@
 /* @flow */
 import { hot } from "react-hot-loader";
 import * as React from "react";
-import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import { colors } from "./settings";
 import { semioticSettings } from "./charts/settings";
@@ -456,7 +455,6 @@ class DataResourceTransform extends React.Component<Props, State> {
             currentView={view}
           />
         </div>
-        <style jsx>{blueprintCSS}</style>
       </div>
     );
   }
