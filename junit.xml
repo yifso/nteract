@@ -1,0 +1,1136 @@
+<testsuites name="jest tests" tests="473" failures="0" time="10.682">
+  <testsuite name="EditorProvider" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="1.996" tests="3">
+    <testcase classname="EditorProvider can be constructed" name="EditorProvider can be constructed" time="0.244">
+    </testcase>
+    <testcase classname="EditorProvider onChange updates cell source" name="EditorProvider onChange updates cell source" time="0.021">
+    </testcase>
+    <testcase classname="EditorProvider onFocusChange can update editor focus" name="EditorProvider onFocusChange can update editor focus" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="Header Editor" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="2.043" tests="3">
+    <testcase classname="Header Editor renders correctly with no props" name="Header Editor renders correctly with no props" time="0.186">
+    </testcase>
+    <testcase classname="Header Editor renders a static view when not editable" name="Header Editor renders a static view when not editable" time="0.007">
+    </testcase>
+    <testcase classname="Header Editor renders correctly given header data" name="Header Editor renders correctly given header data" time="0.017">
+    </testcase>
+  </testsuite>
+  <testsuite name="Notebook" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="2.56" tests="2">
+    <testcase classname="Notebook accepts an Immutable.List of cells" name="Notebook accepts an Immutable.List of cells" time="0.024">
+    </testcase>
+    <testcase classname="Notebook accepts an Object of cells" name="Notebook accepts an Object of cells" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="Toolbar View" errors="0" failures="0" skipped="14" timestamp="2018-11-27T18:41:54" time="0.591" tests="22">
+    <testcase classname="Toolbar View should be able to render a toolbar" name="Toolbar View should be able to render a toolbar" time="0.086">
+    </testcase>
+    <testcase classname="Toolbar View clearOutputs can be clicked" name="Toolbar View clearOutputs can be clicked" time="0.038">
+    </testcase>
+    <testcase classname="Toolbar View toggleCellInputVisibility can be clicked" name="Toolbar View toggleCellInputVisibility can be clicked" time="0.023">
+    </testcase>
+    <testcase classname="Toolbar View toggleCellOutputVisibility can be clicked" name="Toolbar View toggleCellOutputVisibility can be clicked" time="0.023">
+    </testcase>
+    <testcase classname="Toolbar View toggleOutputExpaned can be clicked" name="Toolbar View toggleOutputExpaned can be clicked" time="0.022">
+    </testcase>
+    <testcase classname="Toolbar View changeCellType can be clicked" name="Toolbar View changeCellType can be clicked" time="0.018">
+    </testcase>
+    <testcase classname="Toolbar View shows &quot;convert to code cell&quot; menu entry for markdown type" name="Toolbar View shows &quot;convert to code cell&quot; menu entry for markdown type" time="0.012">
+    </testcase>
+    <testcase classname="Toolbar View shows &quot;convert to markdown cell&quot; menu entry for code type" name="Toolbar View shows &quot;convert to markdown cell&quot; menu entry for code type" time="0.014">
+    </testcase>
+    <testcase classname="toolbar provider Delete Cell works" name="toolbar provider Delete Cell works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider execute cell works" name="toolbar provider execute cell works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider clear outputs works" name="toolbar provider clear outputs works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Input Visibility works" name="toolbar provider change Input Visibility works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Output Visibility works" name="toolbar provider change Output Visibility works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Cell Type works" name="toolbar provider change Cell Type works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider toggle output expansion works" name="toolbar provider toggle output expansion works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider Delete Cell works" name="toolbar provider Delete Cell works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider execute cell works" name="toolbar provider execute cell works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider clear outputs works" name="toolbar provider clear outputs works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Input Visibility works" name="toolbar provider change Input Visibility works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Output Visibility works" name="toolbar provider change Output Visibility works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider change Cell Type works" name="toolbar provider change Cell Type works" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="toolbar provider toggle output expansion works" name="toolbar provider toggle output expansion works" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="NotebookApp" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="3.184" tests="3">
+    <testcase classname="NotebookApp accepts an Immutable.List of cells" name="NotebookApp accepts an Immutable.List of cells" time="0.013">
+    </testcase>
+    <testcase classname="NotebookApp keyDown detects a cell execution keypress" name="NotebookApp keyDown detects a cell execution keypress" time="0.006">
+    </testcase>
+    <testcase classname="NotebookApp keyDown detects a focus to next cell keypress" name="NotebookApp keyDown detects a focus to next cell keypress" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test NotebokRender snapshots" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="3.175" tests="3">
+    <testcase classname="Test NotebokRender snapshots accepts an Immutable.List of cells" name="Test NotebokRender snapshots accepts an Immutable.List of cells" time="0.029">
+    </testcase>
+    <testcase classname="Test NotebokRender snapshots accepts an Object of cells" name="Test NotebokRender snapshots accepts an Object of cells" time="0.007">
+    </testcase>
+    <testcase classname="Render server-side with renderToStaticMarkup html fragment shouldn&apos;t be empty" name="Render server-side with renderToStaticMarkup html fragment shouldn&apos;t be empty" time="0.066">
+    </testcase>
+  </testsuite>
+  <testsuite name="PureNotebookMenu " errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="3.336" tests="4">
+    <testcase classname="PureNotebookMenu  snapshots renders the default" name="PureNotebookMenu  snapshots renders the default" time="0.07">
+    </testcase>
+    <testcase classname="PureNotebookMenu  shallow renders the default" name="PureNotebookMenu  shallow renders the default" time="0.005">
+    </testcase>
+    <testcase classname="PureNotebookMenu  mount renders the default" name="PureNotebookMenu  mount renders the default" time="0.046">
+    </testcase>
+    <testcase classname="PureNotebookMenu  mount calls appropriate handlers on click" name="PureNotebookMenu  mount calls appropriate handlers on click" time="1.713">
+    </testcase>
+  </testsuite>
+  <testsuite name="DataExplorerNoMetadata" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:52" time="3.337" tests="2">
+    <testcase classname="DataExplorerNoMetadata creates a data explorer with metadata" name="DataExplorerNoMetadata creates a data explorer with metadata" time="0.042">
+    </testcase>
+    <testcase classname="DataExplorerMetadata creates a data explorer without metadata" name="DataExplorerMetadata creates a data explorer without metadata" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="MarkdownPreview " errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:54" time="1.161" tests="4">
+    <testcase classname="MarkdownPreview  can be rendered" name="MarkdownPreview  can be rendered" time="0.002">
+    </testcase>
+    <testcase classname="MarkdownPreview  toggles view mode with key events" name="MarkdownPreview  toggles view mode with key events" time="0.094">
+    </testcase>
+    <testcase classname="MarkdownPreview  navigates to the previous cell with the up arrow key" name="MarkdownPreview  navigates to the previous cell with the up arrow key" time="0.001">
+    </testcase>
+    <testcase classname="MarkdownPreview  navigates to the next cell with the down arrow key" name="MarkdownPreview  navigates to the next cell with the down arrow key" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="dispatchCreateCellAbove" errors="0" failures="0" skipped="1" timestamp="2018-11-27T18:41:54" time="0.757" tests="36">
+    <testcase classname="dispatchCreateCellAbove dispatches a CREATE_CELL_ABOVE with code action" name="dispatchCreateCellAbove dispatches a CREATE_CELL_ABOVE with code action" time="0.005">
+    </testcase>
+    <testcase classname="dispatchCreateCellBelow dispatches a CREATE_CELL_BELOW with code action" name="dispatchCreateCellBelow dispatches a CREATE_CELL_BELOW with code action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchCreateTextCellBelow dispatches a CREATE_CELL_BELOW with markdown action" name="dispatchCreateTextCellBelow dispatches a CREATE_CELL_BELOW with markdown action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchCreateCellBefore WARNING: DEPRECATED. Use createCellAbove() instead. dispatches a CREATE_CELL_BEFORE with code action" name="dispatchCreateCellBefore WARNING: DEPRECATED. Use createCellAbove() instead. dispatches a CREATE_CELL_BEFORE with code action" time="0.04">
+    </testcase>
+    <testcase classname="dispatchCreateCellAfter WARNING: DEPRECATED. Use createCellBelow() instead. dispatches a CREATE_CELL_AFTER with code action" name="dispatchCreateCellAfter WARNING: DEPRECATED. Use createCellBelow() instead. dispatches a CREATE_CELL_AFTER with code action" time="0.05">
+    </testcase>
+    <testcase classname="dispatchCreateTextCellAfter WARNING:DEPRECATED. dispatches a CREATE_CELL_AFTER with markdown action" name="dispatchCreateTextCellAfter WARNING:DEPRECATED. dispatches a CREATE_CELL_AFTER with markdown action" time="0.025">
+    </testcase>
+    <testcase classname="dispatchDeleteCell dispatches a DELETE_CELL on currently active cell" name="dispatchDeleteCell dispatches a DELETE_CELL on currently active cell" time="0.001">
+    </testcase>
+    <testcase classname="dispatchChangeCellToCode dispatches a CHANGE_CELL_TYPE with code action" name="dispatchChangeCellToCode dispatches a CHANGE_CELL_TYPE with code action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchChangeCellToText dispatches a CHANGE_CELL_TYPE with code action" name="dispatchChangeCellToText dispatches a CHANGE_CELL_TYPE with code action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchPasteCell dispatches a pasteCell action" name="dispatchPasteCell dispatches a pasteCell action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchCutCell dispatches a cutCell action" name="dispatchCutCell dispatches a cutCell action" time="0">
+    </testcase>
+    <testcase classname="dispatchCopyCell dispatches a copyCell action" name="dispatchCopyCell dispatches a copyCell action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchSetTheme dispatches a SET_CONFIG_AT_KEY action" name="dispatchSetTheme dispatches a SET_CONFIG_AT_KEY action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchSetCursorBlink dispatches a SET_CONFIG_AT_KEY action" name="dispatchSetCursorBlink dispatches a SET_CONFIG_AT_KEY action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchLoadConfig dispatches a LOAD_CONFIG action" name="dispatchLoadConfig dispatches a LOAD_CONFIG action" time="0">
+    </testcase>
+    <testcase classname="dispatchZoomOut executes zoom out" name="dispatchZoomOut executes zoom out" time="0.001">
+    </testcase>
+    <testcase classname="dispatchZoomIn executes zoom in" name="dispatchZoomIn executes zoom in" time="0.001">
+    </testcase>
+    <testcase classname="dispatchZoomReset executes zoom reset" name="dispatchZoomReset executes zoom reset" time="0">
+    </testcase>
+    <testcase classname="dispatchRestartKernel dispatches restart kernel with supplied outputHandling" name="dispatchRestartKernel dispatches restart kernel with supplied outputHandling" time="0.001">
+    </testcase>
+    <testcase classname="dispatchInterruptKernel dispatches INTERRUPT_KERNEL actions" name="dispatchInterruptKernel dispatches INTERRUPT_KERNEL actions" time="0.001">
+    </testcase>
+    <testcase classname="dispatchKillKernel dispatches KILL_KERNEL actions" name="dispatchKillKernel dispatches KILL_KERNEL actions" time="0.001">
+    </testcase>
+    <testcase classname="dispatchClearAll dispatches CLEAR_ALL_OUTPUTS actions" name="dispatchClearAll dispatches CLEAR_ALL_OUTPUTS actions" time="0.001">
+    </testcase>
+    <testcase classname="dispatchRunAllBelow runs all code cells below the focused cell" name="dispatchRunAllBelow runs all code cells below the focused cell" time="0">
+    </testcase>
+    <testcase classname="dispatchRunAll dispatches executeAllCells action" name="dispatchRunAll dispatches executeAllCells action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchUnhideAll " name="dispatchUnhideAll " time="0.001">
+    </testcase>
+    <testcase classname="dispatchPublishUserGist dispatches setUserGithub and publishes gist" name="dispatchPublishUserGist dispatches setUserGithub and publishes gist" time="0">
+    </testcase>
+    <testcase classname="dispatchNewKernel dispatches LAUNCH_KERNEL action" name="dispatchNewKernel dispatches LAUNCH_KERNEL action" time="0.004">
+    </testcase>
+    <testcase classname="dispatchSave sends as SAVE request if given a filename" name="dispatchSave sends as SAVE request if given a filename" time="0.001">
+    </testcase>
+    <testcase classname="dispatchSaveAs dispatches SAVE_AS action" name="dispatchSaveAs dispatches SAVE_AS action" time="0">
+    </testcase>
+    <testcase classname="dispatchLoad dispatches LOAD action" name="dispatchLoad dispatches LOAD action" time="0.001">
+    </testcase>
+    <testcase classname="dispatchNewNotebook dispatches a NEW_NOTEBOOK action" name="dispatchNewNotebook dispatches a NEW_NOTEBOOK action" time="0.001">
+    </testcase>
+    <testcase classname="initMenuHandlers registers the menu events" name="initMenuHandlers registers the menu events" time="0.022">
+    </testcase>
+    <testcase classname="triggerWindowRefresh does nothing if no filename is given" name="triggerWindowRefresh does nothing if no filename is given" time="0">
+    </testcase>
+    <testcase classname="triggerWindowRefresh sends a SAVE_AS action if given filename" name="triggerWindowRefresh sends a SAVE_AS action if given filename" time="0">
+    </testcase>
+    <testcase classname="exportPDF it notifies a user upon successful write" name="exportPDF it notifies a user upon successful write" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="storeToPDF triggers notification when not saved" name="storeToPDF triggers notification when not saved" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Vega2" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.817" tests="6">
+    <testcase classname="Vega2 renders VegaEmbed with embedMode vega" name="Vega2 renders VegaEmbed with embedMode vega" time="0.01">
+    </testcase>
+    <testcase classname="Vega3 renders VegaEmbed with embedMode vega" name="Vega3 renders VegaEmbed with embedMode vega" time="0.002">
+    </testcase>
+    <testcase classname="VegaLite1 renders VegaEmbed with embedMode vega-lite" name="VegaLite1 renders VegaEmbed with embedMode vega-lite" time="0.001">
+    </testcase>
+    <testcase classname="VegaLite2 renders VegaEmbed with embedMode vega-lite" name="VegaLite2 renders VegaEmbed with embedMode vega-lite" time="0.002">
+    </testcase>
+    <testcase classname="VegaEmbed embeds vega" name="VegaEmbed embeds vega" time="0.051">
+    </testcase>
+    <testcase classname="VegaEmbed embeds vega and handles updates" name="VegaEmbed embeds vega and handles updates" time="0.031">
+    </testcase>
+  </testsuite>
+  <testsuite name="HTML" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.617" tests="13">
+    <testcase classname="HTML renders direct HTML" name="HTML renders direct HTML" time="0.054">
+    </testcase>
+    <testcase classname="HTML updates the underlying HTML when data changes" name="HTML updates the underlying HTML when data changes" time="0.008">
+    </testcase>
+    <testcase classname="&lt;Json /&gt; renders JSON data" name="&lt;Json /&gt; renders JSON data" time="0.037">
+    </testcase>
+    <testcase classname="&lt;Json /&gt; updates the theme if it changes" name="&lt;Json /&gt; updates the theme if it changes" time="0.01">
+    </testcase>
+    <testcase classname="&lt;SVG /&gt; renders SVG data" name="&lt;SVG /&gt; renders SVG data" time="0.014">
+    </testcase>
+    <testcase classname="Markdown Should render markdown" name="Markdown Should render markdown" time="0.02">
+    </testcase>
+    <testcase classname="LaTeX Should render LaTeX" name="LaTeX Should render LaTeX" time="0.012">
+    </testcase>
+    <testcase classname="Plain Should render markdown" name="Plain Should render markdown" time="0.005">
+    </testcase>
+    <testcase classname="JavaScript renders contextual div tag" name="JavaScript renders contextual div tag" time="0.005">
+    </testcase>
+    <testcase classname="JavaScript executes the Media.JavaScript" name="JavaScript executes the Media.JavaScript" time="0.001">
+    </testcase>
+    <testcase classname="JavaScript creates a nice little error area" name="JavaScript creates a nice little error area" time="0.003">
+    </testcase>
+    <testcase classname="JavaScript creates a nice little error area with a stack" name="JavaScript creates a nice little error area with a stack" time="0.028">
+    </testcase>
+    <testcase classname="JavaScript handles updates by running again" name="JavaScript handles updates by running again" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="CellCreatorView" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.483" tests="11">
+    <testcase classname="CellCreatorView can be constructed" name="CellCreatorView can be constructed" time="0.004">
+    </testcase>
+    <testcase classname="CellCreatorView creates cell creator buttons if no cells exist" name="CellCreatorView creates cell creator buttons if no cells exist" time="0.006">
+    </testcase>
+    <testcase classname="CellCreatorView has create text cell button" name="CellCreatorView has create text cell button" time="0.003">
+    </testcase>
+    <testcase classname="CellCreatorView has create code cell button" name="CellCreatorView has create code cell button" time="0.002">
+    </testcase>
+    <testcase classname="CellCreatorView clicking text cell button invokes createCell" name="CellCreatorView clicking text cell button invokes createCell" time="0.003">
+    </testcase>
+    <testcase classname="CellCreatorView clicking code cell button invokes createCell" name="CellCreatorView clicking code cell button invokes createCell" time="0.002">
+    </testcase>
+    <testcase classname="CellCreatorProvider can be constructed" name="CellCreatorProvider can be constructed" time="0.033">
+    </testcase>
+    <testcase classname="CellCreatorProvider createCell can create text cell" name="CellCreatorProvider createCell can create text cell" time="0.01">
+    </testcase>
+    <testcase classname="CellCreatorProvider createCell can create code cell" name="CellCreatorProvider createCell can create code cell" time="0.008">
+    </testcase>
+    <testcase classname="CellCreatorProvider createCell can add a cell above the current one" name="CellCreatorProvider createCell can add a cell above the current one" time="0.009">
+    </testcase>
+    <testcase classname="CellCreatorProvider createCell creates a new cell if cell has no id" name="CellCreatorProvider createCell creates a new cell if cell has no id" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="reduceOutputs" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.382" tests="49">
+    <testcase classname="reduceOutputs puts new outputs at the end by default" name="reduceOutputs puts new outputs at the end by default" time="0.004">
+    </testcase>
+    <testcase classname="reduceOutputs handles the case of a single stream output" name="reduceOutputs handles the case of a single stream output" time="0.001">
+    </testcase>
+    <testcase classname="reduceOutputs merges streams of text" name="reduceOutputs merges streams of text" time="0.005">
+    </testcase>
+    <testcase classname="reduceOutputs keeps respective streams together" name="reduceOutputs keeps respective streams together" time="0.003">
+    </testcase>
+    <testcase classname="setNotebookCheckpoint stores saved notebook" name="setNotebookCheckpoint stores saved notebook" time="0.001">
+    </testcase>
+    <testcase classname="setLanguageInfo adds the metadata fields for the kernelspec and kernel_info" name="setLanguageInfo adds the metadata fields for the kernelspec and kernel_info" time="0.001">
+    </testcase>
+    <testcase classname="focusCell should set cellFocused to the appropriate cell ID" name="focusCell should set cellFocused to the appropriate cell ID" time="0.001">
+    </testcase>
+    <testcase classname="focusNextCell should focus the next cell if not the last cell" name="focusNextCell should focus the next cell if not the last cell" time="0.001">
+    </testcase>
+    <testcase classname="focusNextCell should return same state if last cell and createCellIfUndefined is false" name="focusNextCell should return same state if last cell and createCellIfUndefined is false" time="0.001">
+    </testcase>
+    <testcase classname="focusNextCell should create and focus a new code cell if last cell and last cell is code cell" name="focusNextCell should create and focus a new code cell if last cell and last cell is code cell" time="0.002">
+    </testcase>
+    <testcase classname="focusNextCell should create and focus a new markdown cell if last cell and last cell is markdown cell" name="focusNextCell should create and focus a new markdown cell if last cell and last cell is markdown cell" time="0.001">
+    </testcase>
+    <testcase classname="focusPreviousCell should focus the previous cell" name="focusPreviousCell should focus the previous cell" time="0.001">
+    </testcase>
+    <testcase classname="focusCellEditor should set editorFocused to the appropriate cell ID" name="focusCellEditor should set editorFocused to the appropriate cell ID" time="0">
+    </testcase>
+    <testcase classname="focusNextCellEditor should focus the editor of the next cell" name="focusNextCellEditor should focus the editor of the next cell" time="0.001">
+    </testcase>
+    <testcase classname="focusPreviousCellEditor should focus the editor of the previous cell" name="focusPreviousCellEditor should focus the editor of the previous cell" time="0.001">
+    </testcase>
+    <testcase classname="updateExecutionCount updates the execution count by id" name="updateExecutionCount updates the execution count by id" time="0.001">
+    </testcase>
+    <testcase classname="moveCell should swap the first and last cell appropriately" name="moveCell should swap the first and last cell appropriately" time="0.001">
+    </testcase>
+    <testcase classname="moveCell should move a cell above another when asked" name="moveCell should move a cell above another when asked" time="0.001">
+    </testcase>
+    <testcase classname="moveCell should move a cell above another when asked" name="moveCell should move a cell above another when asked" time="0.002">
+    </testcase>
+    <testcase classname="removeCell DEPRECATION WARNING: removeCell() will be deprecated soon, please use deleteCell() instead. should remove a cell given an ID" name="removeCell DEPRECATION WARNING: removeCell() will be deprecated soon, please use deleteCell() instead. should remove a cell given an ID" time="0.011">
+    </testcase>
+    <testcase classname="deleteCell should delete a cell given an ID" name="deleteCell should delete a cell given an ID" time="0.001">
+    </testcase>
+    <testcase classname="clearOutputs should clear outputs list" name="clearOutputs should clear outputs list" time="0.001">
+    </testcase>
+    <testcase classname="clearOutputs doesn&apos;t clear outputs on markdown cells" name="clearOutputs doesn&apos;t clear outputs on markdown cells" time="0.001">
+    </testcase>
+    <testcase classname="createCellBelow creates a brand new cell after the given id" name="createCellBelow creates a brand new cell after the given id" time="0.001">
+    </testcase>
+    <testcase classname="createCellAbove creates a new cell before the given id" name="createCellAbove creates a new cell before the given id" time="0.001">
+    </testcase>
+    <testcase classname="createCellAfter WARNING:DEPRECATED. Use createCellBelow() instead. Creates a brand new cell after the given id" name="createCellAfter WARNING:DEPRECATED. Use createCellBelow() instead. Creates a brand new cell after the given id" time="0.018">
+    </testcase>
+    <testcase classname="createCellBefore WARNING:DEPRECATED. sue createCellAbove() instead. Creates a new cell before the given id" name="createCellBefore WARNING:DEPRECATED. sue createCellAbove() instead. Creates a new cell before the given id" time="0.018">
+    </testcase>
+    <testcase classname="newCellAppend appends a new code cell at the end" name="newCellAppend appends a new code cell at the end" time="0.001">
+    </testcase>
+    <testcase classname="updateSource updates the source of the cell" name="updateSource updates the source of the cell" time="0.001">
+    </testcase>
+    <testcase classname="overwriteMetadataField overwrites notebook metadata appropriately" name="overwriteMetadataField overwrites notebook metadata appropriately" time="0.001">
+    </testcase>
+    <testcase classname="deleteMetadataField deletes notebook metadata appropriately" name="deleteMetadataField deletes notebook metadata appropriately" time="0.002">
+    </testcase>
+    <testcase classname="toggleCellOutputVisibility changes the visibility on a single cell" name="toggleCellOutputVisibility changes the visibility on a single cell" time="0">
+    </testcase>
+    <testcase classname="toggleCellInputVisibility changes the input visibility on a single cell" name="toggleCellInputVisibility changes the input visibility on a single cell" time="0">
+    </testcase>
+    <testcase classname="clearOutputs clears out cell outputs" name="clearOutputs clears out cell outputs" time="0.001">
+    </testcase>
+    <testcase classname="updateCellStatus updates cell status" name="updateCellStatus updates cell status" time="0">
+    </testcase>
+    <testcase classname="setLanguageInfo sets the language object" name="setLanguageInfo sets the language object" time="0.001">
+    </testcase>
+    <testcase classname="copyCell copies a cell" name="copyCell copies a cell" time="0.003">
+    </testcase>
+    <testcase classname="cutCell cuts a cell" name="cutCell cuts a cell" time="0.001">
+    </testcase>
+    <testcase classname="pasteCell pastes a cell" name="pasteCell pastes a cell" time="0.006">
+    </testcase>
+    <testcase classname="changeCellType converts code cell to markdown cell" name="changeCellType converts code cell to markdown cell" time="0.001">
+    </testcase>
+    <testcase classname="changeCellType converts markdown cell to code cell" name="changeCellType converts markdown cell to code cell" time="0.001">
+    </testcase>
+    <testcase classname="changeCellType does nothing if cell type is same" name="changeCellType does nothing if cell type is same" time="0">
+    </testcase>
+    <testcase classname="toggleOutputExpansion changes outputExpanded set" name="toggleOutputExpansion changes outputExpanded set" time="0.001">
+    </testcase>
+    <testcase classname="appendOutput appends outputs" name="appendOutput appends outputs" time="0.002">
+    </testcase>
+    <testcase classname="appendOutput appends output and tracks display IDs" name="appendOutput appends output and tracks display IDs" time="0.001">
+    </testcase>
+    <testcase classname="updateDisplay updates all displays which use the keypath" name="updateDisplay updates all displays which use the keypath" time="0.002">
+    </testcase>
+    <testcase classname="cleanCellTransient cleans out keyPaths that reference a particular cell ID" name="cleanCellTransient cleans out keyPaths that reference a particular cell ID" time="0.007">
+    </testcase>
+    <testcase classname="sendExecuteRequest cleans up the outputs, pagers, and status" name="sendExecuteRequest cleans up the outputs, pagers, and status" time="0.001">
+    </testcase>
+    <testcase classname="acceptPayloadMessage processes jupyter payload message types" name="acceptPayloadMessage processes jupyter payload message types" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Routes util tests" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.689" tests="3">
+    <testcase classname="Routes util tests returns isDir true" name="Routes util tests returns isDir true" time="0.003">
+    </testcase>
+    <testcase classname="Routes util tests returns isDir false" name="Routes util tests returns isDir false" time="0">
+    </testcase>
+    <testcase classname="Routes util tests treats empty path as dir path" name="Routes util tests treats empty path as dir path" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="editor.completions CodeMirror callback" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="0.937" tests="7">
+    <testcase classname="editor.completions CodeMirror callback eventually calls complete.codeComplete" name="editor.completions CodeMirror callback eventually calls complete.codeComplete" time="0.269">
+    </testcase>
+    <testcase classname="editor.completions CodeMirror callback collapses multiple calls into one via debouncing" name="editor.completions CodeMirror callback collapses multiple calls into one via debouncing" time="0.021">
+    </testcase>
+    <testcase classname="editor.completions CodeMirror callback can opt out of debouncing my mutating debounceNextCompletionRequest" name="editor.completions CodeMirror callback can opt out of debouncing my mutating debounceNextCompletionRequest" time="0.012">
+    </testcase>
+    <testcase classname="editor.completions CodeMirror callback debounceNextCompletionRequest discards queued debounced events" name="editor.completions CodeMirror callback debounceNextCompletionRequest discards queued debounced events" time="0.009">
+    </testcase>
+    <testcase classname="editor.completions CodeMirror callback doesn&apos;t call complete.codeComplete when completion property is unset" name="editor.completions CodeMirror callback doesn&apos;t call complete.codeComplete when completion property is unset" time="0.011">
+    </testcase>
+    <testcase classname="Editor handles cursor blinkery changes" name="Editor handles cursor blinkery changes" time="0.014">
+    </testcase>
+    <testcase classname="tooltip handles tooltip" name="tooltip handles tooltip" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="DraggableCell" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.355" tests="1">
+    <testcase classname="DraggableCell can be rendered" name="DraggableCell can be rendered" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="closeNotebookEpic" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.412" tests="6">
+    <testcase classname="closeNotebookEpic when notebook is dirty, prompts user to abort and allows continuing" name="closeNotebookEpic when notebook is dirty, prompts user to abort and allows continuing" time="0.028">
+    </testcase>
+    <testcase classname="closeNotebookEpic when notebook is dirty, prompts user to abort and allows aborting, triggering IPC close-notebook-canceled for app-wide quit orchestration" name="closeNotebookEpic when notebook is dirty, prompts user to abort and allows aborting, triggering IPC close-notebook-canceled for app-wide quit orchestration" time="0.004">
+    </testcase>
+    <testcase classname="closeNotebookEpic kill kernels promptly continue when KILL_KERNEL is successful" name="closeNotebookEpic kill kernels promptly continue when KILL_KERNEL is successful" time="0.024">
+    </testcase>
+    <testcase classname="closeNotebookEpic kill kernels promptly continue when KILL_KERNEL fails" name="closeNotebookEpic kill kernels promptly continue when KILL_KERNEL fails" time="0.006">
+    </testcase>
+    <testcase classname="closeNotebookEpic kill kernels continue after a timeout period when no KILL_KERNEL result is received" name="closeNotebookEpic kill kernels continue after a timeout period when no KILL_KERNEL result is received" time="0.007">
+    </testcase>
+    <testcase classname="closeNotebookEpic update close progress state and trigger window.close" name="closeNotebookEpic update close progress state and trigger window.close" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="acquireKernelInfo" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:55" time="1.016" tests="4">
+    <testcase classname="acquireKernelInfo sends a kernel_info_request and processes kernel_info_reply" name="acquireKernelInfo sends a kernel_info_request and processes kernel_info_reply" time="0.116">
+    </testcase>
+    <testcase classname="watchExecutionStateEpic returns an Observable with an initial state of idle" name="watchExecutionStateEpic returns an Observable with an initial state of idle" time="0.004">
+    </testcase>
+    <testcase classname="restartKernelEpic work for outputHandling None" name="restartKernelEpic work for outputHandling None" time="0.008">
+    </testcase>
+    <testcase classname="restartKernelEpic work for outputHandling Restart and Run All" name="restartKernelEpic work for outputHandling Restart and Run All" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test S3 service" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.462" tests="5">
+    <testcase classname="Test S3 service getObject returns notebook content" name="Test S3 service getObject returns notebook content" time="0.013">
+    </testcase>
+    <testcase classname="Test S3 service listObjectsV2 correctly" name="Test S3 service listObjectsV2 correctly" time="0.009">
+    </testcase>
+    <testcase classname="Test S3 service strips base path from listObjectsV2 listings" name="Test S3 service strips base path from listObjectsV2 listings" time="0.008">
+    </testcase>
+    <testcase classname="Test S3 service deleteObject deletes the object" name="Test S3 service deleteObject deletes the object" time="0.007">
+    </testcase>
+    <testcase classname="Test S3 service uploadObject writes a file to s3 bucket" name="Test S3 service uploadObject writes a file to s3 bucket" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="epics" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.441" tests="2">
+    <testcase classname="epics is an array of epics" name="epics is an array of epics" time="0.01">
+    </testcase>
+    <testcase classname="retryAndEmitError returns the source observable, emitting an error action first" name="retryAndEmitError returns the source observable, emitting an error action first" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="remark-math" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.358" tests="19">
+    <testcase classname="remark-math must parse a math inline and a math block " name="remark-math must parse a math inline and a math block " time="0.029">
+    </testcase>
+    <testcase classname="remark-math must escape a dollar with backslash" name="remark-math must escape a dollar with backslash" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must escape all dollars with backslashes" name="remark-math must escape all dollars with backslashes" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must NOT escape a dollar with double backslashes" name="remark-math must NOT escape a dollar with double backslashes" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must not parse a raw starting dollar" name="remark-math must not parse a raw starting dollar" time="0.003">
+    </testcase>
+    <testcase classname="remark-math fooo must not parse a raw ending dollar" name="remark-math fooo must not parse a raw ending dollar" time="0.001">
+    </testcase>
+    <testcase classname="remark-math fooo must not parse allow inline to contain backticks" name="remark-math fooo must not parse allow inline to contain backticks" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must render a super factorial to a math block" name="remark-math must render a super factorial to a math block" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must render super factorial to a math inline" name="remark-math must render super factorial to a math inline" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must render a math block just after a pragraph" name="remark-math must render a math block just after a pragraph" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must parse inline math between double dollars" name="remark-math must parse inline math between double dollars" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must stringify" name="remark-math must stringify" time="0.004">
+    </testcase>
+    <testcase classname="remark-math must stringify math block child of blockquote" name="remark-math must stringify math block child of blockquote" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must parse math block with indent" name="remark-math must parse math block with indent" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must ignore everything just after opening/closing marker" name="remark-math must ignore everything just after opening/closing marker" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must not affect next block" name="remark-math must not affect next block" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must not set inlineMathDouble class" name="remark-math must not set inlineMathDouble class" time="0.001">
+    </testcase>
+    <testcase classname="remark-math must parse more complex math equations in math block" name="remark-math must parse more complex math equations in math block" time="0.002">
+    </testcase>
+    <testcase classname="remark-math must parse more complex math equations inline math" name="remark-math must parse more complex math equations inline math" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="GeoJSONTransform" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.414" tests="3">
+    <testcase classname="GeoJSONTransform renders a map" name="GeoJSONTransform renders a map" time="0.099">
+    </testcase>
+    <testcase classname="GeoJSONTransform updates the map" name="GeoJSONTransform updates the map" time="0.03">
+    </testcase>
+    <testcase classname="GeoJSONTransform picks an appropriate theme when unknown" name="GeoJSONTransform picks an appropriate theme when unknown" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="StatusBar" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.445" tests="3">
+    <testcase classname="StatusBar can render on a dummyNotebook" name="StatusBar can render on a dummyNotebook" time="0.004">
+    </testcase>
+    <testcase classname="StatusBar no update if an irrelevant prop has changed" name="StatusBar no update if an irrelevant prop has changed" time="0.004">
+    </testcase>
+    <testcase classname="StatusBar update if an irrelevant prop has changed" name="StatusBar update if an irrelevant prop has changed" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="extractNewKernel" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="0.36" tests="4">
+    <testcase classname="extractNewKernel extracts and launches the kernel from a notebook" name="extractNewKernel extracts and launches the kernel from a notebook" time="0.004">
+    </testcase>
+    <testcase classname="loadingEpic errors without a filename" name="loadingEpic errors without a filename" time="0.002">
+    </testcase>
+    <testcase classname="loadingEpic errors when file cant be read" name="loadingEpic errors when file cant be read" time="0.006">
+    </testcase>
+    <testcase classname="newNotebookEpic calls new Kernel after creating a new notebook" name="newNotebookEpic calls new Kernel after creating a new notebook" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="tildify" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.339" tests="4">
+    <testcase classname="tildify returns an empty string if given no path" name="tildify returns an empty string if given no path" time="0.003">
+    </testcase>
+    <testcase classname="tildify replaces the user directory with ~" name="tildify replaces the user directory with ~" time="0.001">
+    </testcase>
+    <testcase classname="setTitleFromAttributes sets the window title" name="setTitleFromAttributes sets the window title" time="0.006">
+    </testcase>
+    <testcase classname="createTitleFeed creates an observable that updates title attributes for modified notebook" name="createTitleFeed creates an observable that updates title attributes for modified notebook" time="0.012">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.43" tests="1">
+    <testcase classname=" styled blueprint jsx css will not trigger stylesheet errors" name=" styled blueprint jsx css will not trigger stylesheet errors" time="0.223">
+    </testcase>
+  </testsuite>
+  <testsuite name="launchKernelObservable" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:56" time="1.083" tests="4">
+    <testcase classname="launchKernelObservable returns an observable" name="launchKernelObservable returns an observable" time="0.002">
+    </testcase>
+    <testcase classname="launchKernelEpic throws an error if given a bad action" name="launchKernelEpic throws an error if given a bad action" time="0.01">
+    </testcase>
+    <testcase classname="launchKernelEpic calls launchKernelObservable if given the correct action" name="launchKernelEpic calls launchKernelObservable if given the correct action" time="0.037">
+    </testcase>
+    <testcase classname="launchKernelByNameEpic creates a LAUNCH_KERNEL action in response to a LAUNCH_KERNEL_BY_NAME action" name="launchKernelByNameEpic creates a LAUNCH_KERNEL action in response to a LAUNCH_KERNEL_BY_NAME action" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="rx-jupyter" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.414" tests="3">
+    <testcase classname="rx-jupyter exports kernels and kernelspecs" name="rx-jupyter exports kernels and kernelspecs" time="0.003">
+    </testcase>
+    <testcase classname="rx-jupyter apiVersion creates an AjaxObservable for getting the notebook server version" name="rx-jupyter apiVersion creates an AjaxObservable for getting the notebook server version" time="0.085">
+    </testcase>
+    <testcase classname="rx-jupyter shutdown  Creates an AjaxObservable for shutting down a notebook server" name="rx-jupyter shutdown  Creates an AjaxObservable for shutting down a notebook server" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="saveEpic" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.419" tests="2">
+    <testcase classname="saveEpic saves the file using the notebook in the state tree" name="saveEpic saves the file using the notebook in the state tree" time="0.011">
+    </testcase>
+    <testcase classname="saveAsEpic works when passed actions of type SAVE_AS" name="saveAsEpic works when passed actions of type SAVE_AS" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="codeMirrorMode" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.371" tests="1">
+    <testcase classname="codeMirrorMode determines the right mode from the notebook metadata" name="codeMirrorMode determines the right mode from the notebook metadata" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="kernels" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.399" tests="8">
+    <testcase classname="kernels get creates an AjaxObservable configured for getting a kernel by id" name="kernels get creates an AjaxObservable configured for getting a kernel by id" time="0.061">
+    </testcase>
+    <testcase classname="kernels list creates an AjaxObservable configured for listing kernels" name="kernels list creates an AjaxObservable configured for listing kernels" time="0.005">
+    </testcase>
+    <testcase classname="kernels start creates an AjaxObservable configured for starting a kernel" name="kernels start creates an AjaxObservable configured for starting a kernel" time="0.004">
+    </testcase>
+    <testcase classname="kernels kill creates an AjaxObservable configured for killing a kernel" name="kernels kill creates an AjaxObservable configured for killing a kernel" time="0.003">
+    </testcase>
+    <testcase classname="kernels interrupt creates an AjaxObservable configured for interrupting a kernel" name="kernels interrupt creates an AjaxObservable configured for interrupting a kernel" time="0.002">
+    </testcase>
+    <testcase classname="kernels restart creates an AjaxObservable configured for restarting a kernel" name="kernels restart creates an AjaxObservable configured for restarting a kernel" time="0.002">
+    </testcase>
+    <testcase classname="kernels formWebSocketURL creates websocket URLs that match the originating scheme" name="kernels formWebSocketURL creates websocket URLs that match the originating scheme" time="0.002">
+    </testcase>
+    <testcase classname="kernels formWebSocketURL creates websocket URLs that match the originating scheme and works with tokens" name="kernels formWebSocketURL creates websocket URLs that match the originating scheme and works with tokens" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="executeCell" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.363" tests="8">
+    <testcase classname="executeCell returns an executeCell action" name="executeCell returns an executeCell action" time="0.002">
+    </testcase>
+    <testcase classname="executeCellStream outright rejects a lack of channels.shell and iopub" name="executeCellStream outright rejects a lack of channels.shell and iopub" time="0.002">
+    </testcase>
+    <testcase classname="createExecuteCellStream errors if the kernel is not connected in create" name="createExecuteCellStream errors if the kernel is not connected in create" time="0.003">
+    </testcase>
+    <testcase classname="createExecuteCellStream doesnt complete but does push until abort action" name="createExecuteCellStream doesnt complete but does push until abort action" time="0.009">
+    </testcase>
+    <testcase classname="executeCellEpic Errors on a bad action" name="executeCellEpic Errors on a bad action" time="0.003">
+    </testcase>
+    <testcase classname="executeCellEpic Errors on an action where source not a string" name="executeCellEpic Errors on an action where source not a string" time="0.003">
+    </testcase>
+    <testcase classname="executeCellEpic Informs about disconnected kernels, allows reconnection" name="executeCellEpic Informs about disconnected kernels, allows reconnection" time="0.003">
+    </testcase>
+    <testcase classname="updateDisplayEpic handles update_display_data messages" name="updateDisplayEpic handles update_display_data messages" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="RichestMime" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.65" tests="2">
+    <testcase classname="RichestMime renders a mimebundle" name="RichestMime renders a mimebundle" time="0.005">
+    </testcase>
+    <testcase classname="RichestMime does not render unknown mimetypes" name="RichestMime does not render unknown mimetypes" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="save" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.291" tests="6">
+    <testcase classname="save should set isSaving to true" name="save should set isSaving to true" time="0.003">
+    </testcase>
+    <testcase classname="saveFailed should set isSaving to false" name="saveFailed should set isSaving to false" time="0.001">
+    </testcase>
+    <testcase classname="saveFulfilled should set isSaving to false" name="saveFulfilled should set isSaving to false" time="0.001">
+    </testcase>
+    <testcase classname="setNotificationSystem returns the same originalState if notificationSystem is undefined" name="setNotificationSystem returns the same originalState if notificationSystem is undefined" time="0">
+    </testcase>
+    <testcase classname="setNotificationSystem sets the notificationSystem if given" name="setNotificationSystem sets the notificationSystem if given" time="0.001">
+    </testcase>
+    <testcase classname="setGithubToken calls setGithubToken" name="setGithubToken calls setGithubToken" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="launchWebSocketKernelEpic" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.29" tests="2">
+    <testcase classname="launchWebSocketKernelEpic launches remote kernels" name="launchWebSocketKernelEpic launches remote kernels" time="0.007">
+    </testcase>
+    <testcase classname="interruptKernelEpic " name="interruptKernelEpic " time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="onBeforeUnloadOrReload" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:57" time="0.373" tests="5">
+    <testcase classname="onBeforeUnloadOrReload if we are not yet closing the notebook, should initiate closeNotebook and cancel close event" name="onBeforeUnloadOrReload if we are not yet closing the notebook, should initiate closeNotebook and cancel close event" time="0.005">
+    </testcase>
+    <testcase classname="onBeforeUnloadOrReload if we are in the process of closing the notebook, should continue to cancel close event" name="onBeforeUnloadOrReload if we are in the process of closing the notebook, should continue to cancel close event" time="0.001">
+    </testcase>
+    <testcase classname="onBeforeUnloadOrReload if we have completed closing the notebook, should not cancel close event" name="onBeforeUnloadOrReload if we have completed closing the notebook, should not cancel close event" time="0.001">
+    </testcase>
+    <testcase classname="initGlobalHandlers adds an unload property to the window object" name="initGlobalHandlers adds an unload property to the window object" time="0.001">
+    </testcase>
+    <testcase classname="initGlobalHandlers wires a listener for a reload msg from main process" name="initGlobalHandlers wires a listener for a reload msg from main process" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="LAUNCH_KERNEL reducers" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.276" tests="1">
+    <testcase classname="LAUNCH_KERNEL reducers set launching state" name="LAUNCH_KERNEL reducers set launching state" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="DisplayData" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.24" tests="1">
+    <testcase classname="DisplayData handles display_data messages" name="DisplayData handles display_data messages" time="0.03">
+    </testcase>
+  </testsuite>
+  <testsuite name="saveConfigOnChangeEpic" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.256" tests="1">
+    <testcase classname="saveConfigOnChangeEpic invokes a SAVE_CONFIG when the SET_CONFIG_AT_KEY action happens" name="saveConfigOnChangeEpic invokes a SAVE_CONFIG when the SET_CONFIG_AT_KEY action happens" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="completionRequest" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.244" tests="4">
+    <testcase classname="completionRequest creates a valid v5 message for complete_request" name="completionRequest creates a valid v5 message for complete_request" time="0.005">
+    </testcase>
+    <testcase classname="formChangeObject translates arguments to a nice Object" name="formChangeObject translates arguments to a nice Object" time="0.001">
+    </testcase>
+    <testcase classname="pick plucks the codemirror handle" name="pick plucks the codemirror handle" time="0.001">
+    </testcase>
+    <testcase classname="codeCompleteObservable handles code completion" name="codeCompleteObservable handles code completion" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="DropdownMenu" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.222" tests="1">
+    <testcase classname="DropdownMenu clicking dropdown content triggers the items callback and closes the menu" name="DropdownMenu clicking dropdown content triggers the items callback and closes the menu" time="0.052">
+    </testcase>
+  </testsuite>
+  <testsuite name="createSocket" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.294" tests="9">
+    <testcase classname="createSocket creates a JMP socket on the channel with identity" name="createSocket creates a JMP socket on the channel with identity" time="0.005">
+    </testcase>
+    <testcase classname="verifiedConnect verifiedConnect monitors the socket" name="verifiedConnect verifiedConnect monitors the socket" time="0.006">
+    </testcase>
+    <testcase classname="verifiedConnect verifiedConnect monitors the socket properly even on fast connect" name="verifiedConnect verifiedConnect monitors the socket properly even on fast connect" time="0.002">
+    </testcase>
+    <testcase classname="getUsername relies on environment variables for username with a specific ordering" name="getUsername relies on environment variables for username with a specific ordering" time="0.002">
+    </testcase>
+    <testcase classname="getUsername when no environment variables are set, use literally &apos;username&apos;, which
+      comes from the classic jupyter notebook" name="getUsername when no environment variables are set, use literally &apos;username&apos;, which
+      comes from the classic jupyter notebook" time="0.002">
+    </testcase>
+    <testcase classname="createMainChannelFromSockets basic creation" name="createMainChannelFromSockets basic creation" time="0.002">
+    </testcase>
+    <testcase classname="createMainChannelFromSockets simple one channel message passing from &apos;socket&apos; to channels" name="createMainChannelFromSockets simple one channel message passing from &apos;socket&apos; to channels" time="0.004">
+    </testcase>
+    <testcase classname="createMainChannelFromSockets handles multiple socket routing underneath" name="createMainChannelFromSockets handles multiple socket routing underneath" time="0.002">
+    </testcase>
+    <testcase classname="createMainChannelFromSockets propagates header information through" name="createMainChannelFromSockets propagates header information through" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Output" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.321" tests="4">
+    <testcase classname="Output handles stream data" name="Output handles stream data" time="0.013">
+    </testcase>
+    <testcase classname="Output handles errors/tracebacks" name="Output handles errors/tracebacks" time="0.002">
+    </testcase>
+    <testcase classname="Output handles display_data messages" name="Output handles display_data messages" time="0.001">
+    </testcase>
+    <testcase classname="Output handles an execute result message" name="Output handles an execute result message" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Output" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.258" tests="4">
+    <testcase classname="Output handles display data" name="Output handles display data" time="0.004">
+    </testcase>
+    <testcase classname="Output handles execute_component" name="Output handles execute_component" time="0.001">
+    </testcase>
+    <testcase classname="Output handles stream data" name="Output handles stream data" time="0.001">
+    </testcase>
+    <testcase classname="Output handles errors/tracebacks" name="Output handles errors/tracebacks" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="registerCommTarget" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.282" tests="3">
+    <testcase classname="registerCommTarget sets comm targets" name="registerCommTarget sets comm targets" time="0.005">
+    </testcase>
+    <testcase classname="comm reducers process comm_open and comm_message actions" name="comm reducers process comm_open and comm_message actions" time="0.002">
+    </testcase>
+    <testcase classname="comm reducers does a straight replacement for unknown comm messages" name="comm reducers does a straight replacement for unknown comm messages" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Display" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.404" tests="4">
+    <testcase classname="Display does not display when status is hidden" name="Display does not display when status is hidden" time="0.006">
+    </testcase>
+    <testcase classname="Display displays status when it is not hidden" name="Display displays status when it is not hidden" time="0.003">
+    </testcase>
+    <testcase classname="Display sets expanded cell style correctly" name="Display sets expanded cell style correctly" time="0.002">
+    </testcase>
+    <testcase classname="Display sets non expanded cell style correctly" name="Display sets non expanded cell style correctly" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="codeMirrorMode" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.22" tests="1">
+    <testcase classname="codeMirrorMode determines the right mode from the notebook metadata" name="codeMirrorMode determines the right mode from the notebook metadata" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="downloadString" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.246" tests="1">
+    <testcase classname="downloadString calls FileSaver.saveAs with notebook and filename" name="downloadString calls FileSaver.saveAs with notebook and filename" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="MakeMessageSubject" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.254" tests="3">
+    <testcase classname="MakeMessageSubject communicates messages" name="MakeMessageSubject communicates messages" time="0.005">
+    </testcase>
+    <testcase classname="MakeMessageSubject communicates closure" name="MakeMessageSubject communicates closure" time="0.001">
+    </testcase>
+    <testcase classname="MakeMessageSubject communicates failure" name="MakeMessageSubject communicates failure" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="richestMimetype" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:58" time="0.24" tests="3">
+    <testcase classname="richestMimetype picks the richest of the mimetypes from a bundle with defaults" name="richestMimetype picks the richest of the mimetypes from a bundle with defaults" time="0.004">
+    </testcase>
+    <testcase classname="richestMimetype falls back to a simpler mimetype if a transform is not available" name="richestMimetype falls back to a simpler mimetype if a transform is not available" time="0.001">
+    </testcase>
+    <testcase classname="transforms is a collection of default transforms that provide React components" name="transforms is a collection of default transforms that provide React components" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="JsonDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.185" tests="3">
+    <testcase classname="JsonDisplay renders a &lt;JSONTree /&gt; component" name="JsonDisplay renders a &lt;JSONTree /&gt; component" time="0.004">
+    </testcase>
+    <testcase classname="JsonDisplay should not expand json tree by default" name="JsonDisplay should not expand json tree by default" time="0.002">
+    </testcase>
+    <testcase classname="JsonDisplay should expand json tree if expanded metadata is true" name="JsonDisplay should expand json tree if expanded metadata is true" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="stream output" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.235" tests="12">
+    <testcase classname="stream output can be converted from nbformat" name="stream output can be converted from nbformat" time="0.002">
+    </testcase>
+    <testcase classname="stream output can be converted from jupyter messages" name="stream output can be converted from jupyter messages" time="0.001">
+    </testcase>
+    <testcase classname="display_data output can be converted from nbformat" name="display_data output can be converted from nbformat" time="0.003">
+    </testcase>
+    <testcase classname="display_data output can be converted from jupyter messages" name="display_data output can be converted from jupyter messages" time="0.001">
+    </testcase>
+    <testcase classname="display_data output has default values" name="display_data output has default values" time="0">
+    </testcase>
+    <testcase classname="execute_result output can be converted from nbformat" name="execute_result output can be converted from nbformat" time="0.001">
+    </testcase>
+    <testcase classname="execute_result output can be converted from jupyter messages" name="execute_result output can be converted from jupyter messages" time="0.001">
+    </testcase>
+    <testcase classname="error output can be converted from nbformat" name="error output can be converted from nbformat" time="0.001">
+    </testcase>
+    <testcase classname="error output can be converted from jupyter messages" name="error output can be converted from jupyter messages" time="0">
+    </testcase>
+    <testcase classname="code cell can be converted from nbformat" name="code cell can be converted from nbformat" time="0.001">
+    </testcase>
+    <testcase classname="markdown cell can be converted from nbformat" name="markdown cell can be converted from nbformat" time="0.001">
+    </testcase>
+    <testcase classname="raw cell can be converted from nbformat" name="raw cell can be converted from nbformat" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="kernelspecs" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.152" tests="2">
+    <testcase classname="kernelspecs list creates an AjaxObservable for listing the kernelspecs" name="kernelspecs list creates an AjaxObservable for listing the kernelspecs" time="0.003">
+    </testcase>
+    <testcase classname="kernelspecs get creates an AjaxObservable for getting a kernelspec" name="kernelspecs get creates an AjaxObservable for getting a kernelspec" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="createMessage" errors="0" failures="0" skipped="1" timestamp="2018-11-27T18:41:59" time="0.239" tests="13">
+    <testcase classname="createMessage makes a msg" name="createMessage makes a msg" time="0.004">
+    </testcase>
+    <testcase classname="createExecuteRequest creates an execute_request message" name="createExecuteRequest creates an execute_request message" time="0.001">
+    </testcase>
+    <testcase classname="childOf filters messages that have the same parent" name="childOf filters messages that have the same parent" time="0.002">
+    </testcase>
+    <testcase classname="childOf throws an error if msg_id is not present" name="childOf throws an error if msg_id is not present" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="ofMessageType filters messages of type requested" name="ofMessageType filters messages of type requested" time="0.002">
+    </testcase>
+    <testcase classname="ofMessageType throws an error in msg_type is not present" name="ofMessageType throws an error in msg_type is not present" time="0.001">
+    </testcase>
+    <testcase classname="ofMessageType handles both the legacy and current arguments for ofMessageType" name="ofMessageType handles both the legacy and current arguments for ofMessageType" time="0.005">
+    </testcase>
+    <testcase classname="convertOutputMessageToNotebookFormat ensures that fields end up notebook format style" name="convertOutputMessageToNotebookFormat ensures that fields end up notebook format style" time="0">
+    </testcase>
+    <testcase classname="convertOutputMessageToNotebookFormat should not mutate the message" name="convertOutputMessageToNotebookFormat should not mutate the message" time="0.002">
+    </testcase>
+    <testcase classname="outputs extracts outputs as nbformattable contents" name="outputs extracts outputs as nbformattable contents" time="0.002">
+    </testcase>
+    <testcase classname="payloads extracts payloads from execute_reply messages" name="payloads extracts payloads from execute_reply messages" time="0.001">
+    </testcase>
+    <testcase classname="executionCounts extracts all execution counts from a session" name="executionCounts extracts all execution counts from a session" time="0.001">
+    </testcase>
+    <testcase classname="kernelStatuses extracts all the execution states from status messages" name="kernelStatuses extracts all the execution states from status messages" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="contents" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.258" tests="10">
+    <testcase classname="contents remove creates the AjaxObservable for removing contents" name="contents remove creates the AjaxObservable for removing contents" time="0.061">
+    </testcase>
+    <testcase classname="contents get creates the AjaxObservable for getting content" name="contents get creates the AjaxObservable for getting content" time="0.007">
+    </testcase>
+    <testcase classname="contents get creates the AjaxObservable for getting content with query parameters" name="contents get creates the AjaxObservable for getting content with query parameters" time="0.003">
+    </testcase>
+    <testcase classname="contents update creates the AjaxObservable for renaming a file" name="contents update creates the AjaxObservable for renaming a file" time="0.004">
+    </testcase>
+    <testcase classname="contents create creates the AjaxObservable for creating content" name="contents create creates the AjaxObservable for creating content" time="0.004">
+    </testcase>
+    <testcase classname="contents save creates the AjaxObservable for saving a file" name="contents save creates the AjaxObservable for saving a file" time="0.007">
+    </testcase>
+    <testcase classname="contents listCheckpoints creates the AjaxObservable for listing checkpoints of a file" name="contents listCheckpoints creates the AjaxObservable for listing checkpoints of a file" time="0.002">
+    </testcase>
+    <testcase classname="contents createCheckpoint creates the AjaxObservable for" name="contents createCheckpoint creates the AjaxObservable for" time="0.002">
+    </testcase>
+    <testcase classname="contents deleteCheckpoint creates the AjaxObservable for" name="contents deleteCheckpoint creates the AjaxObservable for" time="0.002">
+    </testcase>
+    <testcase classname="contents restoreFromCheckpoint creates the AjaxObservable for" name="contents restoreFromCheckpoint creates the AjaxObservable for" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="unlinkObservable" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.257" tests="4">
+    <testcase classname="unlinkObservable errors on unlink issue" name="unlinkObservable errors on unlink issue" time="0.005">
+    </testcase>
+    <testcase classname="unlinkObservable completes and calls fs.existsSync, fs.unlink" name="unlinkObservable completes and calls fs.existsSync, fs.unlink" time="0.002">
+    </testcase>
+    <testcase classname="readdirObservable lists a directory with ✨  Observables ✨" name="readdirObservable lists a directory with ✨  Observables ✨" time="0.002">
+    </testcase>
+    <testcase classname="readdirObservable handles errors listing directories, passes it back directly" name="readdirObservable handles errors listing directories, passes it back directly" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.217" tests="3">
+    <testcase classname=" formBinderURL has default values with empty options" name=" formBinderURL has default values with empty options" time="0.003">
+    </testcase>
+    <testcase classname=" formBinderURL correctly creates a full binder URL" name=" formBinderURL correctly creates a full binder URL" time="0.001">
+    </testcase>
+    <testcase classname=" binder" name=" binder" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="markdown works as it should" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.223" tests="1">
+    <testcase classname="markdown works as it should lets see" name="markdown works as it should lets see" time="0.035">
+    </testcase>
+  </testsuite>
+  <testsuite name="setKey" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.194" tests="2">
+    <testcase classname="setKey sets the keys in the config" name="setKey sets the keys in the config" time="0.002">
+    </testcase>
+    <testcase classname="mergeConfig sets the config" name="mergeConfig sets the config" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="createCommMessage" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.218" tests="5">
+    <testcase classname="createCommMessage creates a comm_msg" name="createCommMessage creates a comm_msg" time="0.004">
+    </testcase>
+    <testcase classname="createCommOpenMessage creates a comm_open" name="createCommOpenMessage creates a comm_open" time="0.001">
+    </testcase>
+    <testcase classname="createCommOpenMessage can specify a target_module" name="createCommOpenMessage can specify a target_module" time="0.001">
+    </testcase>
+    <testcase classname="createCommCloseMessage creates a comm_msg" name="createCommCloseMessage creates a comm_msg" time="0.001">
+    </testcase>
+    <testcase classname="commActionObservable emits COMM_OPEN and COMM_MESSAGE given the right messages" name="commActionObservable emits COMM_OPEN and COMM_MESSAGE given the right messages" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="fetchKernelspecsEpic" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.233" tests="1">
+    <testcase classname="fetchKernelspecsEpic calls kernelspecs.list with appropriate jupyter host config" name="fetchKernelspecsEpic calls kernelspecs.list with appropriate jupyter host config" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="TimeAgo" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.23" tests="11">
+    <testcase classname="TimeAgo just now" name="TimeAgo just now" time="0.012">
+    </testcase>
+    <testcase classname="TimeAgo 1 second ago" name="TimeAgo 1 second ago" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo 2 seconds ago" name="TimeAgo 2 seconds ago" time="0.002">
+    </testcase>
+    <testcase classname="TimeAgo 1 minute ago" name="TimeAgo 1 minute ago" time="0">
+    </testcase>
+    <testcase classname="TimeAgo 2 minutes ago" name="TimeAgo 2 minutes ago" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo 1 hour ago" name="TimeAgo 1 hour ago" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo 2 hours ago" name="TimeAgo 2 hours ago" time="0">
+    </testcase>
+    <testcase classname="TimeAgo 1 day ago" name="TimeAgo 1 day ago" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo 1 week ago" name="TimeAgo 1 week ago" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo 1 week ago in zh-TW" name="TimeAgo 1 week ago in zh-TW" time="0.001">
+    </testcase>
+    <testcase classname="TimeAgo allow custom wordSeparator" name="TimeAgo allow custom wordSeparator" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="MathJax" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.186" tests="3">
+    <testcase classname="MathJax Node can be renderered without provider" name="MathJax Node can be renderered without provider" time="0.015">
+    </testcase>
+    <testcase classname="MathJax Nodes use existing provider" name="MathJax Nodes use existing provider" time="0.004">
+    </testcase>
+    <testcase classname="MathJax Text node renders LaTeX text" name="MathJax Text node renders LaTeX text" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.186" tests="1">
+    <testcase classname=" VDOM Transform is cool" name=" VDOM Transform is cool" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="tooltipRequest" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.241" tests="1">
+    <testcase classname="tooltipRequest creates a valid v5 message for inspect_request" name="tooltipRequest creates a valid v5 message for inspect_request" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Listing" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.208" tests="2">
+    <testcase classname="Listing accepts props and renders entries in directory in a table" name="Listing accepts props and renders entries in directory in a table" time="0.003">
+    </testcase>
+    <testcase classname="Entry accepts props and renders entries in directory" name="Entry accepts props and renders entries in directory" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="JavascriptDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.206" tests="6">
+    <testcase classname="JavascriptDisplay renders contextual div tag" name="JavascriptDisplay renders contextual div tag" time="0.014">
+    </testcase>
+    <testcase classname="JavascriptDisplay executes the Javascript" name="JavascriptDisplay executes the Javascript" time="0.002">
+    </testcase>
+    <testcase classname="JavascriptDisplay creates a nice little error area" name="JavascriptDisplay creates a nice little error area" time="0.003">
+    </testcase>
+    <testcase classname="JavascriptDisplay creates a nice little error area with a stack" name="JavascriptDisplay creates a nice little error area with a stack" time="0.035">
+    </testcase>
+    <testcase classname="JavascriptDisplay handles updates by running again" name="JavascriptDisplay handles updates by running again" time="0.003">
+    </testcase>
+    <testcase classname="runCodeHere runs code with `element` available" name="runCodeHere runs code with `element` available" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="index" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.191" tests="2">
+    <testcase classname="index WidgetDisplay can be constructed" name="index WidgetDisplay can be constructed" time="0.003">
+    </testcase>
+    <testcase classname="index WidgetDisplay matches snapshot" name="index WidgetDisplay matches snapshot" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="PlotlyTransform" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:41:59" time="0.218" tests="3">
+    <testcase classname="PlotlyTransform plots some data from an object" name="PlotlyTransform plots some data from an object" time="0.018">
+    </testcase>
+    <testcase classname="PlotlyTransform plots some data from a JSON string" name="PlotlyTransform plots some data from a JSON string" time="0.003">
+    </testcase>
+    <testcase classname="PlotlyTransform processes updates" name="PlotlyTransform processes updates" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="MarkdownDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.192" tests="1">
+    <testcase classname="MarkdownDisplay renders direct markdown" name="MarkdownDisplay renders direct markdown" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="setLanguageInfo" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.188" tests="42">
+    <testcase classname="setLanguageInfo creates a SET_LANGUAGE_INFO action" name="setLanguageInfo creates a SET_LANGUAGE_INFO action" time="0.002">
+    </testcase>
+    <testcase classname="unhideAll allows being called with sets defaults for outputHidden and inputHidden" name="unhideAll allows being called with sets defaults for outputHidden and inputHidden" time="0.002">
+    </testcase>
+    <testcase classname="commOpenAction creates a COMM_OPEN action" name="commOpenAction creates a COMM_OPEN action" time="0.001">
+    </testcase>
+    <testcase classname="commMessageAction creates a COMM_MESSAGE action" name="commMessageAction creates a COMM_MESSAGE action" time="0">
+    </testcase>
+    <testcase classname="newNotebook creates a new notebook" name="newNotebook creates a new notebook" time="0.001">
+    </testcase>
+    <testcase classname="setExecutionState creates a SET_EXECUTION_STATE action" name="setExecutionState creates a SET_EXECUTION_STATE action" time="0">
+    </testcase>
+    <testcase classname="launchKernel creates a LAUNCH_KERNEL action" name="launchKernel creates a LAUNCH_KERNEL action" time="0">
+    </testcase>
+    <testcase classname="launchKernelByName creates a LAUNCH_KERNEL_BY_NAME action" name="launchKernelByName creates a LAUNCH_KERNEL_BY_NAME action" time="0.001">
+    </testcase>
+    <testcase classname="setKernelspecInfo creates a SET_KERNELSPEC_INFO action" name="setKernelspecInfo creates a SET_KERNELSPEC_INFO action" time="0">
+    </testcase>
+    <testcase classname="updateCellSource creates a UPDATE_CELL_SOURCE action" name="updateCellSource creates a UPDATE_CELL_SOURCE action" time="0.001">
+    </testcase>
+    <testcase classname="clearOutputs creates a CLEAR_OUTPUTS action" name="clearOutputs creates a CLEAR_OUTPUTS action" time="0">
+    </testcase>
+    <testcase classname="updateCellExecutionCount creates a SET_IN_CELL action with the right path" name="updateCellExecutionCount creates a SET_IN_CELL action with the right path" time="0">
+    </testcase>
+    <testcase classname="updateCellStatus creates an UPDATE_CELL_STATUS action" name="updateCellStatus creates an UPDATE_CELL_STATUS action" time="0.001">
+    </testcase>
+    <testcase classname="moveCell creates a MOVE_CELL action" name="moveCell creates a MOVE_CELL action" time="0">
+    </testcase>
+    <testcase classname="deleteCell creates a DELETE_CELL action" name="deleteCell creates a DELETE_CELL action" time="0.001">
+    </testcase>
+    <testcase classname="removeCell DEPRECATION WARNING:DEPRECATED. Use deleteCell() instead. creates a REMOVE_CELL action" name="removeCell DEPRECATION WARNING:DEPRECATED. Use deleteCell() instead. creates a REMOVE_CELL action" time="0">
+    </testcase>
+    <testcase classname="focusCell creates a FOCUS_CELL action" name="focusCell creates a FOCUS_CELL action" time="0">
+    </testcase>
+    <testcase classname="focusNextCell creates a FOCUS_NEXT_CELL action" name="focusNextCell creates a FOCUS_NEXT_CELL action" time="0.001">
+    </testcase>
+    <testcase classname="focusNextCell creates a FOCUS_NEXT_CELL action with cell creation flag" name="focusNextCell creates a FOCUS_NEXT_CELL action with cell creation flag" time="0">
+    </testcase>
+    <testcase classname="focusPreviousCell creates a FOCUS_PREVIOUS_CELL action" name="focusPreviousCell creates a FOCUS_PREVIOUS_CELL action" time="0">
+    </testcase>
+    <testcase classname="focusCellEditor creates a FOCUS_CELL_EDITOR action" name="focusCellEditor creates a FOCUS_CELL_EDITOR action" time="0.001">
+    </testcase>
+    <testcase classname="focusPreviousCellEditor creates a FOCUS_PREVIOUS_CELL_EDITOR action" name="focusPreviousCellEditor creates a FOCUS_PREVIOUS_CELL_EDITOR action" time="0">
+    </testcase>
+    <testcase classname="focusNextCellEditor creates a FOCUS_NEXT_CELL_EDITOR action" name="focusNextCellEditor creates a FOCUS_NEXT_CELL_EDITOR action" time="0">
+    </testcase>
+    <testcase classname="createCellBelow creates a CREATE_CELL_BELOW action with provided source string" name="createCellBelow creates a CREATE_CELL_BELOW action with provided source string" time="0.001">
+    </testcase>
+    <testcase classname="createCellAbove creates a CREATE_CELL_ABOVE action" name="createCellAbove creates a CREATE_CELL_ABOVE action" time="0">
+    </testcase>
+    <testcase classname="createCellAfter DEPRECATION WARNING:DEPRECATED. Use createCellBelow() instead. creates a CREATE_CELL_AFTER action with provided source string" name="createCellAfter DEPRECATION WARNING:DEPRECATED. Use createCellBelow() instead. creates a CREATE_CELL_AFTER action with provided source string" time="0.002">
+    </testcase>
+    <testcase classname="createCellBefore DEPRECATION WARNING:DEPRECATED. USE createCellAbove() instead. creates a CREATE_CELL_BEFORE action" name="createCellBefore DEPRECATION WARNING:DEPRECATED. USE createCellAbove() instead. creates a CREATE_CELL_BEFORE action" time="0">
+    </testcase>
+    <testcase classname="createCellAppend creates a CREATE_CELL_APPEND action" name="createCellAppend creates a CREATE_CELL_APPEND action" time="0">
+    </testcase>
+    <testcase classname="setNotificationSystem creates a SET_NOTIFICATION_SYSTEM action" name="setNotificationSystem creates a SET_NOTIFICATION_SYSTEM action" time="0">
+    </testcase>
+    <testcase classname="overwriteMetadataField creates an OVERWRITE_METADATA_FIELD" name="overwriteMetadataField creates an OVERWRITE_METADATA_FIELD" time="0.001">
+    </testcase>
+    <testcase classname="copyCell creates a COPY_CELL action" name="copyCell creates a COPY_CELL action" time="0">
+    </testcase>
+    <testcase classname="cutCell creates a CUT_CELL action" name="cutCell creates a CUT_CELL action" time="0">
+    </testcase>
+    <testcase classname="toggleCellOutputVisibility creates a TOGGLE_CELL_OUTPUT_VISIBILITY action" name="toggleCellOutputVisibility creates a TOGGLE_CELL_OUTPUT_VISIBILITY action" time="0">
+    </testcase>
+    <testcase classname="toggleCellInputVisibility creates a TOGGLE_CELL_INPUT_VISIBILITY action" name="toggleCellInputVisibility creates a TOGGLE_CELL_INPUT_VISIBILITY action" time="0">
+    </testcase>
+    <testcase classname="pasteCell creates a PASTE_CELL action" name="pasteCell creates a PASTE_CELL action" time="0">
+    </testcase>
+    <testcase classname="changeCellType creates a CHANGE_CELL_TYPE action" name="changeCellType creates a CHANGE_CELL_TYPE action" time="0">
+    </testcase>
+    <testcase classname="setGithubToken creates a SET_GITHUB_TOKEN action" name="setGithubToken creates a SET_GITHUB_TOKEN action" time="0.001">
+    </testcase>
+    <testcase classname="toggleOutputExpansion creates a TOGGLE_OUTPUT_EXPANSION action" name="toggleOutputExpansion creates a TOGGLE_OUTPUT_EXPANSION action" time="0">
+    </testcase>
+    <testcase classname="save creates a SAVE action" name="save creates a SAVE action" time="0.001">
+    </testcase>
+    <testcase classname="save creates a SAVE_AS action" name="save creates a SAVE_AS action" time="0">
+    </testcase>
+    <testcase classname="save creates a SAVE_FAILED action" name="save creates a SAVE_FAILED action" time="0.001">
+    </testcase>
+    <testcase classname="save creates a SAVE_FULFILLED action" name="save creates a SAVE_FULFILLED action" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="NewNotebookNavigation" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.268" tests="1">
+    <testcase classname="NewNotebookNavigation snapshots" name="NewNotebookNavigation snapshots" time="0.031">
+    </testcase>
+  </testsuite>
+  <testsuite name="sessions" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.162" tests="5">
+    <testcase classname="sessions list creates an AjaxObservable for listing the sessions" name="sessions list creates an AjaxObservable for listing the sessions" time="0.004">
+    </testcase>
+    <testcase classname="sessions get creates an AjaxObservable for getting particular session info" name="sessions get creates an AjaxObservable for getting particular session info" time="0.002">
+    </testcase>
+    <testcase classname="sessions destroy creates an AjaxObservable for destroying a session" name="sessions destroy creates an AjaxObservable for destroying a session" time="0.002">
+    </testcase>
+    <testcase classname="sessions rename creates an AjaxObservable for getting particular session info" name="sessions rename creates an AjaxObservable for getting particular session info" time="0.005">
+    </testcase>
+    <testcase classname="sessions create creates an AjaxObservable for getting particular session info" name="sessions create creates an AjaxObservable for getting particular session info" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="ModelDebug" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.215" tests="1">
+    <testcase classname="ModelDebug renders all models when no modelID set" name="ModelDebug renders all models when no modelID set" time="0.061">
+    </testcase>
+  </testsuite>
+  <testsuite name="HTMLDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.167" tests="2">
+    <testcase classname="HTMLDisplay renders direct HTML" name="HTMLDisplay renders direct HTML" time="0.02">
+    </testcase>
+    <testcase classname="HTMLDisplay updates the underlying HTML when data changes" name="HTMLDisplay updates the underlying HTML when data changes" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="list" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.272" tests="5">
+    <testcase classname="list creates an AjaxObservable for listing available terminals" name="list creates an AjaxObservable for listing available terminals" time="0.062">
+    </testcase>
+    <testcase classname="create creates an AjaxObservable for creating a terminal" name="create creates an AjaxObservable for creating a terminal" time="0.006">
+    </testcase>
+    <testcase classname="get creates an AjaxObservable for getting a terminal session" name="get creates an AjaxObservable for getting a terminal session" time="0.003">
+    </testcase>
+    <testcase classname="destroy creates an AjaxObservable for deleting a terminal session" name="destroy creates an AjaxObservable for deleting a terminal session" time="0.003">
+    </testcase>
+    <testcase classname="formWebSocketURL returns a WebSocketURL for connecting to the terminal" name="formWebSocketURL returns a WebSocketURL for connecting to the terminal" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="appendOutput" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.163" tests="6">
+    <testcase classname="appendOutput puts new outputs at the end by default" name="appendOutput puts new outputs at the end by default" time="0.008">
+    </testcase>
+    <testcase classname="appendOutput handles the case of a single stream output" name="appendOutput handles the case of a single stream output" time="0.001">
+    </testcase>
+    <testcase classname="appendOutput merges streams of text" name="appendOutput merges streams of text" time="0.001">
+    </testcase>
+    <testcase classname="appendOutput keeps respective streams together" name="appendOutput keeps respective streams together" time="0.007">
+    </testcase>
+    <testcase classname="appendOutput outputs are actually immutable now" name="appendOutput outputs are actually immutable now" time="0.002">
+    </testcase>
+    <testcase classname="appendOutput outputs are appended and mutable" name="appendOutput outputs are appended and mutable" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Ansi" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.173" tests="8">
+    <testcase classname="Ansi hello world" name="Ansi hello world" time="0.007">
+    </testcase>
+    <testcase classname="Ansi can color" name="Ansi can color" time="0.018">
+    </testcase>
+    <testcase classname="Ansi can have className" name="Ansi can have className" time="0.001">
+    </testcase>
+    <testcase classname="Ansi can nest" name="Ansi can nest" time="0.002">
+    </testcase>
+    <testcase classname="Ansi can handle carriage symbol" name="Ansi can handle carriage symbol" time="0.001">
+    </testcase>
+    <testcase classname="Ansi can linkify" name="Ansi can linkify" time="0.002">
+    </testcase>
+    <testcase classname="Ansi can distinguish URL-ish text" name="Ansi can distinguish URL-ish text" time="0.001">
+    </testcase>
+    <testcase classname="Ansi can distinguish URL-ish text" name="Ansi can distinguish URL-ish text" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="ImageDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.199" tests="5">
+    <testcase classname="ImageDisplay creates an image based on data and mimetype" name="ImageDisplay creates an image based on data and mimetype" time="0.008">
+    </testcase>
+    <testcase classname="ImageDisplay accepts metadata for the size" name="ImageDisplay accepts metadata for the size" time="0.002">
+    </testcase>
+    <testcase classname="PNGDisplay renders a single image base64 inline" name="PNGDisplay renders a single image base64 inline" time="0.001">
+    </testcase>
+    <testcase classname="JPEGDisplay renders a single image base64 inline" name="JPEGDisplay renders a single image base64 inline" time="0.001">
+    </testcase>
+    <testcase classname="GIFDisplay renders a single image base64 inline" name="GIFDisplay renders a single image base64 inline" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="The error middleware" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.153" tests="4">
+    <testcase classname="The error middleware errors with a payload message when given one" name="The error middleware errors with a payload message when given one" time="0.002">
+    </testcase>
+    <testcase classname="The error middleware errors with action as message when no payload" name="The error middleware errors with action as message when no payload" time="0.001">
+    </testcase>
+    <testcase classname="The error middleware treats an action w/ &apos;error: true&apos; as an error" name="The error middleware treats an action w/ &apos;error: true&apos; as an error" time="0.001">
+    </testcase>
+    <testcase classname="The error middleware stringifies a nested Error object sensibly" name="The error middleware stringifies a nested Error object sensibly" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="setKernelSpecs" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.109" tests="1">
+    <testcase classname="setKernelSpecs creates a SET_KERNELSPECS action" name="setKernelSpecs creates a SET_KERNELSPECS action" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="setKernelspecs" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.093" tests="1">
+    <testcase classname="setKernelspecs sets kernelspecs in the state" name="setKernelspecs sets kernelspecs in the state" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="LaTeXDisplay" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.13" tests="1">
+    <testcase classname="LaTeXDisplay processes basic LaTeX" name="LaTeXDisplay processes basic LaTeX" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2018-11-27T18:42:00" time="0.088" tests="1">
+    <testcase classname=" Load script" name=" Load script" time="0.006">
+    </testcase>
+  </testsuite>
+</testsuites>
