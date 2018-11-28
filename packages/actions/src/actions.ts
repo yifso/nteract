@@ -1,4 +1,3 @@
-// @flow
 import {
   CellID,
   CellType,
@@ -663,7 +662,7 @@ export function toggleOutputExpansion(payload: {
 
 export function sendExecuteRequest(payload: {
   id: string;
-  // TODO: Convert this message from an 'any' to a jupyter message object
+  // TODO: Convert the sendExecuteRequest message from an 'any' to a jupyter message object
   message: any;
   contentRef: ContentRef;
 }): actionTypes.SendExecuteRequest {
@@ -806,9 +805,9 @@ export function saveFulfilled(payload: {
   };
 }
 
-// TODO: Use a kernel spec type
+// TODO: New Notebook action should use a kernel spec type
 export function newNotebook(payload: {
-  kernelSpec: Object;
+  kernelSpec: object;
   cwd: string;
   kernelRef: KernelRef;
   contentRef: ContentRef;
@@ -817,10 +816,7 @@ export function newNotebook(payload: {
     type: actionTypes.NEW_NOTEBOOK,
     payload: {
       kernelSpec: payload.kernelSpec,
-      cwd:
-        payload.cwd ||
-        // TODO: Does it matter that this is our fallback when targeting the web app
-        process.cwd(),
+      cwd: payload.cwd || process.cwd(), // Desktop should be passing in the cwd
       kernelRef: payload.kernelRef,
       contentRef: payload.contentRef
     }
@@ -904,7 +900,7 @@ export function appendOutput(payload: {
 
 export function acceptPayloadMessage(payload: {
   id: CellID;
-  // TODO: Properly type this jupyter payload message
+  // TODO: Properly type acceptPayloadMessage as taking jupyter payload message
   // Not to be confused with a redux style action payload
   payload: any;
   contentRef: ContentRef;

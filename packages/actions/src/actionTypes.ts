@@ -1,4 +1,3 @@
-/* @flow */
 import {
   CellID,
   CellType,
@@ -861,7 +860,6 @@ export type ShutdownReplyTimedOut = {
   error: true;
 };
 
-// TODO: This action needs a proper flow type, its from desktop's github store
 export const PUBLISH_GIST = "CORE/PUBLISH_GIST";
 export type PublishGist = {
   type: "CORE/PUBLISH_GIST";
