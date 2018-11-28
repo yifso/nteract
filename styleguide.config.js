@@ -20,18 +20,25 @@ module.exports = {
   defaultExample: false,
   sections: [
     {
+      name: "Introduction",
+      content: "doc/components.md"
+    },
+    {
       name: "@nteract/presentational-components",
-      components: "packages/presentational-components/src/components/*.tsx"
+      components: "packages/presentational-components/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/outputs",
-      components: "packages/outputs/src/components/*.js"
+      components: "packages/outputs/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/outputs/media",
-      components: "packages/outputs/src/components/media/*.js",
+      components: "packages/outputs/src/components/media/*.tsx",
       content: "packages/outputs/src/components/media/index.md",
-      ignore: "packages/outputs/src/components/media/index.js"
+      ignore: "packages/outputs/src/components/media/index.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@mybinder/host-cache",
@@ -40,7 +47,8 @@ module.exports = {
     },
     {
       name: "@nteract/directory-listing",
-      components: "packages/directory-listing/src/components/*.js"
+      components: "packages/directory-listing/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/markdown",
