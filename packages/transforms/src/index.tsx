@@ -9,9 +9,7 @@ import LaTeXDisplay from "./latex";
 import SVGDisplay from "./svg";
 import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
 
-type Transform = {
-  MIMETYPE: string;
-};
+type Transform  = {MIMETYPE: string} & React.ComponentType
 
 type ObjectType = object;
 export interface Transforms extends ObjectType {

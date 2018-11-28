@@ -94,9 +94,12 @@ export default class RichestMime extends React.Component<Props, State> {
       return null;
     }
 
-    const Transform = this.props.transforms[mimetype];
-    const data = this.props.bundle[mimetype];
-    const metadata = this.props.metadata[mimetype];
+    // NOTE: When we transition to the compound component interface these should no longer be
+    //       any (they were implicit any before based on prior code paths).
+    //       Once the TypeScript migration is nearing completion we can clean this up.
+    const Transform: any = this.props.transforms[mimetype];
+    const data: any = this.props.bundle[mimetype];
+    const metadata: any  = this.props.metadata[mimetype];
     return (
       <Transform
         data={data}
