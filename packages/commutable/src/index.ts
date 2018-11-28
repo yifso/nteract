@@ -30,7 +30,8 @@ export {
   makeDisplayData,
   makeErrorOutput,
   makeStreamOutput,
-  makeExecuteResult
+  makeExecuteResult,
+  MimeBundle
 } from "./outputs";
 
 export {
@@ -39,10 +40,12 @@ export {
   makeMarkdownCell,
   ImmutableCodeCell,
   ImmutableRawCell,
-  ImmutableCell
+  ImmutableCell,
+  CellType
 } from "./cells";
 
 export {
+  CellID,
   toJS,
   stringifyNotebook,
   fromJS,

@@ -17,6 +17,7 @@
   "author": "Safia Abdalla <safia@safia.rocks>",
   "license": "MIT",
   "dependencies": {
+    "@nteract/commutable": "6.0.0-alpha.0",
     "@nteract/types": "^3.1.0",
     "immutable": "^4.0.0-rc.12"
   }

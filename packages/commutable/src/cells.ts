@@ -72,3 +72,5 @@ export type ImmutableCell =
   | ImmutableMarkdownCell
   | ImmutableCodeCell
   | ImmutableRawCell;
+
+export type CellType = "raw" | "markdown" | "code";
