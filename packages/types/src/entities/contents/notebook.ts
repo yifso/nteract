@@ -1,8 +1,7 @@
 import * as Immutable from "immutable";
-import { emptyNotebook } from "@nteract/commutable";
-import { ImmutableNotebook } from "@nteract/commutable";
+import { ImmutableNotebook, emptyNotebook, CellId } from "@nteract/commutable";
 
-import { KernelRef, CellId } from "../..";
+import { KernelRef } from "../..";
 
 export type DocumentRecordProps = {
   type: "notebook";

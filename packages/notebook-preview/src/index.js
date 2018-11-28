@@ -85,8 +85,8 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
       <MathJax.Provider>
         <div className="notebook-preview">
           <Cells>
-            {cellOrder.map(cellID => {
-              const cell = cellMap.get(cellID);
+            {cellOrder.map(cellId => {
+              const cell = cellMap.get(cellId);
               const cellType = cell.get("cell_type");
               const source = cell.get("source");
 
@@ -107,7 +107,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                   );
 
                   return (
-                    <Cell key={cellID}>
+                    <Cell key={cellId}>
                       <PapermillView status={papermillStatus} />
                       <Input hidden={sourceHidden}>
                         <Prompt
@@ -135,7 +135,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                   );
                 case "markdown":
                   return (
-                    <Cell key={cellID}>
+                    <Cell key={cellId}>
                       <div className="content-margin">
                         <Markdown source={source} />
                       </div>
@@ -151,7 +151,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                   );
                 case "raw":
                   return (
-                    <Cell key={cellID}>
+                    <Cell key={cellId}>
                       <pre className="raw-cell">
                         {source}
                         <style jsx>{`
@@ -171,7 +171,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
 
                 default:
                   return (
-                    <Cell key={cellID}>
+                    <Cell key={cellId}>
                       <Outputs>
                         <pre>{`Cell Type "${cellType}" is not implemented`}</pre>
                       </Outputs>

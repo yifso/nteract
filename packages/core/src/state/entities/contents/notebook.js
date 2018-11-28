@@ -1,7 +1,7 @@
 // @flow
 import * as Immutable from "immutable";
 import { emptyNotebook } from "@nteract/commutable";
-import type { CellID, ImmutableNotebook } from "@nteract/commutable";
+import type { CellId, ImmutableNotebook } from "@nteract/commutable";
 
 import type { KernelRef } from "../..";
 
@@ -15,8 +15,8 @@ export type DocumentRecordProps = {
   // right now it's keypaths and then it looks like it's able to handle any per
   // cell transient data that will be deleted when the kernel is restarted
   cellPagers: any,
-  editorFocused: ?CellID,
-  cellFocused: ?CellID,
+  editorFocused: ?CellId,
+  cellFocused: ?CellId,
   copied: Immutable.Map<any, any>,
   kernelRef: ?KernelRef
 };

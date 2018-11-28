@@ -87,8 +87,8 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     return (
       <div className="notebook-render">
         <Cells>
-          {cellOrder.map((cellID: string) => {
-            const cell = cellMap.get(cellID);
+          {cellOrder.map((cellId: string) => {
+            const cell = cellMap.get(cellId);
             const cellType: string = cell!.get("cell_type");
             const source = cell!.get("source");
 
@@ -104,7 +104,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                   cell!.getIn(["metadata", "outputHidden"]);
 
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <Input hidden={sourceHidden}>
                       <Prompt
                         counter={(cell as ImmutableCodeCell).get(
@@ -142,7 +142,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                   }
                 } as any;
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <div className="content-margin">
                       <ReactMarkdown
                         escapeHtml={false}
@@ -163,7 +163,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                 );
               case "raw":
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <pre className="raw-cell">
                       {source}
                       <style jsx>{`
@@ -183,7 +183,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
 
               default:
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <Outputs>
                       <pre>{`Cell Type "${cellType}" is not implemented`}</pre>
                     </Outputs>

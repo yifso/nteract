@@ -6,7 +6,6 @@
 // Make sure the index.js.flow types stay in sync with this section
 //
 
-// from types
 export * from "./primitives";
 
 // from structures
@@ -45,7 +44,6 @@ export {
 } from "./cells";
 
 export {
-  CellID,
   toJS,
   stringifyNotebook,
   fromJS,

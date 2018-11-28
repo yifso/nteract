@@ -338,8 +338,8 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
     [key: string]: ImmutableCell;
   } = plainNotebook.cellMap.toObject();
 
-  const cells = plainCellOrder.map((cellID: string) =>
-    cellToJS(plainCellMap[cellID])
+  const cells = plainCellOrder.map((cellId: string) =>
+    cellToJS(plainCellMap[cellId])
   );
 
   return {

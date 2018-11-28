@@ -13,13 +13,11 @@ import * as v3 from "./v3";
 import { Map as ImmutableMap, List as ImmutableList, Record } from "immutable";
 
 import { ImmutableCell } from "./cells";
-import { JSONType } from "./primitives";
-
-export type CellID = string;
+import { JSONType, CellId } from "./primitives";
 
 export type NotebookRecordParams = {
-  cellOrder: ImmutableList<string>;
-  cellMap: ImmutableMap<string, ImmutableCell>;
+  cellOrder: ImmutableList<CellId>;
+  cellMap: ImmutableMap<CellId, ImmutableCell>;
   nbformat_minor: number;
   nbformat: number;
   metadata: ImmutableMap<string, any>;

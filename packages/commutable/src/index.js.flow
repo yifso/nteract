@@ -29,7 +29,7 @@ export type ExecutionCount = number | null;
 export type MimeBundle = JSONObject;
 
 export type CellType = "markdown" | "code";
-export type CellID = string;
+export type CellId = string;
 
 // On disk multi-line strings are used to accomodate line-by-line diffs in
 // tools like git and GitHub. They get converted to strings for the in-memory
@@ -47,8 +47,8 @@ export type ImmutableOutputs = ImmutableList<ImmutableOutput>;
 
 export type ImmutableMimeBundle = ImmutableMap<string, any>;
 
-export type ImmutableCellOrder = ImmutableList<CellID>;
-export type ImmutableCellMap = ImmutableMap<CellID, ImmutableCell>;
+export type ImmutableCellOrder = ImmutableList<CellId>;
+export type ImmutableCellMap = ImmutableMap<CellId, ImmutableCell>;
 
 // .....................................
 // from structures
@@ -74,20 +74,20 @@ declare export function createCodeCell(
 declare export function insertCellAt(
   notebook: ImmutableNotebook,
   cell: ImmutableCell,
-  cellID: string,
+  cellId: string,
   index: number
 ): ImmutableNotebook;
 
 declare export function insertCellAfter(
   notebook: ImmutableNotebook,
   cell: ImmutableCell,
-  cellID: string,
-  priorCellID: string
+  cellId: string,
+  priorCellId: string
 ): ImmutableNotebook;
 
 declare export function deleteCell(
   notebook: ImmutableNotebook,
-  cellID: string
+  cellId: string
 ): ImmutableNotebook;
 
 declare export function appendCellToNotebook(

@@ -1,7 +1,7 @@
 // @flow
 import * as Immutable from "immutable";
 import * as commutable from "@nteract/commutable";
-import type { CellID } from "@nteract/commutable";
+import type { CellId } from "@nteract/commutable";
 import { createSelector } from "reselect";
 
 // All these selectors expect a NotebookModel as the top level state
@@ -10,14 +10,14 @@ import type { NotebookModel } from "../state/entities/contents/notebook";
 export const cellMap = (model: NotebookModel) =>
   model.notebook.get("cellMap", Immutable.Map());
 
-export const cellById = (model: NotebookModel, { id }: { id: CellID }) =>
+export const cellById = (model: NotebookModel, { id }: { id: CellId }) =>
   cellMap(model).get(id);
 
-export const cellOrder = (model: NotebookModel): Immutable.List<CellID> =>
+export const cellOrder = (model: NotebookModel): Immutable.List<CellId> =>
   model.notebook.get("cellOrder", Immutable.List());
 
-export const cellFocused = (model: NotebookModel): ?CellID => model.cellFocused;
-export const editorFocusedId = (model: NotebookModel): ?CellID =>
+export const cellFocused = (model: NotebookModel): ?CellId => model.cellFocused;
+export const editorFocusedId = (model: NotebookModel): ?CellId =>
   model.editorFocused;
 
 export const codeCellIdsBelow = (model: NotebookModel) => {
