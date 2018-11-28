@@ -37,7 +37,9 @@ export {
   makeRawCell,
   makeCodeCell,
   makeMarkdownCell,
-  ImmutableCodeCell
+  ImmutableCodeCell,
+  ImmutableRawCell,
+  ImmutableCell
 } from "./cells";
 
 export {

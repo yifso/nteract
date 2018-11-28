@@ -8,5 +8,7 @@
     "lib": ["esnext", "dom"],
     "jsx": "react",
     "typeRoots": ["./node_modules/@types", "types"]
-  }
+  },
+  // Within VS Code & Atom, compile to keep types up to date
+  "compileOnSave": true
 }
