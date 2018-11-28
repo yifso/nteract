@@ -38,6 +38,7 @@ export {
   makeCodeCell,
   makeMarkdownCell,
   ImmutableCodeCell,
+  ImmutableMarkdownCell,
   ImmutableRawCell,
   ImmutableCell,
   CellType
