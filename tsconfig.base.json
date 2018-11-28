@@ -11,7 +11,7 @@
     "baseUrl": "./packages",
     "moduleResolution": "node",
     "paths": {
-      "@nteract/*": ["./*"]
+      "@nteract/*": ["./*/src"]
     }
   }
 }
