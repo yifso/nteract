@@ -11,7 +11,12 @@
     "baseUrl": "./packages",
     "moduleResolution": "node",
     "paths": {
-      "@nteract/*": ["./*/src"]
+      "@nteract/*": ["./*/src"],
+      "@mybinder/*": ["./*/src"],
+      "rx-jupyter": ["./rx-jupyter/src"],
+      "rx-binder": ["./rx-binder/src"],
+      "enchannel-zmq-backend": ["./enchannel-zmq-backend/src"],
+      "fs-observable": ["./fs-observable/src"]
     }
   }
 }
