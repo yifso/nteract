@@ -15,7 +15,7 @@ import { createSelector } from "reselect";
  * Immutable.Map if no cellMap exists in the NotebookModel.
  *
  * @param   model   The notebook model to extract the cell map from
- * 
+ *
  * @returns         The cell map within the notebook or an empty map
  */
 export const cellMap = (model: NotebookModel) =>
@@ -24,10 +24,10 @@ export const cellMap = (model: NotebookModel) =>
 /**
  * Returns the cell within a notebook with a particular ID. Returns
  * undefined if no cell with that ID is found in the model
- * 
+ *
  * @param   model           The notebook model to extract the cell from
  * @param   { id: CellId }  The ID of the cell to extract
- * 
+ *
  * @returns                 Undefined or a cell with the given ID
  */
 export const cellById = (model: NotebookModel, { id }: { id: CellId }) =>
@@ -36,9 +36,9 @@ export const cellById = (model: NotebookModel, { id }: { id: CellId }) =>
 /**
  * Returns the cell order within a notebook. Returns an empty list if the
  * notebook contains no cellOrder.
- * 
+ *
  * @param   model   The notebook model to extract the cell order list from
- * 
+ *
  * @returns         The cell order within a notebook or an empty list
  */
 export const cellOrder = (model: NotebookModel): Immutable.List<CellId> =>
@@ -46,10 +46,10 @@ export const cellOrder = (model: NotebookModel): Immutable.List<CellId> =>
 
 /**
  * Returns the ID of the focused cell within a notebook.
- * 
+ *
  * @param   model   The notebook to extract the focused cell from
- * 
- * @returns         The ID of the focused cell 
+ *
+ * @returns         The ID of the focused cell
  */
 export const cellFocused = (model: NotebookModel): CellId | null | undefined =>
   model.cellFocused;
@@ -57,9 +57,9 @@ export const cellFocused = (model: NotebookModel): CellId | null | undefined =>
 /**
  * Returns the CellId of the cell with the currently focused editor within
  * the notebook.
- * 
+ *
  * @param   model   The notebook to extract the focused editor from
- * 
+ *
  * @returns         The ID of the cell with the currently focused editor
  */
 export const editorFocusedId = (
@@ -68,12 +68,14 @@ export const editorFocusedId = (
 
 /**
  * Returns a list of CellIds below the currently focused cell in a notebook.
- * 
+ *
  * @param   model   The notebook to extract the code cells from
- * 
+ *
  * @returns         The IDs of cells below the currently focused cell
  */
-export const codeCellIdsBelow = (model: NotebookModel): Immutable.List<CellId> => {
+export const codeCellIdsBelow = (
+  model: NotebookModel
+): Immutable.List<CellId> => {
   const cellFocused = model.cellFocused;
   if (!cellFocused) {
     // NOTE: if there is no focused cell, this runs none of the cells
@@ -122,9 +124,9 @@ export const idsOfHiddenOutputs = createSelector(
 /**
  * Returns a transient version of the cell map within a notebook. This cell
  * map is a copy of the original cell map that is transient.
- * 
+ *
  * @param   model   The notebook to extract the transient cell map from
- * 
+ *
  * @returns         The tranisent cell map
  */
 export const transientCellMap = (model: NotebookModel) =>
@@ -143,9 +145,9 @@ export const codeCellIds = createSelector(
 /**
  * Returns the metadata of a notebook. Returns an empty Immutable.Map if
  * no metadata is defined.
- * 
+ *
  * @param   model   The notebook to extract the metadata from
- * 
+ *
  * @returns         An empty Map or a Map containing the metadata of the notebook
  */
 export const metadata = (model: NotebookModel) =>
