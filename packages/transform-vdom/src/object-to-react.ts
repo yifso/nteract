@@ -66,7 +66,7 @@ export function objectToReactElement(
   onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactElement<any> {
   // Pack args for React.createElement
-  let args = [];
+  var args: any = [];
 
   if (!obj.tagName || typeof obj.tagName !== "string") {
     throw new Error(`Invalid tagName on ${JSON.stringify(obj, null, 2)}`);
@@ -121,7 +121,10 @@ export function objectToReactElement(
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(children as VDOMEl[], onVDOMEvent) as any);
+      args = args.concat(arrayToReactChildren(
+        children as VDOMEl[],
+        onVDOMEvent
+      ) as any);
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {
@@ -133,50 +136,42 @@ export function objectToReactElement(
     }
   }
 
-  // $FlowFixMe: React
   return React.createElement.apply({}, args);
 }
 
 /**
-   * Convert an array of items to React children.
-   *
-   * @param  {Array} arr - The array.
-   * @return {Array}     - The array of mixed values.
-   */
-  function arrayToReactChildren(
-    arr: Array<VDOMEl>,
-    onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
-  ): React.ReactNodeArray {
-    let result = [];
+ * Convert an array of items to React children.
+ *
+ * @param  {Array} arr - The array.
+ * @return {Array}     - The array of mixed values.
+ */
+export function arrayToReactChildren(arr: Array<VDOMEl>): React.ReactNodeArray {
+  var result: React.ReactNodeArray = [];
 
-    // iterate through the `children`
-    for (let i = 0, len = arr.length; i < len; i++) {
-      // child can have mixed values: text, React element, or array
-      const item = arr[i];
-      if (item === null) {
-        continue;
-      } else if (Array.isArray(item)) {
-        result.push(arrayToReactChildren(item, onVDOMEvent));
-      } else if (typeof item === "string") {
-        result.push(item);
-      } else if (typeof item === "object") {
-        // Create a new object so that if we have to set the key, we are not
-        // mutating the original object
-        const keyedItem = {
-          tagName: item.tagName,
-          attributes: item.attributes,
-          children: item.children,
-          eventHandlers: item.eventHandlers,
-          key: i
-        };
-        if (item.attributes && item.attributes.key) {
-          keyedItem.key = item.attributes.key;
-        }
-        result.push(objectToReactElement(keyedItem, onVDOMEvent));
-      } else {
-        throw new Error(`invalid vdom child: "${item}"`);
+  // iterate through the `children`
+  for (var i = 0, len = arr.length; i < len; i++) {
+    // child can have mixed values: text, React element, or array
+    const item = arr[i];
+    if (item === null) {
+      continue;
+    } else if (Array.isArray(item)) {
+      result.push(arrayToReactChildren(item));
+    } else if (typeof item === "string") {
+      result.push(item);
+    } else if (typeof item === "object") {
+      // Create a new object so that if we have to set the key, we are not
+      // mutating the original object
+      const keyedItem = {
+        tagName: item.tagName,
+        attributes: item.attributes,
+        children: item.children,
+        key: i
+      };
+      if (item.attributes && item.attributes.key) {
+        keyedItem.key = item.attributes.key;
       }
     }
 
     return result;
   }
+}
