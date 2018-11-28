@@ -8,15 +8,16 @@
     "lib": ["esnext", "dom"],
     "jsx": "react",
     "typeRoots": ["./node_modules/@types", "types"],
-    "baseUrl": "./packages",
+    "baseUrl": ".",
     "moduleResolution": "node",
     "paths": {
-      "@nteract/*": ["./*/src"],
-      "@mybinder/*": ["./*/src"],
-      "rx-jupyter": ["./rx-jupyter/src"],
-      "rx-binder": ["./rx-binder/src"],
-      "enchannel-zmq-backend": ["./enchannel-zmq-backend/src"],
-      "fs-observable": ["./fs-observable/src"]
+      // Attempt to allow our namespace packages to get resolved 
+      "@nteract/*": ["./packages/*/src"],
+      "@mybinder/*": ["./packages/*/src"],
+      "rx-jupyter": ["./packages/rx-jupyter/src"],
+      "rx-binder": ["./packages/rx-binder/src"],
+      "enchannel-zmq-backend": ["./packages/enchannel-zmq-backend/src"],
+      "fs-observable": ["./packages/fs-observable/src"]
     }
   }
 }
