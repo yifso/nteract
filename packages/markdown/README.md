@@ -1,4 +1,18 @@
+# `markdown`
+
 The `MarkdownRender` component allows you to render Markdown text per the Commonmark specification. It's got one major power-up though, it allows you to render in-line and block math using LaTeX syntax too.
+
+## Installation
+
+You may use whichever package manager (`npm` or `yarn`) best suits your workflow. The `nteract` team internally uses `yarn`.
+
+```bash
+npm install --save @nteract/markdown
+# OR
+yarn add @nteract/markdown
+```
+
+## Usage
 
 Under the hood, the component builds upon the open-source [ReactMarkdown](https://github.com/rexxars/react-markdown) component. The `MarkdownRender` component takes all the same props and passes them on to the `ReactMarkdown` component it uses under the hood.
 
@@ -8,7 +22,7 @@ So, when would you want to use nteract's `MarkdownRender` component? Quite simpl
 
 To render Markdown using this component, you can pass the Markdown text to the `source` prop like so.
 
-```
+```javascript
 const MarkdownRender = require("@nteract/markdown").default;
 
 <MarkdownRender source={`Just some $\delta_{\alpha}$ math.`}/>
@@ -16,7 +30,7 @@ const MarkdownRender = require("@nteract/markdown").default;
 
 Alternatively, you can pass the source as a child of the `MarkdownRender` component.
 
-```
+```javascript
 const MarkdownRender = require("@nteract/markdown").default;
 
 <MarkdownRender>Some _sweet_, **sweet** Markdown.</MarkdownRender>
