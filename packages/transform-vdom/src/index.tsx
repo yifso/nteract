@@ -18,7 +18,10 @@ export default class VDOM extends React.PureComponent<Props> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
-    mediaType
+    mediaType,
+    onVDOMEvent: () => {
+      console.log("This app doesn't support vdom events ☹️ See @nteract/transform-vdom for more info: https://github.com/nteract/nteract/tree/master/packages/transform-vdom");
+    }
   };
 
   render(): React.ReactElement<any> {
