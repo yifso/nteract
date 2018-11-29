@@ -24,7 +24,12 @@ export function createExecuteRequest(code: string = ""): ExecuteRequest {
 
 /**
  * operator for getting all messages that declare their parent header as
- * parentMessage's header
+ * parentMessage's header.
+ * 
+ * @param parentMessage The parent message whose children we should fetch
+ * 
+ * @returns A function that takes an Observable of kernel messages and returns
+ * messages that are children of parentMessage. 
  */
 export const childOf = (parentMessage: JupyterMessage) => (
   source: Observable<JupyterMessage>
@@ -57,9 +62,11 @@ export const childOf = (parentMessage: JupyterMessage) => (
 
 /**
  * ofMessageType is an Rx Operator that filters on msg.header.msg_type
- * being one of messageTypes
- * @param messageTypes e.g. ['stream', 'error']
- * @return the resulting observable
+ * being one of messageTypes.
+ * 
+ * @param messageTypes The message types to filter on
+ * 
+ * @returns An Observable containing only messages of the specified types
  */
 export const ofMessageType = (
   ...messageTypes: Array<string | [string]>
@@ -94,8 +101,9 @@ export const ofMessageType = (
  * Create an object that adheres to the jupyter notebook specification.
  * http://jupyter-client.readthedocs.io/en/latest/messaging.html
  *
- * @param msg - Message that has content which can be converted to nbformat
- * @return Message with the associated output type
+ * @param msg Message that has content which can be converted to nbformat
+ * 
+ * @returns Message with the associated output type
  */
 export const convertOutputMessageToNotebookFormat = (msg: JupyterMessage) => ({
   ...msg.content,
@@ -103,7 +111,7 @@ export const convertOutputMessageToNotebookFormat = (msg: JupyterMessage) => ({
 });
 
 /**
- * Convert raw jupyter messages that are output messages into nbformat style
+ * Convert raw Jupyter messages that are output messages into nbformat style
  * outputs
  *
  * > o$ = iopub$.pipe(
@@ -117,6 +125,9 @@ export const outputs = () => (source: Observable<JupyterMessage>) =>
     map(convertOutputMessageToNotebookFormat)
   );
 
+/**
+ * Get all messages for updating a display output.
+ */
 export const updatedOutputs = () => (source: Observable<JupyterMessage>) =>
   source.pipe(
     ofMessageType("update_display_data"),
@@ -148,6 +159,9 @@ export const executionCounts = () => (source: Observable<JupyterMessage>) =>
     map(entry => entry.content.execution_count)
   );
 
+  /**
+   * Get all statuses of all running kernels.
+   */
 export const kernelStatuses = () => (source: Observable<JupyterMessage>) =>
   source.pipe(
     ofMessageType("status"),
