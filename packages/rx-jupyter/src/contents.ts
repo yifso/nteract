@@ -12,7 +12,7 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
   urljoin("/api/contents/", path, "checkpoints", checkpointID);
 
 /**
- * TODO: Explicit typing of the payloads for content
+ * Explicit typing of the payloads for content
  *
  * name (string): Name of file or directory, equivalent to the last part of the path ,
  * path (string): Full path for file or directory ,
@@ -27,14 +27,25 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
  *                   if type is 'directory' ,
  * format (string): Format of content (one of null, 'text', 'base64', 'json')
  */
+type Payload = {
+  name: string,
+  path: string,
+  type: "directory" | "file" | "notebook",
+  writable: boolean,
+  created: string,
+  last_modified: string,
+  mimetype: string,
+  content: string,
+  format: string
+}
 
 /**
- * Creates an AjaxObservable for removing content
+ * Creates an AjaxObservable for removing content.
  *
- * @param serverConfig  - The server configuration
- * @param path  - The path to the content
+ * @param serverConfig The server configuration
+ * @param path The path to the content
  *
- * @return An Observable with the request response
+ * @returns An Observable with the request response
  */
 export const remove = (serverConfig: ServerConfig, path: string) =>
   ajax(
@@ -52,14 +63,14 @@ interface GetParams {
 /**
  * Creates an AjaxObservable for getting content at a path
  *
- * @param serverConfig  - The server configuration
- * @param path  - The content to fetch
- * @param params - type, format, content
- * @param params.type - file type, one of 'file', 'directory', 'notebook'
- * @param params.format - how file content should be returned, e.g. 'text', 'base64'
- * @param params.content - return content or not (0 => no content, 1 => content please)
+ * @param serverConfig The server configuration
+ * @param path The content to fetch
+ * @param params type, format, content
+ * @param params.type file type, one of 'file', 'directory', 'notebook'
+ * @param params.format How file content should be returned, e.g. 'text', 'base64'
+ * @param params.content Return content or not (0 => no content, 1 => content please)
  *
- * @return An Observable with the request response
+ * @returns An Observable with the request response
  */
 export const get = (
   serverConfig: ServerConfig,
@@ -77,15 +88,16 @@ export const get = (
 /**
  * Creates an AjaxObservable for renaming a file.
  *
- * @param serverConfig  - The server configuration
- * @param path - The content to rename.
- * @param model -  ^^TODO
- * @return An Observable with the request response
+ * @param serverConfig The server configuration
+ * @param path The content to rename.
+ * @param model The data to send in the server request
+ * 
+ * @returns An Observable with the request response
  */
 export const update = (
   serverConfig: ServerConfig,
   path: string,
-  model: object
+  model: Payload
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -100,16 +112,16 @@ export const update = (
 /**
  * Creates an AjaxObservable for creating content
  *
- * @param serverConfig  - The server configuration
- * @param path  - The path to the content
- * @param model - ^^^^ TODO Above
+ * @param serverConfig The server configuration
+ * @param path The path to the content
+ * @param model The data to send in the server request
  *
- * @return An Observable with the request response
+ * @returns An Observable with the request response
  */
 export const create = (
   serverConfig: ServerConfig,
   path: string,
-  model: object
+  model: Payload
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -125,12 +137,13 @@ export const create = (
  * Creates an AjaxObservable for saving the file in the location specified by
  * name and path in the model.
  *
- * @param serverConfig  - The server configuration
- * @param path - The content to
- * @param model - ^^^^ TODO above
- * @return An Observable with the request response
+ * @param serverConfig  The server configuration
+ * @param path The path to the content
+ * @param model The data to send in the server request
+ * 
+ * @returns An Observable with the request response
  */
-export const save = (serverConfig: ServerConfig, path: string, model: object) =>
+export const save = (serverConfig: ServerConfig, path: string, model: Payload) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
       headers: {
@@ -143,9 +156,11 @@ export const save = (serverConfig: ServerConfig, path: string, model: object) =>
 
 /**
  * Creates an AjaxObservable for listing checkpoints for a given file.
- * @param serverConfig  - The server configuration
- * @param path - The content containing checkpoints to be listed.
- * @return An Observable with the request response
+ * 
+ * @param serverConfig The server configuration
+ * @param path The content containing checkpoints to be listed.
+ * 
+ * @returns An Observable with the request response
  */
 export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
   ajax(
@@ -159,9 +174,10 @@ export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
  * With the default Jupyter FileContentsManager, only one checkpoint is supported,
  * so creating new checkpoints clobbers existing ones.
  *
- * @param serverConfig  - The server configuration
- * @param path - The content containing the checkpoint to be created.
- * @return An Observable with the request response
+ * @param serverConfig The server configuration
+ * @param path The content containing the checkpoint to be created
+ * 
+ * @returns An Observable with the request response
  */
 export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
   ajax(
@@ -172,10 +188,12 @@ export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
 
 /**
  * Creates an AjaxObservable for deleting a checkpoint for a given file.
- * @param  serverConfig  - The server configuration
- * @param  path - The content containing the checkpoint to be deleted.
- * @param  checkpoint_id - ID of checkpoint to be deleted.
- * @return An Observable with the request response
+ * 
+ * @param  serverConfig The server configuration
+ * @param  path The content containing the checkpoint to be deleted
+ * @param  checkpointID ID of checkpoint to be deleted
+ * 
+ * @returns An Observable with the request response
  */
 export const deleteCheckpoint = (
   serverConfig: ServerConfig,
@@ -190,10 +208,12 @@ export const deleteCheckpoint = (
 
 /**
  * Creates an AjaxObservable for restoring a file to a specified checkpoint.
- * @param serverConfig  - The server configuration
- * @param path - The content to restore to a previous checkpoint.
- * @param checkpoint_id - ID of checkpoint to be used for restoration.
- * @return An Observable with the request response
+ * 
+ * @param serverConfig The server configuration
+ * @param path The content to restore to a previous checkpoint
+ * @param checkpointID ID of checkpoint to be used for restoration
+ * 
+ * @returns An Observable with the request response
  */
 export const restoreFromCheckpoint = (
   serverConfig: ServerConfig,
