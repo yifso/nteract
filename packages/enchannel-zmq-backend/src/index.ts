@@ -34,11 +34,13 @@ interface HeaderFiller {
 
 /**
  * Takes a Jupyter spec connection info object and channel and returns the
- * string for a channel. Abstracts away tcp and ipc(?) connection string
+ * string for a channel. Abstracts away tcp and ipc connection string
  * formatting
+ * 
  * @param config  Jupyter connection information
  * @param channel Jupyter channel ("iopub", "shell", "control", "stdin")
- * @return The connection string
+ * 
+ * @returns The connection string
  */
 export const formConnectionString = (
   config: JupyterConnectionInfo,
@@ -54,10 +56,12 @@ export const formConnectionString = (
 
 /**
  * Creates a socket for the given channel with ZMQ channel type given a config
+ * 
  * @param channel Jupyter channel ("iopub", "shell", "control", "stdin")
  * @param identity UUID
  * @param config  Jupyter connection information
- * @return The new Jupyter ZMQ socket
+ * 
+ * @returns The new Jupyter ZMQ socket
  */
 export const createSocket = (
   channel: ChannelName,
@@ -76,7 +80,12 @@ export const createSocket = (
 };
 
 /**
- * ensures the socket is ready after connecting
+ * Ensures the socket is ready after connecting.
+ * 
+ * @param socket A 0MQ socket
+ * @param url Creates a connection string to connect the socket to
+ * 
+ * @returns A Promise resolving to the same socket.
  */
 export const verifiedConnect = (
   socket: moduleJMP.Socket,
@@ -100,7 +109,8 @@ export const getUsername = () =>
   "username"; // This is the fallback that the classic notebook uses
 
 /**
- * createMainChannel creates a multiplexed set of channels
+ * Creates a multiplexed set of channels.
+ * 
  * @param  config                  Jupyter connection information
  * @param  config.ip               IP address of the kernel
  * @param  config.transport        Transport, e.g. TCP
@@ -108,7 +118,8 @@ export const getUsername = () =>
  * @param  config.iopub_port       Port for iopub channel
  * @param  subscription            subscribed topic; defaults to all
  * @param  identity                UUID
- * @return Subject containing multiplexed channels
+ * 
+ * @returns Subject containing multiplexed channels
  */
 export const createMainChannel = async (
   config: JupyterConnectionInfo,
@@ -126,7 +137,14 @@ export const createMainChannel = async (
 };
 
 /**
- * createSockets sets up the sockets for each of the jupyter channels
+ * Sets up the sockets for each of the jupyter channels.
+ * 
+ * @param config Jupyter connection information
+ * @param subscription The topic to filter the subscription to the iopub channel on
+ * @param identity UUID
+ * @param jmp A reference to the JMP Node module
+ * 
+ * @returns Sockets for each Jupyter channel
  */
 export const createSockets = async (
   config: JupyterConnectionInfo,
@@ -152,6 +170,16 @@ export const createSockets = async (
   };
 };
 
+/**
+ * Creates a multiplexed set of channels.
+ * 
+ * @param sockets An object containing associations between channel types and 0MQ sockets
+ * @param header The session and username to place in kernel message headers
+ * @param jmp A reference to the JMP Node module
+ * 
+ * @returns Creates an Observable for each channel connection that allows us
+ * to send and receive messages through the Jupyter protocol.
+ */
 export const createMainChannelFromSockets = (
   sockets: {
     [name: string]: moduleJMP.Socket;
