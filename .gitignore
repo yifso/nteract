@@ -54,3 +54,6 @@ styleguide
 nteract-packages/dist
 
 .idea/
+
+# jest reporting coverage
+junit.xml
