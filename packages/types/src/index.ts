@@ -26,7 +26,7 @@ export type KernelspecInfo = {
 
 export type LanguageInfoMetadata = {
   name: string;
-  codemirror_mode?: string | Immutable.Map<string, any>;
+  codemirror_mode?: string | Immutable.Map<string, any> | object;
   file_extension?: string;
   mimetype?: string;
   pygments_lexer?: string;
