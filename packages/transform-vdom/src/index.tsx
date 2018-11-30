@@ -27,7 +27,7 @@ export default class VDOM extends React.PureComponent<Props> {
   render(): React.ReactElement<any> {
     try {
       // objectToReactElement is mutatitve so we'll clone our object
-      var obj = cloneDeep(this.props.data);
+      const obj = cloneDeep(this.props.data);
       return objectToReactElement(obj, this.props.onVDOMEvent);
     } catch (err) {
       return (
