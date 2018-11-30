@@ -166,6 +166,7 @@ export function objectToReactElement(
           tagName: item.tagName,
           attributes: item.attributes,
           children: item.children,
+          eventHandlers: item.eventHandlers,
           key: i
         };
         if (item.attributes && item.attributes.key) {
