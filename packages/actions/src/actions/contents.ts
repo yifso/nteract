@@ -1,3 +1,6 @@
+/**
+ * @module actions
+ */
 import { ContentRef, KernelRef } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";

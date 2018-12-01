@@ -1,3 +1,6 @@
+/**
+ * @module actions
+ */
 import {
   ContentRef,
   KernelInfo,

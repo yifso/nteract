@@ -1,3 +1,6 @@
+/**
+ * @module actions
+ */
 import { CellID, CellType } from "@nteract/commutable";
 import { ContentRef } from "@nteract/types";
 

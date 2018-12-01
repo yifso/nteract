@@ -1,9 +1,7 @@
-import {
-  CellID,
-  MimeBundle,
-  Output,
-  JSONObject
-} from "@nteract/commutable";
+/**
+ * @module actions
+ */
+import { CellID, MimeBundle, Output, JSONObject } from "@nteract/commutable";
 
 import * as actionTypes from "../actionTypes";
 
@@ -11,7 +9,7 @@ import {
   ContentRef,
   HostRef,
   KernelRef,
-  LanguageInfoMetadata,
+  LanguageInfoMetadata
 } from "@nteract/types";
 
 export * from "./cells";

@@ -1,3 +1,6 @@
+/**
+ * @module actions
+ */
 import { ContentRef, KernelRef } from "@nteract/types";
 
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
