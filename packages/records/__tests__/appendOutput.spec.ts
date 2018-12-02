@@ -1,4 +1,3 @@
-// @flow strict
 import appendOutput, { mutate } from "../src/outputs/append-output";
 
 describe("appendOutput", () => {
@@ -114,7 +113,7 @@ describe("appendOutput", () => {
     expect(() => {
       newOutputs[0] = { outputType: "stream", name: "stdout", text: "Boo" };
     }).toThrow(
-      (TypeError: "Cannot assign to read only property '0' of object '[object Array]'")
+      "Cannot assign to read only property '0' of object '[object Array]'"
     );
   });
 

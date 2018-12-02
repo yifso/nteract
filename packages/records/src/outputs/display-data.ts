@@ -1,5 +1,3 @@
-// @flow strict
-
 import produce from "immer";
 
 import * as common from "../common";
@@ -19,13 +17,13 @@ import * as common from "../common";
 
 type DisplayDataType = "display_data";
 
-export const DISPLAYDATA = "display_data";
+export const DISPLAYDATA: DisplayDataType = "display_data";
 export const outputType = DISPLAYDATA;
 
 // In-memory version
 export type DisplayDataOutput = {
   outputType: DisplayDataType,
-  data: common.MediaBundle,
+  data: common.MimeBundle,
   metadata: {}
 };
 
@@ -36,7 +34,7 @@ export type NbformatDisplayDataOutput = {
   metadata: {}
 };
 
-type DisplayDataMessage = {
+export type DisplayDataMessage = {
   header: {
     msg_type: DisplayDataType
   },
@@ -47,6 +45,7 @@ type DisplayDataMessage = {
 };
 
 export function displayData(displayDataOutput?: {
+  outputType?: DisplayDataType,
   data?: common.MimeBundle,
   metadata?: {}
 }): DisplayDataOutput {

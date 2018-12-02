@@ -1,18 +1,17 @@
-// @flow
 import produce from "immer";
 
-import type { MultilineString } from "../common";
-import type { JSONObject } from "../types";
+import { MultilineString } from "../common";
+import { JSONObject } from "../types";
 
 export type MarkdownCellType = "markdown";
-export const MARKDOWNCELL = "markdown";
+export const MARKDOWNCELL: MarkdownCellType = "markdown";
 
 // In-memory version
-type MarkdownCell = {|
+type MarkdownCell = {
   cellType: MarkdownCellType,
   metadata: JSONObject,
   source: string
-|};
+};
 
 // On disk
 export type NbformatMarkdownCell = {

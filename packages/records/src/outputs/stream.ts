@@ -1,6 +1,5 @@
-// @flow strict
-
 import * as common from "../common";
+import { Stream } from "stream";
 
 /**
  * Let this declare the way for well typed records for outputs
@@ -21,7 +20,7 @@ export type StreamType = "stream";
 export const STDOUT: StreamName = "stdout";
 export const STDERR: StreamName = "stderr";
 
-export const STREAM = "stream";
+export const STREAM: StreamType = "stream";
 
 // In-memory version
 export type StreamOutput = {
@@ -37,7 +36,7 @@ export type NbformatStreamOutput = {
   text: common.MultilineString
 };
 
-type StreamMessage = {
+export type StreamMessage = {
   header: {
     msg_type: StreamType
   },
@@ -48,7 +47,7 @@ type StreamMessage = {
 };
 
 export function streamOutput(
-  s: $ReadOnly<{
+  s: Readonly<{
     name?: StreamName,
     text?: string
   }>

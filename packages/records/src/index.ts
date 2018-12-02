@@ -1,11 +1,9 @@
-// @flow
-
 export * from "./outputs";
 export * from "./cells";
 export * from "./common";
 import * as outputs from "./outputs";
-import type { Notebook as v4Notebook } from "./structures";
-import type {
+import { Notebook as v4Notebook } from "./structures";
+import {
   ImmutableNotebook,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
@@ -25,7 +23,7 @@ export type MimeBundle = JSONObject;
 export type CellType = "markdown" | "code";
 export type CellID = string;
 
-export type {
+export {
   ImmutableCellOrder,
   ImmutableCellMap,
   ImmutableNotebook,
@@ -55,7 +53,7 @@ const {
 
 export type Notebook = v4Notebook;
 
-function freezeReviver(k: string, v: JSONType): JSONType {
+function freezeReviver(k: string, v: JSONType): Readonly<JSONType> {
   return Object.freeze(v);
 }
 
