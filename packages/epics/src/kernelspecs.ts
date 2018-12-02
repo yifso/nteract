@@ -5,17 +5,16 @@ import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
 import { Action } from "redux";
 
-import * as actions from "../actions";
-import * as actionTypes from "../actionTypes";
-import { FetchKernelspecs } from "../actionTypes";
-import * as selectors from "../selectors";
+import * as actions from "@nteract/actions";
+import { FetchKernelspecs } from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
 
 export const fetchKernelspecsEpic = (
   action$: ActionsObservable<Action>,
   state$: any
 ) =>
   action$.pipe(
-    ofType(actionTypes.FETCH_KERNELSPECS),
+    ofType(actions.FETCH_KERNELSPECS),
     mergeMap((action: FetchKernelspecs) => {
       const {
         payload: { hostRef, kernelspecsRef }

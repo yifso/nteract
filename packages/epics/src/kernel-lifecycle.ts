@@ -16,12 +16,11 @@ import {
 import { ActionsObservable, ofType } from "redux-observable";
 import { Action } from "redux";
 
-import { ContentRef, KernelRef } from "./types/refs";
-import { createKernelRef } from "../state/refs";
-import * as selectors from "../selectors";
-import * as actions from "../actions";
-import * as actionTypes from "./types/actions/kernel";
-import { AppState, KernelInfo } from "../state";
+import { ContentRef, KernelRef } from "@nteract/types";
+import { createKernelRef } from "@nteract/types";
+import * as selectors from "@nteract/selectors";
+import * as actions from "@nteract/actions";
+import { AppState, KernelInfo } from "@nteract/types";
 
 const path = require("path");
 
@@ -31,11 +30,11 @@ const path = require("path");
  * @oaram  {ActionObservable}  action$ ActionObservable for LAUNCH_KERNEL_SUCCESSFUL action
  */
 export const watchExecutionStateEpic = (
-  action$: ActionsObservable<Action<actionTypes.NewKernelAction>>
+  action$: ActionsObservable<Action<actions.NewKernelAction>>
 ) =>
   action$.pipe(
-    ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: actionTypes.NewKernelAction) =>
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    switchMap((action: actions.NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         filter(msg => msg.header.msg_type === "status"),
         map(msg =>
@@ -113,11 +112,11 @@ export function acquireKernelInfo(
  * @param  {ActionObservable}  The action type
  */
 export const acquireKernelInfoEpic = (
-  action$: ActionsObservable<Action<actionTypes.NewKernelAction>>
+  action$: ActionsObservable<Action<actions.NewKernelAction>>
 ) =>
   action$.pipe(
-    ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: actionTypes.NewKernelAction) => {
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    switchMap((action: actions.NewKernelAction) => {
       const {
         payload: {
           kernel: { channels },
@@ -135,8 +134,10 @@ export const extractNewKernel = (
 ) => {
   const cwd = (filepath && path.dirname(filepath)) || "/";
 
-  const kernelSpecName = notebook.getIn(["metadata", "kernelspec", "name"]) || 
-    notebook.getIn(["metadata", "language_info", "name"]) || "python3";
+  const kernelSpecName =
+    notebook.getIn(["metadata", "kernelspec", "name"]) ||
+    notebook.getIn(["metadata", "language_info", "name"]) ||
+    "python3";
 
   return {
     cwd,
@@ -156,8 +157,8 @@ export const launchKernelWhenNotebookSetEpic = (
   state$: any
 ) =>
   action$.pipe(
-    ofType(actionTypes.FETCH_CONTENT_FULFILLED),
-    mergeMap((action: actionTypes.FetchContentFulfilled) => {
+    ofType(actions.FETCH_CONTENT_FULFILLED),
+    mergeMap((action: actions.FetchContentFulfilled) => {
       const state: AppState = state$.value;
 
       const contentRef = action.payload.contentRef;
@@ -196,8 +197,8 @@ export const restartKernelEpic = (
   kernelRefGenerator: () => KernelRef = createKernelRef
 ) =>
   action$.pipe(
-    ofType(actionTypes.RESTART_KERNEL),
-    concatMap((action: actionTypes.RestartKernel) => {
+    ofType(actions.RESTART_KERNEL),
+    concatMap((action: actions.RestartKernel) => {
       const state = state$.value;
 
       const oldKernelRef = action.payload.kernelRef;
@@ -248,9 +249,9 @@ export const restartKernelEpic = (
       });
 
       const awaitKernelReady = action$.pipe(
-        ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
+        ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
         filter(
-          (action: actionTypes.NewKernelAction) =>
+          (action: actions.NewKernelAction) =>
             action.payload.kernelRef === newKernelRef
         ),
         take(1),

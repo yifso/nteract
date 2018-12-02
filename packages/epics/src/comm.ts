@@ -3,9 +3,11 @@ import { map, retry, switchMap } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { createMessage, ofMessageType } from "@nteract/messaging";
 import { ActionsObservable } from "redux-observable";
+import { Action } from "redux";
 
-import { commOpenAction, commMessageAction } from "./actions/comm";
-import { LAUNCH_KERNEL_SUCCESSFUL, NewKernelAction } from "./types/actions/kernel";
+import { commOpenAction, commMessageAction } from "@nteract/actions";
+import { NewKernelAction } from "@nteract/actions";
+import { LAUNCH_KERNEL_SUCCESSFUL } from "@nteract/actions";
 
 /**
  * creates a comm open message
@@ -91,7 +93,7 @@ export function commActionObservable(action: NewKernelAction) {
  * @param  {redux.Store} store   the redux store
  * @return {ActionsObservable}         Comm actions
  */
-export const commListenEpic = (action$: ActionsObservable<NewKernelAction>) =>
+export const commListenEpic = (action$: ActionsObservable<Action>) =>
   action$.pipe(
     ofType(LAUNCH_KERNEL_SUCCESSFUL),
     switchMap(commActionObservable)

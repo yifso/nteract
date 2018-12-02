@@ -1,28 +1,26 @@
+/* @flow */
 import { empty, from, of, interval } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
 import FileSaver from "file-saver";
 import { ActionsObservable, StateObservable } from "redux-observable";
+import { Action } from "redux";
 import { contents } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 
-import * as actions from "./actions/contents";
-import * as contentActionTypes from "./types/actions/contents";
-import * as saveActionTypes from "./types/actions/save";
-import * as selectors from "../selectors";
-import { ContentRef } from "./types/refs";
-import { AppState } from "../state";
-import { Action } from "redux";
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
+import { ContentRef, AppState } from "@nteract/types";
 
 export function fetchContentEpic(
   action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(contentActionTypes.FETCH_CONTENT),
-    switchMap((action: contentActionTypes.FetchContent) => {
+    ofType(actions.FETCH_CONTENT),
+    switchMap((action: actions.FetchContent) => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
         return of({
           type: "ERROR",
@@ -190,8 +188,8 @@ export function saveContentEpic(
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(saveActionTypes.SAVE, contentActionTypes.DOWNLOAD_CONTENT),
-    mergeMap((action: saveActionTypes.Save | contentActionTypes.DownloadContent) => {
+    ofType(actions.SAVE, actions.DOWNLOAD_CONTENT),
+    mergeMap((action: actions.Save | actions.DownloadContent) => {
       const state = state$.value;
 
       const host = selectors.currentHost(state);
@@ -211,7 +209,7 @@ export function saveContentEpic(
           error: new Error("Content was not set."),
           contentRef: action.payload.contentRef
         };
-        if (action.type === contentActionTypes.DOWNLOAD_CONTENT) {
+        if (action.type === actions.DOWNLOAD_CONTENT) {
           return of(actions.downloadContentFailed(errorPayload));
         }
         return of(actions.saveFailed(errorPayload));
@@ -256,7 +254,7 @@ export function saveContentEpic(
       }
 
       switch (action.type) {
-        case contentActionTypes.DOWNLOAD_CONTENT: {
+        case actions.DOWNLOAD_CONTENT: {
           // FIXME: Convert this to downloadString, so it works for both files & notebooks
           if (
             content.type === "notebook" &&
@@ -286,7 +284,7 @@ export function saveContentEpic(
             })
           );
         }
-        case saveActionTypes.SAVE: {
+        case actions.SAVE: {
           const serverConfig = selectors.serverConfig(host);
 
           // Check to see if the file was modified since the last time we saved
@@ -301,9 +299,9 @@ export function saveContentEpic(
               }
               const model = xhr.response;
 
-              const diskDate = new Date(model.last_modified).getTime();
+              const diskDate = new Date(model.last_modified);
               const inMemoryDate = content.lastSaved
-                ? new Date(content.lastSaved).getTime()
+                ? new Date(content.lastSaved)
                 : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
                   diskDate;
 

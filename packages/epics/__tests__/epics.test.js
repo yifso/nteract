@@ -1,5 +1,7 @@
 "use strict";
 
 describe("@nteract/epics", () => {
-  it("needs tests");
+  it("needs tests", () => {
+    expect(true).toEqual(true);
+  });
 });
