@@ -451,8 +451,8 @@ describe("createCellBelow", () => {
       actions.createCellBelow({ cellType: "markdown", id })
     );
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(4);
-    const cellID = state.getIn(["notebook", "cellOrder"]).last();
-    const cell = state.getIn(["notebook", "cellMap", cellID]);
+    const cellId = state.getIn(["notebook", "cellOrder"]).last();
+    const cell = state.getIn(["notebook", "cellMap", cellId]);
     expect(cell.get("cell_type")).toBe("markdown");
   });
 });
@@ -479,8 +479,8 @@ describe("createCellAfter", () => {
       actions.createCellAfter({ cellType: "markdown", id })
     );
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(4);
-    const cellID = state.getIn(["notebook", "cellOrder"]).last();
-    const cell = state.getIn(["notebook", "cellMap", cellID]);
+    const cellId = state.getIn(["notebook", "cellOrder"]).last();
+    const cell = state.getIn(["notebook", "cellMap", cellId]);
     expect(cell.get("cell_type")).toBe("markdown");
   });
 });

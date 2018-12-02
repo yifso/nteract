@@ -21,7 +21,7 @@ import {
 export type ExecutionCount = number | null;
 export type MimeBundle = JSONObject;
 export type CellType = "markdown" | "code";
-export type CellID = string;
+export type CellId = string;
 
 export {
   ImmutableCellOrder,

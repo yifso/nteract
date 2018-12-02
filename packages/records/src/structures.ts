@@ -1,7 +1,15 @@
 import produce from "immer";
 import uuid from "uuid/v4";
 
-import { NbformatCell, NbformatCodeCell, CodeCellType, MarkdownCellType, NbformatMarkdownCell, CODECELL, MARKDOWNCELL } from "./cells";
+import {
+  NbformatCell,
+  NbformatCodeCell,
+  CodeCellType,
+  MarkdownCellType,
+  NbformatMarkdownCell,
+  CODECELL,
+  MARKDOWNCELL
+} from "./cells";
 import { NbformatOutput } from "./outputs";
 import {
   ImmutableNotebook,
@@ -20,7 +28,7 @@ export interface Notebook {
   metadata: object;
   cellOrder: Array<string>;
   cellMap: object;
-};
+}
 
 export interface CodeCell {
   cell_type: CodeCellType;
@@ -28,13 +36,13 @@ export interface CodeCell {
   execution_count: ExecutionCount;
   source: string;
   outputs: Array<NbformatOutput>;
-};
+}
 
 export interface MarkdownCell {
   cell_type: MarkdownCellType;
   source: string;
   metadata: object;
-};
+}
 
 const defaultCodeCell = {
   cell_type: CODECELL,
@@ -54,7 +62,9 @@ const defaultMarkdownCell = {
   source: ""
 };
 
-export function createCodeCell(cell: CodeCell = defaultCodeCell): NbformatCodeCell {
+export function createCodeCell(
+  cell: CodeCell = defaultCodeCell
+): NbformatCodeCell {
   return produce(defaultCodeCell, draft => Object.assign(draft, cell));
 }
 
@@ -86,7 +96,7 @@ export const emptyNotebook = createNotebook();
 export interface CellStructure {
   cellOrder: ImmutableCellOrder;
   cellMap: ImmutableCellMap;
-};
+}
 
 // Intended to make it easy to use this with (temporary mutable cellOrder + cellMap)
 export function appendCell(
@@ -118,41 +128,45 @@ export function appendCellToNotebook(
 export function insertCellAt(
   notebook: ImmutableNotebook,
   cell: NbformatCell,
-  cellID: string,
+  cellId: string,
   index: number
 ): ImmutableNotebook {
-  notebook["cellMap"][cellID] = cell;
-  notebook["cellOrder"][index] = cellID;
+  notebook["cellMap"][cellId] = cell;
+  notebook["cellOrder"][index] = cellId;
   return notebook;
 }
 
 export function insertCellAfter(
   notebook: ImmutableNotebook,
   cell: NbformatCell,
-  cellID: string,
-  priorCellID: string
+  cellId: string,
+  priorCellId: string
 ): ImmutableNotebook {
   return insertCellAt(
     notebook,
     cell,
-    cellID,
-    notebook["cellOrder"].indexOf(priorCellID) + 1
+    cellId,
+    notebook["cellOrder"].indexOf(priorCellId) + 1
   );
 }
 
 // Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead
-export function removeCell(notebook: ImmutableNotebook, cellID: string) {
+export function removeCell(notebook: ImmutableNotebook, cellId: string) {
   console.log(
     "Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead"
   );
-  delete notebook["cellMap"][cellID];
-  notebook["cellOrder"] = notebook["cellOrder"].filter((id: string) => id !== cellID);
+  delete notebook["cellMap"][cellId];
+  notebook["cellOrder"] = notebook["cellOrder"].filter(
+    (id: string) => id !== cellId
+  );
   return notebook;
 }
 
-export function deleteCell(notebook: ImmutableNotebook, cellID: string) {
-  delete notebook["cellMap"][cellID];
-  notebook["cellOrder"] = notebook["cellOrder"].filter((id: string) => id !== cellID);
+export function deleteCell(notebook: ImmutableNotebook, cellId: string) {
+  delete notebook["cellMap"][cellId];
+  notebook["cellOrder"] = notebook["cellOrder"].filter(
+    (id: string) => id !== cellId
+  );
   return notebook;
 }
 

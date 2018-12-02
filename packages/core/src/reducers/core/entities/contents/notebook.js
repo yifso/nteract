@@ -6,7 +6,7 @@ import type {
   ImmutableCell,
   ImmutableCellMap,
   ImmutableNotebook,
-  CellID,
+  CellId,
   ImmutableCellOrder,
   ImmutableOutput,
   ImmutableOutputs,
@@ -188,7 +188,7 @@ function clearAllOutputs(
 
 function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   const output = action.payload.output;
-  const cellID = action.payload.id;
+  const cellId = action.payload.id;
 
   // If it's display data and it doesn't have a display id, fold it in like non
   // display data
@@ -197,7 +197,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
     !has(output, "transient.display_id")
   ) {
     return state.updateIn(
-      ["notebook", "cellMap", cellID, "outputs"],
+      ["notebook", "cellMap", cellId, "outputs"],
       (outputs: ImmutableOutputs): ImmutableOutputs =>
         reduceOutputs(outputs, output)
     );
@@ -218,14 +218,14 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
 
   // Determine the next output index
   const outputIndex = state
-    .getIn(["notebook", "cellMap", cellID, "outputs"], Immutable.List())
+    .getIn(["notebook", "cellMap", cellId, "outputs"], Immutable.List())
     .count();
 
   // Construct the path to the output for updating later
   const keyPath: KeyPath = Immutable.List([
     "notebook",
     "cellMap",
-    cellID,
+    cellId,
     "outputs",
     outputIndex
   ]);
@@ -295,7 +295,7 @@ function focusNextCell(
     return state;
   }
 
-  const curIndex = cellOrder.findIndex((foundId: CellID) => id === foundId);
+  const curIndex = cellOrder.findIndex((foundId: CellId) => id === foundId);
   const curCellType = state.getIn(["notebook", "cellMap", id, "cell_type"]);
 
   const nextIndex = curIndex + 1;
@@ -306,14 +306,14 @@ function focusNextCell(
       return state;
     }
 
-    const cellID: string = uuid();
+    const cellId: string = uuid();
     const cell = curCellType === "code" ? emptyCodeCell : emptyMarkdownCell;
 
     const notebook: ImmutableNotebook = state.get("notebook");
 
     return state
-      .set("cellFocused", cellID)
-      .set("notebook", insertCellAt(notebook, cell, cellID, nextIndex));
+      .set("cellFocused", cellId)
+      .set("notebook", insertCellAt(notebook, cell, cellId, nextIndex));
   }
 
   // When in the middle of the notebook document, move to the next cell
@@ -326,7 +326,7 @@ function focusPreviousCell(
 ): NotebookModel {
   const cellOrder = state.getIn(["notebook", "cellOrder"], Immutable.List());
   const curIndex = cellOrder.findIndex(
-    (id: CellID) => id === action.payload.id
+    (id: CellId) => id === action.payload.id
   );
   const nextIndex = Math.max(0, curIndex - 1);
 
@@ -357,7 +357,7 @@ function focusNextCellEditor(
     return state;
   }
 
-  const curIndex = cellOrder.findIndex((foundId: CellID) => id === foundId);
+  const curIndex = cellOrder.findIndex((foundId: CellId) => id === foundId);
   const nextIndex = curIndex + 1;
 
   return state.set("editorFocused", cellOrder.get(nextIndex));
@@ -372,7 +372,7 @@ function focusPreviousCellEditor(
     Immutable.List()
   );
   const curIndex = cellOrder.findIndex(
-    (id: CellID) => id === action.payload.id
+    (id: CellId) => id === action.payload.id
   );
   const nextIndex = Math.max(0, curIndex - 1);
 
@@ -425,10 +425,10 @@ function createCellBelow(
 
   const { cellType, source } = action.payload;
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
-  const cellID = uuid();
+  const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
-    return insertCellAt(notebook, cell.set("source", source), cellID, index);
+    return insertCellAt(notebook, cell.set("source", source), cellId, index);
   });
 }
 
@@ -443,14 +443,14 @@ function createCellAbove(
 
   const { cellType } = action.payload;
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
-  const cellID = uuid();
+  const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const cellOrder: ImmutableCellOrder = notebook.get(
       "cellOrder",
       Immutable.List()
     );
     const index = cellOrder.indexOf(id);
-    return insertCellAt(notebook, cell, cellID, index);
+    return insertCellAt(notebook, cell, cellId, index);
   });
 }
 
@@ -468,10 +468,10 @@ function createCellAfter(
 
   const { cellType, source } = action.payload;
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
-  const cellID = uuid();
+  const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
-    return insertCellAt(notebook, cell.set("source", source), cellID, index);
+    return insertCellAt(notebook, cell.set("source", source), cellId, index);
   });
 }
 
@@ -489,14 +489,14 @@ function createCellBefore(
 
   const { cellType } = action.payload;
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
-  const cellID = uuid();
+  const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const cellOrder: ImmutableCellOrder = notebook.get(
       "cellOrder",
       Immutable.List()
     );
     const index = cellOrder.indexOf(id);
-    return insertCellAt(notebook, cell, cellID, index);
+    return insertCellAt(notebook, cell, cellId, index);
   });
 }
 
@@ -513,8 +513,8 @@ function createCellAppend(
   const cell: ImmutableCell =
     cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const index = cellOrder.count();
-  const cellID = uuid();
-  return state.set("notebook", insertCellAt(notebook, cell, cellID, index));
+  const cellId = uuid();
+  return state.set("notebook", insertCellAt(notebook, cell, cellId, index));
 }
 
 function acceptPayloadMessage(
