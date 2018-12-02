@@ -1,3 +1,6 @@
+/**
+ * @module epics
+ */
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { Action } from "redux";
@@ -18,12 +21,12 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import { RemoteKernelProps } from "@nteract/types";
+import { RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { extractNewKernel } from "./kernel-lifecycle";
 
 export const launchWebSocketKernelEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.LaunchKernelByNameAction>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -40,7 +43,7 @@ export const launchWebSocketKernelEpic = (
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig = selectors.serverConfig(host);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       const {
         payload: { kernelSpecName, cwd, kernelRef, contentRef }
@@ -99,7 +102,7 @@ export const launchWebSocketKernelEpic = (
   );
 
 export const changeWebSocketKernelEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.ChangeKernelByName>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -119,7 +122,7 @@ export const changeWebSocketKernelEpic = (
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig = selectors.serverConfig(host);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       // TODO: This is the case where we didn't have a kernel before
       //       and they chose to switch kernels. Instead we need to allow
@@ -196,7 +199,7 @@ export const changeWebSocketKernelEpic = (
   );
 
 export const interruptKernelEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.InterruptKernel>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -213,7 +216,7 @@ export const interruptKernelEpic = (
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig = selectors.serverConfig(host);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       const kernel = selectors.currentKernel(state);
       if (!kernel) {
@@ -256,7 +259,7 @@ export const interruptKernelEpic = (
 
 // NB: This epic kills the *current* kernel. ZMQ killKernelEpic kills a *specified* kernel.
 export const killKernelEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.KillKernelAction>,
   state$: StateObservable<AppState>
 ) =>
   // TODO: Use the sessions API for this
@@ -274,7 +277,7 @@ export const killKernelEpic = (
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig = selectors.serverConfig(host);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       const kernel = selectors.currentKernel(state);
       if (!kernel) {

@@ -1,4 +1,6 @@
-/* @flow */
+/**
+ * @module epics
+ */
 import { empty, from, of, interval } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
@@ -12,10 +14,11 @@ import { Notebook } from "@nteract/commutable";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, AppState } from "@nteract/types";
+import { ContentRef, AppState, ServerConfig } from "@nteract/types";
+import { AjaxResponse } from "rxjs/ajax";
 
 export function fetchContentEpic(
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.FetchContent>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -36,7 +39,7 @@ export function fetchContentEpic(
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig = selectors.serverConfig(host);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
         .get(serverConfig, action.payload.filepath, action.payload.params)
@@ -184,7 +187,7 @@ export function autoSaveCurrentContentEpic(
 }
 
 export function saveContentEpic(
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.Save | actions.DownloadContent>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -285,7 +288,7 @@ export function saveContentEpic(
           );
         }
         case actions.SAVE: {
-          const serverConfig = selectors.serverConfig(host);
+          const serverConfig: ServerConfig = selectors.serverConfig(host);
 
           // Check to see if the file was modified since the last time we saved
           // TODO: Determine how we handle what to do
@@ -315,7 +318,7 @@ export function saveContentEpic(
               }
 
               return contents.save(serverConfig, filepath, saveModel).pipe(
-                map(xhr => {
+                map((xhr: AjaxResponse) => {
                   return actions.saveFulfilled({
                     contentRef: action.payload.contentRef,
                     model: xhr.response

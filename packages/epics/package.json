@@ -36,5 +36,10 @@
   },
   "bugs": {
     "url": "https://github.com/nteract/nteract/issues"
+  },
+  "dependencies": {
+    "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3"
   }
 }

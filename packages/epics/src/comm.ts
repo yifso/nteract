@@ -1,3 +1,6 @@
+/**
+ * @module epics
+ */
 import { merge } from "rxjs";
 import { map, retry, switchMap } from "rxjs/operators";
 import { ofType } from "redux-observable";

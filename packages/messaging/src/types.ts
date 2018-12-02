@@ -49,7 +49,7 @@ export interface JupyterMessage<MT extends MessageType = MessageType, C = any> {
   metadata: object;
   content: C;
   channel: string;
-  buffers?: any[] | null;
+  buffers?: Uint8Array | null;
 }
 
 export interface ExecuteMessageContent {

@@ -1,3 +1,6 @@
+/**
+ * @module epics
+ */
 import {
   createExecuteRequest,
   ofMessageType,
@@ -5,10 +8,11 @@ import {
   outputs,
   payloads,
   kernelStatuses,
-  executionCounts
+  executionCounts,
+  JupyterMessage
 } from "@nteract/messaging";
 import { Channels, ExecuteRequest } from "@nteract/messaging";
-import { Observable, of, merge, empty, throwError } from "rxjs";
+import { Observable, of, merge, empty, throwError, Observer } from "rxjs";
 import {
   groupBy,
   filter,
@@ -40,6 +44,7 @@ import {
   ExecuteCanceled,
   DeleteCell
 } from "@nteract/actions";
+import { CellID } from "@nteract/commutable";
 
 const Immutable = require("immutable");
 
@@ -105,7 +110,7 @@ export function executeCellStream(
   );
 
   // On subscription, send the message
-  return Observable.create(observer => {
+  return Observable.create((observer: Observer<any>) => {
     const subscription = cellAction$.subscribe(observer);
     channels.next(executeRequest);
     return subscription;
@@ -167,7 +172,7 @@ export function createExecuteCellStream(
 }
 
 export function executeAllCellsEpic(
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<ExecuteAllCells | ExecuteAllCellsBelow>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -190,7 +195,7 @@ export function executeAllCellsEpic(
         codeCellIds = selectors.notebook.codeCellIdsBelow(model);
       }
       return of(
-        ...codeCellIds.map(id =>
+        ...codeCellIds.map((id: CellID) =>
           actions.executeCell({ id, contentRef: action.payload.contentRef })
         )
       );
@@ -203,7 +208,7 @@ export function executeAllCellsEpic(
  * inner observable streams of the running execution responses
  */
 export function executeCellEpic(
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<ExecuteCell | ExecuteFocusedCell>,
   state$: any
 ) {
   return action$.pipe(
@@ -301,14 +306,16 @@ export function executeCellEpic(
   );
 }
 
-export const updateDisplayEpic = (action$: ActionsObservable<Action>) =>
+export const updateDisplayEpic = (
+  action$: ActionsObservable<NewKernelAction>
+) =>
   // Global message watcher so we need to set up a feed for each new kernel
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
     switchMap((action: NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         ofMessageType("update_display_data"),
-        map(msg =>
+        map((msg: JupyterMessage) =>
           actions.updateDisplay({
             content: msg.content,
             contentRef: action.payload.contentRef

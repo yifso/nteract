@@ -1,3 +1,6 @@
+/**
+ * @module epics
+ */
 import {
   executeCellEpic,
   updateDisplayEpic,

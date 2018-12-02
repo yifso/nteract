@@ -1,6 +1,9 @@
+/**
+ * @module epics
+ */
 import { Observable, Observer, of, empty, merge } from "rxjs";
 import { createMessage, childOf, ofMessageType } from "@nteract/messaging";
-import { Channels } from "@nteract/messaging";
+import { Channels, JupyterMessage } from "@nteract/messaging";
 import { ImmutableNotebook } from "@nteract/commutable";
 import {
   filter,
@@ -36,8 +39,8 @@ export const watchExecutionStateEpic = (
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
     switchMap((action: actions.NewKernelAction) =>
       action.payload.kernel.channels.pipe(
-        filter(msg => msg.header.msg_type === "status"),
-        map(msg =>
+        filter((msg: JupyterMessage) => msg.header.msg_type === "status"),
+        map((msg: JupyterMessage) =>
           actions.setExecutionState({
             kernelStatus: msg.content.execution_state,
             kernelRef: action.payload.kernelRef,
@@ -153,7 +156,7 @@ export const extractNewKernel = (
  *       We could always inject those dependencies separately...
  */
 export const launchKernelWhenNotebookSetEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.FetchContentFulfilled>,
   state$: any
 ) =>
   action$.pipe(
@@ -192,7 +195,7 @@ export const launchKernelWhenNotebookSetEpic = (
   );
 
 export const restartKernelEpic = (
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<actions.RestartKernel>,
   state$: any,
   kernelRefGenerator: () => KernelRef = createKernelRef
 ) =>
