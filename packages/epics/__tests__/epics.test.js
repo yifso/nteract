@@ -1,7 +1,5 @@
-'use strict';
+"use strict";
 
-const epics = require('..');
-
-describe('@nteract/epics', () => {
-    it('needs tests');
+describe("@nteract/epics", () => {
+  it("needs tests");
 });
