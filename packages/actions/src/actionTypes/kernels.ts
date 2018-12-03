@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { CellID } from "@nteract/commutable";
+import { CellId } from "@nteract/commutable";
 import { ExecuteRequest } from "@nteract/messaging";
 import {
   ContentRef,
@@ -15,7 +15,7 @@ export const SEND_EXECUTE_REQUEST = "SEND_EXECUTE_REQUEST";
 export type SendExecuteRequest = {
   type: "SEND_EXECUTE_REQUEST";
   payload: {
-    id: CellID;
+    id: CellId;
     message: ExecuteRequest;
     contentRef: ContentRef;
   };
@@ -25,7 +25,7 @@ export const EXECUTE_CELL = "EXECUTE_CELL";
 export type ExecuteCell = {
   type: "EXECUTE_CELL";
   payload: {
-    id: CellID;
+    id: CellId;
     contentRef: ContentRef;
   };
 };
@@ -58,7 +58,7 @@ export const EXECUTE_CANCELED = "EXECUTE_CANCELED";
 export type ExecuteCanceled = {
   type: "EXECUTE_CANCELED";
   payload: {
-    id: CellID;
+    id: CellId;
     contentRef: ContentRef;
   };
 };

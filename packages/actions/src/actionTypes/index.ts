@@ -2,7 +2,7 @@
  * @module actions
  */
 import {
-  CellID,
+  CellId,
   MimeBundle,
   Output,
   JSONObject,
@@ -56,7 +56,7 @@ export const APPEND_OUTPUT = "APPEND_OUTPUT";
 export type AppendOutput = {
   type: "APPEND_OUTPUT";
   payload: {
-    id: CellID;
+    id: CellId;
     output: Output;
     contentRef: ContentRef;
   };
@@ -89,7 +89,7 @@ export const ACCEPT_PAYLOAD_MESSAGE = "ACCEPT_PAYLOAD_MESSAGE";
 export type AcceptPayloadMessage = {
   type: "ACCEPT_PAYLOAD_MESSAGE";
   payload: {
-    id: CellID;
+    id: CellId;
     payload: object;
     contentRef: ContentRef;
   };
@@ -173,7 +173,7 @@ export const TOGGLE_OUTPUT_EXPANSION = "TOGGLE_OUTPUT_EXPANSION";
 export type ToggleCellExpansion = {
   type: "TOGGLE_OUTPUT_EXPANSION";
   payload: {
-    id: CellID;
+    id: CellId;
     contentRef: ContentRef;
   };
 };

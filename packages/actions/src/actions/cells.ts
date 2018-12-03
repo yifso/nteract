@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { CellID, CellType } from "@nteract/commutable";
+import { CellId, CellType } from "@nteract/commutable";
 import { ContentRef, KernelRef } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
@@ -58,7 +58,7 @@ export function deleteCell(payload: {
 }
 
 export function createCellBelow(payload: {
-  id?: CellID;
+  id?: CellId;
   cellType: CellType;
   source: string;
   contentRef: ContentRef;
@@ -93,7 +93,7 @@ export function removeCell(payload: {
 
 // Deprecation Warning: createCellAfter() is being deprecated. Please use createCellBelow() instead
 export function createCellAfter(payload: {
-  id?: CellID;
+  id?: CellId;
   cellType: CellType;
   source: string;
   contentRef: ContentRef;
@@ -127,7 +127,7 @@ export function createCellAppend(payload: {
 }
 
 export function toggleParameterCell(payload: {
-  id: CellID;
+  id: CellId;
   contentRef: ContentRef;
 }): actionTypes.ToggleTagInCell {
   // Tag comes via Papermill
@@ -139,7 +139,7 @@ export function toggleParameterCell(payload: {
 }
 
 export function toggleTagInCell(payload: {
-  id: CellID;
+  id: CellId;
   contentRef: ContentRef;
   tag: string;
 }): actionTypes.ToggleTagInCell {
@@ -152,7 +152,7 @@ export function toggleTagInCell(payload: {
 /**
  * setInCell can generically be used to set any attribute on a cell, including
  * and especially for changing metadata per cell.
- * @param {CellID} payload.id    cell ID
+ * @param {CellId} payload.id    cell ID
  * @param {Array<string>} payload.path  path within a cell to set
  * @param {any} payload.value what to set it to
  *
@@ -171,7 +171,7 @@ export function toggleTagInCell(payload: {
  *
  */
 export function setInCell<T>(payload: {
-  id: CellID;
+  id: CellId;
   path: Array<string>;
   value: T;
   contentRef: ContentRef;
@@ -183,7 +183,7 @@ export function setInCell<T>(payload: {
 }
 
 export function updateCellSource(payload: {
-  id: CellID;
+  id: CellId;
   value: string;
   contentRef: ContentRef;
 }): actionTypes.SetInCell<string> {
@@ -191,7 +191,7 @@ export function updateCellSource(payload: {
 }
 
 export function updateCellExecutionCount(payload: {
-  id: CellID;
+  id: CellId;
   value: number;
   contentRef: ContentRef;
 }): actionTypes.SetInCell<number> {
@@ -210,7 +210,7 @@ export function unhideAll(payload: {
 }
 
 export function toggleCellOutputVisibility(payload: {
-  id?: CellID;
+  id?: CellId;
   contentRef: ContentRef;
 }): actionTypes.ToggleCellOutputVisibility {
   return {
@@ -243,7 +243,7 @@ export function updateCellStatus(payload: {
 /* Unlike focus next & previous, to set focus, we require an ID,
      because the others are based on there already being a focused cell */
 export function focusCell(payload: {
-  id: CellID;
+  id: CellId;
   contentRef: ContentRef;
 }): actionTypes.FocusCell {
   return {
@@ -304,7 +304,7 @@ export function focusPreviousCellEditor(payload: {
 }
 
 export function copyCell(payload: {
-  id?: CellID;
+  id?: CellId;
   contentRef: ContentRef;
 }): actionTypes.CopyCell {
   return {
@@ -314,7 +314,7 @@ export function copyCell(payload: {
 }
 
 export function cutCell(payload: {
-  id?: CellID;
+  id?: CellId;
   contentRef: ContentRef;
 }): actionTypes.CutCell {
   return {
@@ -333,7 +333,7 @@ export function pasteCell(payload: {
 }
 
 export function changeCellType(payload: {
-  id?: CellID;
+  id?: CellId;
   to: CellType;
   contentRef: ContentRef;
 }): actionTypes.ChangeCellType {

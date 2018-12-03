@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { CellID, MimeBundle, Output, JSONObject } from "@nteract/commutable";
+import { CellId, MimeBundle, Output, JSONObject } from "@nteract/commutable";
 
 import * as actionTypes from "../actionTypes";
 
@@ -163,7 +163,7 @@ export function commMessageAction(message: any) {
 }
 
 export function appendOutput(payload: {
-  id: CellID;
+  id: CellId;
   output: Output;
   contentRef: ContentRef;
 }): actionTypes.AppendOutput {
@@ -174,7 +174,7 @@ export function appendOutput(payload: {
 }
 
 export function acceptPayloadMessage(payload: {
-  id: CellID;
+  id: CellId;
   // TODO: Properly type acceptPayloadMessage as taking jupyter payload message
   // Not to be confused with a redux style action payload
   payload: any;
