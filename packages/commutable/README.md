@@ -2,7 +2,7 @@
 
 This is a package for Jupyter Notebook operations, helping to enable history stored as a series of immutable notebooks.
 
-This package follows the principles below, based on [Tom MacWright](http://www.macwright.org/2015/05/18/practical-undo.html)'s outline, for immutable data.
+This package follows the principles below, based on [Tom MacWright](http://www.macwright.org/2015/05/18/practical-undo.html)'s outline for practical undo.
 
 - **A notebook document is immutable**. It is never mutated in-place.
 - Changes to a notebook document are encapsulated into **operations** that take a previous version and return a new one.
