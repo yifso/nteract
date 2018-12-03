@@ -15,7 +15,7 @@
   },
   "keywords": [],
   "author": "Safia Abdalla <safia@safia.rocks>",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "@nteract/types": "^3.1.0",
     "immutable": "^4.0.0-rc.12",
