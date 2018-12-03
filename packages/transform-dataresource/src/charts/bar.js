@@ -39,17 +39,17 @@ export const semioticBarChart = (
     additionalSettings.dynamicColumnWidth = metric3;
   }
 
-  if (dim1 && dim1 !== "none") {
-    const uniqueValues = sortedData.reduce(
-      (uniques, datapoint) =>
-        !uniques.find(
-          uniqueDimName => uniqueDimName === datapoint[dim1].toString()
-        )
-          ? [...uniques, datapoint[dim1].toString()]
-          : uniques,
-      []
-    );
+  const uniqueValues = sortedData.reduce(
+    (uniques, datapoint) =>
+      !uniques.find(
+        uniqueDimName => uniqueDimName === datapoint[dim1].toString()
+      )
+        ? [...uniques, datapoint[dim1].toString()]
+        : uniques,
+    []
+  );
 
+  if (dim1 && dim1 !== "none") {
     uniqueValues.forEach((value: string, index: number) => {
       //Color the first 18 values after that everything gets grey because more than 18 colors is unreadable no matter what you want
       colorHash[value] = index > 18 ? "grey" : colors[index % colors.length];
@@ -117,10 +117,13 @@ export const semioticBarChart = (
       fill: colorHash[datapoint[dim1]] || colors[0],
       stroke: colorHash[datapoint[dim1]] || colors[0]
     }),
-    oPadding: 5,
-    oLabel: (columnLabel: Object) => {
-      return <text transform="rotate(90)">{columnLabel}</text>;
-    },
+    oPadding: uniqueValues.length > 30 ? 1 : 5,
+    oLabel:
+      uniqueValues.length > 30
+        ? false
+        : (columnLabel: Object) => {
+            return <text transform="rotate(90)">{columnLabel}</text>;
+          },
     hoverAnnotation: true,
     margin: { top: 10, right: 10, bottom: 100, left: 70 },
     axis: {

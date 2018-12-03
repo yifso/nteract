@@ -27,16 +27,16 @@ export const semioticSummaryChart = (
 
   const rAccessor = metric1;
 
-  if (dim1 && dim1 !== "none") {
-    const uniqueValues = data.reduce(
-      (uniqueArray, datapoint) =>
-        (!uniqueArray.find(
-          dimValue => dimValue === datapoint[dim1].toString()
-        ) && [...uniqueArray, datapoint[dim1].toString()]) ||
-        uniqueArray,
-      []
-    );
+  const uniqueValues = data.reduce(
+    (uniqueArray, datapoint) =>
+      (!uniqueArray.find(
+        dimValue => dimValue === datapoint[dim1].toString()
+      ) && [...uniqueArray, datapoint[dim1].toString()]) ||
+      uniqueArray,
+    []
+  );
 
+  if (dim1 && dim1 !== "none") {
     uniqueValues.forEach((dimValue, index) => {
       colorHash[dimValue] = colors[index % colors.length];
     });
@@ -69,14 +69,18 @@ export const semioticSummaryChart = (
       stroke: "white"
     }),
     oPadding: 5,
-    oLabel: (columnName: string) => (
-      <text
-        textAnchor="end"
-        fontSize={`${(columnName && fontScale(columnName.length)) || 12}px`}
-      >
-        {columnName}
-      </text>
-    ),
+    oLabel:
+      uniqueValues.length > 30
+        ? false
+        : (columnName: string) => (
+            <text
+              textAnchor="end"
+              fontSize={`${(columnName && fontScale(columnName.length)) ||
+                12}px`}
+            >
+              {columnName}
+            </text>
+          ),
     margin: { top: 25, right: 10, bottom: 50, left: 100 },
     axis: {
       orient: "left",

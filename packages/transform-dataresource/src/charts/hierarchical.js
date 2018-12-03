@@ -70,13 +70,17 @@ export const semioticHierarchicalChart = (
   options: Object
 ) => {
   const {
-    hierarchyType = "dendrogram",
+    hierarchyType: baseHierarchyType = "dendrogram",
     chart,
     selectedDimensions,
     primaryKey,
     colors
   } = options;
   const { metric1 } = chart;
+
+  //a sunburst is just a radial partition
+  const hierarchyType =
+    baseHierarchyType === "sunburst" ? "partition" : baseHierarchyType;
 
   if (selectedDimensions.length === 0) {
     return {};
@@ -116,6 +120,7 @@ export const semioticHierarchicalChart = (
     },
     networkType: {
       type: hierarchyType,
+      projection: baseHierarchyType === "sunburst" && "radial",
       hierarchySum: (node: Object) => node[metric1],
       hierarchyChildren: (node: Object) => node.values,
       padding:
@@ -126,7 +131,18 @@ export const semioticHierarchicalChart = (
     },
     baseMarkProps: { forceUpdate: true },
     margin: { left: 100, right: 100, top: 10, bottom: 10 },
-    hoverAnnotation: true,
+    hoverAnnotation: [
+      { type: "frame-hover" },
+      {
+        type: "highlight",
+        style: {
+          stroke: "red",
+          strokeOpacity: 0.5,
+          strokeWidth: 5,
+          fill: "none"
+        }
+      }
+    ],
     tooltipContent: (hoveredDatapoint: Object) => {
       return (
         <TooltipContent x={hoveredDatapoint.x} y={hoveredDatapoint.y}>

@@ -266,7 +266,8 @@ export default ({
             chart.dim2,
             controlHelpText.dim2[view] || controlHelpText.dim2.default
           )}
-        {areaType === "contour" &&
+        {view === "hexbin" &&
+          areaType === "contour" &&
           metricDimSelector(
             ["by color"],
             updateChartGenerator("dim3"),
@@ -295,7 +296,7 @@ export default ({
           )}
         {view === "network" &&
           metricDimSelector(
-            ["force", "sankey"],
+            ["matrix", "arc", "force", "sankey"],
             selectedNetworkType =>
               updateChart({ networkType: selectedNetworkType }),
             "Type",
@@ -303,9 +304,18 @@ export default ({
             networkType,
             controlHelpText.networkType
           )}
+        {view === "network" &&
+          metricDimSelector(
+            ["static", "scaled"],
+            updateChartGenerator("networkLabel"),
+            "Show Labels",
+            false,
+            chart.networkLabel,
+            controlHelpText.networkLabel
+          )}
         {view === "hierarchy" &&
           metricDimSelector(
-            ["dendrogram", "treemap", "partition"],
+            ["dendrogram", "treemap", "partition", "sunburst"],
             selectedHierarchyType =>
               updateChart({ hierarchyType: selectedHierarchyType }),
             "Type",

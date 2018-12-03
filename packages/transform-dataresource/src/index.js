@@ -28,7 +28,7 @@ type SummaryType = "violin" | "joy" | "histogram" | "heatmap" | "boxplot";
 
 type PieceType = "bar" | "point" | "swarm" | "clusterbar";
 
-type HierarchyType = "dendrogram" | "treemap" | "partition";
+type HierarchyType = "dendrogram" | "treemap" | "partition" | "sunburst";
 
 type NetworkType = "force" | "sankey" | "arc" | "matrix";
 
@@ -61,6 +61,7 @@ type dxMetaProps = {
     dim1?: string,
     dim2?: string,
     dim3?: string,
+    networkLabel?: string,
     timeseriesSort?: string
   }
 };
@@ -223,6 +224,7 @@ class DataResourceTransform extends React.Component<Props, State> {
         dim2: (dimensions[1] && dimensions[1].name) || "none",
         dim3: "none",
         timeseriesSort: "array-order",
+        networkLabel: "none",
         ...chart
       },
       displayChart: {},
