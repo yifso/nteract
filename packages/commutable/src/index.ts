@@ -41,8 +41,7 @@ export {
   ImmutableMarkdownCell,
   ImmutableRawCell,
   ImmutableCell,
-  CellType,
-  ImmutableMarkdownCell
+  CellType
 } from "./cells";
 
 export {

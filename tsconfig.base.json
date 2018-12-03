@@ -11,7 +11,7 @@
     "baseUrl": ".",
     "moduleResolution": "node",
     "paths": {
-      // Attempt to allow our namespace packages to get resolved 
+      // Attempt to allow our namespace packages to get resolved
       "@nteract/*": ["./packages/*/src"],
       "@mybinder/*": ["./packages/*/src"],
       "rx-jupyter": ["./packages/rx-jupyter/src"],

@@ -10,9 +10,9 @@ import { Subject } from "rxjs";
 
 type Props = {
   displayOrder: string[];
-  transforms: object;
-  bundle: object;
-  metadata: object;
+  transforms: { [key: string]: any };
+  bundle: { [key: string]: any };
+  metadata: { [key: string]: any };
   theme: string;
   models?: object;
   channels?: Subject<any>;
@@ -99,7 +99,7 @@ export default class RichestMime extends React.Component<Props, State> {
     //       Once the TypeScript migration is nearing completion we can clean this up.
     const Transform: any = this.props.transforms[mimetype];
     const data: any = this.props.bundle[mimetype];
-    const metadata: any  = this.props.metadata[mimetype];
+    const metadata: any = this.props.metadata[mimetype];
     return (
       <Transform
         data={data}

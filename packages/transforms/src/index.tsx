@@ -9,7 +9,7 @@ import LaTeXDisplay from "./latex";
 import SVGDisplay from "./svg";
 import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
 
-type Transform  = {MIMETYPE: string} & React.ComponentType
+type Transform = { MIMETYPE: string } & React.ComponentType;
 
 type ObjectType = object;
 export interface Transforms extends ObjectType {
@@ -36,7 +36,7 @@ const tfs = [
   TextDisplay
 ];
 
-export const standardTransforms: Transforms = {};
+export const standardTransforms: any = {};
 
 tfs.forEach(transform => {
   standardTransforms[transform.MIMETYPE] = transform;
