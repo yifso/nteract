@@ -8,67 +8,78 @@ import { sample } from "lodash";
 import FileSaver from "file-saver";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { Action } from "redux";
-import { contents } from "rx-jupyter";
+import { contents, ServerConfig } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, AppState, ServerConfig } from "@nteract/types";
+import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 export function fetchContentEpic(
-  action$: ActionsObservable<actions.FetchContent>,
+  action$: ActionsObservable<
+    | actions.FetchContent
+    | actions.FetchContentFailed
+    | actions.FetchContentFulfilled
+  >,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
-    switchMap((action: actions.FetchContent) => {
-      if (!action.payload || typeof action.payload.filepath !== "string") {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: { error: new Error("fetching content needs a payload") }
-        });
-      }
+    switchMap(
+      (
+        action:
+          | actions.FetchContent
+          | actions.FetchContentFailed
+          | actions.FetchContentFulfilled
+      ) => {
+        if (!action.payload || typeof action.payload.filepath !== "string") {
+          return of({
+            type: "ERROR",
+            error: true,
+            payload: { error: new Error("fetching content needs a payload") }
+          });
+        }
 
-      const state = state$.value;
+        const state = state$.value;
 
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        // Dismiss any usage that isn't targeting a jupyter server
-        return empty();
-      }
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
+        const host = selectors.currentHost(state);
+        if (host.type !== "jupyter") {
+          // Dismiss any usage that isn't targeting a jupyter server
+          return empty();
+        }
+        const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      return contents
-        .get(serverConfig, action.payload.filepath, action.payload.params)
-        .pipe(
-          tap(xhr => {
-            if (xhr.status !== 200) {
-              throw new Error(xhr.response);
-            }
-          }),
-          map(xhr => {
-            return actions.fetchContentFulfilled({
-              filepath: action.payload.filepath,
-              model: xhr.response,
-              kernelRef: action.payload.kernelRef,
-              contentRef: action.payload.contentRef
-            });
-          }),
-          catchError((xhrError: any) =>
-            of(
-              actions.fetchContentFailed({
+        return contents
+          .get(serverConfig, action.payload.filepath, action.payload.params)
+          .pipe(
+            tap(xhr => {
+              if (xhr.status !== 200) {
+                throw new Error(xhr.response);
+              }
+            }),
+            map(xhr => {
+              return actions.fetchContentFulfilled({
                 filepath: action.payload.filepath,
-                error: xhrError,
+                model: xhr.response,
                 kernelRef: action.payload.kernelRef,
                 contentRef: action.payload.contentRef
-              })
+              });
+            }),
+            catchError((xhrError: any) =>
+              of(
+                actions.fetchContentFailed({
+                  filepath: action.payload.filepath,
+                  error: xhrError,
+                  kernelRef: action.payload.kernelRef,
+                  contentRef: action.payload.contentRef
+                })
+              )
             )
-          )
-        );
-    })
+          );
+      }
+    )
   );
 }
 
@@ -158,10 +169,10 @@ export function autoSaveCurrentContentEpic(
         // Opera 12.10 and Firefox 18 and later support
         isVisible = !document.hidden;
         // $FlowAllowFeatureDetection
-      } else if (typeof document.msHidden !== "undefined") {
+      } else if (document.msHidden) {
         isVisible = !document.msHidden;
         // $FlowAllowFeatureDetection
-      } else if (typeof document.webkitHidden !== "undefined") {
+      } else if (document.webkitHidden) {
         isVisible = !document.webkitHidden;
       } else {
         // Final fallback -- this will say the window is hidden when devtools is open or if the
@@ -227,7 +238,7 @@ export function saveContentEpic(
 
       // This could be object for notebook, or string for files
       let serializedData: Notebook | string;
-      let saveModel = {};
+      let saveModel: Partial<contents.Payload> = {};
       if (content.type === "notebook") {
         // TODO: this default version should probably not be here.
         const appVersion = selectors.appVersion(state) || "0.0.0-beta";
@@ -307,8 +318,9 @@ export function saveContentEpic(
                 ? new Date(content.lastSaved)
                 : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
                   diskDate;
+              const diffDate = diskDate.getTime() - inMemoryDate.getTime();
 
-              if (Math.abs(diskDate - inMemoryDate) > 600) {
+              if (Math.abs(diffDate) > 600) {
                 return of(
                   actions.saveFailed({
                     error: new Error("open in another tab possibly..."),

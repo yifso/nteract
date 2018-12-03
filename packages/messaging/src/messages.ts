@@ -12,9 +12,9 @@ import {
 /**
  * Returns which channel, iopub or stdin or shell, to send a kernel message
  * through.
- * 
+ *
  * @param messageType The message type to fetch a channel for
- * 
+ *
  * @returns The channel to send a kernel message through
  */
 function whichChannel(messageType?: MessageType): string {
@@ -65,10 +65,10 @@ function whichChannel(messageType?: MessageType): string {
 
 /**
  * Returns a fully-formatted kernel message.
- * 
+ *
  * @param header An object containing the message type and session information
  * @param content The message type-specific contents to send in the kernel message
- * 
+ *
  * @returns The fully-formatted kernel message
  */
 export function message<MT extends MessageType>(
@@ -92,15 +92,15 @@ export function message<MT extends MessageType>(
     parent_header: {},
     content,
     channel,
-    buffers: []
+    buffers: new Uint8Array()
   };
 }
 
 /**
  * Creates a header for a kernel message of a given type.
- * 
+ *
  * @param msg_type The message type to create a header for
- * 
+ *
  * @returns A complete header for the message
  */
 function createHeader<MT extends MessageType>(
@@ -142,7 +142,7 @@ function createHeader<MT extends MessageType>(
  *
  * @param code The code to execute
  * @param options The options for the execute request
- * 
+ *
  * @returns A complete execute_request message
  */
 export function executeRequest(
@@ -171,7 +171,7 @@ export function executeRequest(
       ...options
     },
     channel,
-    buffers: []
+    buffers: new Uint8Array()
   };
 }
 
@@ -219,7 +219,7 @@ export function displayData(
 
 /**
  * Creates an update_display_data message.
- * 
+ *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#update-display-data
  */
 export function updateDisplayData(content: {
@@ -234,7 +234,7 @@ export function updateDisplayData(content: {
 
 /**
  * Creates a message containing information about the result of an execution.
- * 
+ *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#id6
  */
 export function executeResult(content: {
@@ -252,7 +252,7 @@ export function executeResult(content: {
 /**
  * Creates an error message to indicate when an exception has occurred during
  * code execution.
- * 
+ *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#execution-errors
  */
 export function error(content: {
@@ -275,9 +275,9 @@ export function error(content: {
 
 /**
  * Creates a stream message.
- * 
+ *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#streams-stdout-stderr-etc
- * 
+ *
  * @param content The message type and its contents.
  */
 export function stream(content: { name: "stdout" | "stderr"; text: string }) {
@@ -293,14 +293,14 @@ export function stream(content: { name: "stdout" | "stderr"; text: string }) {
 
 /**
  * Creates a message containing the response from a kernel execute request.
- * 
+ *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#execution-results
  */
 export function executeReply(content: {
-  status: string,
-  execution_count: number,
-  payload?: Array<object>,
-  user_expressions?: object
+  status: string;
+  execution_count: number;
+  payload?: Array<object>;
+  user_expressions?: object;
 }) {
   // TODO: This function could be better typed. It's a bit dual headed though since:
   //         * `status: ok` carries payloads
@@ -315,7 +315,7 @@ export function executeReply(content: {
 
 /**
  * Creates a status message published by the kernel to indicate its state.
- * 
+ *
  * @param execution_state The kernel's execution state
  */
 export function status(execution_state: "busy" | "idle" | "starting") {
@@ -330,8 +330,8 @@ export function status(execution_state: "busy" | "idle" | "starting") {
 }
 
 /**
- * 
- * @param content 
+ *
+ * @param content
  */
 export function clearOutput(content?: { wait: boolean }) {
   return message(
@@ -343,8 +343,8 @@ export function clearOutput(content?: { wait: boolean }) {
 }
 
 /**
- * 
- * @param content 
+ *
+ * @param content
  */
 export function executeInput(content: {
   code: string;
@@ -360,7 +360,7 @@ export function executeInput(content: {
 
 /**
  * Creates a message to request information about a kernel.
- * 
+ *
  * @returns A kernel_info_request message
  */
 export function kernelInfoRequest() {
@@ -369,9 +369,9 @@ export function kernelInfoRequest() {
 
 /**
  * Creates a message to request the shutdown of a kernel.
- * 
+ *
  * @param content An options object containing whether or not to restart the kernel
- * 
+ *
  * @returns A shutdown_request message
  */
 export function shutdownRequest(

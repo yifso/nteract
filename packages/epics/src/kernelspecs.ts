@@ -3,15 +3,14 @@
  */
 import { empty, of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
-import { kernelspecs } from "rx-jupyter";
+import { kernelspecs, ServerConfig } from "rx-jupyter";
 import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
-import { Action } from "redux";
 
 import * as actions from "@nteract/actions";
 import { FetchKernelspecs } from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { KernelspecProps, ServerConfig } from "@nteract/types";
+import { KernelspecProps } from "@nteract/types";
 
 export const fetchKernelspecsEpic = (
   action$: ActionsObservable<FetchKernelspecs>,

@@ -3,7 +3,6 @@
  */
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { Action } from "redux";
 import {
   catchError,
   map,
@@ -13,7 +12,7 @@ import {
   filter
 } from "rxjs/operators";
 import { of, empty } from "rxjs";
-import { kernels, sessions } from "rx-jupyter";
+import { kernels, sessions, ServerConfig } from "rx-jupyter";
 import { kernelInfoRequest } from "@nteract/messaging";
 
 import * as actions from "@nteract/actions";
@@ -21,7 +20,7 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import { RemoteKernelProps, ServerConfig } from "@nteract/types";
+import { RemoteKernelProps } from "@nteract/types";
 
 import { extractNewKernel } from "./kernel-lifecycle";
 

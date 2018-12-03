@@ -44,7 +44,7 @@ import {
   ExecuteCanceled,
   DeleteCell
 } from "@nteract/actions";
-import { CellID } from "@nteract/commutable";
+import { CellId } from "@nteract/commutable";
 
 const Immutable = require("immutable");
 
@@ -195,7 +195,7 @@ export function executeAllCellsEpic(
         codeCellIds = selectors.notebook.codeCellIdsBelow(model);
       }
       return of(
-        ...codeCellIds.map((id: CellID) =>
+        ...codeCellIds.map((id: CellId) =>
           actions.executeCell({ id, contentRef: action.payload.contentRef })
         )
       );

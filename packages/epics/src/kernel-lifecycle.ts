@@ -36,7 +36,7 @@ export const watchExecutionStateEpic = (
   action$: ActionsObservable<Action<actions.NewKernelAction>>
 ) =>
   action$.pipe(
-    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    ofType(actions.NewKernelAction),
     switchMap((action: actions.NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         filter((msg: JupyterMessage) => msg.header.msg_type === "status"),
@@ -252,7 +252,7 @@ export const restartKernelEpic = (
       });
 
       const awaitKernelReady = action$.pipe(
-        ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+        ofType(actions.RESTART_KERNEL),
         filter(
           (action: actions.NewKernelAction) =>
             action.payload.kernelRef === newKernelRef
