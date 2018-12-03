@@ -4680,7 +4680,7 @@ d3-selection@1, d3-selection@^1.1.0, d3-selection@^1.3.0:
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.3.2.tgz#6e70a9df60801c8af28ac24d10072d82cbfdf652"
   integrity sha512-OoXdv1nZ7h2aKMVg3kaUFbLLK5jXUFAMLD/Tu5JA96mjf8f2a9ZUESGY+C36t8R1WFeWk/e55hy54Ml2I62CRQ==
 
-d3-shape@^1.0.3, d3-shape@^1.0.4, d3-shape@^1.2.0, d3-shape@^1.2.2:
+d3-shape@^1.0.3, d3-shape@^1.2.0, d3-shape@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.2.tgz#f9dba3777a5825f9a8ce8bc928da08c17679e9a7"
   integrity sha512-hUGEozlKecFZ2bOSNt7ENex+4Tk9uc/m0TtTEHBvitCBxUNjhzm5hS2GrrVRD/ae4IylSmxGeqX5tWC2rASMlQ==
@@ -12865,10 +12865,10 @@ semiotic-mark@0.3.0:
     prop-types "^15.6.0"
     roughjs-es5 "0.1.0"
 
-semiotic@^1.15.6:
-  version "1.15.8"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.15.8.tgz#25ea5586428008ad2d3ce0ec6c6d6b9c3924ee5d"
-  integrity sha512-EKk579+JxIBeFRorgia8XWfAF36E2qBM3Oh9V9AMgpT0sVDwoRGQO5igAOVigWf7Ov7kySnqy8LFp2Z+AA9vkA==
+semiotic@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.16.0.tgz#16bf40d24c3e4a415544c43c34ab230a736771d0"
+  integrity sha512-/rQn7xKavGUdyhsyOn7U7SMsP+75BayThCx6f8v3VtIErziP+stHjF0EgZCJaw7OTMa35PWjO8Xi4Q4MaJZ+EQ==
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
@@ -12886,7 +12886,7 @@ semiotic@^1.15.6:
     d3-sankey-circular "0.25.0"
     d3-scale "^1.0.3"
     d3-selection "^1.1.0"
-    d3-shape "^1.0.4"
+    d3-shape "^1.2.0"
     d3-voronoi "^1.0.2"
     json2csv "3.11.5"
     labella "1.1.4"
