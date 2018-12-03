@@ -44,7 +44,7 @@ import {
   ExecuteCanceled,
   DeleteCell
 } from "@nteract/actions";
-import { CellId } from "@nteract/commutable";
+import { CellId, Output } from "@nteract/commutable";
 
 const Immutable = require("immutable");
 
@@ -77,7 +77,7 @@ export function executeCellStream(
   );
 
   // All the payload streams, intended for one user
-  const payloadStream = cellMessages.pipe(payloads());
+  const payloadStream = cellMessages.pipe(payloads() as any);
 
   const cellAction$ = merge(
     payloadStream.pipe(
@@ -86,25 +86,29 @@ export function executeCellStream(
 
     // All actions for updating cell status
     cellMessages.pipe(
-      kernelStatuses(),
-      map(status => actions.updateCellStatus({ id, status, contentRef }))
+      kernelStatuses() as any,
+      map((status: string) =>
+        actions.updateCellStatus({ id, status, contentRef })
+      )
     ),
 
     // Update the input numbering: `[ ]`
     cellMessages.pipe(
-      executionCounts(),
-      map(ct => actions.updateCellExecutionCount({ id, value: ct, contentRef }))
+      executionCounts() as any,
+      map((ct: number) =>
+        actions.updateCellExecutionCount({ id, value: ct, contentRef })
+      )
     ),
 
     // All actions for new outputs
     cellMessages.pipe(
-      outputs(),
-      map(output => actions.appendOutput({ id, output, contentRef }))
+      outputs() as any,
+      map((output: Output) => actions.appendOutput({ id, output, contentRef }))
     ),
 
     // clear_output display message
     cellMessages.pipe(
-      ofMessageType("clear_output"),
+      ofMessageType("clear_output") as any,
       mapTo(actions.clearOutputs({ id, contentRef }))
     )
   );
@@ -297,7 +301,7 @@ export function executeCellEpic(
     ),
     // Bring back all the inner Observables into one stream
     mergeAll(),
-    catchError((error, source) => {
+    catchError((error: Error, source) => {
       // Either we ensure that all errors are caught when the action.payload.contentRef
       // is in scope or we make this be a generic ERROR
       // $FlowFixMe: see above

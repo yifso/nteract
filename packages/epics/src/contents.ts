@@ -18,68 +18,57 @@ import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 export function fetchContentEpic(
-  action$: ActionsObservable<
-    | actions.FetchContent
-    | actions.FetchContentFailed
-    | actions.FetchContentFulfilled
-  >,
+  action$: ActionsObservable<actions.FetchContent>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
-    switchMap(
-      (
-        action:
-          | actions.FetchContent
-          | actions.FetchContentFailed
-          | actions.FetchContentFulfilled
-      ) => {
-        if (!action.payload || typeof action.payload.filepath !== "string") {
-          return of({
-            type: "ERROR",
-            error: true,
-            payload: { error: new Error("fetching content needs a payload") }
-          });
-        }
+    switchMap((action: actions.FetchContent) => {
+      if (!action.payload || typeof action.payload.filepath !== "string") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: { error: new Error("fetching content needs a payload") }
+        });
+      }
 
-        const state = state$.value;
+      const state = state$.value;
 
-        const host = selectors.currentHost(state);
-        if (host.type !== "jupyter") {
-          // Dismiss any usage that isn't targeting a jupyter server
-          return empty();
-        }
-        const serverConfig: ServerConfig = selectors.serverConfig(host);
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        // Dismiss any usage that isn't targeting a jupyter server
+        return empty();
+      }
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-        return contents
-          .get(serverConfig, action.payload.filepath, action.payload.params)
-          .pipe(
-            tap(xhr => {
-              if (xhr.status !== 200) {
-                throw new Error(xhr.response);
-              }
-            }),
-            map(xhr => {
-              return actions.fetchContentFulfilled({
+      return contents
+        .get(serverConfig, action.payload.filepath, action.payload.params)
+        .pipe(
+          tap(xhr => {
+            if (xhr.status !== 200) {
+              throw new Error(xhr.response);
+            }
+          }),
+          map(xhr => {
+            return actions.fetchContentFulfilled({
+              filepath: action.payload.filepath,
+              model: xhr.response,
+              kernelRef: action.payload.kernelRef,
+              contentRef: action.payload.contentRef
+            });
+          }),
+          catchError((xhrError: any) =>
+            of(
+              actions.fetchContentFailed({
                 filepath: action.payload.filepath,
-                model: xhr.response,
+                error: xhrError,
                 kernelRef: action.payload.kernelRef,
                 contentRef: action.payload.contentRef
-              });
-            }),
-            catchError((xhrError: any) =>
-              of(
-                actions.fetchContentFailed({
-                  filepath: action.payload.filepath,
-                  error: xhrError,
-                  kernelRef: action.payload.kernelRef,
-                  contentRef: action.payload.contentRef
-                })
-              )
+              })
             )
-          );
-      }
-    )
+          )
+        );
+    })
   );
 }
 
@@ -165,15 +154,15 @@ export function autoSaveCurrentContentEpic(
       let isVisible = false;
 
       // document.hidden appears well supported
-      if (typeof document.hidden !== "undefined") {
+      if (document.hidden) {
         // Opera 12.10 and Firefox 18 and later support
         isVisible = !document.hidden;
         // $FlowAllowFeatureDetection
-      } else if (document.msHidden) {
-        isVisible = !document.msHidden;
+      } else if ((document as any).msHidden) {
+        isVisible = !(document as any).msHidden;
         // $FlowAllowFeatureDetection
-      } else if (document.webkitHidden) {
-        isVisible = !document.webkitHidden;
+      } else if ((document as any).webkitHidden) {
+        isVisible = !(document as any).webkitHidden;
       } else {
         // Final fallback -- this will say the window is hidden when devtools is open or if the
         // user is interacting with an iframe

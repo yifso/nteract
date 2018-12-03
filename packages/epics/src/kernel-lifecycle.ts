@@ -17,7 +17,6 @@ import {
   timeout
 } from "rxjs/operators";
 import { ActionsObservable, ofType } from "redux-observable";
-import { Action } from "redux";
 
 import { ContentRef, KernelRef } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
@@ -33,7 +32,7 @@ const path = require("path");
  * @oaram  {ActionObservable}  action$ ActionObservable for LAUNCH_KERNEL_SUCCESSFUL action
  */
 export const watchExecutionStateEpic = (
-  action$: ActionsObservable<Action<actions.NewKernelAction>>
+  action$: ActionsObservable<actions.NewKernelAction>
 ) =>
   action$.pipe(
     ofType(actions.NewKernelAction),
@@ -43,8 +42,7 @@ export const watchExecutionStateEpic = (
         map((msg: JupyterMessage) =>
           actions.setExecutionState({
             kernelStatus: msg.content.execution_state,
-            kernelRef: action.payload.kernelRef,
-            contentRef: action.payload.contentRef
+            kernelRef: action.payload.kernelRef
           })
         )
       )
@@ -115,7 +113,7 @@ export function acquireKernelInfo(
  * @param  {ActionObservable}  The action type
  */
 export const acquireKernelInfoEpic = (
-  action$: ActionsObservable<Action<actions.NewKernelAction>>
+  action$: ActionsObservable<actions.NewKernelAction>
 ) =>
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
@@ -254,7 +252,7 @@ export const restartKernelEpic = (
       const awaitKernelReady = action$.pipe(
         ofType(actions.RESTART_KERNEL),
         filter(
-          (action: actions.NewKernelAction) =>
+          (action: actions.RestartKernel) =>
             action.payload.kernelRef === newKernelRef
         ),
         take(1),

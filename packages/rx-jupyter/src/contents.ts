@@ -147,7 +147,7 @@ export const create = (
 export const save = (
   serverConfig: ServerConfig,
   path: string,
-  model: Payload
+  model: Partial<Payload>
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
