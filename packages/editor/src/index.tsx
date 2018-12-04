@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import * as React from "react";
 import ReactDOM from "react-dom";
-import { empty, of, fromEvent, merge, Subject } from "rxjs";
+import { empty, of, fromEvent, merge, Subject, Observable } from "rxjs";
 import { Subscription } from "rxjs";
 import {
   catchError,
@@ -215,9 +215,10 @@ class CodeMirrorEditor extends React.Component<
     this.completionSubject = new Subject();
 
     // $FlowFixMe: Somehow .pipe is broken in the typings
-    const [debounce, immediate] = this.completionSubject.pipe(
-      partition(ev => ev.debounce === true)
+    const pipeFunc: any = partition(
+      (ev: CodeCompletionEvent) => ev.debounce === true
     );
+    const [debounce, immediate] = this.completionSubject.pipe(pipeFunc) as any;
 
     const mergedCompletionEvents = merge(
       immediate,
@@ -230,8 +231,8 @@ class CodeMirrorEditor extends React.Component<
       )
     );
 
-    const completionResults = mergedCompletionEvents.pipe(
-      switchMap((ev: CodeCompletionEvent) => {
+    const completionResults: Observable<any> = mergedCompletionEvents.pipe(
+      switchMap((ev: any) => {
         const { channels } = this.props;
         if (!channels) {
           throw new Error(
