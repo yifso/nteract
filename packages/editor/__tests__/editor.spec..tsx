@@ -10,7 +10,7 @@ const tooltip = require("../src/jupyter/tooltip");
 
 jest.useFakeTimers();
 
-describe("editor.completions CodeMirror callback", () => {
+describe("editor.hint CodeMirror callback", () => {
   it("eventually calls complete.codeComplete", () => {
     const channels = {};
 
@@ -27,7 +27,7 @@ describe("editor.completions CodeMirror callback", () => {
 
     complete.codeComplete = jest.fn().mockImplementation(() => empty());
 
-    editor.completions(cm, () => {});
+    editor.hint(cm, () => {});
 
     jest.runAllTimers();
 
@@ -50,7 +50,7 @@ describe("editor.completions CodeMirror callback", () => {
     complete.codeComplete = jest.fn().mockImplementation(() => empty());
 
     for (var i = 0; i < 3; i++) {
-      editor.completions(cm, () => {});
+      editor.hint(cm, () => {});
     }
 
     jest.runAllTimers();
@@ -76,7 +76,7 @@ describe("editor.completions CodeMirror callback", () => {
 
     for (var i = 0; i < 3; i++) {
       editor.debounceNextCompletionRequest = false;
-      editor.completions(cm, () => {});
+      editor.hint(cm, () => {});
       expect(editor.debounceNextCompletionRequest).toBe(true);
     }
 
@@ -103,12 +103,12 @@ describe("editor.completions CodeMirror callback", () => {
 
     // By themselves, these would be debounced. If we aren't careful they will emerge after our
     // non-debounced call, creating duplicate requests.
-    editor.completions(cm, () => {});
-    editor.completions(cm, () => {});
-    editor.completions(cm, () => {});
+    editor.hint(cm, () => {});
+    editor.hint(cm, () => {});
+    editor.hint(cm, () => {});
 
     editor.debounceNextCompletionRequest = false;
-    editor.completions(cm, () => {});
+    editor.hint(cm, () => {});
     expect(editor.debounceNextCompletionRequest).toBe(true);
 
     jest.runAllTimers();
@@ -134,7 +134,7 @@ describe("editor.completions CodeMirror callback", () => {
       indexFromPos: () => 90001
     };
     const callback = jest.fn();
-    editor.completions(cm, callback);
+    editor.hint(cm, callback);
     expect(callback).not.toHaveBeenCalled();
   });
 });
