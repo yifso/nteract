@@ -33,33 +33,33 @@ function normalizeLineEndings(str: string) {
 }
 
 export type CodeMirrorEditorProps = {
-  editorFocused: boolean,
-  completion: boolean,
-  tip?: boolean,
-  focusAbove?: () => void,
-  focusBelow?: () => void,
-  theme: string,
-  channels?: any,
+  editorFocused: boolean;
+  completion: boolean;
+  tip?: boolean;
+  focusAbove?: () => void;
+  focusBelow?: () => void;
+  theme: string;
+  channels?: any;
   // TODO: We only check if this is idle, so the completion provider should only
   //       care about this when kernelStatus === idle _and_ we're the active cell
   //       could instead call it `canTriggerCompletion` and reduce our current re-renders
-  kernelStatus: string,
-  onChange: (value: string, change: EditorChange) => void,
-  onFocusChange?: (focused: boolean) => void,
-  value: string,
-  defaultValue?: string,
-  options: Options
+  kernelStatus: string;
+  onChange: (value: string, change: EditorChange) => void;
+  onFocusChange?: (focused: boolean) => void;
+  value: string;
+  defaultValue?: string;
+  options: Options;
 };
 
 type CodeMirrorEditorState = {
-  isFocused: boolean,
-  tipElement?: any
+  isFocused: boolean;
+  tipElement?: any;
 };
 
 type CodeCompletionEvent = {
-  editor: CodeMirror.Editor,
-  callback: Function,
-  debounce: boolean
+  editor: CodeMirror.Editor;
+  callback: Function;
+  debounce: boolean;
 };
 
 class CodeMirrorEditor extends React.Component<
@@ -88,11 +88,10 @@ class CodeMirrorEditor extends React.Component<
 
   constructor(props: CodeMirrorEditorProps) {
     super(props);
-    this.hint = this.completions.bind(this);
+    this.hint = this.hint.bind(this);
     this.tips = this.tips.bind(this);
     this.deleteTip = this.deleteTip.bind(this);
     // $FlowFixMe: weirdness in the codemirror API
-    this.hint.async = true;
     this.debounceNextCompletionRequest = true;
     this.state = { isFocused: true, tipElement: null };
 
@@ -117,7 +116,8 @@ class CodeMirrorEditor extends React.Component<
             return editor.execCommand("autocomplete");
           },
           Tab: this.executeTab,
-          "Shift-Tab": (editor: CodeMirror.Editor) => editor.execCommand("indentLess"),
+          "Shift-Tab": (editor: CodeMirror.Editor) =>
+            editor.execCommand("indentLess"),
           Up: this.goLineUpOrEmit,
           Down: this.goLineDownOrEmit,
           "Cmd-/": "toggleComment",
@@ -249,8 +249,8 @@ class CodeMirrorEditor extends React.Component<
       })
     );
 
-    this.completionEventsSubscriber = completionResults.subscribe((callback: Function) =>
-      callback()
+    this.completionEventsSubscriber = completionResults.subscribe(
+      (callback: Function) => callback()
     );
   }
 
@@ -326,7 +326,7 @@ class CodeMirrorEditor extends React.Component<
     this.props.onFocusChange && this.props.onFocusChange(focused);
   }
 
-  completions(editor: CodeMirror.Editor, callback: Function): void {
+  hint(editor: CodeMirror.Editor, callback: Function): void {
     const { completion, channels } = this.props;
     const debounceThisCompletionRequest = this.debounceNextCompletionRequest;
     this.debounceNextCompletionRequest = true;
@@ -349,18 +349,20 @@ class CodeMirrorEditor extends React.Component<
     const { tip, channels } = this.props;
 
     if (tip) {
-      tool(channels, editor).subscribe((resp: {[dict: string]: any}) => {
+      tool(channels, editor).subscribe((resp: { [dict: string]: any }) => {
         const bundle = resp.dict;
 
         if (Object.keys(bundle).length === 0) {
           return;
         }
 
-        const node = document.getElementsByClassName("tip-holder")[0] as HTMLElement;
+        const node = document.getElementsByClassName(
+          "tip-holder"
+        )[0] as HTMLElement;
 
         const tipElement = ReactDOM.createPortal(
           <div className="CodeMirror-hint tip">
-            <RichestMime bundle={bundle} metadata={{expanded: true}} />
+            <RichestMime bundle={bundle} metadata={{ expanded: true }} />
             <button className="bt" onClick={this.deleteTip}>{`\u2715`}</button>
             <style jsx>{`
               .bt {

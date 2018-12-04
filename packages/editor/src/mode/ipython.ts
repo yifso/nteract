@@ -5,8 +5,11 @@ import "codemirror/mode/meta";
 import "codemirror/mode/python/python";
 
 CodeMirror.defineMode(
-  "ipython",
-  (conf: CodeMirror.EditorConfiguration, parserConf: any): CodeMirror.Mode<any> => {
+  "text/x-ipython",
+  (
+    conf: CodeMirror.EditorConfiguration,
+    parserConf: any
+  ): CodeMirror.Mode<any> => {
     const ipythonConf = Object.assign({}, parserConf, {
       name: "python",
       singleOperators: new RegExp("^[\\+\\-\\*/%&|@\\^~<>!\\?]"),
