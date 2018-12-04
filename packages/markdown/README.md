@@ -1,17 +1,41 @@
-# `markdown`
+# @nteract/markdown
 
-Markdown/MathJax renderer for nteract. Allows Markdown text rendering as per the Commonmark specification, but also allows for in-line and block math rending using LaTeX syntax.
+This package contains components that allow us to render Markdown text per the Commonmark specification. It also supports rendering in-line and block math using the LaTeX syntax.
 
 ## Installation
 
-You may use whichever package manager (`npm` or `yarn`) best suits your workflow. The `nteract` team internally uses `yarn`.
+```
+$ yarn add @nteract/markdown
+```
 
-```bash
-npm install --save @nteract/markdown
-# OR
-yarn add @nteract/markdown
+```
+$ npm install --save @nteract/markdown
 ```
 
 ## Usage
 
-[See examples](./examples.md)
+The example below shows how we can use this package to render Commonmark-specified Markdown with LaTeX math.
+
+```javascript
+import MarkdownRender from "@nteract/markdown";
+
+export default () => {
+  return (
+    <MarkdownRender
+      source={`Just some $\delta_{\alpha}$ math and __formatting__.`}
+    />
+  );
+};
+```
+
+## Documentation
+
+You can view the reference documentation for `@nteract/markdown` in the [component docs](https://components.nteract.io/#nteractmarkdown).
+
+## Support
+
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:markdown` label.
+
+## License
+
+[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/)
