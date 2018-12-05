@@ -1,28 +1,27 @@
-// @flow
-import { Observable } from "rxjs";
+import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
-import { createMessage, childOf, ofMessageType } from "@nteract/messaging";
+import { createMessage, childOf, ofMessageType, JupyterMessage, Channels } from "@nteract/messaging";
 
-import type { Channels, CMI } from "../types";
+import { CMI } from "../types";
 
 import { js_idx_to_char_idx } from "./surrogate";
 
 export function tooltipObservable(
   channels: Channels,
   editor: CMI,
-  message: Object
+  message: JupyterMessage
 ) {
   const tip$ = channels.pipe(
     childOf(message),
     ofMessageType("inspect_reply"),
-    map(entry => entry.content),
+    map((entry: JupyterMessage) => entry.content),
     first(),
     map(results => ({
       dict: results.data
     }))
   );
   // On subscription, send the message
-  return Observable.create(observer => {
+  return Observable.create((observer: Observer<any>) => {
     const subscription = tip$.subscribe(observer);
     channels.next(message);
     return subscription;

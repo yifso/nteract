@@ -1,6 +1,5 @@
-// @flow
 /* eslint-disable quote-props */
-const excludedIntelliSenseTriggerKeys = {
+const excludedIntelliSenseTriggerKeys: {[keycode: string]: string} = {
   "8": "backspace",
   "9": "tab",
   "13": "enter",
