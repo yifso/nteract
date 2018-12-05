@@ -9832,10 +9832,10 @@ monaco-editor-webpack-plugin@^1.5.1:
   resolved "https://registry.yarnpkg.com/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-1.6.0.tgz#90cb6062c23d1bdbc8496773eab920482fd802e1"
   integrity sha512-VoiJc6pWutAHtGVQtfYpJwg/dC7R4W6yXXj+OAr/q66miXSnBNKrroq7zYJAJi6y0cM1zT6eS2/IzIDs6Ouz3w==
 
-monaco-editor@^0.14.0:
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.14.3.tgz#7cc4a4096a3821f52fea9b10489b527ef3034e22"
-  integrity sha512-RhaO4xXmWn/p0WrkEOXe4PoZj6xOcvDYjoAh0e1kGUrQnP1IOpc0m86Ceuaa2CLEMDINqKijBSmqhvBQnsPLHQ==
+monaco-editor@^0.15.0:
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.15.4.tgz#86ef041a460815d3b847925c613396aaef6298b4"
+  integrity sha512-MlCeT5OjyrUVrdnCm7Gn+5PZyQLDQlaL17A6BxSXHyTL+LZIhZdHY0rwhuJDhDX4qI9BcJpworzK28c1f1r9yw==
 
 moo@^0.4.3:
   version "0.4.3"
