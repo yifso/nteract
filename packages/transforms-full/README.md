@@ -1,57 +1,45 @@
-# nteract transforms
+# @nteract/transforms-full
 
-This contains all the transforms that nteract uses, which extends all those
-supported by Jupyter frontends from `@nteract/transforms` while adding on
-
-* GeoJSON
-* Plotly
-* Vega
-
-![transformime](https://cloud.githubusercontent.com/assets/6437976/8895696/db154a04-3397-11e5-91ca-296b957658a6.png)
-
-It's likely you don't need to use this package directly and can instead use a
-release of the display area (:soon:).
+This package contains a full set of transforms for rendering plain-text, rich media, and custom visualizations within nteract applications.
 
 ## Installation
 
-You may use whichever package manager (`npm` or `yarn`) best suits your workflow. The `nteract` team internally uses `yarn`.
-
-```bash
-npm install @nteract/transforms-full
-#OR
-yarn add @nteract/transforms-full
+```
+$ yarn add @nteract/transforms-full
 ```
 
-Note: React is a peer dependencies you'll have to install yourself.
+```
+$ npm install --save @nteract/transforms-full
+```
 
 ## Usage
 
-### Standard nteract Transforms
+The example below shows how to use the standard set of transforms to render plain text and image data.
 
 ```js
 import {
   richestMimetype,
   transforms,
-  displayOrder,
-} from '@nteract/transforms-full'
+  displayOrder
+} from "@nteract/transforms-full";
 
 // Jupyter style MIME bundle
 const bundle = {
-  'text/plain': 'This is great',
-  'image/png': 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
-}
+  "text/plain": "This is great",
+  "image/png": "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+};
 
 // Find out which mimetype is the richest
-const mimetype = richestMimetype(bundle, transforms)
+const mimetype = richestMimetype(bundle, transforms);
 
 // Get the matching React.Component for that mimetype
-let Transform = transforms[mimetype]
+let Transform = transforms[mimetype];
 
 // Create a React element
-return <Transform data={bundle[mimetype]} />
+return <Transform data={bundle[mimetype]} />;
 ```
 
-### Adding New Transforms
+The following example shows how you can extend the set of transforms with your own unique transforms. This allows you to create custom renders for different media types.
 
 ```js
 import {
@@ -71,3 +59,15 @@ registry = registerTransform(registry, someCustomTransform);
 
 const Transform = registry.transforms[mimetype];
 ```
+
+## Documentation
+
+We're working on adding more documentation for this component. Stay tuned by watching this repository!
+
+## Support
+
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:transforms-full` label.
+
+## License
+
+[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/)
