@@ -72,7 +72,7 @@ class Contents extends React.Component<ContentsProps, null> {
                 </a>
               </NavSection>
             </Nav>
-            <div>{`content type ${
+          <div>{`content type ${
               this.props.contentType
             } not implemented`}</div>
           </React.Fragment>

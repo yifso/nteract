@@ -1,7 +1,6 @@
 /* @flow strict */
 
 import * as React from "react";
-import { NotebookMenu } from "@nteract/connected-components";
 import type { ContentRef } from "@nteract/core";
 import {
   displayOrder as defaultDisplayOrder,
@@ -146,7 +145,6 @@ export default class Notebook extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <NotebookMenu contentRef={this.props.contentRef} />
         <App
           contentRef={this.props.contentRef}
           displayOrder={this.state.displayOrder}

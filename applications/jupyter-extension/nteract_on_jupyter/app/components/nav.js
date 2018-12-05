@@ -1,5 +1,6 @@
 /* @flow strict */
 import * as React from "react";
+import { NotebookMenu } from "@nteract/connected-components";
 
 type NavSectionProps = {
   children: React.Node
@@ -46,12 +47,18 @@ export class Nav extends React.Component<NavProps, null> {
             return <li className="top-nav-item">{child}</li>;
           })}
         </ul>
+        <NotebookMenu contentRef={this.props.contentRef} />
 
         <style jsx>{`
           header {
             background-color: var(--theme-title-bar-bg, rgb(250, 250, 250));
             padding: var(--nt-spacing-m) var(--nt-spacing-xl);
             box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
           }
 
           /** When we have a nav section that ends up on the right, reverse the padding order **/
