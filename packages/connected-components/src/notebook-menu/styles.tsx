@@ -186,6 +186,9 @@ const Wrapper = (props: Props) => (
         .rc-menu-vertical-left.rc-menu-sub,
         .rc-menu-vertical-right.rc-menu-sub {
           padding: 0;
+          width: auto;
+          position: relative;
+          top: 0;
         }
         .rc-menu-sub.rc-menu-inline {
           padding: 0;
