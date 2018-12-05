@@ -1,13 +1,14 @@
-/* @flow */
-
 import { Map as ImmutableMap } from "immutable";
 
-import type { ConfigState } from "../state";
-import type { SetConfigAction, MergeConfigAction } from "../actionTypes";
+import { ConfigState } from "@nteract/types";
+import { SetConfigAction, MergeConfigAction } from "@nteract/actions";
 
-type ConfigAction = SetConfigAction<*> | MergeConfigAction;
+type ConfigAction = SetConfigAction<any> | MergeConfigAction;
 
-export function setConfigAtKey(state: ConfigState, action: SetConfigAction<*>) {
+export function setConfigAtKey(
+  state: ConfigState,
+  action: SetConfigAction<any>
+) {
   const { key, value } = action;
   return state.set(key, value);
 }
@@ -18,7 +19,7 @@ export function mergeConfig(state: ConfigState, action: MergeConfigAction) {
 }
 
 export default function handleConfig(
-  state: ConfigState = new ImmutableMap(),
+  state: ConfigState = ImmutableMap(),
   action: ConfigAction
 ) {
   switch (action.type) {
@@ -27,7 +28,6 @@ export default function handleConfig(
     case "MERGE_CONFIG":
       return mergeConfig(state, action);
     default:
-      (action: empty);
       return state;
   }
 }

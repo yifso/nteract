@@ -2,12 +2,12 @@
 import * as Immutable from "immutable";
 import { combineReducers } from "redux-immutable";
 
-import * as actionTypes from "../../../actionTypes";
+import * as actionTypes from "@nteract/actions";
 import {
   makeHostsRecord,
   makeJupyterHostRecord,
   makeLocalHostRecord
-} from "../../../state/entities/hosts";
+} from "@nteract/types";
 
 const byRef = (state = Immutable.Map(), action) => {
   switch (action.type) {

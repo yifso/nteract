@@ -1,16 +1,15 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 import * as Immutable from "immutable";
 
 import {
   makeContentCommunicationRecord,
   makeContentsCommunicationRecord
-} from "../../../state/communication/contents";
-import * as actionTypes from "../../../actionTypes";
+} from "@nteract/types";
+import * as actions from "@nteract/actions";
 
 const byRef = (state = Immutable.Map(), action) => {
   switch (action.type) {
-    case actionTypes.FETCH_CONTENT:
+    case actions.FETCH_CONTENT:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({
@@ -19,7 +18,7 @@ const byRef = (state = Immutable.Map(), action) => {
           error: null
         })
       );
-    case actionTypes.FETCH_CONTENT_FULFILLED:
+    case actions.FETCH_CONTENT_FULFILLED:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({
@@ -28,7 +27,7 @@ const byRef = (state = Immutable.Map(), action) => {
           error: null
         })
       );
-    case actionTypes.FETCH_CONTENT_FAILED:
+    case actions.FETCH_CONTENT_FAILED:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({
@@ -37,8 +36,8 @@ const byRef = (state = Immutable.Map(), action) => {
           error: action.payload.error
         })
       );
-    case actionTypes.SAVE:
-    case actionTypes.SAVE_AS:
+    case actions.SAVE:
+    case actions.SAVE_AS:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({
@@ -47,7 +46,7 @@ const byRef = (state = Immutable.Map(), action) => {
           error: null
         })
       );
-    case actionTypes.SAVE_FULFILLED:
+    case actions.SAVE_FULFILLED:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({
@@ -56,7 +55,7 @@ const byRef = (state = Immutable.Map(), action) => {
           error: null
         })
       );
-    case actionTypes.SAVE_FAILED:
+    case actions.SAVE_FAILED:
       return state.set(
         action.payload.contentRef,
         makeContentCommunicationRecord({

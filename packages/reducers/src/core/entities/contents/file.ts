@@ -1,7 +1,5 @@
-// @flow
-
-import * as actionTypes from "../../../../actionTypes";
-import type { FileModelRecord } from "../../../../state/entities/contents";
+import * as actionTypes from "@nteract/actions";
+import { FileModelRecord } from "@nteract/types";
 
 function updateFileText(
   state: FileModelRecord,
@@ -17,7 +15,6 @@ export function file(state: FileModelRecord, action: FileAction) {
     case actionTypes.UPDATE_FILE_TEXT:
       return updateFileText(state, action);
     default:
-      (action: empty);
       return state;
   }
 }

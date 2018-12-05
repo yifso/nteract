@@ -1,13 +1,12 @@
-/* @flow */
 import * as Immutable from "immutable";
 
-import type {
+import {
   RegisterCommTargetAction,
   CommOpenAction,
   CommMessageAction
-} from "../actionTypes";
-import { makeCommsRecord } from "../state";
-import type { CommsRecord } from "../state";
+} from "@nteract/actions";
+import { makeCommsRecord } from "@nteract/types";
+import { CommsRecord } from "@nteract/types";
 
 function registerCommTarget(
   state: CommsRecord,
@@ -71,7 +70,6 @@ export default function(
     case "COMM_MESSAGE":
       return processCommMessage(state, action);
     default:
-      (action: empty);
       return state;
   }
 }

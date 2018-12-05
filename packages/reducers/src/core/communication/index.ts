@@ -1,7 +1,6 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 
-import { makeCommunicationRecord } from "../../../state/communication";
+import { makeCommunicationRecord } from "@nteract/types";
 
 import { contents } from "./contents";
 import { kernels } from "./kernels";

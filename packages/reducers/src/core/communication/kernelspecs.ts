@@ -1,14 +1,19 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 import * as Immutable from "immutable";
 
 import {
   makeKernelspecsByRefCommunicationRecord,
   makeKernelspecsCommunicationRecord
-} from "../../../state/communication/kernelspecs";
-import * as actionTypes from "../../../actionTypes";
+} from "@nteract/types";
+import * as actionTypes from "@nteract/actions";
 
-export const byRef = (state = Immutable.Map(), action: *) => {
+export const byRef = (
+  state = Immutable.Map(),
+  action:
+    | actionTypes.FetchKernelspecs
+    | actionTypes.FetchKernelspecsFulfilled
+    | actionTypes.FetchKernelspecsFailed
+) => {
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS:
       return state.set(

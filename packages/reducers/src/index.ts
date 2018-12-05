@@ -1,4 +1,3 @@
-// @flow
 import comms from "./comms";
 import config from "./config";
 import app from "./app";

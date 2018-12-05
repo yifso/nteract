@@ -1,4 +1,3 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 import * as Immutable from "immutable";
 
@@ -7,12 +6,9 @@ import {
   makeLocalKernelRecord,
   makeRemoteKernelRecord,
   makeKernelsRecord
-} from "../../../state/entities/kernels";
-import {
-  makeKernelInfoRecord,
-  makeHelpLinkRecord
-} from "../../../state/entities/kernel-info";
-import * as actionTypes from "../../../actionTypes";
+} from "@nteract/types";
+import { makeKernelInfoRecord, makeHelpLinkRecord } from "@nteract/types";
+import * as actionTypes from "@nteract/actions";
 
 // TODO: we need to clean up references to old kernels at some point. Listening
 // for KILL_KERNEL_SUCCESSFUL seems like a good candidate, but I think you can
@@ -45,7 +41,7 @@ const byRef = (
     case actionTypes.RESTART_KERNEL:
       return state.setIn([action.payload.kernelRef, "status"], "restarting");
     case actionTypes.LAUNCH_KERNEL:
-      const launchAction = (action: actionTypes.LaunchKernelAction);
+      const launchAction: actionTypes.LaunchKernelAction = action;
       return state.set(
         launchAction.payload.kernelRef,
         makeKernelNotStartedRecord({
@@ -54,7 +50,7 @@ const byRef = (
         })
       );
     case actionTypes.LAUNCH_KERNEL_BY_NAME:
-      const launchByNameAction = (action: actionTypes.LaunchKernelByNameAction);
+      const launchByNameAction: actionTypes.LaunchKernelByNameAction = action;
       return state.set(
         launchByNameAction.payload.kernelRef,
         makeKernelNotStartedRecord({

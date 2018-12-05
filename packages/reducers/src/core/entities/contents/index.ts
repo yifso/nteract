@@ -1,9 +1,9 @@
-/* @flow */
 import * as Immutable from "immutable";
 import { fromJS } from "@nteract/commutable";
 import { combineReducers } from "redux-immutable";
+import { Action } from "redux";
 
-import * as actionTypes from "../../../../actionTypes";
+import * as actionTypes from "@nteract/actions";
 import {
   makeFileContentRecord,
   makeFileModelRecord,
@@ -13,44 +13,48 @@ import {
   makeDirectoryModel,
   makeDocumentRecord,
   makeNotebookContentRecord
-} from "../../../../state/entities/contents";
-import { createContentRef } from "../../../../state/refs";
+} from "@nteract/types";
+import { createContentRef } from "@nteract/types";
 
 import { notebook } from "./notebook";
 import { file } from "./file";
 
-const byRef = (state = Immutable.Map(), action) => {
+const byRef = (state = Immutable.Map(), action: Action) => {
   switch (action.type) {
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until
       // the communication state shows that it should exist.
+      const fetchContentAction = action as actionTypes.FetchContent;
       return state.set(
-        action.payload.contentRef,
+        fetchContentAction.payload.contentRef,
         makeDummyContentRecord({
-          filepath: action.payload.filepath || ""
+          filepath: fetchContentAction.payload.filepath || ""
           // TODO: we can set kernelRef when the content record uses it.
         })
       );
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
       // TODO: is this reasonable? We launched the kernel on behalf of this
       // content... so it makes sense to swap it, right?
+      const launchKernelAction = action as actionTypes.NewKernelAction;
       return state.setIn(
-        [action.payload.contentRef, "model", "kernelRef"],
-        action.payload.kernelRef
+        [launchKernelAction.payload.contentRef, "model", "kernelRef"],
+        launchKernelAction.payload.kernelRef
       );
     case actionTypes.FETCH_CONTENT_FULFILLED:
-      switch (action.payload.model.type) {
+      const fetchContentFulfilledAction = action as actionTypes.FetchContentFulfilled;
+      switch (fetchContentFulfilledAction.payload.model.type) {
         case "file":
           return state.set(
-            action.payload.contentRef,
+            fetchContentFulfilledAction.payload.contentRef,
             makeFileContentRecord({
-              mimetype: action.payload.model.mimetype,
-              created: action.payload.model.created,
-              lastSaved: action.payload.model.last_modified,
-              filepath: action.payload.filepath,
+              mimetype: fetchContentFulfilledAction.payload.model.mimetype,
+              created: fetchContentFulfilledAction.payload.model.created,
+              lastSaved:
+                fetchContentFulfilledAction.payload.model.last_modified,
+              filepath: fetchContentFulfilledAction.payload.filepath,
               model: makeFileModelRecord({
-                text: action.payload.model.content
+                text: fetchContentFulfilledAction.payload.model.content
               })
             })
           );
@@ -64,7 +68,7 @@ const byRef = (state = Immutable.Map(), action) => {
           // Create a map of <ContentRef, ContentRecord> that we merge into the
           // content refs state
           const dummyRecords = Immutable.Map(
-            action.payload.model.content.map(entry => {
+            fetchContentFulfilledAction.payload.model.content.map(entry => {
               return [
                 createContentRef(),
                 makeDummyContentRecord({
@@ -97,28 +101,31 @@ const byRef = (state = Immutable.Map(), action) => {
               .merge(dummyRecords)
               // Set up the base directory
               .set(
-                action.payload.contentRef,
+                fetchContentFulfilledAction.payload.contentRef,
                 makeDirectoryContentRecord({
                   model: makeDirectoryModel({
                     // The listing is all these contents in aggregate
                     items: sorted
                   }),
-                  filepath: action.payload.filepath,
-                  lastSaved: action.payload.model.last_modified,
-                  created: action.payload.model.created
+                  filepath: fetchContentFulfilledAction.payload.filepath,
+                  lastSaved:
+                    fetchContentFulfilledAction.payload.model.last_modified,
+                  created: fetchContentFulfilledAction.payload.model.created
                 })
               )
           );
         }
         case "notebook": {
-          const notebook = fromJS(action.payload.model.content);
+          const notebook = fromJS(
+            fetchContentFulfilledAction.payload.model.content
+          );
 
           return state.set(
-            action.payload.contentRef,
+            fetchContentFulfilledAction.payload.contentRef,
             makeNotebookContentRecord({
-              created: action.payload.created,
-              lastSaved: action.payload.lastSaved,
-              filepath: action.payload.filepath,
+              created: fetchContentFulfilledAction.payload.created,
+              lastSaved: fetchContentFulfilledAction.payload.lastSaved,
+              filepath: fetchContentFulfilledAction.payload.filepath,
               model: makeDocumentRecord({
                 notebook,
                 savedNotebook: notebook,
@@ -138,25 +145,29 @@ const byRef = (state = Immutable.Map(), action) => {
       console.warn("Met some content type we don't support");
       return state;
     case actionTypes.CHANGE_FILENAME: {
-      return state.updateIn([action.payload.contentRef], contentRecord =>
-        contentRecord.merge({
-          filepath: action.payload.filepath
-        })
+      const changeFilenameAction = action as actionTypes.ChangeFilenameAction;
+      return state.updateIn(
+        [changeFilenameAction.payload.contentRef],
+        contentRecord =>
+          contentRecord.merge({
+            filepath: changeFilenameAction.payload.filepath
+          })
       );
     }
     case actionTypes.SAVE_FULFILLED:
+      const saveFulfilledAction = action as actionTypes.SaveFulfilled;
       return state
-        .updateIn([action.payload.contentRef, "model"], model => {
+        .updateIn([saveFulfilledAction.payload.contentRef, "model"], model => {
           // Notebook ends up needing this because we store a last saved version of the notebook
           // Alternatively, we could be storing a hash of the content to compare 🤔
           if (model && model.type === "notebook") {
-            return notebook(model, action);
+            return notebook(model, saveFulfilledAction);
           }
           return model;
         })
         .setIn(
-          [action.payload.contentRef, "lastSaved"],
-          action.payload.model.last_modified
+          [saveFulfilledAction.payload.contentRef, "lastSaved"],
+          saveFulfilledAction.payload.model.last_modified
         );
     // Defer all notebook actions to the notebook reducer
     case actionTypes.SEND_EXECUTE_REQUEST:

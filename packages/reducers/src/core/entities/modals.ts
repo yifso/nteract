@@ -1,14 +1,13 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 
-import * as actionTypes from "../../../actionTypes";
-import { makeModalsRecord } from "../../../state/entities/modals";
+import * as actions from "@nteract/actions";
+import { makeModalsRecord } from "@nteract/types";
 
 const modalType = (state = "", action) => {
   switch (action.type) {
-    case actionTypes.OPEN_MODAL:
+    case actions.OPEN_MODAL:
       return action.payload.modalType;
-    case actionTypes.CLOSE_MODAL:
+    case actions.CLOSE_MODAL:
       return "";
     default:
       return state;

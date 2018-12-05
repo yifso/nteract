@@ -1,8 +1,6 @@
-// @flow
-
 import uuid from "uuid/v4";
 import * as Immutable from "immutable";
-import type {
+import {
   ImmutableCell,
   ImmutableCellMap,
   ImmutableNotebook,
@@ -29,9 +27,9 @@ import {
 import { has } from "lodash";
 import { escapeCarriageReturnSafe } from "escape-carriage";
 
-import * as actionTypes from "../../../../actionTypes";
-import { makeDocumentRecord } from "../../../../state/entities/contents";
-import type { NotebookModel } from "../../../../state/entities/contents";
+import * as actionTypes from "@nteract/actions";
+import { makeDocumentRecord } from "@nteract/types";
+import { NotebookModel } from "@nteract/types";
 
 type KeyPath = Immutable.List<string | number>;
 type KeyPaths = Immutable.List<KeyPath>;
@@ -79,7 +77,7 @@ export function reduceOutputs(
     if (last.get("name") === streamOutput.name) {
       return outputs.updateIn([outputs.size - 1, "text"], appendText);
     }
-    const nextToLast: ?ImmutableOutput = outputs.butLast().last();
+    const nextToLast: ImmutableOutput | undefined = outputs.butLast().last();
     if (
       nextToLast &&
       nextToLast.get("output_type") === "stream" &&
@@ -178,7 +176,7 @@ function clearAllOutputs(
   // Clear all the transient data too
   const transient = Immutable.Map({
     keyPathsForDisplays: Immutable.Map(),
-    cellMap: cellMap.map(() => new Immutable.Map())
+    cellMap: cellMap.map(() => Immutable.Map())
   });
 
   return state
@@ -218,7 +216,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
 
   // Determine the next output index
   const outputIndex = state
-    .getIn(["notebook", "cellMap", cellId, "outputs"], Immutable.List())
+    .getIn(["notebook", "cellMap", cellId, "outputs"])
     .count();
 
   // Construct the path to the output for updating later
@@ -233,8 +231,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   const keyPaths: KeyPaths = state
     // Extract the current list of keypaths for this displayID
     .getIn(
-      ["transient", "keyPathsForDisplays", displayID],
-      new Immutable.List()
+      ["transient", "keyPathsForDisplays", displayID]
     )
     // Append our current output's keyPath
     .push(keyPath);
@@ -263,8 +260,7 @@ function updateDisplay(
   const displayID = content.transient.display_id;
 
   const keyPaths: KeyPaths = state.getIn(
-    ["transient", "keyPathsForDisplays", displayID],
-    new Immutable.List()
+    ["transient", "keyPathsForDisplays", displayID]
   );
 
   const updatedContent = {
@@ -286,7 +282,7 @@ function focusNextCell(
   state: NotebookModel,
   action: actionTypes.FocusNextCell
 ) {
-  const cellOrder = state.getIn(["notebook", "cellOrder"], Immutable.List());
+  const cellOrder = state.getIn(["notebook", "cellOrder"]);
 
   const id = action.payload.id ? action.payload.id : state.get("cellFocused");
   // If for some reason we neither have an ID here or a focused cell, we just
@@ -324,7 +320,7 @@ function focusPreviousCell(
   state: NotebookModel,
   action: actionTypes.FocusPreviousCell
 ): NotebookModel {
-  const cellOrder = state.getIn(["notebook", "cellOrder"], Immutable.List());
+  const cellOrder = state.getIn(["notebook", "cellOrder"]);
   const curIndex = cellOrder.findIndex(
     (id: CellId) => id === action.payload.id
   );
@@ -345,8 +341,7 @@ function focusNextCellEditor(
   action: actionTypes.FocusNextCellEditor
 ) {
   const cellOrder: ImmutableCellOrder = state.getIn(
-    ["notebook", "cellOrder"],
-    Immutable.List()
+    ["notebook", "cellOrder"]
   );
 
   const id = action.payload.id ? action.payload.id : state.get("editorFocused");
@@ -369,7 +364,6 @@ function focusPreviousCellEditor(
 ) {
   const cellOrder: ImmutableCellOrder = state.getIn(
     ["notebook", "cellOrder"],
-    Immutable.List()
   );
   const curIndex = cellOrder.findIndex(
     (id: CellId) => id === action.payload.id
@@ -383,9 +377,9 @@ function moveCell(state: NotebookModel, action: actionTypes.MoveCell) {
   return state.updateIn(
     ["notebook", "cellOrder"],
     (cellOrder: ImmutableCellOrder) => {
-      const oldIndex = cellOrder.findIndex(id => id === action.payload.id);
+      const oldIndex = cellOrder.findIndex((id: string) => id === action.payload.id);
       const newIndex =
-        cellOrder.findIndex(id => id === action.payload.destinationId) +
+        cellOrder.findIndex((id: string) => id === action.payload.destinationId) +
         (action.payload.above ? 0 : 1);
       if (oldIndex === newIndex) {
         return cellOrder;
@@ -525,7 +519,7 @@ function acceptPayloadMessage(
 
   if (payload.source === "page") {
     // append pager
-    return state.updateIn(["cellPagers", id], Immutable.List(), l =>
+    return state.updateIn(["cellPagers", id], l =>
       l.push(payload.data)
     );
   } else if (payload.source === "set_next_input") {
@@ -559,6 +553,7 @@ function sendExecuteRequest(
   action: actionTypes.SendExecuteRequest
 ) {
   const id = action.payload.id ? action.payload.id : state.cellFocused;
+  const contentRef = action.payload.contentRef;
   if (!id) {
     return state;
   }
@@ -574,11 +569,8 @@ function sendExecuteRequest(
     type: "CLEAR_OUTPUTS",
     // $FlowFixMe: Switch this over to clearing outputs without having to take an action
     payload: {
-      id
-      // FIXME: this needs to set a contentRef
-      // Since this is part of the actual document though, maybe we don't need it
-      // in here -- we could basically swap the `clearOutputs` function used here
-      // to be one that doesn't need a content ref
+      id,
+      contentRef
     }
   }).setIn(["transient", "cellMap", id, "status"], "queued");
 }
@@ -850,7 +842,7 @@ type DocumentAction =
   | actionTypes.SaveFulfilled
   | actionTypes.RestartKernel
   | actionTypes.ClearAllOutputs
-  | actionTypes.SetInCell<*>;
+  | actionTypes.SetInCell<any>;
 
 const defaultDocument: NotebookModel = makeDocumentRecord({
   notebook: emptyNotebook
@@ -944,7 +936,6 @@ export function notebook(
     case actionTypes.UNHIDE_ALL:
       return unhideAll(state, action);
     default:
-      (action: empty);
       return state;
   }
 }

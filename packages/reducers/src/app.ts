@@ -1,14 +1,13 @@
-// @flow
-import { makeAppRecord } from "../state";
-import type { AppRecord } from "../state";
-import * as actionTypes from "../actionTypes";
-import type {
+import { makeAppRecord } from "@nteract/types";
+import { AppRecord } from "@nteract/types";
+import * as actions from "@nteract/actions";
+import {
   SetNotificationSystemAction,
   SetGithubTokenAction,
   Save,
   SaveFailed,
   SaveFulfilled
-} from "../actionTypes";
+} from "@nteract/actions";
 
 function setGithubToken(state: AppRecord, action: SetGithubTokenAction) {
   const { githubToken } = action;
@@ -44,15 +43,15 @@ export default function handleApp(
     | SaveFailed
 ) {
   switch (action.type) {
-    case actionTypes.SAVE:
+    case actions.SAVE:
       return save(state);
-    case actionTypes.SAVE_FAILED:
+    case actions.SAVE_FAILED:
       return saveFailed(state);
-    case actionTypes.SAVE_FULFILLED:
+    case actions.SAVE_FULFILLED:
       return saveFulfilled(state);
-    case actionTypes.SET_NOTIFICATION_SYSTEM:
+    case actions.SET_NOTIFICATION_SYSTEM:
       return setNotificationsSystem(state, action);
-    case actionTypes.SET_GITHUB_TOKEN:
+    case actions.SET_GITHUB_TOKEN:
       return setGithubToken(state, action);
     default:
       return state;

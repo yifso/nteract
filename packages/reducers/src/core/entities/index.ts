@@ -1,7 +1,6 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 
-import { makeEntitiesRecord } from "../../../state/entities";
+import { makeEntitiesRecord } from "@nteract/types";
 
 import { contents } from "./contents";
 import { hosts } from "./hosts";

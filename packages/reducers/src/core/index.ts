@@ -1,8 +1,7 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 
-import * as actionTypes from "../../actionTypes";
-import { makeStateRecord } from "../../state";
+import * as actions from "@nteract/actions";
+import { makeStateRecord } from "@nteract/types";
 
 import { communication } from "./communication";
 import { entities } from "./entities";
@@ -14,10 +13,10 @@ import { entities } from "./entities";
 // around.
 const kernelRef = (state = null, action) => {
   switch (action.type) {
-    case actionTypes.LAUNCH_KERNEL:
-    case actionTypes.LAUNCH_KERNEL_BY_NAME:
+    case actions.LAUNCH_KERNEL:
+    case actions.LAUNCH_KERNEL_BY_NAME:
       return action.payload.selectNextKernel ? action.payload.kernelRef : state;
-    case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
+    case actions.LAUNCH_KERNEL_SUCCESSFUL:
       return action.payload.selectNextKernel ? action.payload.kernelRef : state;
     default:
       return state;
@@ -26,7 +25,7 @@ const kernelRef = (state = null, action) => {
 
 const currentKernelspecsRef = (state = null, action) => {
   switch (action.type) {
-    case actionTypes.FETCH_KERNELSPECS:
+    case actions.FETCH_KERNELSPECS:
       return action.payload.kernelspecsRef;
     default:
       return state;

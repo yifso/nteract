@@ -1,4 +1,3 @@
-// @flow
 import { combineReducers } from "redux-immutable";
 import * as Immutable from "immutable";
 
@@ -6,10 +5,13 @@ import {
   makeKernelspec,
   makeKernelspecsByRefRecord,
   makeKernelspecsRecord
-} from "../../../state/entities/kernelspecs";
-import * as actionTypes from "../../../actionTypes";
+} from "@nteract/types";
+import * as actionTypes from "@nteract/actions";
 
-const byRef = (state = Immutable.Map(), action: *) => {
+const byRef = (
+  state = Immutable.Map(),
+  action: actionTypes.FetchKernelspecsFulfilled
+) => {
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
       return state.set(
@@ -30,7 +32,10 @@ const byRef = (state = Immutable.Map(), action: *) => {
   }
 };
 
-const refs = (state = Immutable.List(), action: *) => {
+const refs = (
+  state = Immutable.List(),
+  action: actionTypes.FetchKernelspecsFulfilled
+) => {
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
       return state.includes(action.payload.kernelspecsRef)
