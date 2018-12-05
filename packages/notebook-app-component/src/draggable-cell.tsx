@@ -87,7 +87,7 @@ const cellTarget = {
   drop(
     props: Props,
     monitor: DragSourceMonitor,
-    component: React.ElementRef<*>
+    component: React.ReactElement<any>
   ): void {
     if (monitor) {
       const hoverUpperHalf = isDragUpper(props, monitor, component.el);
@@ -104,7 +104,7 @@ const cellTarget = {
   hover(
     props: Props,
     monitor: DragSourceMonitor,
-    component: React.ElementRef<*>
+    component: any
   ): void {
     if (monitor) {
       component.setState({

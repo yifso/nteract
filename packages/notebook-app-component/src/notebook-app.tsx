@@ -16,6 +16,7 @@ import {
 import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 // $FlowFixMe
 import { RichestMime, Output } from "@nteract/display-area";
 import {
@@ -32,31 +33,31 @@ import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
 
 type AnyCellProps = {
-  id: string,
-  tags: Immutable.Set<string>,
-  contentRef: ContentRef,
-  channels: Subject<any>,
-  cellType: "markdown" | "code" | "raw",
-  theme: string,
-  source: string,
-  executionCount: *,
-  outputs: Immutable.List<*>,
-  pager: Immutable.List<*>,
-  cellStatus: string,
-  cellFocused: boolean, // not the ID of which is focused
-  editorFocused: boolean,
-  sourceHidden: boolean,
-  outputHidden: boolean,
-  outputExpanded: boolean,
-  displayOrder: typeof defaultDisplayOrder,
-  transforms: typeof defaultTransforms,
-  models: Immutable.Map<string, *>,
-  codeMirrorMode: *,
-  selectCell: () => void,
-  focusEditor: () => void,
-  unfocusEditor: () => void,
-  focusAboveCell: () => void,
-  focusBelowCell: () => void
+  id: string;
+  tags: Immutable.Set<string>;
+  contentRef: ContentRef;
+  channels?: Subject<any>;
+  cellType: "markdown" | "code" | "raw";
+  theme: string;
+  source: string;
+  executionCount: number;
+  outputs: Immutable.List<any>;
+  pager: Immutable.List<any>;
+  cellStatus: string;
+  cellFocused: boolean; // not the ID of which is focused
+  editorFocused: boolean;
+  sourceHidden: boolean;
+  outputHidden: boolean;
+  outputExpanded: boolean;
+  displayOrder: string[];
+  transforms: typeof defaultTransforms;
+  models: Immutable.Map<string, any>;
+  codeMirrorMode: string | Immutable.Map<string, any>;
+  selectCell: () => void;
+  focusEditor: () => void;
+  unfocusEditor: () => void;
+  focusAboveCell: () => void;
+  focusBelowCell: () => void;
 };
 
 const markdownEditorOptions = {
@@ -83,7 +84,10 @@ const rawEditorOptions = {
   }
 };
 
-const mapStateToCellProps = (state: AppState, { id, contentRef }: {id: string, contentRef: ContentRef}) => {
+const mapStateToCellProps = (
+  state: AppState,
+  { id, contentRef }: { id: string; contentRef: ContentRef }
+) => {
   const model = selectors.model(state, { contentRef });
   if (!model || model.type !== "notebook") {
     throw new Error(
@@ -116,7 +120,7 @@ const mapStateToCellProps = (state: AppState, { id, contentRef }: {id: string, c
   const pager = model.getIn(["cellPagers", id], Immutable.List());
 
   const kernelRef = selectors.currentKernelRef(state);
-  let channels: Subject<any>;
+  let channels: Subject<any> | undefined;
   if (kernelRef) {
     const kernel = selectors.kernel(state, { kernelRef });
     if (kernel) {
@@ -144,7 +148,10 @@ const mapStateToCellProps = (state: AppState, { id, contentRef }: {id: string, c
   };
 };
 
-const mapDispatchToCellProps = (dispatch, { id, contentRef }) => ({
+const mapDispatchToCellProps = (
+  dispatch: Dispatch,
+  { id, contentRef }: { id: string; contentRef: ContentRef }
+) => ({
   selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
   focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
   unfocusEditor: () =>
@@ -161,7 +168,7 @@ const mapDispatchToCellProps = (dispatch, { id, contentRef }) => ({
   }
 });
 
-const CellBanner = (props: { children: * }) => {
+const CellBanner = (props: { children: React.ReactNode }) => {
   return (
     <React.Fragment>
       <div>{props.children}</div>
@@ -179,7 +186,7 @@ const CellBanner = (props: { children: * }) => {
   );
 };
 
-class AnyCell extends React.PureComponent<AnyCellProps, *> {
+class AnyCell extends React.PureComponent<AnyCellProps> {
   render() {
     const {
       cellFocused,
@@ -233,7 +240,7 @@ class AnyCell extends React.PureComponent<AnyCellProps, *> {
             <Pagers>
               {this.props.pager.map((pager, key) => (
                 <RichestMime
-                  metadata={{ expanded }}
+                  metadata={{ expanded: true }}
                   className="pager"
                   displayOrder={this.props.displayOrder}
                   transforms={this.props.transforms}
@@ -358,31 +365,31 @@ export const ConnectedCell = connect(
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
 type PureNotebookProps = {
-  displayOrder?: Array<string>,
-  cellOrder?: Immutable.List<any>,
-  transforms?: Object,
-  theme?: string,
-  codeMirrorMode?: string | Immutable.Map<string, *>,
-  contentRef: ContentRef,
-  kernelRef?: KernelRef
+  displayOrder?: Array<string>;
+  cellOrder?: Immutable.List<any>;
+  transforms?: Object;
+  theme?: string;
+  codeMirrorMode?: string | Immutable.Map<string, any>;
+  contentRef: ContentRef;
+  kernelRef?: KernelRef;
 };
 
 type NotebookStateProps = {
-  displayOrder: Array<string>,
-  cellOrder: Immutable.List<any>,
-  transforms: Object,
-  theme: string,
-  codeMirrorMode: string | Immutable.Map<string, *>,
-  contentRef: ContentRef,
-  kernelRef: ?KernelRef
+  displayOrder: Array<string>;
+  cellOrder: Immutable.List<any>;
+  transforms: Object;
+  theme: string;
+  codeMirrorMode: string | Immutable.Map<string, any>;
+  contentRef: ContentRef;
+  kernelRef?: KernelRef | null;
 };
 
 type NotebookDispatchProps = {
-  moveCell: (payload: *) => *,
-  focusCell: (payload: *) => *,
-  executeFocusedCell: (payload: *) => *,
-  focusNextCell: (*) => *,
-  focusNextCellEditor: (*) => *
+  moveCell: (payload: object) => void;
+  focusCell: (payload: object) => void;
+  executeFocusedCell: (payload: object) => void;
+  focusNextCell: (payload: object) => void;
+  focusNextCellEditor: (payload: object) => void;
 };
 
 const mapStateToProps = (
@@ -449,13 +456,13 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch): NotebookDispatchProps => ({
-  moveCell: (payload: *) => dispatch(actions.moveCell(payload)),
-  focusCell: (payload: *) => dispatch(actions.focusCell(payload)),
-  executeFocusedCell: (payload: *) =>
+const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
+  moveCell: (payload: object) => dispatch(actions.moveCell(payload)),
+  focusCell: (payload: object) => dispatch(actions.focusCell(payload)),
+  executeFocusedCell: (payload: object) =>
     dispatch(actions.executeFocusedCell(payload)),
-  focusNextCell: (payload: *) => dispatch(actions.focusNextCell(payload)),
-  focusNextCellEditor: (payload: *) =>
+  focusNextCell: (payload: object) => dispatch(actions.focusNextCell(payload)),
+  focusNextCellEditor: (payload: object) =>
     dispatch(actions.focusNextCellEditor(payload))
 });
 
@@ -466,11 +473,11 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     transforms: defaultDisplayOrder
   };
 
-  constructor(): void {
-    super();
-    (this: any).createCellElement = this.createCellElement.bind(this);
-    (this: any).keyDown = this.keyDown.bind(this);
-    (this: any).renderCell = this.renderCell.bind(this);
+  constructor(props: NotebookProps) {
+    super(props);
+    this.createCellElement = this.createCellElement.bind(this);
+    this.keyDown = this.keyDown.bind(this);
+    this.renderCell = this.renderCell.bind(this);
   }
 
   componentDidMount(): void {

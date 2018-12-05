@@ -1,4 +1,3 @@
-/* @flow strict */
 import React from "react";
 import { connect } from "react-redux";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
@@ -70,7 +69,7 @@ export class StatusBar extends React.Component<Props> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef; kernelRef?: KernelRef }
+  ownProps: { contentRef: ContentRef; kernelRef?: KernelRef | null }
 ): Props => {
   const { contentRef, kernelRef } = ownProps;
   const content = selectors.content(state, { contentRef });

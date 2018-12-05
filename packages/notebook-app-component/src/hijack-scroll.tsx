@@ -6,11 +6,11 @@ import * as React from "react";
 type HijackScrollProps = {
   focused: boolean;
   onClick: () => void;
-  children: React.ReactChildren;
+  children: React.ReactNode;
 };
 
 export class HijackScroll extends React.Component<HijackScrollProps> {
-  el?: HTMLElement;
+  el: HTMLDivElement | null = null;
 
   scrollIntoViewIfNeeded(prevFocused?: boolean): void {
     // Check if the element is being hovered over.

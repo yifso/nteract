@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { actions, selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/types";
 import { omit } from "lodash";
@@ -33,7 +34,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps: Props) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props) => {
   const { cellFocused, id, contentRef } = ownProps;
 
   return {

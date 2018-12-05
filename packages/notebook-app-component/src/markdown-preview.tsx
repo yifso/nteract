@@ -17,7 +17,7 @@ type Props = {
   focusBelow: () => void;
   cellFocused: boolean;
   editorFocused: boolean;
-  children: React.ReactChildren;
+  children: React.ReactNode;
 };
 
 type State = {
@@ -36,7 +36,7 @@ const noop = function() {};
 //       within the code base (or leave it alone, which is totally cool too). :)
 
 export default class MarkdownCell extends React.Component<Props, State> {
-  rendered?: HTMLDivElement;
+  rendered: HTMLDivElement | null;
 
   static defaultProps = {
     cellFocused: false,

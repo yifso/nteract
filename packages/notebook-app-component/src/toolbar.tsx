@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { actions } from "@nteract/core";
 import { ContentRef } from "@nteract/types";
 import {
@@ -230,8 +231,12 @@ type ConnectedProps = {
 };
 
 const mapDispatchToProps = (
-  dispatch,
-  { id, type, contentRef }: { id: string; type: string; contentRef: ContentRef }
+  dispatch: Dispatch,
+  {
+    id,
+    type,
+    contentRef
+  }: { id: string; type: "markdown" | "code" | "raw"; contentRef: ContentRef }
 ) => ({
   toggleParameterCell: () =>
     dispatch(actions.toggleParameterCell({ id, contentRef })),
