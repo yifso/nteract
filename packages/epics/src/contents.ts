@@ -1,7 +1,7 @@
 /**
  * @module epics
  */
-import { empty, from, of, interval, Observable } from "rxjs";
+import { empty, from, of, interval, Observable, ObservableInput } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
@@ -33,13 +33,13 @@ export function fetchContentEpic(
 ) {
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
-    switchMap((action: actions.FetchContent) => {
+    switchMap(action => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
         return of({
           type: "ERROR",
           error: true,
           payload: { error: new Error("fetching content needs a payload") }
-        });
+        }) as any;
       }
 
       const state = state$.value;
@@ -52,7 +52,11 @@ export function fetchContentEpic(
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
-        .get(serverConfig, action.payload.filepath, action.payload.params)
+        .get(
+          serverConfig,
+          (action as actions.FetchContent).payload.filepath,
+          (action as actions.FetchContent).payload.params
+        )
         .pipe(
           tap(xhr => {
             if (xhr.status !== 200) {
