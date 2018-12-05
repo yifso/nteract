@@ -1,16 +1,16 @@
 import * as React from "react";
 
 interface OutputsProps {
-  children: React.ReactNode[],
+  children: React.ReactNode[];
   /**
    * Whether or not to collapse the children of the component.
    */
-  expanded: boolean,
+  expanded: boolean;
   /**
    * Whether or not to show the children of the component.
    */
-  hidden: boolean
-};
+  hidden: boolean;
+}
 
 export class Outputs extends React.Component<OutputsProps> {
   static defaultProps = {

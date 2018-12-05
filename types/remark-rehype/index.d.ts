@@ -1,3 +1,3 @@
 declare module "remark-rehype" {
-    export default function(props: any): any;
+  export default function(props: any): any;
 }

@@ -1,15 +1,20 @@
 import * as React from "react";
-import { richestMimetype, transforms, displayOrder } from "@nteract/transforms";
+import {
+  richestMimetype,
+  transforms,
+  displayOrder,
+  Transforms
+} from "@nteract/transforms";
 
 import { Subject } from "rxjs";
 
 type Props = {
   displayOrder: string[];
-  transforms: Object;
-  bundle: Object;
-  metadata: Object;
+  transforms: { [key: string]: any };
+  bundle: { [key: string]: any };
+  metadata: { [key: string]: any };
   theme: string;
-  models?: Object;
+  models?: object;
   channels?: Subject<any>;
 };
 
@@ -81,7 +86,7 @@ export default class RichestMime extends React.Component<Props, State> {
     const mimetype = richestMimetype(
       this.props.bundle,
       this.props.displayOrder,
-      this.props.transforms
+      this.props.transforms as Transforms
     );
 
     if (!mimetype) {
@@ -89,9 +94,12 @@ export default class RichestMime extends React.Component<Props, State> {
       return null;
     }
 
-    const Transform = this.props.transforms[mimetype];
-    const data = this.props.bundle[mimetype];
-    const metadata = this.props.metadata[mimetype];
+    // NOTE: When we transition to the compound component interface these should no longer be
+    //       any (they were implicit any before based on prior code paths).
+    //       Once the TypeScript migration is nearing completion we can clean this up.
+    const Transform: any = this.props.transforms[mimetype];
+    const data: any = this.props.bundle[mimetype];
+    const metadata: any = this.props.metadata[mimetype];
     return (
       <Transform
         data={data}

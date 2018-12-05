@@ -8,11 +8,11 @@ export type EmptyHost = {
   type: "empty"
 };
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
-export const makeEmptyHostRecord: Immutable.RecordFactory<
-  EmptyHost
-> = Immutable.Record({
-  type: "empty"
-});
+export const makeEmptyHostRecord: Immutable.RecordFactory<EmptyHost> = Immutable.Record(
+  {
+    type: "empty"
+  }
+);
 
 export type BaseHostProps = {
   id: ?HostId,
@@ -27,17 +27,17 @@ export type JupyterHostRecordProps = BaseHostProps & {
   crossDomain: ?boolean
 };
 
-export const makeJupyterHostRecord: Immutable.RecordFactory<
-  JupyterHostRecordProps
-> = Immutable.Record({
-  type: "jupyter",
-  id: null,
-  defaultKernelName: "python",
-  token: null,
-  origin: typeof location === "undefined" ? "" : location.origin,
-  basePath: "/",
-  crossDomain: false
-});
+export const makeJupyterHostRecord: Immutable.RecordFactory<JupyterHostRecordProps> = Immutable.Record(
+  {
+    type: "jupyter",
+    id: null,
+    defaultKernelName: "python",
+    token: null,
+    origin: typeof location === "undefined" ? "" : location.origin,
+    basePath: "/",
+    crossDomain: false
+  }
+);
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
 
@@ -45,13 +45,13 @@ export type LocalHostRecordProps = BaseHostProps & {
   type: "local"
 };
 
-export const makeLocalHostRecord: Immutable.RecordFactory<
-  LocalHostRecordProps
-> = Immutable.Record({
-  type: "local",
-  id: null,
-  defaultKernelName: "python"
-});
+export const makeLocalHostRecord: Immutable.RecordFactory<LocalHostRecordProps> = Immutable.Record(
+  {
+    type: "local",
+    id: null,
+    defaultKernelName: "python"
+  }
+);
 
 export type LocalHostRecord = Immutable.RecordOf<LocalHostRecordProps>;
 
@@ -64,9 +64,9 @@ export type HostsRecordProps = {
   refs: Immutable.List<HostRef>
 };
 
-export const makeHostsRecord: Immutable.RecordFactory<
-  HostsRecordProps
-> = Immutable.Record({
-  byRef: Immutable.Map(),
-  refs: Immutable.List()
-});
+export const makeHostsRecord: Immutable.RecordFactory<HostsRecordProps> = Immutable.Record(
+  {
+    byRef: Immutable.Map(),
+    refs: Immutable.List()
+  }
+);

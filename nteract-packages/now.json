@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "name": "nteract-packages",
+  "alias": "packages.nteract.io",
+  "static": {
+    "public": "dist"
+  }
+}

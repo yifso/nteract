@@ -1,3 +1,6 @@
+/**
+ * @module rx-jupyter
+ */
 import Cookies from "js-cookie";
 import { AjaxRequest } from "rxjs/ajax";
 
@@ -10,6 +13,16 @@ export interface ServerConfig extends Partial<AjaxRequest> {
   xsrfToken?: string;
 }
 
+/**
+ * Creates an AJAX request to connect to a given server. This function
+ * handles setting the authorization tokens on the request.
+ * 
+ * @param serverConfig Details about the server to connect to.
+ * @param uri The URL to connect to, not including the base URL
+ * @param opts A set of options to pass to the AJAX request.
+ * 
+ * @returns A fully-configured AJAX request for connecting to the server.
+ */
 export const createAJAXSettings = (
   serverConfig: ServerConfig,
   uri = "/",

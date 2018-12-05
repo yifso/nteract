@@ -8,12 +8,12 @@ export type KernelspecsByRefCommunicationRecordProps = {
   error: ?Object
 };
 
-export const makeKernelspecsByRefCommunicationRecord: Immutable.RecordFactory<
-  KernelspecsByRefCommunicationRecordProps
-> = Immutable.Record({
-  loading: false,
-  error: null
-});
+export const makeKernelspecsByRefCommunicationRecord: Immutable.RecordFactory<KernelspecsByRefCommunicationRecordProps> = Immutable.Record(
+  {
+    loading: false,
+    error: null
+  }
+);
 
 export type KernelspecsCommunicationRecordProps = {
   byRef: Immutable.Map<
@@ -22,8 +22,8 @@ export type KernelspecsCommunicationRecordProps = {
   >
 };
 
-export const makeKernelspecsCommunicationRecord: Immutable.RecordFactory<
-  KernelspecsCommunicationRecordProps
-> = Immutable.Record({
-  byRef: Immutable.Map()
-});
+export const makeKernelspecsCommunicationRecord: Immutable.RecordFactory<KernelspecsCommunicationRecordProps> = Immutable.Record(
+  {
+    byRef: Immutable.Map()
+  }
+);

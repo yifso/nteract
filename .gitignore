@@ -50,4 +50,10 @@ packages/styles/src/index.js
 
 styleguide
 
+# Ignore built TypeDocs
+nteract-packages/dist
+
 .idea/
+
+# jest reporting coverage
+junit.xml

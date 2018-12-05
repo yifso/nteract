@@ -31,19 +31,26 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const React = require("react");
+import * as React from "react";
+import { serializeEvent, SerializedEvent } from "./event-to-object";
 
-interface Attributes {
-  style: object;
-  key: number;
+export { SerializedEvent } from "./event-to-object";
+
+export interface Attributes {
+  [key: string]: any;
+}
+
+export interface EventHandlers {
+  [key: string]: string;
 }
 
 export interface VDOMEl {
   tagName: string; // Could be an enum honestly
   children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
   attributes: Attributes;
+  eventHandlers?: EventHandlers;
   key: number | string | null;
-};
+}
 
 /**
  * Convert an object to React element(s).
@@ -54,13 +61,17 @@ export interface VDOMEl {
  * @param  {Object}       obj - The element object.
  * @return {ReactElement}
  */
-export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
+export function objectToReactElement(
+  obj: VDOMEl,
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
+): React.ReactElement<any> {
   // Pack args for React.createElement
-  var args = [];
+  let args: any[] = [];
 
   if (!obj.tagName || typeof obj.tagName !== "string") {
     throw new Error(`Invalid tagName on ${JSON.stringify(obj, null, 2)}`);
   }
+
   if (
     !obj.attributes ||
     Array.isArray(obj.attributes) ||
@@ -82,6 +93,22 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
     );
   }
 
+  // Add event handlers to attributes.
+  // Replace event handlers values (target name) with callback functions that
+  // serialize the event object and call `onVDOMEvent` with the comm target name
+  // and serialized event.
+  // `onVDOMEvent` will send a comm message to a comm channel of target name
+  // with a body of serialized event and vdom on kernel will handle the event.
+  if (obj.eventHandlers) {
+    for (let eventType in obj.eventHandlers) {
+      const targetName = obj.eventHandlers[eventType];
+      obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
+        const serializedEvent = serializeEvent(event);
+        onVDOMEvent(targetName, serializedEvent);
+      };
+    }
+  }
+
   // `React.createElement` 1st argument: type
   args[0] = obj.tagName;
   args[1] = obj.attributes;
@@ -94,11 +121,14 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(children as VDOMEl[]) as any);
+      args = args.concat(arrayToReactChildren(
+        children as VDOMEl[],
+        onVDOMEvent
+      ) as any);
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {
-      args[2] = objectToReactElement(children as VDOMEl);
+      args[2] = objectToReactElement(children as VDOMEl, onVDOMEvent);
     } else {
       throw new Error(
         "children of a vdom element must be a string, object, null, or array of vdom nodes"
@@ -116,17 +146,20 @@ export function objectToReactElement(obj: VDOMEl): React.ReactElement<any> {
  * @param  {Array} arr - The array.
  * @return {Array}     - The array of mixed values.
  */
-export function arrayToReactChildren(arr: Array<VDOMEl>): React.ReactNodeArray {
-  var result = [];
+function arrayToReactChildren(
+  arr: Array<VDOMEl>,
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
+): React.ReactNodeArray {
+  let result: React.ReactNodeArray = [];
 
   // iterate through the `children`
-  for (var i = 0, len = arr.length; i < len; i++) {
+  for (let i = 0, len = arr.length; i < len; i++) {
     // child can have mixed values: text, React element, or array
     const item = arr[i];
     if (item === null) {
       continue;
     } else if (Array.isArray(item)) {
-      result.push(arrayToReactChildren(item));
+      result.push(arrayToReactChildren(item, onVDOMEvent));
     } else if (typeof item === "string") {
       result.push(item);
     } else if (typeof item === "object") {
@@ -136,12 +169,13 @@ export function arrayToReactChildren(arr: Array<VDOMEl>): React.ReactNodeArray {
         tagName: item.tagName,
         attributes: item.attributes,
         children: item.children,
+        eventHandlers: item.eventHandlers,
         key: i
       };
       if (item.attributes && item.attributes.key) {
         keyedItem.key = item.attributes.key;
       }
-      result.push(objectToReactElement(keyedItem));
+      result.push(objectToReactElement(keyedItem, onVDOMEvent));
     } else {
       throw new Error(`invalid vdom child: "${item}"`);
     }

@@ -20,18 +20,25 @@ module.exports = {
   defaultExample: false,
   sections: [
     {
+      name: "Introduction",
+      content: "doc/components.md"
+    },
+    {
       name: "@nteract/presentational-components",
-      components: "packages/presentational-components/src/components/*.tsx"
+      components: "packages/presentational-components/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/outputs",
-      components: "packages/outputs/src/components/*.js"
+      components: "packages/outputs/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/outputs/media",
-      components: "packages/outputs/src/components/media/*.js",
+      components: "packages/outputs/src/components/media/*.tsx",
       content: "packages/outputs/src/components/media/index.md",
-      ignore: "packages/outputs/src/components/media/index.js"
+      ignore: "packages/outputs/src/components/media/index.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@mybinder/host-cache",
@@ -40,7 +47,8 @@ module.exports = {
     },
     {
       name: "@nteract/directory-listing",
-      components: "packages/directory-listing/src/components/*.js"
+      components: "packages/directory-listing/src/components/*.tsx",
+      propsParser: typescriptPropsParser
     },
     {
       name: "@nteract/markdown",
@@ -66,6 +74,19 @@ module.exports = {
     transforms: {
       // whether template strings get transpiled (we don't want it to, so that we can use the native functionality)
       templateString: false
+    }
+  },
+  template: {
+    body: {
+      raw: `
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129108362-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-129108362-2');
+        </script>`
     }
   },
   webpackConfig: {

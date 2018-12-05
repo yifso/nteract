@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 /*
  * Functions in this module are provided for converting from Jupyter Notebook
  * Format v4 to nteract's in-memory format, affectionately referred to as
@@ -117,6 +120,13 @@ export type Notebook = {
   nbformat_minor: number;
 };
 
+/**
+ * Converts a mutable representation of an output to an immutable representation.
+ * 
+ * @param output The mutable output that will be converted.
+ * 
+ * @returns ImmutableOutput An immutable representation of the same output.
+ */
 export const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "execute_result":
@@ -149,6 +159,13 @@ export const createImmutableOutput = (output: Output): ImmutableOutput => {
   }
 };
 
+/**
+ * Converts a mutable representation of metadata to an immutable representation.
+ * 
+ * @param metadata A JSON representation of notebook metadata.
+ * 
+ * @returns ImmutableMetadata An immutable representation of the metadata.
+ */
 const createImmutableMetadata = (metadata: JSONObject) =>
   ImmutableMap(metadata).map((v, k: string) => {
     if (k !== "tags") {
@@ -188,6 +205,14 @@ const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
     metadata: createImmutableMetadata(cell.metadata)
   });
 
+/**
+ * Converts a JSON representation of a cell of any type to the correct
+ * immutable representation, per the v4 nbformat specification.
+ * 
+ * @param cell A JSON representation of a cell.
+ * 
+ * @returns An immutable representation of the same cell.
+ */
 const createImmutableCell = (cell: Cell): ImmutableCell => {
   switch (cell.cell_type) {
     case "markdown":
@@ -297,6 +322,13 @@ const markdownCellToJS = (immCell: ImmutableMarkdownCell): MarkdownCell => ({
   metadata: metadataToJS(immCell.metadata)
 });
 
+/**
+ * Converts an immutable representation of a code cell to a JSON representation.
+ * 
+ * @param immCell An immutable representation of a code cell.
+ * 
+ * @returns A JSON representation of the same code cell.
+ */
 const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
   return {
     cell_type: "code",
@@ -307,6 +339,13 @@ const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
   };
 };
 
+/**
+ * Converts an immutable representation of a raw cell to a JSON representation.
+ * 
+ * @param immCell An immutable representation of a raw cell.
+ * 
+ * @returns A JSON representation of the same raw cell.
+ */
 const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
   return {
     cell_type: "raw",
@@ -315,6 +354,13 @@ const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
   };
 };
 
+/**
+ * Converts an immutable cell to a JSON cell.
+ * 
+ * @param immCell An immutable representation of a cell.
+ * 
+ * @returns A JSON representation of the same cell.
+ */
 const cellToJS = (immCell: ImmutableCell): Cell => {
   switch (immCell.cell_type) {
     case "markdown":
@@ -328,6 +374,13 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
   }
 };
 
+/**
+ * Converts an immutable representation of a notebook to a JSON representation.
+ * 
+ * @param immnb The immutable representation of a notebook.
+ * 
+ * @returns The JSON representation of a notebook.
+ */
 export const toJS = (immnb: ImmutableNotebook): Notebook => {
   const plainNotebook = immnb.toObject() as NotebookRecordParams;
   const plainCellOrder: string[] = plainNotebook.cellOrder.toArray();
@@ -335,8 +388,8 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
     [key: string]: ImmutableCell;
   } = plainNotebook.cellMap.toObject();
 
-  const cells = plainCellOrder.map((cellID: string) =>
-    cellToJS(plainCellMap[cellID])
+  const cells = plainCellOrder.map((cellId: string) =>
+    cellToJS(plainCellMap[cellId])
   );
 
   return {

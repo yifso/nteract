@@ -1,3 +1,6 @@
+/**
+ * @module commutable
+ */
 import { ImmutableOutput } from "./outputs";
 
 import { ExecutionCount } from "./primitives";
@@ -69,3 +72,5 @@ export type ImmutableCell =
   | ImmutableMarkdownCell
   | ImmutableCodeCell
   | ImmutableRawCell;
+
+export type CellType = "raw" | "markdown" | "code";

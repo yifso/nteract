@@ -1,7 +1,7 @@
 // @flow
 import * as Immutable from "immutable";
 import * as commutable from "@nteract/commutable";
-import type { CellID } from "@nteract/commutable";
+import type { CellId } from "@nteract/commutable";
 import { createSelector } from "reselect";
 
 // All these selectors expect a NotebookModel as the top level state
@@ -10,14 +10,14 @@ import type { NotebookModel } from "../state/entities/contents/notebook";
 export const cellMap = (model: NotebookModel) =>
   model.notebook.get("cellMap", Immutable.Map());
 
-export const cellById = (model: NotebookModel, { id }: { id: CellID }) =>
+export const cellById = (model: NotebookModel, { id }: { id: CellId }) =>
   cellMap(model).get(id);
 
-export const cellOrder = (model: NotebookModel): Immutable.List<CellID> =>
+export const cellOrder = (model: NotebookModel): Immutable.List<CellId> =>
   model.notebook.get("cellOrder", Immutable.List());
 
-export const cellFocused = (model: NotebookModel): ?CellID => model.cellFocused;
-export const editorFocusedId = (model: NotebookModel): ?CellID =>
+export const cellFocused = (model: NotebookModel): ?CellId => model.cellFocused;
+export const editorFocusedId = (model: NotebookModel): ?CellId =>
   model.editorFocused;
 
 export const codeCellIdsBelow = (model: NotebookModel) => {
@@ -71,12 +71,14 @@ export const codeCellIds = createSelector(
 export const metadata = (model: NotebookModel) =>
   model.notebook.get("metadata", Immutable.Map());
 
-export const githubUsername = createSelector([metadata], metadata =>
-  metadata.get("github_username", null)
+export const githubUsername = createSelector(
+  [metadata],
+  metadata => metadata.get("github_username", null)
 );
 
-export const gistId = createSelector([metadata], metadata =>
-  metadata.get("gist_id", null)
+export const gistId = createSelector(
+  [metadata],
+  metadata => metadata.get("gist_id", null)
 );
 
 export const notebook = (model: NotebookModel) => model.notebook;
@@ -88,18 +90,24 @@ export const isDirty = createSelector(
   (original, disk) => !Immutable.is(original, disk)
 );
 
-export const asJSON = createSelector([notebook], notebook => {
-  return commutable.toJS(notebook);
-});
+export const asJSON = createSelector(
+  [notebook],
+  notebook => {
+    return commutable.toJS(notebook);
+  }
+);
 
 // NOTE: This is called asString instead of toString so that REPLs
 //       don't think of this as the representation of this module
-export const asString = createSelector([asJSON], notebookJS => {
-  if (notebookJS) {
-    return commutable.stringifyNotebook(notebookJS);
+export const asString = createSelector(
+  [asJSON],
+  notebookJS => {
+    if (notebookJS) {
+      return commutable.stringifyNotebook(notebookJS);
+    }
+    return "";
   }
-  return "";
-});
+);
 
 const CODE_MIRROR_MODE_DEFAULT = "text";
 
@@ -112,6 +120,7 @@ export const codeMirrorMode = createSelector(
     CODE_MIRROR_MODE_DEFAULT
 );
 
-export const displayName = createSelector([metadata], metadata =>
-  metadata.getIn(["kernelspec", "display_name"], "")
+export const displayName = createSelector(
+  [metadata],
+  metadata => metadata.getIn(["kernelspec", "display_name"], "")
 );

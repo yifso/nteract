@@ -45,11 +45,10 @@ const normalizeNumber = (numbers: ?NumberArray, value: number) =>
   numbers && numbers.length === 10
     ? String(value)
         .split("")
-        .map(
-          (digit: string) =>
-            digit.match(/^[0-9]$/)
-              ? ((numbers: any): NumberArray)[parseInt(digit)]
-              : digit
+        .map((digit: string) =>
+          digit.match(/^[0-9]$/)
+            ? ((numbers: any): NumberArray)[parseInt(digit)]
+            : digit
         )
         .join("")
     : String(value);

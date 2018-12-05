@@ -1,37 +1,41 @@
-import { ajax } from "rxjs/ajax";
+/**
+ * @module rx-jupyter
+ */
+import { Observable } from "rxjs";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import { createAJAXSettings, ServerConfig } from "./base";
 
 /**
  * Creates an AjaxObservable for listing available sessions.
  *
- * @param serverConfig  - The server configuration
- * @param sessionID - Universally unique id for session to be requested.
+ * @param serverConfig The server configuration
+ * @param sessionID Universally unique id for session to be requested.
  *
- * @return An Observable with the request response
+ * @returns An Observable with the request response
  */
-export const list = (serverConfig: ServerConfig) =>
+export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
   ajax(createAJAXSettings(serverConfig, "/api/sessions"));
 
 /**
  * Creates an AjaxObservable for getting a particular session's information.
  *
- * @param serverConfig  - The server configuration
- * @param sessionID - Universally unique id for session to be requested.
+ * @param serverConfig The server configuration
+ * @param sessionID Universally unique id for session to be requested
  *
- * @return An Observable with the request/response
+ * @returns An Observable with the request/response
  */
-export const get = (serverConfig: ServerConfig, sessionID: string) =>
+export const get = (serverConfig: ServerConfig, sessionID: string): Observable<AjaxResponse> =>
   ajax(createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`));
 
 /**
  * Creates an AjaxObservable for destroying a particular session.
  *
- * @param {Object} serverConfig - The server configuration
- * @param {String} sessionID - unique id for session to be requested.
+ * @param serverConfig The server configuration
+ * @param sessionID Unique id for session to be requested
  *
- * @return {Object} - An Observable with the request/response
+ * @returns An Observable with the request/response
  */
-export const destroy = (serverConfig: ServerConfig, sessionID: string) =>
+export const destroy = (serverConfig: ServerConfig, sessionID: string): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {
       method: "DELETE"
@@ -41,18 +45,18 @@ export const destroy = (serverConfig: ServerConfig, sessionID: string) =>
 /**
  * Creates an AjaxObservable for updating a session.
  *
- * @param serverConfig - The server configuration
- * @param sessionID - unique identifier for session to be changed.
- * @param body - Payload containing new kernel_name, new kernel_id,
+ * @param serverConfig The server configuration
+ * @param sessionID Unique identifier for session to be changed
+ * @param body Payload containing new kernel_name, new kernel_id,
  * name of the new session, and the new path.
  *
- * @return An Observable with the request/response
+ * @returns An Observable with the request/response
  */
 export const update = (
   serverConfig: ServerConfig,
   sessionID: string,
   body: object
-) =>
+): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {
       method: "PATCH",
@@ -66,12 +70,13 @@ export const update = (
 /**
  * Creates an AjaxObservable for getting a particular session's information.
  *
- * @param serverConfig  - The server configuration
- * @param payload - Payload containing kernel name, kernel_id, session
+ * @param serverConfig  The server configuration
+ * @param body Payload containing kernel name, kernel_id, session
  * name, and path for creation of a new session.
- * @return An Observable with the request/response
+ * 
+ * @returns An Observable with the request/response
  */
-export const create = (serverConfig: ServerConfig, body: object) =>
+export const create = (serverConfig: ServerConfig, body: object): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/sessions", {
       method: "POST",

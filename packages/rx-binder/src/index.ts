@@ -1,9 +1,18 @@
+/**
+ * @module rx-binder
+ */
 import { Observable, Subscriber } from "rxjs";
 
 const mybinderURL = "https://mybinder.org";
 
-/** trim github.com from repo */
-const cleanRepo = (repo: string) =>
+/**
+ * Strips the github.com URL base from a repo URL.
+ *
+ * @param repo A complete repo URL
+ *
+ * @returns The repo without github.com
+ */
+const cleanRepo = (repo: string): string =>
   repo
     .replace(/^(https?:\/\/)?github.com\//, "")
     // trim trailing or leading '/' on repo
@@ -15,11 +24,18 @@ interface BinderOptions {
   binderURL?: string;
 }
 
+/**
+ * Returns a URL for initializing a connection to Binder.
+ *
+ * @param options An object containing the details of the Binder connection
+ *
+ * @returns A Binder URL
+ */
 export const formBinderURL = ({
   repo = "jupyter/notebook",
   ref = "master",
   binderURL = mybinderURL
-}: BinderOptions = {}) => {
+}: BinderOptions = {}): string => {
   repo = cleanRepo(repo);
   binderURL = binderURL.replace(/(\/?$)/g, ""); // trim trailing / on url
   return `${binderURL}/build/gh/${repo}/${ref}`;
@@ -42,6 +58,8 @@ const defaultEventSource: IEventSourceConstructor =
  *
  * @param options repo and other options to connect
  * @param EventSourceDI allows overriding EventSource for testing
+ *
+ * @returns An Observable with a connection to a Binder instance
  */
 export const binder = (
   options: BinderOptions,

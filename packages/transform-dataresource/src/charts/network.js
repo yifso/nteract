@@ -1,7 +1,94 @@
 /* @flow */
 import * as React from "react";
+import { scaleLinear } from "d3-scale";
 
 import TooltipContent from "../tooltip-content";
+
+const fontScale = scaleLinear()
+  .domain([5, 30])
+  .range([8, 16])
+  .clamp(true);
+
+const edgeStyles = {
+  force: (colorHash: Object) => (edge: Object) => ({
+    fill: colorHash[edge.source.id],
+    stroke: colorHash[edge.source.id],
+    strokeOpacity: 0.25
+  }),
+  sankey: (colorHash: Object) => (edge: Object) => ({
+    fill: colorHash[edge.source.id],
+    stroke: colorHash[edge.source.id],
+    strokeOpacity: 0.25
+  }),
+  matrix: (colorHash: Object) => (edge: Object) => ({
+    fill: colorHash[edge.source.id],
+    stroke: "none"
+  }),
+  arc: (colorHash: Object) => (edge: Object) => ({
+    fill: "none",
+    stroke: colorHash[edge.source.id],
+    strokeWidth: edge.weight || 1,
+    strokeOpacity: 0.75
+  })
+};
+
+const nodeStyles = {
+  force: (colorHash: Object) => (node: Object) => ({
+    fill: colorHash[node.id],
+    stroke: colorHash[node.id],
+    strokeOpacity: 0.5
+  }),
+  sankey: (colorHash: Object) => (node: Object) => ({
+    fill: colorHash[node.id],
+    stroke: colorHash[node.id],
+    strokeOpacity: 0.5
+  }),
+  matrix: () => () => ({
+    fill: "none",
+    stroke: "#666",
+    strokeOpacity: 1
+  }),
+  arc: (colorHash: Object) => (node: Object) => ({
+    fill: colorHash[node.id],
+    stroke: colorHash[node.id],
+    strokeOpacity: 0.5
+  })
+};
+const nodeLinkHover = [
+  { type: "frame-hover" },
+  {
+    type: "highlight",
+    style: { stroke: "red", strokeOpacity: 0.5, strokeWidth: 5, fill: "none" }
+  }
+];
+const hoverAnnotationSettings = {
+  force: nodeLinkHover,
+  sankey: nodeLinkHover,
+  matrix: [
+    { type: "frame-hover" },
+    { type: "highlight", style: { fill: "red", fillOpacity: 0.5 } }
+  ],
+  arc: nodeLinkHover
+};
+
+const nodeLabeling = {
+  none: false,
+  static: true,
+  scaled: d => {
+    if (!d.nodeSize || d.nodeSize < 5) {
+      return null;
+    }
+    return (
+      <text
+        textAnchor="middle"
+        y={fontScale(d.nodeSize) / 2}
+        fontSize={`${fontScale(d.nodeSize)}px`}
+      >
+        {d.id}
+      </text>
+    );
+  }
+};
 
 export const semioticNetwork = (
   data: Array<Object>,
@@ -9,7 +96,14 @@ export const semioticNetwork = (
   options: Object
 ) => {
   const { networkType = "force", chart, colors } = options;
-  const { dim1: sourceDimension, dim2: targetDimension, metric1 } = chart;
+  const {
+    dim1: sourceDimension,
+    dim2: targetDimension,
+    metric1,
+    networkLabel
+  } = chart;
+
+  console.log("chart", chart);
 
   if (
     !sourceDimension ||
@@ -55,23 +149,15 @@ export const semioticNetwork = (
 
   return {
     edges: networkData,
-    edgeType: "halfarrow",
-    edgeStyle: (edge: Object) => ({
-      fill: colorHash[edge.source.id],
-      stroke: colorHash[edge.source.id],
-      strokeOpacity: 0.5
-    }),
-    nodeStyle: (node: Object) => ({
-      fill: colorHash[node.id],
-      stroke: colorHash[node.id],
-      strokeOpacity: 0.5
-    }),
+    edgeType: networkType === "force" && "halfarrow",
+    edgeStyle: edgeStyles[networkType](colorHash),
+    nodeStyle: nodeStyles[networkType](colorHash),
     nodeSizeAccessor: (node: Object) => node.degree,
     networkType: {
       type: networkType,
       iterations: 1000
     },
-    hoverAnnotation: true,
+    hoverAnnotation: hoverAnnotationSettings[networkType],
     tooltipContent: (hoveredNode: Object) => {
       return (
         <TooltipContent x={hoveredNode.x} y={hoveredNode.y}>
@@ -81,6 +167,7 @@ export const semioticNetwork = (
         </TooltipContent>
       );
     },
+    nodeLabels: networkType === "matrix" ? false : nodeLabeling[networkLabel],
     margin: { left: 100, right: 100, top: 10, bottom: 10 }
   };
 };

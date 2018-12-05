@@ -6,7 +6,7 @@ import Provider from "./provider";
 interface Props {
   children: string;
   onRender?: Function;
-};
+}
 
 class MathJaxText_ extends React.Component<Props & MathJaxContextValue> {
   nodeRef: React.RefObject<HTMLDivElement>;

@@ -1,3 +1,3 @@
-import { WideLogo } from './wide';
+import { WideLogo } from "./wide";
 
 export { WideLogo };

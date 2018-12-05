@@ -1,9 +1,11 @@
+/**
+ * @module commutable
+ */
 // .....................................
 // API Exports
 // Make sure the index.js.flow types stay in sync with this section
 //
 
-// from types
 export * from "./primitives";
 
 // from structures
@@ -27,10 +29,20 @@ export {
   makeDisplayData,
   makeErrorOutput,
   makeStreamOutput,
-  makeExecuteResult
+  makeExecuteResult,
+  MimeBundle
 } from "./outputs";
 
-export { makeRawCell, makeCodeCell, makeMarkdownCell, ImmutableCodeCell } from "./cells";
+export {
+  makeRawCell,
+  makeCodeCell,
+  makeMarkdownCell,
+  ImmutableCodeCell,
+  ImmutableMarkdownCell,
+  ImmutableRawCell,
+  ImmutableCell,
+  CellType
+} from "./cells";
 
 export {
   toJS,

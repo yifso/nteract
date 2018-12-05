@@ -1,6 +1,11 @@
+/**
+ * @module commutable
+ */
 import uuid from "uuid/v4";
 
-import { CellID, makeNotebookRecord, ImmutableNotebook } from "./notebook";
+import { CellId, createCellId } from "./primitives";
+
+import { makeNotebookRecord, ImmutableNotebook } from "./notebook";
 
 import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
 
@@ -21,21 +26,36 @@ export const createNotebook = makeNotebookRecord;
 export const emptyNotebook = makeNotebookRecord();
 
 export type CellStructure = {
-  cellOrder: ImmutableList<CellID>;
-  cellMap: ImmutableMap<CellID, ImmutableCell>;
+  cellOrder: ImmutableList<CellId>;
+  cellMap: ImmutableMap<CellId, ImmutableCell>;
 };
 
-// Intended to make it easy to use this with (temporary mutable cellOrder +
-// cellMap)
+/**
+ * A function that appends a new cell to a CellStructure object.
+ * 
+ * @param cellStructure The cellOrder and cellMap of the current notebook
+ * @param immutableCell The cell that will be inserted into the cellStructure
+ * @param id The id of the new cell, defaults to a new UUID
+ * 
+ * @returns Cell structure with the new cell appended at the end
+ */
 export const appendCell = (
   cellStructure: CellStructure,
   immutableCell: ImmutableCell,
-  id: string = uuid()
+  id: CellId = createCellId()
 ): CellStructure => ({
   cellOrder: cellStructure.cellOrder.push(id),
   cellMap: cellStructure.cellMap.set(id, immutableCell)
 });
 
+/**
+ * A function that appends a cell to an immutable notebook.
+ * 
+ * @param immnb An immutable data structure representing the notebook that will be modified
+ * @param immCell The new cell that will be inserted into the notebook
+ * 
+ * @returns The modified notebook
+ */
 export const appendCellToNotebook = (
   immnb: ImmutableNotebook,
   immCell: ImmutableCell
@@ -49,53 +69,92 @@ export const appendCellToNotebook = (
     return nb.set("cellOrder", cellOrder).set("cellMap", cellMap);
   });
 
+  /**
+   * Inserts a cell with cellID at a given index within the notebook.
+   * 
+   * @param notebook The notebook the cell will be inserted into.
+   * @param cell The cell that will be inserted
+   * @param cellID The ID of the cell.
+   * @param index The position we would like to insert the cell at
+   * 
+   * @returns The modified notebook.
+   */
 export const insertCellAt = (
   notebook: ImmutableNotebook,
   cell: ImmutableCell,
-  cellID: string,
+  cellId: string,
   index: number
 ): ImmutableNotebook =>
   notebook.withMutations(nb =>
     nb
-      .setIn(["cellMap", cellID], cell)
-      .set("cellOrder", nb.get("cellOrder").insert(index, cellID))
+      .setIn(["cellMap", cellId], cell)
+      .set("cellOrder", nb.get("cellOrder").insert(index, cellId))
   );
 
+/**
+ * Inserts a new cell with cellID before an existing cell with priorCellID
+ * in the notebook.
+ * 
+ * @param notebook The notebook the cell will be inserted into.
+ * @param cell The cell that will be inserted
+ * @param cellID The ID of the cell.
+ * @param priorCellID The ID of the existing cell.
+ */
 export const insertCellAfter = (
   notebook: ImmutableNotebook,
   cell: ImmutableCell,
-  cellID: string,
-  priorCellID: string
+  cellId: string,
+  priorCellId: string
 ): ImmutableNotebook =>
   insertCellAt(
     notebook,
     cell,
-    cellID,
-    notebook.get("cellOrder").indexOf(priorCellID) + 1
+    cellId,
+    notebook.get("cellOrder").indexOf(priorCellId) + 1
   );
 
 /**
+ * Delete a cell with CellID at a given location. Note that this function
+ * is deprecated in favor of `deleteCell`.
+ *  
+ * @param notebook The notebook containing the cell.
+ * @param cellID The ID of the cell that will be deleted.
+ * 
+ * @returns The modified notebook
+ * 
  * @deprecated use `deleteCell()` instead
  */
 export const removeCell = (
   notebook: ImmutableNotebook,
-  cellID: string
+  cellId: string
 ): ImmutableNotebook => {
   console.log(
     "Deprecation Warning: removeCell() is being deprecated. Please use deleteCell() instead"
   );
 
-  return deleteCell(notebook, cellID);
+  return deleteCell(notebook, cellId);
 };
 
+/**
+ * Delete a cell with CellID at a given location.
+ *  
+ * @param notebook The notebook containing the cell.
+ * @param cellID The ID of the cell that will be deleted.
+ * 
+ * @returns The modified notebook
+ */
 export const deleteCell = (
   notebook: ImmutableNotebook,
-  cellID: string
+  cellId: string
 ): ImmutableNotebook =>
   notebook
-    .removeIn(["cellMap", cellID])
-    .update("cellOrder", cellOrder => cellOrder.filterNot(id => id === cellID));
+    .removeIn(["cellMap", cellId])
+    .update("cellOrder", cellOrder => cellOrder.filterNot(id => id === cellId));
 
+/**
+ * A new notebook with a single empty code cell. This function is useful
+ * if you are looking to initialize a fresh, new notebook.
+ */
 export const monocellNotebook = appendCellToNotebook(
   emptyNotebook,
   emptyCodeCell

@@ -1,49 +1,53 @@
-# Transform VDOM
+# @nteract/transform-vdom
 
-React Component for transforming `application/vdom.v1+json` data to React
-Elements.
+This package contains a React component for rendering [virtual DOM](https://github.com/nteract/vdom) elements.
 
 ## Installation
 
-You may use whichever package manager (`npm` or `yarn`) best suits your workflow. The `nteract` team internally uses `yarn`.
-
-```bash
-npm install --save @nteract/transform-vdom
-# OR
-yarn add @nteract/transform-vdom
+```
+$ yarn add @nteract/transform-vdom
 ```
 
-Note: This transform is included in `@nteract/transforms` so if you're using that
-you don't have to add this to your mimetype transforms.
+```
+$ npm install --save @nteract/transform-vdom
+```
 
 ## Usage
 
-```js
-import VDOMTransform from '@nteract/transform-vdom'
+The example below shows how we can use the component within this package to render a virtual DOM contain a div with some headers and an image.
 
-ReactDOM.render(
-  <VDOMTransform
-    // Data from display_data or execute_result mimebundle on the
-    // mimetype key application/vdom.v1+json
-    data={{ tagName: 'h1', children: 'Hey', attributes: {}}}
-  >,
-  rootEl)
+```javascript
+import { TransformVDOM } from "@nteract/transform-vdom";
+
+export default () => {
+  return (
+    <TransformVDOM
+      data={{
+        tagName: "div",
+        attributes: { style: { color: "DeepPink" } },
+        children: [
+          { tagName: "h1", attributes: {}, children: "Wahoo" },
+          { tagName: "h1", attributes: {}, children: null },
+          {
+            tagName: "img",
+            attributes: { width: "100px", height: "100px", src: "about:blank" },
+            children: []
+          }
+        ]
+      }}
+    />
+  );
+};
 ```
 
-Users of this mimetype are likely using a higher level library that lets
-them write declaratively in their language of choice. For Python, there's
-[`vdom`](https://github.com/nteract/vdom) which lets you write code like:
+## Documentation
 
-```python
-from IPython.display import display
-from vdom.helpers import h1, p, img, div, b
+We're working on adding more documentation for this component. Stay tuned by watching this repository!
 
-display(
-    div(
-        h1('Our Incredibly Declarative Example'),
-        p('Can you believe we wrote this ', b('in Python'), '?'),
-        img(src="https://media.giphy.com/media/xUPGcguWZHRC2HyBRS/giphy.gif"),
-        p('What will ', b('you'), ' create next?'),
-    )
-)
-```
+## Support
+
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:transform-vdom` label.
+
+## License
+
+[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/)

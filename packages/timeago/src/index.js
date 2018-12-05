@@ -103,10 +103,10 @@ export default class TimeAgo extends React.Component<Props, void> {
       seconds < MINUTE
         ? 1000
         : seconds < HOUR
-          ? 1000 * MINUTE
-          : seconds < DAY
-            ? 1000 * HOUR
-            : 0;
+        ? 1000 * MINUTE
+        : seconds < DAY
+        ? 1000 * HOUR
+        : 0;
     const period = Math.min(
       Math.max(unboundPeriod, this.props.minPeriod * 1000),
       this.props.maxPeriod * 1000
@@ -174,16 +174,16 @@ export default class TimeAgo extends React.Component<Props, void> {
       seconds < MINUTE
         ? [Math.round(seconds), "second"]
         : seconds < HOUR
-          ? [Math.round(seconds / MINUTE), "minute"]
-          : seconds < DAY
-            ? [Math.round(seconds / HOUR), "hour"]
-            : seconds < WEEK
-              ? [Math.round(seconds / DAY), "day"]
-              : seconds < MONTH
-                ? [Math.round(seconds / WEEK), "week"]
-                : seconds < YEAR
-                  ? [Math.round(seconds / MONTH), "month"]
-                  : [Math.round(seconds / YEAR), "year"];
+        ? [Math.round(seconds / MINUTE), "minute"]
+        : seconds < DAY
+        ? [Math.round(seconds / HOUR), "hour"]
+        : seconds < WEEK
+        ? [Math.round(seconds / DAY), "day"]
+        : seconds < MONTH
+        ? [Math.round(seconds / WEEK), "week"]
+        : seconds < YEAR
+        ? [Math.round(seconds / MONTH), "month"]
+        : [Math.round(seconds / YEAR), "year"];
 
     const passDownTitle =
       typeof title === "undefined"

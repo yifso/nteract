@@ -10,7 +10,8 @@ import flush from "styled-jsx/server";
 import { Display } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms
+  transforms as defaultTransforms,
+  Transforms
 } from "@nteract/transforms";
 import {
   emptyNotebook,
@@ -30,16 +31,16 @@ import {
   Cells
 } from "@nteract/presentational-components";
 
-interface Props  {
+interface Props {
   displayOrder: string[];
   notebook: ImmutableNotebook;
   transforms: object;
   theme: "light" | "dark";
-};
+}
 
 interface State {
   notebook: ImmutableNotebook;
-};
+}
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -72,11 +73,13 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     // Propagated from the hide_(all)_input nbextension
     const allSourceHidden = notebook.getIn(["metadata", "hide_input"]) || false;
 
-    const language = notebook.getIn(
-      ["metadata", "language_info", "codemirror_mode", "name"]
-    ) || notebook.getIn(
-      ["metadata", "language_info", "codemirror_mode"]
-    ) || notebook.getIn(["metadata", "language_info", "name"]) || "text";
+    const language =
+      notebook.getIn(
+        ["metadata", "language_info", "codemirror_mode", "name"]
+      ) ||
+      notebook.getIn(["metadata", "language_info", "codemirror_mode"]) ||
+      notebook.getIn(["metadata", "language_info", "name"]) ||
+      "text";
 
     const cellOrder = notebook.get("cellOrder");
     const cellMap = notebook.get("cellMap");
@@ -84,8 +87,8 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     return (
       <div className="notebook-render">
         <Cells>
-          {cellOrder.map((cellID: string) => {
-            const cell = cellMap.get(cellID);
+          {cellOrder.map((cellId: string) => {
+            const cell = cellMap.get(cellId);
             const cellType: string = cell!.get("cell_type");
             const source = cell!.get("source");
 
@@ -101,22 +104,28 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                   cell!.getIn(["metadata", "outputHidden"]);
 
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <Input hidden={sourceHidden}>
-                      <Prompt counter={(cell as ImmutableCodeCell).get("execution_count")} />
+                      <Prompt
+                        counter={(cell as ImmutableCodeCell).get(
+                          "execution_count"
+                        )}
+                      />
                       <Source language={language} theme={this.props.theme}>
                         {source}
                       </Source>
                     </Input>
                     <Outputs
                       hidden={outputHidden}
-                      expanded={cell!.getIn(
-                        ["metadata", "outputExpanded"]
-                      ) || true}
+                      expanded={
+                        cell!.getIn(["metadata", "outputExpanded"]) || true
+                      }
                     >
                       <Display
-                        outputs={(cell as ImmutableCodeCell).get("outputs").toJS()}
-                        transforms={this.props.transforms}
+                        outputs={(cell as ImmutableCodeCell)
+                          .get("outputs")
+                          .toJS()}
+                        transforms={this.props.transforms as Transforms}
                         displayOrder={this.props.displayOrder}
                       />
                     </Outputs>
@@ -128,12 +137,12 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                   math: function blockMath(node: { value: string }) {
                     return <BlockMath>{node.value}</BlockMath>;
                   },
-                  inlineMath: function inlineMath(node: { value: string}) {
+                  inlineMath: function inlineMath(node: { value: string }) {
                     return <InlineMath>{node.value}</InlineMath>;
                   }
                 } as any;
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <div className="content-margin">
                       <ReactMarkdown
                         escapeHtml={false}
@@ -154,7 +163,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                 );
               case "raw":
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <pre className="raw-cell">
                       {source}
                       <style jsx>{`
@@ -174,7 +183,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
 
               default:
                 return (
-                  <Cell key={cellID}>
+                  <Cell key={cellId}>
                     <Outputs>
                       <pre>{`Cell Type "${cellType}" is not implemented`}</pre>
                     </Outputs>

@@ -9,9 +9,9 @@ import { NotebookApp } from "../src/notebook-app";
 const dummyCellStatuses = dummyCommutable
   .get("cellOrder")
   .reduce(
-    (statuses, cellID) =>
+    (statuses, cellId) =>
       statuses.set(
-        cellID,
+        cellId,
         Immutable.fromJS({ outputHidden: false, inputHidden: false })
       ),
     new Immutable.Map()

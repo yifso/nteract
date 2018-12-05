@@ -6,12 +6,12 @@ export type FileModelRecordProps = {
   type: "file",
   text: string
 };
-export const makeFileModelRecord: Immutable.RecordFactory<
-  FileModelRecordProps
-> = Immutable.Record({
-  type: "file",
-  text: ""
-});
+export const makeFileModelRecord: Immutable.RecordFactory<FileModelRecordProps> = Immutable.Record(
+  {
+    type: "file",
+    text: ""
+  }
+);
 export type FileModelRecord = Immutable.RecordOf<FileModelRecordProps>;
 
 export type FileContentRecordProps = {
@@ -23,16 +23,16 @@ export type FileContentRecordProps = {
   filepath: string,
   model: FileModelRecord
 };
-export const makeFileContentRecord: Immutable.RecordFactory<
-  FileContentRecordProps
-> = Immutable.Record({
-  type: "file",
-  mimetype: null,
-  created: null,
-  format: "json",
-  lastSaved: null,
-  filepath: "",
-  model: makeFileModelRecord()
-});
+export const makeFileContentRecord: Immutable.RecordFactory<FileContentRecordProps> = Immutable.Record(
+  {
+    type: "file",
+    mimetype: null,
+    created: null,
+    format: "json",
+    lastSaved: null,
+    filepath: "",
+    model: makeFileModelRecord()
+  }
+);
 
 export type FileContentRecord = Immutable.RecordOf<FileContentRecordProps>;
