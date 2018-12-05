@@ -81,7 +81,7 @@ export class File extends React.PureComponent<FileProps, *> {
     // If/when we support more modes, we would case them off here
     return (
       <React.Fragment>
-        <Nav>
+        <Nav contentRef={this.props.contentRef}>
           <NavSection>
             <a
               href={urljoin(this.props.appBase, this.props.baseDir)}

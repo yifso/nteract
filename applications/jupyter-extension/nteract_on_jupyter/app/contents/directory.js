@@ -30,6 +30,7 @@ type DirectoryProps = {
   content: DirectoryContentRecord,
   host: JupyterHostRecord,
   appVersion: string,
+  contentRef: ContentRef,
   contents: Array<{
     path: string,
     type: NotebookTypes,
@@ -60,7 +61,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
     const dotdotlink = <a href={dotdothref}>{".."}</a>;
     return (
       <React.Fragment>
-        <Nav>
+        <Nav contentRef={this.props.contentRef}>
           <NavSection>
             <a
               href={urljoin(this.props.host.basePath, "/nteract/edit")}
