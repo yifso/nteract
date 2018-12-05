@@ -1,15 +1,14 @@
-// @flow
 import { connect } from "react-redux";
 import { actions, selectors } from "@nteract/core";
-import type { ContentRef, AppState } from "@nteract/core";
+import { ContentRef, AppState } from "@nteract/types";
 import { omit } from "lodash";
 import EditorView from "@nteract/editor";
 
 type Props = {
-  id: string,
-  cellFocused: boolean,
-  contentRef: ContentRef,
-  options: Object
+  id: string;
+  cellFocused: boolean;
+  contentRef: ContentRef;
+  options: Object;
 };
 
 function mapStateToProps(state: AppState, ownProps: Props) {

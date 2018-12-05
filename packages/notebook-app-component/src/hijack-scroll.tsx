@@ -1,17 +1,16 @@
-// @flow
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 
 import * as React from "react";
 
 type HijackScrollProps = {
-  focused: boolean,
-  onClick: () => void,
-  children: React.Node
+  focused: boolean;
+  onClick: () => void;
+  children: React.ReactChildren;
 };
 
-export class HijackScroll extends React.Component<HijackScrollProps, *> {
-  el: ?HTMLElement;
+export class HijackScroll extends React.Component<HijackScrollProps> {
+  el?: HTMLElement;
 
   scrollIntoViewIfNeeded(prevFocused?: boolean): void {
     // Check if the element is being hovered over.

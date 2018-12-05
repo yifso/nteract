@@ -1,5 +1,3 @@
-// @flow
-
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/no-noninteractive-tabindex: 0 */
 
@@ -12,18 +10,18 @@ import {
 } from "@nteract/presentational-components";
 
 type Props = {
-  source: string,
-  focusEditor: () => void,
-  unfocusEditor: () => void,
-  focusAbove: () => void,
-  focusBelow: () => void,
-  cellFocused: boolean,
-  editorFocused: boolean,
-  children: React$Element<any>
+  source: string;
+  focusEditor: () => void;
+  unfocusEditor: () => void;
+  focusAbove: () => void;
+  focusBelow: () => void;
+  cellFocused: boolean;
+  editorFocused: boolean;
+  children: React.ReactChildren;
 };
 
 type State = {
-  view: boolean
+  view: boolean;
 };
 
 const noop = function() {};
@@ -37,8 +35,8 @@ const noop = function() {};
 //       only I (@rgbkrk) understand, I'll wait for others to reflect on this
 //       within the code base (or leave it alone, which is totally cool too). :)
 
-export default class MarkdownCell extends React.Component<any, State> {
-  rendered: ?HTMLElement;
+export default class MarkdownCell extends React.Component<Props, State> {
+  rendered?: HTMLDivElement;
 
   static defaultProps = {
     cellFocused: false,
@@ -50,15 +48,15 @@ export default class MarkdownCell extends React.Component<any, State> {
     source: ""
   };
 
-  constructor(props: Props): void {
+  constructor(props: Props) {
     super(props);
     this.state = {
       view: true
     };
-    (this: any).openEditor = this.openEditor.bind(this);
-    (this: any).editorKeyDown = this.editorKeyDown.bind(this);
-    (this: any).renderedKeyDown = this.renderedKeyDown.bind(this);
-    (this: any).closeEditor = this.closeEditor.bind(this);
+    this.openEditor = this.openEditor.bind(this);
+    this.editorKeyDown = this.editorKeyDown.bind(this);
+    this.renderedKeyDown = this.renderedKeyDown.bind(this);
+    this.closeEditor = this.closeEditor.bind(this);
   }
 
   componentDidMount(): void {
@@ -92,7 +90,7 @@ export default class MarkdownCell extends React.Component<any, State> {
   /**
    * Handles when a keydown event occurs on the unrendered MD cell
    */
-  editorKeyDown(e: SyntheticKeyboardEvent<*>): void {
+  editorKeyDown(e: React.KeyboardEvent): void {
     const shift = e.shiftKey;
     const ctrl = e.ctrlKey;
     if ((shift || ctrl) && e.key === "Enter") {
@@ -113,7 +111,7 @@ export default class MarkdownCell extends React.Component<any, State> {
   /**
    * Handles when a keydown event occurs on the rendered MD cell
    */
-  renderedKeyDown(e: SyntheticKeyboardEvent<*>) {
+  renderedKeyDown(e: React.KeyboardEvent) {
     const shift = e.shiftKey;
     const ctrl = e.ctrlKey;
     if ((shift || ctrl) && e.key === "Enter") {
@@ -141,7 +139,7 @@ export default class MarkdownCell extends React.Component<any, State> {
     return;
   }
 
-  render(): ?React$Element<any> {
+  render() {
     const source = this.props.source;
 
     return this.state && this.state.view ? (
@@ -151,7 +149,7 @@ export default class MarkdownCell extends React.Component<any, State> {
         ref={rendered => {
           this.rendered = rendered;
         }}
-        tabIndex={this.props.cellFocused ? 0 : null}
+        tabIndex={this.props.cellFocused ? 0 : undefined}
         style={{
           outline: "none"
         }}

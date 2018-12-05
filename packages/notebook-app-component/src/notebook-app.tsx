@@ -1,9 +1,9 @@
 /* eslint-disable no-return-assign */
-/* @flow */
 import * as Immutable from "immutable";
 import * as React from "react";
+import { Subject } from "rxjs";
 import { actions, selectors } from "@nteract/core";
-import type { AppState, ContentRef, KernelRef } from "@nteract/core";
+import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import {
   Input,
   Prompt,
@@ -35,7 +35,7 @@ type AnyCellProps = {
   id: string,
   tags: Immutable.Set<string>,
   contentRef: ContentRef,
-  channels: rxjs$Subject<any>,
+  channels: Subject<any>,
   cellType: "markdown" | "code" | "raw",
   theme: string,
   source: string,
@@ -83,7 +83,7 @@ const rawEditorOptions = {
   }
 };
 
-const mapStateToCellProps = (state, { id, contentRef }) => {
+const mapStateToCellProps = (state: AppState, { id, contentRef }: {id: string, contentRef: ContentRef}) => {
   const model = selectors.model(state, { contentRef });
   if (!model || model.type !== "notebook") {
     throw new Error(
@@ -116,7 +116,7 @@ const mapStateToCellProps = (state, { id, contentRef }) => {
   const pager = model.getIn(["cellPagers", id], Immutable.List());
 
   const kernelRef = selectors.currentKernelRef(state);
-  let channels: rxjs$Subject<any>;
+  let channels: Subject<any>;
   if (kernelRef) {
     const kernel = selectors.kernel(state, { kernelRef });
     if (kernel) {
@@ -180,7 +180,7 @@ const CellBanner = (props: { children: * }) => {
 };
 
 class AnyCell extends React.PureComponent<AnyCellProps, *> {
-  render(): ?React$Element<any> {
+  render() {
     const {
       cellFocused,
       cellStatus,
@@ -233,7 +233,7 @@ class AnyCell extends React.PureComponent<AnyCellProps, *> {
             <Pagers>
               {this.props.pager.map((pager, key) => (
                 <RichestMime
-                  expanded
+                  metadata={{ expanded }}
                   className="pager"
                   displayOrder={this.props.displayOrder}
                   transforms={this.props.transforms}
@@ -519,7 +519,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     }
   }
 
-  renderCell(id: string): ?React$Element<any> {
+  renderCell(id: string) {
     const { contentRef } = this.props;
     return (
       <ConnectedCell
@@ -532,7 +532,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     );
   }
 
-  createCellElement(id: string): React$Element<any> {
+  createCellElement(id: string) {
     const { moveCell, focusCell, contentRef } = this.props;
     return (
       <div className="cell-container" key={`cell-container-${id}`}>
@@ -554,7 +554,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     );
   }
 
-  render(): ?React$Element<any> {
+  render() {
     return (
       <React.Fragment>
         <div className="cells">

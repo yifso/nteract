@@ -1,25 +1,24 @@
-// @flow strict
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
 import { actions } from "@nteract/core";
-import type { ContentRef } from "@nteract/core";
+import { ContentRef } from "@nteract/types";
 
 type Props = {
-  above: boolean,
-  createCell: (type: "code" | "markdown") => void
+  above: boolean;
+  createCell: (type: "code" | "markdown") => void;
 };
 
 type ConnectedProps = {
-  above: boolean,
-  createCellAppend: (payload: *) => void,
-  createCellAbove: (payload: *) => void,
-  createCellBelow: (payload: *) => void,
-  id?: string,
-  contentRef: ContentRef
+  above: boolean;
+  createCellAppend: (payload: object) => void;
+  createCellAbove: (payload: object) => void;
+  createCellBelow: (payload: object) => void;
+  id?: string;
+  contentRef: ContentRef;
 };
 
-export class PureCellCreator extends React.Component<Props, null> {
+export class PureCellCreator extends React.Component<Props> {
   createMarkdownCell = () => {
     this.props.createCell("markdown");
   };
@@ -144,10 +143,13 @@ class CellCreator extends React.Component<ConnectedProps> {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  createCellAppend: (payload: *) => dispatch(actions.createCellAppend(payload)),
-  createCellAbove: (payload: *) => dispatch(actions.createCellAbove(payload)),
-  createCellBelow: (payload: *) => dispatch(actions.createCellBelow(payload))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  createCellAppend: (payload: object) =>
+    dispatch(actions.createCellAppend(payload)),
+  createCellAbove: (payload: object) =>
+    dispatch(actions.createCellAbove(payload)),
+  createCellBelow: (payload: object) =>
+    dispatch(actions.createCellBelow(payload))
 });
 
 // $FlowFixMe: react-redux typings

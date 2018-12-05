@@ -1,4 +1,3 @@
-// @flow strict
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 
@@ -13,7 +12,7 @@ import {
   ConnectDragPreview,
   ConnectDropTarget
 } from "react-dnd";
-import type { ContentRef } from "@nteract/core";
+import { ContentRef } from "@nteract/types";
 
 /**
   The cell drag preview image is just a little stylized version of
@@ -45,7 +44,7 @@ const cellDragPreviewImage = [
   "Haa1+w2+iFqx0aIgvgAAAABJRU5ErkJggg=="
 ].join("");
 
-type Props = {|
+type Props = {
   connectDragPreview: ConnectDragPreview,
   connectDragSource: ConnectDragSource,
   connectDropTarget: ConnectDropTarget,
@@ -54,13 +53,13 @@ type Props = {|
   isDragging: boolean,
   isOver: boolean,
   moveCell: (payload: *) => void,
-  children: React.Node,
+  children: React.ReactChildren,
   contentRef: ContentRef
-|};
+};
 
-type State = {|
+type State = {
   hoverUpperHalf: boolean
-|};
+ };
 
 const cellSource = {
   beginDrag(props: Props) {
@@ -144,7 +143,7 @@ function collectTarget(
 }
 
 class DraggableCellView extends React.Component<Props, State> {
-  el: ?HTMLElement;
+  el?: HTMLElement;
 
   state = {
     hoverUpperHalf: true
@@ -165,7 +164,7 @@ class DraggableCellView extends React.Component<Props, State> {
     focusCell({ id, contentRef });
   };
 
-  render(): ?React$Element<*> {
+  render() {
     return this.props.connectDropTarget(
       <div
         style={{
