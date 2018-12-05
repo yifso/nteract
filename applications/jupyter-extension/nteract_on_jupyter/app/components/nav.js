@@ -1,6 +1,7 @@
 /* @flow strict */
 import * as React from "react";
 import { NotebookMenu } from "@nteract/connected-components";
+import type { ContentRef } from "@nteract/core";
 
 type NavSectionProps = {
   children: React.Node
@@ -35,7 +36,8 @@ export class NavSection extends React.Component<NavSectionProps, null> {
 }
 
 type NavProps = {
-  children: React.ChildrenArray<React.Element<*>>
+  children: React.ChildrenArray<React.Element<*>>,
+  contentRef: ContentRef
 };
 
 export class Nav extends React.Component<NavProps, null> {
