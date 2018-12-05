@@ -35,7 +35,7 @@ export const watchExecutionStateEpic = (
   action$: ActionsObservable<actions.NewKernelAction>
 ) =>
   action$.pipe(
-    ofType(actions.NewKernelAction),
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
     switchMap((action: actions.NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         filter((msg: JupyterMessage) => msg.header.msg_type === "status"),

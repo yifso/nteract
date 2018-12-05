@@ -36,6 +36,9 @@ import { AppState } from "@nteract/types";
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
 import {
+  LaunchKernelAction,
+  LaunchKernelByNameAction,
+  KillKernelAction,
   NewKernelAction,
   ExecuteCell,
   ExecuteFocusedCell,
@@ -122,7 +125,13 @@ export function executeCellStream(
 }
 
 export function createExecuteCellStream(
-  action$: ActionsObservable<Action>,
+  action$: ActionsObservable<
+    | ExecuteCanceled
+    | DeleteCell
+    | LaunchKernelAction
+    | LaunchKernelByNameAction
+    | KillKernelAction
+  >,
   state: any,
   message: ExecuteRequest,
   id: string,
@@ -152,7 +161,8 @@ export function createExecuteCellStream(
         action$.pipe(
           ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
           filter(
-            (action: ExecuteCanceled | DeleteCell) => action.payload.id === id
+            (action: actions.ExecuteCanceled | actions.DeleteCell) =>
+              action.payload.id === id
           )
         ),
         action$.pipe(
@@ -269,33 +279,32 @@ export function executeCellEpic(
           }
 
           // We only execute code cells
-          if (cell.get("cell_type") !== "code") {
-            return empty();
-          }
+          if (cell.get("cell_type") === "code") {
+            const source = cell.get("source", "");
 
-          const source = cell.get("source", "");
+            const message = createExecuteRequest(source);
 
-          const message = createExecuteRequest(source);
-
-          return createExecuteCellStream(
-            action$,
-            state,
-            message,
-            id,
-            action.payload.contentRef
-          ).pipe(
-            catchError((error, source) =>
-              merge(
-                of(
-                  actions.executeFailed({
-                    error,
-                    contentRef: action.payload.contentRef
-                  })
-                ),
-                source
+            return createExecuteCellStream(
+              action$,
+              state,
+              message,
+              id,
+              action.payload.contentRef
+            ).pipe(
+              catchError((error, source) =>
+                merge(
+                  of(
+                    actions.executeFailed({
+                      error,
+                      contentRef: action.payload.contentRef
+                    })
+                  ),
+                  source
+                )
               )
-            )
-          );
+            );
+          }
+          return empty();
         })
       )
     ),

@@ -1,7 +1,7 @@
 /**
  * @module epics
  */
-import { empty, from, of, interval } from "rxjs";
+import { empty, from, of, interval, Observable } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
@@ -17,8 +17,18 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
+type FetchContentError = {
+  type: "ERROR";
+  error: boolean;
+  payload: { [error: string]: Error };
+};
+
 export function fetchContentEpic(
-  action$: ActionsObservable<actions.FetchContent>,
+  action$: ActionsObservable<
+    | actions.FetchContent
+    | actions.FetchContentFailed
+    | actions.FetchContentFulfilled
+  >,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -192,156 +202,167 @@ export function saveContentEpic(
 ) {
   return action$.pipe(
     ofType(actions.SAVE, actions.DOWNLOAD_CONTENT),
-    mergeMap((action: actions.Save | actions.DownloadContent) => {
-      const state = state$.value;
+    mergeMap(
+      (
+        action: actions.Save | actions.DownloadContent
+      ):
+        | Observable<
+            | actions.DownloadContentFailed
+            | actions.DownloadContentFulfilled
+            | actions.SaveFailed
+            | actions.SaveFulfilled
+          >
+        | Observable<never> => {
+        const state = state$.value;
 
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        // Dismiss any usage that isn't targeting a jupyter server
-        return empty();
-      }
-      const contentRef = action.payload.contentRef;
-      const content = selectors.content(state, { contentRef });
-
-      // NOTE: This could save by having selectors for each model type
-      //       have toDisk() selectors
-      //       It will need to be cased off when we have more than one type
-      //       of content we actually save
-      if (!content) {
-        const errorPayload = {
-          error: new Error("Content was not set."),
-          contentRef: action.payload.contentRef
-        };
-        if (action.type === actions.DOWNLOAD_CONTENT) {
-          return of(actions.downloadContentFailed(errorPayload));
+        const host = selectors.currentHost(state);
+        if (host.type !== "jupyter") {
+          // Dismiss any usage that isn't targeting a jupyter server
+          return empty();
         }
-        return of(actions.saveFailed(errorPayload));
-      }
+        const contentRef = action.payload.contentRef;
+        const content = selectors.content(state, { contentRef });
 
-      if (content.type === "directory") {
-        // Don't save directories
-        return empty();
-      }
-
-      let filepath = content.filepath;
-
-      // This could be object for notebook, or string for files
-      let serializedData: Notebook | string;
-      let saveModel: Partial<contents.Payload> = {};
-      if (content.type === "notebook") {
-        // TODO: this default version should probably not be here.
-        const appVersion = selectors.appVersion(state) || "0.0.0-beta";
-
-        // contents API takes notebook as raw JSON whereas downloading takes
-        // a string
-        serializedData = toJS(
-          content.model.notebook.setIn(
-            ["metadata", "nteract", "version"],
-            appVersion
-          )
-        );
-        saveModel = {
-          content: serializedData,
-          type: content.type
-        };
-      } else if (content.type === "file") {
-        serializedData = content.model.text;
-        saveModel = {
-          content: serializedData,
-          type: content.type,
-          format: "text"
-        };
-      } else {
-        // We shouldn't save directories
-        return empty();
-      }
-
-      switch (action.type) {
-        case actions.DOWNLOAD_CONTENT: {
-          // FIXME: Convert this to downloadString, so it works for both files & notebooks
-          if (
-            content.type === "notebook" &&
-            typeof serializedData === "object"
-          ) {
-            downloadString(
-              stringifyNotebook(serializedData),
-              filepath || "notebook.ipynb",
-              "application/json"
-            );
-          } else if (
-            content.type === "file" &&
-            typeof serializedData === "string"
-          ) {
-            downloadString(
-              serializedData,
-              filepath,
-              content.mimetype || "application/octet-stream"
-            );
-          } else {
-            // This shouldn't happen, is here for safety
-            return empty();
+        // NOTE: This could save by having selectors for each model type
+        //       have toDisk() selectors
+        //       It will need to be cased off when we have more than one type
+        //       of content we actually save
+        if (!content) {
+          const errorPayload = {
+            error: new Error("Content was not set."),
+            contentRef: action.payload.contentRef
+          };
+          if (action.type === actions.DOWNLOAD_CONTENT) {
+            return of(actions.downloadContentFailed(errorPayload));
           }
-          return of(
-            actions.downloadContentFulfilled({
-              contentRef: action.payload.contentRef
-            })
-          );
+          return of(actions.saveFailed(errorPayload));
         }
-        case actions.SAVE: {
-          const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-          // Check to see if the file was modified since the last time we saved
-          // TODO: Determine how we handle what to do
-          // Don't bother doing this if the file is new(?)
-          return contents.get(serverConfig, filepath, { content: 0 }).pipe(
-            // Make sure that the modified time is within some delta
-            mergeMap(xhr => {
-              // TODO: What does it mean if we have a failed GET on the content
-              if (xhr.status !== 200) {
-                throw new Error(xhr.response);
-              }
-              const model = xhr.response;
+        if (content.type === "directory") {
+          // Don't save directories
+          return empty();
+        }
 
-              const diskDate = new Date(model.last_modified);
-              const inMemoryDate = content.lastSaved
-                ? new Date(content.lastSaved)
-                : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
-                  diskDate;
-              const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+        let filepath = content.filepath;
 
-              if (Math.abs(diffDate) > 600) {
-                return of(
-                  actions.saveFailed({
-                    error: new Error("open in another tab possibly..."),
-                    contentRef: action.payload.contentRef
-                  })
-                );
-              }
+        // This could be object for notebook, or string for files
+        let serializedData: Notebook | string;
+        let saveModel: Partial<contents.Payload> = {};
+        if (content.type === "notebook") {
+          // TODO: this default version should probably not be here.
+          const appVersion = selectors.appVersion(state) || "0.0.0-beta";
 
-              return contents.save(serverConfig, filepath, saveModel).pipe(
-                map((xhr: AjaxResponse) => {
-                  return actions.saveFulfilled({
-                    contentRef: action.payload.contentRef,
-                    model: xhr.response
-                  });
-                }),
-                catchError((error: Error) =>
-                  of(
+          // contents API takes notebook as raw JSON whereas downloading takes
+          // a string
+          serializedData = toJS(
+            content.model.notebook.setIn(
+              ["metadata", "nteract", "version"],
+              appVersion
+            )
+          );
+          saveModel = {
+            content: serializedData,
+            type: content.type
+          };
+        } else if (content.type === "file") {
+          serializedData = content.model.text;
+          saveModel = {
+            content: serializedData,
+            type: content.type,
+            format: "text"
+          };
+        } else {
+          // We shouldn't save directories
+          return empty();
+        }
+
+        switch (action.type) {
+          case actions.DOWNLOAD_CONTENT: {
+            // FIXME: Convert this to downloadString, so it works for both files & notebooks
+            if (
+              content.type === "notebook" &&
+              typeof serializedData === "object"
+            ) {
+              downloadString(
+                stringifyNotebook(serializedData),
+                filepath || "notebook.ipynb",
+                "application/json"
+              );
+            } else if (
+              content.type === "file" &&
+              typeof serializedData === "string"
+            ) {
+              downloadString(
+                serializedData,
+                filepath,
+                content.mimetype || "application/octet-stream"
+              );
+            } else {
+              // This shouldn't happen, is here for safety
+              return empty();
+            }
+            return of(
+              actions.downloadContentFulfilled({
+                contentRef: action.payload.contentRef
+              })
+            );
+          }
+          case actions.SAVE: {
+            const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+            // Check to see if the file was modified since the last time we saved
+            // TODO: Determine how we handle what to do
+            // Don't bother doing this if the file is new(?)
+            return contents.get(serverConfig, filepath, { content: 0 }).pipe(
+              // Make sure that the modified time is within some delta
+              mergeMap(xhr => {
+                // TODO: What does it mean if we have a failed GET on the content
+                if (xhr.status !== 200) {
+                  throw new Error(xhr.response);
+                }
+                const model = xhr.response;
+
+                const diskDate = new Date(model.last_modified);
+                const inMemoryDate = content.lastSaved
+                  ? new Date(content.lastSaved)
+                  : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
+                    diskDate;
+                const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+
+                if (Math.abs(diffDate) > 600) {
+                  return of(
                     actions.saveFailed({
-                      error,
+                      error: new Error("open in another tab possibly..."),
                       contentRef: action.payload.contentRef
                     })
+                  );
+                }
+
+                return contents.save(serverConfig, filepath, saveModel).pipe(
+                  map((xhr: AjaxResponse) => {
+                    return actions.saveFulfilled({
+                      contentRef: action.payload.contentRef,
+                      model: xhr.response
+                    });
+                  }),
+                  catchError((error: Error) =>
+                    of(
+                      actions.saveFailed({
+                        error,
+                        contentRef: action.payload.contentRef
+                      })
+                    )
                   )
-                )
-              );
-            })
-          );
+                );
+              })
+            );
+          }
+          default:
+            // NOTE: Flow types and our ofType should prevent reaching here, this
+            // is here merely as safety
+            return empty();
         }
-        default:
-          // NOTE: Flow types and our ofType should prevent reaching here, this
-          // is here merely as safety
-          return empty();
       }
-    })
+    )
   );
 }
