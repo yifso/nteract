@@ -336,7 +336,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             type={cellType}
             sourceHidden={sourceHidden}
             id={id}
-            source={this.props.source}
             contentRef={contentRef}
           />
           {element}

@@ -36,7 +36,7 @@ export type PureToolbarProps = {
 };
 
 export class PureToolbar extends React.Component<PureToolbarProps> {
-  static defaultProps = {
+  static defaultProps: Partial<PureToolbarProps> = {
     type: "code"
   };
 

@@ -74,7 +74,7 @@ class CodeMirrorEditor extends React.Component<
   completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
 
-  static defaultProps = {
+  static defaultProps: Partial<CodeMirrorEditorProps> = {
     theme: "light",
     completion: false,
     tip: false,
