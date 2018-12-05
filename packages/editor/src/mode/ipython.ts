@@ -5,7 +5,7 @@ import "codemirror/mode/meta";
 import "codemirror/mode/python/python";
 
 CodeMirror.defineMode(
-  "text/x-ipython",
+  "ipython",
   (
     conf: CodeMirror.EditorConfiguration,
     parserConf: any
