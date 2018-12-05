@@ -89,6 +89,7 @@ class CodeMirrorEditor extends React.Component<
   constructor(props: CodeMirrorEditorProps) {
     super(props);
     this.hint = this.hint.bind(this);
+    (this.hint as any).async = true;
     this.tips = this.tips.bind(this);
     this.deleteTip = this.deleteTip.bind(this);
     // $FlowFixMe: weirdness in the codemirror API
@@ -214,11 +215,9 @@ class CodeMirrorEditor extends React.Component<
 
     this.completionSubject = new Subject();
 
-    // $FlowFixMe: Somehow .pipe is broken in the typings
-    const pipeFunc: any = partition(
+    const [debounce, immediate] = partition(
       (ev: CodeCompletionEvent) => ev.debounce === true
-    );
-    const [debounce, immediate] = this.completionSubject.pipe(pipeFunc) as any;
+    )(this.completionSubject);
 
     const mergedCompletionEvents = merge(
       immediate,
@@ -231,7 +230,7 @@ class CodeMirrorEditor extends React.Component<
       )
     );
 
-    const completionResults: Observable<any> = mergedCompletionEvents.pipe(
+    const completionResults: Observable<Function> = mergedCompletionEvents.pipe(
       switchMap((ev: any) => {
         const { channels } = this.props;
         if (!channels) {
