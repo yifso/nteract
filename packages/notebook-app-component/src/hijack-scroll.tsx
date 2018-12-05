@@ -28,7 +28,7 @@ export class HijackScroll extends React.Component<HijackScrollProps> {
     ) {
       if (this.el && "scrollIntoViewIfNeeded" in this.el) {
         // $FlowFixMe: This is only valid in Chrome, WebKit
-        this.el.scrollIntoViewIfNeeded();
+        (this.el as any).scrollIntoViewIfNeeded();
       } else {
         // TODO: Polyfill as best we can for the webapp version
       }

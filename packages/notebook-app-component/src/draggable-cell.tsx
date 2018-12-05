@@ -122,7 +122,7 @@ function collectSource(
 }
 
 function collectTarget(
-  connect: ConnectDragTarget,
+  connect: ConnectDropTarget,
   monitor: DragTargetMonitor
 ): {
   connectDropTarget: ConnectDropTarget;
