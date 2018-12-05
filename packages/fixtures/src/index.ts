@@ -6,7 +6,8 @@ import {
   monocellNotebook,
   emptyCodeCell,
   appendCellToNotebook,
-  emptyNotebook
+  emptyNotebook,
+  emptyMarkdownCell
 } from "@nteract/commutable";
 import { combineReducers, createStore } from "redux";
 
@@ -23,7 +24,7 @@ import {
   makeStateRecord,
   createContentRef,
   createKernelRef
-} from "../state";
+} from "@nteract/types";
 
 export { dummyCommutable, dummy, dummyJSON } from "./dummy-nb";
 
@@ -72,7 +73,7 @@ function buildDummyNotebook(config) {
       for (let i = 0; i < config.markdownCellCount; i++) {
         notebook = appendCellToNotebook(
           notebook,
-          emptyCodeCell.set("cell_type", "markdown")
+          emptyMarkdownCell.set("cell_type", "markdown")
         );
       }
     }
@@ -85,7 +86,7 @@ function buildDummyNotebook(config) {
   return notebook;
 }
 
-export function dummyStore(config: *) {
+export function dummyStore(config: { [key: string]: any }) {
   const dummyNotebook = buildDummyNotebook(config);
 
   const frontendToShell = new Subject();
@@ -111,7 +112,7 @@ export function dummyStore(config: *) {
                   config && config.saved === true
                     ? dummyNotebook
                     : emptyNotebook,
-                cellPagers: new Immutable.Map(),
+                cellPagers: Immutable.Map(),
                 cellFocused:
                   config && config.codeCellCount > 1
                     ? dummyNotebook.get("cellOrder", Immutable.List()).get(1)

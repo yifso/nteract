@@ -15,5 +15,9 @@
   },
   "keywords": [],
   "author": "Safia Abdalla <safia@safia.rocks>",
-  "license": "BSD-3-License"
+  "license": "BSD-3-License",
+  "dependencies": {
+    "@nteract/commutable": "^6.0.0-alpha.0",
+    "@nteract/types": "^3.1.0"
+  }
 }

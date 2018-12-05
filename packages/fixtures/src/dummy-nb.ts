@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-str */
-import { fromJS } from "@nteract/commutable";
+import { fromJS, Notebook } from "@nteract/commutable";
 
 export const dummy =
   '{"cells":[{"cell_type":"markdown","metadata":{},\
@@ -20,7 +20,7 @@ export const dummyJSON = JSON.parse(dummy);
 
 export const dummyCommutable = fromJS(dummyJSON);
 
-export const bigDummyJSON = {
+export const bigDummyJSON: Notebook = {
   cells: [
     {
       cell_type: "markdown",
