@@ -23,22 +23,29 @@ export type ImmutableMimeBundle = ImmutableMap<string, any>;
 //
 export type MimeBundle = { [key: string]: string | string[] | Object };
 
-// Map over all the mimetypes, turning them into our in-memory format
-//
-// {
-//   "application/json": {"a": 3, "b": 2},
-//   "text/html": ["<p>\n", "Hey\n", "</p>"],
-//   "text/plain": "Hey"
-// }
-//
-// to
-//
-// {
-//   "application/json": {"a": 3, "b": 2},
-//   "text/html": "<p>\nHey\n</p>",
-//   "text/plain": "Hey"
-// }
-//
+
+/**
+ * Map over all the mimetypes, turning them into our in-memory format.
+ * 
+ * ```
+ * {
+ *  "application/json": {"a": 3, "b": 2},
+ *  "text/html": ["<p>\n", "Hey\n", "</p>"],
+ *  "text/plain": "Hey"
+ * }
+ * ```
+ * to
+ * ```
+ * {
+ *  "application/json": {"a": 3, "b": 2},
+ *  "text/html": "<p>\nHey\n</p>",
+ *  "text/plain": "Hey"
+ * }
+ * ```
+ * @param mimeBundle The mime 
+ * @param previous 
+ * @param key 
+ */
 export const cleanMimeAtKey = (
   mimeBundle: MimeBundle,
   previous: ImmutableMimeBundle,
@@ -46,6 +53,15 @@ export const cleanMimeAtKey = (
 ): ImmutableMimeBundle =>
   previous.set(key, cleanMimeData(key, mimeBundle[key]));
 
+/**
+ * Cleans mimedata, primarily converts an array of strings into a single string
+ * joined by newlines.
+ * 
+ * @param key The key, usually a mime type, that is associated with the mime data.
+ * @param data The mime data to clean.
+ * 
+ * @returns The cleaned mime data.
+ */
 export const cleanMimeData = (
   key: string,
   data: string | string[] | object
@@ -78,6 +94,10 @@ export const demultiline = (s: string | string[]): string =>
 
 /**
  * Split string into a list of strings delimited by newlines
+ * 
+ * @param s The newline-delimited string that will be converted into an array of strings.
+ * 
+ * @returns An array of strings.
  */
 export const remultiline = (s: string | string[]): string[] =>
   Array.isArray(s) ? s : s.split(/(.+?(?:\r\n|\n))/g).filter(x => x !== "");
