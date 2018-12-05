@@ -387,7 +387,7 @@ export type ExecuteFailed = {
   type: "EXECUTE_FAILED";
   payload: {
     error: Error;
-    contentRef: ContentRef;
+    contentRef?: ContentRef;
   };
   error: true;
 };

@@ -724,7 +724,7 @@ export function executeCanceled(payload: {
 
 export function executeFailed(payload: {
   error: Error;
-  contentRef: ContentRef;
+  contentRef?: ContentRef;
 }): actionTypes.ExecuteFailed {
   return {
     type: actionTypes.EXECUTE_FAILED,

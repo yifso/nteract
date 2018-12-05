@@ -29,7 +29,6 @@ import {
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { Action } from "redux";
 
 import { ContentRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
@@ -47,7 +46,7 @@ import {
   ExecuteCanceled,
   DeleteCell
 } from "@nteract/actions";
-import { CellId, Output } from "@nteract/commutable";
+import { CellId, Output, ImmutableCell } from "@nteract/commutable";
 
 const Immutable = require("immutable");
 
@@ -131,12 +130,14 @@ export function createExecuteCellStream(
     | LaunchKernelAction
     | LaunchKernelByNameAction
     | KillKernelAction
+    | ExecuteCell
+    | ExecuteFocusedCell
   >,
   state: any,
   message: ExecuteRequest,
   id: string,
   contentRef: ContentRef
-) {
+): Observable<any> {
   const kernel = selectors.currentKernel(state);
 
   const channels = kernel ? kernel.channels : null;
@@ -161,8 +162,16 @@ export function createExecuteCellStream(
         action$.pipe(
           ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
           filter(
-            (action: actions.ExecuteCanceled | actions.DeleteCell) =>
-              action.payload.id === id
+            (
+              action:
+                | actions.ExecuteCanceled
+                | actions.DeleteCell
+                | actions.LaunchKernelAction
+                | actions.LaunchKernelByNameAction
+                | actions.KillKernelAction
+                | actions.ExecuteCell
+                | actions.ExecuteFocusedCell
+            ) => (action as actions.ExecuteCanceled).payload.id === id
           )
         ),
         action$.pipe(
@@ -273,13 +282,15 @@ export function executeCellEpic(
             return empty();
           }
 
-          const cell = selectors.notebook.cellById(model, { id });
+          const cell = selectors.notebook.cellById(model, {
+            id
+          });
           if (!cell) {
             return empty();
           }
 
           // We only execute code cells
-          if (cell.get("cell_type") === "code") {
+          if ((cell as any).get("cell_type") === "code") {
             const source = cell.get("source", "");
 
             const message = createExecuteRequest(source);
@@ -314,7 +325,14 @@ export function executeCellEpic(
       // Either we ensure that all errors are caught when the action.payload.contentRef
       // is in scope or we make this be a generic ERROR
       // $FlowFixMe: see above
-      return merge(of(actions.executeFailed({ error })), source);
+      return merge(
+        of(
+          actions.executeFailed({
+            error
+          })
+        ),
+        source
+      );
     })
   );
 }
