@@ -1,11 +1,12 @@
 /**
  * @module enchannel-zmq-backend
  */
-import { Subject, Subscriber, fromEvent, merge } from "rxjs";
+import { Subject, Subscriber, fromEvent, merge, Observable } from "rxjs";
 import { map, publish, refCount } from "rxjs/operators";
 import * as moduleJMP from "jmp";
 import uuid from "uuid/v4";
 import { Channels, JupyterMessage } from "@nteract/messaging";
+import { FromEventTarget } from "rxjs/internal/observable/fromEvent";
 
 export const ZMQType = {
   frontend: {
@@ -39,10 +40,10 @@ interface HeaderFiller {
  * Takes a Jupyter spec connection info object and channel and returns the
  * string for a channel. Abstracts away tcp and ipc connection string
  * formatting
- * 
+ *
  * @param config  Jupyter connection information
  * @param channel Jupyter channel ("iopub", "shell", "control", "stdin")
- * 
+ *
  * @returns The connection string
  */
 export const formConnectionString = (
@@ -59,11 +60,11 @@ export const formConnectionString = (
 
 /**
  * Creates a socket for the given channel with ZMQ channel type given a config
- * 
+ *
  * @param channel Jupyter channel ("iopub", "shell", "control", "stdin")
  * @param identity UUID
  * @param config  Jupyter connection information
- * 
+ *
  * @returns The new Jupyter ZMQ socket
  */
 export const createSocket = (
@@ -84,10 +85,10 @@ export const createSocket = (
 
 /**
  * Ensures the socket is ready after connecting.
- * 
+ *
  * @param socket A 0MQ socket
  * @param url Creates a connection string to connect the socket to
- * 
+ *
  * @returns A Promise resolving to the same socket.
  */
 export const verifiedConnect = (
@@ -113,7 +114,7 @@ export const getUsername = () =>
 
 /**
  * Creates a multiplexed set of channels.
- * 
+ *
  * @param  config                  Jupyter connection information
  * @param  config.ip               IP address of the kernel
  * @param  config.transport        Transport, e.g. TCP
@@ -121,7 +122,7 @@ export const getUsername = () =>
  * @param  config.iopub_port       Port for iopub channel
  * @param  subscription            subscribed topic; defaults to all
  * @param  identity                UUID
- * 
+ *
  * @returns Subject containing multiplexed channels
  */
 export const createMainChannel = async (
@@ -141,12 +142,12 @@ export const createMainChannel = async (
 
 /**
  * Sets up the sockets for each of the jupyter channels.
- * 
+ *
  * @param config Jupyter connection information
  * @param subscription The topic to filter the subscription to the iopub channel on
  * @param identity UUID
  * @param jmp A reference to the JMP Node module
- * 
+ *
  * @returns Sockets for each Jupyter channel
  */
 export const createSockets = async (
@@ -175,11 +176,11 @@ export const createSockets = async (
 
 /**
  * Creates a multiplexed set of channels.
- * 
+ *
  * @param sockets An object containing associations between channel types and 0MQ sockets
  * @param header The session and username to place in kernel message headers
  * @param jmp A reference to the JMP Node module
- * 
+ *
  * @returns Creates an Observable for each channel connection that allows us
  * to send and receive messages through the Jupyter protocol.
  */
@@ -195,65 +196,77 @@ export const createMainChannelFromSockets = (
 ): Channels => {
   // The mega subject that encapsulates all the sockets as one multiplexed
   // stream
-  const subject = Subject.create(
-    Subscriber.create(
-      (message?: JupyterMessage) => {
-        // There's always a chance that a bad message is sent, we'll ignore it
-        // instead of consuming it
-        if (!message || !message.channel) {
-          console.warn("message sent without a channel", message);
-          return;
-        }
-        const socket = sockets[message.channel];
-        if (!socket) {
-          // If, for some reason, a message is sent on a channel we don't have
-          // a socket for, warn about it but don't bomb the stream
-          console.warn("channel not understood for message", message);
-          return;
-        }
-        const jMessage = new jmp.Message({
-          // Fold in the setup header to ease usage of messages on channels
-          header: { ...message.header, ...header },
-          parent_header: message.parent_header,
-          content: message.content,
-          metadata: message.metadata,
-          buffers: message.buffers
-        });
-        socket.send(jMessage);
-      },
-      undefined, // not bothering with sending errors on
-      () =>
-        // When the subject is completed / disposed, close all the event
-        // listeners and shutdown the socket
-        Object.keys(sockets).forEach(name => {
-          const socket = sockets[name];
-          socket.removeAllListeners();
-          socket.close();
-        })
-    ),
-    // Messages from kernel on the sockets
-    merge(
-      // Form an Observable with each socket
-      ...Object.keys(sockets).map(name => {
+
+  const outgoingMessages = Subscriber.create<JupyterMessage>(
+    message => {
+      // There's always a chance that a bad message is sent, we'll ignore it
+      // instead of consuming it
+      if (!message || !message.channel) {
+        console.warn("message sent without a channel", message);
+        return;
+      }
+      const socket = sockets[message.channel];
+      if (!socket) {
+        // If, for some reason, a message is sent on a channel we don't have
+        // a socket for, warn about it but don't bomb the stream
+        console.warn("channel not understood for message", message);
+        return;
+      }
+      const jMessage = new jmp.Message({
+        // Fold in the setup header to ease usage of messages on channels
+        header: { ...message.header, ...header },
+        parent_header: message.parent_header,
+        content: message.content,
+        metadata: message.metadata,
+        buffers: message.buffers
+      });
+      socket.send(jMessage);
+    },
+    undefined, // not bothering with sending errors on
+    () =>
+      // When the subject is completed / disposed, close all the event
+      // listeners and shutdown the socket
+      Object.keys(sockets).forEach(name => {
         const socket = sockets[name];
-        // fromEvent typings are broken. socket will work as an event target.
-        return fromEvent(socket as any, "message").pipe(
-          map(body => {
+        socket.removeAllListeners();
+        socket.close();
+      })
+  );
+
+  // Messages from kernel on the sockets
+  const incomingMessages: Observable<JupyterMessage> = merge(
+    // Form an Observable with each socket
+    ...Object.keys(sockets).map(name => {
+      const socket = sockets[name];
+      // fromEvent typings are broken. socket will work as an event target.
+      return fromEvent(
+        // Pending a refactor around jmp, this allows us to treat the socket
+        // as a normal event emitter
+        (socket as unknown) as FromEventTarget<JupyterMessage>,
+        "message"
+      ).pipe(
+        map(
+          (body: JupyterMessage): JupyterMessage => {
             // Route the message for the frontend by setting the channel
-            const msg = { ...body, channel: name } as any;
+            const msg = { ...body, channel: name };
             // Conform to same message format as notebook websockets
             // See https://github.com/n-riesco/jmp/issues/10
-            delete msg.idents;
+            delete (msg as any).idents;
             return msg;
-          }),
-          publish(),
-          refCount()
-        );
-      })
-    ).pipe(
-      publish(),
-      refCount()
-    )
+          }
+        ),
+        publish(),
+        refCount()
+      );
+    })
+  ).pipe(
+    publish(),
+    refCount()
+  );
+
+  const subject: Subject<JupyterMessage> = Subject.create(
+    outgoingMessages,
+    incomingMessages
   );
 
   return subject;
