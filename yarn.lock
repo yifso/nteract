@@ -1773,6 +1773,14 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/redux-immutable@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/redux-immutable/-/redux-immutable-4.0.0.tgz#fe26e05de2f0a99f38f21eb567c5499c855fa599"
+  integrity sha512-0mOEDjYA3HZhKCXuxlA64Y1FDZ+CTfCP/Sl7xCx6yPym8Tb29jCvg00ylSPo2LiCEPNRVVdjRBBSiNbNDOKD2w==
+  dependencies:
+    immutable "^4.0.0-rc.1"
+    redux "^4.0.0"
+
 "@types/shelljs@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.8.0.tgz#0caa56b68baae4f68f44e0dd666ab30b098e3632"
@@ -7456,7 +7464,7 @@ immer@^1.5.0:
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.4.tgz#b9a833a61cbeee477a3694870b172c590837a963"
   integrity sha512-mZpvQe9LXc+lg3hhcT/2M6Apej43FSs6hS2Bt4HrQxyI6hVJugukLgH2KdSBL/fIOmahHmQvpWU37BWzFLDp1Q==
 
-immutable@^4.0.0-rc.12:
+immutable@^4.0.0-rc.1, immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
   integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
