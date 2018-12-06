@@ -21,7 +21,6 @@ const Wrapper = (props: Props) => (
           top: 40px;
           left: 0;
           width: 100%;
-          /*margin-bottom: 80px;*/
         }
         .rc-menu-hidden {
           display: none;
