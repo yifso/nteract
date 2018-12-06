@@ -32,7 +32,6 @@
     "@nteract/notebook-preview": "^11.0.0-alpha.0",
     "@nteract/octicons": "^1.0.0-alpha.0",
     "@nteract/presentational-components": "^2.0.0-alpha.0",
-    "@nteract/timeago": "^3.6.5",
     "@nteract/transform-dataresource": "^5.0.0-alpha.0",
     "@nteract/transform-geojson": "^4.0.0-alpha.0",
     "@nteract/transform-model-debug": "^4.0.0-alpha.0",

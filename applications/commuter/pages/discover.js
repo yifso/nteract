@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react";
-import TimeAgo from "@nteract/timeago";
+import TimeAgo from "react-timeago";
 import NextLink from "next/link";
 
 import Header from "../components/header";

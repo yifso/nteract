@@ -1,5 +1,8 @@
 ![TimeAgo](http://naman.s3.amazonaws.com/react-timeago.png)
 
+## Warning:
+  This project is deprecated and unmaintained.
+
 ## Usage:
 
 `@nteract/timeago` is a very simple component that takes a date prop and returns a span with live updating date in a time-ago format. The date will update only as often as needed. For timestamps below a minute away — every second, for timestamps up to 5 minutes away — every hour, and so on.
