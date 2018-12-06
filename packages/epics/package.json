@@ -1,7 +1,7 @@
 {
   "name": "@nteract/epics",
   "version": "1.0.0",
-  "description": "Epics for interfacing with the Jupyter ecosystem",
+  "description": "Redux-Observable epics for nteract apps",
   "keywords": [
     "jupyter",
     "epics",
