@@ -121,6 +121,7 @@ const mapStateToDirectoryProps = (
 ): DirectoryProps => {
   const host = selectors.currentHost(state);
   const content = selectors.content(state, ownProps);
+  const contentRef = ownProps.contentRef;
 
   if (host.type !== "jupyter") {
     throw new Error("This component only works with jupyter servers");
