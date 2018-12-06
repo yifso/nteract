@@ -1,6 +1,7 @@
 /* @flow strict */
 import * as React from "react";
 import { NotebookMenu } from "@nteract/connected-components";
+import { StickyHeader } from "@nteract/presentational-components"
 import type { ContentRef } from "@nteract/core";
 
 type NavSectionProps = {
@@ -43,7 +44,7 @@ type NavProps = {
 export class Nav extends React.Component<NavProps, null> {
   render() {
     return (
-      <header className="nteract-nav">
+      <StickyHeader className="nteract-nav">
         <ul>
           {React.Children.map(this.props.children, child => {
             return <li className="top-nav-item">{child}</li>;
@@ -52,17 +53,6 @@ export class Nav extends React.Component<NavProps, null> {
         <NotebookMenu contentRef={this.props.contentRef} />
 
         <style jsx>{`
-          header {
-            background-color: var(--theme-title-bar-bg, rgb(250, 250, 250));
-            padding: var(--nt-spacing-m) var(--nt-spacing-xl);
-            box-sizing: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 2;
-          }
-
           /** When we have a nav section that ends up on the right, reverse the padding order **/
           .top-nav-item:not(:first-child):last-child > :global(ul > li) {
             margin: 0px 0px 0px var(--nt-spacing-xl);
@@ -82,7 +72,7 @@ export class Nav extends React.Component<NavProps, null> {
             padding: 0px 0px;
           }
         `}</style>
-      </header>
+      </StickyHeader>
     );
   }
 }

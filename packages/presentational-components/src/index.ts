@@ -6,6 +6,7 @@ import { Source } from "./components/source";
 import { Cell } from "./components/cell";
 import { Cells } from "./components/cells";
 import { HeaderEditor } from "./components/header-editor";
+import { StickyHeader } from "./components/sticky-header";
 import * as themes from "./themes";
 
 export * from "./styles";
@@ -20,5 +21,6 @@ export {
   Source,
   Cell,
   Cells,
-  HeaderEditor
+  HeaderEditor,
+  StickyHeader
 };
