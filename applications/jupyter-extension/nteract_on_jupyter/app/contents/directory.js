@@ -159,6 +159,7 @@ const mapStateToDirectoryProps = (
   return {
     appVersion: selectors.appVersion(state),
     content,
+    contentRef,
     host,
     contents
   };
