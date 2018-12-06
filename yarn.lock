@@ -1650,13 +1650,6 @@
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
   integrity sha512-pGF/zvYOACZ/gLGWdQH8zSwteQS1epp68yRcVLJMgUck/MjEn/FBYmPub9pXT8C1e4a8YZfHo1CKyV8q1vKUnQ==
 
-"@types/immutable@^3.8.7":
-  version "3.8.7"
-  resolved "https://registry.yarnpkg.com/@types/immutable/-/immutable-3.8.7.tgz#536d33d30f3f3d9a6d4642a219419fd82af633fb"
-  integrity sha1-U20z0w8/PZptRkKiGUGf2Cr2M/s=
-  dependencies:
-    immutable "*"
-
 "@types/jest@^23.3.8":
   version "23.3.9"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.9.tgz#c16b55186ee73ae65e001fbee69d392c51337ad1"
@@ -7467,11 +7460,6 @@ immer@^1.5.0:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.4.tgz#b9a833a61cbeee477a3694870b172c590837a963"
   integrity sha512-mZpvQe9LXc+lg3hhcT/2M6Apej43FSs6hS2Bt4HrQxyI6hVJugukLgH2KdSBL/fIOmahHmQvpWU37BWzFLDp1Q==
-
-immutable@*:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
 
 immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
