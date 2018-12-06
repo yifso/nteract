@@ -17,12 +17,6 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
-type FetchContentError = {
-  type: "ERROR";
-  error: boolean;
-  payload: { [error: string]: Error };
-};
-
 export function fetchContentEpic(
   action$: ActionsObservable<
     | actions.FetchContent

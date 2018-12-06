@@ -1,7 +1,7 @@
 import { ChildProcess } from "child_process";
 
 import * as Immutable from "immutable";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 import { HostRef, KernelRef } from "../refs";
 import { KernelId, SessionId } from "../ids";
@@ -77,7 +77,7 @@ export type RemoteKernelProps = {
   info?: KernelInfo | null;
   hostRef?: HostRef | null;
   lastActivity?: Date | null;
-  channels: Subject<any>;
+  channels: Subject<any> | Observable<any>;
   cwd: string;
   // Canonically: idle, busy, starting
   // Xref: http://jupyter-client.readthedocs.io/en/stable/messaging.html#kernel-status
