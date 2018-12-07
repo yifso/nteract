@@ -7,11 +7,12 @@ import {
   emptyCodeCell,
   appendCellToNotebook,
   emptyNotebook,
-  emptyMarkdownCell
+  emptyMarkdownCell,
+  ImmutableNotebook
 } from "@nteract/commutable";
 import { combineReducers, createStore } from "redux";
 
-import { comms, config, core } from "../reducers";
+import { comms, config, core } from "@nteract/reducers";
 import {
   makeNotebookContentRecord,
   makeRemoteKernelRecord,
@@ -26,7 +27,7 @@ import {
   createKernelRef
 } from "@nteract/types";
 
-export { dummyCommutable, dummy, dummyJSON } from "./dummy-nb";
+export { fixtureCommutable, fixture, fixtureJSON } from "./fixture-nb";
 
 const rootReducer = combineReducers({
   app: (state = makeAppRecord()) => state,
@@ -35,7 +36,7 @@ const rootReducer = combineReducers({
   core
 });
 
-function hideCells(notebook) {
+function hideCells(notebook: ImmutableNotebook) {
   return notebook.update("cellMap", cells =>
     notebook
       .get("cellOrder", Immutable.List())
@@ -56,7 +57,7 @@ function hideCells(notebook) {
  * @returns {object} - A notebook for {@link DocumentRecord} for Redux store.
  * Created using the config object passed in.
  */
-function buildDummyNotebook(config) {
+function buildFixtureNotebook(config: { [key: string]: any }) {
   let notebook = monocellNotebook.setIn(
     ["metadata", "kernelspec", "name"],
     "python2"
@@ -86,8 +87,8 @@ function buildDummyNotebook(config) {
   return notebook;
 }
 
-export function dummyStore(config: { [key: string]: any }) {
-  const dummyNotebook = buildDummyNotebook(config);
+export function fixtureStore(config: { [key: string]: any }) {
+  const fixtureNotebook = buildFixtureNotebook(config);
 
   const frontendToShell = new Subject();
   const shellToFrontend = new Subject();
@@ -97,7 +98,6 @@ export function dummyStore(config: { [key: string]: any }) {
   const kernelRef = createKernelRef();
   const contentRef = createContentRef();
 
-  // $FlowFixMe
   return createStore(rootReducer, {
     core: makeStateRecord({
       kernelRef,
@@ -107,15 +107,15 @@ export function dummyStore(config: { [key: string]: any }) {
             // $FlowFixMe: This really is a content ref, Flow can't handle typing it though
             [contentRef]: makeNotebookContentRecord({
               model: makeDocumentRecord({
-                notebook: dummyNotebook,
+                notebook: fixtureNotebook,
                 savedNotebook:
                   config && config.saved === true
-                    ? dummyNotebook
+                    ? fixtureNotebook
                     : emptyNotebook,
                 cellPagers: Immutable.Map(),
                 cellFocused:
                   config && config.codeCellCount > 1
-                    ? dummyNotebook.get("cellOrder", Immutable.List()).get(1)
+                    ? fixtureNotebook.get("cellOrder", Immutable.List()).get(1)
                     : null
               }),
               filepath:

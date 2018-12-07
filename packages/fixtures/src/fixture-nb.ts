@@ -1,7 +1,7 @@
 /* eslint-disable no-multi-str */
 import { fromJS, Notebook } from "@nteract/commutable";
 
-export const dummy =
+export const fixture =
   '{"cells":[{"cell_type":"markdown","metadata":{},\
 "source":["## The Notable Nteract Notebook\\n","\\n","**It\'s a notebook!**\\n"]},\
 {"cell_type":"code","execution_count":11,"metadata":{"collapsed":false},\
@@ -16,11 +16,11 @@ export const dummy =
 "mimetype":"text/x-python","name":"python","nbconvert_exporter":"python",\
 "pygments_lexer":"ipython3","version":"3.5.1"}},"nbformat":4,"nbformat_minor":0}';
 
-export const dummyJSON = JSON.parse(dummy);
+export const fixtureJSON = JSON.parse(fixture);
 
-export const dummyCommutable = fromJS(dummyJSON);
+export const fixtureCommutable = fromJS(fixtureJSON);
 
-export const bigDummyJSON: Notebook = {
+export const bigfixtureJSON: Notebook = {
   cells: [
     {
       cell_type: "markdown",
@@ -147,6 +147,6 @@ export const bigDummyJSON: Notebook = {
   nbformat_minor: 2
 };
 
-export const bigDummyCommutable = fromJS(bigDummyJSON);
+export const bigfixtureCommutable = fromJS(bigfixtureJSON);
 
-export const bigDummy = JSON.stringify(bigDummyJSON);
+export const bigfixture = JSON.stringify(bigfixtureJSON);
