@@ -187,6 +187,7 @@ describe("watchExecutionStateEpic", () => {
 
 describe("restartKernelEpic", () => {
   test("work for outputHandling None", () => {
+    const contentRef = "contentRef";
     const newKernelRef = "newKernelRef";
 
     const state = {
@@ -214,11 +215,13 @@ describe("restartKernelEpic", () => {
       const inputActions = {
         a: actions.restartKernel({
           outputHandling: "None",
-          kernelRef: "oldKernelRef"
+          kernelRef: "oldKernelRef",
+          contentRef: contentRef
         }),
         b: actions.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
+          contentRef: contentRef,
           selectNextKernel: true
         })
       };
@@ -232,7 +235,12 @@ describe("restartKernelEpic", () => {
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
-          selectNextKernel: true
+          selectNextKernel: true,
+          contentRef: contentRef
+        }),
+        e: actions.restartKernelSuccessful({
+          kernelRef: newKernelRef,
+          contentRef: contentRef
         })
       };
 

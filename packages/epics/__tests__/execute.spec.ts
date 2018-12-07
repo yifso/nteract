@@ -26,9 +26,9 @@ describe("executeCell", () => {
 });
 
 describe("executeCellStream", () => {
-  test("outright rejects a lack of channels.shell and iopub", done => {
+  test.only("outright rejects a lack of channels.shell and iopub", done => {
     const obs = executeCellStream(
-      new Subject(),
+      null,
       "0",
       createMessage("execute_request"),
       "fakeContentRef"

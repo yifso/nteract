@@ -193,13 +193,13 @@ export const launchKernelWhenNotebookSetEpic = (
   );
 
 export const restartKernelEpic = (
-  action$: ActionsObservable<actions.RestartKernel>,
+  action$: ActionsObservable<actions.RestartKernel | actions.NewKernelAction>,
   state$: any,
   kernelRefGenerator: () => KernelRef = createKernelRef
 ) =>
   action$.pipe(
     ofType(actions.RESTART_KERNEL),
-    concatMap((action: actions.RestartKernel) => {
+    concatMap((action: actions.RestartKernel | actions.NewKernelAction) => {
       const state = state$.value;
 
       const oldKernelRef = action.payload.kernelRef;
@@ -249,9 +249,9 @@ export const restartKernelEpic = (
       });
 
       const awaitKernelReady = action$.pipe(
-        ofType(actions.RESTART_KERNEL),
+        ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
         filter(
-          (action: actions.RestartKernel) =>
+          (action: actions.NewKernelAction | actions.RestartKernel) =>
             action.payload.kernelRef === newKernelRef
         ),
         take(1),
@@ -262,7 +262,10 @@ export const restartKernelEpic = (
             contentRef: initiatingContentRef
           });
 
-          if (action.payload.outputHandling === "Run All") {
+          if (
+            (action as actions.RestartKernel).payload.outputHandling ===
+            "Run All"
+          ) {
             return of(
               restartSuccess,
               actions.executeAllCells({ contentRef: initiatingContentRef })
