@@ -5,6 +5,7 @@ import { ajax } from "rxjs/ajax";
 import querystring from "querystring";
 import urljoin from "url-join";
 import { ServerConfig, createAJAXSettings } from "./base";
+import { Notebook } from "@nteract/commutable";
 
 const formURI = (path: string) => urljoin("/api/contents/", path);
 
@@ -27,17 +28,17 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
  *                   if type is 'directory' ,
  * format (string): Format of content (one of null, 'text', 'base64', 'json')
  */
-type Payload = {
-  name: string,
-  path: string,
-  type: "directory" | "file" | "notebook",
-  writable: boolean,
-  created: string,
-  last_modified: string,
-  mimetype: string,
-  content: string,
-  format: string
-}
+export type Payload = {
+  name: string;
+  path: string;
+  type: "directory" | "file" | "notebook";
+  writable: boolean;
+  created: string;
+  last_modified: string;
+  mimetype: string;
+  content: string | Notebook;
+  format: string;
+};
 
 /**
  * Creates an AjaxObservable for removing content.
@@ -91,7 +92,7 @@ export const get = (
  * @param serverConfig The server configuration
  * @param path The content to rename.
  * @param model The data to send in the server request
- * 
+ *
  * @returns An Observable with the request response
  */
 export const update = (
@@ -140,10 +141,14 @@ export const create = (
  * @param serverConfig  The server configuration
  * @param path The path to the content
  * @param model The data to send in the server request
- * 
+ *
  * @returns An Observable with the request response
  */
-export const save = (serverConfig: ServerConfig, path: string, model: Payload) =>
+export const save = (
+  serverConfig: ServerConfig,
+  path: string,
+  model: Partial<Payload>
+) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
       headers: {
@@ -156,10 +161,10 @@ export const save = (serverConfig: ServerConfig, path: string, model: Payload) =
 
 /**
  * Creates an AjaxObservable for listing checkpoints for a given file.
- * 
+ *
  * @param serverConfig The server configuration
  * @param path The content containing checkpoints to be listed.
- * 
+ *
  * @returns An Observable with the request response
  */
 export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
@@ -176,7 +181,7 @@ export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
  *
  * @param serverConfig The server configuration
  * @param path The content containing the checkpoint to be created
- * 
+ *
  * @returns An Observable with the request response
  */
 export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
@@ -188,11 +193,11 @@ export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
 
 /**
  * Creates an AjaxObservable for deleting a checkpoint for a given file.
- * 
+ *
  * @param  serverConfig The server configuration
  * @param  path The content containing the checkpoint to be deleted
  * @param  checkpointID ID of checkpoint to be deleted
- * 
+ *
  * @returns An Observable with the request response
  */
 export const deleteCheckpoint = (
@@ -208,11 +213,11 @@ export const deleteCheckpoint = (
 
 /**
  * Creates an AjaxObservable for restoring a file to a specified checkpoint.
- * 
+ *
  * @param serverConfig The server configuration
  * @param path The content to restore to a previous checkpoint
  * @param checkpointID ID of checkpoint to be used for restoration
- * 
+ *
  * @returns An Observable with the request response
  */
 export const restoreFromCheckpoint = (

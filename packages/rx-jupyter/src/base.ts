@@ -11,16 +11,17 @@ export interface ServerConfig extends Partial<AjaxRequest> {
   url?: string;
   token?: string;
   xsrfToken?: string;
+  crossDomain?: boolean;
 }
 
 /**
  * Creates an AJAX request to connect to a given server. This function
  * handles setting the authorization tokens on the request.
- * 
+ *
  * @param serverConfig Details about the server to connect to.
  * @param uri The URL to connect to, not including the base URL
  * @param opts A set of options to pass to the AJAX request.
- * 
+ *
  * @returns A fully-configured AJAX request for connecting to the server.
  */
 export const createAJAXSettings = (

@@ -6,6 +6,7 @@ import { KernelRef, KernelspecsRef } from "./refs";
 import { HostRecord } from "./entities/hosts";
 import { makeCommunicationRecord } from "./communication";
 import { makeEntitiesRecord, makeEmptyHostRecord } from "./entities";
+import { Notification } from "react-notification-system";
 
 export * from "./communication";
 export * from "./entities";
@@ -85,7 +86,7 @@ export type AppRecordProps = {
   host: HostRecord;
   githubToken?: string | null;
   notificationSystem: {
-    addNotification: (msg: { level?: "error" | "warning" }) => void;
+    addNotification: (msg: Notification) => void;
   };
   isSaving: boolean;
   lastSaved?: Date | null;
@@ -99,7 +100,7 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
   host: makeEmptyHostRecord(),
   gitHubToken: null,
   notificationSystem: {
-    addNotification: (msg: { level?: "error" | "warning" }) => {
+    addNotification: (msg: Notification) => {
       let logger = console.log.bind(console);
       switch (msg.level) {
         case "error":

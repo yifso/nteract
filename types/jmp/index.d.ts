@@ -9,7 +9,7 @@ declare module "jmp" {
     parent_header: object;
     metadata: object;
     content: object;
-    buffers: any[] | null;
+    buffers: Uint8Array | null;
   }
 
   export class Message {
@@ -20,7 +20,7 @@ declare module "jmp" {
     parent_header: object;
     metadata: object;
     content: object;
-    buffers: any[];
+    buffers: Uint8Array;
 
     respond(
       socket: Socket,

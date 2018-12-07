@@ -3,6 +3,12 @@ import * as Immutable from "immutable";
 import { HostId } from "../ids";
 import { HostRef } from "../refs";
 
+export type ServerConfig = {
+  endpoint: string;
+  crossDomain: boolean | null | undefined;
+  token: string | null | undefined;
+};
+
 export type EmptyHost = {
   type: "empty";
 };
