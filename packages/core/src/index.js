@@ -6,17 +6,7 @@ import * as reducers from "./reducers";
 import * as epics from "./epics";
 import * as selectors from "./selectors";
 import * as state from "./state";
-import * as dummy from "./dummy";
 
 export * from "./state";
 
-export {
-  actions,
-  actionTypes,
-  middlewares,
-  reducers,
-  selectors,
-  epics,
-  state,
-  dummy
-};
+export { actions, actionTypes, middlewares, reducers, selectors, epics, state };

@@ -10,8 +10,7 @@ import {
 } from "@nteract/actions";
 
 function setGithubToken(state: AppRecord, action: SetGithubTokenAction) {
-  const { githubToken } = action;
-  return state.set("githubToken", githubToken);
+  return state.set("githubToken", action.githubToken);
 }
 
 function save(state: AppRecord) {

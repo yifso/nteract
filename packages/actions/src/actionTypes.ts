@@ -23,7 +23,6 @@ import {
 } from "@nteract/types";
 
 import { System as NotificationSystem } from "react-notification-system";
-import { Action } from "redux";
 
 export type ErrorAction<T extends string> = {
   type: T;
@@ -51,7 +50,7 @@ export type AddHost = {
 };
 
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
-export interface FetchContent extends Action {
+export type FetchContent = {
   type: "CORE/FETCH_CONTENT";
   payload: {
     filepath: string;
@@ -59,10 +58,10 @@ export interface FetchContent extends Action {
     kernelRef: KernelRef;
     contentRef: ContentRef;
   };
-}
+};
 
 export const FETCH_CONTENT_FULFILLED = "CORE/FETCH_CONTENT_FULFILLED";
-export interface FetchContentFulfilled extends Action {
+export type FetchContentFulfilled = {
   type: "CORE/FETCH_CONTENT_FULFILLED";
   payload: {
     filepath: string;
@@ -72,10 +71,10 @@ export interface FetchContentFulfilled extends Action {
     created?: Date | null;
     lastSaved?: Date | null;
   };
-}
+};
 
 export const FETCH_CONTENT_FAILED = "CORE/FETCH_CONTENT_FAILED";
-export interface FetchContentFailed extends Action {
+export type FetchContentFailed = {
   type: "CORE/FETCH_CONTENT_FAILED";
   payload: {
     filepath: string;
@@ -84,7 +83,7 @@ export interface FetchContentFailed extends Action {
     contentRef: ContentRef;
   };
   error: true;
-}
+};
 
 export const FETCH_KERNELSPECS = "CORE/FETCH_KERNELSPECS";
 export type FetchKernelspecs = {
@@ -610,41 +609,41 @@ export type DownloadContentFulfilled = {
 };
 
 export const SAVE = "SAVE";
-export interface Save extends Action {
+export type Save = {
   type: "SAVE";
   payload: {
     contentRef: ContentRef;
   };
-}
+};
 
 export const SAVE_AS = "SAVE_AS";
-export interface SaveAs extends Action {
+export type SaveAs = {
   type: "SAVE_AS";
   payload: {
     filepath: string;
     contentRef: ContentRef;
   };
-}
+};
 
 export const SAVE_FAILED = "SAVE_FAILED";
-export interface SaveFailed extends Action {
+export type SaveFailed = {
   type: "SAVE_FAILED";
   payload: {
     contentRef: ContentRef;
     error: Error;
   };
   error: true;
-}
+};
 
 export const SAVE_FULFILLED = "SAVE_FULFILLED";
-export interface SaveFulfilled extends Action<any> {
+export type SaveFulfilled = {
   type: "SAVE_FULFILLED";
   payload: {
     contentRef: ContentRef;
     // Literal response from contents API, for use with
     model: any;
   };
-}
+};
 
 export const NEW_NOTEBOOK = "NEW_NOTEBOOK";
 export type NewNotebook = {
