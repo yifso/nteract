@@ -36,7 +36,7 @@ export class NavSection extends React.Component<NavSectionProps, null> {
 }
 
 type StickyHeaderProps = {
-  children: JSX.Element,
+  children: React.ChildrenArray<React.Element<*>>
 }
 
 export class StickyHeader extends React.Component<StickyHeaderProps, {}> {
