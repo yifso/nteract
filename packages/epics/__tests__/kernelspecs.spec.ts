@@ -79,7 +79,8 @@ describe("fetchKernelspecsEpic", () => {
               }
             }
           },
-          kernelspecsRef: "fake"
+          kernelspecsRef: "fake",
+          hostRef: "alsoFake"
         });
         done();
       },

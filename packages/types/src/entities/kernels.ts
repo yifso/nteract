@@ -77,7 +77,7 @@ export type RemoteKernelProps = {
   info?: KernelInfo | null;
   hostRef?: HostRef | null;
   lastActivity?: Date | null;
-  channels: Subject<any> | Observable<any>;
+  channels: Subject<any>;
   cwd: string;
   // Canonically: idle, busy, starting
   // Xref: http://jupyter-client.readthedocs.io/en/stable/messaging.html#kernel-status

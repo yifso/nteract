@@ -87,6 +87,8 @@ describe("acquireKernelInfo", () => {
     expect(actions).toEqual([
       {
         payload: {
+          contentRef: "fakeContentRef",
+          kernelRef: "fakeKernelRef",
           langInfo: {
             name: "python",
             version: "3.6.5",
@@ -142,7 +144,8 @@ describe("acquireKernelInfo", () => {
             pygmentsLexer: "ipython3",
             codemirrorMode: { name: "ipython", version: 3 },
             nbconvertExporter: "python"
-          }
+          },
+          kernelRef: "fakeKernelRef"
         }
       }
     ]);
@@ -184,7 +187,6 @@ describe("watchExecutionStateEpic", () => {
 
 describe("restartKernelEpic", () => {
   test("work for outputHandling None", () => {
-    const contentRef = "contentRef";
     const newKernelRef = "newKernelRef";
 
     const state = {
@@ -212,13 +214,11 @@ describe("restartKernelEpic", () => {
       const inputActions = {
         a: actions.restartKernel({
           outputHandling: "None",
-          kernelRef: "oldKernelRef",
-          contentRef: contentRef
+          kernelRef: "oldKernelRef"
         }),
         b: actions.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
-          contentRef: contentRef,
           selectNextKernel: true
         })
       };
@@ -232,12 +232,7 @@ describe("restartKernelEpic", () => {
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
-          selectNextKernel: true,
-          contentRef: contentRef
-        }),
-        e: actions.restartKernelSuccessful({
-          kernelRef: newKernelRef,
-          contentRef: contentRef
+          selectNextKernel: true
         })
       };
 
@@ -284,13 +279,11 @@ describe("restartKernelEpic", () => {
       const inputActions = {
         a: actions.restartKernel({
           outputHandling: "Run All",
-          kernelRef: "oldKernelRef",
-          contentRef: contentRef
+          kernelRef: "oldKernelRef"
         }),
         b: actions.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
-          contentRef: contentRef,
           selectNextKernel: true
         })
       };
@@ -304,16 +297,12 @@ describe("restartKernelEpic", () => {
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
-          selectNextKernel: true,
-          contentRef: contentRef
+          selectNextKernel: true
         }),
         e: actions.restartKernelSuccessful({
-          kernelRef: newKernelRef,
-          contentRef: contentRef
+          kernelRef: newKernelRef
         }),
-        f: actions.executeAllCells({
-          contentRef: contentRef
-        })
+        f: actions.executeAllCells({})
       };
 
       const inputMarbles = "a---b---|";

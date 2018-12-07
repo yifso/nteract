@@ -10,9 +10,9 @@ import * as coreEpics from "../src";
 
 describe("launchWebSocketKernelEpic", () => {
   test("launches remote kernels", async function() {
-    const contentRef: stateModule.ContentRef = stateModule.createContentRef();
+    const contentRef = "fakeContentRef";
     const kernelRef = "fake";
-    const state$ = new StateObservable(undefined, {
+    const value = {
       app: stateModule.makeAppRecord({
         host: stateModule.makeJupyterHostRecord({
           type: "jupyter",
@@ -28,7 +28,7 @@ describe("launchWebSocketKernelEpic", () => {
         entities: stateModule.makeEntitiesRecord({
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
-              contentRef: stateModule.makeNotebookContentRecord()
+              fakeContentRef: stateModule.makeNotebookContentRecord()
             })
           }),
           kernels: stateModule.makeKernelsRecord({
@@ -43,7 +43,11 @@ describe("launchWebSocketKernelEpic", () => {
           })
         })
       })
-    });
+    };
+    const state$ = new StateObservable(
+      new Subject<stateModule.AppState>(),
+      value
+    );
     const action$ = ActionsObservable.of(
       actions.launchKernelByName({
         contentRef,
@@ -83,7 +87,7 @@ describe("launchWebSocketKernelEpic", () => {
 
 describe("interruptKernelEpic", () => {
   test("", async function() {
-    const state$ = new StateObservable(undefined, {
+    const state$ = new StateObservable(new Subject<stateModule.AppState>(), {
       core: stateModule.makeStateRecord({
         kernelRef: "fake",
         entities: stateModule.makeEntitiesRecord({
@@ -122,7 +126,7 @@ describe("interruptKernelEpic", () => {
     expect(responseActions).toEqual([
       {
         type: "INTERRUPT_KERNEL_SUCCESSFUL",
-        payload: {}
+        payload: { kernelRef: "fake" }
       }
     ]);
   });

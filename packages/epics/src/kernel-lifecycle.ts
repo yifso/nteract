@@ -206,7 +206,6 @@ export const restartKernelEpic = (
       const oldKernel = selectors.kernel(state, { kernelRef: oldKernelRef });
 
       const notificationSystem = selectors.notificationSystem(state);
-
       if (!oldKernelRef || !oldKernel) {
         notificationSystem.addNotification({
           title: "Failure to Restart",

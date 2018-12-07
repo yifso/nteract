@@ -107,7 +107,7 @@ describe("commActionObservable", () => {
         actions => {
           expect(actions).toEqual([
             {
-              type: COMM_OPEN,
+              type: "COMM_OPEN",
               data: "DATA",
               metadata: "0",
               comm_id: "0123",
@@ -116,7 +116,7 @@ describe("commActionObservable", () => {
               buffers: new Uint8Array([])
             },
             {
-              type: COMM_MESSAGE,
+              type: "COMM_MESSAGE",
               data: "DATA",
               comm_id: "0123",
               buffers: new Uint8Array([])

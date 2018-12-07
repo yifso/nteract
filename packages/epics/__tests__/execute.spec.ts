@@ -20,7 +20,7 @@ describe("executeCell", () => {
       actions.executeCell({ id: "0-0-0-0", contentRef: "fakeContentRef" })
     ).toEqual({
       type: actions.EXECUTE_CELL,
-      payload: { id: "0-0-0-0" }
+      payload: { id: "0-0-0-0", contentRef: "fakeContentRef" }
     });
   });
 });
@@ -288,16 +288,14 @@ describe("updateDisplayEpic", () => {
           actions.updateDisplay({
             content: {
               data: { "text/html": "<marquee>wee</marquee>" },
-              transient: { display_id: "1234" },
-              metadata: {}
+              transient: { display_id: "1234" }
             },
             contentRef: "fakeContentRef"
           }),
           actions.updateDisplay({
             content: {
               data: { "text/plain": "i am text" },
-              transient: { display_id: "here" },
-              metadata: {}
+              transient: { display_id: "here" }
             },
             contentRef: "fakeContentRef"
           })
