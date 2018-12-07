@@ -1,7 +1,7 @@
 ![TimeAgo](http://naman.s3.amazonaws.com/react-timeago.png)
 
 ## Warning:
-  This project is deprecated and unmaintained.
+  This project is deprecated and unmaintained. Consider using [react-timeago](https://github.com/nmn/react-timeago) instead.
 
 ## Usage:
 
