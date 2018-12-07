@@ -97,6 +97,7 @@ export function commActionObservable(action: NewKernelAction) {
  */
 export const commListenEpic = (action$: ActionsObservable<NewKernelAction>) =>
   action$.pipe(
+    // A LAUNCH_KERNEL_SUCCESSFUL action indicates we have a new channel
     ofType(LAUNCH_KERNEL_SUCCESSFUL),
     switchMap(commActionObservable)
-  ); // We have a new channel
+  );

@@ -153,8 +153,10 @@ export function autoSaveCurrentContentEpic(
 
       return contentRef$;
     }),
-    // TODO: Once we're switched to the coming redux observable 1.0.0 release,
-    // we should use the state$ stream to only save when the content has changed
+    /**
+     * TODO: Now that we are on redux observable 1.0.0, we should use the
+     * state$ stream to only save when the content has changed.
+     */
     mergeMap((contentRef: ContentRef) => {
       const state = state$.value;
       const content = selectors.content(state, { contentRef });
@@ -165,10 +167,8 @@ export function autoSaveCurrentContentEpic(
       if (document.hidden) {
         // Opera 12.10 and Firefox 18 and later support
         isVisible = !document.hidden;
-        // $FlowAllowFeatureDetection
       } else if ((document as any).msHidden) {
         isVisible = !(document as any).msHidden;
-        // $FlowAllowFeatureDetection
       } else if ((document as any).webkitHidden) {
         isVisible = !(document as any).webkitHidden;
       } else {
