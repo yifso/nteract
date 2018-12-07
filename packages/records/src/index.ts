@@ -1,13 +1,7 @@
 export * from "./outputs";
 export * from "./cells";
 export * from "./common";
-export {
-  ImmutableCell,
-  ImmutableCellMap,
-  ImmutableCellOrder,
-  ImmutableOutput,
-  ImmutableOutputs
-} from "./types";
+export * from "./types";
 
 import * as outputs from "./outputs";
 import { Notebook as v4Notebook } from "./structures";

@@ -10,12 +10,6 @@ import {
   ImmutableMarkdownCell
 } from "@nteract/commutable";
 import {
-  ImmutableCellMap,
-  ImmutableCellOrder,
-  ImmutableOutput,
-  ImmutableOutputs
-} from "@nteract/records";
-import {
   makeCodeCell,
   makeRawCell,
   makeMarkdownCell,
@@ -48,7 +42,7 @@ type KeyPaths = Immutable.List<KeyPath>;
  * @return {Immutable.List<Object>} updated-outputs - Outputs + Output
  */
 export function reduceOutputs(
-  outputs: ImmutableOutputs = Immutable.List(),
+  outputs: Immutable.List<any> = Immutable.List(),
   output: Output
 ) {
   const last = outputs.last();
@@ -81,7 +75,9 @@ export function reduceOutputs(
     if (last.get("name") === streamOutput.name) {
       return outputs.updateIn([outputs.size - 1, "text"], appendText);
     }
-    const nextToLast: ImmutableOutput | undefined = outputs.butLast().last();
+    const nextToLast:
+      | Immutable.Map<string, any>
+      | undefined = outputs.butLast().last();
     if (
       nextToLast &&
       nextToLast.get("output_type") === "stream" &&
@@ -196,7 +192,9 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   ) {
     return state.updateIn(
       ["notebook", "cellMap", cellId, "outputs"],
-      (outputs: ImmutableOutputs): ImmutableOutputs =>
+      (
+        outputs: Immutable.List<Immutable.Map<string, any>>
+      ): Immutable.List<Immutable.Map<string, any>> =>
         reduceOutputs(outputs, output)
     );
   }
@@ -340,7 +338,10 @@ function focusNextCellEditor(
   state: NotebookModel,
   action: actionTypes.FocusNextCellEditor
 ) {
-  const cellOrder: ImmutableCellOrder = state.getIn(["notebook", "cellOrder"]);
+  const cellOrder: Immutable.List<CellId> = state.getIn([
+    "notebook",
+    "cellOrder"
+  ]);
 
   const id = action.payload.id ? action.payload.id : state.get("editorFocused");
 
@@ -360,7 +361,10 @@ function focusPreviousCellEditor(
   state: NotebookModel,
   action: actionTypes.FocusPreviousCellEditor
 ) {
-  const cellOrder: ImmutableCellOrder = state.getIn(["notebook", "cellOrder"]);
+  const cellOrder: Immutable.List<CellId> = state.getIn([
+    "notebook",
+    "cellOrder"
+  ]);
   const curIndex = cellOrder.findIndex(
     (id: CellId) => id === action.payload.id
   );
@@ -372,7 +376,7 @@ function focusPreviousCellEditor(
 function moveCell(state: NotebookModel, action: actionTypes.MoveCell) {
   return state.updateIn(
     ["notebook", "cellOrder"],
-    (cellOrder: ImmutableCellOrder) => {
+    (cellOrder: Immutable.List<CellId>) => {
       const oldIndex = cellOrder.findIndex(
         (id: string) => id === action.payload.id
       );
@@ -443,7 +447,7 @@ function createCellAbove(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const cellOrder: ImmutableCellOrder = notebook.get(
+    const cellOrder: Immutable.List<CellId> = notebook.get(
       "cellOrder",
       Immutable.List()
     );
@@ -494,7 +498,7 @@ function createCellBefore(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const cellOrder: ImmutableCellOrder = notebook.get(
+    const cellOrder: Immutable.List<CellId> = notebook.get(
       "cellOrder",
       Immutable.List()
     );
@@ -509,7 +513,7 @@ function createCellAppend(
 ) {
   const { cellType } = action.payload;
   const notebook: ImmutableNotebook = state.get("notebook");
-  const cellOrder: ImmutableCellOrder = notebook.get(
+  const cellOrder: Immutable.List<CellId> = notebook.get(
     "cellOrder",
     Immutable.List()
   );
@@ -812,11 +816,13 @@ function toggleOutputExpansion(
     return state;
   }
 
-  return state.updateIn(["notebook", "cellMap"], (cells: ImmutableCellMap) =>
-    cells.setIn(
-      [id, "metadata", "outputExpanded"],
-      !cells.getIn([id, "metadata", "outputExpanded"])
-    )
+  return state.updateIn(
+    ["notebook", "cellMap"],
+    (cells: Immutable.Map<CellId, ImmutableCell>) =>
+      cells.setIn(
+        [id, "metadata", "outputExpanded"],
+        !cells.getIn([id, "metadata", "outputExpanded"])
+      )
   );
 }
 
