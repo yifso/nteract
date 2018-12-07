@@ -17,6 +17,7 @@ const Wrapper = (props: Props) => (
           border: 1px solid var(--theme-app-border);
           box-shadow: none;
           color: var(--theme-menu-fg);
+          width: 100%;
         }
         .rc-menu-hidden {
           display: none;
@@ -102,7 +103,7 @@ const Wrapper = (props: Props) => (
            * TODO: the app should be structured in such a way that a separate stacking
            * context is created and we don't need to battle it out for z-index in this
            * way...
-        */
+           */
           z-index: 1000;
         }
         .rc-menu-horizontal {
@@ -181,6 +182,9 @@ const Wrapper = (props: Props) => (
         .rc-menu-vertical-left.rc-menu-sub,
         .rc-menu-vertical-right.rc-menu-sub {
           padding: 0;
+          width: auto;
+          position: relative;
+          top: 0;
         }
         .rc-menu-sub.rc-menu-inline {
           padding: 0;

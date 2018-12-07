@@ -65,16 +65,16 @@ class Contents extends React.Component<ContentsProps, null> {
       default:
         return (
           <React.Fragment>
-            <Nav>
+            <Nav contentRef={this.props.contentRef}>
               <NavSection>
                 <a href={urljoin(this.props.appBase)} title="Home">
                   <ThemedLogo />
                 </a>
               </NavSection>
             </Nav>
-            <div>{`content type ${
-              this.props.contentType
-            } not implemented`}</div>
+            <div>
+              {`content type ${ this.props.contentType } not implemented`}
+            </div>
           </React.Fragment>
         );
     }
