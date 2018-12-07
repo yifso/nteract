@@ -11,15 +11,15 @@ export type CellType = "markdown" | "code";
 export type CellId = string;
 
 // These are very unserious types, since Records are not quite typable
-export type ImmutableNotebook = JSONObject;
-export type ImmutableCodeCell = JSONObject;
-export type ImmutableMarkdownCell = JSONObject;
-export type ImmutableRawCell = JSONObject;
+export type ImmutableNotebook = { [key: string]: any };
+export type ImmutableCodeCell = { [key: string]: any };
+export type ImmutableMarkdownCell = { [key: string]: any };
+export type ImmutableRawCell = { [key: string]: any };
 export type ImmutableCell = ImmutableCodeCell | ImmutableMarkdownCell;
-export type ImmutableOutput = JSONObject;
+export type ImmutableOutput = { [key: string]: any };
 export type ImmutableOutputs = Array<ImmutableOutput>;
 
-export type ImmutableMimeBundle = JSONObject;
+export type ImmutableMimeBundle = { [key: string]: any };
 
 export type ImmutableCellOrder = Array<CellId>;
-export type ImmutableCellMap = JSONObject;
+export type ImmutableCellMap = { [key: string]: any };
