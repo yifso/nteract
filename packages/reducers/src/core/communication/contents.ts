@@ -1,4 +1,5 @@
 import { combineReducers } from "redux-immutable";
+import { Action } from "redux";
 import * as Immutable from "immutable";
 
 import {
@@ -7,11 +8,13 @@ import {
 } from "@nteract/types";
 import * as actions from "@nteract/actions";
 
-const byRef = (state = Immutable.Map(), action) => {
+const byRef = (state = Immutable.Map(), action: Action) => {
+  let typedAction;
   switch (action.type) {
     case actions.FETCH_CONTENT:
+      typedAction = action as actions.FetchContent;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: true,
           saving: false,
@@ -19,8 +22,9 @@ const byRef = (state = Immutable.Map(), action) => {
         })
       );
     case actions.FETCH_CONTENT_FULFILLED:
+      typedAction = action as actions.FetchContentFulfilled;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: false,
           saving: false,
@@ -28,18 +32,20 @@ const byRef = (state = Immutable.Map(), action) => {
         })
       );
     case actions.FETCH_CONTENT_FAILED:
+      typedAction = action as actions.FetchContentFailed;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: false,
           saving: false,
-          error: action.payload.error
+          error: typedAction.payload.error
         })
       );
     case actions.SAVE:
     case actions.SAVE_AS:
+      typedAction = action as actions.SaveAs;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: false,
           saving: true,
@@ -47,8 +53,9 @@ const byRef = (state = Immutable.Map(), action) => {
         })
       );
     case actions.SAVE_FULFILLED:
+      typedAction = action as actions.SaveFulfilled;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: false,
           saving: false,
@@ -56,12 +63,13 @@ const byRef = (state = Immutable.Map(), action) => {
         })
       );
     case actions.SAVE_FAILED:
+      typedAction = action as actions.SaveFailed;
       return state.set(
-        action.payload.contentRef,
+        typedAction.payload.contentRef,
         makeContentCommunicationRecord({
           loading: false,
           saving: false,
-          error: action.payload.error
+          error: typedAction.payload.error
         })
       );
     default:
@@ -71,5 +79,5 @@ const byRef = (state = Immutable.Map(), action) => {
 
 export const contents = combineReducers(
   { byRef },
-  makeContentsCommunicationRecord
+  makeContentsCommunicationRecord as any
 );

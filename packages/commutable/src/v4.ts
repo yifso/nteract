@@ -122,9 +122,9 @@ export type Notebook = {
 
 /**
  * Converts a mutable representation of an output to an immutable representation.
- * 
+ *
  * @param output The mutable output that will be converted.
- * 
+ *
  * @returns ImmutableOutput An immutable representation of the same output.
  */
 export const createImmutableOutput = (output: Output): ImmutableOutput => {
@@ -161,9 +161,9 @@ export const createImmutableOutput = (output: Output): ImmutableOutput => {
 
 /**
  * Converts a mutable representation of metadata to an immutable representation.
- * 
+ *
  * @param metadata A JSON representation of notebook metadata.
- * 
+ *
  * @returns ImmutableMetadata An immutable representation of the metadata.
  */
 const createImmutableMetadata = (metadata: JSONObject) =>
@@ -208,9 +208,9 @@ const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
 /**
  * Converts a JSON representation of a cell of any type to the correct
  * immutable representation, per the v4 nbformat specification.
- * 
+ *
  * @param cell A JSON representation of a cell.
- * 
+ *
  * @returns An immutable representation of the same cell.
  */
 const createImmutableCell = (cell: Cell): ImmutableCell => {
@@ -324,9 +324,9 @@ const markdownCellToJS = (immCell: ImmutableMarkdownCell): MarkdownCell => ({
 
 /**
  * Converts an immutable representation of a code cell to a JSON representation.
- * 
+ *
  * @param immCell An immutable representation of a code cell.
- * 
+ *
  * @returns A JSON representation of the same code cell.
  */
 const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
@@ -341,9 +341,9 @@ const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
 
 /**
  * Converts an immutable representation of a raw cell to a JSON representation.
- * 
+ *
  * @param immCell An immutable representation of a raw cell.
- * 
+ *
  * @returns A JSON representation of the same raw cell.
  */
 const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
@@ -356,9 +356,9 @@ const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
 
 /**
  * Converts an immutable cell to a JSON cell.
- * 
+ *
  * @param immCell An immutable representation of a cell.
- * 
+ *
  * @returns A JSON representation of the same cell.
  */
 const cellToJS = (immCell: ImmutableCell): Cell => {
@@ -376,9 +376,9 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
 
 /**
  * Converts an immutable representation of a notebook to a JSON representation.
- * 
+ *
  * @param immnb The immutable representation of a notebook.
- * 
+ *
  * @returns The JSON representation of a notebook.
  */
 export const toJS = (immnb: ImmutableNotebook): Notebook => {

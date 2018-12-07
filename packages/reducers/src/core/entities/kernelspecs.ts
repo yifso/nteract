@@ -1,27 +1,27 @@
 import { combineReducers } from "redux-immutable";
+import { Action } from "redux";
 import * as Immutable from "immutable";
 
 import {
   makeKernelspec,
   makeKernelspecsByRefRecord,
-  makeKernelspecsRecord
+  makeKernelspecsRecord,
+  KernelspecProps
 } from "@nteract/types";
 import * as actionTypes from "@nteract/actions";
 
-const byRef = (
-  state = Immutable.Map(),
-  action: actionTypes.FetchKernelspecsFulfilled
-) => {
+const byRef = (state = Immutable.Map(), action: Action) => {
+  let typedAction = action as actionTypes.FetchKernelspecsFulfilled;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
       return state.set(
-        action.payload.kernelspecsRef,
+        typedAction.payload.kernelspecsRef,
         makeKernelspecsByRefRecord({
-          hostRef: action.payload.hostRef,
-          defaultKernelName: action.payload.defaultKernelName,
+          hostRef: typedAction.payload.hostRef,
+          defaultKernelName: typedAction.payload.defaultKernelName,
           byName: Immutable.Map(
-            Object.keys(action.payload.kernelspecs).reduce((r, k) => {
-              r[k] = makeKernelspec(action.payload.kernelspecs[k]);
+            Object.keys(typedAction.payload.kernelspecs).reduce((r: any, k) => {
+              r[k] = makeKernelspec(typedAction.payload.kernelspecs[k]);
               return r;
             }, {})
           )
@@ -32,15 +32,14 @@ const byRef = (
   }
 };
 
-const refs = (
-  state = Immutable.List(),
-  action: actionTypes.FetchKernelspecsFulfilled
-) => {
+const refs = (state = Immutable.List(), action: Action) => {
+  let typedAction;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
-      return state.includes(action.payload.kernelspecsRef)
+      typedAction = action as actionTypes.FetchKernelspecsFulfilled;
+      return state.includes(typedAction.payload.kernelspecsRef)
         ? state
-        : state.push(action.payload.kernelspecsRef);
+        : state.push(typedAction.payload.kernelspecsRef);
     default:
       return state;
   }
@@ -48,5 +47,5 @@ const refs = (
 
 export const kernelspecs = combineReducers(
   { byRef, refs },
-  makeKernelspecsRecord
+  makeKernelspecsRecord as any
 );

@@ -5,6 +5,7 @@ import { Action } from "redux";
 
 import * as actionTypes from "@nteract/actions";
 import {
+  ContentRecord,
   makeFileContentRecord,
   makeFileModelRecord,
   makeDummyContentRecord,
@@ -14,7 +15,7 @@ import {
   makeDocumentRecord,
   makeNotebookContentRecord
 } from "@nteract/types";
-import { createContentRef } from "@nteract/types";
+import { createContentRef, DummyContentRecordProps } from "@nteract/types";
 
 import { notebook } from "./notebook";
 import { file } from "./file";
@@ -68,32 +69,42 @@ const byRef = (state = Immutable.Map(), action: Action) => {
           // Create a map of <ContentRef, ContentRecord> that we merge into the
           // content refs state
           const dummyRecords = Immutable.Map(
-            fetchContentFulfilledAction.payload.model.content.map(entry => {
-              return [
-                createContentRef(),
-                makeDummyContentRecord({
-                  mimetype: entry.mimetype,
-                  // TODO: We can store the type of this content,
-                  // it just doesn't have a model
-                  // entry.type
-                  assumedType: entry.type,
-                  lastSaved: entry.last_modified,
-                  filepath: entry.path
-                })
-              ];
-            })
+            fetchContentFulfilledAction.payload.model.content.map(
+              (entry: any) => {
+                return [
+                  createContentRef(),
+                  makeDummyContentRecord({
+                    mimetype: entry.mimetype,
+                    // TODO: We can store the type of this content,
+                    // it just doesn't have a model
+                    // entry.type
+                    assumedType: entry.type,
+                    lastSaved: entry.last_modified,
+                    filepath: entry.path
+                  })
+                ];
+              }
+            )
           );
 
           const items = Immutable.List(dummyRecords.keys());
           const sorted = items.sort((aRef, bRef) => {
-            const a = dummyRecords.get(aRef);
-            const b = dummyRecords.get(bRef);
+            const a:
+              | Immutable.RecordOf<DummyContentRecordProps>
+              | undefined = dummyRecords.get(aRef) as Immutable.RecordOf<
+              DummyContentRecordProps
+            >;
+            const b:
+              | Immutable.RecordOf<DummyContentRecordProps>
+              | undefined = dummyRecords.get(bRef) as Immutable.RecordOf<
+              DummyContentRecordProps
+            >;
 
             if (a.assumedType === b.assumedType) {
               return a.filepath.localeCompare(b.filepath);
             }
             return a.assumedType.localeCompare(b.assumedType);
-          });
+          }) as Immutable.List<string>;
 
           return (
             state
@@ -104,6 +115,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
                 fetchContentFulfilledAction.payload.contentRef,
                 makeDirectoryContentRecord({
                   model: makeDirectoryModel({
+                    type: "directory",
                     // The listing is all these contents in aggregate
                     items: sorted
                   }),
@@ -206,15 +218,17 @@ const byRef = (state = Immutable.Map(), action: Action) => {
     case actionTypes.TOGGLE_OUTPUT_EXPANSION:
     case actionTypes.TOGGLE_TAG_IN_CELL:
     case actionTypes.UNHIDE_ALL: {
-      const path = [action.payload.contentRef, "model"];
+      const cellAction = action as actionTypes.FocusCell;
+      const path = [cellAction.payload.contentRef, "model"];
       const model = state.getIn(path);
-      return state.setIn(path, notebook(model, action));
+      return state.setIn(path, notebook(model, cellAction));
     }
     case actionTypes.UPDATE_FILE_TEXT: {
-      const path = [action.payload.contentRef, "model"];
+      const fileAction = action as actionTypes.UpdateFileText;
+      const path = [fileAction.payload.contentRef, "model"];
       const model = state.getIn(path);
       if (model && model.type === "file") {
-        return state.setIn(path, file(model, action));
+        return state.setIn(path, file(model, fileAction));
       }
       return state;
     }
@@ -223,4 +237,4 @@ const byRef = (state = Immutable.Map(), action: Action) => {
   }
 };
 
-export const contents = combineReducers({ byRef }, makeContentsRecord);
+export const contents = combineReducers({ byRef }, makeContentsRecord as any);

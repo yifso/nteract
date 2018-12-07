@@ -1,6 +1,8 @@
 import { combineReducers } from "redux-immutable";
+import { Action } from "redux";
 
 import * as actions from "@nteract/actions";
+
 import { makeStateRecord } from "@nteract/types";
 
 import { communication } from "./communication";
@@ -11,22 +13,30 @@ import { entities } from "./entities";
 // a document, which knows about its session and that session knows about its
 // kernel. For now, we need to keep a reference to the currently targeted kernel
 // around.
-const kernelRef = (state = null, action) => {
+const kernelRef = (state = "", action: Action) => {
+  let typedAction;
   switch (action.type) {
     case actions.LAUNCH_KERNEL:
     case actions.LAUNCH_KERNEL_BY_NAME:
-      return action.payload.selectNextKernel ? action.payload.kernelRef : state;
+      typedAction = action as actions.LaunchKernelAction;
+      return typedAction.payload.selectNextKernel
+        ? typedAction.payload.kernelRef
+        : state;
     case actions.LAUNCH_KERNEL_SUCCESSFUL:
-      return action.payload.selectNextKernel ? action.payload.kernelRef : state;
+      typedAction = action as actions.NewKernelAction;
+      return typedAction.payload.selectNextKernel
+        ? typedAction.payload.kernelRef
+        : state;
     default:
       return state;
   }
 };
 
-const currentKernelspecsRef = (state = null, action) => {
+const currentKernelspecsRef = (state = "", action: Action) => {
   switch (action.type) {
     case actions.FETCH_KERNELSPECS:
-      return action.payload.kernelspecsRef;
+      const typedAction = action as actions.FetchKernelspecs;
+      return typedAction.payload.kernelspecsRef;
     default:
       return state;
   }
@@ -39,7 +49,7 @@ const core = combineReducers(
     entities,
     kernelRef
   },
-  makeStateRecord
+  makeStateRecord as any
 );
 
 export default core;

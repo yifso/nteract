@@ -1,4 +1,5 @@
 import { combineReducers } from "redux-immutable";
+import { Action } from "redux";
 import * as Immutable from "immutable";
 
 import {
@@ -7,30 +8,28 @@ import {
 } from "@nteract/types";
 import * as actionTypes from "@nteract/actions";
 
-export const byRef = (
-  state = Immutable.Map(),
-  action:
-    | actionTypes.FetchKernelspecs
-    | actionTypes.FetchKernelspecsFulfilled
-    | actionTypes.FetchKernelspecsFailed
-) => {
+export const byRef = (state = Immutable.Map(), action: Action) => {
+  let typedAction;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS:
+      typedAction = action as actionTypes.FetchKernelspecs;
       return state.set(
-        action.payload.kernelspecsRef,
+        typedAction.payload.kernelspecsRef,
         makeKernelspecsByRefCommunicationRecord({ loading: true, error: null })
       );
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
+      typedAction = action as actionTypes.FetchKernelspecsFulfilled;
       return state.set(
-        action.payload.kernelspecsRef,
+        typedAction.payload.kernelspecsRef,
         makeKernelspecsByRefCommunicationRecord({ loading: false, error: null })
       );
     case actionTypes.FETCH_KERNELSPECS_FAILED:
+      typedAction = action as actionTypes.FetchKernelspecsFailed;
       return state.set(
-        action.payload.kernelspecsRef,
+        typedAction.payload.kernelspecsRef,
         makeKernelspecsByRefCommunicationRecord({
           loading: false,
-          error: action.payload.error
+          error: typedAction.payload.error
         })
       );
     default:
@@ -40,5 +39,5 @@ export const byRef = (
 
 export const kernelspecs = combineReducers(
   { byRef },
-  makeKernelspecsCommunicationRecord
+  makeKernelspecsCommunicationRecord as any
 );

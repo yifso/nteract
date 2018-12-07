@@ -16,5 +16,5 @@ export const entities = combineReducers(
     kernelspecs,
     modals
   },
-  makeEntitiesRecord
+  makeEntitiesRecord as any
 );

@@ -12,5 +12,5 @@ export const communication = combineReducers(
     kernels,
     kernelspecs
   },
-  makeCommunicationRecord
+  makeCommunicationRecord as any
 );

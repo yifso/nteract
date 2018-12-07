@@ -14,6 +14,7 @@ import { makeModalsRecord } from "./modals";
 export * from "./contents";
 export * from "./hosts";
 export * from "./kernels";
+export * from "./kernel-info";
 export * from "./kernelspecs";
 export * from "./modals";
 
