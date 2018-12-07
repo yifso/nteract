@@ -1,6 +1,6 @@
 # @nteract/transform-vdom
 
-This package contains a React component for rendering [virtual DOM](https://github.com/nteract/vdom) elements.
+This package contains a React component for rendering [virtual DOM elements](https://github.com/nteract/vdom/blob/master/docs/mimetype-spec.md) returned by libraries like [vdom for Python](https://github.com/nteract/vdom).
 
 ## Installation
 
