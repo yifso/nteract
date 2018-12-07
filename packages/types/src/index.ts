@@ -98,7 +98,7 @@ export type AppRecordProps = {
 
 export const makeAppRecord = Immutable.Record<AppRecordProps>({
   host: makeEmptyHostRecord(),
-  gitHubToken: null,
+  githubToken: null,
   notificationSystem: {
     addNotification: (msg: Notification) => {
       let logger = console.log.bind(console);

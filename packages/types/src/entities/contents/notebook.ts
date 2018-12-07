@@ -1,5 +1,10 @@
 import * as Immutable from "immutable";
-import { ImmutableNotebook, emptyNotebook, CellId } from "@nteract/commutable";
+import {
+  ImmutableCell,
+  ImmutableNotebook,
+  emptyNotebook,
+  CellId
+} from "@nteract/commutable";
 
 import { KernelRef } from "../..";
 
@@ -14,7 +19,7 @@ export type DocumentRecordProps = {
   cellPagers: any;
   editorFocused?: CellId | null;
   cellFocused?: CellId | null;
-  copied: Immutable.Map<any, any>;
+  copied: ImmutableCell | null;
   kernelRef?: KernelRef | null;
 };
 export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
@@ -27,7 +32,7 @@ export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   cellPagers: Immutable.Map(),
   editorFocused: null,
   cellFocused: null,
-  copied: Immutable.Map(),
+  copied: null,
   kernelRef: null
 });
 export type NotebookModel = Immutable.RecordOf<DocumentRecordProps>;

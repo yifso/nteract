@@ -190,7 +190,7 @@ export type SetExecutionStateAction = {
 export const SET_NOTIFICATION_SYSTEM = "SET_NOTIFICATION_SYSTEM";
 export type SetNotificationSystemAction = {
   type: "SET_NOTIFICATION_SYSTEM";
-  notificationSystem: Object;
+  notificationSystem: object;
 };
 
 export const SET_GITHUB_TOKEN = "SET_GITHUB_TOKEN";

@@ -22,6 +22,8 @@ import {
   RemoteKernelProps
 } from "@nteract/types";
 
+import { System as NotificationSystem } from "react-notification-system";
+
 export type ErrorAction<T extends string> = {
   type: T;
   payload: Error;
@@ -66,6 +68,8 @@ export type FetchContentFulfilled = {
     model: any; // literal response from API
     kernelRef: KernelRef;
     contentRef: ContentRef;
+    created?: Date | null;
+    lastSaved?: Date | null;
   };
 };
 
@@ -581,7 +585,7 @@ export type SetExecutionStateAction = {
 export const SET_NOTIFICATION_SYSTEM = "SET_NOTIFICATION_SYSTEM";
 export type SetNotificationSystemAction = {
   type: "SET_NOTIFICATION_SYSTEM";
-  notificationSystem: Object;
+  notificationSystem: NotificationSystem;
 };
 
 export const DOWNLOAD_CONTENT = "CORE/DOWNLOAD_CONTENT";
@@ -756,7 +760,7 @@ export type LaunchKernelAction = {
   type: "LAUNCH_KERNEL";
   payload: {
     kernelRef: KernelRef;
-    kernelSpec: Object;
+    kernelSpec: KernelspecInfo;
     cwd: string;
     selectNextKernel: boolean;
     contentRef: ContentRef;
