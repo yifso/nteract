@@ -62,12 +62,14 @@ describe("setNotificationSystem", () => {
 });
 
 describe("setGithubToken", () => {
-  test.only("calls setGithubToken", () => {
-    const originalState = stateModule.makeAppRecord();
+  test("calls setGithubToken", () => {
+    const originalState = stateModule.makeAppRecord({
+      githubToken: null
+    });
 
     const action = { type: actions.SET_GITHUB_TOKEN, githubToken: "TOKEN" };
 
     const state = reducers.app(originalState, action);
-    expect(state.githubToken).toEqual("TOKEN");
+    expect(state.githubToken).toBe("TOKEN");
   });
 });
