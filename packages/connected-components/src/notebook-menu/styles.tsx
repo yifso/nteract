@@ -17,9 +17,6 @@ const Wrapper = (props: Props) => (
           border: 1px solid var(--theme-app-border);
           box-shadow: none;
           color: var(--theme-menu-fg);
-          position: fixed;
-          top: 40px;
-          left: 0;
           width: 100%;
         }
         .rc-menu-hidden {

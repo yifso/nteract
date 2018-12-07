@@ -44,13 +44,17 @@ type NavProps = {
 export class Nav extends React.Component<NavProps, null> {
   render() {
     return (
-      <StickyHeader className="nteract-nav">
-        <ul>
-          {React.Children.map(this.props.children, child => {
-            return <li className="top-nav-item">{child}</li>;
-          })}
-        </ul>
-        <NotebookMenu contentRef={this.props.contentRef} />
+      <StickyHeader>
+        <div className="nteract-nav">
+          <ul>
+            {React.Children.map(this.props.children, child => {
+              return <li className="top-nav-item">{child}</li>;
+            })}
+          </ul>
+        </div>
+        <div>
+          <NotebookMenu contentRef={this.props.contentRef} />
+        </div>
 
         <style jsx>{`
           /** When we have a nav section that ends up on the right, reverse the padding order **/
@@ -61,8 +65,9 @@ export class Nav extends React.Component<NavProps, null> {
           ul {
             display: flex;
             justify-content: space-between;
-            padding: 0px 0px;
+            padding: 10px 20px;
             margin: 0 auto;
+            width: 100%;
           }
           header > ul {
           }
