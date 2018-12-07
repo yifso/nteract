@@ -70,6 +70,7 @@ export interface DisplayData {
   output_type: "display_data";
   data: MimeBundle;
   metadata: JSONObject;
+  transient?: JSONObject;
 }
 
 export interface StreamOutput {

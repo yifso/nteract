@@ -8,8 +8,13 @@ import {
   makeRemoteKernelRecord,
   makeKernelsRecord
 } from "@nteract/types";
-import { makeKernelInfoRecord, makeHelpLinkRecord } from "@nteract/types";
+import {
+  makeKernelInfoRecord,
+  makeHelpLinkRecord,
+  HelpLink
+} from "@nteract/types";
 import * as actionTypes from "@nteract/actions";
+import { JSONObject } from "@nteract/commutable/src";
 
 // TODO: we need to clean up references to old kernels at some point. Listening
 // for KILL_KERNEL_SUCCESSFUL seems like a good candidate, but I think you can
@@ -71,7 +76,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
           // already set as we want it
           break;
         case "object":
-          codemirrorMode = Immutable.Map(codemirrorMode);
+          codemirrorMode = Immutable.Map(codemirrorMode as JSONObject);
           break;
         default:
           // any other case results in falling back to language name
@@ -80,7 +85,9 @@ const byRef = (state = Immutable.Map(), action: Action) => {
 
       const helpLinks = typedAction.payload.info.helpLinks
         ? Immutable.List(
-            typedAction.payload.info.helpLinks.map(makeHelpLinkRecord)
+            (typedAction.payload.info.helpLinks as Array<HelpLink>).map(
+              makeHelpLinkRecord
+            )
           )
         : Immutable.List();
 

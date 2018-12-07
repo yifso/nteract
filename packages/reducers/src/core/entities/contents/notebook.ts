@@ -2,10 +2,12 @@ import uuid from "uuid/v4";
 import * as Immutable from "immutable";
 import {
   ImmutableCell,
+  ImmutableCodeCell,
   ImmutableNotebook,
   CellId,
   Output,
-  StreamOutput
+  StreamOutput,
+  ImmutableMarkdownCell
 } from "@nteract/commutable";
 import {
   ImmutableCellMap,
@@ -163,7 +165,7 @@ function clearAllOutputs(
     // NOTE: My kingdom for a mergeMap
     .map((cell: ImmutableCell) => {
       if ((cell as any).get("cell_type") === "code") {
-        return cell.merge({
+        return (cell as ImmutableCodeCell).merge({
           outputs: Immutable.List(),
           execution_count: null
         });
@@ -207,7 +209,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   // }
 
   // We now have a display to track
-  const displayID = output.transient.display_id;
+  const displayID = output.transient!.display_id;
 
   // Every time we see a display id we're going to capture the keypath
   // to the output
@@ -419,7 +421,12 @@ function createCellBelow(
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
-    return insertCellAt(notebook, cell.set("source", source), cellId, index);
+    return insertCellAt(
+      notebook,
+      (cell as ImmutableMarkdownCell).set("source", source),
+      cellId,
+      index
+    );
   });
 }
 
@@ -462,7 +469,12 @@ function createCellAfter(
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
-    return insertCellAt(notebook, cell.set("source", source), cellId, index);
+    return insertCellAt(
+      notebook,
+      (cell as ImmutableMarkdownCell).set("source", source),
+      cellId,
+      index
+    );
   });
 }
 
@@ -845,7 +857,8 @@ type DocumentAction =
   | actionTypes.SaveFulfilled
   | actionTypes.RestartKernel
   | actionTypes.ClearAllOutputs
-  | actionTypes.SetInCell<any>;
+  | actionTypes.SetInCell<any>
+  | actionTypes.UnhideAll;
 
 const defaultDocument: NotebookModel = makeDocumentRecord({
   notebook: emptyNotebook

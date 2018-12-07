@@ -1,4 +1,4 @@
-import actions from "@nteract/actions";
+import * as actions from "@nteract/actions";
 
 import { makeKernelsRecord } from "@nteract/types";
 import { kernels } from "../../../src/core/entities/kernels";

@@ -1,40 +1,23 @@
 export * from "./outputs";
 export * from "./cells";
 export * from "./common";
+export {
+  ImmutableCell,
+  ImmutableCellMap,
+  ImmutableCellOrder,
+  ImmutableOutput,
+  ImmutableOutputs
+} from "./types";
+
 import * as outputs from "./outputs";
 import { Notebook as v4Notebook } from "./structures";
-import {
-  ImmutableNotebook,
-  ImmutableCodeCell,
-  ImmutableMarkdownCell,
-  ImmutableRawCell,
-  ImmutableCell,
-  ImmutableOutput,
-  ImmutableOutputs,
-  ImmutableMimeBundle,
-  ImmutableCellOrder,
-  ImmutableCellMap,
-  JSONObject,
-  JSONType
-} from "./types";
+
+import { JSONObject, JSONType } from "./types";
 
 export type ExecutionCount = number | null;
 export type MimeBundle = JSONObject;
 export type CellType = "markdown" | "code";
 export type CellId = string;
-
-export {
-  ImmutableCellOrder,
-  ImmutableCellMap,
-  ImmutableNotebook,
-  ImmutableCodeCell,
-  ImmutableMarkdownCell,
-  ImmutableRawCell,
-  ImmutableCell,
-  ImmutableOutput,
-  ImmutableOutputs,
-  ImmutableMimeBundle
-};
 
 // Deprecation Warning: removeCell is being deprecated. Please use deleteCell instead
 const {
