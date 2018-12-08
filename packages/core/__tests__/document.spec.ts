@@ -12,22 +12,19 @@ import {
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
 
-import * as actions from "../src/actions";
+import * as actions from "@nteract/action";
 import {
   notebook as reducers,
   reduceOutputs,
   cleanCellTransient
-} from "../src/reducers/core/entities/contents/notebook";
-import { makeDocumentRecord } from "../src/state";
+} from "@nteract/reducers";
+import { makeDocumentRecord } from "@nteract/types";
 import { dummyCommutable } from "../src/dummy";
 
-const initialDocument = new Immutable.Map();
+const initialDocument = Immutable.Map();
 const monocellDocument = initialDocument
   .set("notebook", appendCellToNotebook(dummyCommutable, emptyCodeCell))
-  .set(
-    "transient",
-    new Immutable.Map({ keyPathsForDisplays: new Immutable.Map() })
-  );
+  .set("transient", Immutable.Map({ keyPathsForDisplays: Immutable.Map() }));
 
 const firstCellId = monocellDocument.getIn(["notebook", "cellOrder"]).first();
 
@@ -418,7 +415,7 @@ describe("clearOutputs", () => {
       )
       .set(
         "transient",
-        new Immutable.Map({ keyPathsForDisplays: new Immutable.Map() })
+        Immutable.Map({ keyPathsForDisplays: Immutable.Map() })
       );
 
     const id = originalState.getIn(["notebook", "cellOrder"]).last();

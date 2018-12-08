@@ -1,16 +1,16 @@
-// @flow
 // NOTE: These are just default middlewares here for now until we figure out how
 // to divide up the desktop app and this core package
 
 import { isCollection } from "immutable";
 import { createLogger } from "redux-logger";
+import { Action } from "redux";
 
-import * as selectors from "./selectors";
+import * as selectors from "@nteract/selectors";
 
 type ErrorAction = {
-  type: string,
-  error: ?boolean,
-  payload: ?any
+  type: string;
+  error?: boolean;
+  payload?: any;
 };
 
 // Get the type
@@ -19,8 +19,8 @@ type Console = typeof console;
 export const errorMiddleware = (
   store: any,
   console: Console = global.console
-) => (next: any) => (action: redux$Action | ErrorAction) => {
-  if (!(action.type.includes("ERROR") || action.error)) {
+) => (next: any) => (action: ErrorAction) => {
+  if (!(action.type.includes("ERROR") || (action as ErrorAction).error)) {
     return next(action);
   }
   console.error(action);
@@ -43,7 +43,7 @@ export const errorMiddleware = (
   const notificationSystem = selectors.notificationSystem(state);
   if (notificationSystem) {
     notificationSystem.addNotification({
-      title: action.type,
+      title: (action as ErrorAction).type,
       message: errorText,
       dismissible: true,
       position: "tr",
