@@ -1,8 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { CellType } from "@nteract/commutable";
 import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
-import { actions } from "@nteract/core";
+import * as actions from "@nteract/actions";
 import { ContentRef } from "@nteract/types";
 
 type Props = {
@@ -145,12 +146,19 @@ class CellCreator extends React.Component<ConnectedProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  createCellAppend: (payload: object) =>
+  createCellAppend: (payload: { cellType: CellType; contentRef: ContentRef }) =>
     dispatch(actions.createCellAppend(payload)),
-  createCellAbove: (payload: object) =>
-    dispatch(actions.createCellAbove(payload)),
-  createCellBelow: (payload: object) =>
-    dispatch(actions.createCellBelow(payload))
+  createCellAbove: (payload: {
+    cellType: CellType;
+    id?: string;
+    contentRef: ContentRef;
+  }) => dispatch(actions.createCellAbove(payload)),
+  createCellBelow: (payload: {
+    cellType: CellType;
+    id?: string;
+    source: string;
+    contentRef: ContentRef;
+  }) => dispatch(actions.createCellBelow(payload))
 });
 
 // $FlowFixMe: react-redux typings

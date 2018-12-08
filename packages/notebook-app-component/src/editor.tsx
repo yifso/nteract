@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { actions, selectors } from "@nteract/core";
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { omit } from "lodash";
 import EditorView from "@nteract/editor";

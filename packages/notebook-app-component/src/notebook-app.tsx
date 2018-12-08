@@ -2,7 +2,8 @@
 import * as Immutable from "immutable";
 import * as React from "react";
 import { Subject } from "rxjs";
-import { actions, selectors } from "@nteract/core";
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import {
   Input,

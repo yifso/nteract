@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-import { selectors } from "@nteract/core";
+import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState, KernelRef } from "@nteract/types";
 
 type Props = {
-  lastSaved?: Date;
+  lastSaved?: Date | null;
   kernelSpecDisplayName: string;
   kernelStatus: string;
 };

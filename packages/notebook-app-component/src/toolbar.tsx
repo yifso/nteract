@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { actions } from "@nteract/core";
+import * as actions from "@nteract/actions";
 import { ContentRef } from "@nteract/types";
 import {
   DropdownMenu,
