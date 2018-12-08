@@ -1,11 +1,7 @@
-import * as reducers from "@nteract/reducers";
-import * as epics from "@nteract/epics";
-import * as selectors from "@nteract/selectors";
-import * as state from "@nteract/types";
-import * as actions from "@nteract/actions";
+declare export var actions: any;
+declare export var middlewares: any;
+declare export var reducers: any;
+declare export var selectors: any;
+declare export var epics: any;
+declare export var state: any;
 
-import * as middlewares from "./middlewares";
-
-export * from "@nteract/types";
-
-export { actions, middlewares, reducers, selectors, epics, state };
