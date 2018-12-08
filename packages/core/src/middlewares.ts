@@ -3,7 +3,6 @@
 
 import { isCollection } from "immutable";
 import { createLogger } from "redux-logger";
-import { Action } from "redux";
 
 import * as selectors from "@nteract/selectors";
 
