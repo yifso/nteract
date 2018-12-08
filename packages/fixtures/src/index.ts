@@ -101,10 +101,10 @@ export function fixtureStore(config: { [key: string]: any }) {
   return createStore(rootReducer, {
     core: makeStateRecord({
       kernelRef,
+      currentKernelspecsRef: kernelRef,
       entities: makeEntitiesRecord({
         contents: makeContentsRecord({
           byRef: Immutable.Map({
-            // $FlowFixMe: This really is a content ref, Flow can't handle typing it though
             [contentRef]: makeNotebookContentRecord({
               model: makeDocumentRecord({
                 notebook: fixtureNotebook,
