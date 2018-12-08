@@ -1,6 +1,6 @@
 // @flow strict
 import { shell } from "electron";
-import { selectors, actions, actionTypes } from "@nteract/core";
+import { selectors, actions } from "@nteract/core";
 import { of, empty } from "rxjs";
 import { ajax } from "rxjs/ajax";
 import { mergeMap, catchError } from "rxjs/operators";
@@ -57,8 +57,8 @@ export const publishEpic = (
   state$: StateObservable<AppState>
 ) => {
   return action$.pipe(
-    ofType(actionTypes.PUBLISH_GIST),
-    mergeMap((action: actionTypes.PublishGist) => {
+    ofType(actions.PUBLISH_GIST),
+    mergeMap((action: actions.PublishGist) => {
       const state = state$.value;
 
       const contentRef = action.payload.contentRef;

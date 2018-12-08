@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 import toJSON from "enzyme-to-json";
 import { Provider } from "react-redux";
 import { dummyStore } from "@nteract/core/dummy";
-import { actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 
 import Toolbar, { PureToolbar } from "../src/toolbar";
 
@@ -16,7 +16,7 @@ const {
   TOGGLE_CELL_OUTPUT_VISIBILITY,
   CHANGE_CELL_TYPE,
   TOGGLE_OUTPUT_EXPANSION
-} = actionTypes;
+} = actions;
 
 describe("Toolbar View", () => {
   test("should be able to render a toolbar", () => {

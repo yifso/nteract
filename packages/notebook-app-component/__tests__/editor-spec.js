@@ -2,7 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { dummyStore } from "@nteract/core/dummy";
-import { actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 
 import Editor from "../src/editor";
 
@@ -25,7 +25,7 @@ describe("EditorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.value).toBe("i love nteract");
-        expect(action.type).toBe(actionTypes.SET_IN_CELL);
+        expect(action.type).toBe(actions.SET_IN_CELL);
         resolve();
       };
       store.dispatch = dispatch;
@@ -40,7 +40,7 @@ describe("EditorProvider", () => {
     new Promise(resolve => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
-        expect(action.type).toBe(actionTypes.FOCUS_CELL_EDITOR);
+        expect(action.type).toBe(actions.FOCUS_CELL_EDITOR);
         resolve();
       };
       store.dispatch = dispatch;

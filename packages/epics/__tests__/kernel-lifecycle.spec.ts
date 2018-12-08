@@ -1,6 +1,6 @@
 import * as Immutable from "immutable";
 import { ActionsObservable } from "redux-observable";
-import { actions, actionTypes, state as stateModule } from "@nteract/core";
+import { actions, state as stateModule } from "@nteract/core";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
 import { Subject, of } from "rxjs";
 import { toArray } from "rxjs/operators";
@@ -157,7 +157,7 @@ describe("acquireKernelInfo", () => {
 describe("watchExecutionStateEpic", () => {
   test("returns an Observable with an initial state of idle", done => {
     const action$ = ActionsObservable.of({
-      type: actionTypes.LAUNCH_KERNEL_SUCCESSFUL,
+      type: actions.LAUNCH_KERNEL_SUCCESSFUL,
       payload: {
         kernel: {
           channels: of({
@@ -177,7 +177,7 @@ describe("watchExecutionStateEpic", () => {
       // Every action that goes through should get stuck on an array
       actions => {
         const types = actions.map(({ type }) => type);
-        expect(types).toEqual([actionTypes.SET_EXECUTION_STATE]);
+        expect(types).toEqual([actions.SET_EXECUTION_STATE]);
       },
       err => done.fail(err), // It should not error in the stream
       () => done()

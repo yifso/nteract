@@ -1,7 +1,7 @@
 import { ActionsObservable } from "redux-observable";
 import { monocellNotebook, toJS } from "@nteract/commutable";
 import { dummyCommutable } from "@nteract/core/dummy";
-import { actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 import { toArray } from "rxjs/operators";
 
 import {
@@ -65,7 +65,7 @@ describe("loadingEpic", () => {
 describe("newNotebookEpic", () => {
   test("calls new Kernel after creating a new notebook", async function() {
     const action$ = ActionsObservable.of({
-      type: actionTypes.NEW_NOTEBOOK,
+      type: actions.NEW_NOTEBOOK,
       payload: {
         kernelSpec: {
           name: "hylang"
@@ -80,7 +80,7 @@ describe("newNotebookEpic", () => {
 
     expect(responseActions).toEqual([
       {
-        type: actionTypes.FETCH_CONTENT_FULFILLED,
+        type: actions.FETCH_CONTENT_FULFILLED,
         payload: {
           contentRef: "cRef",
           kernelRef: "kRef",

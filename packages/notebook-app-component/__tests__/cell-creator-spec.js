@@ -2,7 +2,7 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import { Provider } from "react-redux";
-import { actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 import { dummyStore } from "@nteract/core/dummy";
 
 import CellCreator, { PureCellCreator } from "../src/cell-creator";
@@ -70,7 +70,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("markdown");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_BELOW);
+        expect(action.type).toBe(actions.CREATE_CELL_BELOW);
         resolve();
       };
       store.dispatch = dispatch;
@@ -95,7 +95,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_BELOW);
+        expect(action.type).toBe(actions.CREATE_CELL_BELOW);
         resolve();
       };
       store.dispatch = dispatch;
@@ -120,7 +120,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_ABOVE);
+        expect(action.type).toBe(actions.CREATE_CELL_ABOVE);
         resolve();
       };
       store.dispatch = dispatch;
@@ -144,7 +144,7 @@ describe("CellCreatorProvider", () => {
     return new Promise(resolve => {
       const dispatch = action => {
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_APPEND);
+        expect(action.type).toBe(actions.CREATE_CELL_APPEND);
         resolve();
       };
       store.dispatch = dispatch;

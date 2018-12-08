@@ -1,5 +1,5 @@
 import { ActionsObservable } from "redux-observable";
-import { actions, actionTypes, makeStateRecord } from "@nteract/core";
+import { actions, makeStateRecord } from "@nteract/core";
 import { toArray } from "rxjs/operators";
 
 import {
@@ -19,13 +19,13 @@ describe("launchKernelEpic", () => {
   test("throws an error if given a bad action", async function() {
     const action$ = ActionsObservable.of(
       {
-        type: actionTypes.LAUNCH_KERNEL,
+        type: actions.LAUNCH_KERNEL,
         payload: {
           kernelRef: "1234"
         }
       },
       {
-        type: actionTypes.LAUNCH_KERNEL,
+        type: actions.LAUNCH_KERNEL,
         payload: { kernelSpec: {} }
       }
     );
@@ -118,7 +118,7 @@ describe("launchKernelByNameEpic", () => {
     obs.pipe(toArray()).subscribe(
       actions => {
         const types = actions.map(({ type }) => type);
-        expect(types).toEqual([actionTypes.LAUNCH_KERNEL]);
+        expect(types).toEqual([actions.LAUNCH_KERNEL]);
         done();
       },
       err => done.fail(err)

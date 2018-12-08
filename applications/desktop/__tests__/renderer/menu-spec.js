@@ -1,6 +1,6 @@
 jest.mock("fs");
 import { webFrame, ipcRenderer as ipc } from "electron";
-import { actions, actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 import * as Immutable from "immutable";
 
 import * as menu from "../../src/notebook/menu";
@@ -244,7 +244,7 @@ describe("dispatchSetTheme", () => {
     menu.dispatchSetTheme(props, store, {}, "test_theme");
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.SET_CONFIG_AT_KEY,
+      type: actions.SET_CONFIG_AT_KEY,
       key: "theme",
       value: "test_theme"
     });
@@ -262,7 +262,7 @@ describe("dispatchSetCursorBlink", () => {
     menu.dispatchSetCursorBlink(props, store, {}, 42);
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.SET_CONFIG_AT_KEY,
+      type: actions.SET_CONFIG_AT_KEY,
       key: "cursorBlinkRate",
       value: 42
     });
@@ -344,7 +344,7 @@ describe("dispatchRestartKernel", () => {
     menu.dispatchRestartKernel(props, store, "Clear All");
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.RESTART_KERNEL,
+      type: actions.RESTART_KERNEL,
       payload: {
         outputHandling: "Clear All",
         kernelRef: "k1",
@@ -391,7 +391,7 @@ describe("dispatchInterruptKernel", () => {
 
     if (process.platform !== "win32") {
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: actionTypes.INTERRUPT_KERNEL,
+        type: actions.INTERRUPT_KERNEL,
         payload: {
           kernelRef: "k1"
         }
@@ -436,7 +436,7 @@ describe("dispatchKillKernel", () => {
     menu.dispatchKillKernel(props, store);
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.KILL_KERNEL,
+      type: actions.KILL_KERNEL,
       payload: {
         restarting: false,
         kernelRef: "k1"
@@ -535,7 +535,7 @@ describe("dispatchPublishUserGist", () => {
 
     menu.dispatchPublishGist(props, store, {});
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.PUBLISH_GIST,
+      type: actions.PUBLISH_GIST,
       payload: {
         contentRef: "123"
       }
@@ -567,7 +567,7 @@ describe("dispatchNewKernel", () => {
     menu.dispatchNewKernel(props, store, {}, { spec: "hokey" });
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actionTypes.LAUNCH_KERNEL,
+      type: actions.LAUNCH_KERNEL,
       payload: {
         kernelSpec: { spec: "hokey" },
         cwd: process.cwd(),
