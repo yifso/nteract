@@ -2,11 +2,11 @@
 import React from "react";
 import Immutable from "immutable";
 import { shallow } from "enzyme";
-import { dummyStore, dummyCommutable } from "@nteract/core/dummy";
+import { fixtureStore, fixtureCommutable } from "@nteract/fixtures";
 
 import { NotebookApp } from "../src/notebook-app";
 
-const dummyCellStatuses = dummyCommutable
+const dummyCellStatuses = fixtureCommutable
   .get("cellOrder")
   .reduce(
     (statuses, cellId) =>
@@ -22,8 +22,8 @@ describe("NotebookApp", () => {
   test("accepts an Immutable.List of cells", () => {
     const component = shallow(
       <NotebookApp
-        cellOrder={dummyCommutable.get("cellOrder")}
-        cellMap={dummyCommutable.get("cellMap")}
+        cellOrder={fixtureCommutable.get("cellOrder")}
+        cellMap={fixtureCommutable.get("cellMap")}
         transient={new Immutable.Map({ cellMap: new Immutable.Map() })}
         cellPagers={new Immutable.Map()}
         cellStatuses={new Immutable.Map()}
@@ -34,16 +34,16 @@ describe("NotebookApp", () => {
 
   describe("keyDown", () => {
     test("detects a cell execution keypress", () => {
-      const focusedCell = dummyCommutable.getIn(["cellOrder", 1]);
+      const focusedCell = fixtureCommutable.getIn(["cellOrder", 1]);
 
-      const context = { store: dummyStore() };
+      const context = { store: fixtureStore() };
 
       context.store.dispatch = jest.fn();
       const executeFocusedCell = jest.fn();
       const component = shallow(
         <NotebookApp
-          cellOrder={dummyCommutable.get("cellOrder")}
-          cellMap={dummyCommutable.get("cellMap")}
+          cellOrder={fixtureCommutable.get("cellOrder")}
+          cellMap={fixtureCommutable.get("cellMap")}
           transient={new Immutable.Map({ cellMap: new Immutable.Map() })}
           cellPagers={new Immutable.Map()}
           cellStatuses={dummyCellStatuses}
@@ -64,9 +64,9 @@ describe("NotebookApp", () => {
       expect(executeFocusedCell).toHaveBeenCalled();
     });
     test("detects a focus to next cell keypress", () => {
-      const focusedCell = dummyCommutable.getIn(["cellOrder", 1]);
+      const focusedCell = fixtureCommutable.getIn(["cellOrder", 1]);
 
-      const context = { store: dummyStore() };
+      const context = { store: fixtureStore() };
 
       context.store.dispatch = jest.fn();
       const executeFocusedCell = jest.fn();
@@ -74,8 +74,8 @@ describe("NotebookApp", () => {
       const focusNextCellEditor = jest.fn();
       const component = shallow(
         <NotebookApp
-          cellOrder={dummyCommutable.get("cellOrder")}
-          cellMap={dummyCommutable.get("cellMap")}
+          cellOrder={fixtureCommutable.get("cellOrder")}
+          cellMap={fixtureCommutable.get("cellMap")}
           transient={new Immutable.Map({ cellMap: new Immutable.Map() })}
           cellPagers={new Immutable.Map()}
           cellStatuses={dummyCellStatuses}

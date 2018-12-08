@@ -3,7 +3,7 @@ import * as React from "react";
 import { mount } from "enzyme";
 import toJSON from "enzyme-to-json";
 import { Provider } from "react-redux";
-import { dummyStore } from "@nteract/core/dummy";
+import { fixtureStore } from "@nteract/fixtures";
 import { actions } from "@nteract/core";
 
 import Toolbar, { PureToolbar } from "../src/toolbar";
@@ -81,7 +81,7 @@ describe("Toolbar View", () => {
 });
 
 describe.skip("toolbar provider", () => {
-  const store = dummyStore();
+  const store = fixtureStore();
   const dropdown = { hide: () => {} };
 
   const setup = props =>
@@ -202,7 +202,7 @@ describe.skip("toolbar provider", () => {
 });
 
 describe.skip("toolbar provider", () => {
-  const store = dummyStore();
+  const store = fixtureStore();
   const dropdown = { hide: () => {} };
 
   const setup = props =>

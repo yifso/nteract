@@ -1,13 +1,13 @@
 import React from "react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { dummyStore } from "@nteract/core/dummy";
+import { fixtureStore } from "@nteract/fixtures";
 import { actions } from "@nteract/core";
 
 import Editor from "../src/editor";
 
 describe("EditorProvider", () => {
-  const store = dummyStore();
+  const store = fixtureStore();
 
   const setup = (id, cellFocused = true) =>
     mount(

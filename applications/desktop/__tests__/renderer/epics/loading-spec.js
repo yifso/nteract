@@ -1,6 +1,6 @@
 import { ActionsObservable } from "redux-observable";
 import { monocellNotebook, toJS } from "@nteract/commutable";
-import { dummyCommutable } from "@nteract/core/dummy";
+import { fixtureCommutable } from "@nteract/fixtures";
 import { actions } from "@nteract/core";
 import { toArray } from "rxjs/operators";
 
@@ -14,7 +14,7 @@ const path = require("path");
 
 describe("extractNewKernel", () => {
   test("extracts and launches the kernel from a notebook", () => {
-    expect(extractNewKernel("/tmp/test.ipynb", dummyCommutable)).toEqual({
+    expect(extractNewKernel("/tmp/test.ipynb", fixtureCommutable)).toEqual({
       kernelSpecName: "python3",
       cwd: path.resolve("/tmp")
     });
