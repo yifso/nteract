@@ -1,12 +1,11 @@
-//@flow
-import * as actions from "./actions";
-import * as actionTypes from "./actionTypes";
+import * as reducers from "@nteract/reducers";
+import * as epics from "@nteract/epics";
+import * as selectors from "@nteract/selectors";
+import * as state from "@nteract/types";
+import * as actions from "@nteract/actions";
+
 import * as middlewares from "./middlewares";
-import * as reducers from "./reducers";
-import * as epics from "./epics";
-import * as selectors from "./selectors";
-import * as state from "./state";
 
-export * from "./state";
+export * from "@nteract/types";
 
-export { actions, actionTypes, middlewares, reducers, selectors, epics, state };
+export { actions, middlewares, reducers, selectors, epics, state };
