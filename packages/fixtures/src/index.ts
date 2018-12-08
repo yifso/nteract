@@ -8,7 +8,8 @@ import {
   appendCellToNotebook,
   emptyNotebook,
   emptyMarkdownCell,
-  ImmutableNotebook
+  ImmutableNotebook,
+  JSONObject
 } from "@nteract/commutable";
 import { combineReducers, createStore } from "redux";
 
@@ -57,7 +58,7 @@ function hideCells(notebook: ImmutableNotebook) {
  * @returns {object} - A notebook for {@link DocumentRecord} for Redux store.
  * Created using the config object passed in.
  */
-function buildFixtureNotebook(config: { [key: string]: any }) {
+function buildFixtureNotebook(config: JSONObject) {
   let notebook = monocellNotebook.setIn(
     ["metadata", "kernelspec", "name"],
     "python2"
@@ -87,8 +88,8 @@ function buildFixtureNotebook(config: { [key: string]: any }) {
   return notebook;
 }
 
-export function fixtureStore(config: { [key: string]: any }) {
-  const fixtureNotebook = buildFixtureNotebook(config);
+export function fixtureStore(config: JSONObject) {
+  const dummyNotebook = buildFixtureNotebook(config);
 
   const frontendToShell = new Subject();
   const shellToFrontend = new Subject();
@@ -101,21 +102,20 @@ export function fixtureStore(config: { [key: string]: any }) {
   return createStore(rootReducer, {
     core: makeStateRecord({
       kernelRef,
-      currentKernelspecsRef: kernelRef,
       entities: makeEntitiesRecord({
         contents: makeContentsRecord({
           byRef: Immutable.Map({
             [contentRef]: makeNotebookContentRecord({
               model: makeDocumentRecord({
-                notebook: fixtureNotebook,
+                notebook: dummyNotebook,
                 savedNotebook:
                   config && config.saved === true
-                    ? fixtureNotebook
+                    ? dummyNotebook
                     : emptyNotebook,
                 cellPagers: Immutable.Map(),
                 cellFocused:
-                  config && config.codeCellCount > 1
-                    ? fixtureNotebook.get("cellOrder", Immutable.List()).get(1)
+                  config && config.codeCellCount && config.codeCellCount > 1
+                    ? dummyNotebook.get("cellOrder", Immutable.List()).get(1)
                     : null
               }),
               filepath:
@@ -133,7 +133,7 @@ export function fixtureStore(config: { [key: string]: any }) {
           })
         })
       })
-    }),
+    }) as any,
     app: makeAppRecord({
       notificationSystem: {
         addNotification: () => {} // most of the time you'll want to mock this
