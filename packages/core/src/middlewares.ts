@@ -13,13 +13,9 @@ type ErrorAction = {
   payload?: any;
 };
 
-// Get the type
-export type Console = typeof console;
-
-export const errorMiddleware = (
-  store: any,
-  console: Console = global.console
-) => (next: any) => (action: ErrorAction) => {
+export const errorMiddleware = (store: any, console = global.console) => (
+  next: any
+) => (action: ErrorAction) => {
   if (!(action.type.includes("ERROR") || (action as ErrorAction).error)) {
     return next(action);
   }
@@ -56,7 +52,7 @@ export const errorMiddleware = (
 export function logger() {
   const craftedLogger = createLogger({
     // predicate: (getState, action) => action.type.includes('COMM'),
-    stateTransformer: state =>
+    stateTransformer: (state: any) =>
       Object.keys(state).reduce(
         (prev, key) =>
           Object.assign({}, prev, {
