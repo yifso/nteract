@@ -12,18 +12,18 @@ import {
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
 
-import * as actions from "@nteract/action";
+import * as actions from "@nteract/actions";
 import {
   notebook as reducers,
   reduceOutputs,
   cleanCellTransient
 } from "@nteract/reducers";
 import { makeDocumentRecord } from "@nteract/types";
-import { dummyCommutable } from "../src/dummy";
+import { fixtureCommutable } from "@nteract/fixtures";
 
 const initialDocument = Immutable.Map();
 const monocellDocument = initialDocument
-  .set("notebook", appendCellToNotebook(dummyCommutable, emptyCodeCell))
+  .set("notebook", appendCellToNotebook(fixtureCommutable, emptyCodeCell))
   .set("transient", Immutable.Map({ keyPathsForDisplays: Immutable.Map() }));
 
 const firstCellId = monocellDocument.getIn(["notebook", "cellOrder"]).first();
@@ -212,7 +212,7 @@ describe("focusNextCell", () => {
   test("should create and focus a new code cell if last cell and last cell is code cell", () => {
     const originalState = monocellDocument.set(
       "notebook",
-      appendCellToNotebook(dummyCommutable, emptyCodeCell)
+      appendCellToNotebook(fixtureCommutable, emptyCodeCell)
     );
 
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
@@ -235,7 +235,7 @@ describe("focusNextCell", () => {
   test("should create and focus a new markdown cell if last cell and last cell is markdown cell", () => {
     const originalState = monocellDocument.set(
       "notebook",
-      appendCellToNotebook(dummyCommutable, emptyMarkdownCell)
+      appendCellToNotebook(fixtureCommutable, emptyMarkdownCell)
     );
 
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
@@ -259,7 +259,7 @@ describe("focusNextCell", () => {
 
 describe("focusPreviousCell", () => {
   test("should focus the previous cell", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
 
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
     const previousId = originalState.getIn(["notebook", "cellOrder"]).first();
@@ -289,7 +289,7 @@ describe("focusNextCellEditor", () => {
 
 describe("focusPreviousCellEditor", () => {
   test("should focus the editor of the previous cell", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
 
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
     const previousId = originalState.getIn(["notebook", "cellOrder"]).first();
@@ -318,7 +318,7 @@ describe("updateExecutionCount", () => {
 
 describe("moveCell", () => {
   test("should swap the first and last cell appropriately", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
 
     const cellOrder = originalState.getIn(["notebook", "cellOrder"]);
     const id = cellOrder.last();
@@ -331,7 +331,7 @@ describe("moveCell", () => {
     expect(state.getIn(["notebook", "cellOrder"]).first()).toBe(destinationId);
   });
   test("should move a cell above another when asked", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
 
     const cellOrder = originalState.getIn(["notebook", "cellOrder"]);
     const id = cellOrder.last();
@@ -345,9 +345,9 @@ describe("moveCell", () => {
   });
   test("should move a cell above another when asked", () => {
     const originalState = reducers(
-      initialDocument.set("notebook", dummyCommutable),
+      initialDocument.set("notebook", fixtureCommutable),
       actions.createCellBelow({
-        id: dummyCommutable.get("cellOrder").first(),
+        id: fixtureCommutable.get("cellOrder").first(),
         cellType: "markdown",
         source: "# Woo\n*Yay*"
       })
@@ -409,7 +409,7 @@ describe("clearOutputs", () => {
       .set(
         "notebook",
         appendCellToNotebook(
-          dummyCommutable,
+          fixtureCommutable,
           emptyCodeCell.set("outputs", ["dummy outputs"])
         )
       )
@@ -456,7 +456,7 @@ describe("createCellBelow", () => {
 
 describe("createCellAbove", () => {
   test("creates a new cell before the given id", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
     const state = reducers(
       originalState,
@@ -484,7 +484,7 @@ describe("createCellAfter", () => {
 
 describe("createCellBefore", () => {
   test("WARNING:DEPRECATED. sue createCellAbove() instead. Creates a new cell before the given id", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
     const state = reducers(
       originalState,
@@ -497,7 +497,7 @@ describe("createCellBefore", () => {
 
 describe("newCellAppend", () => {
   test("appends a new code cell at the end", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
     const state = reducers(
       originalState,
       actions.createCellAppend({ cellType: "code" })
@@ -508,7 +508,7 @@ describe("newCellAppend", () => {
 
 describe("updateSource", () => {
   test("updates the source of the cell", () => {
-    const originalState = initialDocument.set("notebook", dummyCommutable);
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
 
     const id = originalState.getIn(["notebook", "cellOrder"]).first();
     const state = reducers(
