@@ -13,9 +13,24 @@ type Props = {
 
 type ConnectedProps = {
   above: boolean;
-  createCellAppend: (payload: object) => void;
-  createCellAbove: (payload: object) => void;
-  createCellBelow: (payload: object) => void;
+  createCellAppend: (
+    payload: { cellType: CellType; contentRef: ContentRef }
+  ) => void;
+  createCellAbove: (
+    payload: {
+      cellType: CellType;
+      id?: string;
+      contentRef: ContentRef;
+    }
+  ) => void;
+  createCellBelow: (
+    payload: {
+      cellType: CellType;
+      id?: string;
+      source: string;
+      contentRef: ContentRef;
+    }
+  ) => void;
   id?: string;
   contentRef: ContentRef;
 };

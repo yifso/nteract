@@ -3,6 +3,7 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import { Subject } from "rxjs";
 import * as actions from "@nteract/actions";
+import { CellId, ImmutableCodeCell, ExecutionCount } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import {
@@ -41,7 +42,7 @@ type AnyCellProps = {
   cellType: "markdown" | "code" | "raw";
   theme: string;
   source: string;
-  executionCount: number;
+  executionCount: ExecutionCount;
   outputs: Immutable.List<any>;
   pager: Immutable.List<any>;
   cellStatus: string;
@@ -101,13 +102,14 @@ const mapStateToCellProps = (
     throw new Error("cell not found inside cell map");
   }
 
-  const cellType = cell.get("cell_type");
+  const cellType = (cell as any).get("cell_type");
   const outputs = cell.get("outputs", Immutable.List());
 
   const sourceHidden =
-    cellType === "code" &&
-    (cell.getIn(["metadata", "inputHidden"], false) ||
-      cell.getIn(["metadata", "hide_input"], false));
+    (cellType === "code" &&
+      (cell.getIn(["metadata", "inputHidden"]) ||
+        cell.getIn(["metadata", "hide_input"]))) ||
+    false;
 
   const outputHidden =
     cellType === "code" &&
@@ -116,9 +118,9 @@ const mapStateToCellProps = (
   const outputExpanded =
     cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);
 
-  const tags = cell.getIn(["metadata", "tags"], Immutable.Set());
+  const tags = cell.getIn(["metadata", "tags"]) || Immutable.Set();
 
-  const pager = model.getIn(["cellPagers", id], Immutable.List());
+  const pager = model.getIn(["cellPagers", id]) || Immutable.List();
 
   const kernelRef = selectors.currentKernelRef(state);
   let channels: Subject<any> | undefined;
@@ -136,7 +138,7 @@ const mapStateToCellProps = (
     tags,
     source: cell.get("source", ""),
     theme: selectors.userTheme(state),
-    executionCount: cell.get("execution_count"),
+    executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
     outputs,
     models: selectors.models(state),
     pager,
@@ -156,7 +158,7 @@ const mapDispatchToCellProps = (
   selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
   focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
   unfocusEditor: () =>
-    dispatch(actions.focusCellEditor({ id: null, contentRef })),
+    dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
   focusAboveCell: () => {
     dispatch(actions.focusPreviousCell({ id, contentRef }));
     dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
@@ -385,11 +387,26 @@ type NotebookStateProps = {
 };
 
 type NotebookDispatchProps = {
-  moveCell: (payload: object) => void;
-  focusCell: (payload: object) => void;
-  executeFocusedCell: (payload: object) => void;
-  focusNextCell: (payload: object) => void;
-  focusNextCellEditor: (payload: object) => void;
+  moveCell: (
+    payload: {
+      id: CellId;
+      destinationId: CellId;
+      above: boolean;
+      contentRef: ContentRef;
+    }
+  ) => void;
+  focusCell: (payload: { id: CellId; contentRef: ContentRef }) => void;
+  executeFocusedCell: (payload: { contentRef: ContentRef }) => void;
+  focusNextCell: (
+    payload: {
+      id?: CellId;
+      createCellIfUndefined: boolean;
+      contentRef: ContentRef;
+    }
+  ) => void;
+  focusNextCellEditor: (
+    payload: { id?: CellId; contentRef: ContentRef }
+  ) => void;
 };
 
 const mapStateToProps = (
@@ -409,7 +426,7 @@ const mapStateToProps = (
       "<Notebook /> has to have content & model that are notebook types"
     );
   }
-  if (model.type === "dummy" || model.type === "unknown") {
+  if ((model as any).type === "dummy" || model.type === "unknown") {
     return {
       theme: selectors.userTheme(state),
       cellOrder: Immutable.List(),
@@ -457,12 +474,22 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
-  moveCell: (payload: object) => dispatch(actions.moveCell(payload)),
-  focusCell: (payload: object) => dispatch(actions.focusCell(payload)),
-  executeFocusedCell: (payload: object) =>
+  moveCell: (payload: {
+    id: CellId;
+    destinationId: CellId;
+    above: boolean;
+    contentRef: ContentRef;
+  }) => dispatch(actions.moveCell(payload)),
+  focusCell: (payload: { id: CellId; contentRef: ContentRef }) =>
+    dispatch(actions.focusCell(payload)),
+  executeFocusedCell: (payload: { contentRef: ContentRef }) =>
     dispatch(actions.executeFocusedCell(payload)),
-  focusNextCell: (payload: object) => dispatch(actions.focusNextCell(payload)),
-  focusNextCellEditor: (payload: object) =>
+  focusNextCell: (payload: {
+    id?: CellId;
+    createCellIfUndefined: boolean;
+    contentRef: ContentRef;
+  }) => dispatch(actions.focusNextCell(payload)),
+  focusNextCellEditor: (payload: { id?: CellId; contentRef: ContentRef }) =>
     dispatch(actions.focusNextCellEditor(payload))
 });
 
@@ -521,8 +548,8 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
 
     if (e.shiftKey) {
       // Couldn't focusNextCell just do focusing of both?
-      focusNextCell({ id: null, createCellIfUndefined: true, contentRef });
-      focusNextCellEditor({ id: null, contentRef });
+      focusNextCell({ id: undefined, createCellIfUndefined: true, contentRef });
+      focusNextCellEditor({ id: undefined, contentRef });
     }
   }
 
