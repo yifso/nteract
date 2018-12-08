@@ -14,7 +14,7 @@ type ErrorAction = {
 };
 
 // Get the type
-type Console = typeof console;
+export type Console = typeof console;
 
 export const errorMiddleware = (
   store: any,

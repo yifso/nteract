@@ -21,7 +21,7 @@ import type { StateObservable } from "redux-observable";
 import { ipcRenderer as ipc } from "electron";
 import { createMainChannel } from "enchannel-zmq-backend";
 import * as jmp from "jmp";
-import { selectors, actions, actionTypes } from "@nteract/core";
+import { selectors, actions } from "@nteract/core";
 import type {
   AppState,
   KernelspecInfo,
@@ -152,13 +152,13 @@ export const launchKernelByNameEpic = (
   action$: ActionsObservable<redux$Action>
 ): Observable<redux$Action> =>
   action$.pipe(
-    ofType(actionTypes.LAUNCH_KERNEL_BY_NAME),
-    tap((action: actionTypes.LaunchKernelByNameAction) => {
+    ofType(actions.LAUNCH_KERNEL_BY_NAME),
+    tap((action: actions.LaunchKernelByNameAction) => {
       if (!action.payload.kernelSpecName) {
         throw new Error("launchKernelByNameEpic requires a kernel name");
       }
     }),
-    mergeMap((action: actionTypes.LaunchKernelByNameAction) =>
+    mergeMap((action: actions.LaunchKernelByNameAction) =>
       kernelSpecsObservable.pipe(
         map(specs => {
           const kernelSpec = specs[action.payload.kernelSpecName];
@@ -197,10 +197,10 @@ export const launchKernelEpic = (
   state$: StateObservable<AppState>
 ): Observable<redux$Action> =>
   action$.pipe(
-    ofType(actionTypes.LAUNCH_KERNEL),
+    ofType(actions.LAUNCH_KERNEL),
     // We must kill the previous kernel now
     // Then launch the next one
-    switchMap((action: actionTypes.LaunchKernelAction) => {
+    switchMap((action: actions.LaunchKernelAction) => {
       if (
         !action.payload ||
         !action.payload.kernelSpec ||
@@ -261,12 +261,12 @@ export const interruptKernelEpic = (
   state$: StateObservable<AppState>
 ): Observable<redux$Action> =>
   action$.pipe(
-    ofType(actionTypes.INTERRUPT_KERNEL),
+    ofType(actions.INTERRUPT_KERNEL),
     // This epic can only interrupt direct zeromq connected kernels
     filter(() => selectors.isCurrentKernelZeroMQ(state$.value)),
     // If the user fires off _more_ interrupts, we shouldn't interrupt the in-flight
     // interrupt, instead doing it after the last one happens
-    concatMap((action: actionTypes.InterruptKernel) => {
+    concatMap((action: actions.InterruptKernel) => {
       const kernel = selectors.currentKernel(state$.value);
       if (!kernel) {
         return of(
@@ -329,8 +329,8 @@ export const killKernelEpic = (
   state$: StateObservable<AppState>
 ): Observable<redux$Action> =>
   action$.pipe(
-    ofType(actionTypes.KILL_KERNEL),
-    concatMap((action: actionTypes.KillKernelAction) => {
+    ofType(actions.KILL_KERNEL),
+    concatMap((action: actions.KillKernelAction) => {
       const kernelRef = action.payload.kernelRef;
       const kernel = selectors.kernel(state$.value, { kernelRef });
 
@@ -405,8 +405,8 @@ export const killKernelEpic = (
 
 export function watchSpawn(action$: *) {
   return action$.pipe(
-    ofType(actionTypes.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: actionTypes.NewKernelAction) => {
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    switchMap((action: actions.NewKernelAction) => {
       if (!action.payload.kernel.type === "zeromq") {
         throw new Error("kernel.type is not zeromq.");
       }

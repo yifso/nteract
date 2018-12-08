@@ -1,4 +1,3 @@
-// @flow
 /* eslint-disable max-len */
 
 import uuid from "uuid/v4";
@@ -17,7 +16,7 @@ import {
   notebook as reducers,
   reduceOutputs,
   cleanCellTransient
-} from "@nteract/reducers";
+} from "../src/core/entities/contents/notebook";
 import { makeDocumentRecord } from "@nteract/types";
 import { fixtureCommutable } from "@nteract/fixtures";
 
@@ -963,8 +962,14 @@ describe("sendExecuteRequest", () => {
 
 describe("acceptPayloadMessage", () => {
   test("processes jupyter payload message types", () => {
+    const notebook = appendCellToNotebook(emptyNotebook, emptyCodeCell);
+    const initialState = makeDocumentRecord({
+      filename: "test.ipynb",
+      notebook,
+      cellPagers: Immutable.Map({})
+    });
     const state = reducers(
-      initialDocument,
+      initialState,
       actions.acceptPayloadMessage({
         id: firstCellId,
         payload: {
