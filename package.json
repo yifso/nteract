@@ -159,7 +159,7 @@
     "electron-builder": "20.38.2",
     "electron-context-menu": "^0.10.0",
     "electron-log": "^2.2.13",
-    "electron-updater": "^3.0.0",
+    "electron-updater": "^4.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.1",
