@@ -1,7 +1,6 @@
-declare export var actions: any;
-declare export var middlewares: any;
-declare export var reducers: any;
-declare export var selectors: any;
-declare export var epics: any;
-declare export var state: any;
+// @flow
+/* eslint-disable */
 
+declare module "@nteract/core" {
+    declare module.exports: any;
+}
