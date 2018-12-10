@@ -19,6 +19,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@nteract/actions": "^1.0.0",
     "@nteract/commutable": "^6.0.0-alpha.0",
     "@nteract/connected-components": "^5.0.0-alpha.0",
     "@nteract/core": "^9.0.0-alpha.0",
