@@ -6,6 +6,7 @@ import { ExecuteRequest } from "@nteract/messaging";
 import {
   ContentRef,
   KernelInfo,
+  KernelspecInfo,
   KernelRef,
   LocalKernelProps,
   RemoteKernelProps
@@ -68,7 +69,7 @@ export type ExecuteFailed = {
   type: "EXECUTE_FAILED";
   payload: {
     error: Error;
-    contentRef: ContentRef;
+    contentRef?: ContentRef;
   };
   error: true;
 };
@@ -171,7 +172,7 @@ export type LaunchKernelAction = {
   type: "LAUNCH_KERNEL";
   payload: {
     kernelRef: KernelRef;
-    kernelSpec: Object;
+    kernelSpec: KernelspecInfo;
     cwd: string;
     selectNextKernel: boolean;
     contentRef: ContentRef;

@@ -22,6 +22,8 @@ export type FetchContentFulfilled = {
     model: any; // literal response from API
     kernelRef: KernelRef;
     contentRef: ContentRef;
+    created?: Date | null;
+    lastSaved?: Date | null;
   };
 };
 
