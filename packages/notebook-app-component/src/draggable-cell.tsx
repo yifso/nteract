@@ -206,4 +206,4 @@ class DraggableCellView extends React.Component<Props, State> {
 const source = DragSource("CELL", cellSource, collectSource);
 const target = DropTarget("CELL", cellTarget, collectTarget);
 
-export default target(source(DraggableCellView));
+export default source(target(DraggableCellView));
