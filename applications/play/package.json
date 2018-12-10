@@ -16,7 +16,6 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@babel/runtime-corejs2": "^7.0.0",
-    "@nteract/core": "^9.0.0-alpha.0",
     "@nteract/display-area": "^5.0.0-alpha.0",
     "@nteract/editor": "^8.0.0-alpha.0",
     "@nteract/markdown": "^3.0.1",

@@ -1,12 +1,12 @@
 // @flow
 import { applyMiddleware, compose, createStore } from "redux";
 import { createEpicMiddleware } from "redux-observable";
-import { middlewares as coreMiddlewares } from "@nteract/core";
 import merge from "deepmerge";
 
 import epics from "./epics";
 import reducer from "./reducer";
 import getInitialState from "./getInitialState";
+import { errorMiddleware } from "./middlewares";
 
 /**
  * Not that we need to here, but I thought I'd write it out
@@ -37,9 +37,7 @@ export default function(givenInitialState: Object = {}) {
   const store = createStore(
     reducer,
     initialState,
-    composeEnhancers(
-      applyMiddleware(epicMiddleware, coreMiddlewares.errorMiddleware)
-    )
+    composeEnhancers(applyMiddleware(epicMiddleware, errorMiddleware))
   );
   epicMiddleware.run(epics);
   return store;
