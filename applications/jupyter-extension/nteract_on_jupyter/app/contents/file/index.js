@@ -92,7 +92,7 @@ export class File extends React.PureComponent<FileProps, *> {
               <ThemedLogo />
             </a>
             <EditableText
-              disabled={false}
+              disabled={true}
               placeholder={"Enter Title..."}
               value={this.props.displayName}
             />
