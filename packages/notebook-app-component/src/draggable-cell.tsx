@@ -46,16 +46,22 @@ const cellDragPreviewImage = [
 ].join("");
 
 type Props = {
-  connectDragPreview: ConnectDragPreview;
-  connectDragSource: ConnectDragSource;
-  connectDropTarget: ConnectDropTarget;
   focusCell: (payload: any) => void;
   id: string;
-  isDragging: boolean;
-  isOver: boolean;
   moveCell: (payload: any) => void;
   children: React.ReactNode;
   contentRef: ContentRef;
+};
+
+type DnDSourceProps = {
+  connectDragPreview: ConnectDragPreview;
+  connectDragSource: ConnectDragSource;
+  isDragging: boolean;
+};
+
+type DnDTargetProps = {
+  connectDropTarget: ConnectDropTarget;
+  isOver: boolean;
 };
 
 type State = {
@@ -135,7 +141,10 @@ function collectTarget(
   };
 }
 
-class DraggableCellView extends React.Component<Props, State> {
+class DraggableCellView extends React.Component<
+  Props & DnDSourceProps & DnDTargetProps,
+  State
+> {
   el?: HTMLDivElement | null;
 
   state = {
@@ -203,7 +212,15 @@ class DraggableCellView extends React.Component<Props, State> {
   }
 }
 
-const source = DragSource("CELL", cellSource, collectSource);
-const target = DropTarget("CELL", cellTarget, collectTarget);
+const source = DragSource<Props, DnDSourceProps>(
+  "CELL",
+  cellSource,
+  collectSource
+);
+const target = DropTarget<Props, DnDTargetProps>(
+  "CELL",
+  cellTarget,
+  collectTarget
+);
 
 export default source(target(DraggableCellView));

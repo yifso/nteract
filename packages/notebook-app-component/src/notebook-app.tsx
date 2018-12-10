@@ -2,9 +2,8 @@
 import * as Immutable from "immutable";
 import * as React from "react";
 import { Subject } from "rxjs";
-import * as actions from "@nteract/actions";
+import { actions, selectors } from "@nteract/core";
 import { CellId, ImmutableCodeCell, ExecutionCount } from "@nteract/commutable";
-import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import {
   Input,
@@ -19,7 +18,6 @@ import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-// $FlowFixMe
 import { RichestMime, Output } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
