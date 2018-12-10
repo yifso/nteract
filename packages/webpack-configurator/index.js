@@ -9,9 +9,8 @@ opaque type Aliases = {[string]: string }
 
 const rxAliases /* : Aliases */ = require("rxjs/_esm5/path-mapping")();
 
-const babelFlowConfig = require("../../babel.flow.config");
-const babelTypescriptConfig = require("../../babel.typescript.config");
-
+const babelFlowConfig = require("./config/babel.flow.config");
+const babelTypescriptConfig = require("./config/babel.typescript.config");
 const { aliases } = require("./aliases");
 
 // We don't transpile packages in node_modules, unless it's _our_ package

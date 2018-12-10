@@ -3,8 +3,12 @@
   "version": "2.0.0-alpha.0",
   "main": "index.js",
   "description": "a common webpack configurator for nteract applications",
+  "files": ["./config/babel.config.js", "./config/babel.flow.config.js", "./config/babel.typescript.config.js"],
   "scripts": {
-    "test": "echo 'write a basic integration test please' && node -e 'process.exit(1)'"
+    "test": "echo 'write a basic integration test please' && node -e 'process.exit(1)'",
+    "copyConfig": "bash ./copy_config.sh",
+    "build": "yarn copyConfig",
+    "prepublish": "yarn copyConfig"
   },
   "publishConfig": {
     "access": "public"
