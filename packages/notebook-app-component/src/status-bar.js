@@ -74,7 +74,9 @@ const mapStateToProps = (
 ): Props => {
   const { contentRef, kernelRef } = ownProps;
   const content = selectors.content(state, { contentRef });
-  const kernel = kernelRef ? selectors.kernel(state, { kernelRef }) : null;
+  const kernel =
+    // check for undefined or null kernelRef (using double equal)
+    kernelRef == null ? selectors.kernel(state, { kernelRef }) : null;
 
   const lastSaved = content && content.lastSaved ? content.lastSaved : null;
 

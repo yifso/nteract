@@ -1,6 +1,0 @@
-// @flow
-/* eslint-disable */
-
-declare module "@nteract/core" {
-    declare module.exports: any;
-}
