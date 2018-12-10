@@ -1,16 +1,15 @@
 // @flow
-import React from "react";
-import type { ChildrenArray } from "react";
+import * as React from "react";
 
-type WrapperProps<T> = {
-  children: ChildrenArray<T>,
-  outerProps: any,
-  width: number,
-  height: number,
-  viewBox: string
+type WrapperProps = {
+  children: React.ReactNode;
+  outerProps: React.SVGAttributes<any>;
+  width: number;
+  height: number;
+  viewBox: string;
 };
 
-export const SVGWrapper = (props: WrapperProps<*>) => {
+export const SVGWrapper = (props: WrapperProps) => {
   return (
     <span>
       <svg
@@ -34,7 +33,7 @@ export const SVGWrapper = (props: WrapperProps<*>) => {
   );
 };
 
-export const SavingingIcon = (props: any) => (
+export const SavingIcon = (props: React.SVGAttributes<any>) => (
   <SVGWrapper width={16} height={16} viewBox="0 0 24 24" outerProps={props}>
     <title>Saving...</title>
     <path
@@ -44,7 +43,7 @@ export const SavingingIcon = (props: any) => (
   </SVGWrapper>
 );
 
-export const LoadingIcon = (props: any) => (
+export const LoadingIcon = (props: React.SVGAttributes<any>) => (
   <SVGWrapper width={16} height={16} viewBox="0 0 24 24" outerProps={props}>
     <title>Loading...</title>
     <path
@@ -54,7 +53,7 @@ export const LoadingIcon = (props: any) => (
   </SVGWrapper>
 );
 
-export const ErrorIcon = (props: any) => (
+export const ErrorIcon = (props: React.SVGAttributes<any>) => (
   <SVGWrapper width={16} height={16} viewBox="0 0 24 24" outerProps={props}>
     <title>Error</title>
     <path

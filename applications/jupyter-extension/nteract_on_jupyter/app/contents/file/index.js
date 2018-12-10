@@ -5,7 +5,7 @@ import { dirname } from "path";
 import * as React from "react";
 import { selectors } from "@nteract/core";
 import type { ContentRef, AppState } from "@nteract/core";
-import { LoadingIcon, SavingingIcon, ErrorIcon } from "@nteract/iron-icons";
+import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 
 import { ThemedLogo } from "../../components/themed-logo";
@@ -48,7 +48,7 @@ export class File extends React.PureComponent<FileProps, *> {
     // Determine the file handler
     let choice = null;
     const icon = this.props.saving ? (
-      <SavingingIcon />
+      <SavingIcon />
     ) : this.props.error ? (
       <ErrorIcon />
     ) : this.props.loading ? (
