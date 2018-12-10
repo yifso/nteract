@@ -31,7 +31,7 @@ Update the keys thus:
   // modify the scripts below, delete the ones noted, and add any missing
   "scripts": {
     "prepare": "npm run build",
-    "prepublishOnly": "npm run:build",
+    "prepublishOnly": "npm run build",
     "build": "npm run build:clean && npm run build:lib",
     "build:clean": "tsc -b --clean",
     //"build:flow": "...", // DELETE!
