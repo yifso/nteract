@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { dummyCommutable } from "@nteract/core/dummy";
+import { fixtureCommutable } from "@nteract/fixtures";
 
 import { StatusBar } from "../src/status-bar";
 
@@ -11,7 +11,7 @@ describe("StatusBar", () => {
 
     const component = shallow(
       <StatusBar
-        notebook={dummyCommutable}
+        notebook={fixtureCommutable}
         lastSaved={lastSaved}
         kernelSpecDisplayName={kernelSpecDisplayName}
       />
@@ -25,7 +25,7 @@ describe("StatusBar", () => {
 
     const component = shallow(
       <StatusBar
-        notebook={dummyCommutable}
+        notebook={fixtureCommutable}
         lastSaved={lastSaved}
         kernelSpecDisplayName={kernelSpecDisplayName}
       />
@@ -34,7 +34,7 @@ describe("StatusBar", () => {
     const shouldUpdate = component.instance().shouldComponentUpdate({
       lastSaved,
       kernelSpecDisplayName: "javascript",
-      notebook: dummyCommutable
+      notebook: fixtureCommutable
     });
     expect(shouldUpdate).toBe(false);
   });
@@ -44,7 +44,7 @@ describe("StatusBar", () => {
 
     const component = shallow(
       <StatusBar
-        notebook={dummyCommutable}
+        notebook={fixtureCommutable}
         lastSaved={lastSaved}
         kernelSpecDisplayName={kernelSpecDisplayName}
       />
@@ -53,7 +53,7 @@ describe("StatusBar", () => {
     const shouldUpdate = component.instance().shouldComponentUpdate({
       lastSaved: new Date(),
       kernelSpecDisplayName: "python3",
-      notebook: dummyCommutable
+      notebook: fixtureCommutable
     });
     expect(shouldUpdate).toBe(true);
   });

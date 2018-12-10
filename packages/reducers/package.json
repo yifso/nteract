@@ -1,12 +1,12 @@
 {
-  "name": "reducers",
+  "name": "@nteract/reducers",
   "version": "1.0.0",
-  "description": "",
+  "description": "A set of reducers for use in nteract applications",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "prepublishOnly": "npm run:build",
+    "prepublishOnly": "npm run build",
     "build": "npm run build:clean && npm run build:lib",
     "build:clean": "tsc -b --clean",
     "build:lib": "tsc -b",

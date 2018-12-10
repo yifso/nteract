@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import { displayOrder, transforms } from "@nteract/transforms";
 
-import { dummyCommutable, dummyJSON } from "../../core/src/dummy";
+import { fixtureCommutable, fixtureJSON } from "@nteract/fixtures";
 
 import NotebookPreview from "./../src";
 
@@ -17,7 +17,7 @@ describe("Notebook", () => {
   it("accepts an Immutable.List of cells", () => {
     const component = shallow(
       <NotebookPreview
-        notebook={dummyCommutable}
+        notebook={fixtureCommutable}
         theme="light"
         tip
         displayOrder={displayOrder}
@@ -30,7 +30,7 @@ describe("Notebook", () => {
   it("accepts an Object of cells", () => {
     const component = shallow(
       <NotebookPreview
-        notebook={dummyJSON}
+        notebook={fixtureJSON}
         theme="light"
         tip
         displayOrder={displayOrder}

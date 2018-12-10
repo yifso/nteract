@@ -17,7 +17,7 @@ import type { ActionsObservable, StateObservable } from "redux-observable";
 import { readFileObservable, statObservable } from "fs-observable";
 import { monocellNotebook, toJS } from "@nteract/commutable";
 import type { ImmutableNotebook } from "@nteract/commutable";
-import { actionTypes, actions, selectors } from "@nteract/core";
+import { actions, selectors } from "@nteract/core";
 import type { AppState } from "@nteract/core";
 
 /**
@@ -104,8 +104,8 @@ function createContentsResponse(
  */
 export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
   action$.pipe(
-    ofType(actionTypes.FETCH_CONTENT),
-    tap((action: actionTypes.FetchContent) => {
+    ofType(actions.FETCH_CONTENT),
+    tap((action: actions.FetchContent) => {
       // If there isn't a filepath, save-as it instead
       if (!action.payload.filepath) {
         throw new Error("fetch content needs a path");
@@ -151,8 +151,8 @@ export const launchKernelWhenNotebookSetEpic = (
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
-    ofType(actionTypes.FETCH_CONTENT_FULFILLED),
-    mergeMap((action: actionTypes.FetchContentFulfilled) => {
+    ofType(actions.FETCH_CONTENT_FULFILLED),
+    mergeMap((action: actions.FetchContentFulfilled) => {
       const contentRef = action.payload.contentRef;
 
       const content = selectors.content(state$.value, { contentRef });
@@ -190,8 +190,8 @@ export const launchKernelWhenNotebookSetEpic = (
  */
 export const newNotebookEpic = (action$: ActionsObservable<redux$Action>) =>
   action$.pipe(
-    ofType(actionTypes.NEW_NOTEBOOK),
-    map((action: actionTypes.NewNotebook) => {
+    ofType(actions.NEW_NOTEBOOK),
+    map((action: actions.NewNotebook) => {
       const {
         payload: {
           kernelSpec: { name, spec }

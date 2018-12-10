@@ -1,6 +1,6 @@
 /* @flow strict */
 import { remote } from "electron";
-import { actions, actionTypes } from "@nteract/core";
+import { actions } from "@nteract/core";
 import { readFileObservable, writeFileObservable } from "fs-observable";
 import { mapTo, mergeMap, map, switchMap } from "rxjs/operators";
 import { ofType } from "redux-observable";
@@ -18,7 +18,7 @@ export const CONFIG_FILE_PATH = path.join(HOME, ".jupyter", "nteract.json");
  */
 export const loadConfigEpic = (action$: ActionsObservable<redux$Action>) =>
   action$.pipe(
-    ofType(actionTypes.LOAD_CONFIG),
+    ofType(actions.LOAD_CONFIG),
     switchMap(() =>
       // $FlowFixMe deal with after the typescript migration
       readFileObservable(CONFIG_FILE_PATH).pipe(
@@ -34,8 +34,8 @@ export const saveConfigOnChangeEpic = (
   action$: ActionsObservable<redux$Action>
 ) =>
   action$.pipe(
-    ofType(actionTypes.SET_CONFIG_AT_KEY),
-    mapTo({ type: actionTypes.SAVE_CONFIG })
+    ofType(actions.SET_CONFIG_AT_KEY),
+    mapTo({ type: actions.SAVE_CONFIG })
   );
 
 /**
@@ -46,7 +46,7 @@ export const saveConfigEpic = (
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
-    ofType(actionTypes.SAVE_CONFIG),
+    ofType(actions.SAVE_CONFIG),
     mergeMap(() =>
       writeFileObservable(
         CONFIG_FILE_PATH,

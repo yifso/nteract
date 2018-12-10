@@ -1,6 +1,6 @@
 import * as Immutable from "immutable";
 import { ActionsObservable } from "redux-observable";
-import { actions, actionTypes, state as stateModule } from "@nteract/core";
+import { actions as actionsModule, state as stateModule } from "@nteract/core";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
 import { Subject, of } from "rxjs";
 import { toArray } from "rxjs/operators";
@@ -157,7 +157,7 @@ describe("acquireKernelInfo", () => {
 describe("watchExecutionStateEpic", () => {
   test("returns an Observable with an initial state of idle", done => {
     const action$ = ActionsObservable.of({
-      type: actionTypes.LAUNCH_KERNEL_SUCCESSFUL,
+      type: actionsModule.LAUNCH_KERNEL_SUCCESSFUL,
       payload: {
         kernel: {
           channels: of({
@@ -177,7 +177,7 @@ describe("watchExecutionStateEpic", () => {
       // Every action that goes through should get stuck on an array
       actions => {
         const types = actions.map(({ type }) => type);
-        expect(types).toEqual([actionTypes.SET_EXECUTION_STATE]);
+        expect(types).toEqual([actionsModule.SET_EXECUTION_STATE]);
       },
       err => done.fail(err), // It should not error in the stream
       () => done()
@@ -213,12 +213,12 @@ describe("restartKernelEpic", () => {
     testScheduler.run(helpers => {
       const { hot, expectObservable } = helpers;
       const inputActions = {
-        a: actions.restartKernel({
+        a: actionsModule.restartKernel({
           outputHandling: "None",
           kernelRef: "oldKernelRef",
           contentRef: contentRef
         }),
-        b: actions.launchKernelSuccessful({
+        b: actionsModule.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
           contentRef: contentRef,
@@ -227,18 +227,18 @@ describe("restartKernelEpic", () => {
       };
 
       const outputActions = {
-        c: actions.killKernel({
+        c: actionsModule.killKernel({
           restarting: true,
           kernelRef: "oldKernelRef"
         }),
-        d: actions.launchKernelByName({
+        d: actionsModule.launchKernelByName({
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,
           contentRef: contentRef
         }),
-        e: actions.restartKernelSuccessful({
+        e: actionsModule.restartKernelSuccessful({
           kernelRef: newKernelRef,
           contentRef: contentRef
         })
@@ -258,7 +258,6 @@ describe("restartKernelEpic", () => {
     });
   });
   test("work for outputHandling Restart and Run All", () => {
-    const contentRef = "contentRef";
     const newKernelRef = "newKernelRef";
 
     const state = {
@@ -285,11 +284,11 @@ describe("restartKernelEpic", () => {
       const { hot, expectObservable } = helpers;
 
       const inputActions = {
-        a: actions.restartKernel({
+        a: actionsModule.restartKernel({
           outputHandling: "Run All",
           kernelRef: "oldKernelRef"
         }),
-        b: actions.launchKernelSuccessful({
+        b: actionsModule.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
           selectNextKernel: true
@@ -297,20 +296,20 @@ describe("restartKernelEpic", () => {
       };
 
       const outputActions = {
-        c: actions.killKernel({
+        c: actionsModule.killKernel({
           restarting: true,
           kernelRef: "oldKernelRef"
         }),
-        d: actions.launchKernelByName({
+        d: actionsModule.launchKernelByName({
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true
         }),
-        e: actions.restartKernelSuccessful({
+        e: actionsModule.restartKernelSuccessful({
           kernelRef: newKernelRef
         }),
-        f: actions.executeAllCells({})
+        f: actionsModule.executeAllCells({})
       };
 
       const inputMarbles = "a---b---|";

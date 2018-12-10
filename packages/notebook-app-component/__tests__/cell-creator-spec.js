@@ -2,8 +2,8 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
 import { Provider } from "react-redux";
-import { actionTypes } from "@nteract/core";
-import { dummyStore } from "@nteract/core/dummy";
+import { actions } from "@nteract/core";
+import { fixtureStore } from "@nteract/fixtures";
 
 import CellCreator, { PureCellCreator } from "../src/cell-creator";
 
@@ -44,7 +44,7 @@ describe("CellCreatorView", () => {
 
 describe("CellCreatorProvider", () => {
   test("can be constructed", () => {
-    const store = dummyStore();
+    const store = fixtureStore();
 
     const setup = (above, id) =>
       mount(
@@ -57,7 +57,7 @@ describe("CellCreatorProvider", () => {
     expect(component).not.toBeNull();
   });
   test("createCell can create text cell", () => {
-    const store = dummyStore();
+    const store = fixtureStore();
 
     const setup = (above, id) =>
       mount(
@@ -70,7 +70,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("markdown");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_BELOW);
+        expect(action.type).toBe(actions.CREATE_CELL_BELOW);
         resolve();
       };
       store.dispatch = dispatch;
@@ -82,7 +82,7 @@ describe("CellCreatorProvider", () => {
     });
   });
   test("createCell can create code cell", () => {
-    const store = dummyStore();
+    const store = fixtureStore();
 
     const setup = (above, id) =>
       mount(
@@ -95,7 +95,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_BELOW);
+        expect(action.type).toBe(actions.CREATE_CELL_BELOW);
         resolve();
       };
       store.dispatch = dispatch;
@@ -107,7 +107,7 @@ describe("CellCreatorProvider", () => {
     });
   });
   test("createCell can add a cell above the current one", () => {
-    const store = dummyStore();
+    const store = fixtureStore();
 
     const setup = (above, id) =>
       mount(
@@ -120,7 +120,7 @@ describe("CellCreatorProvider", () => {
       const dispatch = action => {
         expect(action.payload.id).toBe("test");
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_ABOVE);
+        expect(action.type).toBe(actions.CREATE_CELL_ABOVE);
         resolve();
       };
       store.dispatch = dispatch;
@@ -132,7 +132,7 @@ describe("CellCreatorProvider", () => {
     });
   });
   test("createCell creates a new cell if cell has no id", () => {
-    const store = dummyStore();
+    const store = fixtureStore();
 
     const setup = (above, id) =>
       mount(
@@ -144,7 +144,7 @@ describe("CellCreatorProvider", () => {
     return new Promise(resolve => {
       const dispatch = action => {
         expect(action.payload.cellType).toBe("code");
-        expect(action.type).toBe(actionTypes.CREATE_CELL_APPEND);
+        expect(action.type).toBe(actions.CREATE_CELL_APPEND);
         resolve();
       };
       store.dispatch = dispatch;

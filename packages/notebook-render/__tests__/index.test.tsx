@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import { displayOrder, transforms } from "@nteract/transforms";
 
-import { dummyCommutable, dummyJSON } from "../../core/src/dummy";
+import { fixtureCommutable, fixtureJSON } from "@nteract/fixtures";
 
 import NotebookRender from "./../src";
 
@@ -18,7 +18,7 @@ describe("Test NotebokRender snapshots", () => {
   it("accepts an Immutable.List of cells", () => {
     const component = shallow(
       <NotebookRender
-        notebook={dummyCommutable}
+        notebook={fixtureCommutable}
         theme="light"
         tip
         displayOrder={displayOrder}
@@ -31,7 +31,7 @@ describe("Test NotebokRender snapshots", () => {
   it("accepts an Object of cells", () => {
     const component = shallow(
       <NotebookRender
-        notebook={dummyJSON}
+        notebook={fixtureJSON}
         theme="light"
         tip
         displayOrder={displayOrder}
@@ -46,7 +46,7 @@ describe("Render server-side with renderToStaticMarkup", () => {
   it("html fragment shouldn't be empty", () => {
     const component = shallow(
       <NotebookRender
-        notebook={dummyJSON}
+        notebook={fixtureJSON}
         theme="light"
         tip
         displayOrder={displayOrder}

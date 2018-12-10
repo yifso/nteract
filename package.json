@@ -77,7 +77,6 @@
     ],
     "moduleNameMapper": {
       "^@nteract/styles$": "<rootDir>/packages/styles/lib",
-      "^@nteract/core/dummy$": "<rootDir>/packages/core/src/dummy",
       "^@nteract/vega-embed-v2": "@nteract/vega-embed-v2",
       "^@nteract/([^/]*)$": "<rootDir>/packages/$1/src",
       "^(ansi-to-react|enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
@@ -145,6 +144,7 @@
     "@types/react-test-renderer": "^16.0.3",
     "@types/react-timeago": "^4.1.0",
     "@types/redux-immutable": "^4.0.0",
+    "@types/redux-logger": "^3.0.6",
     "@types/styled-jsx": "^2.2.7",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.0",

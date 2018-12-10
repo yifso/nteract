@@ -3,11 +3,7 @@
 // Lots of open bugs around intersection types, and they're used inside Immutable.js too, so layers upon layers.
 // https://github.com/facebook/flow/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+intersect
 
-import {
-  actionTypes as coreActionTypes,
-  actions as coreActions,
-  selectors
-} from "@nteract/core";
+import { actions as coreActions, selectors } from "@nteract/core";
 import { Observable, empty, of, zip, concat } from "rxjs";
 import {
   catchError,
@@ -77,8 +73,8 @@ export const closeNotebookEpic = (
           killKernelAwaits.push(
             action$.pipe(
               ofType(
-                coreActionTypes.KILL_KERNEL_SUCCESSFUL,
-                coreActionTypes.KILL_KERNEL_FAILED
+                coreActions.KILL_KERNEL_SUCCESSFUL,
+                coreActions.KILL_KERNEL_FAILED
               ),
               filter(action => action.payload.kernelRef === kernelRef),
               take(1)

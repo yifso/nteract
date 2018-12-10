@@ -97,7 +97,7 @@ export function cleanCellTransient(state: NotebookModel, id: string) {
     .updateIn(
       ["transient", "keyPathsForDisplays"],
       (kpfd: Immutable.Map<string, KeyPaths>) =>
-        kpfd.map((keyPaths: KeyPaths) =>
+        (kpfd || Immutable.Map()).map((keyPaths: KeyPaths) =>
           keyPaths.filter((keyPath: KeyPath) => keyPath.get(2) !== id)
         )
     )
@@ -226,9 +226,12 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
     outputIndex
   ]);
 
-  const keyPaths: KeyPaths = state
-    // Extract the current list of keypaths for this displayID
-    .getIn(["transient", "keyPathsForDisplays", displayID])
+  const keyPaths: KeyPaths = (
+    state
+      // Extract the current list of keypaths for this displayID
+      .getIn(["transient", "keyPathsForDisplays", displayID]) ||
+    Immutable.List()
+  )
     // Append our current output's keyPath
     .push(keyPath);
 
@@ -539,7 +542,9 @@ function acceptPayloadMessage(
 
   if (payload.source === "page") {
     // append pager
-    return state.updateIn(["cellPagers", id], l => l.push(payload.data));
+    return state.updateIn(["cellPagers", id], l =>
+      (l || Immutable.List()).push(payload.data)
+    );
   } else if (payload.source === "set_next_input") {
     if (payload.replace) {
       // this payload is sent in IPython when you use %load

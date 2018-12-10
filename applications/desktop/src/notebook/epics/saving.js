@@ -2,7 +2,7 @@
 import { ofType } from "redux-observable";
 import type { ActionsObservable, StateObservable } from "redux-observable";
 import { writeFileObservable } from "fs-observable";
-import { actionTypes, selectors, actions } from "@nteract/core";
+import { selectors, actions } from "@nteract/core";
 import type { AppState } from "@nteract/core";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { of } from "rxjs";
@@ -18,8 +18,8 @@ export function saveEpic(
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(actionTypes.SAVE),
-    mergeMap((action: actionTypes.Save) => {
+    ofType(actions.SAVE),
+    mergeMap((action: actions.Save) => {
       const state = state$.value;
       const contentRef = action.payload.contentRef;
 
@@ -90,8 +90,8 @@ export function saveEpic(
  */
 export function saveAsEpic(action$: ActionsObservable<redux$Action>) {
   return action$.pipe(
-    ofType(actionTypes.SAVE_AS),
-    concatMap((action: actionTypes.SaveAs) => {
+    ofType(actions.SAVE_AS),
+    concatMap((action: actions.SaveAs) => {
       return [
         // Using concatMap because order matters here.
         // Filename state MUST be updated before save in all cases

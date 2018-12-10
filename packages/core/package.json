@@ -3,33 +3,26 @@
   "version": "9.0.0-alpha.0",
   "description": "core modules and components for nteract apps",
   "main": "lib/index.js",
-  "nteractDesktop": "src/index.js",
+  "types": "lib/index.d.ts",
+  "nteractDesktop": "src/index.ts",
   "scripts": {
     "prepare": "npm run build",
-    "prepublishOnly": "npm run build && npm run build:flow",
+    "prepublishOnly": "npm run:build",
     "build": "npm run build:clean && npm run build:lib",
-    "build:clean": "rimraf lib",
-    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src lib",
-    "build:lib": "babel -d lib src --ignore '**/__tests__/**' --config-file ../../babel.config.js",
-    "build:lib:watch": "npm run build:lib -- --watch",
-    "build:watch": "npm run build:clean && npm run build:lib:watch && npm run build:flow"
+    "build:clean": "tsc -b --clean",
+    "build:lib": "tsc -b",
+    "build:lib:watch": "tsc -b --watch",
+    "build:watch": "npm run build:clean && npm run build:lib:watch"
   },
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.0.0",
+    "@nteract/actions": "^1.0.0",
     "@nteract/commutable": "^6.0.0-alpha.0",
+    "@nteract/epics": "^1.0.0",
     "@nteract/messaging": "^5.0.0-alpha.0",
-    "babel-runtime": "^6.26.0",
-    "escape-carriage": "^1.3.0",
-    "file-saver": "^2.0.0",
-    "redux": "^4.0.0",
-    "redux-immutable": "^4.0.0",
-    "redux-logger": "^3.0.6",
-    "redux-observable": "^1.0.0",
-    "reselect": "^4.0.0",
-    "rx-binder": "^3.0.0-alpha.0",
-    "rx-jupyter": "^4.0.0-alpha.0",
-    "rxjs": "^6.3.3",
-    "uuid": "^3.1.0"
+    "@nteract/reducers": "^1.0.0",
+    "@nteract/selectors": "^1.0.0",
+    "@nteract/types": "^3.1.0",
+    "redux-logger": "^3.0.6"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12"
