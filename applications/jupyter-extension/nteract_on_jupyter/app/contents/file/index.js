@@ -7,6 +7,8 @@ import { selectors } from "@nteract/core";
 import type { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
+import { EditableText } from "@blueprintjs/core";
+import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
@@ -89,7 +91,11 @@ export class File extends React.PureComponent<FileProps, *> {
             >
               <ThemedLogo />
             </a>
-            <span>{this.props.displayName}</span>
+            <EditableText
+              disabled={false}
+              placeholder={"Enter Title..."}
+              value={this.props.displayName}
+            />
           </NavSection>
           <NavSection>
             <span className="icon">{icon}</span>
@@ -97,6 +103,7 @@ export class File extends React.PureComponent<FileProps, *> {
           </NavSection>
         </Nav>
         {choice}
+        <style>{blueprintCSS}</style>
       </React.Fragment>
     );
   }
