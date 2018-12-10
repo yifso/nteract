@@ -13,6 +13,8 @@ import { ContentRef, HostRef, KernelRef } from "@nteract/types";
 import { HostRecord } from "@nteract/types";
 import { LanguageInfoMetadata } from "@nteract/types";
 
+import { System as NotificationSystem } from "react-notification-system";
+
 export * from "./cells";
 export * from "./contents";
 export * from "./kernels";
@@ -190,7 +192,7 @@ export type SetExecutionStateAction = {
 export const SET_NOTIFICATION_SYSTEM = "SET_NOTIFICATION_SYSTEM";
 export type SetNotificationSystemAction = {
   type: "SET_NOTIFICATION_SYSTEM";
-  notificationSystem: object;
+  notificationSystem: NotificationSystem;
 };
 
 export const SET_GITHUB_TOKEN = "SET_GITHUB_TOKEN";

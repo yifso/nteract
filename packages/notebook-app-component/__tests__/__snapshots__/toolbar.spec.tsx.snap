@@ -300,7 +300,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".0"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"
@@ -314,7 +314,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".1"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"
@@ -328,7 +328,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".2"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"
@@ -342,7 +342,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".3"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"
@@ -356,7 +356,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".4"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"
@@ -370,7 +370,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   key=".5"
                   onClick={[Function]}
                   role="option"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a
                     className="jsx-3494371011"

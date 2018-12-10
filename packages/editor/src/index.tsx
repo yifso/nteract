@@ -44,7 +44,7 @@ export type CodeMirrorEditorProps = {
   //       care about this when kernelStatus === idle _and_ we're the active cell
   //       could instead call it `canTriggerCompletion` and reduce our current re-renders
   kernelStatus: string;
-  onChange: (value: string, change: EditorChange) => void;
+  onChange?: (value: string, change: EditorChange) => void;
   onFocusChange?: (focused: boolean) => void;
   value: string;
   defaultValue?: string;
@@ -74,13 +74,11 @@ class CodeMirrorEditor extends React.Component<
   completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
 
-  static defaultProps = {
+  static defaultProps: Partial<CodeMirrorEditorProps> = {
     theme: "light",
     completion: false,
     tip: false,
     kernelStatus: "not connected",
-    onChange: null,
-    onFocusChange: null,
     options: {},
     editorFocused: false,
     channels: null

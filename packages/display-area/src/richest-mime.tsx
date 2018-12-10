@@ -51,7 +51,10 @@ const Fallback = ({ componentStack, error }: FallbackProps) => (
   </div>
 );
 
-export default class RichestMime extends React.Component<Props, State> {
+export default class RichestMime extends React.Component<
+  Props & React.HTMLAttributes<HTMLElement>,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {

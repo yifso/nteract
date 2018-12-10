@@ -1,25 +1,41 @@
-// @flow strict
 import * as React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { CellType } from "@nteract/commutable";
 import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
-import { actions } from "@nteract/core";
-import type { ContentRef } from "@nteract/core";
+import * as actions from "@nteract/actions";
+import { ContentRef } from "@nteract/types";
 
 type Props = {
-  above: boolean,
-  createCell: (type: "code" | "markdown") => void
+  above: boolean;
+  createCell: (type: "code" | "markdown") => void;
 };
 
 type ConnectedProps = {
-  above: boolean,
-  createCellAppend: (payload: *) => void,
-  createCellAbove: (payload: *) => void,
-  createCellBelow: (payload: *) => void,
-  id?: string,
-  contentRef: ContentRef
+  above: boolean;
+  createCellAppend: (
+    payload: { cellType: CellType; contentRef: ContentRef }
+  ) => void;
+  createCellAbove: (
+    payload: {
+      cellType: CellType;
+      id?: string;
+      contentRef: ContentRef;
+    }
+  ) => void;
+  createCellBelow: (
+    payload: {
+      cellType: CellType;
+      id?: string;
+      source: string;
+      contentRef: ContentRef;
+    }
+  ) => void;
+  id?: string;
+  contentRef: ContentRef;
 };
 
-export class PureCellCreator extends React.Component<Props, null> {
+export class PureCellCreator extends React.Component<Props> {
   createMarkdownCell = () => {
     this.props.createCell("markdown");
   };
@@ -144,10 +160,20 @@ class CellCreator extends React.Component<ConnectedProps> {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  createCellAppend: (payload: *) => dispatch(actions.createCellAppend(payload)),
-  createCellAbove: (payload: *) => dispatch(actions.createCellAbove(payload)),
-  createCellBelow: (payload: *) => dispatch(actions.createCellBelow(payload))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  createCellAppend: (payload: { cellType: CellType; contentRef: ContentRef }) =>
+    dispatch(actions.createCellAppend(payload)),
+  createCellAbove: (payload: {
+    cellType: CellType;
+    id?: string;
+    contentRef: ContentRef;
+  }) => dispatch(actions.createCellAbove(payload)),
+  createCellBelow: (payload: {
+    cellType: CellType;
+    id?: string;
+    source: string;
+    contentRef: ContentRef;
+  }) => dispatch(actions.createCellBelow(payload))
 });
 
 // $FlowFixMe: react-redux typings

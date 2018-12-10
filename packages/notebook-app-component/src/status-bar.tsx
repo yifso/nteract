@@ -1,14 +1,13 @@
-/* @flow strict */
 import React from "react";
 import { connect } from "react-redux";
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-import { selectors } from "@nteract/core";
-import type { ContentRef, AppState, KernelRef } from "@nteract/core";
+import * as selectors from "@nteract/selectors";
+import { ContentRef, AppState, KernelRef } from "@nteract/types";
 
 type Props = {
-  lastSaved: ?Date,
-  kernelSpecDisplayName: string,
-  kernelStatus: string
+  lastSaved?: Date | null;
+  kernelSpecDisplayName: string;
+  kernelStatus: string;
 };
 
 const NOT_CONNECTED = "not connected";
@@ -24,7 +23,7 @@ export class StatusBar extends React.Component<Props> {
     return false;
   }
 
-  render(): ?React$Element<*> {
+  render() {
     const name = this.props.kernelSpecDisplayName || "Loading...";
 
     return (
@@ -70,7 +69,7 @@ export class StatusBar extends React.Component<Props> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef, kernelRef: ?KernelRef }
+  ownProps: { contentRef: ContentRef; kernelRef?: KernelRef | null }
 ): Props => {
   const { contentRef, kernelRef } = ownProps;
   const content = selectors.content(state, { contentRef });

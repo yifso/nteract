@@ -1,17 +1,16 @@
-// @flow
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 
 import * as React from "react";
 
 type HijackScrollProps = {
-  focused: boolean,
-  onClick: () => void,
-  children: React.Node
+  focused: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
 };
 
-export class HijackScroll extends React.Component<HijackScrollProps, *> {
-  el: ?HTMLElement;
+export class HijackScroll extends React.Component<HijackScrollProps> {
+  el: HTMLDivElement | null = null;
 
   scrollIntoViewIfNeeded(prevFocused?: boolean): void {
     // Check if the element is being hovered over.
@@ -29,7 +28,7 @@ export class HijackScroll extends React.Component<HijackScrollProps, *> {
     ) {
       if (this.el && "scrollIntoViewIfNeeded" in this.el) {
         // $FlowFixMe: This is only valid in Chrome, WebKit
-        this.el.scrollIntoViewIfNeeded();
+        (this.el as any).scrollIntoViewIfNeeded();
       } else {
         // TODO: Polyfill as best we can for the webapp version
       }

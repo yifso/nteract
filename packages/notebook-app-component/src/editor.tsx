@@ -1,15 +1,16 @@
-// @flow
 import { connect } from "react-redux";
-import { actions, selectors } from "@nteract/core";
-import type { ContentRef, AppState } from "@nteract/core";
+import { Dispatch } from "redux";
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
+import { ContentRef, AppState } from "@nteract/types";
 import { omit } from "lodash";
 import EditorView from "@nteract/editor";
 
 type Props = {
-  id: string,
-  cellFocused: boolean,
-  contentRef: ContentRef,
-  options: Object
+  id: string;
+  cellFocused: boolean;
+  contentRef: ContentRef;
+  options: Object;
 };
 
 function mapStateToProps(state: AppState, ownProps: Props) {
@@ -34,7 +35,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps: Props) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props) => {
   const { cellFocused, id, contentRef } = ownProps;
 
   return {

@@ -192,8 +192,8 @@ export const kernelsByRef = (state: AppState) =>
  */
 export const kernel = (
   state: AppState,
-  { kernelRef }: { kernelRef: KernelRef }
-) => kernelsByRef(state).get(kernelRef);
+  { kernelRef }: { kernelRef?: KernelRef | null }
+) => (kernelRef ? kernelsByRef(state).get(kernelRef) : null);
 
 /**
  * Returns the KernelRef for the kernel the nteract application is currently

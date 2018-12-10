@@ -1,4 +1,3 @@
-// @flow
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/anchor-is-valid: 0 */
@@ -8,8 +7,9 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { actions } from "@nteract/core";
-import type { ContentRef } from "@nteract/core";
+import { Dispatch } from "redux";
+import * as actions from "@nteract/actions";
+import { ContentRef } from "@nteract/types";
 import {
   DropdownMenu,
   DropdownTrigger,
@@ -21,26 +21,26 @@ import {
   TriangleRightOcticon
 } from "@nteract/octicons";
 
-export type PureToolbarProps = {|
-  type: "markdown" | "code" | "raw",
-  executeCell: ?() => void,
-  deleteCell: ?() => void,
-  clearOutputs: ?() => void,
-  toggleParameterCell: ?() => void,
-  toggleCellInputVisibility: ?() => void,
-  toggleCellOutputVisibility: ?() => void,
-  toggleOutputExpansion: ?() => void,
-  changeCellType: ?() => void,
-  sourceHidden: boolean,
-  contentRef: ContentRef
-|};
+export type PureToolbarProps = {
+  type: "markdown" | "code" | "raw";
+  executeCell?: () => void;
+  deleteCell?: () => void;
+  clearOutputs?: () => void;
+  toggleParameterCell?: () => void;
+  toggleCellInputVisibility?: () => void;
+  toggleCellOutputVisibility?: () => void;
+  toggleOutputExpansion?: () => void;
+  changeCellType?: () => void;
+  sourceHidden: boolean;
+  contentRef: ContentRef;
+};
 
 export class PureToolbar extends React.Component<PureToolbarProps> {
-  static defaultProps = {
+  static defaultProps: Partial<PureToolbarProps> = {
     type: "code"
   };
 
-  render(): React$Element<any> {
+  render() {
     const { type, executeCell, deleteCell, sourceHidden } = this.props;
 
     return (
@@ -72,7 +72,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="clearOutput"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Clear Cell Output</a>
                 </li>
@@ -81,7 +81,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="inputVisibility"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Toggle Input Visibility</a>
                 </li>
@@ -90,7 +90,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="outputVisibility"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Toggle Output Visibility</a>
                 </li>
@@ -99,7 +99,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="outputExpanded"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Toggle Expanded Output</a>
                 </li>
@@ -107,7 +107,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   onClick={this.props.toggleParameterCell}
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Toggle Parameter Cell</a>
                 </li>
@@ -117,7 +117,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="changeType"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Convert to Markdown Cell</a>
                 </li>
@@ -129,7 +129,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
                   className="changeType"
                   role="option"
                   aria-selected="false"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   <a>Convert to Code Cell</a>
                 </li>
@@ -219,18 +219,25 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
 
 // eslint-disable-next-line no-unused-vars
 type ConnectedProps = {
-  id: string,
-  type: "markdown" | "code" | "raw",
-  executeCell: () => void,
-  deleteCell: () => void,
-  clearOutputs: () => void,
-  toggleCellOutputVisibility: () => void,
-  toggleCellInputVisibility: () => void,
-  changeCellType: () => void,
-  toggleOutputExpansion: () => void
+  id: string;
+  type: "markdown" | "code" | "raw";
+  executeCell: () => void;
+  deleteCell: () => void;
+  clearOutputs: () => void;
+  toggleCellOutputVisibility: () => void;
+  toggleCellInputVisibility: () => void;
+  changeCellType: () => void;
+  toggleOutputExpansion: () => void;
 };
 
-const mapDispatchToProps = (dispatch, { id, type, contentRef }) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  {
+    id,
+    type,
+    contentRef
+  }: { id: string; type: "markdown" | "code" | "raw"; contentRef: ContentRef }
+) => ({
   toggleParameterCell: () =>
     dispatch(actions.toggleParameterCell({ id, contentRef })),
   deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
