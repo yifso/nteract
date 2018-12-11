@@ -7,7 +7,14 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
-// NOTE: de-any this file
+export const updateContent = (payload: {
+  filepath: string;
+  kernelRef: KernelRef;
+  contentRef: ContentRef;
+}): actionTypes.UpdateContent => ({
+  type: actionTypes.UPDATE_CONTENT,
+  payload
+});
 
 export const fetchContent = (
   payload: actionTypes.FetchContent["payload"]

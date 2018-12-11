@@ -3,6 +3,16 @@
  */
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
+export const UPDATE_CONTENT = "CORE/UPDATE_CONTENT";
+export type UpdateContent = {
+  type: "CORE/UPDATE_CONTENT";
+  payload: {
+    filepath: string;
+    kernelRef: KernelRef;
+    contentRef: ContentRef;
+  };
+};
+
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
 export type FetchContent = {
   type: "CORE/FETCH_CONTENT";

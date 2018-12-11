@@ -16,6 +16,54 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
+export function updateContentEpic(
+  action$: ActionsObservable<
+    | actions.UpdateContent
+  >,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.UPDATE_CONTENT),
+    switchMap(action => {
+      if (!action.payload || typeof action.payload.filepath !== "string") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: { error: new Error("updating content needs a payload") }
+        }) as any;
+      }
+
+      const state = state$.value;
+
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        // Dismiss any usage that isn't targeting a jupyter server
+        return empty();
+      }
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      return contents
+        .get(
+          serverConfig,
+          (action as actions.FetchContent).payload.filepath,
+        )
+        .pipe(
+          tap(xhr => {
+            if (xhr.status !== 200) {
+              throw new Error(xhr.response);
+            }
+          }),
+          map(xhr => {
+            console.log(xhr);
+          }),
+          catchError((xhrError: any) =>
+            of()
+          )
+        );
+    })
+  );
+}
+
 export function fetchContentEpic(
   action$: ActionsObservable<
     | actions.FetchContent
