@@ -36,13 +36,15 @@ const byRef = (state = Immutable.Map(), action: Action) => {
     case actions.RESTART_KERNEL_FAILED:
     case actions.LAUNCH_KERNEL_FAILED:
       typedAction = action as actions.LaunchKernelFailed;
-      return state.set(
-        typedAction.payload.kernelRef,
-        makeKernelCommunicationRecord({
-          error: typedAction.payload.error,
-          loading: false
-        })
-      );
+      return typedAction.payload.kernelRef
+        ? state.set(
+            typedAction.payload.kernelRef,
+            makeKernelCommunicationRecord({
+              error: typedAction.payload.error,
+              loading: false
+            })
+          )
+        : state;
     default:
       return state;
   }
