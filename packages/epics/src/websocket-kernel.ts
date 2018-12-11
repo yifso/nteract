@@ -95,6 +95,9 @@ export const launchWebSocketKernelEpic = (
               selectNextKernel: true
             })
           );
+        }),
+        catchError(error => {
+          return of(actions.launchKernelFailed({ error }));
         })
       );
     })
