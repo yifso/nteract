@@ -181,11 +181,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/timeago",
-      version: "3.6.5",
-      private: false
-    },
-    {
       name: "@nteract/transform-dataresource",
       version: "5.0.0-alpha.0",
       private: false
