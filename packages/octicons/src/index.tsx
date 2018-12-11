@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface WrapperProps {
   children: React.ReactNode;
-  outerProps: any;
+  outerProps: React.SVGAttributes<any>;
   width: number;
   height: number;
   viewBox: string;
