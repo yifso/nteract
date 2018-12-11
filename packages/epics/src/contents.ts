@@ -17,9 +17,7 @@ import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 export function updateContentEpic(
-  action$: ActionsObservable<
-    | actions.UpdateContent
-  >,
+  action$: ActionsObservable<actions.UpdateContent>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -45,7 +43,7 @@ export function updateContentEpic(
       return contents
         .get(
           serverConfig,
-          (action as actions.FetchContent).payload.filepath,
+          (action as actions.UpdateContent).payload.filepath,
         )
         .pipe(
           tap(xhr => {
@@ -53,9 +51,7 @@ export function updateContentEpic(
               throw new Error(xhr.response);
             }
           }),
-          map(xhr => {
-            console.log(xhr);
-          }),
+          map(xhr => {}),
           catchError((xhrError: any) =>
             of()
           )

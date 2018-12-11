@@ -6,6 +6,7 @@ import { Epic, ActionsObservable, StateObservable } from "redux-observable";
 
 import { saveEpic, saveAsEpic } from "./saving";
 import {
+  updateContentEpic,
   fetchContentEpic,
   newNotebookEpic,
   launchKernelWhenNotebookSetEpic
@@ -54,6 +55,7 @@ const epics = [
   publishEpic,
   saveEpic,
   saveAsEpic,
+  updateContentEpic,
   fetchContentEpic,
   newNotebookEpic,
   launchKernelEpic,

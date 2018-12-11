@@ -7,6 +7,7 @@ import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { EditableText } from "@blueprintjs/core";
+import { actions } from "@nteract/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
@@ -96,7 +97,7 @@ export class File extends React.PureComponent<FileProps> {
                 <ThemedLogo />
               </a>
               <EditableText
-                disabled={true}
+                disabled={false}
                 placeholder={"Enter Title..."}
                 value={this.props.displayName}
               />
@@ -146,6 +147,15 @@ const mapStateToProps = (
   };
 };
 
-export const ConnectedFile = connect(mapStateToProps)(File);
+const mapDispatchToProps = (dispatch: any) => {
+  return ({
+    updateTitle: (title: object) => dispatch(actions.updateContent(title))
+  });
+}
+
+export const ConnectedFile = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(File);
 
 export default ConnectedFile;

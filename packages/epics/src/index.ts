@@ -21,6 +21,7 @@ import {
 } from "./kernel-lifecycle";
 import { fetchKernelspecsEpic } from "./kernelspecs";
 import {
+  updateContentEpic,
   fetchContentEpic,
   saveContentEpic,
   autoSaveCurrentContentEpic
@@ -44,6 +45,7 @@ const allEpics = [
   restartKernelEpic,
   fetchKernelspecsEpic,
   fetchContentEpic,
+  updateContentEpic,
   saveContentEpic,
   autoSaveCurrentContentEpic
 ];
@@ -64,6 +66,7 @@ export {
   restartKernelEpic,
   fetchKernelspecsEpic,
   fetchContentEpic,
+  updateContentEpic,
   saveContentEpic,
   autoSaveCurrentContentEpic
 };
