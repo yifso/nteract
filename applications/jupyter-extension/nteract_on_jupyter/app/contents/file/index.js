@@ -8,7 +8,6 @@ import type { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { EditableText } from "@blueprintjs/core";
-import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
