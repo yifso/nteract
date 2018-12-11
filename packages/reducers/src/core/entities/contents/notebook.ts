@@ -537,8 +537,9 @@ function acceptPayloadMessage(
     data: object;
     text: string;
     replace: boolean;
+    start: number;
   };
-  const payload = action.payload.payload as ActionPayload;
+  const payload = action.payload.payload as Partial<ActionPayload>;
 
   if (payload.source === "page") {
     // append pager
