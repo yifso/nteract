@@ -10,6 +10,7 @@ import {
 } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
+import { ExecuteRequest } from "@nteract/messaging/src";
 
 export function launchKernelFailed(payload: {
   error: Error;
@@ -186,8 +187,7 @@ export function restartKernelSuccessful(payload: {
 
 export function sendExecuteRequest(payload: {
   id: string;
-  // TODO: Convert the sendExecuteRequest message from an 'any' to a jupyter message object
-  message: any;
+  message: ExecuteRequest;
   contentRef: ContentRef;
 }): actionTypes.SendExecuteRequest {
   return {
