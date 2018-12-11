@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { ContentRef, KernelRef } from "@nteract/types";
+import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
 
@@ -113,7 +113,7 @@ export function saveFulfilled(payload: {
 
 // TODO: New Notebook action should use a kernel spec type
 export function newNotebook(payload: {
-  kernelSpec: object;
+  kernelSpec: KernelspecInfo;
   cwd: string;
   kernelRef: KernelRef;
   contentRef: ContentRef;
