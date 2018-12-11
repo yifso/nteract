@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { ContentRef, KernelRef } from "@nteract/types";
+import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
 export type FetchContent = {
@@ -101,7 +101,7 @@ export type NewNotebook = {
   type: "NEW_NOTEBOOK";
   payload: {
     cwd: string;
-    kernelSpec: Object;
+    kernelSpec: KernelspecInfo;
     kernelRef: KernelRef;
     contentRef: ContentRef;
   };
