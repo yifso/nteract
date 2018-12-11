@@ -103,7 +103,6 @@ export class File extends React.PureComponent<FileProps, *> {
           </NavSection>
         </Nav>
         {choice}
-        <style>{blueprintCSS}</style>
       </React.Fragment>
     );
   }

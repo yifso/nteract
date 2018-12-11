@@ -4,6 +4,7 @@ import * as React from "react";
 import NotificationSystem from "react-notification-system";
 import { Styles, themes } from "@nteract/presentational-components";
 import type { ContentRef } from "@nteract/core";
+import { blueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import { default as Contents } from "./contents";
 
@@ -64,6 +65,7 @@ class App extends React.Component<{ contentRef: ContentRef }, null> {
             animation-fill-mode: forwards;
           }
         `}</style>
+        <style jsx>{blueprintCSS}</style>
       </React.Fragment>
     );
   }
