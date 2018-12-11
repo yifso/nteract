@@ -247,8 +247,7 @@ export function saveContentEpic(
         let serializedData: Notebook | string;
         let saveModel: Partial<contents.Payload> = {};
         if (content.type === "notebook") {
-          // TODO: this default version should probably not be here.
-          const appVersion = selectors.appVersion(state) || "0.0.0-beta";
+          const appVersion = selectors.appVersion(state);
 
           // contents API takes notebook as raw JSON whereas downloading takes
           // a string

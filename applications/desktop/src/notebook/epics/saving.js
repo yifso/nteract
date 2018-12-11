@@ -44,8 +44,7 @@ export function saveEpic(
       }
 
       const filepath = content.filepath;
-      // TODO: this default version should probably not be here.
-      const appVersion = selectors.appVersion(state) || "0.0.0-beta";
+      const appVersion = selectors.appVersion(state);
       const notebook = stringifyNotebook(
         toJS(
           model.notebook.setIn(["metadata", "nteract", "version"], appVersion)
