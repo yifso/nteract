@@ -10,7 +10,7 @@ import {
 } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
-import { ExecuteRequest } from "@nteract/messaging/src";
+import { ExecuteRequest } from "@nteract/messaging";
 
 export function launchKernelFailed(payload: {
   error: Error;
