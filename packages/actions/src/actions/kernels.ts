@@ -13,8 +13,8 @@ import * as actionTypes from "../actionTypes";
 
 export function launchKernelFailed(payload: {
   error: Error;
-  kernelRef: KernelRef;
-  contentRef: ContentRef;
+  kernelRef?: KernelRef;
+  contentRef?: ContentRef;
 }): actionTypes.LaunchKernelFailed {
   return {
     type: actionTypes.LAUNCH_KERNEL_FAILED,

@@ -206,8 +206,8 @@ export type LaunchKernelFailed = {
   type: "LAUNCH_KERNEL_FAILED";
   payload: {
     error: Error;
-    kernelRef: KernelRef;
-    contentRef: ContentRef;
+    kernelRef?: KernelRef;
+    contentRef?: ContentRef;
   };
   error: true;
 };
