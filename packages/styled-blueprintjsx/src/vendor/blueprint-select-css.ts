@@ -1,6 +1,11 @@
 import css from "styled-jsx/css";
 
-export default css.global`
+export default css.global`/*!
+
+Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the terms of the LICENSE file distributed with this project.
+
+*/
 .bp3-omnibar{
   -webkit-filter:blur(0);
           filter:blur(0);
@@ -107,4 +112,4 @@ export default css.global`
   padding:0; }
   .bp3-select-popover .bp3-menu:not(:first-child){
     padding-top:5px; }
-`;
+/*# sourceMappingURL=blueprint-select.css.map */`;

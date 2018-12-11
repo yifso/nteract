@@ -1,4 +1,4 @@
-import css from "styled-jsx/css";
+import css from 'styled-jsx/css';
 
 export default css.global`@charset "UTF-8";
 /*!
@@ -17,15 +17,14 @@ html{
   -webkit-box-sizing:inherit;
           box-sizing:inherit; }
 
-/*
 body{
   text-transform:none;
   line-height:1.28581;
   letter-spacing:0;
-  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
   font-size:14px;
   font-weight:400;
-  color:#182026; }
+  color:#182026;
+  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif; }
 
 p{
   margin-top:0;
@@ -42,15 +41,11 @@ strong{
 
 ::selection{
   background:rgba(125, 188, 255, 0.6); }
-
-  */
-
 .bp3-heading{
   color:#182026;
   font-weight:600;
   margin:0 0 10px;
   padding:0; }
-
   .bp3-dark .bp3-heading{
     color:#f5f8fa; }
 
@@ -81,7 +76,6 @@ h6.bp3-heading, .bp3-running-text h6{
   text-transform:none;
   line-height:1.28581;
   letter-spacing:0;
-  font-family:-apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
   font-size:14px;
   font-weight:400; }
 
@@ -387,7 +381,8 @@ a{
   border-radius:3px;
   background:#ced9e0;
   cursor:pointer;
-  padding:1px 5px; }
+  padding:1px 5px;
+  vertical-align:text-bottom; }
   .bp3-breadcrumbs-collapsed::before{
     display:block;
     background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%235C7080'%3e%3ccircle cx='2' cy='8.03' r='2'/%3e%3ccircle cx='14' cy='8.03' r='2'/%3e%3ccircle cx='8' cy='8.03' r='2'/%3e%3c/g%3e%3c/svg%3e") center no-repeat;
@@ -1877,7 +1872,7 @@ a.bp3-button{
         -ms-user-select:none;
             user-select:none; }
     .bp3-control .bp3-control-indicator::before{
-      display:inline-block;
+      display:block;
       width:1em;
       height:1em;
       content:""; }
@@ -3523,7 +3518,8 @@ table.bp3-html-table.bp3-interactive tbody tr:active td{
   display:inline-block;
   -webkit-box-flex:0;
       -ms-flex:0 0 auto;
-          flex:0 0 auto; }
+          flex:0 0 auto;
+  vertical-align:text-bottom; }
   .bp3-icon:not(:empty)::before{
     content:"" !important;
     content:unset !important; }
@@ -3785,6 +3781,9 @@ span.bp3-icon:empty{
 
 .bp3-icon-citation::before{
   content:""; }
+
+.bp3-icon-clean::before{
+  content:""; }
 
 .bp3-icon-clipboard::before{
   content:""; }
@@ -5303,9 +5302,6 @@ button.bp3-menu-item{
     top:0;
     right:0;
     left:0; }
-  .bp3-navbar .bp3-logo{
-    margin-right:15px;
-    width:20px; }
 
 .bp3-navbar-heading{
   margin-right:15px;
@@ -6380,6 +6376,7 @@ span.bp3-popover-target{
   max-width:100%;
   min-height:20px;
   padding:2px 6px;
+  line-height:16px;
   color:#f5f8fa;
   font-size:12px; }
   .bp3-tag.bp3-interactive{
@@ -6432,6 +6429,7 @@ span.bp3-popover-target{
     min-width:30px;
     min-height:30px;
     padding:0 10px;
+    line-height:20px;
     font-size:14px; }
     .bp3-tag.bp3-large::before,
     .bp3-tag.bp3-large > *,
@@ -7306,4 +7304,4 @@ span.bp3-popover-target{
 
 .bp3-dark .bp3-tree-node.bp3-tree-node-selected > .bp3-tree-node-content{
   background-color:#137cbd; }
-/*# sourceMappingURL=blueprint.css.map */`;
+/*# sourceMappingURL=blueprint.css.map */`
