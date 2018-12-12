@@ -4,11 +4,11 @@ interface CellProps {
   /**
    * Indicates if a cell is selected
    */
-  isSelected: boolean;
+  isSelected?: boolean;
   /**
    * Indicates if hovering over a cell
    */
-  _hovered: boolean;
+  _hovered?: boolean;
   /**
    * Style children when a cell is selected or hovered over
    */
@@ -16,7 +16,7 @@ interface CellProps {
 }
 
 /** @component */
-export const Cell = (props: CellProps): React.ReactNode => {
+export const Cell = (props: CellProps) => {
   const children = props.children;
 
   return (

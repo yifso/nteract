@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface OutputsProps {
-  children: React.ReactNode[];
+  children: React.ReactNode;
   /**
    * Whether or not to collapse the children of the component.
    */
