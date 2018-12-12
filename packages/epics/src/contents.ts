@@ -41,6 +41,7 @@ export function updateContentEpic(
         return empty();
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
+      debugger;
       const fileName: string = window.frames.location.pathname.split("/")[3];
       const { kernelRef, filepath } = action.payload;
       const { pathname } = window.frames.location;
@@ -73,16 +74,12 @@ export function updateContentEpic(
             // Modifying the url's file name in the browser. 
             // Effects back button behavior.
             // Is there a better way to accomplish this?
-            window.history.replaceState(
-              {}, 
-              filepath, 
-              `${path}${filepath}`
-            );
-            // TOTAL HACK!!! This needs to be replaced. 
-            // Refreshes browser after confirming a title
-            // change. Due to the client requesting the 
-            // notebook file before the file change is finished. 
-            window.location.reload(true);
+            // window.history.replaceState(
+            //   {}, 
+            //   filepath, 
+            //   `${path}${filepath}`
+            // );
+            window.location.replace(`${path}${filepath}`);
 
             return actions.updateContentFulfilled({ filepath, contentRef });
           }),
