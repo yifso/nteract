@@ -662,7 +662,7 @@ function updateCellMetadata(
 ) {
   const { id, metadata } = action.payload;
   console.log("state", state);
-  return state.setIn(["transient", "cellMap", id, "metadata"], metadata);
+  return state.setIn(["notebook", "cellMap", id, "metadata"], metadata);
 }
 
 function setLanguageInfo(
@@ -947,7 +947,6 @@ export function notebook(
     case actionTypes.UPDATE_CELL_STATUS:
       return updateCellStatus(state, action);
     case actionTypes.UPDATE_CELL_METADATA:
-      console.log("the actual reducer right here", state, action);
       return updateCellMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);

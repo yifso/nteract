@@ -14,7 +14,7 @@ type Props = {
   theme: string;
   models: Object;
   channels?: Subject<any>;
-  onMetadataChange?: () => void;
+  onMetadataChange?: Function;
 };
 
 const classPrefix = "nteract-display-area-";
@@ -63,6 +63,7 @@ export default class Output extends React.Component<Props> {
 
       // falls through
       case "display_data": {
+        console.log("output", output);
         const bundle = output.data;
         const metadata = output.metadata;
         return (

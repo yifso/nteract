@@ -37,8 +37,6 @@ import Editor from "./editor";
 import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
 
-console.log("actions in notebook app", actions);
-
 type AnyCellProps = {
   id: string;
   tags: Immutable.Set<string>;
@@ -65,7 +63,7 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
-  updateCellMetadata: () => void;
+  updateCellMetadata: Function;
 };
 
 const markdownEditorOptions = {
@@ -219,7 +217,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
     const queued = cellStatus === "queued";
     let element = null;
 
-    console.log("notebook props", this.props);
+    console.log("this.props in notebook-app", this.props);
 
     switch (cellType) {
       case "code":
@@ -369,6 +367,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
     );
   }
 }
+
+console.log("wqhaaa");
 
 // $FlowFixMe: react-redux typings
 export const ConnectedCell = connect(
