@@ -30,12 +30,18 @@ const byRef = (
   switch (action.type) {
     case actionTypes.UPDATE_CONTENT:
       const updateContentAction = action as actionTypes.UpdateContent;
+      const { filepath, contentRef, kernelRef } = updateContentAction.payload;
+
       return state.set(
-        updateContentAction.payload.contentRef,
-        makeDummyContentRecord({
-          filepath: updateContentAction.payload.filepath || ""
-        })
+        contentRef,
+        {
+          filepath: filepath || "",
+          kernelRef: kernelRef
+        }
       );
+    case actionTypes.UPDATE_CONTENT_FULFILLED:
+      const updateContentFulfilledAction = action as actionTypes.FetchContentFulfilled;
+      console.log('SUCCESS')
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until

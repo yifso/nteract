@@ -9,7 +9,9 @@ import FileSaver from "file-saver";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
-import { toJS, stringifyNotebook, Notebook } from "@nteract/commutable";
+import { toJS, stringifyNotebook } from "@nteract/commutable";
+import { Notebook } from "@nteract/commutable";
+import { makeDummyContentRecord } from "@nteract/core";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
@@ -39,11 +41,27 @@ export function updateContentEpic(
         return empty();
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
+      const fileName: string = window.frames.location.pathname.split("/")[3];
 
       return contents
-        .get(
+        .update(
           serverConfig,
-          (action as actions.UpdateContent).payload.filepath,
+          fileName,
+          {
+            kernel: {
+              id: action.payload.kernelRef,
+              name: "ir"
+            },
+            created: "today",
+            last_modified: "now",
+            writable: true,
+            name: "",
+            path: action.payload.filepath.slice(1),
+            type: "notebook",
+            mimetype: "",
+            content: "",
+            format: ""
+          }
         )
         .pipe(
           tap(xhr => {
@@ -51,7 +69,17 @@ export function updateContentEpic(
               throw new Error(xhr.response);
             }
           }),
-          map(xhr => {}),
+          map(xhr => {
+            const pathname = window.frames.location.pathname.split("/").slice(0, 3).join("/");
+            // Not sure if this is the best way to do this
+            // Change the filepath in the url 
+            window.history.replaceState({}, action.payload.filepath, `${pathname}${action.payload.filepath}`);
+
+            return actions.updateContentFulfilled({
+              filepath: action.payload.filepath,
+              contentRef: action.payload.contentRef
+            });
+          }),
           catchError((xhrError: any) =>
             of()
           )

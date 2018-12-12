@@ -10,6 +10,16 @@ export type UpdateContent = {
     filepath: string;
     kernelRef: KernelRef;
     contentRef: ContentRef;
+    kernelRef: KernelRef;
+  };
+};
+
+export const UPDATE_CONTENT_FULFILLED = "CORE/UPDATE_CONTENT_FULFILLED";
+export type UpdateContentFulfilled = {
+  type: "CORE/UPDATE_CONTENT_FULFILLED";
+  payload: {
+    filepath: string;
+    contentRef: ContentRef;
   };
 };
 

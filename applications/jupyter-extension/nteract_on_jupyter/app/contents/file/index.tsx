@@ -49,7 +49,18 @@ type FileProps = {
   error?: object | null;
 };
 
+<<<<<<< HEAD:applications/jupyter-extension/nteract_on_jupyter/app/contents/file/index.tsx
 export class File extends React.PureComponent<FileProps> {
+=======
+export class File extends React.PureComponent<FileProps, *> {
+  constructor(props: FileProps) {
+    super(props);
+    this.state = {
+      title: props.displayName.split(".")[0]
+    };
+  }
+
+>>>>>>> getting editable header to write to the file system:applications/jupyter-extension/nteract_on_jupyter/app/contents/file/index.js
   render() {
     // Determine the file handler
     let choice = null;

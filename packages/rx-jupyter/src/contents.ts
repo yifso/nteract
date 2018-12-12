@@ -72,6 +72,18 @@ export interface IContent<FT extends FileType = FileType>
  *                   if type is 'directory' ,
  * format (string): Format of content (one of null, 'text', 'base64', 'json')
  */
+export type Payload = {
+  name: string;
+  path: string;
+  type: "directory" | "file" | "notebook";
+  writable: boolean;
+  created: string;
+  last_modified: string;
+  mimetype: string;
+  content: string | Notebook;
+  format: string;
+  kernel: any
+};
 
 /**
  * Creates an AjaxObservable for removing content.
