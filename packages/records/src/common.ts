@@ -4,15 +4,15 @@ import { deepFreeze } from "./freeze";
 export type MultilineString = string | Array<string>;
 
 export interface OnDiskMimebundle {
-  "text/plain": MultilineString | {} | undefined;
-  "text/html": MultilineString | {} | undefined;
-  "text/latex": MultilineString | {} | undefined;
-  "text/markdown": MultilineString | {} | undefined;
-  "application/javascript": MultilineString | {} | undefined;
-  "image/png": MultilineString | {} | undefined;
-  "image/jpeg": MultilineString | {} | undefined;
-  "image/gif": MultilineString | {} | undefined;
-  "image/svg+xml": MultilineString | {} | undefined;
+  "text/plain"?: MultilineString;
+  "text/html"?: MultilineString;
+  "text/latex"?: MultilineString;
+  "text/markdown"?: MultilineString;
+  "application/javascript"?: MultilineString;
+  "image/png"?: MultilineString;
+  "image/jpeg"?: MultilineString;
+  "image/gif"?: MultilineString;
+  "image/svg+xml"?: MultilineString;
 
   // The JSON mimetype has some corner cases because of the protocol / format assuming the values
   // in a mimebundle are either:
@@ -20,47 +20,47 @@ export interface OnDiskMimebundle {
   //   * A string; which would be deserialized
   //   * An array; which would have to be assumed to be a multiline string
   //
-  "application/json": string | Array<string> | {} | undefined;
-  "application/vdom.v1+json": {} | undefined;
-  "application/vnd.dataresource+json": {} | undefined;
-  "text/vnd.plotly.v1+html": MultilineString | {} | undefined;
-  "application/vnd.plotly.v1+json": {} | undefined;
-  "application/geo+json": {} | undefined;
-  "application/x-nteract-model-debug+json": {} | undefined;
-  "application/vnd.vega.v2+json": {} | undefined;
-  "application/vnd.vega.v3+json": {} | undefined;
-  "application/vnd.vegalite.v1+json": {} | undefined;
-  "application/vnd.vegalite.v2+json": {} | undefined;
+  "application/json"?: string | Array<string> | {};
+  "application/vdom.v1+json"?: {};
+  "application/vnd.dataresource+json"?: {};
+  "text/vnd.plotly.v1+html"?: MultilineString | {};
+  "application/vnd.plotly.v1+json"?: {};
+  "application/geo+json"?: {};
+  "application/x-nteract-model-debug+json"?: {};
+  "application/vnd.vega.v2+json"?: {};
+  "application/vnd.vega.v3+json"?: {};
+  "application/vnd.vegalite.v1+json"?: {};
+  "application/vnd.vegalite.v2+json"?: {};
 
   [key: string]: string | Array<string> | {} | undefined | undefined;
-};
+}
 
 // Enumerating over all the media types we currently accept
 export interface MediaBundle {
-  "text/plain": string | {} | undefined;
-  "text/html": string | {} | undefined;
-  "text/latex": string | {} | undefined;
-  "text/markdown": string | {} | undefined;
-  "application/javascript": string | {} | undefined;
-  "image/png": string | {} | undefined;
-  "image/jpeg": string | {} | undefined;
-  "image/gif": string | {} | undefined;
-  "image/svg+xml": string | {} | undefined;
-  "application/json": {} | undefined;
-  "application/vdom.v1+json": {} | undefined;
-  "application/vnd.dataresource+json": {} | undefined;
-  "text/vnd.plotly.v1+html": string | {} | undefined;
-  "application/vnd.plotly.v1+json": {} | undefined;
-  "application/geo+json": {} | undefined;
-  "application/x-nteract-model-debug+json": {} | undefined;
-  "application/vnd.vega.v2+json": {} | undefined;
-  "application/vnd.vega.v3+json": {} | undefined;
-  "application/vnd.vegalite.v1+json": {} | undefined;
-  "application/vnd.vegalite.v2+json": {} | undefined;
+  "text/plain"?: string;
+  "text/html"?: string;
+  "text/latex"?: string;
+  "text/markdown"?: string;
+  "application/javascript"?: string;
+  "image/png"?: string;
+  "image/jpeg"?: string;
+  "image/gif"?: string;
+  "image/svg+xml"?: string;
+  "application/json"?: {};
+  "application/vdom.v1+json"?: {};
+  "application/vnd.dataresource+json"?: {};
+  "text/vnd.plotly.v1+html"?: string | {};
+  "application/vnd.plotly.v1+json"?: {};
+  "application/geo+json"?: {};
+  "application/x-nteract-model-debug+json"?: {};
+  "application/vnd.vega.v2+json"?: {};
+  "application/vnd.vega.v3+json"?: {};
+  "application/vnd.vegalite.v1+json"?: {};
+  "application/vnd.vegalite.v2+json"?: {};
   [key: string]: string | Array<string> | {} | undefined; // all others
-};
+}
 
-export type MimeBundle = Partial<MediaBundle>;
+export type MimeBundle = MediaBundle; // Partial<MediaBundle>;
 
 /**
  * Turn nbformat multiline strings (arrays of strings for simplifying diffs) into strings

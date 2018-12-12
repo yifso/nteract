@@ -32,7 +32,11 @@ export class Output extends React.Component<Props, State> {
 
     // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
-      const childElement = child as React.ReactElement<any>;
+      if (typeof child === "string" || typeof child === "number") {
+        return;
+      }
+
+      const childElement = child;
       if (chosenOne) {
         // Already have a selection
         return;
@@ -53,6 +57,6 @@ export class Output extends React.Component<Props, State> {
     }
 
     // Render the output component that handles this output type
-    return React.cloneElement(chosenOne, this.props.output);
+    return React.cloneElement(chosenOne, this.props.output as any);
   }
 }
