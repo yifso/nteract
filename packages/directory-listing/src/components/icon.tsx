@@ -7,7 +7,7 @@ type IconProps = {
 };
 
 export class Icon extends React.Component<IconProps> {
-  static defaultProps = {
+  static defaultProps: Partial<IconProps> = {
     fileType: "file",
     color: "#0366d6"
   };

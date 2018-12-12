@@ -66,7 +66,7 @@ export function objectToReactElement(
   onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactElement<any> {
   // Pack args for React.createElement
-  let args: any[] = [];
+  let args: any = [];
 
   if (!obj.tagName || typeof obj.tagName !== "string") {
     throw new Error(`Invalid tagName on ${JSON.stringify(obj, null, 2)}`);
@@ -136,7 +136,6 @@ export function objectToReactElement(
     }
   }
 
-  // $FlowFixMe: React
   return React.createElement.apply({}, args);
 }
 
