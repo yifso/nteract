@@ -49,20 +49,6 @@ type FileProps = {
   error?: object | null;
 };
 
-const prepFileName = (filename: string): string => {
-  if (!filename) {
-    throw new Error("A filename is expected");
-  }
-  // Check if the filename has the `.ipynb` extension
-  const ext = filename.search(/\.ipynb/);
-
-  if (ext >= 0) {
-    return `/${filename}`;
-  } else {
-    return `/${filename}.ipynb`;
-  }
-}
-
 export class File extends React.PureComponent<FileProps, *> {
   constructor(props: FileProps) {
     super(props);
