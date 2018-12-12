@@ -1,6 +1,7 @@
 import * as Immutable from "immutable";
 import * as React from "react";
 import Menu, { SubMenu, Divider, MenuItem } from "rc-menu";
+import { CellType } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
   AppState,
@@ -27,7 +28,7 @@ type Props = {
   persistAfterClick?: boolean;
   defaultOpenKeys?: Array<string>;
   openKeys?: Array<string>;
-  currentKernelRef?: KernelRef;
+  currentKernelRef?: KernelRef | null;
   saveNotebook?: (payload: object) => void;
   downloadNotebook?: (payload: object) => void;
   executeCell?: (payload: object) => void;
@@ -46,7 +47,7 @@ type Props = {
   changeKernelByName?: (
     payload: {
       kernelSpecName: string;
-      oldKernelRef?: KernelRef;
+      oldKernelRef?: KernelRef | null;
       contentRef: ContentRef;
     }
   ) => void;
@@ -56,8 +57,8 @@ type Props = {
   killKernel?: (payload: object) => void;
   interruptKernel?: (payload: object) => void;
   currentContentRef: ContentRef;
-  currentKernelspecsRef?: KernelspecsRef;
-  currentKernelspecs?: KernelspecsByRefRecord;
+  currentKernelspecsRef?: KernelspecsRef | null;
+  currentKernelspecs?: KernelspecsByRefRecord | null;
 };
 
 type State = {
@@ -450,38 +451,68 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-  saveNotebook: (payload: object) => dispatch(actions.save(payload)),
-  downloadNotebook: (payload: object) =>
+  saveNotebook: (payload: { contentRef: string }) =>
+    dispatch(actions.save(payload)),
+  downloadNotebook: (payload: { contentRef: string }) =>
     dispatch(actions.downloadContent(payload)),
-  executeCell: (payload: object) => dispatch(actions.executeCell(payload)),
-  executeAllCells: (payload: object) =>
+  executeCell: (payload: { id: string; contentRef: string }) =>
+    dispatch(actions.executeCell(payload)),
+  executeAllCells: (payload: { contentRef: string }) =>
     dispatch(actions.executeAllCells(payload)),
-  executeAllCellsBelow: (payload: object) =>
+  executeAllCellsBelow: (payload: { contentRef: string }) =>
     dispatch(actions.executeAllCellsBelow(payload)),
-  clearAllOutputs: (payload: object) =>
+  clearAllOutputs: (payload: { contentRef: string }) =>
     dispatch(actions.clearAllOutputs(payload)),
-  unhideAll: (payload: object) => dispatch(actions.unhideAll(payload)),
-  cutCell: (payload: object) => dispatch(actions.cutCell(payload)),
-  copyCell: (payload: object) => dispatch(actions.copyCell(payload)),
-  pasteCell: (payload: object) => dispatch(actions.pasteCell(payload)),
-  createCellBelow: (payload: object) =>
-    dispatch(actions.createCellBelow(payload)),
-  changeCellType: (payload: object) =>
-    dispatch(actions.changeCellType(payload)),
+  unhideAll: (payload: {
+    outputHidden: boolean;
+    inputHidden: boolean;
+    contentRef: string;
+  }) => dispatch(actions.unhideAll(payload)),
+  cutCell: (payload: { id?: string; contentRef: string }) =>
+    dispatch(actions.cutCell(payload)),
+  copyCell: (payload: { id?: string; contentRef: string }) =>
+    dispatch(actions.copyCell(payload)),
+  pasteCell: (payload: { contentRef: string }) =>
+    dispatch(actions.pasteCell(payload)),
+  createCellBelow: (payload: {
+    id?: string | undefined;
+    cellType: CellType;
+    source: string;
+    contentRef: string;
+  }) => dispatch(actions.createCellBelow(payload)),
+  changeCellType: (payload: {
+    id?: string | undefined;
+    to: CellType;
+    contentRef: string;
+  }) => dispatch(actions.changeCellType(payload)),
   setTheme: (theme: string) => dispatch(actions.setTheme(theme)),
   openAboutModal: () =>
     dispatch(actions.openModal({ modalType: MODAL_TYPES.ABOUT })),
-  changeKernelByName: (payload: object) =>
-    dispatch(actions.changeKernelByName(payload)),
-  restartKernel: (payload: object) => dispatch(actions.restartKernel(payload)),
-  restartKernelAndClearOutputs: (payload: object) =>
+  changeKernelByName: (payload: {
+    kernelSpecName: any;
+    oldKernelRef?: string | undefined;
+    contentRef: string;
+  }) => dispatch(actions.changeKernelByName(payload)),
+  restartKernel: (payload: {
+    outputHandling: actions.RestartKernelOutputHandling;
+    kernelRef: string;
+    contentRef: string;
+  }) => dispatch(actions.restartKernel(payload)),
+  restartKernelAndClearOutputs: (payload: {
+    kernelRef: string;
+    contentRef: string;
+  }) =>
     dispatch(
       actions.restartKernel({ ...payload, outputHandling: "Clear All" })
     ),
-  restartKernelAndRunAllOutputs: (payload: object) =>
+  restartKernelAndRunAllOutputs: (payload: {
+    kernelRef: string;
+    contentRef: string;
+  }) =>
     dispatch(actions.restartKernel({ ...payload, outputHandling: "Run All" })),
-  killKernel: (payload: object) => dispatch(actions.killKernel(payload)),
-  interruptKernel: (payload: object) =>
+  killKernel: (payload: { restarting: boolean; kernelRef: string }) =>
+    dispatch(actions.killKernel(payload)),
+  interruptKernel: (payload: { kernelRef: string }) =>
     dispatch(actions.interruptKernel(payload))
 });
 

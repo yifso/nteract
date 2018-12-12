@@ -14,7 +14,7 @@ import { modalCss } from "./styles";
 
 type Props = {
   appVersion?: string;
-  hostType?: string;
+  hostType: "local" | "empty" | "jupyter" | null;
   closeModal?: () => void;
 };
 
