@@ -14,6 +14,7 @@ type Props = {
   theme: string;
   models: Object;
   channels?: Subject<any>;
+  onMetadataChange?: () => void;
 };
 
 const classPrefix = "nteract-display-area-";
@@ -73,6 +74,7 @@ export default class Output extends React.Component<Props> {
             theme={this.props.theme}
             models={models}
             channels={this.props.channels}
+            onMetadataChange={this.props.onMetadataChange}
           />
         );
       }

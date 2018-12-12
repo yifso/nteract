@@ -37,6 +37,8 @@ import Editor from "./editor";
 import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
 
+console.log("actions in notebook app", actions);
+
 type AnyCellProps = {
   id: string;
   tags: Immutable.Set<string>;
@@ -63,6 +65,7 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
+  updateCellMetadata: () => void;
 };
 
 const markdownEditorOptions = {
@@ -171,6 +174,9 @@ const mapDispatchToCellProps = (
       actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
+  },
+  updateCellMetadata: (metadata: Object) => {
+    dispatch(actions.updateCellMetadata({ id, contentRef, metadata }));
   }
 });
 
@@ -212,6 +218,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
     let element = null;
+
+    console.log("notebook props", this.props);
 
     switch (cellType) {
       case "code":
@@ -269,6 +277,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   theme={this.props.theme}
                   models={this.props.models}
                   channels={this.props.channels}
+                  onMetadataChange={this.props.updateCellMetadata}
                 />
               ))}
             </Outputs>
@@ -410,6 +419,13 @@ type NotebookDispatchProps = {
   focusNextCellEditor: (
     payload: { id?: CellId; contentRef: ContentRef }
   ) => void;
+  updateCellMetadata: (
+    payload: {
+      id: CellId;
+      metadata: Object;
+      contentRef: ContentRef;
+    }
+  ) => void;
 };
 
 const mapStateToProps = (
@@ -493,7 +509,12 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
     contentRef: ContentRef;
   }) => dispatch(actions.focusNextCell(payload)),
   focusNextCellEditor: (payload: { id?: CellId; contentRef: ContentRef }) =>
-    dispatch(actions.focusNextCellEditor(payload))
+    dispatch(actions.focusNextCellEditor(payload)),
+  updateCellMetadata: (payload: {
+    id: CellId;
+    contentRef: ContentRef;
+    metadata: Object;
+  }) => dispatch(actions.updateCellMetadata(payload))
 });
 
 export class NotebookApp extends React.PureComponent<NotebookProps> {

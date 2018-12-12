@@ -16,6 +16,7 @@ type Props = {
   theme: string;
   models?: object;
   channels?: Subject<any>;
+  onMetadataChange?: () => void;
 };
 
 type ErrorInfo = {
@@ -110,6 +111,7 @@ export default class RichestMime extends React.Component<
         theme={this.props.theme}
         models={this.props.models}
         channels={this.props.channels}
+        onMetadataChange={this.props.onMetadataChange}
       />
     );
   }

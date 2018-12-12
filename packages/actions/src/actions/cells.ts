@@ -342,3 +342,19 @@ export function changeCellType(payload: {
     payload
   };
 }
+
+export function updateCellMetadata(payload: {
+  id: CellId;
+  metadata: Object;
+  contentRef: ContentRef;
+}): actionTypes.UpdateCellMetadata {
+  console.log(
+    "dispatch this action with this paylopad",
+    actionTypes.UPDATE_CELL_METADATA,
+    payload
+  );
+  return {
+    type: actionTypes.UPDATE_CELL_METADATA,
+    payload
+  };
+}

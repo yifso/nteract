@@ -217,10 +217,13 @@ const byRef = (state = Immutable.Map(), action: Action) => {
     case actionTypes.CHANGE_CELL_TYPE:
     case actionTypes.TOGGLE_OUTPUT_EXPANSION:
     case actionTypes.TOGGLE_TAG_IN_CELL:
+    //should this be added into this list of cases
+    case actionTypes.UPDATE_CELL_METADATA:
     case actionTypes.UNHIDE_ALL: {
       const cellAction = action as actionTypes.FocusCell;
       const path = [cellAction.payload.contentRef, "model"];
       const model = state.getIn(path);
+      console.log("in the giant switch", path, cellAction);
       return state.setIn(path, notebook(model, cellAction));
     }
     case actionTypes.UPDATE_FILE_TEXT: {

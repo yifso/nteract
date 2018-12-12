@@ -8,4 +8,6 @@ import * as middlewares from "./middlewares";
 
 export * from "@nteract/types";
 
+console.log("actions in core import", actions);
+
 export { actions, middlewares, reducers, selectors, epics, state };

@@ -656,6 +656,15 @@ function updateCellStatus(
   const { id, status } = action.payload;
   return state.setIn(["transient", "cellMap", id, "status"], status);
 }
+function updateCellMetadata(
+  state: NotebookModel,
+  action: actionTypes.UpdateCellMetadata
+) {
+  const { id, metadata } = action.payload;
+  console.log("state", state);
+  return state.setIn(["transient", "cellMap", id, "metadata"], metadata);
+}
+
 function setLanguageInfo(
   state: NotebookModel,
   action: actionTypes.SetLanguageInfo
@@ -848,6 +857,7 @@ type DocumentAction =
   | actionTypes.ToggleCellOutputVisibility
   | actionTypes.ToggleCellInputVisibility
   | actionTypes.UpdateCellStatus
+  | actionTypes.UpdateCellMetadata
   | actionTypes.SetLanguageInfo
   | actionTypes.SetKernelspecInfo
   | actionTypes.OverwriteMetadataField
@@ -936,6 +946,9 @@ export function notebook(
       return acceptPayloadMessage(state, action);
     case actionTypes.UPDATE_CELL_STATUS:
       return updateCellStatus(state, action);
+    case actionTypes.UPDATE_CELL_METADATA:
+      console.log("the actual reducer right here", state, action);
+      return updateCellMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
     case actionTypes.SET_KERNELSPEC_INFO:
