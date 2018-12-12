@@ -41,7 +41,7 @@ export const KernelOutputError = (props: Props) => {
   return (
     <React.Fragment>
       <div className="kernel-output-error">
-        <Ansi>{kernelOutputError.join("\n")}</Ansi>
+        <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>
         <style jsx>{`
           .kernel-output-error :global(code) {
             white-space: pre-wrap;

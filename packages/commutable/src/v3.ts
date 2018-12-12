@@ -214,7 +214,7 @@ export const fromJS = (notebook: Notebook) => {
     cellMap: ImmutableMap().asMutable()
   };
 
-  const cellStructure = [].concat.apply(
+  const cellStructure = ([] as CellStructure[]).concat.apply(
     [],
     notebook.worksheets.map(worksheet =>
       worksheet.cells.reduce(

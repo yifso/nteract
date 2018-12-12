@@ -3,7 +3,12 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import { Subject } from "rxjs";
 import { actions, selectors } from "@nteract/core";
-import { CellId, ImmutableCodeCell, ExecutionCount } from "@nteract/commutable";
+import {
+  CellId,
+  ImmutableCodeCell,
+  ExecutionCount,
+  JSONObject
+} from "@nteract/commutable";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import {
   Input,
@@ -613,7 +618,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
           dangerouslySetInnerHTML={{
             __html: `
 :root {
-  ${themes[this.props.theme]};
+  ${(themes as JSONObject)[this.props.theme]};
 }`
           }}
         >

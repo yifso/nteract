@@ -75,7 +75,7 @@ function convertBundleIntoReact(
 declare type Props = {
   children: string;
   className?: string;
-  linkify?: boolean;
+  linkify: boolean;
 };
 
 export default function Ansi(props: Props) {

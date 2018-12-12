@@ -7,7 +7,7 @@ import { Outputs } from "./outputs";
  */
 
 interface PagersProps {
-  children: React.ReactNode[];
+  children: React.ReactNode;
   hidden: boolean;
 }
 

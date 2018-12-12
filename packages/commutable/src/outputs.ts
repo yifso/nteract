@@ -21,12 +21,11 @@ export type ImmutableMimeBundle = ImmutableMap<string, any>;
 //   "text/plain": "Hey"
 // }
 //
-export type MimeBundle = { [key: string]: string | string[] | Object };
-
+export type MimeBundle = { [key: string]: string | string[] | undefined };
 
 /**
  * Map over all the mimetypes, turning them into our in-memory format.
- * 
+ *
  * ```
  * {
  *  "application/json": {"a": 3, "b": 2},
@@ -42,9 +41,9 @@ export type MimeBundle = { [key: string]: string | string[] | Object };
  *  "text/plain": "Hey"
  * }
  * ```
- * @param mimeBundle The mime 
- * @param previous 
- * @param key 
+ * @param mimeBundle The mime
+ * @param previous
+ * @param key
  */
 export const cleanMimeAtKey = (
   mimeBundle: MimeBundle,
@@ -56,15 +55,15 @@ export const cleanMimeAtKey = (
 /**
  * Cleans mimedata, primarily converts an array of strings into a single string
  * joined by newlines.
- * 
+ *
  * @param key The key, usually a mime type, that is associated with the mime data.
  * @param data The mime data to clean.
- * 
+ *
  * @returns The cleaned mime data.
  */
 export const cleanMimeData = (
   key: string,
-  data: string | string[] | object
+  data: string | string[] | undefined
 ) => {
   // See https://github.com/jupyter/nbformat/blob/62d6eb8803616d198eaa2024604d1fe923f2a7b3/nbformat/v4/nbformat.v4.schema.json#L368
   if (isJSONKey(key)) {
@@ -94,9 +93,9 @@ export const demultiline = (s: string | string[]): string =>
 
 /**
  * Split string into a list of strings delimited by newlines
- * 
+ *
  * @param s The newline-delimited string that will be converted into an array of strings.
- * 
+ *
  * @returns An array of strings.
  */
 export const remultiline = (s: string | string[]): string[] =>
