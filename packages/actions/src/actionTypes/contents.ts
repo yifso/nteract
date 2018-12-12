@@ -23,6 +23,17 @@ export type UpdateContentFulfilled = {
   };
 };
 
+export const UPDATE_CONTENT_FAILED = "CORE/UPDATE_CONTENT_FAILED";
+export type UpdateContentFailed = {
+  type: "CORE/UPDATE_CONTENT_FAILED";
+  payload: {
+    filepath: string;
+    error: Error;
+    contentRef: ContentRef;
+    kernelRef: KernelRef;
+  };
+};
+
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
 export type FetchContent = {
   type: "CORE/FETCH_CONTENT";

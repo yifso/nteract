@@ -49,18 +49,31 @@ type FileProps = {
   error?: object | null;
 };
 
-<<<<<<< HEAD:applications/jupyter-extension/nteract_on_jupyter/app/contents/file/index.tsx
-export class File extends React.PureComponent<FileProps> {
-=======
+const prepFileName = (filename: string): string => {
+  if (!filename) {
+    throw new Error("A filename is expected");
+  }
+  // Check if the filename has the `.ipynb` extension
+  const ext = filename.search(/\.ipynb/);
+
+  if (ext >= 0) {
+    return `/${filename}`;
+  } else {
+    return `/${filename}.ipynb`;
+  }
+}
+
 export class File extends React.PureComponent<FileProps, *> {
   constructor(props: FileProps) {
     super(props);
+
     this.state = {
-      title: props.displayName.split(".")[0]
+      // Removes the `.ipynb` extension 
+      // title: props.displayName.split(".")[0]
+      title: props.displayName
     };
   }
 
->>>>>>> getting editable header to write to the file system:applications/jupyter-extension/nteract_on_jupyter/app/contents/file/index.js
   render() {
     // Determine the file handler
     let choice = null;

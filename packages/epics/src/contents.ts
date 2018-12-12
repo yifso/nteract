@@ -11,7 +11,7 @@ import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
-import { makeDummyContentRecord } from "@nteract/core";
+import { makeDummyContentFileRecord } from "@nteract/core";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
@@ -42,26 +42,18 @@ export function updateContentEpic(
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
       const fileName: string = window.frames.location.pathname.split("/")[3];
+      const { kernelRef, filepath } = action.payload;
+      const { pathname } = window.frames.location;
 
       return contents
         .update(
           serverConfig,
           fileName,
-          {
-            kernel: {
-              id: action.payload.kernelRef,
-              name: "ir"
-            },
-            created: "today",
-            last_modified: "now",
+          makeDummyContentFileRecord({
+            kernel: { id: kernelRef },
             writable: true,
-            name: "",
-            path: action.payload.filepath.slice(1),
-            type: "notebook",
-            mimetype: "",
-            content: "",
-            format: ""
-          }
+            path: filepath.slice(1)
+          })
         )
         .pipe(
           tap(xhr => {
@@ -70,18 +62,39 @@ export function updateContentEpic(
             }
           }),
           map(xhr => {
-            const pathname = window.frames.location.pathname.split("/").slice(0, 3).join("/");
-            // Not sure if this is the best way to do this
-            // Change the filepath in the url 
-            window.history.replaceState({}, action.payload.filepath, `${pathname}${action.payload.filepath}`);
+            const { filepath, contentRef } = action.payload;
+            // Extract url path, e.g. `/nteract/edit`
+            const pathnameArray = pathname.split("/");
+            const lastSliceIndex = pathnameArray.length - 1; 
+            const path = pathnameArray
+              .slice(0, lastSliceIndex)
+              .join("/");
 
-            return actions.updateContentFulfilled({
-              filepath: action.payload.filepath,
-              contentRef: action.payload.contentRef
-            });
+            // Modifying the url's file name in the browser. 
+            // Effects back button behavior.
+            // Is there a better way to accomplish this?
+            window.history.replaceState(
+              {}, 
+              filepath, 
+              `${path}${filepath}`
+            );
+            // TOTAL HACK!!! This needs to be replaced. 
+            // Refreshes browser after confirming a title
+            // change. Due to the client requesting the 
+            // notebook file before the file change is finished. 
+            window.location.reload(true);
+
+            return actions.updateContentFulfilled({ filepath, contentRef });
           }),
           catchError((xhrError: any) =>
-            of()
+            of(
+              actions.updateContentFailed({
+                filepath: action.payload.filepath,
+                error: xhrError,
+                kernelRef: action.payload.kernelRef,
+                contentRef: action.payload.contentRef
+              })
+            )
           )
         );
     })

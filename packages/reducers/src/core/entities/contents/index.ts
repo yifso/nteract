@@ -10,6 +10,7 @@ import {
   makeFileContentRecord,
   makeFileModelRecord,
   makeDummyContentRecord,
+  makeDummyContentFileRecord,
   makeContentsRecord,
   makeDirectoryContentRecord,
   makeDirectoryModel,
@@ -41,7 +42,18 @@ const byRef = (
       );
     case actionTypes.UPDATE_CONTENT_FULFILLED:
       const updateContentFulfilledAction = action as actionTypes.FetchContentFulfilled;
-      console.log('SUCCESS')
+      console.log("SUCCESS");
+
+      // return state.set(
+      //   updateContentFulfilledAction.payload.contentRef,
+      //   makeDummyContentFileRecord({
+      //     kernel: { 
+      //       id: updateContentFulfilledAction.payload.kernelRef,
+      //       name: "ir"
+      //     },
+      //     path: updateContentFulfilledAction.payload.filepath || ""
+      //   })
+      // );
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until

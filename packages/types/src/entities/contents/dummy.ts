@@ -29,4 +29,36 @@ export const makeDummyContentRecord = Immutable.Record<DummyContentRecordProps>(
     model: makeEmptyModel()
   }
 );
+export type DummyContentFileRecordProps = {
+  kernel: {
+    id: string,
+    name: "ir"
+  },
+  created: string | null,
+  last_modified: string | null,
+  writable: boolean,
+  name: string,
+  path: string,
+  type: NotebookTypes,
+  mimetype?: string | null,
+  content: string,
+  format: string
+};
+export const makeDummyContentFileRecord = Immutable.Record<DummyContentFileRecordProps>(
+  {
+    kernel: {
+      id: "",
+      name: "ir"
+    },
+    created: null,
+    last_modified: null,
+    writable: true,
+    name: "",
+    path: "",
+    type: "notebook",
+    mimetype: null,
+    content: "",
+    format: ""
+  }
+);
 export type DummyContentRecord = Immutable.RecordOf<DummyContentRecordProps>;
