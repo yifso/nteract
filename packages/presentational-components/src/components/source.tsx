@@ -4,7 +4,7 @@ import Highlighter from "../syntax-highlighter";
 
 export type SourceProps = {
   language: string;
-  children: React.ReactNode[];
+  children: React.ReactNode;
   className: string;
   theme: "light" | "dark";
 };
