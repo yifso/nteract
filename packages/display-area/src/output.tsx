@@ -82,7 +82,11 @@ export default class Output extends React.Component<Props> {
         switch (name) {
           case "stdout":
           case "stderr":
-            return <Ansi className={classPrefix + name}>{text}</Ansi>;
+            return (
+              <Ansi linkify={false} className={classPrefix + name}>
+                {text}
+              </Ansi>
+            );
           default:
             return null;
         }
@@ -91,13 +95,13 @@ export default class Output extends React.Component<Props> {
         const traceback = output.traceback;
         if (!traceback) {
           return (
-            <Ansi className={classPrefix + "traceback"}>{`${output.ename}: ${
-              output.evalue
-            }`}</Ansi>
+            <Ansi linkify={false} className={classPrefix + "traceback"}>{`${
+              output.ename
+            }: ${output.evalue}`}</Ansi>
           );
         }
         return (
-          <Ansi className={classPrefix + "traceback"}>
+          <Ansi linkify={false} className={classPrefix + "traceback"}>
             {traceback.join("\n")}
           </Ansi>
         );
