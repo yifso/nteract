@@ -6,7 +6,8 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { EditableText } from "@blueprintjs/core";
+import { FormGroup, classNames } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 import { actions } from "@nteract/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
@@ -50,15 +51,6 @@ type FileProps = {
 };
 
 export class File extends React.PureComponent<FileProps, *> {
-  constructor(props: FileProps) {
-    super(props);
-
-    this.state = {
-      // Removes the `.ipynb` extension 
-      // title: props.displayName.split(".")[0]
-      title: props.displayName
-    };
-  }
 
   render() {
     // Determine the file handler
@@ -106,11 +98,28 @@ export class File extends React.PureComponent<FileProps, *> {
               >
                 <ThemedLogo />
               </a>
-              <EditableText
+              {/* Uncontrolled input */}
+              <FormGroup
                 disabled={false}
-                placeholder={"Enter Title..."}
-                value={this.props.displayName}
-              />
+                intent={"primary"} 
+              >
+                <input 
+                  className={Classes.EDITABLE_TEXT_INPUT}
+                  type="text" 
+                  ref={input => this.ref = input} 
+                  defaultValue={this.props.displayName}
+                  spellCheck={false}
+                  onBlur={(event) => {
+                      event.preventDefault();
+
+                      return this.props.updateTitle({
+                        filepath: `/${this.ref.value}`,
+                        contentRef: this.props.contentRef
+                      })
+                    }
+                  }
+                /> 
+              </FormGroup>
             </NavSection>
             <NavSection>
               <span className="icon">{icon}</span>
@@ -159,7 +168,7 @@ const mapStateToProps = (
 
 const mapDispatchToProps = (dispatch: any) => {
   return ({
-    updateTitle: (title: object) => dispatch(actions.updateContent(title))
+    updateTitle: (value: object) => dispatch(actions.changeContentName(value))
   });
 }
 

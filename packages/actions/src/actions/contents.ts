@@ -7,10 +7,10 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
-export const updateContent = (payload: {
+export const changeContentName = (payload: {
   filepath: string;
-  kernelRef: KernelRef;
   contentRef: ContentRef;
+<<<<<<< HEAD
 }): actionTypes.UpdateContent => ({
   type: actionTypes.UPDATE_CONTENT,
   payload
@@ -19,6 +19,36 @@ export const updateContent = (payload: {
 export const fetchContent = (
   payload: actionTypes.FetchContent["payload"]
 ): actionTypes.FetchContent => ({
+=======
+}): actionTypes.ChangeContentName => ({
+  type: actionTypes.CHANGE_CONTENT_NAME,
+  payload
+});
+
+export const changeContentNameFulfilled = (payload: {
+  filepath: string,
+  contentRef: ContentRef
+}): actionTypes.ChangeContentNameFulfilled => ({
+  type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED,
+  payload
+});
+
+export const changeContentNameFailed = (payload: {
+  filepath: string,
+  error: Error,
+  contentRef: ContentRef,
+}): actionTypes.ChangeContentNameFailed => ({
+  type: actionTypes.CHANGE_CONTENT_NAME_FAILED,
+  payload
+});
+
+export const fetchContent = (payload: {
+  filepath: string;
+  params: Object;
+  kernelRef: KernelRef;
+  contentRef: ContentRef;
+}): actionTypes.FetchContent => ({
+>>>>>>> changing controlled component to uncomtrolled component, refactoring after PR review, troubleshooting the display name update
   type: actionTypes.FETCH_CONTENT,
   payload
 });

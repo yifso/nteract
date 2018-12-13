@@ -11,7 +11,7 @@ import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
-import { makeDummyContentFileRecord } from "@nteract/core";
+import { makeDummyContentRecord } from "@nteract/core";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
@@ -19,11 +19,11 @@ import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 export function updateContentEpic(
-  action$: ActionsObservable<actions.UpdateContent>,
+  action$: ActionsObservable<actions.ChangeContentName>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(actions.UPDATE_CONTENT),
+    ofType(actions.CHANGE_CONTENT_NAME),
     switchMap(action => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
         return of({
@@ -34,27 +34,31 @@ export function updateContentEpic(
       }
 
       const state = state$.value;
-
       const host = selectors.currentHost(state);
       if (host.type !== "jupyter") {
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
-      debugger;
       const fileName: string = window.frames.location.pathname.split("/")[3];
-      const { kernelRef, filepath } = action.payload;
-      const { pathname } = window.frames.location;
+      const { contentRef, filepath } = action.payload;
 
       return contents
         .update(
           serverConfig,
           fileName,
-          makeDummyContentFileRecord({
-            kernel: { id: kernelRef },
+          {
+            name: "",
+            path: filepath.slice(1),
+            type: "notebook",
             writable: true,
-            path: filepath.slice(1)
-          })
+            created: "",
+            last_modified: "",
+            mimetype: "",
+            content: "",
+            format: "",
+            kernel: {}
+          }
         )
         .pipe(
           tap(xhr => {
@@ -62,33 +66,14 @@ export function updateContentEpic(
               throw new Error(xhr.response);
             }
           }),
-          map(xhr => {
-            const { filepath, contentRef } = action.payload;
-            // Extract url path, e.g. `/nteract/edit`
-            const pathnameArray = pathname.split("/");
-            const lastSliceIndex = pathnameArray.length - 1; 
-            const path = pathnameArray
-              .slice(0, lastSliceIndex)
-              .join("/");
-
-            // Modifying the url's file name in the browser. 
-            // Effects back button behavior.
-            // Is there a better way to accomplish this?
-            // window.history.replaceState(
-            //   {}, 
-            //   filepath, 
-            //   `${path}${filepath}`
-            // );
-            window.location.replace(`${path}${filepath}`);
-
-            return actions.updateContentFulfilled({ filepath, contentRef });
-          }),
+          map(() => actions.changeContentNameFulfilled({ 
+            filepath, 
+            contentRef 
+          })),
           catchError((xhrError: any) =>
-            of(
-              actions.updateContentFailed({
+            of(actions.changeContentNameFailed({
                 filepath: action.payload.filepath,
                 error: xhrError,
-                kernelRef: action.payload.kernelRef,
                 contentRef: action.payload.contentRef
               })
             )

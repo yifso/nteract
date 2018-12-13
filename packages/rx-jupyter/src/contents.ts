@@ -82,7 +82,7 @@ export type Payload = {
   mimetype: string;
   content: string | Notebook;
   format: string;
-  kernel: any
+  kernel: any;
 };
 
 /**

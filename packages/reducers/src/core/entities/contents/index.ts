@@ -10,7 +10,6 @@ import {
   makeFileContentRecord,
   makeFileModelRecord,
   makeDummyContentRecord,
-  makeDummyContentFileRecord,
   makeContentsRecord,
   makeDirectoryContentRecord,
   makeDirectoryModel,
@@ -29,19 +28,12 @@ const byRef = (
   action: Action
 ): Immutable.Map<ContentRef, ContentRecord> => {
   switch (action.type) {
-    case actionTypes.UPDATE_CONTENT:
-      const updateContentAction = action as actionTypes.UpdateContent;
-      const { filepath, contentRef, kernelRef } = updateContentAction.payload;
-
-      return state.set(
-        contentRef,
-        {
-          filepath: filepath || "",
-          kernelRef: kernelRef
-        }
-      );
-    case actionTypes.UPDATE_CONTENT_FULFILLED:
-      const updateContentFulfilledAction = action as actionTypes.FetchContentFulfilled;
+    case actionTypes.CHANGE_CONTENT_NAME:
+      const changeContentNameAction = action as actionTypes.ChangeContentName;
+      const { filepath } = changeContentNameAction.payload;
+      state.setIn(["filepath"], filepath);
+    case actionTypes.CHANGE_CONTENT_NAME_FULFILLED:
+      const changeContentNameFulfilledAction = action as actionTypes.ChangeContentNameFulfilled;
       console.log("SUCCESS");
 
       // return state.set(
