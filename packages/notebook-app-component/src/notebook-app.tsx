@@ -105,7 +105,7 @@ const mapStateToCellProps = (
     throw new Error("cell not found inside cell map");
   }
 
-  const cellType = (cell as any).get("cellType");
+  const cellType = (cell as any).get("cell_type");
   const outputs = cell.get("outputs", Immutable.List());
 
   const sourceHidden =
@@ -141,7 +141,7 @@ const mapStateToCellProps = (
     tags,
     source: cell.get("source", ""),
     theme: selectors.userTheme(state),
-    executionCount: (cell as ImmutableCodeCell).get("executionCount", null),
+    executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
     outputs,
     models: selectors.models(state),
     pager,

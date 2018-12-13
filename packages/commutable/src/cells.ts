@@ -15,16 +15,16 @@ import {
 /* CodeCell Record Boilerplate */
 
 type CodeCellParams = {
-  cellType: "code";
+  cell_type: "code";
   // Sadly untyped and widely unspecced
   metadata: ImmutableMap<string, any>;
-  executionCount: ExecutionCount;
+  execution_count: ExecutionCount;
   source: string;
   outputs: ImmutableList<ImmutableOutput>;
 };
 export const makeCodeCell = Record<CodeCellParams>({
-  cellType: "code",
-  executionCount: null,
+  cell_type: "code",
+  execution_count: null,
   metadata: ImmutableMap({
     collapsed: false,
     outputHidden: false,
@@ -39,13 +39,13 @@ export type ImmutableCodeCell = RecordOf<CodeCellParams>;
 /* MarkdownCell Record Boilerplate */
 
 type MarkdownCellParams = {
-  cellType: "markdown";
+  cell_type: "markdown";
   source: string;
   metadata: ImmutableMap<string, any>;
 };
 
 export const makeMarkdownCell = Record<MarkdownCellParams>({
-  cellType: "markdown",
+  cell_type: "markdown",
   metadata: ImmutableMap(),
   source: ""
 });
@@ -55,13 +55,13 @@ export type ImmutableMarkdownCell = RecordOf<MarkdownCellParams>;
 /* RawCell Record Boilerplate */
 
 type RawCellParams = {
-  cellType: "raw";
+  cell_type: "raw";
   source: string;
   metadata: ImmutableMap<string, any>;
 };
 
 export const makeRawCell = Record<RawCellParams>({
-  cellType: "raw",
+  cell_type: "raw",
   metadata: ImmutableMap(),
   source: ""
 });

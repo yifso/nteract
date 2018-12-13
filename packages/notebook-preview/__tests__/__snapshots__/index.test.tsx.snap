@@ -102,7 +102,7 @@ print('hey')
                     "text/plain": "<IPython.core.display.HTML object>",
                   },
                   "metadata": Object {},
-                  "outputType": "display_data",
+                  "output_type": "display_data",
                 },
               ]
             }
@@ -349,7 +349,7 @@ print('hey')
                     "text/plain": "<IPython.core.display.HTML object>",
                   },
                   "metadata": Object {},
-                  "outputType": "display_data",
+                  "output_type": "display_data",
                 },
               ]
             }

@@ -100,7 +100,7 @@ const createImmutableMarkdownCell = (
   cell: MarkdownCell
 ): ImmutableMarkdownCell =>
   makeMarkdownCell({
-    cellType: cell.cell_type,
+    cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
   });
@@ -124,7 +124,7 @@ const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "pyout":
       return makeExecuteResult({
-        executionCount: output.prompt_number,
+        execution_count: output.prompt_number,
         // Note strangeness with v4 API
         data: createImmutableMimeBundle(output),
         metadata: immutableFromJS(output.metadata)
@@ -155,16 +155,16 @@ const createImmutableOutput = (output: Output): ImmutableOutput => {
 
 const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
   makeCodeCell({
-    cellType: cell.cell_type,
+    cell_type: cell.cell_type,
     source: demultiline(cell.input),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
-    executionCount: cell.prompt_number,
+    execution_count: cell.prompt_number,
     metadata: immutableFromJS(cell.metadata)
   });
 
 const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
   makeRawCell({
-    cellType: cell.cell_type,
+    cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
   });
@@ -172,7 +172,7 @@ const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
 const createImmutableHeadingCell = (cell: HeadingCell): ImmutableMarkdownCell =>
   // v3 heading cells are just markdown cells in v4+
   makeMarkdownCell({
-    cellType: "markdown",
+    cell_type: "markdown",
     source: Array.isArray(cell.source)
       ? demultiline(
           cell.source.map(line =>
@@ -227,7 +227,7 @@ export const fromJS = (notebook: Notebook) => {
   return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
-    nbformatMinor: notebook.nbformat_minor,
+    nbformat_minor: notebook.nbformat_minor,
     nbformat: 4,
     metadata: immutableFromJS(notebook.metadata)
   });

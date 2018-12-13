@@ -86,7 +86,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
           <Cells>
             {cellOrder.map((cellId: string) => {
               const cell = cellMap.get(cellId);
-              const cellType = cell.get("cellType");
+              const cellType = cell.get("cell_type");
               const source = cell.get("source");
 
               switch (cellType) {
@@ -110,7 +110,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                       <PapermillView status={papermillStatus} />
                       <Input hidden={sourceHidden}>
                         <Prompt
-                          counter={cell.get("executionCount")}
+                          counter={cell.get("execution_count")}
                           running={papermillStatus === "running"}
                         />
                         <Source language={language} theme={this.props.theme}>
@@ -172,7 +172,8 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                   return (
                     <Cell key={cellId}>
                       <Outputs>
-                        <pre>{`Cell Type "${cellType}" is not implemented`}</pre>
+                        <pre
+                        >{`Cell Type "${cellType}" is not implemented`}</pre>
                       </Outputs>
                     </Cell>
                   );

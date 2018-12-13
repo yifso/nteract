@@ -88,7 +88,7 @@ export const codeCellIdsBelow = (
     .skip(index)
     .filter(
       (id: string) =>
-        model.notebook.getIn(["cellMap", id, "cellType"]) === "code"
+        model.notebook.getIn(["cellMap", id, "cell_type"]) === "code"
     );
 };
 
@@ -138,7 +138,7 @@ export const transientCellMap = (model: NotebookModel) =>
 export const codeCellIds = createSelector(
   [cellMap, cellOrder],
   (cellMap, cellOrder) => {
-    return cellOrder.filter(id => cellMap.getIn([id, "cellType"]) === "code");
+    return cellOrder.filter(id => cellMap.getIn([id, "cell_type"]) === "code");
   }
 );
 
