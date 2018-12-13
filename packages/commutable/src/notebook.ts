@@ -18,7 +18,7 @@ import { JSONType, CellId } from "./primitives";
 export type NotebookRecordParams = {
   cellOrder: ImmutableList<CellId>;
   cellMap: ImmutableMap<CellId, ImmutableCell>;
-  nbformat_minor: number;
+  nbformatMinor: number;
   nbformat: number;
   metadata: ImmutableMap<string, any>;
 };
@@ -26,7 +26,7 @@ export type NotebookRecordParams = {
 export const makeNotebookRecord = Record<NotebookRecordParams>({
   cellOrder: ImmutableList(),
   cellMap: ImmutableMap(),
-  nbformat_minor: 0,
+  nbformatMinor: 0,
   nbformat: 4,
   metadata: ImmutableMap()
 });
@@ -41,9 +41,9 @@ export type Notebook = v4.Notebook | v3.Notebook;
 
 /**
  * Converts a string representation of a notebook into a JSON representation.
- * 
+ *
  * @param notebookString A string representation of a notebook.
- * 
+ *
  * @returns A JSON representation of the same notebook.
  */
 export const parseNotebook = (notebookString: string): Notebook =>
@@ -85,13 +85,13 @@ export const fromJS = (
 /**
  * Converts an immutable representation of a notebook to a JSON representation of the
  * notebook using the v4 of the nbformat specification.
- * 
+ *
  * @param immnb The immutable representation of a notebook.
- * 
+ *
  * @returns The JSON representation of a notebook.
  */
 export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
-  const minorVersion: null | number = immnb.get("nbformat_minor", null);
+  const minorVersion: null | number = immnb.get("nbformatMinor", null);
 
   if (
     immnb.get("nbformat") === 4 &&
@@ -105,9 +105,9 @@ export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
 
 /**
  * Converts a JSON representation of a notebook into a string representation.
- * 
+ *
  * @param notebook The JSON representation of a notebook.
- * 
+ *
  * @returns A string containing the notebook data.
  */
 export const stringifyNotebook = (notebook: v4.Notebook) =>
