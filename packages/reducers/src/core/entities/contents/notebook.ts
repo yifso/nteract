@@ -660,9 +660,13 @@ function updateCellMetadata(
   state: NotebookModel,
   action: actionTypes.UpdateCellMetadata
 ) {
-  const { id, metadata } = action.payload;
-  console.log("state", state);
-  return state.setIn(["notebook", "cellMap", id, "metadata"], metadata);
+  const { id, metadata, mimeType } = action.payload;
+  console.log("updateCellMetadata", action);
+  console.log("store before update", state);
+  return state.setIn(
+    ["notebook", "cellMap", id, "metadata", mimeType],
+    metadata
+  );
 }
 
 function setLanguageInfo(

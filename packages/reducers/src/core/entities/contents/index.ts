@@ -223,7 +223,6 @@ const byRef = (state = Immutable.Map(), action: Action) => {
       const cellAction = action as actionTypes.FocusCell;
       const path = [cellAction.payload.contentRef, "model"];
       const model = state.getIn(path);
-      console.log("in the giant switch", path, cellAction);
       return state.setIn(path, notebook(model, cellAction));
     }
     case actionTypes.UPDATE_FILE_TEXT: {

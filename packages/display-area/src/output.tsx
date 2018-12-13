@@ -14,6 +14,7 @@ type Props = {
   theme: string;
   models: Object;
   channels?: Subject<any>;
+  metadata: Object;
   onMetadataChange?: Function;
 };
 
@@ -63,9 +64,12 @@ export default class Output extends React.Component<Props> {
 
       // falls through
       case "display_data": {
-        console.log("output", output);
+        //        console.log("output", output);
         const bundle = output.data;
-        const metadata = output.metadata;
+        // Not sure about this vs output.metadata and how to make them live together happily
+
+        const metadata = this.props.metadata;
+
         return (
           <RichestMime
             bundle={bundle}

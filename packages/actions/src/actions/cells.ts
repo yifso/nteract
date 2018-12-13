@@ -347,6 +347,7 @@ export function updateCellMetadata(payload: {
   id: CellId;
   metadata: Object;
   contentRef: ContentRef;
+  mimeType: string;
 }): actionTypes.UpdateCellMetadata {
   return {
     type: actionTypes.UPDATE_CELL_METADATA,

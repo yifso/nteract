@@ -64,6 +64,7 @@ type AnyCellProps = {
   focusAboveCell: () => void;
   focusBelowCell: () => void;
   updateCellMetadata: Function;
+  metadata: Object;
 };
 
 const markdownEditorOptions = {
@@ -126,6 +127,8 @@ const mapStateToCellProps = (
 
   const pager = model.getIn(["cellPagers", id]) || Immutable.List();
 
+  const metadata = (cell.getIn(["metadata"]) || Immutable.Set()).toJS();
+
   const kernelRef = selectors.currentKernelRef(state);
   let channels: Subject<any> | undefined;
   if (kernelRef) {
@@ -151,7 +154,8 @@ const mapStateToCellProps = (
     sourceHidden,
     outputHidden,
     outputExpanded,
-    cellStatus: model.transient.getIn(["cellMap", id, "status"])
+    cellStatus: model.transient.getIn(["cellMap", id, "status"]),
+    metadata
   };
 };
 
@@ -173,8 +177,10 @@ const mapDispatchToCellProps = (
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
   },
-  updateCellMetadata: (metadata: Object) => {
-    dispatch(actions.updateCellMetadata({ id, contentRef, metadata }));
+  updateCellMetadata: (metadata: Object, mimeType: string) => {
+    dispatch(
+      actions.updateCellMetadata({ id, contentRef, metadata, mimeType })
+    );
   }
 });
 
@@ -211,13 +217,12 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       selectCell,
       unfocusEditor,
       contentRef,
-      sourceHidden
+      sourceHidden,
+      metadata
     } = this.props;
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
     let element = null;
-
-    console.log("this.props in notebook-app", this.props);
 
     switch (cellType) {
       case "code":
@@ -276,6 +281,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   models={this.props.models}
                   channels={this.props.channels}
                   onMetadataChange={this.props.updateCellMetadata}
+                  metadata={metadata}
                 />
               ))}
             </Outputs>
@@ -368,8 +374,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
   }
 }
 
-console.log("wqhaaa");
-
 // $FlowFixMe: react-redux typings
 export const ConnectedCell = connect(
   mapStateToCellProps,
@@ -424,6 +428,7 @@ type NotebookDispatchProps = {
       id: CellId;
       metadata: Object;
       contentRef: ContentRef;
+      mimeType: string;
     }
   ) => void;
 };
@@ -514,6 +519,7 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
     id: CellId;
     contentRef: ContentRef;
     metadata: Object;
+    mimeType: string;
   }) => dispatch(actions.updateCellMetadata(payload))
 });
 

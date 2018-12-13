@@ -167,7 +167,7 @@ class DataResourceTransform extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    console.log("Data expl;orer pros", props);
+    //    console.log("Data expl;orer pros", props);
 
     const { metadata, initialView } = props;
 

@@ -253,5 +253,6 @@ export type UpdateCellMetadata = {
     id: CellId;
     contentRef: ContentRef;
     metadata: Object;
+    mimeType: string;
   };
 };
