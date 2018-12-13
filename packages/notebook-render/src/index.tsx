@@ -74,12 +74,9 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
     const allSourceHidden = notebook.getIn(["metadata", "hide_input"]) || false;
 
     const language =
-      notebook.getIn([
-        "metadata",
-        "language_info",
-        "codemirror_mode",
-        "name"
-      ]) ||
+      notebook.getIn(
+        ["metadata", "language_info", "codemirror_mode", "name"]
+      ) ||
       notebook.getIn(["metadata", "language_info", "codemirror_mode"]) ||
       notebook.getIn(["metadata", "language_info", "name"]) ||
       "text";
@@ -92,7 +89,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
         <Cells>
           {cellOrder.map((cellId: string) => {
             const cell = cellMap.get(cellId);
-            const cellType: string = cell!.get("cellType");
+            const cellType: string = cell!.get("cell_type");
             const source = cell!.get("source");
 
             switch (cellType) {
@@ -111,7 +108,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                     <Input hidden={sourceHidden}>
                       <Prompt
                         counter={(cell as ImmutableCodeCell).get(
-                          "executionCount"
+                          "execution_count"
                         )}
                       />
                       <Source language={language} theme={this.props.theme}>
