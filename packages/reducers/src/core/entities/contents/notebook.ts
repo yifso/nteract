@@ -50,7 +50,7 @@ export function reduceOutputs(
   if (
     output.output_type !== "stream" ||
     !last ||
-    (outputs.size > 0 && last.get("output_type") !== "stream")
+    (outputs.size > 0 && last.get("outputType") !== "stream")
   ) {
     // If it's not a stream type, we just fold in the output
     return outputs.push(createImmutableOutput(output));
@@ -69,7 +69,7 @@ export function reduceOutputs(
     last &&
     outputs.size > 0 &&
     typeof streamOutput.name !== "undefined" &&
-    last.get("output_type") === "stream"
+    last.get("outputType") === "stream"
   ) {
     // Invariant: size > 0, outputs.last() exists
     if (last.get("name") === streamOutput.name) {
@@ -80,7 +80,7 @@ export function reduceOutputs(
       | undefined = outputs.butLast().last();
     if (
       nextToLast &&
-      nextToLast.get("output_type") === "stream" &&
+      nextToLast.get("outputType") === "stream" &&
       nextToLast.get("name") === streamOutput.name
     ) {
       return outputs.updateIn([outputs.size - 2, "text"], appendText);
@@ -119,14 +119,14 @@ function clearOutputs(state: NotebookModel, action: actionTypes.ClearOutputs) {
     return state;
   }
 
-  const type = state.getIn(["notebook", "cellMap", id, "cell_type"]);
+  const type = state.getIn(["notebook", "cellMap", id, "cellType"]);
 
   const cleanedState = cleanCellTransient(state, id);
 
   if (type === "code") {
     return cleanedState
       .setIn(["notebook", "cellMap", id, "outputs"], Immutable.List())
-      .setIn(["notebook", "cellMap", id, "execution_count"], null);
+      .setIn(["notebook", "cellMap", id, "executionCount"], null);
   }
   return cleanedState;
 }
@@ -160,10 +160,10 @@ function clearAllOutputs(
     .getIn(["notebook", "cellMap"])
     // NOTE: My kingdom for a mergeMap
     .map((cell: ImmutableCell) => {
-      if ((cell as any).get("cell_type") === "code") {
+      if ((cell as any).get("cellType") === "code") {
         return (cell as ImmutableCodeCell).merge({
           outputs: Immutable.List(),
-          execution_count: null
+          executionCount: null
         });
       }
       return cell;
@@ -293,7 +293,7 @@ function focusNextCell(
   }
 
   const curIndex = cellOrder.findIndex((foundId: CellId) => id === foundId);
-  const curCellType = state.getIn(["notebook", "cellMap", id, "cell_type"]);
+  const curCellType = state.getIn(["notebook", "cellMap", id, "cellType"]);
 
   const nextIndex = curIndex + 1;
 
@@ -622,7 +622,7 @@ function toggleCellOutputVisibility(
 function unhideAll(state: NotebookModel, action: actionTypes.UnhideAll) {
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
-      if ((cell as any).get("cell_type") === "code") {
+      if ((cell as any).get("cellType") === "code") {
         return cell.mergeIn(["metadata"], {
           // TODO: Verify that we convert to one namespace for hidden input/output
           outputHidden: action.payload.outputHidden,
@@ -758,7 +758,7 @@ function changeCellType(
   // $FlowFixMe: flow types in immutable need to be updated
   const cell = state.getIn(["notebook", "cellMap", id]);
 
-  const from = cell.cell_type;
+  const from = cell.cellType;
 
   // NOOP, since we're already that cell type
   if (from === to) {
@@ -771,7 +771,7 @@ function changeCellType(
   if (from === "code") {
     nextState = cleanCellTransient(
       state
-        .deleteIn(["notebook", "cellMap", id, "execution_count"])
+        .deleteIn(["notebook", "cellMap", id, "executionCount"])
         .deleteIn(["notebook", "cellMap", id, "outputs"]),
       id
     );
