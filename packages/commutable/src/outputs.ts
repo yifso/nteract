@@ -106,15 +106,15 @@ export const isJSONKey = (key: string) =>
 
 /** ExecuteResult Record Boilerplate */
 type ExecuteResultParams = {
-  output_type: "execute_result";
-  execution_count: ExecutionCount;
+  outputType: "execute_result";
+  executionCount: ExecutionCount;
   data: ImmutableMimeBundle;
   metadata?: any;
 };
 
 export const makeExecuteResult = Record<ExecuteResultParams>({
-  output_type: "execute_result",
-  execution_count: null,
+  outputType: "execute_result",
+  executionCount: null,
   data: ImmutableMap(),
   metadata: ImmutableMap()
 });
@@ -124,13 +124,13 @@ type ImmutableExecuteResult = RecordOf<ExecuteResultParams>;
 /** DisplayData Record Boilerplate */
 
 type DisplayDataParams = {
-  output_type: "display_data";
+  outputType: "display_data";
   data: ImmutableMimeBundle;
   metadata?: any;
 };
 
 export const makeDisplayData = Record<DisplayDataParams>({
-  output_type: "display_data",
+  outputType: "display_data",
   data: ImmutableMap(),
   metadata: ImmutableMap()
 });
@@ -140,13 +140,13 @@ type ImmutableDisplayData = RecordOf<DisplayDataParams>;
 /** StreamOutput Record Boilerplate */
 
 type StreamOutputParams = {
-  output_type: "stream";
+  outputType: "stream";
   name: "stdout" | "stderr";
   text: string;
 };
 
 export const makeStreamOutput = Record<StreamOutputParams>({
-  output_type: "stream",
+  outputType: "stream",
   name: "stdout",
   text: ""
 });
@@ -156,14 +156,14 @@ type ImmutableStreamOutput = RecordOf<StreamOutputParams>;
 /** ErrorOutput Record Boilerplate */
 
 type ErrorOutputParams = {
-  output_type: "error";
+  outputType: "error";
   ename: string;
   evalue: string;
   traceback: ImmutableList<string>;
 };
 
 export const makeErrorOutput = Record<ErrorOutputParams>({
-  output_type: "error",
+  outputType: "error",
   ename: "",
   evalue: "",
   traceback: ImmutableList()

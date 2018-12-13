@@ -292,7 +292,7 @@ export function executeCellEpic(
           }
 
           // We only execute code cells
-          if ((cell as any).get("cell_type") === "code") {
+          if ((cell as any).get("cellType") === "code") {
             const source = cell.get("source", "");
 
             const message = createExecuteRequest(source);

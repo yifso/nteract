@@ -132,7 +132,7 @@ export const createImmutableOutput = (output: Output): ImmutableOutput => {
   switch (output.output_type) {
     case "execute_result":
       return makeExecuteResult({
-        execution_count: output.execution_count,
+        executionCount: output.execution_count,
         data: createImmutableMimeBundle(output.data),
         metadata: immutableFromJS(output.metadata)
       });
@@ -148,7 +148,7 @@ export const createImmutableOutput = (output: Output): ImmutableOutput => {
       });
     case "error":
       return makeErrorOutput({
-        output_type: "error",
+        outputType: "error",
         ename: output.ename,
         evalue: output.evalue,
         // Note: this is one of the cases where the Array of strings (for
@@ -183,7 +183,7 @@ const createImmutableMetadata = (metadata: JSONObject) =>
 
 const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
   makeRawCell({
-    cell_type: cell.cell_type,
+    cellType: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
   });
@@ -192,17 +192,17 @@ const createImmutableMarkdownCell = (
   cell: MarkdownCell
 ): ImmutableMarkdownCell =>
   makeMarkdownCell({
-    cell_type: cell.cell_type,
+    cellType: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
   });
 
 const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
   makeCodeCell({
-    cell_type: cell.cell_type,
+    cellType: cell.cell_type,
     source: demultiline(cell.source),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
-    execution_count: cell.execution_count,
+    executionCount: cell.execution_count,
     metadata: createImmutableMetadata(cell.metadata)
   });
 
@@ -250,7 +250,7 @@ export const fromJS = (notebook: Notebook) => {
   return makeNotebookRecord({
     cellOrder: cellStructure.cellOrder.asImmutable(),
     cellMap: cellStructure.cellMap.asImmutable(),
-    nbformat_minor: notebook.nbformat_minor,
+    nbformatMinor: notebook.nbformat_minor,
     nbformat: 4,
     metadata: immutableFromJS(notebook.metadata)
   });
@@ -285,29 +285,29 @@ const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
 };
 
 const outputToJS = (output: ImmutableOutput): Output => {
-  switch (output.output_type) {
+  switch (output.outputType) {
     case "execute_result":
       return {
-        output_type: output.output_type,
-        execution_count: output.execution_count,
+        output_type: output.outputType,
+        execution_count: output.executionCount,
         data: mimeBundleToJS(output.data),
         metadata: output.metadata.toJS()
       };
     case "display_data":
       return {
-        output_type: output.output_type,
+        output_type: output.outputType,
         data: mimeBundleToJS(output.data),
         metadata: output.metadata.toJS()
       };
     case "stream":
       return {
-        output_type: output.output_type,
+        output_type: output.outputType,
         name: output.name,
         text: remultiline(output.text)
       };
     case "error":
       return {
-        output_type: output.output_type,
+        output_type: output.outputType,
         ename: output.ename,
         evalue: output.evalue,
         // Note: this is one of the cases where the Array of strings (for
@@ -335,7 +335,7 @@ const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
     cell_type: "code",
     source: remultiline(immCell.source),
     outputs: immCell.outputs.map(outputToJS).toArray(),
-    execution_count: immCell.execution_count,
+    execution_count: immCell.executionCount,
     metadata: metadataToJS(immCell.metadata)
   };
 };
@@ -363,7 +363,7 @@ const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
  * @returns A JSON representation of the same cell.
  */
 const cellToJS = (immCell: ImmutableCell): Cell => {
-  switch (immCell.cell_type) {
+  switch (immCell.cellType) {
     case "markdown":
       return markdownCellToJS(immCell);
     case "code":
@@ -397,6 +397,6 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
     cells,
     metadata: plainNotebook.metadata.toJS(),
     nbformat: 4,
-    nbformat_minor: plainNotebook.nbformat_minor
+    nbformat_minor: plainNotebook.nbformatMinor
   };
 };

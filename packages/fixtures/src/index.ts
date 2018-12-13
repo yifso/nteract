@@ -75,7 +75,7 @@ function buildFixtureNotebook(config: JSONObject) {
       for (let i = 0; i < config.markdownCellCount; i++) {
         notebook = appendCellToNotebook(
           notebook,
-          emptyMarkdownCell.set("cell_type", "markdown")
+          emptyMarkdownCell.set("cellType", "markdown")
         );
       }
     }

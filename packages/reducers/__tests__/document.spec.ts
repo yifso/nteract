@@ -30,9 +30,9 @@ const firstCellId = monocellDocument.getIn(["notebook", "cellOrder"]).first();
 describe("reduceOutputs", () => {
   test("puts new outputs at the end by default", () => {
     const outputs = Immutable.List([
-      Immutable.Map({ output_type: "stream", name: "stdout", text: "Woo" }),
+      Immutable.Map({ outputType: "stream", name: "stdout", text: "Woo" }),
       Immutable.Map({
-        output_type: "error",
+        outputType: "error",
         ename: "well",
         evalue: "actually",
         traceback: Immutable.List()
@@ -47,15 +47,15 @@ describe("reduceOutputs", () => {
     expect(JSON.stringify(newOutputs)).toEqual(
       JSON.stringify(
         Immutable.List([
-          Immutable.Map({ output_type: "stream", name: "stdout", text: "Woo" }),
+          Immutable.Map({ outputType: "stream", name: "stdout", text: "Woo" }),
           Immutable.Map({
-            output_type: "error",
+            outputType: "error",
             ename: "well",
             evalue: "actually",
             traceback: Immutable.List()
           }),
           Immutable.Map({
-            output_type: "display_data",
+            outputType: "display_data",
             data: Immutable.Map(),
             metadata: Immutable.Map()
           })
@@ -66,7 +66,7 @@ describe("reduceOutputs", () => {
 
   test("handles the case of a single stream output", () => {
     const outputs = Immutable.fromJS([
-      { name: "stdout", text: "hello", output_type: "stream" }
+      { name: "stdout", text: "hello", outputType: "stream" }
     ]);
     const newOutputs = reduceOutputs(outputs, {
       name: "stdout",
@@ -77,7 +77,7 @@ describe("reduceOutputs", () => {
     expect(JSON.stringify(newOutputs)).toBe(
       JSON.stringify(
         Immutable.fromJS([
-          { name: "stdout", text: "hello world", output_type: "stream" }
+          { name: "stdout", text: "hello world", outputType: "stream" }
         ])
       )
     );
@@ -103,6 +103,7 @@ describe("reduceOutputs", () => {
       text: " world",
       output_type: "stream"
     });
+    debugger;
     expect(
       Immutable.is(
         outputs,
@@ -115,8 +116,8 @@ describe("reduceOutputs", () => {
 
   test("keeps respective streams together", () => {
     const outputs = Immutable.fromJS([
-      { name: "stdout", text: "hello", output_type: "stream" },
-      { name: "stderr", text: "errors are", output_type: "stream" }
+      { name: "stdout", text: "hello", outputType: "stream" },
+      { name: "stderr", text: "errors are", outputType: "stream" }
     ]);
     const newOutputs = reduceOutputs(outputs, {
       name: "stdout",
@@ -127,8 +128,8 @@ describe("reduceOutputs", () => {
     expect(JSON.stringify(newOutputs)).toBe(
       JSON.stringify(
         Immutable.fromJS([
-          { name: "stdout", text: "hello world", output_type: "stream" },
-          { name: "stderr", text: "errors are", output_type: "stream" }
+          { name: "stdout", text: "hello world", outputType: "stream" },
+          { name: "stderr", text: "errors are", outputType: "stream" }
         ])
       )
     );
@@ -141,12 +142,12 @@ describe("reduceOutputs", () => {
     expect(JSON.stringify(evenNewerOutputs)).toBe(
       JSON.stringify(
         Immutable.fromJS([
-          { name: "stdout", text: "hello world", output_type: "stream" },
+          { name: "stdout", text: "hello world", outputType: "stream" },
           {
             name: "stderr",
 
             text: "errors are informative",
-            output_type: "stream"
+            outputType: "stream"
           }
         ])
       )
@@ -224,7 +225,7 @@ describe("focusNextCell", () => {
       "notebook",
       "cellMap",
       newCellId,
-      "cell_type"
+      "cellType"
     ]);
 
     expect(state.cellFocused).not.toBeNull();
@@ -247,7 +248,7 @@ describe("focusNextCell", () => {
       "notebook",
       "cellMap",
       newCellId,
-      "cell_type"
+      "cellType"
     ]);
 
     expect(state.cellFocused).not.toBeNull();
@@ -307,11 +308,9 @@ describe("updateExecutionCount", () => {
     const id = originalState.getIn(["notebook", "cellOrder"]).last();
     const state = reducers(
       originalState,
-      actions.setInCell({ id, path: ["execution_count"], value: 42 })
+      actions.setInCell({ id, path: ["executionCount"], value: 42 })
     );
-    expect(state.getIn(["notebook", "cellMap", id, "execution_count"])).toBe(
-      42
-    );
+    expect(state.getIn(["notebook", "cellMap", id, "executionCount"])).toBe(42);
   });
 });
 
@@ -449,7 +448,7 @@ describe("createCellBelow", () => {
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(4);
     const cellId = state.getIn(["notebook", "cellOrder"]).last();
     const cell = state.getIn(["notebook", "cellMap", cellId]);
-    expect(cell.get("cell_type")).toBe("markdown");
+    expect(cell.get("cellType")).toBe("markdown");
   });
 });
 
@@ -477,7 +476,7 @@ describe("createCellAfter", () => {
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(4);
     const cellId = state.getIn(["notebook", "cellOrder"]).last();
     const cell = state.getIn(["notebook", "cellMap", cellId]);
-    expect(cell.get("cell_type")).toBe("markdown");
+    expect(cell.get("cellType")).toBe("markdown");
   });
 });
 
@@ -732,7 +731,7 @@ describe("changeCellType", () => {
       originalState,
       actions.changeCellType({ id, to: "markdown" })
     );
-    expect(state.getIn(["notebook", "cellMap", id, "cell_type"])).toBe(
+    expect(state.getIn(["notebook", "cellMap", id, "cellType"])).toBe(
       "markdown"
     );
   });
@@ -746,7 +745,7 @@ describe("changeCellType", () => {
 
     const cell = state.getIn(["notebook", "cellMap", id]);
 
-    expect(cell.cell_type).toBe("code");
+    expect(cell.cellType).toBe("code");
     expect(cell.outputs).toEqual(Immutable.List());
   });
   test("does nothing if cell type is same", () => {
