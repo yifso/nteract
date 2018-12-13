@@ -82,26 +82,43 @@ export class File extends React.PureComponent<FileProps, *> {
     // If/when we support more modes, we would case them off here
     return (
       <React.Fragment>
-        <Nav contentRef={this.props.contentRef}>
-          <NavSection>
-            <a
-              href={urljoin(this.props.appBase, this.props.baseDir)}
-              title="Home"
-            >
-              <ThemedLogo />
-            </a>
-            <EditableText
-              disabled={true}
-              placeholder={"Enter Title..."}
-              value={this.props.displayName}
-            />
-          </NavSection>
-          <NavSection>
-            <span className="icon">{icon}</span>
-            <LastSaved contentRef={this.props.contentRef} />
-          </NavSection>
-        </Nav>
-        {choice}
+        <div className="jupyter-extension-container">
+          <Nav contentRef={this.props.contentRef}>
+            <NavSection>
+              <a
+                href={urljoin(this.props.appBase, this.props.baseDir)}
+                title="Home"
+              >
+                <ThemedLogo />
+              </a>
+              <EditableText
+                disabled={true}
+                placeholder={"Enter Title..."}
+                value={this.props.displayName}
+              />
+            </NavSection>
+            <NavSection>
+              <span className="icon">{icon}</span>
+              <LastSaved contentRef={this.props.contentRef} />
+            </NavSection>
+          </Nav>
+          <div className="jupyter-extension-choice-container">
+            {choice}
+          </div>
+        </div>
+        <style jsx>{`
+          .jupyter-extension-container {
+            display: flex;
+            flex-flow: column;
+            align-items: stretch;
+            height: -webkit-fill-available;
+          }
+
+          .jupyter-extension-choice-container {
+            flex: 1 1 auto;
+            overflow: auto;
+          }
+        `}</style>
       </React.Fragment>
     );
   }
