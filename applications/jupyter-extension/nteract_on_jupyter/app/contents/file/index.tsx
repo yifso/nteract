@@ -6,9 +6,9 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { FormGroup, classNames } from "@blueprintjs/core";
+import { FormGroup } from "@blueprintjs/core";
 import { Classes } from "@blueprintjs/core";
-import * as actions from "@nteract/actions";
+import * as actions from "@nteract/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
