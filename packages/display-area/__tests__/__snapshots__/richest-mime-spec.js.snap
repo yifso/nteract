@@ -11,6 +11,7 @@ exports[`RichestMime renders a mimebundle 1`] = `
     }
   }
   models={Object {}}
+  onMetadataChange={[Function]}
   theme="light"
 />
 `;

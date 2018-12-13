@@ -25,7 +25,8 @@ export default class Output extends React.Component<Props> {
     models: {},
     theme: "light",
     transforms,
-    displayOrder
+    displayOrder,
+    metadata: {}
   };
 
   shouldComponentUpdate(nextProps: Props) {
