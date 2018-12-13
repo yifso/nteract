@@ -8,7 +8,7 @@ import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { FormGroup, classNames } from "@blueprintjs/core";
 import { Classes } from "@blueprintjs/core";
-import { actions } from "@nteract/core";
+import * as actions from "@nteract/actions";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
@@ -166,11 +166,9 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return ({
-    updateTitle: (value: object) => dispatch(actions.changeContentName(value))
-  });
-}
+const mapDispatchToProps = (dispatch: any) => ({
+  updateTitle: (value: object) => dispatch(actions.changeContentName(value))
+});
 
 export const ConnectedFile = connect(
   mapStateToProps,
