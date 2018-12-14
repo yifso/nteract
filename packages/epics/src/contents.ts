@@ -1,7 +1,7 @@
 /**
  * @module epics
  */
-import { empty, from, of, interval, Observable, ObservableInput } from "rxjs";
+import { empty, from, of, interval, Observable } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
@@ -11,12 +11,40 @@ import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
-import { makeDummyContentRecord } from "@nteract/core";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
+
+const checkForErrors = (payload: any, errorString: string) => {
+  if (!payload || typeof payload.filepath !== "string") {
+    return of({
+      type: "ERROR",
+      error: true,
+      payload: { error: new Error(errorString) }
+    }) as any;
+  }
+}
+
+const getHost = (state$: any, selectors: any): any => {
+  const state: any = state$.value;
+  const host: any = selectors.currentHost(state);
+
+  // Dismiss any usage that isn't targeting a jupyter server
+  if (host.type !== "jupyter") {
+    return empty();
+  }
+  return host;
+}
+
+const getServerConfig = (
+  host: any, 
+  selectors: any
+): ServerConfig => selectors.serverConfig(host);
+
+
+
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -25,54 +53,38 @@ export function updateContentEpic(
   return action$.pipe(
     ofType(actions.CHANGE_CONTENT_NAME),
     switchMap(action => {
-      if (!action.payload || typeof action.payload.filepath !== "string") {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: { error: new Error("updating content needs a payload") }
-        }) as any;
-      }
-
-      const state = state$.value;
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        // Dismiss any usage that isn't targeting a jupyter server
-        return empty();
-      }
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
-      const fileName: string = window.frames.location.pathname.split("/")[3];
-      const { contentRef, filepath } = action.payload;
+      checkForErrors(action.payload, "updating content needs a payload");
+      
+      const { contentRef, filepath, prevFilePath } = action.payload;
+      const host: actions.AddHost = getHost(state$, selectors);
+      const serverConfig: ServerConfig = getServerConfig(host, selectors);
 
       return contents
-        .update(
-          serverConfig,
-          fileName,
-          {
-            name: "",
-            path: filepath.slice(1),
-            type: "notebook",
-            writable: true,
-            created: "",
-            last_modified: "",
-            mimetype: "",
-            content: "",
-            format: "",
-            kernel: {}
-          }
-        )
+        .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
         .pipe(
           tap(xhr => {
             if (xhr.status !== 200) {
               throw new Error(xhr.response);
             }
           }),
-          map(() => actions.changeContentNameFulfilled({ 
-            filepath, 
-            contentRef 
-          })),
+          map(() => {
+            /* 
+             * Modifying the url's file name in the browser. 
+             * Effects back button behavior.
+             * Is there a better way to accomplish this?
+             */
+            window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
+
+            return actions.changeContentNameFulfilled({ 
+              filepath, 
+              prevFilePath, 
+              contentRef 
+            });
+          }),
           catchError((xhrError: any) =>
             of(actions.changeContentNameFailed({
                 filepath: action.payload.filepath,
+                prevFilePath,
                 error: xhrError,
                 contentRef: action.payload.contentRef
               })
@@ -94,22 +106,11 @@ export function fetchContentEpic(
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
     switchMap(action => {
-      if (!action.payload || typeof action.payload.filepath !== "string") {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: { error: new Error("fetching content needs a payload") }
-        }) as any;
-      }
+      checkForErrors(action.payload, "fetching content needs a payload");
 
-      const state = state$.value;
-
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        // Dismiss any usage that isn't targeting a jupyter server
-        return empty();
-      }
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
+      // Can short circuit this function if host.type !== "jupyter"
+      const host = getHost(state$, selectors);
+      const serverConfig: ServerConfig = getServerConfig(host, selectors);
 
       return contents
         .get(

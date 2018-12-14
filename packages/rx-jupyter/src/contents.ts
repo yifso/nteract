@@ -148,9 +148,9 @@ export function get(
 export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT>>
-) {
-  return ajax(
+  model: Payload | Partial<Payload>
+) =>
+  ajax(
     createAJAXSettings(serverConfig, formURI(path), {
       body: model,
       headers: {
@@ -159,7 +159,6 @@ export function update<FT extends FileType>(
       method: "PATCH"
     })
   );
-}
 
 /**
  * Creates an AjaxObservable for creating content

@@ -8,6 +8,7 @@ export type ChangeContentName = {
   type: "CORE/CHANGE_CONTENT_NAME";
   payload: {
     filepath: string;
+    prevFilePath: string;
     contentRef: ContentRef;
   };
 };
@@ -17,6 +18,7 @@ export type ChangeContentNameFulfilled = {
   type: "CORE/CHANGE_CONTENT_NAME_FULFILLED";
   payload: {
     filepath: string;
+    prevFilePath: string;
     contentRef: ContentRef;
   };
 };
@@ -26,6 +28,7 @@ export type ChangeContentNameFailed = {
   type: "CORE/CHANGE_CONTENT_NAME_FAILED";
   payload: {
     filepath: string;
+    prevFilePath: string;
     error: Error;
     contentRef: ContentRef;
   };

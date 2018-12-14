@@ -9,6 +9,7 @@ import { contents } from "rx-jupyter";
 
 export const changeContentName = (payload: {
   filepath: string;
+  prevFilePath: string;
   contentRef: ContentRef;
 <<<<<<< HEAD
 }): actionTypes.UpdateContent => ({
@@ -26,8 +27,9 @@ export const fetchContent = (
 });
 
 export const changeContentNameFulfilled = (payload: {
-  filepath: string,
-  contentRef: ContentRef
+  filepath: string;
+  prevFilePath: string;
+  contentRef: ContentRef;
 }): actionTypes.ChangeContentNameFulfilled => ({
   type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED,
   payload
@@ -35,6 +37,7 @@ export const changeContentNameFulfilled = (payload: {
 
 export const changeContentNameFailed = (payload: {
   filepath: string,
+  prevFilePath: string;
   error: Error,
   contentRef: ContentRef,
 }): actionTypes.ChangeContentNameFailed => ({

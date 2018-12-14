@@ -29,23 +29,14 @@ const byRef = (
 ): Immutable.Map<ContentRef, ContentRecord> => {
   switch (action.type) {
     case actionTypes.CHANGE_CONTENT_NAME:
-      const changeContentNameAction = action as actionTypes.ChangeContentName;
-      const { filepath } = changeContentNameAction.payload;
-      state.setIn(["filepath"], filepath);
+      return state;
     case actionTypes.CHANGE_CONTENT_NAME_FULFILLED:
       const changeContentNameFulfilledAction = action as actionTypes.ChangeContentNameFulfilled;
-      console.log("SUCCESS");
-
-      // return state.set(
-      //   updateContentFulfilledAction.payload.contentRef,
-      //   makeDummyContentFileRecord({
-      //     kernel: { 
-      //       id: updateContentFulfilledAction.payload.kernelRef,
-      //       name: "ir"
-      //     },
-      //     path: updateContentFulfilledAction.payload.filepath || ""
-      //   })
-      // );
+      const { contentRef, filepath } = changeContentNameFulfilledAction.payload;
+      return state.setIn([contentRef, "filepath"], filepath);
+    case actionTypes.CHANGE_CONTENT_NAME_FAILED:
+      // TODO: Add to error component for alerting the user
+      return state;
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until
