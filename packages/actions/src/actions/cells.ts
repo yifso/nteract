@@ -347,9 +347,10 @@ export function updateOutputMetadata(payload: {
   id: CellId;
   metadata: Object;
   contentRef: ContentRef;
+  index: number;
 }): actionTypes.UpdateOutputMetadata {
   return {
-    type: actionTypes.UPDATE_CELL_METADATA,
+    type: actionTypes.UPDATE_OUTPUT_METADATA,
     payload
   };
 }

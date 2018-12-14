@@ -246,12 +246,13 @@ export type UpdateCellStatus = {
   };
 };
 
-export const UPDATE_CELL_METADATA = "UPDATE_CELL_METADATA";
+export const UPDATE_OUTPUT_METADATA = "UPDATE_OUTPUT_METADATA";
 export type UpdateOutputMetadata = {
-  type: "UPDATE_CELL_METADATA";
+  type: "UPDATE_OUTPUT_METADATA";
   payload: {
     id: CellId;
     contentRef: ContentRef;
     metadata: Object;
+    index: number;
   };
 };

@@ -660,14 +660,11 @@ function updateOutputMetadata(
   state: NotebookModel,
   action: actionTypes.UpdateOutputMetadata
 ) {
-  const { id, metadata } = action.payload;
+  const { id, metadata, index } = action.payload;
   const currentOutputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
 
-  const updatedOutputs = currentOutputs.update(
-    currentOutputs.findIndex(
-      (item: any) => item.get("output_type") === "execute_result"
-    ),
-    (item: any) => item.set("metadata", Immutable.fromJS(metadata))
+  const updatedOutputs = currentOutputs.update(index, (item: any) =>
+    item.set("metadata", Immutable.fromJS(metadata))
   );
 
   return state.setIn(["notebook", "cellMap", id, "outputs"], updatedOutputs);
@@ -954,7 +951,7 @@ export function notebook(
       return acceptPayloadMessage(state, action);
     case actionTypes.UPDATE_CELL_STATUS:
       return updateCellStatus(state, action);
-    case actionTypes.UPDATE_CELL_METADATA:
+    case actionTypes.UPDATE_OUTPUT_METADATA:
       return updateOutputMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);

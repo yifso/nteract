@@ -63,7 +63,7 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
-  updateOutputMetadata: Function;
+  updateOutputMetadata: (index: number, metadata: Object) => void;
   metadata: Object;
 };
 
@@ -177,8 +177,8 @@ const mapDispatchToCellProps = (
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
   },
-  updateOutputMetadata: (metadata: Object) => {
-    dispatch(actions.updateOutputMetadata({ id, contentRef, metadata }));
+  updateOutputMetadata: (index: number, metadata: Object) => {
+    dispatch(actions.updateOutputMetadata({ id, contentRef, metadata, index }));
   }
 });
 
@@ -279,6 +279,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   models={this.props.models}
                   channels={this.props.channels}
                   onMetadataChange={this.props.updateOutputMetadata}
+                  index={index}
                   metadata={metadata}
                 />
               ))}
@@ -426,6 +427,7 @@ type NotebookDispatchProps = {
       id: CellId;
       metadata: Object;
       contentRef: ContentRef;
+      index: number;
     }
   ) => void;
 };
@@ -516,6 +518,7 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
     id: CellId;
     contentRef: ContentRef;
     metadata: Object;
+    index: number;
   }) => dispatch(actions.updateOutputMetadata(payload))
 });
 

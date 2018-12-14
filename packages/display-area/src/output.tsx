@@ -15,7 +15,8 @@ type Props = {
   models: Object;
   channels?: Subject<any>;
   metadata: Object;
-  onMetadataChange?: Function;
+  index: number;
+  onMetadataChange?: (index: number, metadata: Object) => void;
 };
 
 const classPrefix = "nteract-display-area-";
@@ -68,6 +69,10 @@ export default class Output extends React.Component<Props> {
         const bundle = output.data;
         const metadata = output.metadata;
 
+        const boundMetadataChange =
+          this.props.onMetadataChange &&
+          this.props.onMetadataChange.bind(null, this.props.index);
+
         return (
           <RichestMime
             bundle={bundle}
@@ -77,7 +82,7 @@ export default class Output extends React.Component<Props> {
             theme={this.props.theme}
             models={models}
             channels={this.props.channels}
-            onMetadataChange={this.props.onMetadataChange}
+            onMetadataChange={boundMetadataChange}
           />
         );
       }

@@ -40,7 +40,7 @@ export default class Display extends React.PureComponent<Props> {
         >
           {outputs
             ? outputs.map((output, index) => (
-                <Output key={index} output={output} {...props} />
+                <Output key={index} index={index} output={output} {...props} />
               ))
             : null}
         </div>
