@@ -104,17 +104,13 @@ export default class RichestMime extends React.Component<
     const Transform: any = this.props.transforms[mimetype];
     const data: any = this.props.bundle[mimetype];
     const metadata: any = this.props.metadata[mimetype];
-    //    console.log("this.props", this.props);
-    //    console.log("this.props.metadata", this.props.metadata);
+
     const onMetadataChangeScoped = (scopedChanges: any) =>
       this.props.onMetadataChange &&
-      this.props.onMetadataChange(
-        {
-          ...this.props.metadata,
-          ...scopedChanges
-        },
-        mimetype
-      );
+      this.props.onMetadataChange({
+        ...this.props.metadata,
+        [mimetype]: scopedChanges
+      });
 
     return (
       <Transform

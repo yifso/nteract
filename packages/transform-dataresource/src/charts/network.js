@@ -103,8 +103,6 @@ export const semioticNetwork = (
     networkLabel
   } = chart;
 
-  console.log("chart", chart);
-
   if (
     !sourceDimension ||
     sourceDimension === "none" ||

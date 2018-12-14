@@ -343,12 +343,11 @@ export function changeCellType(payload: {
   };
 }
 
-export function updateCellMetadata(payload: {
+export function updateOutputMetadata(payload: {
   id: CellId;
   metadata: Object;
   contentRef: ContentRef;
-  mimeType: string;
-}): actionTypes.UpdateCellMetadata {
+}): actionTypes.UpdateOutputMetadata {
   return {
     type: actionTypes.UPDATE_CELL_METADATA,
     payload

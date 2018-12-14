@@ -65,11 +65,8 @@ export default class Output extends React.Component<Props> {
 
       // falls through
       case "display_data": {
-        //        console.log("output", output);
         const bundle = output.data;
-        // Not sure about this vs output.metadata and how to make them live together happily
-
-        const metadata = this.props.metadata;
+        const metadata = output.metadata;
 
         return (
           <RichestMime

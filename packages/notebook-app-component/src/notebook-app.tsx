@@ -63,7 +63,7 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
-  updateCellMetadata: Function;
+  updateOutputMetadata: Function;
   metadata: Object;
 };
 
@@ -177,10 +177,8 @@ const mapDispatchToCellProps = (
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
   },
-  updateCellMetadata: (metadata: Object, mimeType: string) => {
-    dispatch(
-      actions.updateCellMetadata({ id, contentRef, metadata, mimeType })
-    );
+  updateOutputMetadata: (metadata: Object) => {
+    dispatch(actions.updateOutputMetadata({ id, contentRef, metadata }));
   }
 });
 
@@ -280,7 +278,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   theme={this.props.theme}
                   models={this.props.models}
                   channels={this.props.channels}
-                  onMetadataChange={this.props.updateCellMetadata}
+                  onMetadataChange={this.props.updateOutputMetadata}
                   metadata={metadata}
                 />
               ))}
@@ -423,12 +421,11 @@ type NotebookDispatchProps = {
   focusNextCellEditor: (
     payload: { id?: CellId; contentRef: ContentRef }
   ) => void;
-  updateCellMetadata: (
+  updateOutputMetadata: (
     payload: {
       id: CellId;
       metadata: Object;
       contentRef: ContentRef;
-      mimeType: string;
     }
   ) => void;
 };
@@ -515,12 +512,11 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
   }) => dispatch(actions.focusNextCell(payload)),
   focusNextCellEditor: (payload: { id?: CellId; contentRef: ContentRef }) =>
     dispatch(actions.focusNextCellEditor(payload)),
-  updateCellMetadata: (payload: {
+  updateOutputMetadata: (payload: {
     id: CellId;
     contentRef: ContentRef;
     metadata: Object;
-    mimeType: string;
-  }) => dispatch(actions.updateCellMetadata(payload))
+  }) => dispatch(actions.updateOutputMetadata(payload))
 });
 
 export class NotebookApp extends React.PureComponent<NotebookProps> {

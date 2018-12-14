@@ -656,17 +656,21 @@ function updateCellStatus(
   const { id, status } = action.payload;
   return state.setIn(["transient", "cellMap", id, "status"], status);
 }
-function updateCellMetadata(
+function updateOutputMetadata(
   state: NotebookModel,
-  action: actionTypes.UpdateCellMetadata
+  action: actionTypes.UpdateOutputMetadata
 ) {
-  const { id, metadata, mimeType } = action.payload;
-  console.log("updateCellMetadata", action);
-  console.log("store before update", state);
-  return state.setIn(
-    ["notebook", "cellMap", id, "metadata", mimeType],
-    metadata
+  const { id, metadata } = action.payload;
+  const currentOutputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
+
+  const updatedOutputs = currentOutputs.update(
+    currentOutputs.findIndex(
+      (item: any) => item.get("output_type") === "execute_result"
+    ),
+    (item: any) => item.set("metadata", Immutable.fromJS(metadata))
   );
+
+  return state.setIn(["notebook", "cellMap", id, "outputs"], updatedOutputs);
 }
 
 function setLanguageInfo(
@@ -861,7 +865,7 @@ type DocumentAction =
   | actionTypes.ToggleCellOutputVisibility
   | actionTypes.ToggleCellInputVisibility
   | actionTypes.UpdateCellStatus
-  | actionTypes.UpdateCellMetadata
+  | actionTypes.UpdateOutputMetadata
   | actionTypes.SetLanguageInfo
   | actionTypes.SetKernelspecInfo
   | actionTypes.OverwriteMetadataField
@@ -951,7 +955,7 @@ export function notebook(
     case actionTypes.UPDATE_CELL_STATUS:
       return updateCellStatus(state, action);
     case actionTypes.UPDATE_CELL_METADATA:
-      return updateCellMetadata(state, action);
+      return updateOutputMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
     case actionTypes.SET_KERNELSPEC_INFO:
