@@ -8,7 +8,7 @@ import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { FormGroup } from "@blueprintjs/core";
 import { Classes } from "@blueprintjs/core";
-import * as actions from "@nteract/core";
+import * as actions from "@nteract/actions";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
