@@ -127,7 +127,7 @@ const mapStateToCellProps = (
 
   const pager = model.getIn(["cellPagers", id]) || Immutable.List();
 
-  const metadata = (cell.getIn(["metadata"]) || Immutable.Set()).toJS();
+  const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
 
   const kernelRef = selectors.currentKernelRef(state);
   let channels: Subject<any> | undefined;
