@@ -114,7 +114,7 @@ export class File extends React.PureComponent<FileProps, *> {
 
                       return this.props.updateTitle({
                         filepath: `/${this.ref.value}`,
-                        oldFilePath: `/${this.props.displayName}`,
+                        prevFilePath: `/${this.props.displayName}`,
                         contentRef: this.props.contentRef
                       })
                     }
@@ -170,6 +170,7 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateTitle: (payload: { 
     filepath: string, 
+    prevFilePath: string,
     contentRef: ContentRef 
   }) => dispatch(actions.changeContentName(payload))
 });
