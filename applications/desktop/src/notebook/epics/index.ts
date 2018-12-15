@@ -6,7 +6,6 @@ import { Epic, ActionsObservable, StateObservable } from "redux-observable";
 
 import { saveEpic, saveAsEpic } from "./saving";
 import {
-  updateContentEpic,
   fetchContentEpic,
   newNotebookEpic,
   launchKernelWhenNotebookSetEpic
@@ -49,13 +48,13 @@ const epics = [
   coreEpics.updateDisplayEpic,
   coreEpics.commListenEpic,
   coreEpics.executeAllCellsEpic,
+  coreEpics.updateContentEpic,
 
   launchKernelWhenNotebookSetEpic,
   watchSpawn,
   publishEpic,
   saveEpic,
   saveAsEpic,
-  updateContentEpic,
   fetchContentEpic,
   newNotebookEpic,
   launchKernelEpic,

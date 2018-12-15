@@ -1,7 +1,7 @@
 /**
  * @module epics
  */
-import { empty, from, of, interval, Observable } from "rxjs";
+import { empty, from, of, interval, Observable, ObservableInput } from "rxjs";
 import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { sample } from "lodash";
@@ -17,34 +17,6 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
-const checkForErrors = (payload: any, errorString: string) => {
-  if (!payload || typeof payload.filepath !== "string") {
-    return of({
-      type: "ERROR",
-      error: true,
-      payload: { error: new Error(errorString) }
-    }) as any;
-  }
-}
-
-const getHost = (state$: any, selectors: any): any => {
-  const state: any = state$.value;
-  const host: any = selectors.currentHost(state);
-
-  // Dismiss any usage that isn't targeting a jupyter server
-  if (host.type !== "jupyter") {
-    return empty();
-  }
-  return host;
-}
-
-const getServerConfig = (
-  host: any, 
-  selectors: any
-): ServerConfig => selectors.serverConfig(host);
-
-
-
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -53,11 +25,24 @@ export function updateContentEpic(
   return action$.pipe(
     ofType(actions.CHANGE_CONTENT_NAME),
     switchMap(action => {
-      checkForErrors(action.payload, "updating content needs a payload");
+      if (!action.payload || typeof action.payload.filepath !== "string") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: { error: new Error("updating content needs a payload") }
+        }) as any;
+      }
+
+      const state: any = state$.value;
+      const host: any = selectors.currentHost(state);
+
+      // Dismiss any usage that isn't targeting a jupyter server
+      if (host.type !== "jupyter") {
+        return empty();
+      }
       
       const { contentRef, filepath, prevFilePath } = action.payload;
-      const host: actions.AddHost = getHost(state$, selectors);
-      const serverConfig: ServerConfig = getServerConfig(host, selectors);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
         .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
@@ -106,11 +91,23 @@ export function fetchContentEpic(
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
     switchMap(action => {
-      checkForErrors(action.payload, "fetching content needs a payload");
+      if (!action.payload || typeof action.payload.filepath !== "string") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: { error: new Error("fetching content needs a payload") }
+        }) as any;
+      }
 
-      // Can short circuit this function if host.type !== "jupyter"
-      const host = getHost(state$, selectors);
-      const serverConfig: ServerConfig = getServerConfig(host, selectors);
+      const state: any = state$.value;
+      const host: any = selectors.currentHost(state);
+
+      // Dismiss any usage that isn't targeting a jupyter server
+      if (host.type !== "jupyter") {
+        return empty();
+      }
+
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
         .get(
