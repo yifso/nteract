@@ -656,6 +656,7 @@ function updateCellStatus(
   const { id, status } = action.payload;
   return state.setIn(["transient", "cellMap", id, "status"], status);
 }
+
 function updateOutputMetadata(
   state: NotebookModel,
   action: actionTypes.UpdateOutputMetadata

@@ -588,6 +588,28 @@ describe("changeCellType", () => {
   });
 });
 
+describe("updateOutputMetadata", () => {
+  test("creates a UPDATE_OUTPUT_METADATA action", () => {
+    const contentRef = createContentRef();
+    expect(
+      actions.updateOutputMetadata({
+        id: "235",
+        contentRef,
+        metadata: { meta: "data" },
+        index: 0
+      })
+    ).toEqual({
+      type: actionTypes.UPDATE_OUTPUT_METADATA,
+      payload: {
+        id: "235",
+        contentRef,
+        metadata: { meta: "data" },
+        index: 0
+      }
+    });
+  });
+});
+
 describe("setGithubToken", () => {
   test("creates a SET_GITHUB_TOKEN action", () => {
     expect(actions.setGithubToken("token_string")).toEqual({
