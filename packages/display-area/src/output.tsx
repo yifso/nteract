@@ -7,6 +7,8 @@ import { Subject } from "rxjs";
 
 import RichestMime from "./richest-mime";
 
+import { JSONObject } from "@nteract/commutable";
+
 type Props = {
   displayOrder: Array<string>;
   output: any;
@@ -16,7 +18,7 @@ type Props = {
   channels?: Subject<any>;
   metadata: Object;
   index: number;
-  onMetadataChange?: (index: number, metadata: Object) => void;
+  onMetadataChange?: (index: number, metadata: JSONObject) => void;
 };
 
 const classPrefix = "nteract-display-area-";

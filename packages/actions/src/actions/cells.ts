@@ -5,6 +5,7 @@ import { CellId, CellType } from "@nteract/commutable";
 import { ContentRef, KernelRef } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
+import { JSONObject } from "@nteract/commutable";
 
 export function setExecutionState(payload: {
   kernelStatus: string;
@@ -345,7 +346,7 @@ export function changeCellType(payload: {
 
 export function updateOutputMetadata(payload: {
   id: CellId;
-  metadata: Object;
+  metadata: JSONObject;
   contentRef: ContentRef;
   index: number;
 }): actionTypes.UpdateOutputMetadata {

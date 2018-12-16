@@ -63,7 +63,7 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
-  updateOutputMetadata: (index: number, metadata: Object) => void;
+  updateOutputMetadata: (index: number, metadata: JSONObject) => void;
   metadata: Object;
 };
 
@@ -177,7 +177,7 @@ const mapDispatchToCellProps = (
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
   },
-  updateOutputMetadata: (index: number, metadata: Object) => {
+  updateOutputMetadata: (index: number, metadata: JSONObject) => {
     dispatch(actions.updateOutputMetadata({ id, contentRef, metadata, index }));
   }
 });
@@ -425,7 +425,7 @@ type NotebookDispatchProps = {
   updateOutputMetadata: (
     payload: {
       id: CellId;
-      metadata: Object;
+      metadata: JSONObject;
       contentRef: ContentRef;
       index: number;
     }
@@ -517,7 +517,7 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
   updateOutputMetadata: (payload: {
     id: CellId;
     contentRef: ContentRef;
-    metadata: Object;
+    metadata: JSONObject;
     index: number;
   }) => dispatch(actions.updateOutputMetadata(payload))
 });
