@@ -2,6 +2,7 @@ import { dirname } from "path";
 
 import * as React from "react";
 import styled from "styled-components";
+import { Dispatch } from "redux";
 import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
@@ -49,7 +50,8 @@ type FileProps = {
   error?: object | null;
 };
 
-export class File extends React.PureComponent<FileProps, *> {
+export class File extends React.PureComponent <*> {
+  input?: HTMLInputElement;
 
   render() {
     // Determine the file handler
@@ -97,7 +99,6 @@ export class File extends React.PureComponent<FileProps, *> {
               >
                 <ThemedLogo />
               </a>
-              {/* Uncontrolled input */}
               <FormGroup
                 disabled={false}
                 intent={"primary"} 
@@ -105,17 +106,17 @@ export class File extends React.PureComponent<FileProps, *> {
                 <input 
                   className={Classes.EDITABLE_TEXT_INPUT}
                   type="text" 
-                  ref={input => this.ref = input} 
+                  ref={input => (this.input = input)}
                   defaultValue={this.props.displayName}
                   spellCheck={false}
                   onBlur={(event) => {
                       event.preventDefault();
 
-                      return this.props.updateTitle({
-                        filepath: `/${this.ref.value}`,
+                      return this.props.changeContentName({
+                        filepath: `/${this.input && this.input.value ? this.input.value : ""}`,
                         prevFilePath: `/${this.props.displayName}`,
                         contentRef: this.props.contentRef
-                      })
+                      });
                     }
                   }
                 /> 
@@ -137,8 +138,10 @@ export class File extends React.PureComponent<FileProps, *> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef; appBase: string }
-): FileProps => {
+  ownProps: { 
+    contentRef: ContentRef, 
+    appBase: string
+  }): FileProps => {
   const content = selectors.content(state, ownProps);
 
   if (!content || content.type === "directory") {
@@ -166,13 +169,13 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  updateTitle: (payload: { 
-    filepath: string, 
-    prevFilePath: string,
-    contentRef: ContentRef 
-  }) => dispatch(actions.changeContentName(payload))
-});
+const mapDispatchToProps = (dispatch: Dispatch<*>) => {
+  return {
+    changeContentName: (
+      payload //:{ filepath: string, prevFilePath: string, contentRef: ContentRef }
+    ) => dispatch(actions.changeContentName(payload))
+  };
+};
 
 export const ConnectedFile = connect(
   mapStateToProps,
