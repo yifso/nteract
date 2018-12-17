@@ -145,6 +145,7 @@
     "@types/react-timeago": "^4.1.0",
     "@types/redux-immutable": "^4.0.0",
     "@types/redux-logger": "^3.0.6",
+    "@types/styled-components": "^4.1.4",
     "@types/styled-jsx": "^2.2.7",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.0",

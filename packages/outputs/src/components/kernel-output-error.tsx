@@ -1,5 +1,6 @@
 import * as React from "react";
 import Ansi from "ansi-to-react";
+import styled from "styled-components";
 
 type Props = {
   /**
@@ -21,6 +22,12 @@ type Props = {
   traceback: Array<string>;
 };
 
+const KernelOutputErrorDiv = styled.div`
+  & code {
+    white-space: pre-wrap;
+  }
+`;
+
 export const KernelOutputError = (props: Props) => {
   const { ename, evalue, traceback } = props;
 
@@ -40,14 +47,9 @@ export const KernelOutputError = (props: Props) => {
 
   return (
     <React.Fragment>
-      <div className="kernel-output-error">
+      <KernelOutputErrorDiv>
         <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>
-        <style jsx>{`
-          .kernel-output-error :global(code) {
-            white-space: pre-wrap;
-          }
-        `}</style>
-      </div>
+      </KernelOutputErrorDiv>
     </React.Fragment>
   );
 };
