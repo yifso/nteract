@@ -38,20 +38,51 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <div
-            className="jsx-3273030785"
+          <styled.div
             onClick={[Function]}
           >
-            <div
-              className="clickMe"
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-bwzfXH",
+                    "isStatic": true,
+                    "lastClassName": "iaRngl",
+                    "rules": Array [
+                      "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-bwzfXH",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              onClick={[Function]}
             >
-              Click me
-            </div>
-            <JSXStyle
-              css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-              styleId="3273030785"
-            />
-          </div>
+              <div
+                className="sc-bwzfXH iaRngl"
+                onClick={[Function]}
+              >
+                <div
+                  className="clickMe"
+                >
+                  Click me
+                </div>
+              </div>
+            </StyledComponent>
+          </styled.div>
         </DropdownTrigger>
       </div>
     </StyledComponent>
@@ -97,20 +128,51 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <div
-            className="jsx-3273030785"
+          <styled.div
             onClick={[Function]}
           >
-            <div
-              className="clickMe"
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-bwzfXH",
+                    "isStatic": true,
+                    "lastClassName": "iaRngl",
+                    "rules": Array [
+                      "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-bwzfXH",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              onClick={[Function]}
             >
-              Click me
-            </div>
-            <JSXStyle
-              css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-              styleId="3273030785"
-            />
-          </div>
+              <div
+                className="sc-bwzfXH iaRngl"
+                onClick={[Function]}
+              >
+                <div
+                  className="clickMe"
+                >
+                  Click me
+                </div>
+              </div>
+            </StyledComponent>
+          </styled.div>
         </DropdownTrigger>
       </div>
     </StyledComponent>
@@ -156,44 +218,132 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <div
-            className="jsx-3273030785"
+          <styled.div
             onClick={[Function]}
           >
-            <div
-              className="clickMe"
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-bwzfXH",
+                    "isStatic": true,
+                    "lastClassName": "iaRngl",
+                    "rules": Array [
+                      "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-bwzfXH",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              onClick={[Function]}
             >
-              Click me
-            </div>
-            <JSXStyle
-              css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-              styleId="3273030785"
-            />
-          </div>
+              <div
+                className="sc-bwzfXH iaRngl"
+                onClick={[Function]}
+              >
+                <div
+                  className="clickMe"
+                >
+                  Click me
+                </div>
+              </div>
+            </StyledComponent>
+          </styled.div>
         </DropdownTrigger>
         <DropdownContent
           key=".1"
           onItemClick={[Function]}
         >
-          <div
-            className="jsx-19483498"
-          >
-            <ul
-              className="jsx-19483498"
+          <styled.div>
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-htpNat",
+                    "isStatic": true,
+                    "lastClassName": "zLNyI",
+                    "rules": Array [
+                      "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+
+  width: 200px;
+
+  opacity: 1;
+  position: absolute;
+  top: 0.2em;
+  right: 0;
+  border-style: none;
+  padding: 0;
+  font-family: var(--nt-font-family-normal);
+  font-size: var(--nt-font-size-m);
+  line-height: 1.5;
+  margin: 20px 0;
+  background-color: var(--theme-cell-menu-bg);
+
+  ul {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+  }
+
+  ul :global(li) {
+    padding: 0.5rem;
+  }
+
+  ul :global(li:hover) {
+    background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
+    cursor: pointer;
+  }
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-htpNat",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
             >
-              <li
-                className="alsoClickMe"
-                key=".0"
-                onClick={[Function]}
+              <div
+                className="sc-htpNat zLNyI"
               >
-                1
-              </li>
-            </ul>
-            <JSXStyle
-              css="div.jsx-19483498{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;width:200px;opacity:1;position:absolute;top:0.2em;right:0;border-style:none;padding:0;font-family:var(--nt-font-family-normal);font-size:var(--nt-font-size-m);line-height:1.5;margin:20px 0;background-color:var(--theme-cell-menu-bg);}ul.jsx-19483498{list-style:none;text-align:left;padding:0;margin:0;opacity:1;}ul.jsx-19483498 li{padding:0.5rem;}ul.jsx-19483498 li:hover{background-color:var(--theme-cell-menu-bg-hover,#e2dfe3);cursor:pointer;}"
-              styleId="19483498"
-            />
-          </div>
+                <ul>
+                  <li
+                    className="alsoClickMe"
+                    key=".0"
+                    onClick={[Function]}
+                  >
+                    1
+                  </li>
+                </ul>
+              </div>
+            </StyledComponent>
+          </styled.div>
         </DropdownContent>
       </div>
     </StyledComponent>
@@ -239,20 +389,51 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <div
-            className="jsx-3273030785"
+          <styled.div
             onClick={[Function]}
           >
-            <div
-              className="clickMe"
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "sc-bwzfXH",
+                    "isStatic": true,
+                    "lastClassName": "iaRngl",
+                    "rules": Array [
+                      "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                    ],
+                  },
+                  "displayName": "styled.div",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "sc-bwzfXH",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              onClick={[Function]}
             >
-              Click me
-            </div>
-            <JSXStyle
-              css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-              styleId="3273030785"
-            />
-          </div>
+              <div
+                className="sc-bwzfXH iaRngl"
+                onClick={[Function]}
+              >
+                <div
+                  className="clickMe"
+                >
+                  Click me
+                </div>
+              </div>
+            </StyledComponent>
+          </styled.div>
         </DropdownTrigger>
       </div>
     </StyledComponent>

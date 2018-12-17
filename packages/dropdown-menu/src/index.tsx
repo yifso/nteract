@@ -75,25 +75,61 @@ export class DropdownMenu extends React.Component<
   }
 }
 
+const DropdownTriggerDiv = styled.div`
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+`;
+
 export class DropdownTrigger extends React.Component<{
   children: React.ReactNode;
   onClick?: (ev: React.MouseEvent<HTMLElement>) => void;
 }> {
   render() {
     return (
-      <div onClick={this.props.onClick}>
+      <DropdownTriggerDiv onClick={this.props.onClick}>
         {this.props.children}
-        <style jsx>{`
-          div {
-            user-select: none;
-            margin: 0px;
-            padding: 0px;
-          }
-        `}</style>
-      </div>
+      </DropdownTriggerDiv>
     );
   }
 }
+
+const DropdownContentDiv = styled.div`
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+
+  width: 200px;
+
+  opacity: 1;
+  position: absolute;
+  top: 0.2em;
+  right: 0;
+  border-style: none;
+  padding: 0;
+  font-family: var(--nt-font-family-normal);
+  font-size: var(--nt-font-size-m);
+  line-height: 1.5;
+  margin: 20px 0;
+  background-color: var(--theme-cell-menu-bg);
+
+  ul {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+  }
+
+  ul :global(li) {
+    padding: 0.5rem;
+  }
+
+  ul :global(li:hover) {
+    background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
+    cursor: pointer;
+  }
+`;
 
 export class DropdownContent extends React.Component<{
   children: React.ReactNode;
@@ -106,7 +142,7 @@ export class DropdownContent extends React.Component<{
 
   render() {
     return (
-      <div>
+      <DropdownContentDiv>
         <ul>
           {React.Children.map(this.props.children, child => {
             const childElement = child as React.ReactElement<any>;
@@ -119,45 +155,7 @@ export class DropdownContent extends React.Component<{
             });
           })}
         </ul>
-        <style jsx>{`
-          div {
-            user-select: none;
-            margin: 0px;
-            padding: 0px;
-
-            width: 200px;
-
-            opacity: 1;
-            position: absolute;
-            top: 0.2em;
-            right: 0;
-            border-style: none;
-            padding: 0;
-            font-family: var(--nt-font-family-normal);
-            font-size: var(--nt-font-size-m);
-            line-height: 1.5;
-            margin: 20px 0;
-            background-color: var(--theme-cell-menu-bg);
-          }
-
-          ul {
-            list-style: none;
-            text-align: left;
-            padding: 0;
-            margin: 0;
-            opacity: 1;
-          }
-
-          ul :global(li) {
-            padding: 0.5rem;
-          }
-
-          ul :global(li:hover) {
-            background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
-            cursor: pointer;
-          }
-        `}</style>
-      </div>
+      </DropdownContentDiv>
     );
   }
 }

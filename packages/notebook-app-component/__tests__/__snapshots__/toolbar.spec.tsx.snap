@@ -88,56 +88,87 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 key=".0"
                 onClick={[Function]}
               >
-                <div
-                  className="jsx-3273030785"
+                <styled.div
                   onClick={[Function]}
                 >
-                  <button
-                    className="jsx-3494371011"
-                    title="show additional actions"
+                  <StyledComponent
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "sc-bwzfXH",
+                          "isStatic": true,
+                          "lastClassName": "iaRngl",
+                          "rules": Array [
+                            "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                          ],
+                        },
+                        "displayName": "styled.div",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "sc-bwzfXH",
+                        "target": "div",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    onClick={[Function]}
                   >
-                    <span
-                      className="jsx-3494371011 octicon toggle-menu"
+                    <div
+                      className="sc-bwzfXH iaRngl"
+                      onClick={[Function]}
                     >
-                      <ChevronDownOcticon>
-                        <SVGWrapper
-                          height={16}
-                          outerProps={Object {}}
-                          viewBox="0 0 10 16"
-                          width={10}
+                      <button
+                        className="jsx-3494371011"
+                        title="show additional actions"
+                      >
+                        <span
+                          className="jsx-3494371011 octicon toggle-menu"
                         >
-                          <span>
-                            <svg
+                          <ChevronDownOcticon>
+                            <SVGWrapper
                               height={16}
-                              style={
-                                Object {
-                                  "display": "inline-block",
-                                  "fill": "currentColor",
-                                  "verticalAlign": "text-bottom",
-                                }
-                              }
+                              outerProps={Object {}}
                               viewBox="0 0 10 16"
                               width={10}
-                              xmlns="http://www.w3.org/2000/svg"
                             >
-                              <title>
-                                Show Additional Actions
-                              </title>
-                              <path
-                                d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
-                                fillRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                        </SVGWrapper>
-                      </ChevronDownOcticon>
-                    </span>
-                  </button>
-                  <JSXStyle
-                    css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-                    styleId="3273030785"
-                  />
-                </div>
+                              <span>
+                                <svg
+                                  height={16}
+                                  style={
+                                    Object {
+                                      "display": "inline-block",
+                                      "fill": "currentColor",
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                  viewBox="0 0 10 16"
+                                  width={10}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <title>
+                                    Show Additional Actions
+                                  </title>
+                                  <path
+                                    d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
+                                    fillRule="evenodd"
+                                  />
+                                </svg>
+                              </span>
+                            </SVGWrapper>
+                          </ChevronDownOcticon>
+                        </span>
+                      </button>
+                    </div>
+                  </StyledComponent>
+                </styled.div>
               </DropdownTrigger>
             </div>
           </StyledComponent>
@@ -289,157 +320,245 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 key=".0"
                 onClick={[Function]}
               >
-                <div
-                  className="jsx-3273030785"
+                <styled.div
                   onClick={[Function]}
                 >
-                  <button
-                    className="jsx-3494371011"
-                    title="show additional actions"
+                  <StyledComponent
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "sc-bwzfXH",
+                          "isStatic": true,
+                          "lastClassName": "iaRngl",
+                          "rules": Array [
+                            "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+",
+                          ],
+                        },
+                        "displayName": "styled.div",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "sc-bwzfXH",
+                        "target": "div",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
+                    onClick={[Function]}
                   >
-                    <span
-                      className="jsx-3494371011 octicon toggle-menu"
+                    <div
+                      className="sc-bwzfXH iaRngl"
+                      onClick={[Function]}
                     >
-                      <ChevronDownOcticon>
-                        <SVGWrapper
-                          height={16}
-                          outerProps={Object {}}
-                          viewBox="0 0 10 16"
-                          width={10}
+                      <button
+                        className="jsx-3494371011"
+                        title="show additional actions"
+                      >
+                        <span
+                          className="jsx-3494371011 octicon toggle-menu"
                         >
-                          <span>
-                            <svg
+                          <ChevronDownOcticon>
+                            <SVGWrapper
                               height={16}
-                              style={
-                                Object {
-                                  "display": "inline-block",
-                                  "fill": "currentColor",
-                                  "verticalAlign": "text-bottom",
-                                }
-                              }
+                              outerProps={Object {}}
                               viewBox="0 0 10 16"
                               width={10}
-                              xmlns="http://www.w3.org/2000/svg"
                             >
-                              <title>
-                                Show Additional Actions
-                              </title>
-                              <path
-                                d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
-                                fillRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                        </SVGWrapper>
-                      </ChevronDownOcticon>
-                    </span>
-                  </button>
-                  <JSXStyle
-                    css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-                    styleId="3273030785"
-                  />
-                </div>
+                              <span>
+                                <svg
+                                  height={16}
+                                  style={
+                                    Object {
+                                      "display": "inline-block",
+                                      "fill": "currentColor",
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                  viewBox="0 0 10 16"
+                                  width={10}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <title>
+                                    Show Additional Actions
+                                  </title>
+                                  <path
+                                    d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
+                                    fillRule="evenodd"
+                                  />
+                                </svg>
+                              </span>
+                            </SVGWrapper>
+                          </ChevronDownOcticon>
+                        </span>
+                      </button>
+                    </div>
+                  </StyledComponent>
+                </styled.div>
               </DropdownTrigger>
               <DropdownContent
                 key=".1"
                 onItemClick={[Function]}
               >
-                <div
-                  className="jsx-19483498"
-                >
-                  <ul
-                    className="jsx-19483498"
+                <styled.div>
+                  <StyledComponent
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "sc-htpNat",
+                          "isStatic": true,
+                          "lastClassName": "zLNyI",
+                          "rules": Array [
+                            "
+  user-select: none;
+  margin: 0px;
+  padding: 0px;
+
+  width: 200px;
+
+  opacity: 1;
+  position: absolute;
+  top: 0.2em;
+  right: 0;
+  border-style: none;
+  padding: 0;
+  font-family: var(--nt-font-family-normal);
+  font-size: var(--nt-font-size-m);
+  line-height: 1.5;
+  margin: 20px 0;
+  background-color: var(--theme-cell-menu-bg);
+
+  ul {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+  }
+
+  ul :global(li) {
+    padding: 0.5rem;
+  }
+
+  ul :global(li:hover) {
+    background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
+    cursor: pointer;
+  }
+",
+                          ],
+                        },
+                        "displayName": "styled.div",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "sc-htpNat",
+                        "target": "div",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={null}
                   >
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011 clearOutput"
-                      key=".0"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
+                    <div
+                      className="sc-htpNat zLNyI"
                     >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Clear Cell Output
-                      </a>
-                    </li>
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011 inputVisibility"
-                      key=".1"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
-                    >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Toggle Input Visibility
-                      </a>
-                    </li>
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011 outputVisibility"
-                      key=".2"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
-                    >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Toggle Output Visibility
-                      </a>
-                    </li>
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011 outputExpanded"
-                      key=".3"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
-                    >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Toggle Expanded Output
-                      </a>
-                    </li>
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011"
-                      key=".4"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
-                    >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Toggle Parameter Cell
-                      </a>
-                    </li>
-                    <li
-                      aria-selected="false"
-                      className="jsx-3494371011 changeType"
-                      key=".5"
-                      onClick={[Function]}
-                      role="option"
-                      tabIndex={0}
-                    >
-                      <a
-                        className="jsx-3494371011"
-                      >
-                        Convert to Markdown Cell
-                      </a>
-                    </li>
-                  </ul>
-                  <JSXStyle
-                    css="div.jsx-19483498{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;width:200px;opacity:1;position:absolute;top:0.2em;right:0;border-style:none;padding:0;font-family:var(--nt-font-family-normal);font-size:var(--nt-font-size-m);line-height:1.5;margin:20px 0;background-color:var(--theme-cell-menu-bg);}ul.jsx-19483498{list-style:none;text-align:left;padding:0;margin:0;opacity:1;}ul.jsx-19483498 li{padding:0.5rem;}ul.jsx-19483498 li:hover{background-color:var(--theme-cell-menu-bg-hover,#e2dfe3);cursor:pointer;}"
-                    styleId="19483498"
-                  />
-                </div>
+                      <ul>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011 clearOutput"
+                          key=".0"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Clear Cell Output
+                          </a>
+                        </li>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011 inputVisibility"
+                          key=".1"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Toggle Input Visibility
+                          </a>
+                        </li>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011 outputVisibility"
+                          key=".2"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Toggle Output Visibility
+                          </a>
+                        </li>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011 outputExpanded"
+                          key=".3"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Toggle Expanded Output
+                          </a>
+                        </li>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011"
+                          key=".4"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Toggle Parameter Cell
+                          </a>
+                        </li>
+                        <li
+                          aria-selected="false"
+                          className="jsx-3494371011 changeType"
+                          key=".5"
+                          onClick={[Function]}
+                          role="option"
+                          tabIndex={0}
+                        >
+                          <a
+                            className="jsx-3494371011"
+                          >
+                            Convert to Markdown Cell
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </StyledComponent>
+                </styled.div>
               </DropdownContent>
             </div>
           </StyledComponent>
