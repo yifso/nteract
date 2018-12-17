@@ -22,13 +22,7 @@ type Props = {
   traceback: Array<string>;
 };
 
-const KernelOutputErrorDiv = styled.div`
-  & code {
-    white-space: pre-wrap;
-  }
-`;
-
-export const KernelOutputError = (props: Props) => {
+const PlainKernelOutputError = (props: Props) => {
   const { ename, evalue, traceback } = props;
 
   const joinedTraceback = Array.isArray(traceback)
@@ -45,18 +39,18 @@ export const KernelOutputError = (props: Props) => {
     }
   }
 
-  return (
-    <React.Fragment>
-      <KernelOutputErrorDiv>
-        <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>
-      </KernelOutputErrorDiv>
-    </React.Fragment>
-  );
+  return <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>;
 };
 
-KernelOutputError.defaultProps = {
+PlainKernelOutputError.defaultProps = {
   outputType: "error",
   ename: "",
   evalue: "",
   traceback: []
 };
+
+export const KernelOutputError = styled(PlainKernelOutputError)`
+  & code {
+    white-space: pre-wrap;
+  }
+`;

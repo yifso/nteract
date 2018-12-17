@@ -21,13 +21,11 @@ export function Image(props: Props) {
   }
 
   return (
-    <React.Fragment>
-      <ImageStyle
-        alt=""
-        src={`data:${props.mediaType};base64,${props.data}`}
-        {...size}
-      />
-    </React.Fragment>
+    <ImageStyle
+      alt=""
+      src={`data:${props.mediaType};base64,${props.data}`}
+      {...size}
+    />
   );
 }
 
