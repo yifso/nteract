@@ -1,0 +1,8 @@
+// @flow
+/* eslint-disable */
+
+declare module "@nteract/actions" {
+  declare module.exports: any;
+}
+
+declare export var changeContentName: any;
