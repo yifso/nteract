@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import Highlighter from "../syntax-highlighter";
+import styled from "styled-components";
 
 export type SourceProps = {
   language: string;
@@ -9,7 +10,7 @@ export type SourceProps = {
   theme: "light" | "dark";
 };
 
-export class Source extends React.Component<SourceProps> {
+class BareSource extends React.Component<SourceProps> {
   static defaultProps = {
     children: "",
     language: "text",
@@ -33,6 +34,8 @@ export class Source extends React.Component<SourceProps> {
       );
     }
     // Otherwise assume they have their own editor component
-    return <div className="input">{this.props.children}</div>;
+    return <div className={this.props.className}>{this.props.children}</div>;
   }
 }
+
+export const Source = styled(BareSource)``;

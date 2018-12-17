@@ -50,17 +50,14 @@ exports[`Test NotebokRender snapshots accepts an Immutable.List of cells 1`] = `
       isSelected={false}
       key="3"
     >
-      <Input
-        hidden={false}
-      >
+      <Styled(BareInput)>
         <Prompt
           blank={false}
           counter={11}
           queued={false}
           running={false}
         />
-        <Source
-          className="input"
+        <Styled(BareSource)
           language="ipython"
           theme="light"
         >
@@ -76,8 +73,8 @@ display(Markdown('**awesome**'))
 
 print('hey')
 42
-        </Source>
-      </Input>
+        </Styled(BareSource)>
+      </Styled(BareInput)>
       <Outputs
         expanded={true}
         hidden={false}
@@ -303,17 +300,14 @@ exports[`Test NotebokRender snapshots accepts an Object of cells 1`] = `
       isSelected={false}
       key="15"
     >
-      <Input
-        hidden={false}
-      >
+      <Styled(BareInput)>
         <Prompt
           blank={false}
           counter={11}
           queued={false}
           running={false}
         />
-        <Source
-          className="input"
+        <Styled(BareSource)
           language="ipython"
           theme="light"
         >
@@ -329,8 +323,8 @@ display(Markdown('**awesome**'))
 
 print('hey')
 42
-        </Source>
-      </Input>
+        </Styled(BareSource)>
+      </Styled(BareInput)>
       <Outputs
         expanded={true}
         hidden={false}
