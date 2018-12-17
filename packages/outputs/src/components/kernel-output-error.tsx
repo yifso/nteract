@@ -54,3 +54,5 @@ export const KernelOutputError = styled(PlainKernelOutputError)`
     white-space: pre-wrap;
   }
 `;
+
+KernelOutputError.displayName = "KernelOutputError";
