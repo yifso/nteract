@@ -8,6 +8,7 @@ import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { FormGroup, Classes } from "@blueprintjs/core";
+// $FlowFixMe
 import * as actions from "@nteract/actions";
 
 import { ThemedLogo } from "../../components/themed-logo";
