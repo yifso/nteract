@@ -9,8 +9,8 @@ interface InputProps {
   /**
    * Whether or not to render the children.
    */
-  hidden: boolean;
-  className: string;
+  hidden?: boolean;
+  className?: string;
 }
 
 class BareInput extends React.Component<InputProps> {
@@ -48,3 +48,5 @@ export const Input = styled(BareInput)`
     background-color: var(--theme-cell-input-bg, #fafafa);
   }
 `;
+
+Input.displayName = "Input";

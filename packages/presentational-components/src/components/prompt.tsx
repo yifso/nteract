@@ -17,21 +17,21 @@ interface PromptProps {
    * ```
    *
    */
-  counter: number | null;
+  counter?: number | null;
   /**
    * Show that execution is currently happening related to this prompt
    */
-  running: boolean;
+  running?: boolean;
   /**
    * Show that execution is queued up
    */
-  queued: boolean;
+  queued?: boolean;
   /**
    * Create a prompt without the `[]`. Used with markdown cells.
    */
-  blank: boolean;
+  blank?: boolean;
 
-  className: string;
+  className?: string;
 }
 
 /**

@@ -4,10 +4,10 @@ import Highlighter from "../syntax-highlighter";
 import styled from "styled-components";
 
 export type SourceProps = {
-  language: string;
-  children: React.ReactNode;
-  className: string;
-  theme: "light" | "dark";
+  language?: string;
+  children?: React.ReactNode;
+  className?: string;
+  theme?: "light" | "dark";
 };
 
 class BareSource extends React.Component<SourceProps> {
@@ -26,8 +26,10 @@ class BareSource extends React.Component<SourceProps> {
     if (typeof this.props.children === "string") {
       return (
         <Highlighter
-          language={this.props.language}
-          className={this.props.className}
+          // NOTE: To get around styled-components & defaultProps not lining up,
+          // this defaults to "text" for us https://github.com/DefinitelyTyped/DefinitelyTyped/issues/29540
+          language={this.props.language || "text"}
+          className={this.props.className || "input"}
         >
           {this.props.children}
         </Highlighter>
@@ -38,4 +40,13 @@ class BareSource extends React.Component<SourceProps> {
   }
 }
 
-export const Source = styled(BareSource)``;
+export const Source = styled(BareSource)<SourceProps>``;
+
+Source.defaultProps = {
+  children: "",
+  language: "text",
+  className: "input",
+  theme: "light"
+};
+
+Source.displayName = "Source";

@@ -4,7 +4,7 @@ exports[`Test NotebokRender snapshots accepts an Immutable.List of cells 1`] = `
 <div
   className="notebook-render"
 >
-  <styled.div>
+  <Cells>
     <Cell
       _hovered={false}
       isSelected={false}
@@ -50,14 +50,15 @@ exports[`Test NotebokRender snapshots accepts an Immutable.List of cells 1`] = `
       isSelected={false}
       key="3"
     >
-      <Styled(BareInput)>
+      <Input>
         <Prompt
           blank={false}
           counter={11}
           queued={false}
           running={false}
         />
-        <Styled(BareSource)
+        <Source
+          className="input"
           language="ipython"
           theme="light"
         >
@@ -73,8 +74,8 @@ display(Markdown('**awesome**'))
 
 print('hey')
 42
-        </Styled(BareSource)>
-      </Styled(BareInput)>
+        </Source>
+      </Input>
       <Outputs
         expanded={true}
         hidden={false}
@@ -128,7 +129,7 @@ print('hey')
         />
       </Outputs>
     </Cell>
-  </styled.div>
+  </Cells>
   <style />
   <style>
     :root {
@@ -254,7 +255,7 @@ exports[`Test NotebokRender snapshots accepts an Object of cells 1`] = `
 <div
   className="notebook-render"
 >
-  <styled.div>
+  <Cells>
     <Cell
       _hovered={false}
       isSelected={false}
@@ -300,14 +301,15 @@ exports[`Test NotebokRender snapshots accepts an Object of cells 1`] = `
       isSelected={false}
       key="15"
     >
-      <Styled(BareInput)>
+      <Input>
         <Prompt
           blank={false}
           counter={11}
           queued={false}
           running={false}
         />
-        <Styled(BareSource)
+        <Source
+          className="input"
           language="ipython"
           theme="light"
         >
@@ -323,8 +325,8 @@ display(Markdown('**awesome**'))
 
 print('hey')
 42
-        </Styled(BareSource)>
-      </Styled(BareInput)>
+        </Source>
+      </Input>
       <Outputs
         expanded={true}
         hidden={false}
@@ -378,7 +380,7 @@ print('hey')
         />
       </Outputs>
     </Cell>
-  </styled.div>
+  </Cells>
   <style />
   <style>
     :root {

@@ -7,10 +7,12 @@ import styled from "styled-components";
  */
 
 interface PagersProps {
-  children: React.ReactNode;
-  hidden: boolean;
+  children?: React.ReactNode;
+  hidden?: boolean;
 }
 
 export const Pagers = styled(Outputs)`
   background-color: var(--theme-pager-bg, #fafafa);
 `;
+
+Pagers.displayName = "Pagers";

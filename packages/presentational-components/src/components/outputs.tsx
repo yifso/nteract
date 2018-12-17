@@ -3,19 +3,19 @@ import * as React from "react";
 import styled from "styled-components";
 
 interface OutputsProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   /**
    * Whether or not to collapse the children of the component.
    */
-  expanded: boolean;
+  expanded?: boolean;
   /**
    * Whether or not to show the children of the component.
    */
-  hidden: boolean;
+  hidden?: boolean;
 }
 
 type OutputWrapperProps = {
-  expanded: boolean;
+  expanded?: boolean;
 };
 
 const OutputWrapper = styled.div<OutputWrapperProps>`

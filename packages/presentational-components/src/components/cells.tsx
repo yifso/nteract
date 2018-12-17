@@ -15,3 +15,5 @@ export const Cells = styled.div`
     padding-bottom: 10px;
   }
 `;
+
+Cells.displayName = "Cells";
