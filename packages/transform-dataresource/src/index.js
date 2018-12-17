@@ -324,8 +324,10 @@ class DataResourceTransform extends React.Component<Props, State> {
     );
 
     //If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
+
     onMetadataChange &&
       onMetadataChange({
+        ...this.props.metadata,
         dx: {
           view,
           lineType,

@@ -16,6 +16,7 @@ type Props = {
   theme: string;
   models?: object;
   channels?: Subject<any>;
+  onMetadataChange?: Function;
 };
 
 type ErrorInfo = {
@@ -103,6 +104,14 @@ export default class RichestMime extends React.Component<
     const Transform: any = this.props.transforms[mimetype];
     const data: any = this.props.bundle[mimetype];
     const metadata: any = this.props.metadata[mimetype];
+
+    const onMetadataChangeScoped = (scopedChanges: any) =>
+      this.props.onMetadataChange &&
+      this.props.onMetadataChange({
+        ...this.props.metadata,
+        [mimetype]: scopedChanges
+      });
+
     return (
       <Transform
         data={data}
@@ -110,6 +119,7 @@ export default class RichestMime extends React.Component<
         theme={this.props.theme}
         models={this.props.models}
         channels={this.props.channels}
+        onMetadataChange={onMetadataChangeScoped}
       />
     );
   }

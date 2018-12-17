@@ -63,6 +63,8 @@ type AnyCellProps = {
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
+  updateOutputMetadata: (index: number, metadata: JSONObject) => void;
+  metadata: Object;
 };
 
 const markdownEditorOptions = {
@@ -125,6 +127,8 @@ const mapStateToCellProps = (
 
   const pager = model.getIn(["cellPagers", id]) || Immutable.List();
 
+  const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
+
   const kernelRef = selectors.currentKernelRef(state);
   let channels: Subject<any> | undefined;
   if (kernelRef) {
@@ -150,7 +154,8 @@ const mapStateToCellProps = (
     sourceHidden,
     outputHidden,
     outputExpanded,
-    cellStatus: model.transient.getIn(["cellMap", id, "status"])
+    cellStatus: model.transient.getIn(["cellMap", id, "status"]),
+    metadata
   };
 };
 
@@ -171,6 +176,9 @@ const mapDispatchToCellProps = (
       actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
+  },
+  updateOutputMetadata: (index: number, metadata: JSONObject) => {
+    dispatch(actions.updateOutputMetadata({ id, contentRef, metadata, index }));
   }
 });
 
@@ -207,7 +215,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       selectCell,
       unfocusEditor,
       contentRef,
-      sourceHidden
+      sourceHidden,
+      metadata
     } = this.props;
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
@@ -269,6 +278,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   theme={this.props.theme}
                   models={this.props.models}
                   channels={this.props.channels}
+                  onMetadataChange={this.props.updateOutputMetadata}
+                  index={index}
+                  metadata={metadata}
                 />
               ))}
             </Outputs>
@@ -410,6 +422,14 @@ type NotebookDispatchProps = {
   focusNextCellEditor: (
     payload: { id?: CellId; contentRef: ContentRef }
   ) => void;
+  updateOutputMetadata: (
+    payload: {
+      id: CellId;
+      metadata: JSONObject;
+      contentRef: ContentRef;
+      index: number;
+    }
+  ) => void;
 };
 
 const mapStateToProps = (
@@ -493,7 +513,13 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
     contentRef: ContentRef;
   }) => dispatch(actions.focusNextCell(payload)),
   focusNextCellEditor: (payload: { id?: CellId; contentRef: ContentRef }) =>
-    dispatch(actions.focusNextCellEditor(payload))
+    dispatch(actions.focusNextCellEditor(payload)),
+  updateOutputMetadata: (payload: {
+    id: CellId;
+    contentRef: ContentRef;
+    metadata: JSONObject;
+    index: number;
+  }) => dispatch(actions.updateOutputMetadata(payload))
 });
 
 export class NotebookApp extends React.PureComponent<NotebookProps> {

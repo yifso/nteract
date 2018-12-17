@@ -7,6 +7,8 @@ import { Subject } from "rxjs";
 
 import RichestMime from "./richest-mime";
 
+import { JSONObject } from "@nteract/commutable";
+
 type Props = {
   displayOrder: Array<string>;
   output: any;
@@ -14,6 +16,9 @@ type Props = {
   theme: string;
   models: Object;
   channels?: Subject<any>;
+  metadata: Object;
+  index: number;
+  onMetadataChange?: (index: number, metadata: JSONObject) => void;
 };
 
 const classPrefix = "nteract-display-area-";
@@ -23,7 +28,8 @@ export default class Output extends React.Component<Props> {
     models: {},
     theme: "light",
     transforms,
-    displayOrder
+    displayOrder,
+    metadata: {}
   };
 
   shouldComponentUpdate(nextProps: Props) {
@@ -64,6 +70,11 @@ export default class Output extends React.Component<Props> {
       case "display_data": {
         const bundle = output.data;
         const metadata = output.metadata;
+
+        const boundMetadataChange =
+          this.props.onMetadataChange &&
+          this.props.onMetadataChange.bind(null, this.props.index);
+
         return (
           <RichestMime
             bundle={bundle}
@@ -73,6 +84,7 @@ export default class Output extends React.Component<Props> {
             theme={this.props.theme}
             models={models}
             channels={this.props.channels}
+            onMetadataChange={boundMetadataChange}
           />
         );
       }

@@ -1000,3 +1000,31 @@ describe("acceptPayloadMessage", () => {
     ).toEqual("this is now the text");
   });
 });
+
+describe("updateOutputMetadata", () => {
+  test("updates the metadata of an output by cell ID & index", () => {
+    const originalState = monocellDocument.set(
+      "notebook",
+      appendCellToNotebook(
+        fixtureCommutable,
+        emptyCodeCell.set("outputs", Immutable.fromJS([{ empty: "output" }]))
+      )
+    );
+
+    const newOutputMetadata = { meta: "data" };
+
+    const id: string = originalState.getIn(["notebook", "cellOrder"]).last();
+
+    const state = reducers(
+      originalState,
+      actions.updateOutputMetadata({
+        id,
+        metadata: newOutputMetadata,
+        index: 0
+      })
+    );
+    expect(
+      JSON.stringify(state.getIn(["notebook", "cellMap", id, "outputs", 0]))
+    ).toBe(JSON.stringify({ empty: "output", metadata: newOutputMetadata }));
+  });
+});

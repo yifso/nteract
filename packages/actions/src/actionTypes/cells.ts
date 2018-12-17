@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { CellId, CellType } from "@nteract/commutable";
+import { CellId, CellType, JSONObject } from "@nteract/commutable";
 import { ContentRef } from "@nteract/types";
 
 export const TOGGLE_TAG_IN_CELL = "CORE/TOGGLE_TAG_IN_CELL";
@@ -243,5 +243,16 @@ export type UpdateCellStatus = {
     id: CellId;
     status: string;
     contentRef: ContentRef;
+  };
+};
+
+export const UPDATE_OUTPUT_METADATA = "UPDATE_OUTPUT_METADATA";
+export type UpdateOutputMetadata = {
+  type: "UPDATE_OUTPUT_METADATA";
+  payload: {
+    id: CellId;
+    contentRef: ContentRef;
+    metadata: JSONObject;
+    index: number;
   };
 };

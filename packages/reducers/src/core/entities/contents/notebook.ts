@@ -656,6 +656,21 @@ function updateCellStatus(
   const { id, status } = action.payload;
   return state.setIn(["transient", "cellMap", id, "status"], status);
 }
+
+function updateOutputMetadata(
+  state: NotebookModel,
+  action: actionTypes.UpdateOutputMetadata
+) {
+  const { id, metadata, index } = action.payload;
+  const currentOutputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
+
+  const updatedOutputs = currentOutputs.update(index, (item: any) =>
+    item.set("metadata", Immutable.fromJS(metadata))
+  );
+
+  return state.setIn(["notebook", "cellMap", id, "outputs"], updatedOutputs);
+}
+
 function setLanguageInfo(
   state: NotebookModel,
   action: actionTypes.SetLanguageInfo
@@ -848,6 +863,7 @@ type DocumentAction =
   | actionTypes.ToggleCellOutputVisibility
   | actionTypes.ToggleCellInputVisibility
   | actionTypes.UpdateCellStatus
+  | actionTypes.UpdateOutputMetadata
   | actionTypes.SetLanguageInfo
   | actionTypes.SetKernelspecInfo
   | actionTypes.OverwriteMetadataField
@@ -936,6 +952,8 @@ export function notebook(
       return acceptPayloadMessage(state, action);
     case actionTypes.UPDATE_CELL_STATUS:
       return updateCellStatus(state, action);
+    case actionTypes.UPDATE_OUTPUT_METADATA:
+      return updateOutputMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
     case actionTypes.SET_KERNELSPEC_INFO:
