@@ -1,10 +1,11 @@
 // @flow
 
 import * as React from "react";
+import { createGlobalStyle } from "styled-components";
 
 // Built from `@nteract/styles`
 // When a change happens within `@nteract/styles`, we need to re-generate this
-const styles = `
+const GlobalCSSVariables = createGlobalStyle`
 :root {
   --nt-color-alabaster-darkest: var(--nt-color-alabaster-darker);
   --nt-color-alabaster-darker: var(--nt-color-alabaster-dark);
@@ -193,6 +194,8 @@ const styles = `
 }
 `;
 
+// @deprecated -- `<GlobalCSSVariables />` can be used as a component directly
+// see https://www.styled-components.com/docs/api#createglobalstyle
 class CSSVariables extends React.Component<
   { children: React.ReactNode[] },
   null
@@ -200,13 +203,14 @@ class CSSVariables extends React.Component<
   render() {
     return (
       <React.Fragment>
-        <style dangerouslySetInnerHTML={{ __html: styles }} />
+        <GlobalCSSVariables />
         {this.props.children}
       </React.Fragment>
     );
   }
 }
 
+// @deprecated
 const Styles = CSSVariables;
 
 export { Styles, CSSVariables };
