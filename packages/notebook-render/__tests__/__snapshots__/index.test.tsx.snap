@@ -4,7 +4,7 @@ exports[`Test NotebokRender snapshots accepts an Immutable.List of cells 1`] = `
 <div
   className="notebook-render"
 >
-  <Cells>
+  <styled.div>
     <Cell
       _hovered={false}
       isSelected={false}
@@ -131,7 +131,7 @@ print('hey')
         />
       </Outputs>
     </Cell>
-  </Cells>
+  </styled.div>
   <style />
   <style>
     :root {
@@ -257,7 +257,7 @@ exports[`Test NotebokRender snapshots accepts an Object of cells 1`] = `
 <div
   className="notebook-render"
 >
-  <Cells>
+  <styled.div>
     <Cell
       _hovered={false}
       isSelected={false}
@@ -384,7 +384,7 @@ print('hey')
         />
       </Outputs>
     </Cell>
-  </Cells>
+  </styled.div>
   <style />
   <style>
     :root {
