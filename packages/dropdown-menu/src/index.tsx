@@ -6,6 +6,7 @@
 // using hot module reloading
 import { areComponentsEqual } from "react-hot-loader";
 import * as React from "react";
+import styled from "styled-components";
 
 type DropdownMenuProps = {
   children: React.ReactNode;
@@ -14,6 +15,11 @@ type DropdownMenuProps = {
 type DropdownMenuState = {
   menuHidden: boolean;
 };
+
+const DropdownDiv = styled.div`
+  z-index: 10000;
+  display: inline-block;
+`;
 
 export class DropdownMenu extends React.Component<
   DropdownMenuProps,
@@ -28,7 +34,7 @@ export class DropdownMenu extends React.Component<
 
   render() {
     return (
-      <div className="dropdown">
+      <DropdownDiv>
         {React.Children.map(this.props.children, child => {
           const childElement = child as React.ReactElement<any>;
           if (
@@ -64,13 +70,7 @@ export class DropdownMenu extends React.Component<
             return child;
           }
         })}
-        <style jsx>{`
-          .dropdown {
-            z-index: 10000;
-            display: inline-block;
-          }
-        `}</style>
-      </div>
+      </DropdownDiv>
     );
   }
 }
