@@ -52,69 +52,96 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
         </span>
       </button>
       <DropdownMenu>
-        <div
-          className="jsx-3444321073 dropdown"
-        >
-          <DropdownTrigger
-            key=".0"
-            onClick={[Function]}
+        <styled.div>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bdVaJa",
+                  "isStatic": true,
+                  "lastClassName": "igpjjl",
+                  "rules": Array [
+                    "
+  z-index: 10000;
+  display: inline-block;
+",
+                  ],
+                },
+                "displayName": "styled.div",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bdVaJa",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
           >
             <div
-              className="jsx-3273030785"
-              onClick={[Function]}
+              className="sc-bdVaJa igpjjl"
             >
-              <button
-                className="jsx-3494371011"
-                title="show additional actions"
+              <DropdownTrigger
+                key=".0"
+                onClick={[Function]}
               >
-                <span
-                  className="jsx-3494371011 octicon toggle-menu"
+                <div
+                  className="jsx-3273030785"
+                  onClick={[Function]}
                 >
-                  <ChevronDownOcticon>
-                    <SVGWrapper
-                      height={16}
-                      outerProps={Object {}}
-                      viewBox="0 0 10 16"
-                      width={10}
+                  <button
+                    className="jsx-3494371011"
+                    title="show additional actions"
+                  >
+                    <span
+                      className="jsx-3494371011 octicon toggle-menu"
                     >
-                      <span>
-                        <svg
+                      <ChevronDownOcticon>
+                        <SVGWrapper
                           height={16}
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "fill": "currentColor",
-                              "verticalAlign": "text-bottom",
-                            }
-                          }
+                          outerProps={Object {}}
                           viewBox="0 0 10 16"
                           width={10}
-                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <title>
-                            Show Additional Actions
-                          </title>
-                          <path
-                            d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </SVGWrapper>
-                  </ChevronDownOcticon>
-                </span>
-              </button>
-              <JSXStyle
-                css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-                styleId="3273030785"
-              />
+                          <span>
+                            <svg
+                              height={16}
+                              style={
+                                Object {
+                                  "display": "inline-block",
+                                  "fill": "currentColor",
+                                  "verticalAlign": "text-bottom",
+                                }
+                              }
+                              viewBox="0 0 10 16"
+                              width={10}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <title>
+                                Show Additional Actions
+                              </title>
+                              <path
+                                d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
+                                fillRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </SVGWrapper>
+                      </ChevronDownOcticon>
+                    </span>
+                  </button>
+                  <JSXStyle
+                    css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
+                    styleId="3273030785"
+                  />
+                </div>
+              </DropdownTrigger>
             </div>
-          </DropdownTrigger>
-          <JSXStyle
-            css=".dropdown.jsx-3444321073{z-index:10000;display:inline-block;}"
-            styleId="3444321073"
-          />
-        </div>
+          </StyledComponent>
+        </styled.div>
       </DropdownMenu>
       <span
         className="jsx-3494371011 spacer"
@@ -226,170 +253,197 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
         </span>
       </button>
       <DropdownMenu>
-        <div
-          className="jsx-3444321073 dropdown"
-        >
-          <DropdownTrigger
-            key=".0"
-            onClick={[Function]}
+        <styled.div>
+          <StyledComponent
+            forwardedComponent={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "attrs": Array [],
+                "componentStyle": ComponentStyle {
+                  "componentId": "sc-bdVaJa",
+                  "isStatic": true,
+                  "lastClassName": "igpjjl",
+                  "rules": Array [
+                    "
+  z-index: 10000;
+  display: inline-block;
+",
+                  ],
+                },
+                "displayName": "styled.div",
+                "foldedComponentIds": Array [],
+                "render": [Function],
+                "styledComponentId": "sc-bdVaJa",
+                "target": "div",
+                "toString": [Function],
+                "warnTooManyClasses": [Function],
+                "withComponent": [Function],
+              }
+            }
+            forwardedRef={null}
           >
             <div
-              className="jsx-3273030785"
-              onClick={[Function]}
+              className="sc-bdVaJa igpjjl"
             >
-              <button
-                className="jsx-3494371011"
-                title="show additional actions"
+              <DropdownTrigger
+                key=".0"
+                onClick={[Function]}
               >
-                <span
-                  className="jsx-3494371011 octicon toggle-menu"
+                <div
+                  className="jsx-3273030785"
+                  onClick={[Function]}
                 >
-                  <ChevronDownOcticon>
-                    <SVGWrapper
-                      height={16}
-                      outerProps={Object {}}
-                      viewBox="0 0 10 16"
-                      width={10}
+                  <button
+                    className="jsx-3494371011"
+                    title="show additional actions"
+                  >
+                    <span
+                      className="jsx-3494371011 octicon toggle-menu"
                     >
-                      <span>
-                        <svg
+                      <ChevronDownOcticon>
+                        <SVGWrapper
                           height={16}
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "fill": "currentColor",
-                              "verticalAlign": "text-bottom",
-                            }
-                          }
+                          outerProps={Object {}}
                           viewBox="0 0 10 16"
                           width={10}
-                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <title>
-                            Show Additional Actions
-                          </title>
-                          <path
-                            d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
-                            fillRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </SVGWrapper>
-                  </ChevronDownOcticon>
-                </span>
-              </button>
-              <JSXStyle
-                css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
-                styleId="3273030785"
-              />
-            </div>
-          </DropdownTrigger>
-          <DropdownContent
-            key=".1"
-            onItemClick={[Function]}
-          >
-            <div
-              className="jsx-19483498"
-            >
-              <ul
-                className="jsx-19483498"
+                          <span>
+                            <svg
+                              height={16}
+                              style={
+                                Object {
+                                  "display": "inline-block",
+                                  "fill": "currentColor",
+                                  "verticalAlign": "text-bottom",
+                                }
+                              }
+                              viewBox="0 0 10 16"
+                              width={10}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <title>
+                                Show Additional Actions
+                              </title>
+                              <path
+                                d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"
+                                fillRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </SVGWrapper>
+                      </ChevronDownOcticon>
+                    </span>
+                  </button>
+                  <JSXStyle
+                    css="div.jsx-3273030785{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;}"
+                    styleId="3273030785"
+                  />
+                </div>
+              </DropdownTrigger>
+              <DropdownContent
+                key=".1"
+                onItemClick={[Function]}
               >
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011 clearOutput"
-                  key=".0"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
+                <div
+                  className="jsx-19483498"
                 >
-                  <a
-                    className="jsx-3494371011"
+                  <ul
+                    className="jsx-19483498"
                   >
-                    Clear Cell Output
-                  </a>
-                </li>
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011 inputVisibility"
-                  key=".1"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
-                >
-                  <a
-                    className="jsx-3494371011"
-                  >
-                    Toggle Input Visibility
-                  </a>
-                </li>
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011 outputVisibility"
-                  key=".2"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
-                >
-                  <a
-                    className="jsx-3494371011"
-                  >
-                    Toggle Output Visibility
-                  </a>
-                </li>
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011 outputExpanded"
-                  key=".3"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
-                >
-                  <a
-                    className="jsx-3494371011"
-                  >
-                    Toggle Expanded Output
-                  </a>
-                </li>
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011"
-                  key=".4"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
-                >
-                  <a
-                    className="jsx-3494371011"
-                  >
-                    Toggle Parameter Cell
-                  </a>
-                </li>
-                <li
-                  aria-selected="false"
-                  className="jsx-3494371011 changeType"
-                  key=".5"
-                  onClick={[Function]}
-                  role="option"
-                  tabIndex={0}
-                >
-                  <a
-                    className="jsx-3494371011"
-                  >
-                    Convert to Markdown Cell
-                  </a>
-                </li>
-              </ul>
-              <JSXStyle
-                css="div.jsx-19483498{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;width:200px;opacity:1;position:absolute;top:0.2em;right:0;border-style:none;padding:0;font-family:var(--nt-font-family-normal);font-size:var(--nt-font-size-m);line-height:1.5;margin:20px 0;background-color:var(--theme-cell-menu-bg);}ul.jsx-19483498{list-style:none;text-align:left;padding:0;margin:0;opacity:1;}ul.jsx-19483498 li{padding:0.5rem;}ul.jsx-19483498 li:hover{background-color:var(--theme-cell-menu-bg-hover,#e2dfe3);cursor:pointer;}"
-                styleId="19483498"
-              />
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011 clearOutput"
+                      key=".0"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Clear Cell Output
+                      </a>
+                    </li>
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011 inputVisibility"
+                      key=".1"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Toggle Input Visibility
+                      </a>
+                    </li>
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011 outputVisibility"
+                      key=".2"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Toggle Output Visibility
+                      </a>
+                    </li>
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011 outputExpanded"
+                      key=".3"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Toggle Expanded Output
+                      </a>
+                    </li>
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011"
+                      key=".4"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Toggle Parameter Cell
+                      </a>
+                    </li>
+                    <li
+                      aria-selected="false"
+                      className="jsx-3494371011 changeType"
+                      key=".5"
+                      onClick={[Function]}
+                      role="option"
+                      tabIndex={0}
+                    >
+                      <a
+                        className="jsx-3494371011"
+                      >
+                        Convert to Markdown Cell
+                      </a>
+                    </li>
+                  </ul>
+                  <JSXStyle
+                    css="div.jsx-19483498{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;margin:0px;padding:0px;width:200px;opacity:1;position:absolute;top:0.2em;right:0;border-style:none;padding:0;font-family:var(--nt-font-family-normal);font-size:var(--nt-font-size-m);line-height:1.5;margin:20px 0;background-color:var(--theme-cell-menu-bg);}ul.jsx-19483498{list-style:none;text-align:left;padding:0;margin:0;opacity:1;}ul.jsx-19483498 li{padding:0.5rem;}ul.jsx-19483498 li:hover{background-color:var(--theme-cell-menu-bg-hover,#e2dfe3);cursor:pointer;}"
+                    styleId="19483498"
+                  />
+                </div>
+              </DropdownContent>
             </div>
-          </DropdownContent>
-          <JSXStyle
-            css=".dropdown.jsx-3444321073{z-index:10000;display:inline-block;}"
-            styleId="3444321073"
-          />
-        </div>
+          </StyledComponent>
+        </styled.div>
       </DropdownMenu>
       <span
         className="jsx-3494371011 spacer"
