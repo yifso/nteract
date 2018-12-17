@@ -52,7 +52,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
         </span>
       </button>
       <DropdownMenu>
-        <styled.div>
+        <DropdownDiv>
           <StyledComponent
             forwardedComponent={
               Object {
@@ -69,7 +69,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
 ",
                   ],
                 },
-                "displayName": "styled.div",
+                "displayName": "DropdownDiv",
                 "foldedComponentIds": Array [],
                 "render": [Function],
                 "styledComponentId": "sc-bdVaJa",
@@ -88,7 +88,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 key=".0"
                 onClick={[Function]}
               >
-                <styled.div
+                <DropdownTriggerDiv
                   onClick={[Function]}
                 >
                   <StyledComponent
@@ -108,7 +108,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
 ",
                           ],
                         },
-                        "displayName": "styled.div",
+                        "displayName": "DropdownTriggerDiv",
                         "foldedComponentIds": Array [],
                         "render": [Function],
                         "styledComponentId": "sc-bwzfXH",
@@ -168,11 +168,11 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                       </button>
                     </div>
                   </StyledComponent>
-                </styled.div>
+                </DropdownTriggerDiv>
               </DropdownTrigger>
             </div>
           </StyledComponent>
-        </styled.div>
+        </DropdownDiv>
       </DropdownMenu>
       <span
         className="jsx-3494371011 spacer"
@@ -284,7 +284,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
         </span>
       </button>
       <DropdownMenu>
-        <styled.div>
+        <DropdownDiv>
           <StyledComponent
             forwardedComponent={
               Object {
@@ -301,7 +301,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
 ",
                   ],
                 },
-                "displayName": "styled.div",
+                "displayName": "DropdownDiv",
                 "foldedComponentIds": Array [],
                 "render": [Function],
                 "styledComponentId": "sc-bdVaJa",
@@ -320,7 +320,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 key=".0"
                 onClick={[Function]}
               >
-                <styled.div
+                <DropdownTriggerDiv
                   onClick={[Function]}
                 >
                   <StyledComponent
@@ -340,7 +340,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
 ",
                           ],
                         },
-                        "displayName": "styled.div",
+                        "displayName": "DropdownTriggerDiv",
                         "foldedComponentIds": Array [],
                         "render": [Function],
                         "styledComponentId": "sc-bwzfXH",
@@ -400,13 +400,13 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                       </button>
                     </div>
                   </StyledComponent>
-                </styled.div>
+                </DropdownTriggerDiv>
               </DropdownTrigger>
               <DropdownContent
                 key=".1"
                 onItemClick={[Function]}
               >
-                <styled.div>
+                <DropdownContentDiv>
                   <StyledComponent
                     forwardedComponent={
                       Object {
@@ -455,7 +455,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
 ",
                           ],
                         },
-                        "displayName": "styled.div",
+                        "displayName": "DropdownContentDiv",
                         "foldedComponentIds": Array [],
                         "render": [Function],
                         "styledComponentId": "sc-htpNat",
@@ -558,11 +558,11 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                       </ul>
                     </div>
                   </StyledComponent>
-                </styled.div>
+                </DropdownContentDiv>
               </DropdownContent>
             </div>
           </StyledComponent>
-        </styled.div>
+        </DropdownDiv>
       </DropdownMenu>
       <span
         className="jsx-3494371011 spacer"

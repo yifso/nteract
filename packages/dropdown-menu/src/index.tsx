@@ -21,6 +21,8 @@ const DropdownDiv = styled.div`
   display: inline-block;
 `;
 
+DropdownDiv.displayName = "DropdownDiv";
+
 export class DropdownMenu extends React.Component<
   DropdownMenuProps,
   DropdownMenuState
@@ -81,6 +83,8 @@ const DropdownTriggerDiv = styled.div`
   padding: 0px;
 `;
 
+DropdownTriggerDiv.displayName = "DropdownTriggerDiv";
+
 export class DropdownTrigger extends React.Component<{
   children: React.ReactNode;
   onClick?: (ev: React.MouseEvent<HTMLElement>) => void;
@@ -130,6 +134,8 @@ const DropdownContentDiv = styled.div`
     cursor: pointer;
   }
 `;
+
+DropdownContentDiv.displayName = "DropdownContentDiv";
 
 export class DropdownContent extends React.Component<{
   children: React.ReactNode;

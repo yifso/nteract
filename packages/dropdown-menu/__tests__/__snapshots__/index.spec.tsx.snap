@@ -2,7 +2,7 @@
 
 exports[`DropdownMenu clicking dropdown content triggers the items callback and closes the menu 1`] = `
 <DropdownMenu>
-  <styled.div>
+  <DropdownDiv>
     <StyledComponent
       forwardedComponent={
         Object {
@@ -19,7 +19,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
             ],
           },
-          "displayName": "styled.div",
+          "displayName": "DropdownDiv",
           "foldedComponentIds": Array [],
           "render": [Function],
           "styledComponentId": "sc-bdVaJa",
@@ -38,7 +38,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <styled.div
+          <DropdownTriggerDiv
             onClick={[Function]}
           >
             <StyledComponent
@@ -58,7 +58,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
                     ],
                   },
-                  "displayName": "styled.div",
+                  "displayName": "DropdownTriggerDiv",
                   "foldedComponentIds": Array [],
                   "render": [Function],
                   "styledComponentId": "sc-bwzfXH",
@@ -82,17 +82,17 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                 </div>
               </div>
             </StyledComponent>
-          </styled.div>
+          </DropdownTriggerDiv>
         </DropdownTrigger>
       </div>
     </StyledComponent>
-  </styled.div>
+  </DropdownDiv>
 </DropdownMenu>
 `;
 
 exports[`DropdownMenu clicking dropdown content triggers the items callback and closes the menu 2`] = `
 <DropdownMenu>
-  <styled.div>
+  <DropdownDiv>
     <StyledComponent
       forwardedComponent={
         Object {
@@ -109,7 +109,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
             ],
           },
-          "displayName": "styled.div",
+          "displayName": "DropdownDiv",
           "foldedComponentIds": Array [],
           "render": [Function],
           "styledComponentId": "sc-bdVaJa",
@@ -128,7 +128,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <styled.div
+          <DropdownTriggerDiv
             onClick={[Function]}
           >
             <StyledComponent
@@ -148,7 +148,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
                     ],
                   },
-                  "displayName": "styled.div",
+                  "displayName": "DropdownTriggerDiv",
                   "foldedComponentIds": Array [],
                   "render": [Function],
                   "styledComponentId": "sc-bwzfXH",
@@ -172,17 +172,17 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                 </div>
               </div>
             </StyledComponent>
-          </styled.div>
+          </DropdownTriggerDiv>
         </DropdownTrigger>
       </div>
     </StyledComponent>
-  </styled.div>
+  </DropdownDiv>
 </DropdownMenu>
 `;
 
 exports[`DropdownMenu clicking dropdown content triggers the items callback and closes the menu 3`] = `
 <DropdownMenu>
-  <styled.div>
+  <DropdownDiv>
     <StyledComponent
       forwardedComponent={
         Object {
@@ -199,7 +199,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
             ],
           },
-          "displayName": "styled.div",
+          "displayName": "DropdownDiv",
           "foldedComponentIds": Array [],
           "render": [Function],
           "styledComponentId": "sc-bdVaJa",
@@ -218,7 +218,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <styled.div
+          <DropdownTriggerDiv
             onClick={[Function]}
           >
             <StyledComponent
@@ -238,7 +238,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
                     ],
                   },
-                  "displayName": "styled.div",
+                  "displayName": "DropdownTriggerDiv",
                   "foldedComponentIds": Array [],
                   "render": [Function],
                   "styledComponentId": "sc-bwzfXH",
@@ -262,13 +262,13 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                 </div>
               </div>
             </StyledComponent>
-          </styled.div>
+          </DropdownTriggerDiv>
         </DropdownTrigger>
         <DropdownContent
           key=".1"
           onItemClick={[Function]}
         >
-          <styled.div>
+          <DropdownContentDiv>
             <StyledComponent
               forwardedComponent={
                 Object {
@@ -317,7 +317,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
                     ],
                   },
-                  "displayName": "styled.div",
+                  "displayName": "DropdownContentDiv",
                   "foldedComponentIds": Array [],
                   "render": [Function],
                   "styledComponentId": "sc-htpNat",
@@ -343,17 +343,17 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                 </ul>
               </div>
             </StyledComponent>
-          </styled.div>
+          </DropdownContentDiv>
         </DropdownContent>
       </div>
     </StyledComponent>
-  </styled.div>
+  </DropdownDiv>
 </DropdownMenu>
 `;
 
 exports[`DropdownMenu clicking dropdown content triggers the items callback and closes the menu 4`] = `
 <DropdownMenu>
-  <styled.div>
+  <DropdownDiv>
     <StyledComponent
       forwardedComponent={
         Object {
@@ -370,7 +370,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
             ],
           },
-          "displayName": "styled.div",
+          "displayName": "DropdownDiv",
           "foldedComponentIds": Array [],
           "render": [Function],
           "styledComponentId": "sc-bdVaJa",
@@ -389,7 +389,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           key=".0"
           onClick={[Function]}
         >
-          <styled.div
+          <DropdownTriggerDiv
             onClick={[Function]}
           >
             <StyledComponent
@@ -409,7 +409,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
 ",
                     ],
                   },
-                  "displayName": "styled.div",
+                  "displayName": "DropdownTriggerDiv",
                   "foldedComponentIds": Array [],
                   "render": [Function],
                   "styledComponentId": "sc-bwzfXH",
@@ -433,10 +433,10 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                 </div>
               </div>
             </StyledComponent>
-          </styled.div>
+          </DropdownTriggerDiv>
         </DropdownTrigger>
       </div>
     </StyledComponent>
-  </styled.div>
+  </DropdownDiv>
 </DropdownMenu>
 `;
