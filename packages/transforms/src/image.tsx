@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 type Props = {
   data: string;
@@ -9,6 +10,11 @@ type Props = {
 type ImageDisplayProps = Props & {
   mimetype?: "image/png" | "image/jpeg" | "image/gif";
 };
+
+const Image = styled.img`
+  display: block;
+  max-width: 100%;
+`;
 
 export default function ImageDisplay(props: ImageDisplayProps) {
   let size = {};
@@ -22,13 +28,7 @@ export default function ImageDisplay(props: ImageDisplayProps) {
 
   return (
     <React.Fragment>
-      <img alt="" src={`data:${mediaType};base64,${props.data}`} {...size} />
-      <style jsx>{`
-        img {
-          display: block;
-          max-width: 100%;
-        }
-      `}</style>
+      <Image alt="" src={`data:${mediaType};base64,${props.data}`} {...size} />
     </React.Fragment>
   );
 }
