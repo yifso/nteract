@@ -415,7 +415,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                         "componentStyle": ComponentStyle {
                           "componentId": "sc-htpNat",
                           "isStatic": true,
-                          "lastClassName": "zLNyI",
+                          "lastClassName": "juMQnP",
                           "rules": Array [
                             "
   user-select: none;
@@ -444,11 +444,11 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
     opacity: 1;
   }
 
-  ul :global(li) {
+  ul li {
     padding: 0.5rem;
   }
 
-  ul :global(li:hover) {
+  ul li:hover {
     background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
     cursor: pointer;
   }
@@ -468,7 +468,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                     forwardedRef={null}
                   >
                     <div
-                      className="sc-htpNat zLNyI"
+                      className="sc-htpNat juMQnP"
                     >
                       <ul>
                         <li

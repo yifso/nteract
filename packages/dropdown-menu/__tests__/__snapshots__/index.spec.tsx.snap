@@ -277,7 +277,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-htpNat",
                     "isStatic": true,
-                    "lastClassName": "zLNyI",
+                    "lastClassName": "juMQnP",
                     "rules": Array [
                       "
   user-select: none;
@@ -306,11 +306,11 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
     opacity: 1;
   }
 
-  ul :global(li) {
+  ul li {
     padding: 0.5rem;
   }
 
-  ul :global(li:hover) {
+  ul li:hover {
     background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
     cursor: pointer;
   }
@@ -330,7 +330,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
               forwardedRef={null}
             >
               <div
-                className="sc-htpNat zLNyI"
+                className="sc-htpNat juMQnP"
               >
                 <ul>
                   <li

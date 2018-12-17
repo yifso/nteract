@@ -121,11 +121,11 @@ const DropdownContentDiv = styled.div`
     opacity: 1;
   }
 
-  ul :global(li) {
+  ul li {
     padding: 0.5rem;
   }
 
-  ul :global(li:hover) {
+  ul li:hover {
     background-color: var(--theme-cell-menu-bg-hover, #e2dfe3);
     cursor: pointer;
   }
