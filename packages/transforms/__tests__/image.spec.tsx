@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import ImageDisplay, {
   PNGDisplay,
@@ -10,9 +10,9 @@ import ImageDisplay, {
 const imageData = "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 describe("ImageDisplay", () => {
-  it("creates an image based on data and mimetype", () => {
-    const component = shallow(
-      <ImageDisplay data={imageData} mimetype="image/png" />
+  it("creates an image based on data and mediaType", () => {
+    const component = mount(
+      <ImageDisplay data={imageData} mediaType="image/png" />
     );
 
     const img = component.find("img");
@@ -24,10 +24,10 @@ describe("ImageDisplay", () => {
 
 describe("ImageDisplay", () => {
   it("accepts metadata for the size", () => {
-    const component = shallow(
+    const component = mount(
       <ImageDisplay
         data={imageData}
-        mimetype="image/png"
+        mediaType="image/png"
         metadata={{ width: "200" }}
       />
     );
@@ -35,10 +35,10 @@ describe("ImageDisplay", () => {
     const img = component.find("img");
     expect(img.prop("width")).toEqual("200");
 
-    const component2 = shallow(
+    const component2 = mount(
       <ImageDisplay
         data={imageData}
-        mimetype="image/png"
+        mediaType="image/png"
         metadata={{ width: "200", height: "300" }}
       />
     );
