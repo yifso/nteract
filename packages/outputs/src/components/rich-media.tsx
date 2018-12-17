@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 import { MediaBundle } from "@nteract/records";
 
 /** Error handling types */
@@ -51,23 +52,23 @@ type State = {
   caughtError?: Caught | null;
 };
 
+const ErrorFallbackDiv = styled.div`
+  backgroundcolor: ghostwhite;
+  color: black;
+  font-weight: 600;
+  display: block;
+  padding: 10px;
+  margin-bottom: 20px;
+`;
+
 const ErrorFallback = (caught: Caught) => (
-  <div
-    style={{
-      backgroundColor: "ghostwhite",
-      color: "black",
-      fontWeight: 600,
-      display: "block",
-      padding: "10px",
-      marginBottom: "20px"
-    }}
-  >
+  <ErrorFallbackDiv>
     <h3>{caught.error.toString()}</h3>
     <details>
       <summary>stack trace</summary>
       <pre>{caught.info.componentStack}</pre>
     </details>
-  </div>
+  </ErrorFallbackDiv>
 );
 
 export class RichMedia extends React.Component<RichMediaProps, State> {

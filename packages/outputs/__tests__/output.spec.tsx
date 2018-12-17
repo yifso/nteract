@@ -18,7 +18,7 @@ describe("Output", () => {
         <StreamText />
       </Output>
     );
-    console.log(component);
+
     expect(component.type()).toEqual(StreamText);
   });
 
@@ -35,7 +35,8 @@ describe("Output", () => {
         <KernelOutputError />
       </Output>
     );
-    expect(component.type()).toEqual(KernelOutputError);
+
+    expect(component.find("KernelOutputError")).not.toBeNull();
 
     const outputNoTraceback = {
       outputType: "error",
@@ -48,7 +49,7 @@ describe("Output", () => {
         <KernelOutputError />
       </Output>
     );
-    expect(component2.type()).toEqual(KernelOutputError);
+    expect(component2.find("KernelOutputError")).not.toBeNull();
   });
   it("handles display_data messages", () => {
     const output = {
