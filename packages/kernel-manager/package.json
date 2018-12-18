@@ -22,5 +22,12 @@
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/nteract/nteract/issues"
+  },
+  "dependencies": {
+    "execa": "^1.0.0",
+    "jsonfile": "^5.0.0",
+    "mkdirp": "^0.5.1",
+    "portfinder": "^1.0.20",
+    "uuid": "^3.3.2"
   }
 }

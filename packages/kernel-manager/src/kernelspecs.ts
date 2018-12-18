@@ -105,4 +105,4 @@ function findAll() {
   });
 }
 
-export { find, findAll, getKernelInfos, getKernelResources };
+export default { find, findAll, getKernelInfos, getKernelResources };
