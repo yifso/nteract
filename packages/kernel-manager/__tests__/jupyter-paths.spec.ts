@@ -55,8 +55,8 @@ describe("dataDirs", () => {
       expect(dirs).toStrictEqual(actual.data);
     });
   });
-  it("returns immediately with a guess by default", () => {
-    var dirs = jp.dataDirs();
+  it("returns immediately with a guess by default", async () => {
+    var dirs = await jp.dataDirs();
     dirs = dirs.map(dir => {
       return dir.toLowerCase();
     });
@@ -69,8 +69,8 @@ describe("dataDirs", () => {
 });
 
 describe("runtimeDir", () => {
-  it("returns the directory where runtime data is stored", () => {
-    expect(jp.runtimeDir()).toEqual(actual.runtime[0]);
+  it("returns the directory where runtime data is stored", async () => {
+    expect(await jp.runtimeDir()).toEqual(actual.runtime[0]);
   });
 });
 
@@ -101,8 +101,8 @@ describe("configDirs", () => {
         expect(dirs).toStrictEqual(actual.config);
       });
   });
-  it("returns immediately with a guess by default", () => {
-    var dirs = jp.configDirs();
+  it("returns immediately with a guess by default", async () => {
+    var dirs = await jp.configDirs();
     dirs = dirs.map(dir => {
       return dir.toLowerCase();
     });

@@ -85,13 +85,13 @@ function writeConnectionFile(portFinderOptions?: {
   options.host = options.host || "127.0.0.1";
 
   return new Promise((resolve, reject) => {
-    getPorts(5, options, (err, ports) => {
+    getPorts(5, options, async (err, ports) => {
       if (err) {
         reject(err);
       } else {
         // Make sure the kernel runtime dir exists before trying to write the
         // kernel file.
-        const runtimeDir = jp.runtimeDir();
+        const runtimeDir = await jp.runtimeDir();
         mkdirp(runtimeDir, error => {
           if (error) reject(error);
         });
@@ -99,7 +99,7 @@ function writeConnectionFile(portFinderOptions?: {
         // Write the kernel connection file.
         const config = createConnectionInfo(ports);
         const connectionFile = path.join(
-          jp.runtimeDir(),
+          await jp.runtimeDir(),
           `kernel-${uuid.v4()}.json`
         );
         jsonfile.writeFile(connectionFile, config, jsonErr => {
@@ -210,7 +210,7 @@ function launchSpecFromConnectionInfo(
  * @return {string}       spawnResults.connectionFile  connection file path
  * @return {object}       spawnResults.config          connection info
  */
-function launch(kernelName, spawnOptions, specs) {
+function launch(kernelName: string, spawnOptions?: object, specs?) {
   // Let them pass in a cached specs file
   if (!specs) {
     return kernelspecs

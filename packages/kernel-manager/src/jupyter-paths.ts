@@ -6,11 +6,9 @@ let sysPrefixGuess: string | null | undefined = undefined;
 
 type JupyterPaths = {
   config: string[];
-  runtime: string[];
+  runtime: string;
   data: string[];
 };
-
-type MaybePromiseString = Promise<string[] | string> | string[] | string;
 
 function home(subDir: string) {
   const envVariable = process.platform == "win32" ? "USERPROFILE" : "HOME";
@@ -114,14 +112,17 @@ function systemConfigDirs() {
   return paths;
 }
 
-function configDirs(opts?: {
+async function configDirs(opts?: {
   askJupyter?: () => Promise<JupyterPaths>;
   withSysPrefix?: boolean;
-}): MaybePromiseString {
+}): Promise<string[]> {
   if (opts && opts.askJupyter) {
-    return askJupyter()
-      .then((paths: JupyterPaths) => paths.config)
-      .catch(err => configDirs());
+    try {
+      const paths = await askJupyter();
+      return paths.config;
+    } catch {
+      return configDirs();
+    }
   }
 
   var paths = [];
@@ -194,17 +195,17 @@ function userDataDir() {
  * @param  {bool} withSysPrefix include the sys.prefix paths
  * @return {Array} All the Jupyter Data Dirs
  */
-function dataDirs(opts?: {
+async function dataDirs(opts?: {
   askJupyter?: () => Promise<JupyterPaths>;
   withSysPrefix?: boolean;
-}): MaybePromiseString {
+}): Promise<string[]> {
   if (opts && opts.askJupyter) {
-    return (
-      askJupyter()
-        .then((paths: JupyterPaths) => paths.data)
-        // fallback on default
-        .catch(err => dataDirs())
-    );
+    try {
+      const paths = await askJupyter();
+      return paths.data;
+    } catch (error) {
+      return dataDirs();
+    }
   }
 
   var paths = [];
@@ -234,16 +235,16 @@ function dataDirs(opts?: {
   return paths.concat(systemDirs);
 }
 
-function runtimeDir(opts?: {
+async function runtimeDir(opts?: {
   askJupyter?: () => Promise<JupyterPaths>;
-}): MaybePromiseString {
+}): Promise<string> {
   if (opts && opts.askJupyter) {
-    return (
-      askJupyter()
-        .then((paths: JupyterPaths) => paths.runtime)
-        // fallback on default
-        .catch(err => runtimeDir())
-    );
+    try {
+      const paths = await askJupyter();
+      return paths.runtime;
+    } catch (error) {
+      return runtimeDir();
+    }
   }
 
   if (process.env.JUPYTER_RUNTIME_DIR) {
