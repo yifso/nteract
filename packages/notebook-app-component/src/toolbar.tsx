@@ -21,6 +21,8 @@ import {
   TriangleRightOcticon
 } from "@nteract/octicons";
 
+import styled from "styled-components";
+
 export type PureToolbarProps = {
   type: "markdown" | "code" | "raw";
   executeCell?: () => void;
@@ -35,6 +37,70 @@ export type PureToolbarProps = {
   contentRef: ContentRef;
 };
 
+export const CellToolbar = styled.div`
+  background-color: var(--theme-cell-toolbar-bg);
+  opacity: 0.4;
+  transition: opacity 0.4s;
+
+  & > div {
+    display: inline-block;
+  }
+
+  :hover {
+    opacity: 1;
+  }
+
+  button {
+    display: inline-block;
+
+    width: 22px;
+    height: 20px;
+    padding: 0px 4px;
+
+    text-align: center;
+
+    border: none;
+    outline: none;
+    background: none;
+  }
+
+  span {
+    font-size: 15px;
+    line-height: 1;
+    color: var(--theme-cell-toolbar-fg);
+  }
+
+  button span:hover {
+    color: var(--theme-cell-toolbar-fg-hover);
+  }
+
+  .octicon {
+    transition: color 0.5s;
+  }
+
+  span.spacer {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 1px 5px 3px 5px;
+    height: 11px;
+  }
+`;
+
+export const CellToolbarMask = styled.div`
+  z-index: 9999;
+  display: ${(props: { sourceHidden?: boolean }) =>
+    props.sourceHidden ? "block" : "none"};
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 34px;
+
+  /* Set the left padding to 50px to give users extra room to move their
+              mouse to the toolbar without causing the cell to go out of focus and thus
+              hide the toolbar before they get there. */
+  padding: 0px 0px 0px 50px;
+`;
+
 export class PureToolbar extends React.Component<PureToolbarProps> {
   static defaultProps: Partial<PureToolbarProps> = {
     type: "code"
@@ -44,8 +110,8 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
     const { type, executeCell, deleteCell, sourceHidden } = this.props;
 
     return (
-      <div className="cell-toolbar-mask">
-        <div className="cell-toolbar">
+      <CellToolbarMask sourceHidden={sourceHidden}>
+        <CellToolbar>
           {type !== "markdown" && (
             <button
               onClick={executeCell}
@@ -146,73 +212,8 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
               <TrashOcticon />
             </span>
           </button>
-        </div>
-
-        <style jsx>{`
-          .cell-toolbar > div {
-            display: inline-block;
-          }
-
-          .cell-toolbar {
-            background-color: var(--theme-cell-toolbar-bg);
-            opacity: 0.4;
-            transition: opacity 0.4s;
-          }
-
-          .cell-toolbar:hover {
-            opacity: 1;
-          }
-
-          .cell-toolbar button {
-            display: inline-block;
-
-            width: 22px;
-            height: 20px;
-            padding: 0px 4px;
-
-            text-align: center;
-
-            border: none;
-            outline: none;
-            background: none;
-          }
-
-          .cell-toolbar span {
-            font-size: 15px;
-            line-height: 1;
-            color: var(--theme-cell-toolbar-fg);
-          }
-
-          .cell-toolbar button span:hover {
-            color: var(--theme-cell-toolbar-fg-hover);
-          }
-
-          .cell-toolbar-mask {
-            z-index: 9999;
-            display: ${sourceHidden ? "block" : "none"};
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            height: 34px;
-
-            /* Set the left padding to 50px to give users extra room to move their
-              mouse to the toolbar without causing the cell to go out of focus and thus
-              hide the toolbar before they get there. */
-            padding: 0px 0px 0px 50px;
-          }
-
-          .octicon {
-            transition: color 0.5s;
-          }
-
-          .cell-toolbar span.spacer {
-            display: inline-block;
-            vertical-align: middle;
-            margin: 1px 5px 3px 5px;
-            height: 11px;
-          }
-        `}</style>
-      </div>
+        </CellToolbar>
+      </CellToolbarMask>
     );
   }
 }
