@@ -1,5 +1,6 @@
 import * as React from "react";
 import { areComponentsEqual } from "react-hot-loader";
+import styled from "styled-components";
 
 import { Icon } from "./icon";
 import { Name } from "./name";
@@ -9,6 +10,25 @@ type EntryProps = {
   children: React.ReactNode;
 };
 
+const DirectoryEntry = styled.tr`
+  border-top: 1px solid #eaecef;
+
+  :hover {
+    background-color: #f6f8fa;
+    transition: background-color 0.1s ease-out;
+  }
+
+  :first-child {
+    border-top: none;
+  }
+
+  :last-child {
+    border-bottom: none;
+  }
+`;
+
+DirectoryEntry.displayName = "DirectoryEntry";
+
 export class Entry extends React.Component<EntryProps> {
   static defaultProps = {
     children: null
@@ -16,7 +36,7 @@ export class Entry extends React.Component<EntryProps> {
 
   render() {
     return (
-      <tr className="directory-entry">
+      <DirectoryEntry>
         {React.Children.map(this.props.children, child => {
           const childElement = child as React.ReactElement<any>;
           if (
@@ -44,25 +64,7 @@ export class Entry extends React.Component<EntryProps> {
             return <td className="directory-entry-field">{child}</td>;
           }
         })}
-        <style jsx>{`
-          tr {
-            border-top: 1px solid #eaecef;
-          }
-
-          tr:hover {
-            background-color: #f6f8fa;
-            transition: background-color 0.1s ease-out;
-          }
-
-          tr:first-child {
-            border-top: none;
-          }
-
-          tr:last-child {
-            border-bottom: none;
-          }
-        `}</style>
-      </tr>
+      </DirectoryEntry>
     );
   }
 }
