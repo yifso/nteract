@@ -14,6 +14,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import { AppState, KernelspecRecord, KernelspecProps } from "@nteract/types";
 import * as Immutable from "immutable";
 
@@ -26,6 +27,85 @@ export type AvailableNotebook = {
 export type AvailableNotebooks =
   | Array<AvailableNotebook>
   | Immutable.List<AvailableNotebook>;
+
+const NewNotebookDiv = styled.div`
+  color: var(--nt-color-midnight-light);
+  cursor: pointer;
+
+  font-family: var(--nt-font-family-normal);
+  color: var(--nt-color-midnight-light);
+  margin: 20px 20px 0 0;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  width: 100px;
+
+  a {
+    padding-top: 20px;
+  }
+
+  :hover {
+    box-shadow: var(--theme-primary-shadow-hover);
+    & ${DisplayNameLong} {
+      white-space: initial;
+      overflow: initial;
+      text-overflow: initial;
+    }
+  }
+
+  :focus {
+    box-shadow: var(--theme-primary-shadow-focus);
+    & ${DisplayNameLong} {
+      white-space: initial;
+      overflow: initial;
+      text-overflow: initial;
+    }
+  }
+`;
+
+const LogoBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  background-color: var(--theme-app-bg);
+  flex: 1;
+
+  .logo {
+    width: 2em;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+`;
+
+const TextBox = styled.div`
+  padding: 8px 6px 8px 6px;
+  font-size: 0.8em;
+  width: 100px;
+  box-sizing: border-box;
+  background-color: var(--theme-primary-bg);
+  border-top: 1px solid var(--theme-app-border);
+`;
+
+const DisplayNameShort = styled.p`
+  text-transform: capitalize;
+  margin: 0 5px 0 0;
+  font-weight: 600;
+  color: var(--theme-app-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const DisplayNameLong = styled.p`
+  margin: 0;
+  color: var(--theme-primary-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const NewNotebook = (
   props: AvailableNotebook & {
@@ -40,101 +120,21 @@ export const NewNotebook = (
   };
 
   return (
-    <React.Fragment>
-      <div tabIndex={0} className="new-notebook" onClick={onClick}>
-        <div className="logo-box">
-          <div className="logo">
-            <Logo language={props.kernelspec.language} />
-          </div>
+    <NewNotebookDiv tabIndex={0} onClick={onClick}>
+      <LogoBox>
+        <div className="logo">
+          <Logo language={props.kernelspec.language} />
         </div>
-        <div className="text-box">
-          <p className="display-name-short" title={props.kernelspec.language}>
-            {props.kernelspec.language}
-          </p>
-          <p className="display-name-long" title={props.kernelspec.displayName}>
-            {props.kernelspec.displayName}
-          </p>
-        </div>
-      </div>
-      <style jsx>{`
-        .new-notebook :global(*) {
-          color: var(--nt-color-midnight-light);
-          cursor: pointer;
-        }
-
-        a {
-          padding-top: 20px;
-        }
-
-        .new-notebook {
-          font-family: var(--nt-font-family-normal);
-          color: var(--nt-color-midnight-light);
-          margin: 20px 20px 0 0;
-          flex: 0 0 auto;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          height: 150px;
-          width: 100px;
-        }
-
-        .new-notebook:hover {
-          box-shadow: var(--theme-primary-shadow-hover);
-        }
-
-        .new-notebook:focus {
-          box-shadow: var(--theme-primary-shadow-focus);
-        }
-        .logo {
-          width: 2em;
-          box-sizing: border-box;
-          margin: 0 auto;
-        }
-
-        .logo-box {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 30px;
-          background-color: var(--theme-app-bg);
-          flex: 1;
-        }
-
-        .text-box {
-          padding: 8px 6px 8px 6px;
-          font-size: 0.8em;
-          width: 100px;
-          box-sizing: border-box;
-          background-color: var(--theme-primary-bg);
-          border-top: 1px solid var(--theme-app-border);
-        }
-
-        .display-name-short {
-          text-transform: capitalize;
-          margin: 0 5px 0 0;
-          font-weight: 600;
-          color: var(--theme-app-fg);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .display-name-long {
-          margin: 0;
-          color: var(--theme-primary-fg);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .new-notebook:hover .display-name-long,
-        .new-notebook:focus .display-name-long {
-          white-space: initial;
-          overflow: initial;
-          text-overflow: initial;
-        }
-      `}</style>
-    </React.Fragment>
+      </LogoBox>
+      <TextBox>
+        <DisplayNameShort title={props.kernelspec.language}>
+          {props.kernelspec.language}
+        </DisplayNameShort>
+        <DisplayNameLong title={props.kernelspec.displayName}>
+          {props.kernelspec.displayName}
+        </DisplayNameLong>
+      </TextBox>
+    </NewNotebookDiv>
   );
 };
 
@@ -142,57 +142,47 @@ NewNotebook.defaultProps = {
   onClick: () => {}
 };
 
-const NotebookCollection = (props: { children: React.ReactNode }) => (
-  <div className="collection">
-    {props.children}
-    <style jsx>{`
-      .collection {
-        padding: 0 0 20px 0;
-        box-sizing: border-box;
-        min-width: 0;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-      }
-    `}</style>
-  </div>
-);
+const NotebookCollection = styled.div`
+  padding: 0 0 20px 0;
+  box-sizing: border-box;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+`;
+
+const Banner = styled.div`
+  background-color: var(--nt-color-grey-light);
+  color: var(--nt-color-midnight);
+
+  box-sizing: border-box;
+
+  width: 100vw;
+  padding-top: 20px;
+  padding-left: 20px;
+`;
 
 export const PureNewNotebookNavigation = (props: {
   availableNotebooks: AvailableNotebooks;
   onClick?: (ks: KernelspecRecord | KernelspecProps) => void;
 }) => (
-  <React.Fragment>
-    <div className="banner">
-      <div>Start a new notebook</div>
-      <NotebookCollection>
-        {(props.availableNotebooks as Array<AvailableNotebook>).map(
-          (an: AvailableNotebook) => (
-            <NewNotebook
-              kernelspec={an.kernelspec}
-              key={an.kernelspec.name}
-              onClick={props.onClick}
-            />
-          )
-        )}
-      </NotebookCollection>
-    </div>
-    <style jsx>{`
-      .banner {
-        background-color: var(--nt-color-grey-light);
-        color: var(--nt-color-midnight);
-
-        box-sizing: border-box;
-
-        width: 100vw;
-        padding-top: 20px;
-        padding-left: 20px;
-      }
-    `}</style>
-  </React.Fragment>
+  <Banner>
+    <div>Start a new notebook</div>
+    <NotebookCollection>
+      {(props.availableNotebooks as Array<AvailableNotebook>).map(
+        (an: AvailableNotebook) => (
+          <NewNotebook
+            kernelspec={an.kernelspec}
+            key={an.kernelspec.name}
+            onClick={props.onClick}
+          />
+        )
+      )}
+    </NotebookCollection>
+  </Banner>
 );
 
 const mapStateToProps = (state: AppState) => {
