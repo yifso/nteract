@@ -45,8 +45,6 @@ export function updateContentEpic(
       const { contentRef, filepath, prevFilePath } = action.payload;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      console.log("serverConfig: ", serverConfig);
-
       return contents
         .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
         .pipe(
