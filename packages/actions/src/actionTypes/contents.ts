@@ -17,6 +17,7 @@ export const CHANGE_CONTENT_NAME_FULFILLED = "CORE/CHANGE_CONTENT_NAME_FULFILLED
 export type ChangeContentNameFulfilled = {
   type: "CORE/CHANGE_CONTENT_NAME_FULFILLED";
   payload: {
+    basepath: string;
     filepath: string;
     prevFilePath: string;
     contentRef: ContentRef;
@@ -27,9 +28,21 @@ export const CHANGE_CONTENT_NAME_FAILED = "CORE/CHANGE_CONTENT_NAME_FAILED";
 export type ChangeContentNameFailed = {
   type: "CORE/CHANGE_CONTENT_NAME_FAILED";
   payload: {
+    basepath: string;
     filepath: string;
     prevFilePath: string;
     error: Error;
+    contentRef: ContentRef;
+  };
+};
+
+export const CHANGE_TITLE_AND_HISTORY_EPIC = "CORE/CHANGE_TITLE_AND_HISTORY_EPIC";
+export type ChangeTitleAndHistoryEpic = {
+  type: "CORE/CHANGE_TITLE_AND_HISTORY_EPIC";
+  payload: {
+    basepath: string;
+    filepath: string;
+    prevFilePath: string;
     contentRef: ContentRef;
   };
 };

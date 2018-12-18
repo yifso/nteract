@@ -7,7 +7,7 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { FormGroup, Classes } from "@blueprintjs/core";
+import { FormGroup, EditableText } from "@blueprintjs/core";
 // $FlowFixMe
 import * as actions from "@nteract/actions";
 
@@ -52,12 +52,16 @@ type FileProps = {
 };
 
 export class File extends React.PureComponent <*> {
-  input?: HTMLInputElement;
+  // Handles onConfirm callback for EditableText component
+  confirmTitle = (value: string) => this.props.changeContentName({
+    filepath: `/${value ? this.addFileExtension(value) : ""}`,
+    prevFilePath: `/${this.props.displayName}`,
+    contentRef: this.props.contentRef
+  });
 
-  render() {
-    // Determine the file handler
-    let choice = null;
-    const icon = this.props.saving ? (
+  // Determine the file handler
+  getFileHandlerIcon = () => {
+    return this.props.saving ? (
       <SavingIcon />
     ) : this.props.error ? (
       <ErrorIcon />
@@ -66,6 +70,29 @@ export class File extends React.PureComponent <*> {
     ) : (
       ""
     );
+  }
+
+  // TODO: Add more acceptable file extensions
+  hasFileExtension = (fileName: string) => {
+    if (/\.ipynb/.exec(fileName) !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  // TODO: Add logic for acceptable file extensions
+  addFileExtension = (fileName: string) => {
+    if (!this.hasFileExtension(fileName)) {
+      return `${fileName}.ipynb`;
+    } else {
+      return fileName;
+    }
+  }
+
+  getChoice = () => {
+    let choice = null;
 
     // notebooks don't report a mimetype so we'll use the content.type
     if (this.props.type === "notebook") {
@@ -87,6 +114,13 @@ export class File extends React.PureComponent <*> {
       choice = <TextFile.default contentRef={this.props.contentRef} />;
     }
 
+    return choice;
+  }
+
+  render() {
+    const icon = this.getFileHandlerIcon();
+    const choice = this.getChoice();
+
     // Right now we only handle one kind of editor
     // If/when we support more modes, we would case them off here
     return (
@@ -100,27 +134,17 @@ export class File extends React.PureComponent <*> {
               >
                 <ThemedLogo />
               </a>
-              <FormGroup
-                disabled={false}
-                intent={"primary"} 
-              >
-                <input 
-                  className={Classes.EDITABLE_TEXT_INPUT}
-                  type="text" 
-                  ref={input => (this.input = input)}
+              <FormGroup>
+                <EditableText
+                  disabled={false}
                   defaultValue={this.props.displayName}
-                  spellCheck={false}
-                  onBlur={(event) => {
-                      event.preventDefault();
-
-                      return this.props.changeContentName({
-                        filepath: `/${this.input && this.input.value ? this.input.value : ""}`,
-                        prevFilePath: `/${this.props.displayName}`,
-                        contentRef: this.props.contentRef
-                      });
-                    }
-                  }
-                /> 
+                  intent={"none"}
+                  placeholder={"Enter title..."}
+                  minWidth={300}
+                  selectAllOnFocus={true}
+                  confirmOnEnterKey={true}
+                  onConfirm={this.confirmTitle}
+                />
               </FormGroup>
             </NavSection>
             <NavSection>

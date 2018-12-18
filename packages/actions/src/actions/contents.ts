@@ -27,6 +27,7 @@ export const fetchContent = (
 });
 
 export const changeContentNameFulfilled = (payload: {
+  basepath: string,
   filepath: string;
   prevFilePath: string;
   contentRef: ContentRef;
@@ -36,12 +37,23 @@ export const changeContentNameFulfilled = (payload: {
 });
 
 export const changeContentNameFailed = (payload: {
+  basepath: string,
   filepath: string,
   prevFilePath: string;
   error: Error,
   contentRef: ContentRef,
 }): actionTypes.ChangeContentNameFailed => ({
   type: actionTypes.CHANGE_CONTENT_NAME_FAILED,
+  payload
+});
+
+export const changeTitleAndHistoryEpic = (payload: {
+  basepath: string,
+  filepath: string,
+  prevFilePath: string,
+  contentRef: ContentRef
+}): actionTypes.ChangeTitleAndHistoryEpic => ({
+  type: actionTypes.CHANGE_TITLE_AND_HISTORY_EPIC,
   payload
 });
 

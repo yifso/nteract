@@ -17,6 +17,7 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
+const urljoin = require("url-join");
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -40,9 +41,11 @@ export function updateContentEpic(
       if (host.type !== "jupyter") {
         return empty();
       }
-      
+
       const { contentRef, filepath, prevFilePath } = action.payload;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      console.log("serverConfig: ", serverConfig);
 
       return contents
         .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
@@ -52,30 +55,41 @@ export function updateContentEpic(
               throw new Error(xhr.response);
             }
           }),
-          map(() => {
-            /* 
-             * Modifying the url's file name in the browser. 
-             * Effects back button behavior.
-             * Is there a better way to accomplish this?
-             */
-            window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
-
-            return actions.changeContentNameFulfilled({ 
-              filepath, 
-              prevFilePath, 
-              contentRef 
-            });
-          }),
+          map(() => actions.changeContentNameFulfilled({ 
+            basepath: host.basepath,
+            filepath, 
+            prevFilePath, 
+            contentRef 
+          })),
           catchError((xhrError: any) =>
             of(actions.changeContentNameFailed({
-                filepath: action.payload.filepath,
-                prevFilePath,
-                error: xhrError,
-                contentRef: action.payload.contentRef
-              })
-            )
+              basepath: host.basepath,
+              filepath: action.payload.filepath,
+              prevFilePath,
+              error: xhrError,
+              contentRef: action.payload.contentRef
+            }))
           )
         );
+    })
+  );
+}
+
+export function changeTitleAndHistoryEpic( 
+  action$: ActionsObservable<actions.ChangeContentNameFulfilled>,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.CHANGE_CONTENT_NAME_FULFILLED),
+    switchMap(action => { 
+      const { filepath } = action.payload;
+
+      /* 
+        * Modifying the url's file name in the browser. 
+        * Effects back button behavior.
+        * Is there a better way to accomplish this?
+        */
+      window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
     })
   );
 }

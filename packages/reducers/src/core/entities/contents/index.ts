@@ -37,6 +37,8 @@ const byRef = (
     case actionTypes.CHANGE_CONTENT_NAME_FAILED:
       // TODO: Add to error component for alerting the user
       return state;
+    case actionTypes.CHANGE_TITLE_AND_HISTORY_EPIC:
+      return state;
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until
