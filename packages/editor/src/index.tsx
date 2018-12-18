@@ -20,12 +20,31 @@ import CodeMirror from "codemirror";
 import excludedIntelliSenseTriggerKeys from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
 import { tool } from "./jupyter/tooltip";
-import styles from "./styles";
-import codemirrorStyles from "./vendored/codemirror";
-import showHintStyles from "./vendored/show-hint";
 import { Options, EditorChange, CMI, CMDoc } from "./types";
 
 export { EditorChange, Options };
+
+import { CodeMirrorContainer } from "./styled/codemirror";
+
+import styled from "styled-components";
+
+const TipButton = styled.button`
+  float: right;
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 11.5px;
+`;
+
+const Tip = styled.div`
+  padding: 20px 20px 50px 20px;
+  margin: 30px 20px 50px 20px;
+  box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
+  white-space: pre-wrap;
+  background-color: var(--theme-app-bg);
+  z-index: 9999999;
+`;
 
 function normalizeLineEndings(str: string) {
   if (!str) return str;
@@ -359,29 +378,10 @@ class CodeMirrorEditor extends React.Component<
         )[0] as HTMLElement;
 
         const tipElement = ReactDOM.createPortal(
-          <div className="CodeMirror-hint tip">
+          <Tip className="CodeMirror-hint">
             <RichestMime bundle={bundle} metadata={{ expanded: true }} />
-            <button className="bt" onClick={this.deleteTip}>{`\u2715`}</button>
-            <style jsx>{`
-              .bt {
-                float: right;
-                display: inline-block;
-                position: absolute;
-                top: 0px;
-                right: 0px;
-                font-size: 11.5px;
-              }
-
-              .tip {
-                padding: 20px 20px 50px 20px;
-                margin: 30px 20px 50px 20px;
-                box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
-                white-space: pre-wrap;
-                background-color: var(--theme-app-bg);
-                z-index: 9999999;
-              }
-            `}</style>
-          </div>,
+            <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
+          </Tip>,
           node
         );
 
@@ -443,7 +443,7 @@ class CodeMirrorEditor extends React.Component<
 
   render() {
     return (
-      <div className="CodeMirror cm-s-composition ">
+      <CodeMirrorContainer className="CodeMirror cm-s-composition ">
         <div className="tip-holder" />
         <textarea
           ref={ta => {
@@ -453,11 +453,8 @@ class CodeMirrorEditor extends React.Component<
           autoComplete="off"
           className="initialTextAreaForCodeMirror"
         />
-        <style jsx>{showHintStyles}</style>
-        <style jsx>{codemirrorStyles}</style>
-        <style jsx>{styles}</style>
         {this.state.tipElement}
-      </div>
+      </CodeMirrorContainer>
     );
   }
 }

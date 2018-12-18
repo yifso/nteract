@@ -1,8 +1,8 @@
-import css from "styled-jsx/css";
+import { css } from "styled-components";
 
 // This file contains the base codemirror styles for including in the base editor
 export default css`
-  :global(.CodeMirror-hints) {
+  .CodeMirror-hints {
     position: absolute;
     z-index: 10;
     overflow: hidden;
@@ -25,7 +25,7 @@ export default css`
     overflow-y: auto;
   }
 
-  :global(.CodeMirror-hint) {
+  .CodeMirror-hint {
     margin: 0;
     padding: 0 4px;
     border-radius: 2px;
@@ -34,7 +34,7 @@ export default css`
     cursor: pointer;
   }
 
-  :global(li.CodeMirror-hint-active) {
+  li.CodeMirror-hint-active {
     background: #08f;
     color: white;
   }
