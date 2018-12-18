@@ -1,30 +1,28 @@
 import jp from "./jupyter-paths";
 import path from "path";
 import fs from "fs";
+import { promisify } from "util";
 
 type KernelInfo = {
   name: string;
   resourceDir: string;
 };
 
-type KernelResources = {
+export type KernelSpec = {
+  display_name: string;
+  argv: string[];
+  language: string;
+  env?: { [varialbe: string]: string };
+};
+
+type KernelResource = {
   name: string;
   files: string[];
   resources_dir: string;
-  spec: any;
+  spec: KernelSpec;
 };
 
-/**
- * Converts a callback style call to a Promise
- * @param  {function} f       a node style function that accepts a callback
- * @param  {Object[]} args    arguments to pass to the function when invoking it
- * @return {Promise<Object>}  object returned by the function
- */
-function promisify(f, args) {
-  return new Promise((resolve, reject) =>
-    f.apply(this, args.concat((err, x) => (err ? reject(err) : resolve(x))))
-  );
-}
+export type KernelResourceByName = { [name: string]: KernelResource };
 
 /**
  * Get a kernel resources object
@@ -33,24 +31,24 @@ function promisify(f, args) {
  * @param  {string}   kernelInfo.resourceDir  kernel's resources directory
  * @return {Promise<Object>}                  Promise for a kernelResources object
  */
-function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResources> {
-  return promisify(fs.readdir, [kernelInfo.resourceDir]).then(
-    (files: string[]) => {
-      const kernelJSONIndex = files.indexOf("kernel.json");
-      if (kernelJSONIndex === -1) {
-        throw new Error("kernel.json not found");
-      }
+function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
+  const readdir = promisify(fs.readdir);
+  return readdir(kernelInfo.resourceDir).then((files: string[]) => {
+    const kernelJSONIndex = files.indexOf("kernel.json");
+    if (kernelJSONIndex === -1) {
+      throw new Error("kernel.json not found");
+    }
 
-      return promisify(fs.readFile, [
-        path.join(kernelInfo.resourceDir, "kernel.json")
-      ]).then((data: string) => ({
+    const readFile = promisify(fs.readFile);
+    return readFile(path.join(kernelInfo.resourceDir, "kernel.json")).then(
+      (data: string | Buffer) => ({
         name: kernelInfo.name,
         files: files.map(x => path.join(kernelInfo.resourceDir, x)),
         resources_dir: kernelInfo.resourceDir, // eslint-disable-line camelcase
-        spec: JSON.parse(data)
-      }));
-    }
-  );
+        spec: data instanceof Buffer ? data.toJSON() : JSON.parse(data)
+      })
+    );
+  });
 }
 
 /**
@@ -58,8 +56,9 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResources> {
  * @param  {string}   directory path to a directory full of kernels
  * @return {Promise<Object[]>}  Promise for an array of kernelInfo objects
  */
-function getKernelInfos(directory) {
-  return promisify(fs.readdir, [directory]).then((files: string[]) =>
+function getKernelInfos(directory: string): Promise<KernelInfo[]> {
+  const readdir = promisify(fs.readdir);
+  return readdir(directory).then((files: string[]) =>
     files.map(fileName => ({
       name: fileName,
       resourceDir: path.join(directory, fileName)
@@ -72,36 +71,41 @@ function getKernelInfos(directory) {
  * @param  {string} kernelName the kernel to locate
  * @return {Object} kernelResource object
  */
-function find(kernelName) {
+export function find(kernelName: string) {
   return jp
     .dataDirs({ withSysPrefix: true })
     .then(dirs => {
-      const kernelInfos = dirs.map(dir => ({
+      const kernelInfos: KernelInfo[] = dirs.map(dir => ({
         name: kernelName,
         resourceDir: path.join(dir, "kernels", kernelName)
       }));
 
       return extractKernelResources(kernelInfos);
     })
-    .then(kernelResource => kernelResource[kernelName]);
+    .then((kernelResource: KernelResourceByName) => kernelResource[kernelName]);
 }
 
-function extractKernelResources(kernelInfos: KernelInfo[]) {
-  return Promise.all(
-    kernelInfos
-      .filter(a => a) // remove null/undefined kernelInfo
-      .reduce((a, b) => a.concat(b), []) // flatten the results into one array
-      .map(a => getKernelResources(a).catch(() => {})) // convert kernelInfo -> kernelResources and ignore errors
-  ).then((kernelResources: KernelResources[]) =>
-    kernelResources
+async function extractKernelResources(
+  kernelInfos: KernelInfo[]
+): Promise<KernelResourceByName> {
+  try {
+    const kernelResources = await Promise.all(
+      kernelInfos
+        .filter(a => a) // remove null/undefined kernelInfo
+        .reduce((a: KernelInfo[], b: KernelInfo) => a.concat(b), []) // flatten the results into one array
+        .map(a => getKernelResources(a))
+    );
+    return kernelResources
       .filter(a => a) // remove null/undefined kernelResources
-      .reduce((kernels, kernel) => {
+      .reduce((kernels: KernelResourceByName, kernel: KernelResource) => {
         if (!kernels[kernel.name]) {
           kernels[kernel.name] = kernel;
         }
         return kernels;
-      }, {})
-  );
+      }, {});
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -109,14 +113,14 @@ function extractKernelResources(kernelInfos: KernelInfo[]) {
  * This matches the Jupyter notebook API for kernelspecs exactly
  * @return {Promise<Object<string,kernelResource>} Promise for an array of kernelResources objects
  */
-function findAll() {
-  return jp.dataDirs({ withSysPrefix: true }).then(dirs => {
-    return Promise.all(
-      dirs
-        // get kernel infos for each directory and ignore errors
-        .map(dir => getKernelInfos(path.join(dir, "kernels")).catch(() => {}))
-    ).then(extractKernelResources);
-  });
+export async function findAll() {
+  try {
+    const dirs = await jp.dataDirs({ withSysPrefix: true });
+    const kernelInfos = dirs
+      .map(async dir => await getKernelInfos(path.join(dir, "kernels")))
+      .flat();
+    return extractKernelResources(kernelInfos);
+  } catch (error) {
+    throw error;
+  }
 }
-
-export default { find, findAll, getKernelInfos, getKernelResources };

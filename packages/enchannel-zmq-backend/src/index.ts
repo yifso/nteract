@@ -20,6 +20,7 @@ export const ZMQType = {
 type ChannelName = "iopub" | "stdin" | "shell" | "control";
 
 export interface JupyterConnectionInfo {
+  version: number;
   iopub_port: number;
   shell_port: number;
   stdin_port: number;

@@ -25,17 +25,19 @@
 import path from "path";
 import fs from "fs";
 
-import kernelspecs from "./kernelspecs";
-import jp from "./jupyter-paths";
-
 import uuid from "uuid";
 import { getPorts } from "portfinder";
 import jsonfile from "jsonfile";
 
-import execa from "execa";
+import execa, { Options } from "execa";
 import mkdirp from "mkdirp";
 
-function cleanup(connectionFile) {
+import { findAll, KernelResourceByName, KernelSpec } from "./kernelspecs";
+import jp from "./jupyter-paths";
+
+import { JupyterConnectionInfo } from "@nteract/enchannel-zmq-backend";
+
+function cleanup(connectionFile: fs.PathLike) {
   try {
     fs.unlinkSync(connectionFile);
   } catch (e) {
@@ -50,7 +52,7 @@ function cleanup(connectionFile) {
  *                          control_port, shell_port, stdin_port, iopub_port]
  * @return {object}         connectionInfo object
  */
-function createConnectionInfo(ports: number[]) {
+function createConnectionInfo(ports: number[]): JupyterConnectionInfo {
   return {
     version: 5,
     key: uuid.v4(),
@@ -79,13 +81,13 @@ function createConnectionInfo(ports: number[]) {
 function writeConnectionFile(portFinderOptions?: {
   port: number;
   host: string;
-}): Promise<{ config: object; connectionFile: string }> {
+}): Promise<{ config: JupyterConnectionInfo; connectionFile: string }> {
   const options = Object.assign({}, portFinderOptions);
   options.port = options.port || 9000;
   options.host = options.host || "127.0.0.1";
 
   return new Promise((resolve, reject) => {
-    getPorts(5, options, async (err, ports) => {
+    getPorts(5, options, async (err: Error, ports: number[]) => {
       if (err) {
         reject(err);
       } else {
@@ -102,7 +104,7 @@ function writeConnectionFile(portFinderOptions?: {
           await jp.runtimeDir(),
           `kernel-${uuid.v4()}.json`
         );
-        jsonfile.writeFile(connectionFile, config, jsonErr => {
+        jsonfile.writeFile(connectionFile, config, (jsonErr: Error) => {
           if (jsonErr) {
             reject(jsonErr);
           } else {
@@ -131,7 +133,7 @@ function writeConnectionFile(portFinderOptions?: {
  * @return {object}       spawnResults.config          connection info
  *
  */
-function launchSpec(kernelSpec, spawnOptions) {
+function launchSpec(kernelSpec: KernelSpec, spawnOptions?: Options) {
   return writeConnectionFile().then(c => {
     return launchSpecFromConnectionInfo(
       kernelSpec,
@@ -141,6 +143,13 @@ function launchSpec(kernelSpec, spawnOptions) {
     );
   });
 }
+
+type LaunchedKernel = {
+  spawn: execa.ExecaChildProcess;
+  connectionFile: string;
+  config: JupyterConnectionInfo;
+  kernelSpec: KernelSpec;
+};
 
 /**
  * Launch a kernel for a given kernelSpec and connection info
@@ -159,12 +168,12 @@ function launchSpec(kernelSpec, spawnOptions) {
  *
  */
 function launchSpecFromConnectionInfo(
-  kernelSpec,
-  config,
-  connectionFile,
-  spawnOptions
-) {
-  const argv = kernelSpec.argv.map(x =>
+  kernelSpec: KernelSpec,
+  config: JupyterConnectionInfo,
+  connectionFile: string,
+  spawnOptions?: Options
+): LaunchedKernel {
+  const argv = kernelSpec.argv.map((x: string) =>
     x === "{connection_file}" ? connectionFile : x
   );
 
@@ -184,8 +193,8 @@ function launchSpecFromConnectionInfo(
   const runningKernel = execa(argv[0], argv.slice(1), fullSpawnOptions);
 
   if (fullSpawnOptions.cleanupConnectionFile !== false) {
-    runningKernel.on("exit", (code, signal) => cleanup(connectionFile));
-    runningKernel.on("error", (code, signal) => cleanup(connectionFile));
+    runningKernel.on("exit", (_code, _signal) => cleanup(connectionFile));
+    runningKernel.on("error", _error => cleanup(connectionFile));
   }
   return {
     spawn: runningKernel,
@@ -210,12 +219,16 @@ function launchSpecFromConnectionInfo(
  * @return {string}       spawnResults.connectionFile  connection file path
  * @return {object}       spawnResults.config          connection info
  */
-function launch(kernelName: string, spawnOptions?: object, specs?) {
+function launch(
+  kernelName: string,
+  spawnOptions?: Options,
+  specs?: KernelResourceByName
+): Promise<LaunchedKernel> {
   // Let them pass in a cached specs file
   if (!specs) {
-    return kernelspecs
-      .findAll()
-      .then(sp => launch(kernelName, spawnOptions, sp));
+    return findAll().then((sp: KernelResourceByName) =>
+      launch(kernelName, spawnOptions, sp)
+    );
   }
   if (!specs[kernelName]) {
     return Promise.reject(new Error(`No spec available for ${kernelName}`));

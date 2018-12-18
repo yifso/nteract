@@ -1,6 +1,7 @@
 import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
+import { homedir } from "os";
 
 let sysPrefixGuess: string | null | undefined = undefined;
 
@@ -11,8 +12,7 @@ type JupyterPaths = {
 };
 
 function home(subDir: string) {
-  const envVariable = process.platform == "win32" ? "USERPROFILE" : "HOME";
-  var baseDir = process.env[envVariable];
+  const baseDir = homedir();
   return subDir ? path.join(baseDir, subDir) : baseDir;
 }
 
@@ -20,7 +20,7 @@ function accessCheck(d: fs.PathLike) {
   // check if a directory exists and is listable (X_OK)
   if (!fs.existsSync(d)) return false;
   try {
-    fs.accessSync(d, fs.X_OK);
+    fs.accessSync(d, fs.constants.X_OK);
   } catch (e) {
     // [WSA]EACCES
     return false;
@@ -134,7 +134,7 @@ async function configDirs(opts?: {
   const systemDirs = systemConfigDirs();
 
   if (opts && opts.withSysPrefix) {
-    return new Promise((resolve, reject) => {
+    return new Promise<string[]>((resolve, reject) => {
       // deprecated: withSysPrefix expects a Promise
       // but no change in content
       resolve(configDirs());
@@ -176,7 +176,7 @@ function userDataDir() {
   if (process.platform === "darwin") {
     return home("Library/Jupyter");
   } else if (process.platform === "win32") {
-    const defaultAppDataPath = "";
+    const defaultAppDataPath = home("AppData");
     return path.resolve(
       path.join(process.env.APPDATA || defaultAppDataPath, "jupyter")
     );
@@ -218,7 +218,7 @@ async function dataDirs(opts?: {
   const systemDirs = systemDataDirs();
 
   if (opts && opts.withSysPrefix) {
-    return new Promise((resolve, reject) => {
+    return new Promise<string[]>((resolve, reject) => {
       // deprecated: withSysPrefix expects a Promise
       // but no change in content
       resolve(dataDirs());
