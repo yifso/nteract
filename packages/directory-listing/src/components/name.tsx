@@ -14,3 +14,5 @@ export const Name = styled.td`
     outline-width: 0;
   }
 `;
+
+Name.displayName = "Name";
