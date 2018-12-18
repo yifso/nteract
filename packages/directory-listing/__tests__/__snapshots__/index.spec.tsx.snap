@@ -8,12 +8,12 @@ exports[`Entry accepts props and renders entries in directory 1`] = `
     fileType="directory"
     key=".0"
   />
-  <Name
+  <Styled(PlainName)
     className="directory-entry-field"
     key=".1"
   >
     linky jr
-  </Name>
+  </Styled(PlainName)>
   <LastSaved
     className="directory-entry-field"
     key=".2"

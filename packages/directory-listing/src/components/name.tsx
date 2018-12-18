@@ -5,7 +5,17 @@ type NameProps = {
   children: React.ReactNode;
 };
 
-const NameTD = styled.td`
+class PlainName extends React.Component<NameProps> {
+  static defaultProps = {
+    children: null
+  };
+
+  render() {
+    return <td>{this.props.children}</td>;
+  }
+}
+
+export const Name = styled(PlainName)`
   vertical-align: middle;
   font-size: 0.9em;
   padding: 8px;
@@ -19,13 +29,3 @@ const NameTD = styled.td`
     outline-width: 0;
   }
 `;
-
-export class Name extends React.Component<NameProps> {
-  static defaultProps = {
-    children: null
-  };
-
-  render() {
-    return <NameTD>{this.props.children}</NameTD>;
-  }
-}

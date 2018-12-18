@@ -14,7 +14,7 @@ const IconTD = styled.td`
   vertical-align: middle;
   text-align: center;
   opacity: 0.95;
-  color: #0366d6;
+  color: ${props => props.color || "#0366d6"};
 `;
 
 IconTD.displayName = "IconTD";
