@@ -50,9 +50,7 @@ exports[`Test NotebokRender snapshots accepts an Immutable.List of cells 1`] = `
       isSelected={false}
       key="3"
     >
-      <Input
-        hidden={false}
-      >
+      <Input>
         <Prompt
           blank={false}
           counter={11}
@@ -303,9 +301,7 @@ exports[`Test NotebokRender snapshots accepts an Object of cells 1`] = `
       isSelected={false}
       key="15"
     >
-      <Input
-        hidden={false}
-      >
+      <Input>
         <Prompt
           blank={false}
           counter={11}
