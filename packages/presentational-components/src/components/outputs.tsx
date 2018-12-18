@@ -29,19 +29,20 @@ const OutputWrapper = styled.div<OutputWrapperProps>`
 
   ${props => (props.expanded ? `max-height: 100%;` : null)}
 
-  /* NOTE: All these styles should get moved into some sort of 
+  &:empty {
+    display: none;
+  }
+
+  /* NOTE: All these styles should get moved into some sort of
            "Default Output Style" that an output type can opt in to,
-           like with HTML, 
+           like with HTML, Markdown, VDOM
+           */
   & a {
     color: var(--link-color-unvisited, blue);
   }
 
   & a:visited {
     color: var(--link-color-visited, blue);
-  }
-
-  &:empty {
-    display: none;
   }
 
   & code {
@@ -77,7 +78,7 @@ const OutputWrapper = styled.div<OutputWrapperProps>`
 
   & th,
   & td,
-  /* for legacy output handling */ 
+  /* for legacy output handling */
   & .th,
   & .td {
     padding: 0.5em 1em;
