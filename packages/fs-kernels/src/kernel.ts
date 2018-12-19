@@ -5,7 +5,7 @@ import { KernelSpec } from "./kernelspecs";
 export default class Kernel {
   name?: string;
   kernelSpec?: KernelSpec;
-  launchedKernel: LaunchedKernel;
+  launchedKernel?: LaunchedKernel;
 
   constructor(input: string | KernelSpec) {
     if (typeof input === "string") {
@@ -19,7 +19,7 @@ export default class Kernel {
     let launchedKernel;
     if (this.name && !this.kernelSpec) {
       launchedKernel = await launch(this.name);
-    } else {
+    } else if (this.kernelSpec && !this.name) {
       launchedKernel = await launchSpec(this.kernelSpec);
     }
 
@@ -27,13 +27,17 @@ export default class Kernel {
   }
 
   async shutdown() {
-    this.launchedKernel.spawn.kill();
-    cleanup(this.launchedKernel.connectionFile);
-    this.launchedKernel = undefined;
+    if (this.launchedKernel) {
+      this.launchedKernel.spawn.kill();
+      cleanup(this.launchedKernel.connectionFile);
+      this.launchedKernel = undefined;
+    }
   }
 
   async getUsage() {
-    const pid = this.launchedKernel.spawn.pid;
-    return await pidusage(pid);
+    if (this.launchedKernel) {
+      const pid = this.launchedKernel.spawn.pid;
+      return await pidusage(pid);
+    }
   }
 }
