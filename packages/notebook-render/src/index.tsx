@@ -5,7 +5,7 @@ import remark2rehype from "remark-rehype";
 import katex from "rehype-katex";
 import stringify from "rehype-stringify";
 import { InlineMath, BlockMath } from "react-katex";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import flush from "styled-jsx/server";
 import { Display } from "@nteract/display-area";
 import {
@@ -58,6 +58,17 @@ const RawCell = styled.pre`
     #f1f1f1 20px
   );
 `;
+
+const Themes = {
+  dark: createGlobalStyle`
+    :root {
+      ${themes.dark}
+    }`,
+  light: createGlobalStyle`
+    :root {
+      ${themes.light}
+    }`
+};
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -192,16 +203,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
           })}
         </Cells>
         <style>{/* render styled jsx styles */ flush()}</style>
-        <style>{`:root {
-          ${themes[this.props.theme]}
-            --theme-cell-shadow-hover: none;
-            --theme-cell-shadow-focus: none;
-            --theme-cell-prompt-bg-hover: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-bg-focus: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-fg-hover: var(--theme-cell-prompt-fg);
-            --theme-cell-prompt-fg-focus: var(--theme-cell-prompt-fg);
-          }
-        `}</style>
+        {this.props.theme === "dark" ? <Themes.dark /> : <Themes.light />}
       </div>
     );
   }
