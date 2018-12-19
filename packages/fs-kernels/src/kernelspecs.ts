@@ -27,6 +27,10 @@ type KernelResource = {
 
 export type KernelResourceByName = { [name: string]: KernelResource };
 
+function flatten(array: Array<any>) {
+  return [].concat(...array);
+}
+
 /**
  * Get a kernel resources object
  * @param  {Object}   kernelInfo              description of a kernel
@@ -65,7 +69,6 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
 function getKernelInfos(directory: string): Promise<KernelInfo[]> {
   const readdir = promisify(fs.readdir);
   return readdir(directory).then((files: string[]) => {
-    console.log("files: ", files);
     return files.map(fileName => ({
       name: fileName,
       resourceDir: path.join(directory, fileName)
@@ -123,9 +126,9 @@ async function extractKernelResources(
 export async function findAll() {
   try {
     const dirs = await jp.dataDirs({ withSysPrefix: true });
-    const kernelInfoPromises = dirs
-      .map(async dir => await getKernelInfos(path.join(dir, "kernels")))
-      .flat();
+    const kernelInfoPromises = flatten(
+      dirs.map(async dir => await getKernelInfos(path.join(dir, "kernels")))
+    );
     const kernelInfos = await Promise.all(kernelInfoPromises);
     return extractKernelResources(kernelInfos);
   } catch (error) {
