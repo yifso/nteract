@@ -11,7 +11,7 @@ type JupyterPaths = {
   data: string[];
 };
 
-function home(subDir: string) {
+function home(subDir?: string) {
   const baseDir = homedir();
   return subDir ? path.join(baseDir, subDir) : baseDir;
 }
@@ -181,8 +181,7 @@ function userDataDir() {
       path.join(process.env.APPDATA || defaultAppDataPath, "jupyter")
     );
   }
-  // TODO: respect XDG_DATA_HOME
-  return home(".local/share/jupyter");
+  return process.env.XDG_DATA_HOME || home(".local/share/jupyter");
 }
 
 /**
