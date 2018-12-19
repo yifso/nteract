@@ -27,10 +27,11 @@ export class HijackScroll extends React.Component<HijackScrollProps> {
       !hovered
     ) {
       if (this.el && "scrollIntoViewIfNeeded" in this.el) {
-        // $FlowFixMe: This is only valid in Chrome, WebKit
+        // This is only valid in Chrome, WebKit
         (this.el as any).scrollIntoViewIfNeeded();
-      } else {
-        // TODO: Polyfill as best we can for the webapp version
+      } else if (this.el) {
+        // Make a best guess effort for older platforms
+        this.el.scrollIntoView();
       }
     }
   }

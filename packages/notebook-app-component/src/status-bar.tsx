@@ -12,6 +12,30 @@ type Props = {
 
 const NOT_CONNECTED = "not connected";
 
+import styled from "styled-components";
+
+export const LeftStatus = styled.div`
+  float: left;
+  display: block;
+  padding-left: 10px;
+`;
+export const RightStatus = styled.div`
+  float: right;
+  padding-right: 10px;
+  display: block;
+`;
+
+export const Bar = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  line-height: 0.5em;
+  background: var(--status-bar);
+  z-index: 99;
+`;
+
 export class StatusBar extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     if (
@@ -27,42 +51,20 @@ export class StatusBar extends React.Component<Props> {
     const name = this.props.kernelSpecDisplayName || "Loading...";
 
     return (
-      <div className="status-bar">
-        <span className="pull-right">
+      <Bar>
+        <RightStatus>
           {this.props.lastSaved ? (
             <p> Last saved {distanceInWordsToNow(this.props.lastSaved)} </p>
           ) : (
             <p> Not saved yet </p>
           )}
-        </span>
-        <span className="pull-left">
+        </RightStatus>
+        <LeftStatus>
           <p>
             {name} | {this.props.kernelStatus}
           </p>
-        </span>
-        <style jsx>{`
-          .status-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            font-size: 12px;
-            line-height: 0.5em;
-            background: var(--status-bar);
-            z-index: 99;
-          }
-
-          .pull-right {
-            float: right;
-            padding-right: 10px;
-          }
-
-          .pull-left {
-            display: block;
-            padding-left: 10px;
-          }
-        `}</style>
-      </div>
+        </LeftStatus>
+      </Bar>
     );
   }
 }
