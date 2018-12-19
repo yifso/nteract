@@ -55,11 +55,10 @@ const Themes = {
 function getTheme(theme: string) {
   switch (theme) {
     case "dark":
-      return Themes.dark;
+      return <Themes.dark />;
     case "light":
-      return Themes.light;
     default:
-      return Themes.light;
+      return <Themes.light />;
   }
 }
 
