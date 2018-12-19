@@ -17,7 +17,7 @@ import {
   Pagers,
   Outputs,
   Cell as PlainCell,
-  themes
+  themes as rawThemeVars
 } from "@nteract/presentational-components";
 import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -37,9 +37,31 @@ import Editor from "./editor";
 import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
 
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 import { CellToolbarMask } from "./toolbar";
+
+const Themes = {
+  dark: createGlobalStyle`
+    :root {
+      ${rawThemeVars.dark}
+    }`,
+  light: createGlobalStyle`
+    :root {
+      ${rawThemeVars.light}
+    }`
+};
+
+function getTheme(theme: string) {
+  switch (theme) {
+    case "dark":
+      return Themes.dark;
+    case "light":
+      return Themes.light;
+    default:
+      return Themes.light;
+  }
+}
 
 const Cell = styled(PlainCell)`
   /*
@@ -53,6 +75,8 @@ const Cell = styled(PlainCell)`
     ${props => (props.isSelected ? `display: block;` : ``)}
   }
 `;
+
+Cell.displayName = "Cell";
 
 type AnyCellProps = {
   id: string;
@@ -199,23 +223,16 @@ const mapDispatchToCellProps = (
   }
 });
 
-const CellBanner = (props: { children: React.ReactNode }) => {
-  return (
-    <React.Fragment>
-      <div>{props.children}</div>
-      <style jsx>{`
-        div {
-          background-color: darkblue;
-          color: ghostwhite;
-          padding: 9px 16px;
+const CellBanner = styled.div`
+  background-color: darkblue;
+  color: ghostwhite;
+  padding: 9px 16px;
 
-          font-size: 12px;
-          line-height: 20px;
-        }
-      `}</style>
-    </React.Fragment>
-  );
-};
+  font-size: 12px;
+  line-height: 20px;
+`;
+
+CellBanner.displayName = "CellBanner";
 
 class AnyCell extends React.PureComponent<AnyCellProps> {
   render() {
@@ -503,6 +520,12 @@ const mapStateToProps = (
   };
 };
 
+const Cells = styled.div`
+  padding-top: var(--nt-spacing-m, 10px);
+  padding-left: var(--nt-spacing-m, 10px);
+  padding-right: var(--nt-spacing-m, 10px);
+`;
+
 const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
   moveCell: (payload: {
     id: CellId;
@@ -627,35 +650,19 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
   render() {
     return (
       <React.Fragment>
-        <div className="cells">
+        <Cells>
           <CellCreator
             id={this.props.cellOrder.get(0)}
             above
             contentRef={this.props.contentRef}
           />
           {this.props.cellOrder.map(this.createCellElement)}
-        </div>
+        </Cells>
         <StatusBar
           contentRef={this.props.contentRef}
           kernelRef={this.props.kernelRef}
         />
-        <style jsx>{`
-          .cells {
-            padding-top: var(--nt-spacing-m, 10px);
-            padding-left: var(--nt-spacing-m, 10px);
-            padding-right: var(--nt-spacing-m, 10px);
-          }
-        `}</style>
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-:root {
-  ${(themes as JSONObject)[this.props.theme]};
-}`
-          }}
-        >
-          {}
-        </style>
+        {getTheme(this.props.theme)}
       </React.Fragment>
     );
   }
