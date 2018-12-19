@@ -33,7 +33,7 @@ export default class Kernel {
     if (this.launchedKernel) {
       cleanup(this.launchedKernel.connectionFile);
       if (!this.launchedKernel.spawn.killed && this.launchedKernel.spawn.pid) {
-        this.launchedKernel.spawn.kill();
+        process.kill(this.launchedKernel.spawn.pid);
       }
       this.launchedKernel.spawn.removeAllListeners();
       this.launchedKernel = undefined;
