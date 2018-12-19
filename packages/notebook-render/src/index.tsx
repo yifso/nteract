@@ -202,7 +202,6 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
             }
           })}
         </Cells>
-        <style>{/* render styled jsx styles */ flush()}</style>
         {this.props.theme === "dark" ? <Themes.dark /> : <Themes.light />}
       </div>
     );
