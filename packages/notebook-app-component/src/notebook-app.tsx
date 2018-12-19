@@ -16,7 +16,7 @@ import {
   Source,
   Pagers,
   Outputs,
-  Cell,
+  Cell as PlainCell,
   themes
 } from "@nteract/presentational-components";
 import { DragDropContext as dragDropContext } from "react-dnd";
@@ -36,6 +36,23 @@ import MarkdownPreviewer from "./markdown-preview";
 import Editor from "./editor";
 import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
+
+import styled from "styled-components";
+
+import { CellToolbarMask } from "./toolbar";
+
+const Cell = styled(PlainCell)`
+  /*
+   * Show the cell-toolbar-mask if hovering on cell,
+   * cell was the last clicked (has .focused class).
+   */
+  &:hover ${CellToolbarMask} {
+    display: block;
+  }
+  & ${CellToolbarMask} {
+    ${props => (props.isSelected ? `display: block;` : ``)}
+  }
+`;
 
 type AnyCellProps = {
   id: string;
@@ -357,16 +374,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             contentRef={contentRef}
           />
           {element}
-          <style jsx>{`
-            /*
-             * Show the cell-toolbar-mask if hovering on cell,
-             * cell was the last clicked (has .focused class).
-            */
-            :global(.cell:hover .cell-toolbar-mask),
-            :global(.cell.focused .cell-toolbar-mask) {
-              display: block;
-            }
-          `}</style>
         </Cell>
       </HijackScroll>
     );
