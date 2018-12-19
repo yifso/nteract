@@ -89,7 +89,7 @@ function askJupyter() {
   // ask Jupyter where the paths are
   if (!askJupyterPromise) {
     askJupyterPromise = new Promise((resolve, reject) => {
-      exec("jupyter --paths --json", (err, stdout) => {
+      exec("python3 -m jupyter --paths --json", (err, stdout) => {
         if (err) {
           console.warn("Failed to ask Jupyter about its paths: " + err);
           reject(err);
