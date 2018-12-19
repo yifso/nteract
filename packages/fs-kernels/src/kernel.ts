@@ -35,7 +35,6 @@ export default class Kernel {
       if (!this.launchedKernel.spawn.killed && this.launchedKernel.spawn.pid) {
         this.launchedKernel.spawn.kill();
       }
-      this.launchedKernel.spawn.stdin.end();
       this.launchedKernel.spawn.removeAllListeners();
       this.launchedKernel = undefined;
     }

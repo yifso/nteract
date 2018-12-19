@@ -5,6 +5,7 @@ describe("Kernel", () => {
     const kernel = new Kernel("python3");
     await kernel.launch();
     expect(kernel.launchedKernel).toBeDefined();
+    await kernel.shutdown();
     done();
   });
   it("can shutdown a kernel", async done => {
@@ -21,6 +22,7 @@ describe("Kernel", () => {
     const stats = await kernel.getUsage();
     expect(stats.memory).toBeDefined();
     expect(stats.pid).toEqual(kernel.launchedKernel.spawn.pid);
+    await kernel.shutdown();
     done();
   });
 });
