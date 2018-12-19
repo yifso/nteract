@@ -16,6 +16,10 @@ function home(subDir?: string) {
   return subDir ? path.join(baseDir, subDir) : baseDir;
 }
 
+function pushIfExists(paths: string[], path: string) {
+  if (fs.existsSync(path)) paths.push(path);
+}
+
 function accessCheck(d: fs.PathLike) {
   // check if a directory exists and is listable (X_OK)
   if (!fs.existsSync(d)) return false;
@@ -96,18 +100,19 @@ function askJupyter() {
 }
 
 function systemConfigDirs() {
-  var paths = [];
+  var paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
     const defaultProgramDataPath = "C:ProgramData";
-    paths.push(
+    pushIfExists(
+      paths,
       path.resolve(
         path.join(process.env.PROGRAMDATA || defaultProgramDataPath, "jupyter")
       )
     );
   } else {
-    paths.push("/usr/local/etc/jupyter");
-    paths.push("/etc/jupyter");
+    pushIfExists(paths, "/usr/local/etc/jupyter");
+    pushIfExists(paths, "/etc/jupyter");
   }
   return paths;
 }
@@ -119,18 +124,18 @@ async function configDirs(opts?: {
   if (opts && opts.askJupyter) {
     try {
       const paths = await askJupyter();
-      return paths.config;
+      return paths.config.filter(fs.existsSync);
     } catch {
       return configDirs();
     }
   }
 
-  var paths = [];
+  var paths: string[] = [];
   if (process.env.JUPYTER_CONFIG_DIR) {
-    paths.push(process.env.JUPYTER_CONFIG_DIR);
+    pushIfExists(paths, process.env.JUPYTER_CONFIG_DIR);
   }
 
-  paths.push(home(".jupyter"));
+  pushIfExists(paths, home(".jupyter"));
   const systemDirs = systemConfigDirs();
 
   if (opts && opts.withSysPrefix) {
@@ -144,24 +149,25 @@ async function configDirs(opts?: {
   var sysPrefix = guessSysPrefix() || "/usr/local/";
   var sysPathed = path.join(sysPrefix, "etc", "jupyter");
   if (systemDirs.indexOf(sysPathed) === -1) {
-    paths.push(sysPathed);
+    pushIfExists(paths, sysPathed);
   }
   return paths.concat(systemDirs);
 }
 
 function systemDataDirs() {
-  var paths = [];
+  var paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
     const defaultProgramDataPath = "C:ProgramData";
-    paths.push(
+    pushIfExists(
+      paths,
       path.resolve(
         path.join(process.env.PROGRAMDATA || defaultProgramDataPath, "jupyter")
       )
     );
   } else {
-    paths.push("/usr/local/share/jupyter");
-    paths.push("/usr/share/jupyter");
+    pushIfExists(paths, "/usr/local/share/jupyter");
+    pushIfExists(paths, "/usr/share/jupyter");
   }
   return paths;
 }
@@ -201,18 +207,18 @@ async function dataDirs(opts?: {
   if (opts && opts.askJupyter) {
     try {
       const paths = await askJupyter();
-      return paths.data;
+      return paths.data.filter(fs.existsSync);
     } catch (error) {
       return dataDirs();
     }
   }
 
-  var paths = [];
+  var paths: string[] = [];
   if (process.env.JUPYTER_PATH) {
-    paths.push(process.env.JUPYTER_PATH);
+    pushIfExists(paths, process.env.JUPYTER_PATH);
   }
 
-  paths.push(userDataDir());
+  pushIfExists(paths, userDataDir());
 
   const systemDirs = systemDataDirs();
 
@@ -228,7 +234,7 @@ async function dataDirs(opts?: {
   if (sysPrefix) {
     var sysPathed = path.join(sysPrefix, "share", "jupyter");
     if (systemDirs.indexOf(sysPathed) === -1) {
-      paths.push(sysPathed);
+      pushIfExists(paths, sysPathed);
     }
   }
   return paths.concat(systemDirs);

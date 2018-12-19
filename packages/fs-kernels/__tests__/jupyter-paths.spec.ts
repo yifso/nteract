@@ -1,3 +1,4 @@
+import fs from "fs";
 import jp from "../src/jupyter-paths";
 
 const execSync = require("child_process").execSync;
@@ -5,10 +6,10 @@ const execSync = require("child_process").execSync;
 const actual = JSON.parse(execSync("jupyter --paths --json"));
 
 // case-insensitive comparisons
-actual.data = actual.data.map(path => {
+actual.data = actual.data.filter(fs.existsSync).map(path => {
   return path.toLowerCase();
 });
-actual.config = actual.config.map(path => {
+actual.config = actual.config.filter(fs.existsSync).map(path => {
   return path.toLowerCase();
 });
 
