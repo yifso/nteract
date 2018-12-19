@@ -31,8 +31,12 @@ export default class Kernel {
 
   async shutdown() {
     if (this.launchedKernel) {
-      this.launchedKernel.spawn.kill();
       cleanup(this.launchedKernel.connectionFile);
+      if (!this.launchedKernel.spawn.killed && this.launchedKernel.spawn.pid) {
+        this.launchedKernel.spawn.kill();
+      }
+      this.launchedKernel.spawn.stdin.end();
+      this.launchedKernel.spawn.removeAllListeners();
       this.launchedKernel = undefined;
     }
   }
