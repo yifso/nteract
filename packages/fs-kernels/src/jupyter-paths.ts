@@ -106,7 +106,7 @@ function systemConfigDirs() {
   var paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
-    const defaultProgramDataPath = "C:ProgramData";
+    const defaultProgramDataPath = "C:\\ProgramData";
     pushIfExists(
       paths,
       path.resolve(
@@ -161,7 +161,7 @@ function systemDataDirs() {
   var paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
-    const defaultProgramDataPath = "C:ProgramData";
+    const defaultProgramDataPath = "C:\\ProgramData";
     pushIfExists(
       paths,
       path.resolve(
