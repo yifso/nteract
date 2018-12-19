@@ -45,7 +45,10 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
         name: kernelInfo.name,
         files: files.map(x => path.join(kernelInfo.resourceDir, x)),
         resources_dir: kernelInfo.resourceDir, // eslint-disable-line camelcase
-        spec: data instanceof Buffer ? data.toJSON() : JSON.parse(data)
+        spec:
+          data instanceof Buffer
+            ? JSON.parse(data.toString())
+            : JSON.parse(data)
       })
     );
   });
