@@ -64,12 +64,13 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
  */
 function getKernelInfos(directory: string): Promise<KernelInfo[]> {
   const readdir = promisify(fs.readdir);
-  return readdir(directory).then((files: string[]) =>
-    files.map(fileName => ({
+  return readdir(directory).then((files: string[]) => {
+    console.log("files: ", files);
+    return files.map(fileName => ({
       name: fileName,
       resourceDir: path.join(directory, fileName)
-    }))
-  );
+    }));
+  });
 }
 
 /**

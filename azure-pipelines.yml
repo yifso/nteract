@@ -16,6 +16,8 @@ steps:
       pip3 install wheel
       pip3 install setuptools
       pip3 install jupyter
+      pip3 install ipykernel 
+      python3 -m ipykernel install --user
     displayName: "Install Jupyter"
 
   - script: |

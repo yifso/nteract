@@ -7,8 +7,6 @@ const actual = JSON.parse(
   execSync("python3 -m jupyter --paths --json").toString()
 );
 
-console.log(actual);
-
 // case-insensitive comparisons
 actual.data = actual.data.filter(fs.existsSync).map(path => {
   return path.toLowerCase();
