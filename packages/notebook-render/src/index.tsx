@@ -5,8 +5,8 @@ import remark2rehype from "remark-rehype";
 import katex from "rehype-katex";
 import stringify from "rehype-stringify";
 import { InlineMath, BlockMath } from "react-katex";
+import styled, { createGlobalStyle } from "styled-components";
 import flush from "styled-jsx/server";
-// $FlowFixMe
 import { Display } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
@@ -41,6 +41,34 @@ interface Props {
 interface State {
   notebook: ImmutableNotebook;
 }
+
+const ContentMargin = styled.div`
+  padding-left: calc(var(--prompt-width, 50px) + 10px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+`;
+
+const RawCell = styled.pre`
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    #efefef 10px,
+    #f1f1f1 20px
+  );
+`;
+
+const Themes = {
+  dark: createGlobalStyle`
+    :root {
+      ${themes.dark}
+    }`,
+  light: createGlobalStyle`
+    :root {
+      ${themes.light}
+    }`
+};
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -146,41 +174,20 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                 } as any;
                 return (
                   <Cell key={cellId}>
-                    <div className="content-margin">
+                    <ContentMargin>
                       <ReactMarkdown
                         escapeHtml={false}
                         source={source}
                         plugins={remarkPlugins}
                         renderers={remarkRenderers}
                       />
-                    </div>
-                    <style jsx>{`
-                      .content-margin {
-                        padding-left: calc(var(--prompt-width, 50px) + 10px);
-                        padding-top: 10px;
-                        padding-bottom: 10px;
-                        padding-right: 10px;
-                      }
-                    `}</style>
+                    </ContentMargin>
                   </Cell>
                 );
               case "raw":
                 return (
                   <Cell key={cellId}>
-                    <pre className="raw-cell">
-                      {source}
-                      <style jsx>{`
-                        raw-cell {
-                          background: repeating-linear-gradient(
-                            -45deg,
-                            transparent,
-                            transparent 10px,
-                            #efefef 10px,
-                            #f1f1f1 20px
-                          );
-                        }
-                      `}</style>
-                    </pre>
+                    <RawCell>{source}</RawCell>
                   </Cell>
                 );
 
@@ -195,17 +202,7 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
             }
           })}
         </Cells>
-        <style>{/* render styled jsx styles */ flush()}</style>
-        <style>{`:root {
-          ${themes[this.props.theme]}
-            --theme-cell-shadow-hover: none;
-            --theme-cell-shadow-focus: none;
-            --theme-cell-prompt-bg-hover: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-bg-focus: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-fg-hover: var(--theme-cell-prompt-fg);
-            --theme-cell-prompt-fg-focus: var(--theme-cell-prompt-fg);
-          }
-        `}</style>
+        {this.props.theme === "dark" ? <Themes.dark /> : <Themes.light />}
       </div>
     );
   }
