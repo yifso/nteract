@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled, { createGlobalStyle } from "styled-components";
 import { Display } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
@@ -34,6 +35,34 @@ type Props = {
 
 type State = {
   notebook: any;
+};
+
+const RawCell = styled.pre`
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    #efefef 10px,
+    #f1f1f1 20px
+  );
+`;
+
+const ContentMargin = styled.div`
+  padding-left: calc(var(--prompt-width, 50px) + 10px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+`;
+
+const Themes = {
+  dark: createGlobalStyle`
+    :root {
+      ${themes.dark}
+    }`,
+  light: createGlobalStyle`
+    :root {
+      ${themes.light}
+    }`
 };
 
 export class NotebookPreview extends React.PureComponent<Props, State> {
@@ -138,36 +167,15 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                 case "markdown":
                   return (
                     <Cell key={cellId}>
-                      <div className="content-margin">
+                      <ContentMargin>
                         <Markdown source={source} />
-                      </div>
-                      <style jsx>{`
-                        .content-margin {
-                          padding-left: calc(var(--prompt-width, 50px) + 10px);
-                          padding-top: 10px;
-                          padding-bottom: 10px;
-                          padding-right: 10px;
-                        }
-                      `}</style>
+                      </ContentMargin>
                     </Cell>
                   );
                 case "raw":
                   return (
                     <Cell key={cellId}>
-                      <pre className="raw-cell">
-                        {source}
-                        <style jsx>{`
-                          raw-cell {
-                            background: repeating-linear-gradient(
-                              -45deg,
-                              transparent,
-                              transparent 10px,
-                              #efefef 10px,
-                              #f1f1f1 20px
-                            );
-                          }
-                        `}</style>
-                      </pre>
+                      <RawCell>{source}</RawCell>
                     </Cell>
                   );
 
@@ -182,16 +190,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
               }
             })}
           </Cells>
-          <style>{`:root {
-          ${themes[this.props.theme]}
-            --theme-cell-shadow-hover: none;
-            --theme-cell-shadow-focus: none;
-            --theme-cell-prompt-bg-hover: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-bg-focus: var(--theme-cell-prompt-bg);
-            --theme-cell-prompt-fg-hover: var(--theme-cell-prompt-fg);
-            --theme-cell-prompt-fg-focus: var(--theme-cell-prompt-fg);
-          }
-        `}</style>
+          {this.props.theme === "dark" ? <Themes.dark /> : <Themes.light />}
         </div>
       </MathJax.Provider>
     );
