@@ -1,7 +1,7 @@
 import { findAll } from "../src/kernelspecs";
 
 describe("findAll", () => {
-  it("retrieves a collection of kernel specs", () => {
+  it("retrieves a collection of kernel specs", done => {
     return findAll().then(kernelspecs => {
       expect(kernelspecs).toHaveProperty("python3");
 
@@ -14,6 +14,7 @@ describe("findAll", () => {
 
       expect(spec).toHaveProperty("display_name");
       expect(spec).toHaveProperty("argv");
+      done();
     });
   });
 });
