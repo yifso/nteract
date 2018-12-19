@@ -28,6 +28,14 @@ export type AvailableNotebooks =
   | Array<AvailableNotebook>
   | Immutable.List<AvailableNotebook>;
 
+const DisplayNameLong = styled.p`
+  margin: 0;
+  color: var(--theme-primary-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const NewNotebookDiv = styled.div`
   color: var(--nt-color-midnight-light);
   cursor: pointer;
@@ -94,14 +102,6 @@ const DisplayNameShort = styled.p`
   margin: 0 5px 0 0;
   font-weight: 600;
   color: var(--theme-app-fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const DisplayNameLong = styled.p`
-  margin: 0;
-  color: var(--theme-primary-fg);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
