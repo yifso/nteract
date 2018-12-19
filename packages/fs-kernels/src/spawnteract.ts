@@ -1,4 +1,7 @@
 /**
+ * @module fs-kernels
+ */
+/**
  * This module contains methods that allow you to spawn Jupyter kernels.  You
  * can spawn kernels either by name or by a kernelSpec object (see the
  * `kernelspecs` npm package for more information).
@@ -14,7 +17,6 @@
  * You'll need to close `spawnResults.spawn` yourself as well as delete
  * `spawnResults.connectionFile` from disk when finished.
  *
- * @exports spawnteract
  */
 
 /* eslint camelcase: 0 */

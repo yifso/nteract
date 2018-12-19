@@ -1,3 +1,6 @@
+/**
+ * @module fs-kernels
+ */
 export * from "./jupyter-paths";
 export * from "./kernel";
 export * from "./kernelspecs";

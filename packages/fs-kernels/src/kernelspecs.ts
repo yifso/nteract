@@ -1,3 +1,6 @@
+/**
+ * @module fs-kernels
+ */
 import jp from "./jupyter-paths";
 import path from "path";
 import fs from "fs";

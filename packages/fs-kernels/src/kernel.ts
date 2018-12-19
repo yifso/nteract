@@ -1,3 +1,6 @@
+/**
+ * @module fs-kernels
+ */
 import { launch, launchSpec, LaunchedKernel, cleanup } from "./spawnteract";
 import pidusage from "pidusage";
 import { KernelSpec } from "./kernelspecs";
