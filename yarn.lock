@@ -1747,6 +1747,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.38.tgz#01fb3f7ee5da861fa7dd4c518f1fa7b01ba39b7f"
   integrity sha512-DQpoqhq5wxekTecxnf33SRGqpPNfyQLW/TmOZpNssSkZZStN9ujzRS6+aReY3qNzGuIyX77LoCUcm0qYgET7aQ==
 
+"@types/pidusage@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/pidusage/-/pidusage-2.0.0.tgz#55062f51791355d466f09132457c793b68459849"
+  integrity sha512-ZErgH2JLgx50JOmIf8yqDc/RZMyp2lKL0HJL2mkKtUgAwWCPjGTnl3YkYfz/iBhI7XCiuK8AUIXqw/NDB+qBFQ==
+
 "@types/prop-types@*":
   version "15.5.6"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.6.tgz#9c03d3fed70a8d517c191b7734da2879b50ca26c"
@@ -11074,6 +11079,13 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+pidusage@^2.0.17:
+  version "2.0.17"
+  resolved "https://registry.yarnpkg.com/pidusage/-/pidusage-2.0.17.tgz#6b4a2b4a09026f0e9828f7e5627837e4c0672581"
+  integrity sha512-N8X5v18rBmlBoArfS83vrnD0gIFyZkXEo7a5pAS2aT0i2OLVymFb2AzVg+v8l/QcXnE1JwZcaXR8daJcoJqtjw==
+  dependencies:
+    safe-buffer "^5.1.2"
 
 pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"

@@ -27,6 +27,7 @@
     "execa": "^1.0.0",
     "jsonfile": "^5.0.0",
     "mkdirp": "^0.5.1",
+    "pidusage": "^2.0.17",
     "portfinder": "^1.0.20",
     "uuid": "^3.3.2"
   }

@@ -37,7 +37,7 @@ import jp from "./jupyter-paths";
 
 import { JupyterConnectionInfo } from "@nteract/enchannel-zmq-backend";
 
-function cleanup(connectionFile: fs.PathLike) {
+export function cleanup(connectionFile: fs.PathLike) {
   try {
     fs.unlinkSync(connectionFile);
   } catch (e) {
@@ -144,7 +144,7 @@ function launchSpec(kernelSpec: KernelSpec, spawnOptions?: Options) {
   });
 }
 
-type LaunchedKernel = {
+export type LaunchedKernel = {
   spawn: execa.ExecaChildProcess;
   connectionFile: string;
   config: JupyterConnectionInfo;
