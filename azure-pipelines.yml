@@ -12,8 +12,8 @@ steps:
       versionSpec: "10.x"
     displayName: "Install Node.js"
   - script: |
-      python -m pip install setuptools
-      python -m pip install jupyter
+      python3 -m pip install setuptools
+      python3 -m pip install jupyter
     displayName: "Install Jupyter"
   - script: |
       yarn
