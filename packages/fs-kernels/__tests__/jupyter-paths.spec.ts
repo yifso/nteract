@@ -3,7 +3,9 @@ import jp from "../src/jupyter-paths";
 
 import { execSync } from "child_process";
 
-const actual = JSON.parse(execSync("jupyter --paths --json").toString());
+const actual = JSON.parse(
+  execSync("python3 -m jupyter --paths --json").toString()
+);
 
 // case-insensitive comparisons
 actual.data = actual.data.filter(fs.existsSync).map(path => {
