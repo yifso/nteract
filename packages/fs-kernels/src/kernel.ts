@@ -29,6 +29,7 @@ export default class Kernel {
   async shutdown() {
     this.launchedKernel.spawn.kill();
     cleanup(this.launchedKernel.connectionFile);
+    this.launchedKernel = undefined;
   }
 
   async getUsage() {
