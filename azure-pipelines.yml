@@ -11,11 +11,13 @@ steps:
     inputs:
       versionSpec: "10.x"
     displayName: "Install Node.js"
+
   - script: |
-      python3 -m pip install wheel
-      python3 -m pip install setuptools
-      python3 -m pip install jupyter
+      pip3 install wheel
+      pip3 install setuptools
+      pip3 install jupyter
     displayName: "Install Jupyter"
+
   - script: |
       yarn
       yarn test
