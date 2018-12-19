@@ -116,9 +116,10 @@ async function extractKernelResources(
 export async function findAll() {
   try {
     const dirs = await jp.dataDirs({ withSysPrefix: true });
-    const kernelInfos = dirs
+    const kernelInfoPromises = dirs
       .map(async dir => await getKernelInfos(path.join(dir, "kernels")))
       .flat();
+    const kernelInfos = await Promise.all(kernelInfoPromises);
     return extractKernelResources(kernelInfos);
   } catch (error) {
     throw error;

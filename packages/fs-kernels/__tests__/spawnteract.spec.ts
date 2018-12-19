@@ -1,7 +1,7 @@
 import fs from "fs";
 
 import { launch } from "../src/spawnteract";
-import kernelspecs from "../src/kernelspecs";
+import { findAll } from "../src/kernelspecs";
 
 function cleanup(connectionFile) {
   // cleanup after our test, fail silently if the test failed
@@ -17,8 +17,7 @@ describe("launch", () => {
   let spawnResultNoCleanup;
   let kernelName;
   it("spawns a kernel", done => {
-    kernelspecs
-      .findAll()
+    findAll()
       .then(kernels => {
         const kernel = kernels.python2 || kernels.python3;
         kernelName = kernel.name;
