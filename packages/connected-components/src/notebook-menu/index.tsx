@@ -1,5 +1,6 @@
 import * as Immutable from "immutable";
 import * as React from "react";
+import styled from "styled-components";
 import Menu, { SubMenu, Divider, MenuItem } from "rc-menu";
 import { CellType } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
@@ -23,6 +24,12 @@ import StyleWrapper from "./styles";
 const createActionKey = (action: string, ...args: any[]) =>
   [action, ...args].join(":");
 const parseActionKey = (key: string) => key.split(":");
+const StickyMenu = styled(Menu)`
+  position: sticky;
+  top: 0;
+  /* TODO: this is getting ridiculous... */
+  z-index: 10000;
+`;
 
 type Props = {
   persistAfterClick?: boolean;
@@ -272,7 +279,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
     }
     return (
       <StyleWrapper>
-        <Menu {...menuProps}>
+        <StickyMenu {...menuProps}>
           <SubMenu key={MENUS.FILE} title="File">
             <MenuItem>
               <a
@@ -426,13 +433,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
               About
             </MenuItem>
           </SubMenu>
-        </Menu>
-        <style jsx>{`
-          position: sticky;
-          top: 0;
-          /* TODO: this is getting ridiculous... */
-          z-index: 10000;
-        `}</style>
+        </StickyMenu>
       </StyleWrapper>
     );
   }
