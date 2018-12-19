@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10
+      - image: circleci/python:3.6.7-node
 
     working_directory: ~/nteract
 
@@ -20,8 +20,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - yarn-packages-
 
-      - run: pip install setuptools
-      - run: pip install jupyter
+      - run: pip install --user setuptools
+      - run: pip install --user jupyter
       - run: yarn
 
       - save_cache:
