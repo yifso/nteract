@@ -13,7 +13,7 @@ import { createAJAXSettings, ServerConfig } from "./base";
  * @return An Observable with the request response
  */
 export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
-  ajax(createAJAXSettings(serverConfig, "/api/kernelspecs"));
+  ajax(createAJAXSettings(serverConfig, "/api/kernelspecs", {cache: false}));
 
   /**
    * Returns the specification of available kernels with the given
@@ -25,4 +25,4 @@ export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
    * @returns An Observable with the request reponse
    */
 export const get = (serverConfig: ServerConfig, name: string): Observable<AjaxResponse> =>
-  ajax(createAJAXSettings(serverConfig, `/api/kernelspecs/${name}`));
+  ajax(createAJAXSettings(serverConfig, `/api/kernelspecs/${name}`, {cache: false}));
