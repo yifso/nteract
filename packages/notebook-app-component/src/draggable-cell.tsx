@@ -15,6 +15,8 @@ import {
 } from "react-dnd";
 import { ContentRef } from "@nteract/types";
 
+import styled from "styled-components";
+
 /**
   The cell drag preview image is just a little stylized version of
 
@@ -75,6 +77,36 @@ const cellSource = {
     };
   }
 };
+
+const DragHandle = styled.div.attrs({
+  role: "presentation"
+})`
+  position: absolute;
+  z-index: 200;
+  width: var(--prompt-width, 50px);
+  height: 100%;
+  cursor: move;
+`;
+
+type DragAreaProps = {
+  isDragging: boolean;
+  isOver: boolean;
+  hoverUpperHalf: boolean;
+};
+
+const DragArea = styled.div`
+  position: relative;
+  padding: 10px;
+  opacity: ${(props: DragAreaProps) => (props.isDragging ? 0.25 : 1)};
+  border-top: ${(props: DragAreaProps) =>
+    props.isOver && props.hoverUpperHalf
+      ? "3px lightgray solid"
+      : "3px transparent solid"};
+  border-bottom: ${(props: DragAreaProps) =>
+    props.isOver && !props.hoverUpperHalf
+      ? "3px lightgray solid"
+      : "3px transparent solid"};
+`;
 
 function isDragUpper(
   props: Props,
@@ -168,45 +200,24 @@ class DraggableCellView extends React.Component<
 
   render() {
     return this.props.connectDropTarget(
-      <div
-        style={{
-          opacity: this.props.isDragging ? 0.25 : 1,
-          borderTop:
-            this.props.isOver && this.state.hoverUpperHalf
-              ? "3px lightgray solid"
-              : "3px transparent solid",
-          borderBottom:
-            this.props.isOver && !this.state.hoverUpperHalf
-              ? "3px lightgray solid"
-              : "3px transparent solid"
-        }}
-        className={"draggable-cell"}
-        ref={el => {
-          this.el = el;
-        }}
-      >
-        {this.props.connectDragSource(
-          <div
-            className="cell-drag-handle"
-            onClick={this.selectCell}
-            role="presentation"
-          />
-        )}
-        {this.props.children}
-        <style jsx>{`
-          .draggable-cell {
-            position: relative;
-            padding: 10px;
-          }
-
-          .cell-drag-handle {
-            position: absolute;
-            z-index: 200;
-            width: var(--prompt-width, 50px);
-            height: 100%;
-            cursor: move;
-          }
-        `}</style>
+      // Sadly connectDropTarget _has_ to take a React element for a DOM element (no styled-divs)
+      <div>
+        <DragArea
+          isDragging={this.props.isDragging}
+          hoverUpperHalf={this.state.hoverUpperHalf}
+          isOver={this.props.isOver}
+          ref={el => {
+            this.el = el;
+          }}
+        >
+          {this.props.connectDragSource(
+            // Same thing with connectDragSource... It also needs a React Element that matches a DOM element
+            <div>
+              <DragHandle onClick={this.selectCell} />
+            </div>
+          )}
+          {this.props.children}
+        </DragArea>
       </div>
     );
   }
