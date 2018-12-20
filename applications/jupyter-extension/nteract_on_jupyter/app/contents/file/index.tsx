@@ -7,10 +7,11 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { FormGroup, EditableText } from "@blueprintjs/core";
+import { FormGroup, H4 } from "@blueprintjs/core";
 // $FlowFixMe
 import * as actions from "@nteract/actions";
 
+import { EditableTitleOverlay } from "./editable-title-overlay";
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
 import LastSaved from "../../components/last-saved";
@@ -51,13 +52,21 @@ type FileProps = {
   error?: object | null;
 };
 
-export class File extends React.PureComponent <*> {
+export class File extends React.PureComponent<*> {
+  state = { isDialogOpen: false };
+
   // Handles onConfirm callback for EditableText component
-  confirmTitle = (value: string) => this.props.changeContentName({
-    filepath: `/${value ? this.addFileExtension(value) : ""}`,
-    prevFilePath: `/${this.props.displayName}`,
-    contentRef: this.props.contentRef
-  });
+  confirmTitle = (value: string) => {
+    if (value !== this.props.displayName) {
+      this.props.changeContentName({
+        filepath: `/${value ? this.addFileExtension(value) : ""}`,
+        prevFilePath: `/${this.props.displayName}`,
+        contentRef: this.props.contentRef
+      });
+
+      this.setState({ isDialogOpen: false });
+    }
+  }
 
   // Determine the file handler
   getFileHandlerIcon = () => {
@@ -80,7 +89,6 @@ export class File extends React.PureComponent <*> {
       return false;
     }
   }
-
 
   // TODO: Add logic for acceptable file extensions
   addFileExtension = (fileName: string) => {
@@ -135,15 +143,14 @@ export class File extends React.PureComponent <*> {
                 <ThemedLogo />
               </a>
               <FormGroup>
-                <EditableText
-                  disabled={false}
+                <H4 onClick={() => this.setState({ isDialogOpen: true })}>
+                  {this.props.displayName}
+                </H4>
+                <EditableTitleOverlay 
                   defaultValue={this.props.displayName}
-                  intent={"none"}
-                  placeholder={"Enter title..."}
-                  minWidth={300}
-                  selectAllOnFocus={true}
-                  confirmOnEnterKey={true}
-                  onConfirm={this.confirmTitle}
+                  isOpen={this.state.isDialogOpen}
+                  onCancel={() => this.setState({ isDialogOpen: false })}
+                  onSave={this.confirmTitle}
                 />
               </FormGroup>
             </NavSection>
@@ -194,13 +201,9 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<*>) => {
-  return {
-    changeContentName: (
-      payload //:{ filepath: string, prevFilePath: string, contentRef: ContentRef }
-    ) => dispatch(actions.changeContentName(payload))
-  };
-};
+const mapDispatchToProps = (dispatch: Dispatch<*>) => ({
+    changeContentName: (payload) => dispatch(actions.changeContentName(payload))
+});
 
 export const ConnectedFile = connect(
   mapStateToProps,
