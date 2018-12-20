@@ -18,6 +18,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@nteract/commutable": "^6.0.0-alpha.0",
+    "@nteract/reducers": "^1.0.0",
     "@nteract/types": "^3.1.0"
   }
 }

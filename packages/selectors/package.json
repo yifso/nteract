@@ -17,8 +17,10 @@
   "author": "Safia Abdalla <safia@safia.rocks>",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@nteract/commutable": "^6.0.0-alpha.0",
     "@nteract/types": "^3.1.0",
     "immutable": "^4.0.0-rc.12",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "rx-jupyter": "^4.0.0-alpha.0"
   }
 }
