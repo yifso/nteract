@@ -6,7 +6,6 @@ import katex from "rehype-katex";
 import stringify from "rehype-stringify";
 import { InlineMath, BlockMath } from "react-katex";
 import styled, { createGlobalStyle } from "styled-components";
-import flush from "styled-jsx/server";
 import { Display } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,

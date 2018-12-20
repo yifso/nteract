@@ -24,6 +24,7 @@
     "url": "https://github.com/nteract/nteract/issues"
   },
   "dependencies": {
+    "enchannel-zmq-backend": "^8.0.0-alpha.0",
     "execa": "^1.0.0",
     "jsonfile": "^5.0.0",
     "mkdirp": "^0.5.1",
