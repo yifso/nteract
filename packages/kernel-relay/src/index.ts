@@ -20,10 +20,10 @@ const resolvers = {
   Query: {
     listKernelSpecs: async () => {
       const kernelspecs = await findAll();
-      console.log(kernelspecs);
-      debugger;
 
-      return Object.keys(kernelspecs).map(key => kernelspecs[key]);
+      return Object.keys(kernelspecs).map(key => {
+        return { id: key, ...kernelspecs[key] };
+      });
     }
   }
 };
