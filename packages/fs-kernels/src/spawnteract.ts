@@ -37,7 +37,7 @@ import mkdirp from "mkdirp";
 import { findAll, KernelResourceByName, KernelSpec } from "./kernelspecs";
 import jp from "./jupyter-paths";
 
-import { JupyterConnectionInfo } from "@nteract/enchannel-zmq-backend";
+import { JupyterConnectionInfo } from "enchannel-zmq-backend";
 
 export function cleanup(connectionFile: fs.PathLike) {
   try {
@@ -54,7 +54,9 @@ export function cleanup(connectionFile: fs.PathLike) {
  *                          control_port, shell_port, stdin_port, iopub_port]
  * @return {object}         connectionInfo object
  */
-function createConnectionInfo(ports: number[]): JupyterConnectionInfo {
+function createConnectionInfo(
+  ports: number[]
+): { version: number } & JupyterConnectionInfo {
   return {
     version: 5,
     key: uuid.v4(),
