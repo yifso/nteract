@@ -1,0 +1,28 @@
+{
+  "name": "@nteract/kernel-relay",
+  "version": "1.0.0",
+  "description": "This package provides a GraphQL API for managing communication between a Jupyter kernel and clients. The package allows users to launch kernels, subscribe to the status of a kernel, send Jupyter messages from a client to a kernel, and more.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "start": "node lib/index.js",
+    "dev": "tsc-watch --onSuccess \"npm run start\""
+  },
+  "keywords": [
+    "jupyter",
+    "graphql",
+    "server"
+  ],
+  "author": "nteract Contributors",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "apollo-server": "^2.3.1",
+    "graphql": "^14.0.2",
+    "graphql-type-json": "^0.2.1"
+  },
+  "devDependencies": {
+    "tsc-watch": "^1.0.31"
+  }
+}
