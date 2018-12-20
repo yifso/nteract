@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "tsc -b",
+    "build:watch": "tsc -b --watch",
     "start": "node lib/index.js",
     "dev": "tsc-watch --onSuccess \"npm run start\""
   },
