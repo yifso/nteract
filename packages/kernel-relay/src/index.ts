@@ -1,11 +1,16 @@
 import { ApolloServer, gql } from "apollo-server";
 
-import { findAll } from "@nteract/fs-kernels";
+import { findAll, Kernel } from "@nteract/fs-kernels";
 
 const Types = gql`
   type KernelSpec {
     id: ID!
     name: String
+  }
+
+  type KernelSession {
+    id: ID!
+    status: String
   }
 `;
 
@@ -15,7 +20,17 @@ const Query = gql`
   }
 `;
 
-const typeDefs = [Types, Query];
+const Mutation = gql`
+  type Mutation {
+    startKernel(name: String): KernelSession!
+  }
+`;
+
+type StartKernel = {
+  name: string;
+};
+
+const typeDefs = [Types, Query, Mutation];
 const resolvers = {
   Query: {
     listKernelSpecs: async () => {
@@ -24,6 +39,16 @@ const resolvers = {
       return Object.keys(kernelspecs).map(key => {
         return { id: key, ...kernelspecs[key] };
       });
+    }
+  },
+  Mutation: {
+    startKernel: async (_parentValue, args: StartKernel) => {
+      const kernel = new Kernel(args.name);
+      await kernel.launch();
+      return {
+        id: kernel.launchedKernel ? kernel.launchedKernel.config.key : null,
+        status: "launched"
+      };
     }
   }
 };

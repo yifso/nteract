@@ -5,7 +5,7 @@ import { launch, launchSpec, LaunchedKernel, cleanup } from "./spawnteract";
 import pidusage from "pidusage";
 import { KernelSpec } from "./kernelspecs";
 
-export default class Kernel {
+export class Kernel {
   name?: string;
   kernelSpec?: KernelSpec;
   launchedKernel?: LaunchedKernel;

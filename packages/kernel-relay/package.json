@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc -b",
     "build:watch": "tsc -b --watch",
-    "start": "node lib/index.js",
+    "start": "node lib/kernel-relay/src/index.js",
     "dev": "tsc-watch --onSuccess \"npm run start\""
   },
   "keywords": [
