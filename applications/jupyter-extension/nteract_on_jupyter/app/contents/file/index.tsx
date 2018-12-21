@@ -11,7 +11,6 @@ import { FormGroup, H4 } from "@blueprintjs/core";
 // $FlowFixMe
 import * as actions from "@nteract/actions";
 
-import { EditableTitleOverlay } from "./editable-title-overlay";
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
 import LastSaved from "../../components/last-saved";

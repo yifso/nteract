@@ -39,7 +39,6 @@ export class EditableTitleOverlay extends React.Component<EditableTitleOverlayPr
   render() {
     return (
       <Overlay 
-        autoFocus={true} 
         canEscapeKeyClose={true}
         canOutsideClickClose={true}
         usePortal={false}
