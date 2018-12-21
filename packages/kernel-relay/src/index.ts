@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 
-import { findAll, Kernel } from "@nteract/fs-kernels";
+import { findAll, launchKernel, Kernel } from "@nteract/fs-kernels";
 
 const Types = gql`
   type KernelSpec {
@@ -56,16 +56,11 @@ const resolvers = {
        *
        */
 
-      const kernel = new Kernel(args.name);
-      await kernel.launch();
+      const kernel = await launchKernel(args.name);
 
-      if (!kernel.launchedKernel) {
-        throw new Error("Could not launch kernel");
-      }
-
-      kernels[kernel.launchedKernel.config.key] = kernel;
+      kernels[kernel.connectionInfo.key] = kernel;
       return {
-        id: kernel.launchedKernel ? kernel.launchedKernel.config.key : null,
+        id: kernel.connectionInfo.key,
         status: "launched"
       };
     }

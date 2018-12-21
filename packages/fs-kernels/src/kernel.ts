@@ -1,49 +1,46 @@
 /**
  * @module fs-kernels
  */
-import { launch, launchSpec, LaunchedKernel, cleanup } from "./spawnteract";
+import { ExecaChildProcess } from "execa";
 import pidusage from "pidusage";
+
+import { JupyterConnectionInfo } from "enchannel-zmq-backend";
+
+import { launch, launchSpec, LaunchedKernel, cleanup } from "./spawnteract";
 import { KernelSpec } from "./kernelspecs";
 
 export class Kernel {
-  name?: string;
-  kernelSpec?: KernelSpec;
-  launchedKernel?: LaunchedKernel;
+  kernelSpec: KernelSpec;
+  process: ExecaChildProcess;
+  connectionInfo: JupyterConnectionInfo;
+  connectionFile: string;
 
-  constructor(input: string | KernelSpec) {
-    if (typeof input === "string") {
-      this.name = input;
-    } else {
-      this.kernelSpec = input;
-    }
-  }
-
-  async launch() {
-    let launchedKernel;
-    if (this.name && !this.kernelSpec) {
-      launchedKernel = await launch(this.name);
-    } else if (this.kernelSpec && !this.name) {
-      launchedKernel = await launchSpec(this.kernelSpec);
-    }
-
-    this.launchedKernel = launchedKernel;
+  constructor(launchedKernel: LaunchedKernel) {
+    this.process = launchedKernel.spawn;
+    this.connectionInfo = launchedKernel.config;
+    this.kernelSpec = launchedKernel.kernelSpec;
+    this.connectionFile = launchedKernel.connectionFile;
   }
 
   async shutdown() {
-    if (this.launchedKernel) {
-      cleanup(this.launchedKernel.connectionFile);
-      if (!this.launchedKernel.spawn.killed && this.launchedKernel.spawn.pid) {
-        process.kill(this.launchedKernel.spawn.pid);
-      }
-      this.launchedKernel.spawn.removeAllListeners();
-      this.launchedKernel = undefined;
+    cleanup(this.connectionFile);
+    if (!this.process.killed && this.process.pid) {
+      process.kill(this.process.pid);
     }
+    this.process.removeAllListeners();
   }
 
   async getUsage() {
-    if (this.launchedKernel) {
-      const pid = this.launchedKernel.spawn.pid;
-      return await pidusage(pid);
-    }
+    return await pidusage(this.process.pid);
   }
+}
+
+export async function launchKernel(input: string | KernelSpec) {
+  let launchedKernel;
+  if (typeof input === "string") {
+    launchedKernel = await launch(input);
+  } else {
+    launchedKernel = await launchSpec(input);
+  }
+  return new Kernel(launchedKernel);
 }
