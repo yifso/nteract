@@ -42,7 +42,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    startKernel: async (_parentValue, args: StartKernel) => {
+    startKernel: async (_parentValue: any, args: StartKernel) => {
       const kernel = new Kernel(args.name);
       await kernel.launch();
       return {
@@ -63,7 +63,7 @@ const mocks = {
 // responsible for fetching the data for those types.
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers: resolvers as any,
   // mocks,
   // mockEntireSchema: false,
   // Since we're playing around, enable features for introspection and playing on our current deployment
