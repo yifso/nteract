@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "lib",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../transforms" }, { "path": "../ansi-to-react" }]
 }

@@ -28,11 +28,12 @@ import {
   makeStreamOutput,
   makeErrorOutput,
   demultiline,
-  cleanMimeAtKey
+  cleanMimeAtKey,
+  ErrorOutput
 } from "./outputs";
 
 import { CellStructure, appendCell } from "./structures";
-import { ErrorOutput, RawCell, MarkdownCell } from "./v4";
+import { RawCell, MarkdownCell } from "./v4";
 
 const VALID_MIMETYPES = {
   text: "text/plain",

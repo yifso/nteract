@@ -1,7 +1,23 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "lib"
+    "outDir": "lib",
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../actions" },
+    { "path": "../commutable" },
+    { "path": "../connected-components" },
+    { "path": "../core" },
+    { "path": "../display-area" },
+    { "path": "../dropdown-menu" },
+    { "path": "../editor" },
+    { "path": "../markdown" },
+    { "path": "../messaging" },
+    { "path": "../octicons" },
+    { "path": "../presentational-components" },
+    { "path": "../transforms" },
+    { "path": "../types" }
+  ]
 }

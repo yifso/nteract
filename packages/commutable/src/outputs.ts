@@ -5,10 +5,11 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record,
-  RecordOf
+  RecordOf,
+  fromJS as immutableFromJS
 } from "immutable";
 
-import { ExecutionCount } from "./primitives";
+import { ExecutionCount, JSONObject, MultiLineString } from "./primitives";
 
 export type ImmutableMimeBundle = ImmutableMap<string, any>;
 
@@ -180,3 +181,75 @@ export type ImmutableOutput =
   | ImmutableErrorOutput;
 
 //////// OUTPUTS /////
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                             Output Types
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+export interface ExecuteResult {
+  output_type: "execute_result";
+  execution_count: ExecutionCount;
+  data: MimeBundle;
+  metadata: JSONObject;
+}
+
+export interface DisplayData {
+  output_type: "display_data";
+  data: MimeBundle;
+  metadata: JSONObject;
+  transient?: JSONObject;
+}
+
+export interface StreamOutput {
+  output_type: "stream";
+  name: "stdout" | "stderr";
+  text: MultiLineString;
+}
+
+export interface ErrorOutput {
+  output_type: "error" | "pyerr";
+  ename: string;
+  evalue: string;
+  traceback: string[];
+}
+
+export type Output = ExecuteResult | DisplayData | StreamOutput | ErrorOutput;
+
+/**
+ * Converts a mutable representation of an output to an immutable representation.
+ *
+ * @param output The mutable output that will be converted.
+ *
+ * @returns ImmutableOutput An immutable representation of the same output.
+ */
+export const createImmutableOutput = (output: Output): ImmutableOutput => {
+  switch (output.output_type) {
+    case "execute_result":
+      return makeExecuteResult({
+        execution_count: output.execution_count,
+        data: createImmutableMimeBundle(output.data),
+        metadata: immutableFromJS(output.metadata)
+      });
+    case "display_data":
+      return makeDisplayData({
+        data: createImmutableMimeBundle(output.data),
+        metadata: immutableFromJS(output.metadata)
+      });
+    case "stream":
+      return makeStreamOutput({
+        name: output.name,
+        text: demultiline(output.text)
+      });
+    case "error":
+      return makeErrorOutput({
+        output_type: "error",
+        ename: output.ename,
+        evalue: output.evalue,
+        // Note: this is one of the cases where the Array of strings (for
+        // traceback) is part of the format, not a multiline string
+        traceback: ImmutableList(output.traceback)
+      });
+    default:
+      throw new TypeError(`Output type ${output.output_type} not recognized`);
+  }
+};

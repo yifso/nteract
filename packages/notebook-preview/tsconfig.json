@@ -1,7 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "lib"
+    "outDir": "lib",
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../commutable" },
+    { "path": "../display-area" },
+    { "path": "../markdown" },
+    { "path": "../mathjax" },
+    { "path": "../presentational-components" },
+    { "path": "../transforms" },
+  ]
 }
