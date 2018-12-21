@@ -16,6 +16,8 @@ describe("Kernel", () => {
     await kernel.shutdown();
     expect(process.kill).toBeCalledWith(kernel.process.pid);
     expect(process.kill).toBeCalledTimes(1);
+    process.kill.mockRestore();
+    await kernel.shutdown();
     done();
   });
   it("can get usage metrics on a kernel", async done => {
