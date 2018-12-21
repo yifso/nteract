@@ -24,6 +24,7 @@ const Query = gql`
 const Mutation = gql`
   type Mutation {
     startKernel(name: String): KernelSession!
+    shutdownKernel(id: ID!): KernelSession!
   }
 `;
 
@@ -55,6 +56,14 @@ const resolvers = {
       return {
         id: kernel.connectionInfo.key,
         status: "launched"
+      };
+    },
+    shutdownKernel: async (_parentValue: any, args: { id: string }) => {
+      const kernel = kernels[args.id];
+      await kernel.shutdown();
+      return {
+        id: args.id,
+        status: "shutdown"
       };
     }
   }
