@@ -49,13 +49,6 @@ const resolvers = {
   },
   Mutation: {
     startKernel: async (_parentValue: any, args: StartKernel) => {
-      /**
-       *
-       * const kernel
-       *
-       *
-       */
-
       const kernel = await launchKernel(args.name);
 
       kernels[kernel.connectionInfo.key] = kernel;
@@ -102,10 +95,10 @@ async function main() {
   });
 }
 
-main();
-
 process.on("exit", () => {
   Object.keys(kernels).map(async id => {
     await kernels[id].shutdown();
   });
 });
+
+main();
