@@ -51,8 +51,16 @@ type FileProps = {
   error?: object | null;
 };
 
-export class File extends React.PureComponent<*> {
-  state = { isDialogOpen: false };
+type State = { isDialogOpen: boolean };
+
+export class File extends React.PureComponent<FileProps, State> {
+  constructor(props: FileProps) {
+    super(props);
+
+    this.state = { 
+      isDialogOpen: false 
+    };
+  };
 
   // Determine the file handler
   getFileHandlerIcon = () => {
@@ -114,6 +122,7 @@ export class File extends React.PureComponent<*> {
   // Handles onConfirm callback for EditableText component
   confirmTitle = (value: string) => {
     if (value !== this.props.displayName) {
+      // $FlowFixMe
       this.props.changeContentName({
         filepath: `/${value ? this.addFileExtension(value) : ""}`,
         prevFilePath: `/${this.props.displayName}`,
@@ -186,6 +195,7 @@ const mapStateToProps = (
     throw new Error("CommunicationByRef information not found");
   }
 
+  // $FlowFixMe
   return {
     type: content.type,
     mimetype: content.mimetype,
@@ -201,6 +211,7 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<*>) => ({
+    // $FlowFixMe
     changeContentName: (payload) => dispatch(actions.changeContentName(payload))
 });
 
