@@ -32,7 +32,7 @@
     "@nteract/transforms": "^5.0.0-alpha.0",
     "@nteract/types": "^3.1.0",
     "rc-menu": "6.2.11",
-    "react-redux": "^5.0.7",
+    "react-redux": "^6.0.0",
     "redux": "^4.0.0",
     "styled-components": "^4.1.3"
   },
