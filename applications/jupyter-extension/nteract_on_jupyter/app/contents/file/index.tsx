@@ -55,19 +55,6 @@ type FileProps = {
 export class File extends React.PureComponent<*> {
   state = { isDialogOpen: false };
 
-  // Handles onConfirm callback for EditableText component
-  confirmTitle = (value: string) => {
-    if (value !== this.props.displayName) {
-      this.props.changeContentName({
-        filepath: `/${value ? this.addFileExtension(value) : ""}`,
-        prevFilePath: `/${this.props.displayName}`,
-        contentRef: this.props.contentRef
-      });
-
-      this.setState({ isDialogOpen: false });
-    }
-  }
-
   // Determine the file handler
   getFileHandlerIcon = () => {
     return this.props.saving ? (
@@ -123,6 +110,19 @@ export class File extends React.PureComponent<*> {
     }
 
     return choice;
+  }
+
+  // Handles onConfirm callback for EditableText component
+  confirmTitle = (value: string) => {
+    if (value !== this.props.displayName) {
+      this.props.changeContentName({
+        filepath: `/${value ? this.addFileExtension(value) : ""}`,
+        prevFilePath: `/${this.props.displayName}`,
+        contentRef: this.props.contentRef
+      });
+    }
+
+    this.setState({ isDialogOpen: false });
   }
 
   render() {

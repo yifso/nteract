@@ -47,16 +47,6 @@ export const changeContentNameFailed = (payload: {
   payload
 });
 
-export const changeTitleAndHistoryEpic = (payload: {
-  basepath: string,
-  filepath: string,
-  prevFilePath: string,
-  contentRef: ContentRef
-}): actionTypes.ChangeTitleAndHistoryEpic => ({
-  type: actionTypes.CHANGE_TITLE_AND_HISTORY_EPIC,
-  payload
-});
-
 export const fetchContent = (payload: {
   filepath: string;
   params: Object;

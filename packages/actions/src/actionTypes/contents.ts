@@ -36,17 +36,6 @@ export type ChangeContentNameFailed = {
   };
 };
 
-export const CHANGE_TITLE_AND_HISTORY_EPIC = "CORE/CHANGE_TITLE_AND_HISTORY_EPIC";
-export type ChangeTitleAndHistoryEpic = {
-  type: "CORE/CHANGE_TITLE_AND_HISTORY_EPIC";
-  payload: {
-    basepath: string;
-    filepath: string;
-    prevFilePath: string;
-    contentRef: ContentRef;
-  };
-};
-
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
 export type FetchContent = {
   type: "CORE/FETCH_CONTENT";

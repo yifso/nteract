@@ -8,6 +8,7 @@ import {
   Label, 
   Overlay 
 } from "@blueprintjs/core";
+import styled from "styled-components";
 
 export type EditableTitleOverlayProps = {
   defaultValue: string;
@@ -16,19 +17,24 @@ export type EditableTitleOverlayProps = {
   onSave: (value) => void;
 };
 
+// styled blueprintjs `Icon`
+const CloseIcon = styled(Icon)`
+  cursor: pointer;
+`; 
+
 export class EditableTitleOverlay extends React.Component<EditableTitleOverlayProps> {
-  constructor(props) {
-    super(props);
+  // Needs to track the input value because in order to handle save
+  // when the save button is clicked, we needed to know what the value
+  // that was last entered is.
+  state = {
+    value: this.props.defaultValue || ""
+  };
 
-    this.state = {
-      value: props.defaultValue || ""
-    };
-  }
+  handleChange = (value: string) => this.setState({ value });
 
-  handleClose = () => this.props.onCancel();
-  handleSave = (value: string) => this.setState({ value }, () => {
-    this.props.onSave(this.state.value);
-  });
+  handleClose = () => this.props.onCancel(true);
+
+  handleSave = () => this.props.onSave(this.state.value);
 
   render() {
     return (
@@ -44,11 +50,7 @@ export class EditableTitleOverlay extends React.Component<EditableTitleOverlayPr
           <div className="bp3-dialog">
             <div className="bp3-dialog-header">
               <h4 className="bp3-heading">Rename Notebook</h4>
-              <Icon 
-                icon="small-cross" 
-                style={{ cursor: "pointer" }}
-                onClick={this.handleClose}
-              />
+              <CloseIcon icon="small-cross" onClick={this.handleClose}/>
             </div>
             <div className="bp3-dialog-body">
               <Label>Enter a new notebook name:</Label>
@@ -60,6 +62,7 @@ export class EditableTitleOverlay extends React.Component<EditableTitleOverlayPr
                 intent={"none"}
                 selectAllOnFocus={true}
                 confirmOnEnterKey={true}
+                onChange={this.handleChange}
                 onConfirm={this.handleSave}
               />
             </div>

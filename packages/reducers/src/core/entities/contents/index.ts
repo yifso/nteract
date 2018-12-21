@@ -33,11 +33,17 @@ const byRef = (
     case actionTypes.CHANGE_CONTENT_NAME_FULFILLED:
       const changeContentNameFulfilledAction = action as actionTypes.ChangeContentNameFulfilled;
       const { contentRef, filepath } = changeContentNameFulfilledAction.payload;
+
+      /*
+       * Modifying the url's file name in the browser.
+       * This effects back button behavior.
+       * Is there a better way to accomplish this?
+      */
+      window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
+
       return state.setIn([contentRef, "filepath"], filepath);
     case actionTypes.CHANGE_CONTENT_NAME_FAILED:
       // TODO: Add to error component for alerting the user
-      return state;
-    case actionTypes.CHANGE_TITLE_AND_HISTORY_EPIC:
       return state;
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the

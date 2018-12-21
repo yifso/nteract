@@ -73,25 +73,6 @@ export function updateContentEpic(
   );
 }
 
-export function changeTitleAndHistoryEpic( 
-  action$: ActionsObservable<actions.ChangeContentNameFulfilled>,
-  state$: StateObservable<AppState>
-) {
-  return action$.pipe(
-    ofType(actions.CHANGE_CONTENT_NAME_FULFILLED),
-    switchMap(action => { 
-      const { filepath } = action.payload;
-
-      /* 
-        * Modifying the url's file name in the browser. 
-        * Effects back button behavior.
-        * Is there a better way to accomplish this?
-        */
-      window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
-    })
-  );
-}
-
 export function fetchContentEpic(
   action$: ActionsObservable<
     | actions.FetchContent
