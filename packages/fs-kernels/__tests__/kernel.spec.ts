@@ -1,4 +1,4 @@
-import Kernel from "../src/kernel";
+import { Kernel } from "../src/kernel";
 
 describe("Kernel", () => {
   it("can launch a kernel given a name", async done => {
