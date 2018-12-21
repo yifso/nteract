@@ -11,12 +11,13 @@ describe("Kernel", () => {
   });
   it("can shutdown a kernel", async done => {
     const kernel = await launchKernel("python3");
+    const originalKill = process.kill;
     process.kill = jest.fn();
     expect(kernel.process).toBeDefined();
     await kernel.shutdown();
     expect(process.kill).toBeCalledWith(kernel.process.pid);
     expect(process.kill).toBeCalledTimes(1);
-    process.kill.mockRestore();
+    process.kill = originalKill;
     await kernel.shutdown();
     done();
   });
