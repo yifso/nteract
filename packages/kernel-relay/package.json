@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc -b",
     "build:watch": "tsc -b --watch",
-    "start": "node lib/index.js"
+    "start": "node lib/index.js",
+    "dev": "nodemon lib/index.js"
   },
   "keywords": [
     "jupyter",
@@ -23,6 +24,6 @@
     "graphql-type-json": "^0.2.1"
   },
   "devDependencies": {
-    "tsc-watch": "^1.0.31"
+    "nodemon": "^1.18.9"
   }
 }
