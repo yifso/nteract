@@ -19,7 +19,7 @@ import { JupyterMessage } from "@nteract/messaging";
  * @returns An Observable with the request response
  */
 export const list = (serverConfig: ServerConfig) =>
-  ajax(createAJAXSettings(serverConfig, "/api/kernels"));
+  ajax(createAJAXSettings(serverConfig, "/api/kernels", {cache: false}));
 
 /**
  * Creates an AjaxObservable for getting info about a kernel.
@@ -30,7 +30,7 @@ export const list = (serverConfig: ServerConfig) =>
  * @returns An Observable with the request response
  */
 export const get = (serverConfig: ServerConfig, id: string) =>
-  ajax(createAJAXSettings(serverConfig, `/api/kernels/${id}`));
+  ajax(createAJAXSettings(serverConfig, `/api/kernels/${id}`, {cache: false}));
 
 /**
  * Creates an AjaxObservable for starting a kernel.

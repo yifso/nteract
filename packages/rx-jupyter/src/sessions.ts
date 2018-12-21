@@ -14,7 +14,7 @@ import { createAJAXSettings, ServerConfig } from "./base";
  * @returns An Observable with the request response
  */
 export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
-  ajax(createAJAXSettings(serverConfig, "/api/sessions"));
+  ajax(createAJAXSettings(serverConfig, "/api/sessions", {cache: false}));
 
 /**
  * Creates an AjaxObservable for getting a particular session's information.
@@ -25,7 +25,7 @@ export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
  * @returns An Observable with the request/response
  */
 export const get = (serverConfig: ServerConfig, sessionID: string): Observable<AjaxResponse> =>
-  ajax(createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`));
+  ajax(createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {cache: false}));
 
 /**
  * Creates an AjaxObservable for destroying a particular session.

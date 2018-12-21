@@ -20,17 +20,23 @@ export interface ServerConfig extends Partial<AjaxRequest> {
  *
  * @param serverConfig Details about the server to connect to.
  * @param uri The URL to connect to, not including the base URL
- * @param opts A set of options to pass to the AJAX request.
+ * @param opts A set of options to pass to the AJAX request. We mimic jquery.ajax support of a cache option here.
  *
  * @returns A fully-configured AJAX request for connecting to the server.
  */
 export const createAJAXSettings = (
   serverConfig: ServerConfig,
   uri = "/",
-  opts: Partial<AjaxRequest> = {}
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ): AjaxRequest => {
   const baseURL = normalizeBaseURL(serverConfig.endpoint || serverConfig.url);
-  const url = `${baseURL}${uri}`;
+  let url = `${baseURL}${uri}`;
+  if (opts.cache === false) {
+    const parsed = new URL(url);
+    parsed.searchParams.set("_", Date.now().toString());
+    url = parsed.href;
+  }
+
   // Use the server config provided token if available before trying cookies
   const xsrfToken = serverConfig.xsrfToken || Cookies.get("_xsrf");
   const headers = {
@@ -50,5 +56,6 @@ export const createAJAXSettings = (
     headers: { ...headers, ...opts.headers }
   };
   delete settings.endpoint;
+  delete settings.cache;
   return settings;
 };

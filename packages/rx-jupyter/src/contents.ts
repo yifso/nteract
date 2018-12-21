@@ -83,7 +83,7 @@ export const get = (
   if (query.length > 0) {
     uri = `${uri}?${query}`;
   }
-  return ajax(createAJAXSettings(serverConfig, uri));
+  return ajax(createAJAXSettings(serverConfig, uri, {cache: false}));
 };
 
 /**
@@ -170,7 +170,8 @@ export const save = (
 export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, ""), {
-      method: "GET"
+      method: "GET",
+      cache: false
     })
   );
 
