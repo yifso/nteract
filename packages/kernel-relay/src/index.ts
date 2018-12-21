@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 
-import { findAll, Kernel } from "@nteract/fs-kernels";
+import { findAll, Kernel, LaunchedKernel } from "@nteract/fs-kernels";
 
 const Types = gql`
   type KernelSpec {
@@ -17,6 +17,7 @@ const Types = gql`
 const Query = gql`
   type Query {
     listKernelSpecs: [KernelSpec!]!
+    running: [KernelSession!]!
   }
 `;
 
@@ -30,6 +31,8 @@ type StartKernel = {
   name: string;
 };
 
+const kernels: { [id: string]: LaunchedKernel } = {};
+
 const typeDefs = [Types, Query, Mutation];
 const resolvers = {
   Query: {
@@ -39,12 +42,28 @@ const resolvers = {
       return Object.keys(kernelspecs).map(key => {
         return { id: key, ...kernelspecs[key] };
       });
+    },
+    running: () => {
+      return Object.keys(kernels).map(id => ({ id, status: "pretend" }));
     }
   },
   Mutation: {
     startKernel: async (_parentValue: any, args: StartKernel) => {
+      /**
+       *
+       * const kernel
+       *
+       *
+       */
+
       const kernel = new Kernel(args.name);
       await kernel.launch();
+
+      if (!kernel.launchedKernel) {
+        throw new Error("Could not launch kernel");
+      }
+
+      kernels[kernel.launchedKernel.config.key] = kernel.launchedKernel;
       return {
         id: kernel.launchedKernel ? kernel.launchedKernel.config.key : null,
         status: "launched"
