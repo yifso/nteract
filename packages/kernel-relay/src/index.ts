@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 
-import { findAll, Kernel, LaunchedKernel } from "@nteract/fs-kernels";
+import { findAll, Kernel } from "@nteract/fs-kernels";
 
 const Types = gql`
   type KernelSpec {
@@ -31,7 +31,7 @@ type StartKernel = {
   name: string;
 };
 
-const kernels: { [id: string]: LaunchedKernel } = {};
+const kernels: { [id: string]: Kernel } = {};
 
 const typeDefs = [Types, Query, Mutation];
 const resolvers = {
@@ -63,7 +63,7 @@ const resolvers = {
         throw new Error("Could not launch kernel");
       }
 
-      kernels[kernel.launchedKernel.config.key] = kernel.launchedKernel;
+      kernels[kernel.launchedKernel.config.key] = kernel;
       return {
         id: kernel.launchedKernel ? kernel.launchedKernel.config.key : null,
         status: "launched"
@@ -72,35 +72,45 @@ const resolvers = {
   }
 };
 
-const mocks = {
-  // By default we'll do empty objects for the JSON Scalar
-  JSON: () => ({})
-};
+async function main() {
+  const mocks = {
+    // By default we'll do empty objects for the JSON Scalar
+    JSON: () => ({})
+  };
 
-// In the most basic sense, the ApolloServer can be started
-// by passing type definitions (typeDefs) and the resolvers
-// responsible for fetching the data for those types.
-const server = new ApolloServer({
-  typeDefs,
-  resolvers: resolvers as any,
-  // mocks,
-  // mockEntireSchema: false,
-  // Since we're playing around, enable features for introspection and playing on our current deployment
-  // If this gets used in a "real" production capacity, introspection and playground should be disabled
-  // based on NODE_ENV === "production"
-  introspection: true,
-  playground: {
-    /*tabs: [
-      {
-        endpoint: "",
-        query: ``
-      }
-    ]*/
-  }
-});
+  // In the most basic sense, the ApolloServer can be started
+  // by passing type definitions (typeDefs) and the resolvers
+  // responsible for fetching the data for those types.
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers: resolvers as any,
+    // mocks,
+    // mockEntireSchema: false,
+    // Since we're playing around, enable features for introspection and playing on our current deployment
+    // If this gets used in a "real" production capacity, introspection and playground should be disabled
+    // based on NODE_ENV === "production"
+    introspection: true,
+    playground: {
+      /*tabs: [
+        {
+          endpoint: "",
+          query: ``
+        }
+      ]*/
+    }
+  });
 
-// This `listen` method launches a web-server.  Existing apps
-// can utilize middleware options, which we'll discuss later.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  // This `listen` method launches a web-server.  Existing apps
+  // can utilize middleware options, which we'll discuss later.
+  server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
+}
+
+main();
+
+process.on("exit", () => {
+  Object.keys(kernels).map(async id => {
+    await kernels[id].shutdown();
+  });
 });
