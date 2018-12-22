@@ -19,6 +19,8 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@nteract/fs-kernels": "^1.0.0",
+    "@nteract/messaging": "^5.0.0-alpha.0",
+    "enchannel-zmq-backend": "^8.0.0-alpha.0",
     "apollo-server": "^2.3.1",
     "graphql": "^14.0.2",
     "graphql-type-json": "^0.2.1"
