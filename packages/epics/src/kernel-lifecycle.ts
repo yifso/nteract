@@ -2,8 +2,13 @@
  * @module epics
  */
 import { Observable, Observer, of, empty, merge } from "rxjs";
-import { createMessage, childOf, ofMessageType } from "@nteract/messaging";
-import { Channels, JupyterMessage } from "@nteract/messaging";
+import {
+  createMessage,
+  childOf,
+  ofMessageType,
+  Channels,
+  JupyterMessage
+} from "@nteract/messaging";
 import { ImmutableNotebook } from "@nteract/commutable";
 import {
   filter,

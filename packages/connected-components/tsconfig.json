@@ -8,13 +8,6 @@
   "references": [
     { "path": "../commutable" },
     { "path": "../core" },
-    { "path": "../display-area" },
-    { "path": "../dropdown-menu" },
-    { "path": "../editor" },
-    { "path": "../logos" },
-    { "path": "../octicons" },
-    { "path": "../presentational-components" },
-    { "path": "../transforms" },
     { "path": "../types" }
   ]
 }

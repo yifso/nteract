@@ -5,8 +5,7 @@ import {
   CommOpenAction,
   CommMessageAction
 } from "@nteract/actions";
-import { makeCommsRecord } from "@nteract/types";
-import { CommsRecord } from "@nteract/types";
+import { CommsRecord, makeCommsRecord } from "@nteract/types";
 
 function registerCommTarget(
   state: CommsRecord,

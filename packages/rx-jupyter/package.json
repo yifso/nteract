@@ -27,13 +27,14 @@
   },
   "dependencies": {
     "@nteract/commutable": "6.0.0-alpha.0",
-    "@types/js-cookie": "^2.2.0",
+    "@nteract/messaging": "5.0.0-alpha.0",
     "js-cookie": "^2.2.0",
     "rxjs": "^6.3.3",
     "url-join": "^4.0.0",
     "url-search-params": "^1.0.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.0",
     "@types/url-join": "^0.8.2",
     "@types/url-search-params": "^0.10.2"
   }

@@ -1,5 +1,4 @@
-import { makeAppRecord } from "@nteract/types";
-import { AppRecord } from "@nteract/types";
+import { AppRecord, makeAppRecord } from "@nteract/types";
 import * as actions from "@nteract/actions";
 import {
   SetNotificationSystemAction,

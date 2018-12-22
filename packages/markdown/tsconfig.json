@@ -5,9 +5,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [
-    {
-      "path": "../mathjax"
-    }
-  ]
+  "references": [{ "path": "../mathjax" }]
 }
