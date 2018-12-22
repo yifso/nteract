@@ -100,7 +100,9 @@ const resolvers = {
       });
     },
     messages: () => {
-      return ([] as JupyterMessage[]).concat(...Object.values(messages));
+      return ([] as Array<JupyterMessage>)
+        .concat(...Object.values(messages))
+        .map(message => ({ id: message.header.msg_id, payload: message }));
     },
     running: () => {
       return Object.keys(kernels).map(id => ({ id, status: "pretend" }));
