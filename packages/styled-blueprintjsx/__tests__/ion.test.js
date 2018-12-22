@@ -2,7 +2,7 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
 
-import { blueprintCSS, blueprintSelectCSS } from "../src";
+import { BlueprintCSS, BlueprintSelectCSS } from "../src";
 
 test("styled blueprint jsx css will not trigger stylesheet errors", () => {
   const BareComponent = props => (
@@ -18,8 +18,8 @@ test("styled blueprint jsx css will not trigger stylesheet errors", () => {
         title="Testing Higher Order Components"
         description="This seemed reasonable, though there may be a better way"
       />
-      <style jsx>{blueprintCSS}</style>
-      <style jsx>{blueprintSelectCSS}</style>
+			<BlueprintCSS />
+			<BlueprintSelectCSS />
     </React.Fragment>
   );
 
@@ -27,10 +27,4 @@ test("styled blueprint jsx css will not trigger stylesheet errors", () => {
 
   // Make sure our component got passed through and that it got the props
   expect(children[0].type).toEqual(BareComponent);
-
-  // Ensure we got our styles
-  expect(children[1].props.css.toString()).toEqual(blueprintCSS.toString());
-  expect(children[2].props.css.toString()).toEqual(
-    blueprintSelectCSS.toString()
-  );
 });

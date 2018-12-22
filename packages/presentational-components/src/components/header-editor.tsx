@@ -8,7 +8,7 @@ import {
   Tooltip,
   ITagProps
 } from "@blueprintjs/core";
-import { blueprintCSS } from "@nteract/styled-blueprintjsx";
+import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 
 // https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
 
@@ -240,7 +240,7 @@ export class HeaderEditor extends React.Component<
             />
           </div>
         </div>
-        <style jsx>{blueprintCSS}</style>
+        <BlueprintCSS />
       </header>
     );
   }

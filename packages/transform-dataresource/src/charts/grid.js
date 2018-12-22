@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
-import { blueprintCSS } from "@nteract/styled-blueprintjsx";
+import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import ReactTableStyles from "../css/react-table";
 
@@ -165,7 +165,7 @@ class DataResourceTransformGrid extends React.Component<Props, State> {
           filterable={showFilters}
         />
         <style jsx>{ReactTableStyles}</style>
-        <style jsx>{blueprintCSS}</style>
+        <BlueprintCSS />
       </div>
     );
   }

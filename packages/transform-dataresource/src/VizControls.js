@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Select } from "@blueprintjs/select";
 import { Button, ButtonGroup, MenuItem, Code } from "@blueprintjs/core";
-import { blueprintCSS, blueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 
 import buttonGroupStyle from "./css/button-group";
 import chartUIStyle from "./css/viz-controls";
@@ -449,8 +449,8 @@ export default ({
       </div>
       <style jsx>{chartUIStyle}</style>
       <style jsx>{buttonGroupStyle}</style>
-      <style jsx>{blueprintCSS}</style>
-      <style jsx>{blueprintSelectCSS}</style>
+      <BlueprintCSS />
+      <BlueprintSelectCSS />
     </React.Fragment>
   );
 };
