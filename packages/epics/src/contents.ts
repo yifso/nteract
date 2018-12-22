@@ -9,8 +9,7 @@ import FileSaver from "file-saver";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
-import { toJS, stringifyNotebook } from "@nteract/commutable";
-import { Notebook } from "@nteract/commutable";
+import { toJS, stringifyNotebook, Notebook } from "@nteract/commutable";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";

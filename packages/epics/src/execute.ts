@@ -9,9 +9,10 @@ import {
   payloads,
   kernelStatuses,
   executionCounts,
-  JupyterMessage
+  JupyterMessage,
+  Channels,
+  ExecuteRequest
 } from "@nteract/messaging";
-import { Channels, ExecuteRequest } from "@nteract/messaging";
 import { Observable, of, merge, empty, throwError, Observer } from "rxjs";
 import {
   groupBy,
@@ -30,23 +31,10 @@ import {
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 
-import { ContentRef, PayloadMessage } from "@nteract/types";
-import { AppState } from "@nteract/types";
+import { AppState, ContentRef, PayloadMessage } from "@nteract/types";
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import {
-  LaunchKernelAction,
-  LaunchKernelByNameAction,
-  KillKernelAction,
-  NewKernelAction,
-  ExecuteCell,
-  ExecuteFocusedCell,
-  ExecuteAllCells,
-  ExecuteAllCellsBelow,
-  ExecuteCanceled,
-  DeleteCell
-} from "@nteract/actions";
-import { CellId, Output, ImmutableCell } from "@nteract/commutable";
+import { CellId, Output } from "@nteract/commutable";
 
 const Immutable = require("immutable");
 
@@ -127,13 +115,13 @@ export function executeCellStream(
 
 export function createExecuteCellStream(
   action$: ActionsObservable<
-    | ExecuteCanceled
-    | DeleteCell
-    | LaunchKernelAction
-    | LaunchKernelByNameAction
-    | KillKernelAction
-    | ExecuteCell
-    | ExecuteFocusedCell
+    | actions.ExecuteCanceled
+    | actions.DeleteCell
+    | actions.LaunchKernelAction
+    | actions.LaunchKernelByNameAction
+    | actions.KillKernelAction
+    | actions.ExecuteCell
+    | actions.ExecuteFocusedCell
   >,
   state: any,
   message: ExecuteRequest,
@@ -197,34 +185,38 @@ export function createExecuteCellStream(
 }
 
 export function executeAllCellsEpic(
-  action$: ActionsObservable<ExecuteAllCells | ExecuteAllCellsBelow>,
+  action$: ActionsObservable<
+    actions.ExecuteAllCells | actions.ExecuteAllCellsBelow
+  >,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.EXECUTE_ALL_CELLS, actions.EXECUTE_ALL_CELLS_BELOW),
-    concatMap((action: ExecuteAllCells | ExecuteAllCellsBelow) => {
-      const state = state$.value;
-      const contentRef = action.payload.contentRef;
+    concatMap(
+      (action: actions.ExecuteAllCells | actions.ExecuteAllCellsBelow) => {
+        const state = state$.value;
+        const contentRef = action.payload.contentRef;
 
-      const model = selectors.model(state, { contentRef });
-      // If it's not a notebook, we shouldn't be here
-      if (!model || model.type !== "notebook") {
-        return empty();
+        const model = selectors.model(state, { contentRef });
+        // If it's not a notebook, we shouldn't be here
+        if (!model || model.type !== "notebook") {
+          return empty();
+        }
+
+        let codeCellIds = Immutable.List();
+
+        if (action.type === actions.EXECUTE_ALL_CELLS) {
+          codeCellIds = selectors.notebook.codeCellIds(model);
+        } else if (action.type === actions.EXECUTE_ALL_CELLS_BELOW) {
+          codeCellIds = selectors.notebook.codeCellIdsBelow(model);
+        }
+        return of(
+          ...codeCellIds.map((id: CellId) =>
+            actions.executeCell({ id, contentRef: action.payload.contentRef })
+          )
+        );
       }
-
-      let codeCellIds = Immutable.List();
-
-      if (action.type === actions.EXECUTE_ALL_CELLS) {
-        codeCellIds = selectors.notebook.codeCellIds(model);
-      } else if (action.type === actions.EXECUTE_ALL_CELLS_BELOW) {
-        codeCellIds = selectors.notebook.codeCellIdsBelow(model);
-      }
-      return of(
-        ...codeCellIds.map((id: CellId) =>
-          actions.executeCell({ id, contentRef: action.payload.contentRef })
-        )
-      );
-    })
+    )
   );
 }
 
@@ -233,12 +225,12 @@ export function executeAllCellsEpic(
  * inner observable streams of the running execution responses
  */
 export function executeCellEpic(
-  action$: ActionsObservable<ExecuteCell | ExecuteFocusedCell>,
+  action$: ActionsObservable<actions.ExecuteCell | actions.ExecuteFocusedCell>,
   state$: any
 ) {
   return action$.pipe(
     ofType(actions.EXECUTE_CELL, actions.EXECUTE_FOCUSED_CELL),
-    mergeMap((action: ExecuteCell | ExecuteFocusedCell) => {
+    mergeMap((action: actions.ExecuteCell | actions.ExecuteFocusedCell) => {
       if (action.type === actions.EXECUTE_FOCUSED_CELL) {
         const contentRef = action.payload.contentRef;
         const state = state$.value;
@@ -259,19 +251,19 @@ export function executeCellEpic(
       }
       return of(action);
     }),
-    tap((action: ExecuteCell) => {
+    tap((action: actions.ExecuteCell) => {
       if (!action.payload.id) {
         throw new Error("execute cell needs an id");
       }
     }),
     // Split stream by cell IDs
-    groupBy((action: ExecuteCell) => action.payload.id),
+    groupBy((action: actions.ExecuteCell) => action.payload.id),
     // Work on each cell's stream
     map(cellAction$ =>
       cellAction$.pipe(
         // When a new EXECUTE_CELL comes in with the current ID, we create a
         // a new stream and unsubscribe from the old one.
-        switchMap((action: ExecuteCell) => {
+        switchMap((action: actions.ExecuteCell) => {
           const { id } = action.payload;
 
           const state = state$.value;
@@ -340,12 +332,12 @@ export function executeCellEpic(
 }
 
 export const updateDisplayEpic = (
-  action$: ActionsObservable<NewKernelAction>
+  action$: ActionsObservable<actions.NewKernelAction>
 ) =>
   // Global message watcher so we need to set up a feed for each new kernel
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: NewKernelAction) =>
+    switchMap((action: actions.NewKernelAction) =>
       action.payload.kernel.channels.pipe(
         ofMessageType("update_display_data"),
         map((msg: JupyterMessage) =>
