@@ -18,12 +18,18 @@ const Types = gql`
     id: ID!
     status: String
   }
+
+  type Message {
+    id: ID!
+    payload: JSON
+  }
 `;
 
 const Query = gql`
   type Query {
     listKernelSpecs: [KernelSpec!]!
     running: [KernelSession!]!
+    messages: [Message!]!
   }
 `;
 
@@ -92,6 +98,9 @@ const resolvers = {
           ...kernelspecs[key]
         };
       });
+    },
+    messages: () => {
+      return ([] as JupyterMessage[]).concat(...Object.values(messages));
     },
     running: () => {
       return Object.keys(kernels).map(id => ({ id, status: "pretend" }));
