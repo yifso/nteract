@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { MODAL_TYPES } from "../modal-controller";
 
 import { MENU_ITEM_ACTIONS, MENUS } from "./constants";
-import StyleWrapper from "./styles";
+import { GlobalMenuStyle } from "./styles";
 
 // To allow actions that can take dynamic arguments (like selecting a kernel
 // based on the host's kernelspecs), we have some simple utility functions to
@@ -278,7 +278,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
       menuProps.openKeys = openKeys;
     }
     return (
-      <StyleWrapper>
+      <React.Fragment>
         <StickyMenu {...menuProps}>
           <SubMenu key={MENUS.FILE} title="File">
             <MenuItem>
@@ -434,7 +434,8 @@ class PureNotebookMenu extends React.Component<Props, State> {
             </MenuItem>
           </SubMenu>
         </StickyMenu>
-      </StyleWrapper>
+        <GlobalMenuStyle />
+      </React.Fragment>
     );
   }
 }

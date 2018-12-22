@@ -1,7 +1,6 @@
-import * as React from "react";
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
-const GlobalMenuStyle = createGlobalStyle`
+export const GlobalMenuStyle = createGlobalStyle`
   .rc-menu {
     outline: none;
     margin: 0;
@@ -288,16 +287,3 @@ const GlobalMenuStyle = createGlobalStyle`
     }
   }
 `;
-
-type Props = {
-  children: React.ReactNode;
-};
-
-const Wrapper = (props: Props) => (
-  <React.Fragment>
-    <GlobalMenuStyle />
-    {props.children}
-  </React.Fragment>
-);
-
-export default Wrapper;
