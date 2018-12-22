@@ -4,6 +4,7 @@
   "description": "A collection of actions",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "nteractDesktop": "src/index.ts",
   "scripts": {
     "prepare": "npm run build",
     "prepublishOnly": "npm run build",
