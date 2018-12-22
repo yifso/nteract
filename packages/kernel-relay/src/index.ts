@@ -2,7 +2,13 @@ import { ApolloServer, gql } from "apollo-server";
 
 import { findAll, launchKernel, Kernel } from "@nteract/fs-kernels";
 
+import { JupyterMessage } from "@nteract/messaging";
+
+import GraphQLJSON from "graphql-type-json";
+
 const Types = gql`
+  scalar JSON
+
   type KernelSpec {
     id: ID!
     name: String
@@ -35,12 +41,16 @@ const kernels: { [id: string]: Kernel } = {};
 
 const typeDefs = [Types, Query, Mutation];
 const resolvers = {
+  JSON: GraphQLJSON,
   Query: {
     listKernelSpecs: async () => {
       const kernelspecs = await findAll();
 
       return Object.keys(kernelspecs).map(key => {
-        return { id: key, ...kernelspecs[key] };
+        return {
+          id: key,
+          ...kernelspecs[key]
+        };
       });
     },
     running: () => {
@@ -51,9 +61,16 @@ const resolvers = {
     startKernel: async (_parentValue: any, args: StartKernel) => {
       const kernel = await launchKernel(args.name);
 
+      console.log("kernel launched", kernel);
+
+      // NOTE: we should generate IDs
+      // We're also setting a session ID within the enchannel-zmq setup, I wonder
+      // if we should use that
+      const id = kernel.connectionInfo.key;
+
       kernels[kernel.connectionInfo.key] = kernel;
       return {
-        id: kernel.connectionInfo.key,
+        id,
         status: "launched"
       };
     }
@@ -61,11 +78,6 @@ const resolvers = {
 };
 
 async function main() {
-  const mocks = {
-    // By default we'll do empty objects for the JSON Scalar
-    JSON: () => ({})
-  };
-
   // In the most basic sense, the ApolloServer can be started
   // by passing type definitions (typeDefs) and the resolvers
   // responsible for fetching the data for those types.
@@ -97,6 +109,7 @@ async function main() {
 
 process.on("exit", () => {
   Object.keys(kernels).map(async id => {
+    console.log("shutting down ", id);
     await kernels[id].shutdown();
   });
 });
