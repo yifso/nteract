@@ -1,4 +1,3 @@
-/* @flow strict */
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { ipcRenderer as ipc, remote } from "electron";
@@ -18,7 +17,7 @@ import {
   makeLocalHostRecord,
   makeEntitiesRecord
 } from "@nteract/core";
-import type { ContentRef, ContentRecord } from "@nteract/core";
+import { ContentRef, ContentRecord } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
 import { displayOrder, transforms } from "@nteract/transforms-full";
 import * as Immutable from "immutable";
@@ -26,7 +25,7 @@ import * as Immutable from "immutable";
 import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
 import { initGlobalHandlers } from "./global-events";
-import { makeDesktopNotebookRecord } from "./state.js";
+import { makeDesktopNotebookRecord } from "./state";
 import configureStore from "./store";
 
 // Load the nteract fonts
@@ -34,10 +33,10 @@ require("./fonts");
 
 const contentRef = createContentRef();
 
-const initialRefs: Immutable.Map<
-  ContentRef,
-  ContentRecord
-> = Immutable.Map().set(contentRef, makeNotebookContentRecord());
+const initialRefs = Immutable.Map<ContentRef, ContentRecord>().set(
+  contentRef,
+  makeNotebookContentRecord()
+);
 
 const store = configureStore({
   app: makeAppRecord({
@@ -59,6 +58,11 @@ const store = configureStore({
 });
 
 // Register for debugging
+declare global {
+  interface Window {
+    store: typeof store;
+  }
+}
 window.store = store;
 
 initNativeHandlers(contentRef, store);
@@ -66,7 +70,7 @@ initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
 export default class App extends React.PureComponent<{}, null> {
-  notificationSystem: NotificationSystem;
+  notificationSystem: any;
 
   componentDidMount(): void {
     store.dispatch(actions.setNotificationSystem(this.notificationSystem));

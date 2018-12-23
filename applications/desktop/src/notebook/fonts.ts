@@ -1,12 +1,9 @@
-/* @flow */
-
-const path = require("path");
-
-const WebFont = require("webfontloader");
+import * as path from "path";
+import { load } from "webfontloader";
 
 const fontFolder = ["..", "node_modules", "nteract-assets", "fonts"];
 
-WebFont.load({
+load({
   // $FlowFixMe
   custom: {
     families: ["Source Sans Pro", "Source Code Pro"],

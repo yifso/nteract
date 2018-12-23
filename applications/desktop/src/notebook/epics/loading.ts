@@ -1,5 +1,3 @@
-/* @flow strict */
-
 import * as path from "path";
 import * as fs from "fs";
 
@@ -13,28 +11,30 @@ import {
   timeout
 } from "rxjs/operators";
 import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { readFileObservable, statObservable } from "fs-observable";
 import { monocellNotebook, toJS } from "@nteract/commutable";
-import type { ImmutableNotebook } from "@nteract/commutable";
+import { ImmutableNotebook } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
-import type { AppState } from "@nteract/core";
+import { AppState } from "@nteract/core";
+
+import { Actions } from "../actions";
 
 /**
  * Determines the right kernel to launch based on a notebook
  */
 export const extractNewKernel = (
-  filepath: ?string,
+  filepath: string | null,
   notebook: ImmutableNotebook
 ) => {
   // TODO: There's some incongruence between desktop and web app here, regarding path vs. filename
   //       Instead, this function is slightly repeated between here and @nteract/core
   const cwd =
     (filepath != null && path.dirname(path.resolve(filepath))) || process.cwd();
-  const kernelSpecName = notebook.getIn(
-    ["metadata", "kernelspec", "name"],
-    notebook.getIn(["metadata", "language_info", "name"], "python3")
-  );
+  const kernelSpecName =
+    notebook.getIn(["metadata", "kernelspec", "name"]) ||
+    notebook.getIn(["metadata", "language_info", "name"]) ||
+    "python3";
   return {
     cwd,
     kernelSpecName
@@ -44,7 +44,7 @@ export const extractNewKernel = (
 function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
-  content: *
+  content: string
 ): JupyterApi$Content {
   const parsedFilePath = path.parse(filePath);
 
@@ -102,7 +102,7 @@ function createContentsResponse(
  *
  * @param  {ActionObservable}  A LOAD action with the notebook filename
  */
-export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
+export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
     ofType(actions.FETCH_CONTENT),
     tap((action: actions.FetchContent) => {
@@ -147,7 +147,7 @@ export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
   );
 
 export const launchKernelWhenNotebookSetEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Actions>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -188,7 +188,7 @@ export const launchKernelWhenNotebookSetEpic = (
  *
  * @param  {ActionObservable}  ActionObservable for NEW_NOTEBOOK action
  */
-export const newNotebookEpic = (action$: ActionsObservable<redux$Action>) =>
+export const newNotebookEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
     ofType(actions.NEW_NOTEBOOK),
     map((action: actions.NewNotebook) => {

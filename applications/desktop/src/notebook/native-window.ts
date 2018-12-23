@@ -2,9 +2,16 @@
 import path from "path";
 
 import { remote } from "electron";
-import { selectors } from "@nteract/core";
-import type { ContentRef, KernelRef, AppState } from "@nteract/core";
-import { empty, of, from, combineLatest } from "rxjs";
+import { selectors, ContentRecord, NotebookContentRecord } from "@nteract/core";
+import { ContentRef, KernelRef, AppState, ContentModel } from "@nteract/core";
+import {
+  empty,
+  of,
+  from,
+  combineLatest,
+  ObservableInput,
+  Observable
+} from "rxjs";
 import {
   map,
   distinctUntilChanged,
@@ -13,6 +20,9 @@ import {
   mergeMap,
   share
 } from "rxjs/operators";
+import { Store } from "redux";
+
+import { Actions } from "./actions";
 
 const HOME = remote.app.getPath("home");
 
@@ -21,7 +31,7 @@ const HOME = remote.app.getPath("home");
  * @param  {string} p the full path to a file
  * @return {string}   tildified path
  */
-export function tildify(p: ?string) {
+export function tildify(p?: string) {
   if (!p) {
     return "";
   }
@@ -32,7 +42,7 @@ export function tildify(p: ?string) {
   ).slice(0, -1);
 }
 
-export function setTitleFromAttributes(attributes: *) {
+export function setTitleFromAttributes(attributes: any) {
   const filename = tildify(attributes.fullpath);
   const { kernelStatus } = attributes;
 
@@ -56,8 +66,11 @@ export function setTitleFromAttributes(attributes: *) {
   }
 }
 
-export function createTitleFeed(contentRef: ContentRef, state$: *) {
-  const content$ = state$.pipe(
+export function createTitleFeed(
+  contentRef: ContentRef,
+  state$: Observable<AppState>
+) {
+  const content$: Observable<ContentRecord> = state$.pipe(
     mergeMap((state: AppState) => {
       const content = selectors.content(state, { contentRef });
       if (content) {
@@ -73,17 +86,19 @@ export function createTitleFeed(contentRef: ContentRef, state$: *) {
     distinctUntilChanged()
   );
 
-  // $FlowFixMe somehow isDirty confuses flow
   const modified$ = content$.pipe(
-    map(content => selectors.notebook.isDirty(content.model)),
+    map(content => {
+      // In desktop we can safely assume that the model is a notebook model
+      return selectors.notebook.isDirty(
+        (content as NotebookContentRecord).model
+      );
+    }),
     distinctUntilChanged()
   );
 
   const kernelRef$ = content$.pipe(
     mergeMap(content => {
       if (content && content.type === "notebook") {
-        // FIXME COME BACK TO HERE, we need to strip off the kernelRef
-        // const kernelRef = content.model.kernelRef;
         return of(content.model.kernelRef);
       } else {
         return empty();
@@ -119,8 +134,13 @@ export function createTitleFeed(contentRef: ContentRef, state$: *) {
   );
 }
 
-export function initNativeHandlers(contentRef: ContentRef, store: any) {
-  const state$ = from(store).pipe(share());
+export function initNativeHandlers(
+  contentRef: ContentRef,
+  store: Store<AppState, Actions>
+) {
+  const state$ = from((store as unknown) as ObservableInput<AppState>).pipe(
+    share()
+  );
 
   return createTitleFeed(contentRef, state$).subscribe(
     setTitleFromAttributes,

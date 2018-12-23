@@ -1,12 +1,14 @@
 /* @flow strict */
 import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { writeFileObservable } from "fs-observable";
 import { selectors, actions } from "@nteract/core";
-import type { AppState } from "@nteract/core";
+import { AppState } from "@nteract/core";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { of } from "rxjs";
 import { mergeMap, catchError, map, concatMap } from "rxjs/operators";
+
+import { Actions } from "../actions";
 
 /**
  * Cleans up the notebook document and saves the file.
@@ -14,7 +16,7 @@ import { mergeMap, catchError, map, concatMap } from "rxjs/operators";
  * @param  {ActionObservable}  action$ The SAVE action with the filename and notebook
  */
 export function saveEpic(
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Actions>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
@@ -87,7 +89,7 @@ export function saveEpic(
  *
  * @param  {ActionObservable}  action$ The SAVE_AS action with the filename and notebook
  */
-export function saveAsEpic(action$: ActionsObservable<redux$Action>) {
+export function saveAsEpic(action$: ActionsObservable<Actions>) {
   return action$.pipe(
     ofType(actions.SAVE_AS),
     concatMap((action: actions.SaveAs) => {

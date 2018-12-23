@@ -5,24 +5,26 @@ import { of, empty } from "rxjs";
 import { ajax } from "rxjs/ajax";
 import { mergeMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
-import type { AppState } from "@nteract/core";
+import { ActionsObservable, StateObservable } from "redux-observable";
+import { AppState } from "@nteract/core";
 
-const path = require("path");
+import { Actions } from "../actions";
+
+import * as path from "path";
 
 type GithubFiles = {
-  [string]: {
+  [result: string]: {
     // Raw file as string
-    content: string,
+    content: string;
     // Specify the filename on update to rename it
-    filename?: string
-  } | null // Null allows for deletes
+    filename?: string;
+  } | null; // Null allows for deletes
 };
 
 function publishGist(
-  model: { files: GithubFiles, description: string, public: boolean },
+  model: { files: GithubFiles; description: string; public: boolean },
   token: string,
-  id: ?string
+  id: string | null
 ) {
   const url =
     id != null
@@ -53,7 +55,7 @@ function publishGist(
  * response from the Github API.
  */
 export const publishEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<Actions>,
   state$: StateObservable<AppState>
 ) => {
   return action$.pipe(

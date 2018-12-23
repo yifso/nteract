@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
 
-import type { DesktopNotebookAppState } from "./state";
+import { DesktopNotebookAppState } from "./state";
 import { handleDesktopNotebook } from "./reducers";
 import epics from "./epics";
 

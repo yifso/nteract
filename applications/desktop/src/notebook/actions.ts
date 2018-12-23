@@ -21,3 +21,13 @@ export function closeNotebookProgress(payload: {
     payload
   };
 }
+
+// Need to merge types from core actions with the actions defined here and actionTypes
+export type Actions =
+  | {
+      type: string;
+      payload: any;
+      error?: boolean;
+    }
+  | actionTypes.CloseNotebookProgress
+  | actionTypes.CloseNotebook;
