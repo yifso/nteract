@@ -491,7 +491,7 @@ describe("setNotificationSystem", () => {
   test("creates a SET_NOTIFICATION_SYSTEM action", () => {
     expect(actions.setNotificationSystem(null)).toEqual({
       type: actionTypes.SET_NOTIFICATION_SYSTEM,
-      notificationSystem: null
+      payload: { notificationSystem: null }
     });
   });
 });
@@ -614,7 +614,7 @@ describe("setGithubToken", () => {
   test("creates a SET_GITHUB_TOKEN action", () => {
     expect(actions.setGithubToken("token_string")).toEqual({
       type: actionTypes.SET_GITHUB_TOKEN,
-      githubToken: "token_string"
+      payload: { githubToken: "token_string" }
     });
   });
 });
