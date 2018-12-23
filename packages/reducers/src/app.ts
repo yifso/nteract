@@ -9,7 +9,7 @@ import {
 } from "@nteract/actions";
 
 function setGithubToken(state: AppRecord, action: SetGithubTokenAction) {
-  return state.set("githubToken", action.githubToken);
+  return state.set("githubToken", action.payload.githubToken);
 }
 
 function save(state: AppRecord) {
@@ -28,7 +28,10 @@ function setNotificationsSystem(
   state: AppRecord,
   action: SetNotificationSystemAction
 ) {
-  return state.set("notificationSystem", action.notificationSystem);
+  if (!action.payload || !action.payload.notificationSystem) {
+    return state;
+  }
+  return state.set("notificationSystem", action.payload.notificationSystem);
 }
 
 export default function handleApp(

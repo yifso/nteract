@@ -245,8 +245,10 @@ describe("dispatchSetTheme", () => {
 
     expect(store.dispatch).toHaveBeenCalledWith({
       type: actions.SET_CONFIG_AT_KEY,
-      key: "theme",
-      value: "test_theme"
+      payload: {
+        key: "theme",
+        value: "test_theme"
+      }
     });
   });
 });
@@ -263,8 +265,10 @@ describe("dispatchSetCursorBlink", () => {
 
     expect(store.dispatch).toHaveBeenCalledWith({
       type: actions.SET_CONFIG_AT_KEY,
-      key: "cursorBlinkRate",
-      value: 42
+      payload: {
+        key: "cursorBlinkRate",
+        value: 42
+      }
     });
   });
 });

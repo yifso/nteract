@@ -68,4 +68,6 @@ const epics = [
   closeNotebookEpic
 ];
 
-export default epics.map<Epic<Actions, Actions>>(epic => wrapEpic(epic));
+export default epics.map<Epic<Actions, Actions, DesktopNotebookAppState>>(
+  epic => wrapEpic((epic as unknown) as any)
+);

@@ -34,7 +34,7 @@ export const closeNotebookEpic = (
       const model = selectors.model(state, { contentRef });
 
       var dirtyPromptObservable: Observable<boolean>;
-      if (selectors.notebook.isDirty(model)) {
+      if (selectors.notebook.isDirty((model as unknown) as any)) {
         dirtyPromptObservable = Observable.create(observer => {
           const promptDialog = {
             type: "question",

@@ -26,7 +26,7 @@ export function closeNotebookProgress(payload: {
 export type Actions =
   | {
       type: string;
-      payload: any;
+      payload?: any;
       error?: boolean;
     }
   | actionTypes.CloseNotebookProgress

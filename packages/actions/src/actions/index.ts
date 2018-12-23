@@ -68,7 +68,9 @@ export function setNotificationSystem(
 ): actionTypes.SetNotificationSystemAction {
   return {
     type: actionTypes.SET_NOTIFICATION_SYSTEM,
-    notificationSystem
+    payload: {
+      notificationSystem
+    }
   };
 }
 
@@ -77,7 +79,9 @@ export function setGithubToken(
 ): actionTypes.SetGithubTokenAction {
   return {
     type: actionTypes.SET_GITHUB_TOKEN,
-    githubToken
+    payload: {
+      githubToken
+    }
   };
 }
 
@@ -87,8 +91,10 @@ export function setConfigAtKey<T>(
 ): actionTypes.SetConfigAction<T> {
   return {
     type: actionTypes.SET_CONFIG_AT_KEY,
-    key,
-    value
+    payload: {
+      key,
+      value
+    }
   };
 }
 

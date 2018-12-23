@@ -25,8 +25,10 @@ import * as Immutable from "immutable";
 import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
 import { initGlobalHandlers } from "./global-events";
-import { makeDesktopNotebookRecord } from "./state";
-import configureStore from "./store";
+import { makeDesktopNotebookRecord, DesktopNotebookAppState } from "./state";
+import configureStore, { DesktopStore } from "./store";
+import { Actions } from "./actions";
+import { Store } from "redux";
 
 // Load the nteract fonts
 require("./fonts");
@@ -60,14 +62,14 @@ const store = configureStore({
 // Register for debugging
 declare global {
   interface Window {
-    store: typeof store;
+    store: DesktopStore;
   }
 }
 window.store = store;
 
-initNativeHandlers(contentRef, store as any);
-initMenuHandlers(contentRef, store as any);
-initGlobalHandlers(contentRef, store as any);
+initNativeHandlers(contentRef, store);
+initMenuHandlers(contentRef, store);
+initGlobalHandlers(contentRef, store);
 
 export default class App extends React.PureComponent<{}, null> {
   notificationSystem: any;

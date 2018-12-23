@@ -3,16 +3,18 @@ import { ipcRenderer as ipc } from "electron";
 import { selectors } from "@nteract/core";
 import { ContentRef } from "@nteract/core";
 
-import * as actions from "./actions";
+import { Actions, closeNotebook } from "./actions";
 import { DesktopNotebookAppState } from "./state";
 import {
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
 } from "./state";
 
+import { DesktopStore } from "./store";
+
 export function onBeforeUnloadOrReload(
   contentRef: ContentRef,
-  store: Store<DesktopNotebookAppState, any>,
+  store: DesktopStore,
   reloading: boolean
 ) {
   const state = store.getState();
@@ -29,9 +31,7 @@ export function onBeforeUnloadOrReload(
     // See https://github.com/electron/electron/issues/12668
     setTimeout(
       () =>
-        store.dispatch(
-          actions.closeNotebook({ contentRef: contentRef, reloading })
-        ),
+        store.dispatch(closeNotebook({ contentRef: contentRef, reloading })),
       0
     );
   }
@@ -43,7 +43,7 @@ export function onBeforeUnloadOrReload(
 
 export function initGlobalHandlers(
   contentRef: ContentRef,
-  store: Store<DesktopNotebookAppState, any>
+  store: DesktopStore
 ) {
   // This wiring of onBeforeUnloadOrReload is meant to handle:
   // - User closing window by hand
