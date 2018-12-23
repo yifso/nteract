@@ -56,7 +56,7 @@ const mainConfig = {
 const rendererConfig = {
   mode: "development",
   entry: {
-    app: "./src/notebook/index.js",
+    app: "./src/notebook/index.tsx",
     vendor: [
       "react",
       "react-dnd",

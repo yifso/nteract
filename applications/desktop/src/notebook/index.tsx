@@ -65,9 +65,9 @@ declare global {
 }
 window.store = store;
 
-initNativeHandlers(contentRef, store);
-initMenuHandlers(contentRef, store);
-initGlobalHandlers(contentRef, store);
+initNativeHandlers(contentRef, store as any);
+initMenuHandlers(contentRef, store as any);
+initGlobalHandlers(contentRef, store as any);
 
 export default class App extends React.PureComponent<{}, null> {
   notificationSystem: any;

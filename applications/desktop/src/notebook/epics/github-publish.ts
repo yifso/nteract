@@ -6,7 +6,7 @@ import { ajax } from "rxjs/ajax";
 import { mergeMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { AppState } from "@nteract/core";
+import { DesktopNotebookAppState } from "../state";
 
 import { Actions } from "../actions";
 
@@ -56,7 +56,7 @@ function publishGist(
  */
 export const publishEpic = (
   action$: ActionsObservable<Actions>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<DesktopNotebookAppState>
 ) => {
   return action$.pipe(
     ofType(actions.PUBLISH_GIST),

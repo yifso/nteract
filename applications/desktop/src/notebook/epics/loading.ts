@@ -18,6 +18,8 @@ import { ImmutableNotebook } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import { AppState } from "@nteract/core";
 
+import { contents } from "rx-jupyter";
+
 import { Actions } from "../actions";
 
 /**
@@ -45,13 +47,14 @@ function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
   content: string
-): JupyterApi$Content {
+): contents.Payload {
   const parsedFilePath = path.parse(filePath);
 
   const name = parsedFilePath.base;
   const writable = Boolean(fs.constants.W_OK & stat.mode);
-  const created = stat.birthtime;
-  const last_modified = stat.mtime;
+  // TODO: Determine if these can be encoded as date objects in the contentsResponse
+  const created = (stat.birthtime as unknown) as string;
+  const last_modified = (stat.mtime as unknown) as string;
 
   if (stat.isDirectory()) {
     return {
@@ -119,7 +122,7 @@ export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
         readFileObservable(filepath),
         statObservable(filepath),
         // Project onto the Contents API response
-        (content, stat): JupyterApi$Content =>
+        (content, stat): contents.Payload =>
           createContentsResponse(filepath, stat, content)
       ).pipe(
         // Timeout after one minute

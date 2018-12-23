@@ -4,7 +4,7 @@ import { readFileObservable, writeFileObservable } from "fs-observable";
 import { mapTo, mergeMap, map, switchMap } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { AppState } from "@nteract/core";
+import { DesktopNotebookAppState } from "../state";
 
 import * as path from "path";
 
@@ -42,7 +42,7 @@ export const saveConfigOnChangeEpic = (action$: ActionsObservable<Actions>) =>
  */
 export const saveConfigEpic = (
   action$: ActionsObservable<Actions>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<DesktopNotebookAppState>
 ) =>
   action$.pipe(
     ofType(actions.SAVE_CONFIG),

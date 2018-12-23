@@ -45,7 +45,7 @@ export function launchKernelObservable(
   cwd: string,
   kernelRef: KernelRef,
   contentRef: ContentRef
-): Observable<any> {
+): Observable<Actions> {
   const spec = kernelSpec.spec;
 
   return Observable.create(observer => {
@@ -93,7 +93,7 @@ export function launchKernelObservable(
       });
 
       // do dependency injection of jmp to make it match our ABI version of node
-      createMainChannel(config, undefined, undefined, jmp)
+      createMainChannel(config, undefined, undefined, undefined, jmp)
         .then((channels: Channels) => {
           observer.next(
             actions.setKernelspecInfo({
@@ -200,7 +200,7 @@ type LaunchKernelResponseActions =
 export const launchKernelEpic = (
   action$: ActionsObservable<Actions>,
   state$: StateObservable<AppState>
-): Observable<LaunchKernelResponseActions> => {
+): Observable<Actions> => {
   const response$ = action$.pipe(
     ofType(actions.LAUNCH_KERNEL),
     // We must kill the previous kernel now

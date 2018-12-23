@@ -1,7 +1,7 @@
 /* @flow strict */
 import { catchError, startWith } from "rxjs/operators";
 import { epics as coreEpics } from "@nteract/core";
-import { AppState } from "@nteract/core";
+import { DesktopNotebookAppState } from "../state";
 import { Epic, ActionsObservable, StateObservable } from "redux-observable";
 
 import { saveEpic, saveAsEpic } from "./saving";
@@ -36,7 +36,11 @@ export function retryAndEmitError(
 }
 
 export const wrapEpic = (epic: Epic<Actions, Actions>) => (
-  ...args: [ActionsObservable<Actions>, StateObservable<AppState>, undefined]
+  ...args: [
+    ActionsObservable<Actions>,
+    StateObservable<DesktopNotebookAppState>,
+    undefined
+  ]
 ) => epic(...args).pipe(catchError(retryAndEmitError));
 
 const epics = [
@@ -65,6 +69,4 @@ const epics = [
   closeNotebookEpic
 ];
 
-// Type arguments are needed currently because of Flow export limitations
-// https://github.com/facebook/flow/issues/6828#issuecomment-418495625
 export default epics.map<Epic<Actions, Actions>>(epic => wrapEpic(epic));
