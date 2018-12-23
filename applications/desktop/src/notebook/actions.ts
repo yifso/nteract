@@ -1,13 +1,11 @@
-// @flow strict
-
-import type { ContentRef } from "@nteract/core";
+import { ContentRef } from "@nteract/core";
 
 import * as actionTypes from "./actionTypes";
-import type { DesktopNotebookClosingState } from "./state";
+import { DesktopNotebookClosingState } from "./state";
 
 export function closeNotebook(payload: {
-  contentRef: ContentRef,
-  reloading: boolean
+  contentRef: ContentRef;
+  reloading: boolean;
 }): actionTypes.CloseNotebook {
   return {
     type: actionTypes.CLOSE_NOTEBOOK,
@@ -16,7 +14,7 @@ export function closeNotebook(payload: {
 }
 
 export function closeNotebookProgress(payload: {
-  newState: DesktopNotebookClosingState
+  newState: DesktopNotebookClosingState;
 }): actionTypes.CloseNotebookProgress {
   return {
     type: actionTypes.CLOSE_NOTEBOOK_PROGRESS,
