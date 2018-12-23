@@ -17,8 +17,8 @@ import {
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
-} from "../../src/notebook/state.js";
-import * as actions from "../../src/notebook/actions.js";
+} from "../../src/notebook/state";
+import * as actions from "../../src/notebook/actions";
 
 const createStore = (
   contentRef,
