@@ -4,7 +4,9 @@ import { ipcRenderer as ipc, remote } from "electron";
 import { Provider } from "react-redux";
 import * as MathJax from "@nteract/mathjax";
 import { mathJaxPath } from "mathjax-electron";
-import NotificationSystem from "react-notification-system";
+import NotificationSystem, {
+  System as ReactNotificationSystem
+} from "react-notification-system";
 import { Styles } from "@nteract/presentational-components";
 import {
   actions,
@@ -72,7 +74,7 @@ initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
 export default class App extends React.PureComponent<{}, null> {
-  notificationSystem: any;
+  notificationSystem: ReactNotificationSystem;
 
   componentDidMount(): void {
     store.dispatch(actions.setNotificationSystem(this.notificationSystem));

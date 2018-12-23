@@ -1,4 +1,9 @@
-import { actions as coreActions, selectors } from "@nteract/core";
+import {
+  actions as coreActions,
+  selectors,
+  DocumentRecordProps
+} from "@nteract/core";
+import { RecordOf } from "immutable";
 import { Observable, empty, of, zip, concat } from "rxjs";
 import {
   catchError,
@@ -31,10 +36,12 @@ export const closeNotebookEpic = (
     exhaustMap((action: actionTypes.CloseNotebook) => {
       const contentRef = action.payload.contentRef;
       const state = state$.value;
-      const model = selectors.model(state, { contentRef });
+      const model = selectors.model(state, {
+        contentRef
+      }) as RecordOf<DocumentRecordProps>;
 
       var dirtyPromptObservable: Observable<boolean>;
-      if (selectors.notebook.isDirty((model as unknown) as any)) {
+      if (selectors.notebook.isDirty(model)) {
         dirtyPromptObservable = Observable.create(observer => {
           const promptDialog = {
             type: "question",
