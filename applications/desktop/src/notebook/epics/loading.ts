@@ -52,7 +52,10 @@ function createContentsResponse(
 
   const name = parsedFilePath.base;
   const writable = Boolean(fs.constants.W_OK & stat.mode);
-  // TODO: Determine if these can be encoded as date objects in the contentsResponse
+  /**
+   * TODO: Determine if the content record can encode created and last_modified
+   * as pure `Date`s or if it's supposed to match the jupyter API response literally
+   */
   const created = (stat.birthtime as unknown) as string;
   const last_modified = (stat.mtime as unknown) as string;
 
