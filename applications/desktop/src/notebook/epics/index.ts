@@ -1,4 +1,3 @@
-/* @flow strict */
 import { catchError, startWith } from "rxjs/operators";
 import { epics as coreEpics } from "@nteract/core";
 import { DesktopNotebookAppState } from "../state";

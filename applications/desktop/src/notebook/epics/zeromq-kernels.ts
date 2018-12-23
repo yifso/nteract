@@ -1,5 +1,3 @@
-/* @flow strict */
-
 import { ChildProcess } from "child_process";
 
 import { Observable, of, merge, empty } from "rxjs";
@@ -421,7 +419,6 @@ export function watchSpawn(action$: ActionsObservable<Actions>) {
       if (action.payload.kernel.type !== "zeromq") {
         throw new Error("kernel.type is not zeromq.");
       }
-      // $FlowFixMe: spawn's type seems not to be defined.
       if (!action.payload.kernel.spawn) {
         throw new Error("kernel.spawn is not provided.");
       }

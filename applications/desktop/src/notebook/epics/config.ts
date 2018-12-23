@@ -21,7 +21,6 @@ export const loadConfigEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
     ofType(actions.LOAD_CONFIG),
     switchMap(() =>
-      // $FlowFixMe deal with after the typescript migration
       readFileObservable(CONFIG_FILE_PATH).pipe(
         map(data => actions.configLoaded(JSON.parse(data.toString())))
       )

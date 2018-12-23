@@ -1,5 +1,3 @@
-/* @flow strict */
-
 import * as actionTypes from "./actionTypes";
 import { DesktopNotebookRecord } from "./state";
 import {

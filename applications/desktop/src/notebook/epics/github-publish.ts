@@ -1,4 +1,3 @@
-// @flow strict
 import { shell } from "electron";
 import { selectors, actions } from "@nteract/core";
 import { of, empty } from "rxjs";

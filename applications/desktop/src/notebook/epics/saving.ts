@@ -1,4 +1,3 @@
-/* @flow strict */
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { writeFileObservable } from "fs-observable";

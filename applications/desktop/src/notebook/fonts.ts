@@ -4,7 +4,6 @@ import { load } from "webfontloader";
 const fontFolder = ["..", "node_modules", "nteract-assets", "fonts"];
 
 load({
-  // $FlowFixMe
   custom: {
     families: ["Source Sans Pro", "Source Code Pro"],
     urls: [
