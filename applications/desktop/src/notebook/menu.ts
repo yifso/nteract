@@ -3,8 +3,7 @@ import * as fs from "fs";
 
 import { ipcRenderer as ipc, webFrame, shell, remote } from "electron";
 import { throttle } from "lodash";
-import { actions, selectors, createKernelRef } from "@nteract/core";
-import { ContentRef } from "@nteract/core";
+import { actions, selectors, createKernelRef, ContentRef } from "@nteract/core";
 import { DesktopStore } from "./store";
 
 type NotificationSystemRef = any;
@@ -109,7 +108,7 @@ export function promptUserAboutNewKernel(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
   filepath: string
-): Promise<undefined> {
+): Promise<void> {
   return new Promise(resolve => {
     dialog.showMessageBox(
       {

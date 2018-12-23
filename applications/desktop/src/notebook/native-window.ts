@@ -1,8 +1,14 @@
 import path from "path";
 
 import { remote } from "electron";
-import { selectors, ContentRecord, NotebookContentRecord } from "@nteract/core";
-import { ContentRef, KernelRef, AppState, ContentModel } from "@nteract/core";
+import {
+  selectors,
+  ContentRecord,
+  NotebookContentRecord,
+  ContentRef,
+  KernelRef,
+  AppState
+} from "@nteract/core";
 import {
   empty,
   of,
