@@ -141,6 +141,7 @@ exports[`Header Editor renders a static view when not editable 1`] = `
       </div>
     </div>
   </div>
+  < />
 </header>
 `;
 
@@ -285,5 +286,6 @@ exports[`Header Editor renders correctly with no props 1`] = `
       </div>
     </div>
   </div>
+  < />
 </header>
 `;

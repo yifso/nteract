@@ -4,6 +4,16 @@ import renderer from "react-test-renderer";
 
 import { HeaderEditor } from "../src/";
 
+jest.mock("styled-components", () => {
+  const styled = () => () => () => {};
+  styled.div = () => () => () => {};
+  return {
+    __esModule: true,
+    createGlobalStyle: jest.fn(() => ""),
+    default: styled
+  };
+});
+
 describe("Header Editor", () => {
   it("renders correctly with no props", () => {
     const tree = renderer.create(<HeaderEditor />).toJSON();
@@ -22,9 +32,9 @@ describe("Header Editor", () => {
       authors: [{ name: "zombo.com" }, { name: "internets" }],
       title: "Welcome to ZomboCom",
       description: `This ... is ... ZomboCom. Welcome. This is ZomboCom; welcome ... to ZomboCom. You can do anything at ZomboCom. Anything at all. The only limit is yourself. Welcome ... to ZomboCom.
-Welcome ... to ZomboCom. This is ... ZomboCom. Welcome ... to ZomboCom! This is ZomboCom, welcome! Yes ... This ... is ZomboCom.
-This is ZomboCom! And welcome to you, who have come to ZomboCom. Anything ... is possible ... at ZomboCom. You can do ... anything at ZomboCom. The infinite is possible at ZomboCom. The unattainable is unknown at ZomboCom. Welcome to ZomboCom. This ... is ZomboCom.
-Welcome to ZomboCom. Welcome. This ... is ... ZomboCom. Welcome ... to ZomboCom! Welcome ... to ZomboCom.`,
+  Welcome ... to ZomboCom. This is ... ZomboCom. Welcome ... to ZomboCom! This is ZomboCom, welcome! Yes ... This ... is ZomboCom.
+  This is ZomboCom! And welcome to you, who have come to ZomboCom. Anything ... is possible ... at ZomboCom. You can do ... anything at ZomboCom. The infinite is possible at ZomboCom. The unattainable is unknown at ZomboCom. Welcome to ZomboCom. This ... is ZomboCom.
+  Welcome to ZomboCom. Welcome. This ... is ... ZomboCom. Welcome ... to ZomboCom! Welcome ... to ZomboCom.`,
       tags: ["best of web", "colorful", "pulsating discs"]
     };
 
@@ -42,9 +52,9 @@ Welcome to ZomboCom. Welcome. This ... is ... ZomboCom. Welcome ... to ZomboCom!
     authorEntry.simulate("keypress", { key: "Enter" });
 
     /*
-    Can't seem to make all this work...
-    expect(onChange).toHaveBeenCalledWith({
-      a: "b"
-    });*/
+      Can't seem to make all this work...
+      expect(onChange).toHaveBeenCalledWith({
+        a: "b"
+      });*/
   });
 });
