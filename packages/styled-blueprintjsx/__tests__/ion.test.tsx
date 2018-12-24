@@ -1,4 +1,3 @@
-"use strict";
 import * as React from "react";
 import renderer from "react-test-renderer";
 
@@ -18,8 +17,8 @@ test("styled blueprint jsx css will not trigger stylesheet errors", () => {
         title="Testing Higher Order Components"
         description="This seemed reasonable, though there may be a better way"
       />
-			<BlueprintCSS />
-			<BlueprintSelectCSS />
+      <BlueprintCSS />
+      <BlueprintSelectCSS />
     </React.Fragment>
   );
 
