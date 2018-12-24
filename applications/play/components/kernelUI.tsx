@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import styled from "styled-comonents";
+import styled from "styled-components";
 import { KernelspecRecord } from "@nteract/types";
 
 type KernelOptionProps = {
