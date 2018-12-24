@@ -1,8 +1,11 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
 
-import { BlueprintCSS, BlueprintSelectCSS } from "../src";
+jest.mock("styled-components", () => ({
+  createGlobalStyle: jest.fn(() => "")
+}));
 
+import { BlueprintCSS, BlueprintSelectCSS } from "../src";
 test("styled blueprint jsx css will not trigger stylesheet errors", () => {
   const BareComponent = props => (
     <div>
