@@ -93,6 +93,10 @@ export function objectToReactElement(
     );
   }
 
+  if (obj.attributes.dangerouslySetInnerHTML) {
+    delete obj.attributes.dangerouslySetInnerHTML;
+  }
+
   // Add event handlers to attributes.
   // Replace event handlers values (target name) with callback functions that
   // serialize the event object and call `onVDOMEvent` with the comm target name
