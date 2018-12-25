@@ -36,6 +36,6 @@
   "devDependencies": {
     "@types/js-cookie": "^2.2.0",
     "@types/url-join": "^0.8.2",
-    "@types/url-search-params": "^0.10.2"
+    "@types/url-search-params": "^1.0.0"
   }
 }
