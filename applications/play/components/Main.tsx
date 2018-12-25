@@ -53,12 +53,22 @@ const PlayEditor = styled.div`
   position: absolute;
   left: 0;
   height: 100%;
+
+  .CodeMirror {
+    height: 100%;
+  }
+
+  & > div {
+    height: 100%;
+  }
 `;
 
 const PlayOutputs = styled.div`
+  --editor-width: 52%;
   width: calc(100% - var(--editor-width));
   position: absolute;
   right: 0;
+  height: 100%;
 `;
 
 const Header = styled.header`
@@ -109,12 +119,14 @@ const Header = styled.header`
 `;
 
 const BodyStyle = createGlobalStyle`
-  height: 100%;
-  font-family: Monaco, monospace;
-
-  & .CodeMirror {
+  body {
+    margin: 0;
     height: 100%;
+    font-family: Monaco, monospace;
   }
+  .CodeMirror {
+    height: 100%;
+  }  
 `;
 
 class Main extends React.Component<Props, State> {
@@ -233,7 +245,7 @@ class Main extends React.Component<Props, State> {
           <title>nteract play: Run interactive code</title>
         </Head>
         <Header>
-          <div className="left">
+          <div>
             <img
               src={NTERACT_LOGO_URL}
               alt="nteract logo"
@@ -316,6 +328,7 @@ class Main extends React.Component<Props, State> {
             }}
             value={sourceValue}
             onChange={this.handleEditorChange}
+            style={{ height: "100%" }}
           />
         </PlayEditor>
 

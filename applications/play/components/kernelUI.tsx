@@ -42,15 +42,6 @@ class KernelSelector extends React.Component<KernelSelectorProps> {
             return <KernelOption kernelName={kernelName} key={kernelName} />;
           })}
         </select>
-        <style jsx>
-          {`
-            form label,
-            form select {
-              font-family: inherit;
-              font-size: inherit;
-            }
-          `}
-        </style>
       </Form>
     );
   }
@@ -69,6 +60,7 @@ const KernelData = styled.div`
 `;
 
 const KernelInfo = styled.div`
+  --header-height: 42px;
   color: #f1f1f1;
   line-height: var(--header-height);
   white-space: pre-wrap;
@@ -88,6 +80,9 @@ const KernelSelectorWrapper = styled.div`
 
 const KernelStatus = styled.div`
   color: #888;
+  & span {
+    color: #fff;
+  }
 `;
 
 export class KernelUI extends React.Component<KernelUIProps> {
@@ -99,8 +94,9 @@ export class KernelUI extends React.Component<KernelUIProps> {
           <KernelSelector {...otherprops} />
         </KernelSelectorWrapper>
         <KernelInfo>
-          <KernelStatus>Runtime: </KernelStatus>
-          {this.props.status}
+          <KernelStatus>
+            Runtime: <span>{this.props.status} </span>
+          </KernelStatus>
         </KernelInfo>
       </KernelData>
     );

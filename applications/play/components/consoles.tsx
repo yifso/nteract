@@ -36,15 +36,21 @@ type BinderTextInputProps = {
 };
 
 const Label = styled.label`
-  & input {
+  input {
     font-family: inherit;
     font-size: inherit;
   }
 
-  & span {
+  span {
     width: 12em;
     display: inline-block;
   }
+`;
+
+const Fieldset = styled.fieldset`
+  border: none;
+  padding-left: 0px;
+  margin-left: 0px;
 `;
 
 class BinderTextInput extends React.Component<BinderTextInputProps> {
@@ -53,7 +59,7 @@ class BinderTextInput extends React.Component<BinderTextInputProps> {
 
     return (
       <React.Fragment>
-        <fieldset className="binder">
+        <Fieldset>
           <Label htmlFor={id}>
             <span>{labelText}</span>
             <input
@@ -65,7 +71,7 @@ class BinderTextInput extends React.Component<BinderTextInputProps> {
               size={80}
             />
           </Label>
-        </fieldset>
+        </Fieldset>
       </React.Fragment>
     );
   }
@@ -92,12 +98,6 @@ const Button = styled.button`
     background-color: #2a2a2a;
     border: 1px solid #d7d7d7;
   }
-`;
-
-const Fieldset = styled.fieldset`
-  border: none;
-  padding-left: 0px;
-  margin-left: 0px;
 `;
 
 class BinderForm extends React.Component<BinderFormProps> {
@@ -184,20 +184,18 @@ class BinderLogs extends React.Component<BinderLogsProps> {
 }
 
 const ConsoleDiv = styled.div`
-  & .binder-console {
-    clear: left;
-    min-height: 42px;
-    padding: 15px 0px 20px 25px;
-    color: #f1f1f1;
-    font-family: Monaco, monospace;
-    font-size: 12px;
-    line-height: 19px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background-color: #1a1a1a;
-    counter-reset: line-numbering;
-    margin-top: 0;
-  }
+  clear: left;
+  min-height: 42px;
+  padding: 15px 0px 20px 25px;
+  color: #f1f1f1;
+  font-family: Monaco, monospace;
+  font-size: 12px;
+  line-height: 19px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: #1a1a1a;
+  counter-reset: line-numbering;
+  margin-top: 0;
 `;
 
 export class Console extends React.Component {
