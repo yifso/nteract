@@ -10,13 +10,10 @@ import {
   catchError,
   timeout
 } from "rxjs/operators";
-import { ofType } from "redux-observable";
-import { ActionsObservable, StateObservable } from "redux-observable";
+import { ofType, ActionsObservable, StateObservable } from "redux-observable";
 import { readFileObservable, statObservable } from "fs-observable";
-import { monocellNotebook, toJS } from "@nteract/commutable";
-import { ImmutableNotebook } from "@nteract/commutable";
-import { actions, selectors } from "@nteract/core";
-import { AppState } from "@nteract/core";
+import { monocellNotebook, toJS, ImmutableNotebook } from "@nteract/commutable";
+import { actions, selectors, AppState } from "@nteract/core";
 
 import { contents } from "rx-jupyter";
 
@@ -46,7 +43,7 @@ export const extractNewKernel = (
 function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
-  content: string
+  content: Buffer
 ): contents.Payload {
   const parsedFilePath = path.parse(filePath);
 
@@ -64,7 +61,7 @@ function createContentsResponse(
       type: "directory",
       mimetype: null,
       format: "json",
-      content,
+      content: null,
       writable,
       name: name === "." ? "" : name,
       path: filePath === "." ? "" : filePath,
@@ -77,7 +74,7 @@ function createContentsResponse(
         type: "notebook",
         mimetype: null,
         format: "json",
-        content: content ? JSON.parse(content) : null,
+        content: content ? JSON.parse(content.toString()) : null,
         writable,
         name,
         path: filePath,
@@ -91,7 +88,7 @@ function createContentsResponse(
       type: "file",
       mimetype: null,
       format: "text",
-      content,
+      content: content.toString(),
       writable,
       name,
       path: filePath,
@@ -125,7 +122,7 @@ export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
         readFileObservable(filepath),
         statObservable(filepath),
         // Project onto the Contents API response
-        (content, stat): contents.Payload =>
+        (content: Buffer, stat: fs.Stats): contents.Payload =>
           createContentsResponse(filepath, stat, content)
       ).pipe(
         // Timeout after one minute
