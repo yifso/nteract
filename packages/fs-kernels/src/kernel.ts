@@ -11,8 +11,6 @@ import {
   tap,
   mergeMap,
   catchError,
-  switchMap,
-  concatMap,
   timeout,
   first,
   toArray
@@ -106,7 +104,6 @@ export class Kernel {
       timeout(1000 * 2),
       catchError(err => of({ error: err, id: this.id })),
       mergeMap(async action => {
-        debugger;
         // End all communication on the channels
         this.channels.complete();
 
