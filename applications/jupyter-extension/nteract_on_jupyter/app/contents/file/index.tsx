@@ -7,7 +7,6 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { FormGroup, H4 } from "@blueprintjs/core";
 // $FlowFixMe
 import * as actions from "@nteract/actions";
 
@@ -150,7 +149,7 @@ export class File extends React.PureComponent<FileProps, State> {
               >
                 <ThemedLogo />
               </a>
-              <FormGroup>
+              <div>
                 <H4 onClick={() => this.setState({ isDialogOpen: true })}>
                   {this.props.displayName}
                 </H4>
@@ -160,7 +159,7 @@ export class File extends React.PureComponent<FileProps, State> {
                   onCancel={() => this.setState({ isDialogOpen: false })}
                   onSave={this.confirmTitle}
                 />
-              </FormGroup>
+              </div>
             </NavSection>
             <NavSection>
               <span className="icon">{icon}</span>
