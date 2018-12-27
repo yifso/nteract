@@ -28,7 +28,7 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
  *                   if type is 'directory' ,
  * format (string): Format of content (one of null, 'text', 'base64', 'json')
  */
-export type Payload = {
+export interface IContent {
   name: string;
   path: string;
   type: "directory" | "file" | "notebook";
@@ -38,7 +38,7 @@ export type Payload = {
   mimetype: string;
   content: string | Notebook;
   format: string;
-};
+}
 
 /**
  * Creates an AjaxObservable for removing content.
@@ -55,10 +55,10 @@ export const remove = (serverConfig: ServerConfig, path: string) =>
     })
   );
 
-interface GetParams {
-  type?: "file" | "directory" | "notebook";
-  format?: "text" | "base64" | string;
-  content?: 0 | 1;
+interface IGetParams {
+  type: "file" | "directory" | "notebook";
+  format: "text" | "base64" | string;
+  content: 0 | 1;
 }
 
 /**
@@ -76,14 +76,14 @@ interface GetParams {
 export const get = (
   serverConfig: ServerConfig,
   path: string,
-  params: GetParams = {}
+  params: Partial<IGetParams> = {}
 ) => {
   let uri = formURI(path);
   const query = querystring.stringify(params);
   if (query.length > 0) {
     uri = `${uri}?${query}`;
   }
-  return ajax(createAJAXSettings(serverConfig, uri, {cache: false}));
+  return ajax(createAJAXSettings(serverConfig, uri, { cache: false }));
 };
 
 /**
@@ -98,15 +98,15 @@ export const get = (
 export const update = (
   serverConfig: ServerConfig,
   path: string,
-  model: Payload
+  model: Partial<IContent>
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PATCH",
-      body: model
+      method: "PATCH"
     })
   );
 
@@ -122,15 +122,15 @@ export const update = (
 export const create = (
   serverConfig: ServerConfig,
   path: string,
-  model: Payload
+  model: IContent
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "POST",
-      body: model
+      method: "POST"
     })
   );
 
@@ -147,15 +147,15 @@ export const create = (
 export const save = (
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<Payload>
+  model: Partial<IContent>
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PUT",
-      body: model
+      method: "PUT"
     })
   );
 
@@ -170,8 +170,8 @@ export const save = (
 export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, ""), {
-      method: "GET",
-      cache: false
+      cache: false,
+      method: "GET"
     })
   );
 
