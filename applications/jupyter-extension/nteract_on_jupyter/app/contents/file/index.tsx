@@ -7,6 +7,7 @@ import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
+import { H4 } from "@blueprintjs/core";
 // $FlowFixMe
 import * as actions from "@nteract/actions";
 
