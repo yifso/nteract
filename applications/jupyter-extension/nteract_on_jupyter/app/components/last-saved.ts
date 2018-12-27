@@ -1,5 +1,3 @@
-/* @flow strict */
-
 /**
  * A simple contentRef aware component that renders a little lastSaved
  * display.
@@ -15,16 +13,28 @@
 
 import * as React from "react";
 import { selectors } from "@nteract/core";
-import type { ContentRef, AppState } from "@nteract/core";
+import { ContentRef, AppState } from "@nteract/core";
 import moment from "moment";
+import styled from "styled-components";
 import { connect } from "react-redux";
 
 type LastSavedProps = {
   date: string | number | Date | null
 };
 
+const Span = styled('span')`
+  margin: 0 auto;
+  font-size: 15px;
+  color: var(--nt-nav-dark);
+`;
+
+const Pretext = styled(Span)`
+  font-weight: var(--nt-font-weight-bolder);
+  padding-right: 10px;
+`;
+
 class LastSaved extends React.Component<LastSavedProps, null> {
-  intervalId: IntervalID;
+  intervalId: NodeJS.Timeout;
   isStillMounted: boolean;
 
   constructor(props: LastSavedProps) {
@@ -36,6 +46,8 @@ class LastSaved extends React.Component<LastSavedProps, null> {
     this.isStillMounted = true;
     this.intervalId = setInterval(() => {
       if (this.isStillMounted && this.props.date !== null) {
+        // React Component method. Forces component to update.
+        // See https://reactjs.org/docs/react-component.html#forceupdate
         this.forceUpdate();
       }
     }, 30 * 1000);
@@ -63,23 +75,12 @@ class LastSaved extends React.Component<LastSavedProps, null> {
 
     return (
       <React.Fragment>
-        <span className="pretext" title={title}>
+        <Pretext title={title}>
           Last Saved:{" "}
-        </span>
-        <span className="timetext" title={title}>
+        </Pretext>
+        <Span className="timetext" title={title}>
           {text}
-        </span>
-        <style jsx>{`
-          .pretext {
-            font-weight: var(--nt-font-weight-bolder);
-            padding-right: 10px;
-          }
-          span {
-            margin: 0 auto;
-            font-size: 15px;
-            color: var(--nt-nav-dark);
-          }
-        `}</style>
+        </Span>
       </React.Fragment>
     );
   }
