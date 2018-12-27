@@ -1,11 +1,12 @@
 import * as Immutable from "immutable";
 import { fromJS } from "@nteract/commutable";
-import { combineReducers } from "redux-immutable";
 import { Action } from "redux";
 
 import * as actionTypes from "@nteract/actions";
 import {
   ContentModel,
+  ContentRecord,
+  ContentsRecord,
   makeFileContentRecord,
   makeFileModelRecord,
   makeDummyContentRecord,
@@ -15,13 +16,17 @@ import {
   makeDocumentRecord,
   makeNotebookContentRecord,
   createContentRef,
-  DummyContentRecordProps
+  DummyContentRecordProps,
+  ContentRef
 } from "@nteract/types";
 
 import { notebook } from "./notebook";
 import { file } from "./file";
 
-const byRef = (state = Immutable.Map(), action: Action) => {
+const byRef = (
+  state: Immutable.Map<ContentRef, ContentRecord>,
+  action: Action
+): Immutable.Map<ContentRef, ContentRecord> => {
   switch (action.type) {
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
@@ -69,7 +74,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
 
           // Create a map of <ContentRef, ContentRecord> that we merge into the
           // content refs state
-          const dummyRecords = Immutable.Map(
+          const dummyRecords = Immutable.Map<ContentRef, ContentRecord>(
             fetchContentFulfilledAction.payload.model.content.map(
               (entry: any) => {
                 return [
@@ -88,7 +93,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
             )
           );
 
-          const items = Immutable.List(dummyRecords.keys());
+          const items = Immutable.List<ContentRef>(dummyRecords.keys());
           const sorted = items.sort((aRef, bRef) => {
             const a:
               | Immutable.RecordOf<DummyContentRecordProps>
@@ -232,7 +237,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
     case actionTypes.UPDATE_FILE_TEXT: {
       const fileAction = action as actionTypes.UpdateFileText;
       const path = [fileAction.payload.contentRef, "model"];
-      const model = state.getIn(path);
+      const model: ContentModel = state.getIn(path);
       if (model && model.type === "file") {
         return state.setIn(path, file(model, fileAction));
       }
@@ -243,4 +248,11 @@ const byRef = (state = Immutable.Map(), action: Action) => {
   }
 };
 
-export const contents = combineReducers({ byRef }, makeContentsRecord as any);
+export const contents = (
+  state: ContentsRecord = makeContentsRecord(),
+  action: Action
+): ContentsRecord => {
+  return state.merge({
+    byRef: byRef(state.byRef, action)
+  });
+};

@@ -1,6 +1,12 @@
 import { combineReducers } from "redux-immutable";
 
-import { makeEntitiesRecord } from "@nteract/types";
+import {
+  makeEntitiesRecord,
+  EntitiesRecord,
+  EntitiesRecordProps
+} from "@nteract/types";
+
+import { Action } from "redux";
 
 import { contents } from "./contents";
 import { hosts } from "./hosts";
