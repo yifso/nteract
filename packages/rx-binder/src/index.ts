@@ -41,7 +41,7 @@ export const formBinderURL = ({
   return `${binderURL}/build/gh/${repo}/${ref}`;
 };
 
-interface IEventSource {
+export interface IEventSource {
   onmessage?: (evt: MessageEvent) => void;
   onerror?: (reason: any) => void;
   close(): void;

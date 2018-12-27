@@ -1,10 +1,9 @@
-// @flow
 import React from "react";
 import App, { Container } from "next/app";
 import withRedux from "next-redux-wrapper";
 import { Provider } from "react-redux";
 
-import { createStore } from "../redux";
+import { createStore } from "../app-redux";
 
 /**
  * @param {object} initialState
