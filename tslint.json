@@ -4,7 +4,8 @@
     "tslint:recommended",
     "tslint-react",
     "tslint-react-a11y",
-    "tslint-react-perf"
+    "tslint-react-perf",
+    "tslint-config-prettier"
   ],
   "jsRules": {},
   "rules": {
