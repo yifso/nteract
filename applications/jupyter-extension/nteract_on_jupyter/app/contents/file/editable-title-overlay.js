@@ -14,7 +14,11 @@ export type EditableTitleOverlayProps = {
   defaultValue: string;
   isOpen: boolean;
   onCancel: () => void;
-  onSave: (value) => void;
+  onSave: (value: string) => void;
+};
+
+export type EditableTitleOverlayState = {
+  value: string;
 };
 
 // styled blueprintjs `Icon`
@@ -22,7 +26,7 @@ const CloseIcon = styled(Icon)`
   cursor: pointer;
 `; 
 
-export class EditableTitleOverlay extends React.Component<EditableTitleOverlayProps> {
+export class EditableTitleOverlay extends React.Component<EditableTitleOverlayProps, EditableTitleOverlayState> {
   // Needs to track the input value because in order to handle save
   // when the save button is clicked, we needed to know what the value
   // that was last entered is.
