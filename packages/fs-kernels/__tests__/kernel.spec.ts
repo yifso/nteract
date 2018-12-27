@@ -1,4 +1,7 @@
+import { toArray } from "rxjs/operators";
+
 import { launchKernel } from "../src/kernel";
+import { DebugLogger } from "builder-util";
 
 jest.unmock("process");
 
@@ -21,7 +24,24 @@ describe("Kernel", () => {
     await kernel.shutdown();
     done();
   });
-  it.skip("can get usage metrics on a kernel", async done => {
+  it("creates a valid shutdown epic", async done => {
+    const originalKill = process.kill;
+    process.kill = jest.fn(pid => {});
+    const kernel = await launchKernel("python3");
+    const shutdown$ = await kernel
+      .shutdownEpic()
+      .pipe(toArray())
+      .toPromise();
+    expect(shutdown$[0].subscribe).toBeTruthy();
+    expect(shutdown$[0].value).toEqual({
+      status: "shutdown",
+      id: kernel.id
+    });
+    process.kill = originalKill;
+    kernel.process.kill();
+    done();
+  });
+  it("can get usage metrics on a kernel", async done => {
     const kernel = await launchKernel("python3");
     const stats = await kernel.getUsage();
     expect(stats.memory).toBeDefined();
