@@ -4,7 +4,8 @@
     "tslint:recommended",
     "tslint-react",
     "tslint-react-a11y",
-    "tslint-react-perf"
+    "tslint-react-perf",
+    "tslint-config-prettier"
   ],
   "jsRules": {},
   "rules": {
@@ -15,8 +16,7 @@
     "no-duplicate-imports": true,
     "max-line-length": false,
     "trailing-comma": false,
-    "member-access": false,
-    "member-ordering": true
+    "member-access": false
   },
   "rulesDirectory": []
 }
