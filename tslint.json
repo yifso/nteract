@@ -11,7 +11,7 @@
     "no-unnecessary-type-assertion": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
-    "ordered-imports": true,
+    "ordered-imports": false,
     "no-duplicate-imports": true,
     "max-line-length": false,
     "trailing-comma": false
