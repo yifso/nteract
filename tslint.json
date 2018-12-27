@@ -16,8 +16,7 @@
     "no-duplicate-imports": true,
     "max-line-length": false,
     "trailing-comma": false,
-    "member-access": false,
-    "member-ordering": true
+    "member-access": false
   },
   "rulesDirectory": []
 }
