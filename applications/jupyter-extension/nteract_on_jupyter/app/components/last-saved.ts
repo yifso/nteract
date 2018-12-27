@@ -22,7 +22,7 @@ type LastSavedProps = {
   date: string | number | Date | null
 };
 
-const Span = styled('span')`
+const Span = styled.span`
   margin: 0 auto;
   font-size: 15px;
   color: var(--nt-nav-dark);
