@@ -15733,12 +15733,12 @@ vega-tooltip@^0.11.0:
   dependencies:
     vega-util "^1.7.0"
 
-vega-tooltip@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.14.0.tgz#4b8655bf3ea0bdf8c527238f41c69d1bd8f0d988"
-  integrity sha512-lcse840tvMmg909LlJGPwQY4qB4GvOgyiYu3slCc6kPLjiG6eDmtSX9qtDSFYK4V8zifZOHMobEPz/kmNy7jUA==
+vega-tooltip@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.15.0.tgz#2606a95b46f0aa6a70f03d18f919dc13696c4d44"
+  integrity sha512-xfac+5I7YR1ZKfip2i9xlEHuNrl5YpQnZAmTc9dzQcnkoo5MmGVIhH01tEGOr8keVC9UbYU1AREezwv8Mpajhw==
   dependencies:
-    vega-util "^1.7.0"
+    vega-util "^1.7.1"
 
 vega-transforms@^2.3.0:
   version "2.3.0"
@@ -15761,6 +15761,11 @@ vega-util@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.7.0.tgz#0ca0512bb8dcc6541165c34663d115d0712e0cf1"
   integrity sha512-IlmYqW0t3UP8AJX4QuOOm5cMPKPOUa8fSTcCvNkfVOR5zvMNFKCVhoZmJSXgcbEhkfboB+ysI2aaWOeW2kKBog==
+
+vega-util@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.7.1.tgz#0b95bbe6058895c332596c215247507caa68ab61"
+  integrity sha512-jdzigLdaXH0rClqkr/qHY//xvmLyxQyZL4Wxb3mew29QpITrMk/USV6v/399h29xVt1+hJuw1vpLoJqAq6WerA==
 
 vega-view-transforms@^2.0.3:
   version "2.0.3"
