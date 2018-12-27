@@ -5,7 +5,7 @@ import { Action } from "redux";
 
 import * as actionTypes from "@nteract/actions";
 import {
-  ContentRecord,
+  ContentModel,
   makeFileContentRecord,
   makeFileModelRecord,
   makeDummyContentRecord,
@@ -13,9 +13,10 @@ import {
   makeDirectoryContentRecord,
   makeDirectoryModel,
   makeDocumentRecord,
-  makeNotebookContentRecord
+  makeNotebookContentRecord,
+  createContentRef,
+  DummyContentRecordProps
 } from "@nteract/types";
-import { createContentRef, DummyContentRecordProps } from "@nteract/types";
 
 import { notebook } from "./notebook";
 import { file } from "./file";
@@ -169,14 +170,17 @@ const byRef = (state = Immutable.Map(), action: Action) => {
     case actionTypes.SAVE_FULFILLED:
       const saveFulfilledAction = action as actionTypes.SaveFulfilled;
       return state
-        .updateIn([saveFulfilledAction.payload.contentRef, "model"], model => {
-          // Notebook ends up needing this because we store a last saved version of the notebook
-          // Alternatively, we could be storing a hash of the content to compare 🤔
-          if (model && model.type === "notebook") {
-            return notebook(model, saveFulfilledAction);
+        .updateIn(
+          [saveFulfilledAction.payload.contentRef, "model"],
+          (model: ContentModel) => {
+            // Notebook ends up needing this because we store a last saved version of the notebook
+            // Alternatively, we could be storing a hash of the content to compare 🤔
+            if (model && model.type === "notebook") {
+              return notebook(model, saveFulfilledAction);
+            }
+            return model;
           }
-          return model;
-        })
+        )
         .setIn(
           [saveFulfilledAction.payload.contentRef, "lastSaved"],
           saveFulfilledAction.payload.model.last_modified
