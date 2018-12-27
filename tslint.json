@@ -1,0 +1,20 @@
+{
+  "defaultSeverity": "warn",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-react-a11y",
+    "tslint-react-perf"
+  ],
+  "jsRules": {},
+  "rules": {
+    "no-unnecessary-type-assertion": true,
+    "no-debugger": true,
+    "no-duplicate-variable": true,
+    "ordered-imports": true,
+    "no-duplicate-imports": true,
+    "max-line-length": false,
+    "trailing-comma": false
+  },
+  "rulesDirectory": []
+}
