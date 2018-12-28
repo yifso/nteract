@@ -1,6 +1,6 @@
 import { ChildProcess } from "child_process";
 
-import { Observable, of, merge, empty } from "rxjs";
+import { Observable, of, merge, empty, Subscriber } from "rxjs";
 import { sample } from "lodash";
 import {
   filter,
@@ -414,7 +414,7 @@ export const killKernelEpic = (
       );
 
       // On subscription, send the message
-      return Observable.create(observer => {
+      return new Observable(observer => {
         const subscription = shutDownHandling.subscribe(observer);
         kernel.channels.next(request);
         return subscription;
@@ -433,7 +433,7 @@ export function watchSpawn(action$: ActionsObservable<Actions>) {
         throw new Error("kernel.spawn is not provided.");
       }
       const spawn: ChildProcess = action.payload.kernel.spawn;
-      return Observable.create(observer => {
+      return new Observable((observer: Subscriber<Actions>) => {
         spawn.on("error", error => {
           // We both set the state and make it easy for us to log the error
           observer.next(
