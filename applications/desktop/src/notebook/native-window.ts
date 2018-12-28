@@ -50,7 +50,7 @@ export function tildify(p?: string) {
 type Attributes = {
   fullpath: string;
   modified: boolean;
-  kernelStatus: string;
+  kernelStatus?: string;
 };
 
 export function setTitleFromAttributes(attributes: Attributes) {
@@ -80,7 +80,7 @@ export function setTitleFromAttributes(attributes: Attributes) {
 export function createTitleFeed(
   contentRef: ContentRef,
   state$: Observable<AppState>
-) {
+): Observable<Attributes> {
   const content$: Observable<ContentRecord> = state$.pipe(
     mergeMap((state: AppState) => {
       const content = selectors.content(state, { contentRef });
@@ -133,9 +133,9 @@ export function createTitleFeed(
     fullpath$,
     kernelStatus$,
     (modified, fullpath, kernelStatus) => ({
-      modified,
       fullpath,
-      kernelStatus
+      kernelStatus,
+      modified
     })
   ).pipe(
     distinctUntilChanged(),
@@ -153,6 +153,6 @@ export function initNativeHandlers(
 
   return createTitleFeed(contentRef, state$).subscribe(
     setTitleFromAttributes,
-    err => console.error(err)
+    (err: Error) => console.error(err)
   );
 }

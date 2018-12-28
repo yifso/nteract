@@ -247,7 +247,7 @@ export function dispatchPublishGist(
       win.webContents.executeJavaScript(
         `require('electron').ipcRenderer.send('auth', document.body.textContent);`
       );
-      remote.ipcMain.on("auth", (event, auth) => {
+      remote.ipcMain.on("auth", (event: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
