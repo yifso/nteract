@@ -432,45 +432,47 @@ export const killKernelEpic = (
 export function watchSpawn(action$: ActionsObservable<Actions>) {
   return action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: actions.NewKernelAction) => {
-      if (action.payload.kernel.type !== "zeromq") {
-        throw new Error("kernel.type is not zeromq.");
+    switchMap(
+      (action: actions.NewKernelAction): Observable<Actions> => {
+        if (action.payload.kernel.type !== "zeromq") {
+          throw new Error("kernel.type is not zeromq.");
+        }
+        if (!action.payload.kernel.spawn) {
+          throw new Error("kernel.spawn is not provided.");
+        }
+        const spawn: ChildProcess = action.payload.kernel.spawn;
+        return new Observable((observer: Subscriber<Actions>) => {
+          spawn.on("error", error => {
+            // We both set the state and make it easy for us to log the error
+            observer.next(
+              actions.setExecutionState({
+                kernelStatus: "process errored",
+                kernelRef: action.payload.kernelRef
+              })
+            );
+            observer.error({ type: "ERROR", payload: error, err: true });
+            observer.complete();
+          });
+          spawn.on("exit", () => {
+            observer.next(
+              actions.setExecutionState({
+                kernelStatus: "process exited",
+                kernelRef: action.payload.kernelRef
+              })
+            );
+            observer.complete();
+          });
+          spawn.on("disconnect", () => {
+            observer.next(
+              actions.setExecutionState({
+                kernelStatus: "process disconnected",
+                kernelRef: action.payload.kernelRef
+              })
+            );
+            observer.complete();
+          });
+        });
       }
-      if (!action.payload.kernel.spawn) {
-        throw new Error("kernel.spawn is not provided.");
-      }
-      const spawn: ChildProcess = action.payload.kernel.spawn;
-      return new Observable((observer: Subscriber<Actions>) => {
-        spawn.on("error", error => {
-          // We both set the state and make it easy for us to log the error
-          observer.next(
-            actions.setExecutionState({
-              kernelStatus: "process errored",
-              kernelRef: action.payload.kernelRef
-            })
-          );
-          observer.error({ type: "ERROR", payload: error, err: true });
-          observer.complete();
-        });
-        spawn.on("exit", () => {
-          observer.next(
-            actions.setExecutionState({
-              kernelStatus: "process exited",
-              kernelRef: action.payload.kernelRef
-            })
-          );
-          observer.complete();
-        });
-        spawn.on("disconnect", () => {
-          observer.next(
-            actions.setExecutionState({
-              kernelStatus: "process disconnected",
-              kernelRef: action.payload.kernelRef
-            })
-          );
-          observer.complete();
-        });
-      });
-    })
+    )
   );
 }
