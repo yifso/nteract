@@ -53,7 +53,7 @@ module.exports = {
   },
   resolve: {
     mainFields: ["nteractDesktop", "module", "main"],
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".ts", ".tsx"],
     alias: configurator.mergeDefaultAliases()
   },
   plugins: [
