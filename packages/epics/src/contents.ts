@@ -53,7 +53,7 @@ export function fetchContentEpic(
         .pipe(
           tap(xhr => {
             if (xhr.status !== 200) {
-              throw new Error(xhr.response);
+              throw new Error(xhr.response.toString());
             }
           }),
           map(xhr => {
@@ -244,7 +244,7 @@ export function saveContentEpic(
 
         // This could be object for notebook, or string for files
         let serializedData: Notebook | string;
-        let saveModel: Partial<contents.Payload> = {};
+        let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
         if (content.type === "notebook") {
           const appVersion = selectors.appVersion(state);
 
@@ -314,8 +314,14 @@ export function saveContentEpic(
               mergeMap(xhr => {
                 // TODO: What does it mean if we have a failed GET on the content
                 if (xhr.status !== 200) {
-                  throw new Error(xhr.response);
+                  throw new Error(xhr.response.toString());
                 }
+                if (typeof xhr.response === "string") {
+                  throw new Error(
+                    `jupyter server response invalid: ${xhr.response}`
+                  );
+                }
+
                 const model = xhr.response;
 
                 const diskDate = new Date(model.last_modified);

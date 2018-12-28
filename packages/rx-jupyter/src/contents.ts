@@ -4,18 +4,62 @@
 import { ajax } from "rxjs/ajax";
 import querystring from "querystring";
 import urljoin from "url-join";
-import { ServerConfig, createAJAXSettings } from "./base";
+import { ServerConfig, createAJAXSettings, JupyterAjaxResponse } from "./base";
 import { Notebook } from "@nteract/commutable";
+import { Observable } from "rxjs";
 
 const formURI = (path: string) => urljoin("/api/contents/", path);
 
 const formCheckpointURI = (path: string, checkpointID: string) =>
   urljoin("/api/contents/", path, "checkpoints", checkpointID);
 
+type FileType = "directory" | "file" | "notebook";
+
+/*********************************************
+ * Contents API request and response payloads
+ *********************************************/
+
 /**
- * Explicit typing of the payloads for content
+ * Just the Stat call portion of the contents API
+ * (no content property)
+ */
+export interface IStatContent {
+  name: string;
+  path: string;
+  type: FileType;
+  writable: boolean;
+  created: string;
+  last_modified: string;
+  mimetype: string;
+  format: string;
+}
+
+/**
+ * For directory listings and when a GET is performed against content with ?content=0
+ * the content field is null
+ */
+export interface IEmptyContent<FT = FileType> extends IStatContent {
+  type: FileType;
+  content: null;
+}
+
+/**
+ * Full Payloads from the contents API
+ */
+export interface IContent<FT extends FileType> extends IStatContent {
+  type: FT;
+  content: FT extends "file"
+    ? string
+    : FT extends "notebook"
+    ? Notebook
+    : FT extends "directory"
+    ? Array<IContent<FileType>>
+    : null;
+}
+
+/*
  *
- * name (string): Name of file or directory, equivalent to the last part of the path ,
+ * name (string):
  * path (string): Full path for file or directory ,
  * type (string): Type of content = ['directory', 'file', 'notebook']
  *                stringEnum:"directory", "file", "notebook",
@@ -28,17 +72,6 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
  *                   if type is 'directory' ,
  * format (string): Format of content (one of null, 'text', 'base64', 'json')
  */
-export type Payload = {
-  name: string;
-  path: string;
-  type: "directory" | "file" | "notebook";
-  writable: boolean;
-  created: string;
-  last_modified: string;
-  mimetype: string;
-  content: string | Notebook;
-  format: string;
-};
 
 /**
  * Creates an AjaxObservable for removing content.
@@ -55,10 +88,10 @@ export const remove = (serverConfig: ServerConfig, path: string) =>
     })
   );
 
-interface GetParams {
-  type?: "file" | "directory" | "notebook";
-  format?: "text" | "base64" | string;
-  content?: 0 | 1;
+interface IGetParams {
+  type: "file" | "directory" | "notebook";
+  format: "text" | "base64" | string;
+  content: 0 | 1;
 }
 
 /**
@@ -73,18 +106,23 @@ interface GetParams {
  *
  * @returns An Observable with the request response
  */
-export const get = (
+export function get(
   serverConfig: ServerConfig,
   path: string,
-  params: GetParams = {}
-) => {
+  params: Partial<IGetParams> = {}
+) {
   let uri = formURI(path);
   const query = querystring.stringify(params);
   if (query.length > 0) {
     uri = `${uri}?${query}`;
   }
-  return ajax(createAJAXSettings(serverConfig, uri, {cache: false}));
-};
+
+  // NOTE: If the user requests with params.content === 0
+  // Then the response is IEmptyContent
+  return ajax(
+    createAJAXSettings(serverConfig, uri, { cache: false })
+  ) as Observable<JupyterAjaxResponse<IContent<FileType>>>;
+}
 
 /**
  * Creates an AjaxObservable for renaming a file.
@@ -95,20 +133,21 @@ export const get = (
  *
  * @returns An Observable with the request response
  */
-export const update = (
+export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Payload
-) =>
-  ajax(
+  model: Partial<IContent<FT>>
+) {
+  return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PATCH",
-      body: model
+      method: "PATCH"
     })
   );
+}
 
 /**
  * Creates an AjaxObservable for creating content
@@ -119,20 +158,21 @@ export const update = (
  *
  * @returns An Observable with the request response
  */
-export const create = (
+export function create<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Payload
-) =>
-  ajax(
+  model: IContent<FT>
+) {
+  return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "POST",
-      body: model
+      method: "POST"
     })
   );
+}
 
 /**
  * Creates an AjaxObservable for saving the file in the location specified by
@@ -144,20 +184,21 @@ export const create = (
  *
  * @returns An Observable with the request response
  */
-export const save = (
+export function save<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<Payload>
-) =>
-  ajax(
+  model: Partial<IContent<FT>>
+) {
+  return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
+      body: model,
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PUT",
-      body: model
+      method: "PUT"
     })
   );
+}
 
 /**
  * Creates an AjaxObservable for listing checkpoints for a given file.
@@ -170,8 +211,8 @@ export const save = (
 export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, ""), {
-      method: "GET",
-      cache: false
+      cache: false,
+      method: "GET"
     })
   );
 
