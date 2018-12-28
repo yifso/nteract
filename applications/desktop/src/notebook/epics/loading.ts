@@ -12,7 +12,12 @@ import {
 } from "rxjs/operators";
 import { ofType, ActionsObservable, StateObservable } from "redux-observable";
 import { readFileObservable, statObservable } from "fs-observable";
-import { monocellNotebook, toJS, ImmutableNotebook } from "@nteract/commutable";
+import {
+  monocellNotebook,
+  toJS,
+  ImmutableNotebook,
+  Notebook
+} from "@nteract/commutable";
 import { actions, selectors, AppState } from "@nteract/core";
 
 import { contents } from "rx-jupyter";
@@ -44,17 +49,15 @@ function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
   content: Buffer
-): contents.Payload {
+): contents.IContent {
   const parsedFilePath = path.parse(filePath);
 
   const name = parsedFilePath.base;
+  // tslint:disable-next-line no-bitwise
   const writable = Boolean(fs.constants.W_OK & stat.mode);
-  /**
-   * TODO: Determine if the content record can encode created and last_modified
-   * as pure `Date`s or if it's supposed to match the jupyter API response literally
-   */
-  const created = (stat.birthtime as unknown) as string;
-  const last_modified = (stat.mtime as unknown) as string;
+  const created = stat.birthtime.toString();
+  // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
+  const last_modified = stat.mtime.toString();
 
   if (stat.isDirectory()) {
     return {
@@ -83,7 +86,6 @@ function createContentsResponse(
       };
     }
 
-    // TODO: Mimetype detection
     return {
       type: "file",
       mimetype: null,
@@ -122,19 +124,28 @@ export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
         readFileObservable(filepath),
         statObservable(filepath),
         // Project onto the Contents API response
-        (content: Buffer, stat: fs.Stats): contents.Payload =>
+        (content: Buffer, stat: fs.Stats): contents.IContent =>
           createContentsResponse(filepath, stat, content)
       ).pipe(
         // Timeout after one minute
         timeout(60 * 1000),
-        map(model =>
-          actions.fetchContentFulfilled({
+        map((model: contents.IContent | contents.IEmptyContent) => {
+          if (model.type !== "notebook") {
+            throw new Error(
+              "Attempted to load a non-notebook type from desktop"
+            );
+          }
+          if (model.content === null) {
+            throw new Error("No content loaded for notebook");
+          }
+
+          return actions.fetchContentFulfilled({
             filepath: model.path,
             model,
             kernelRef: action.payload.kernelRef,
             contentRef: action.payload.contentRef
-          })
-        ),
+          });
+        }),
         catchError((err: Error) =>
           of(
             actions.fetchContentFailed({

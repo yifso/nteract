@@ -55,6 +55,9 @@ export function fetchContentEpic(
             if (xhr.status !== 200) {
               throw new Error(xhr.response.toString());
             }
+            if (typeof xhr.response === "string") {
+              throw new Error(`Invalid API response: ${xhr.response}`);
+            }
           }),
           map(xhr => {
             return actions.fetchContentFulfilled({
