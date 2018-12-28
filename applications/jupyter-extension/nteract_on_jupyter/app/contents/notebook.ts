@@ -1,7 +1,5 @@
-/* @flow strict */
-
 import * as React from "react";
-import type { ContentRef } from "@nteract/core";
+import { ContentRef } from "@nteract/core";
 import {
   displayOrder as defaultDisplayOrder,
   transforms as defaultTransforms
