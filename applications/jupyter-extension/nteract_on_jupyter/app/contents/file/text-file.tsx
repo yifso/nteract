@@ -2,19 +2,15 @@ import * as React from "react";
 import styled from "styled-components";
 import { AppState, ContentRef } from "@nteract/core";
 import { selectors, actions } from "@nteract/core";
+import { MonacoEditorProps } from "@nteract/monaco-editor";
 import { connect } from "react-redux";
 
-import { MonacoEditorProps } from "../../../../../../node_modules/@nteract/monaco-editor";
 
 const EditorContainer = styled.div`
   position: absolute;
   left: 0;
   height: 100%;
   width: 100%;
-  
-  :global(.monaco) {
-    height: 100%;
-  }
 `;
 
 type MappedStateProps = {

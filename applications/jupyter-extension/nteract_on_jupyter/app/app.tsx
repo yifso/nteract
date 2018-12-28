@@ -1,4 +1,3 @@
-/* @flow strict */
 import { hot } from "react-hot-loader";
 import * as React from "react";
 import NotificationSystem from "react-notification-system";

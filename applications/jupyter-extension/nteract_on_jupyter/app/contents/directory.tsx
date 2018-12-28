@@ -21,11 +21,11 @@ import { connect } from "react-redux";
 
 import { Nav, NavSection } from "../components/nav";
 import { openNotebook } from "../triggers/open-notebook";
-import { ThemedLogo } from "../components/themed-logo.js";
+import { ThemedLogo } from "../components/themed-logo.jsx";
 
 const urljoin = require("url-join");
 
-const JextListingRoot = styled.div`
+const ListingRoot = styled.div`
   margin-top: 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -78,7 +78,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
           </NavSection>
         </Nav>
         <NewNotebookNavigation onClick={this.openNotebook} />
-        <JextListingRoot>
+        <ListingRoot>
           <Listing>
             {atRoot ? null : (
               // TODO: Create a contentRef for `..`, even though it's a placeholder
@@ -107,7 +107,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
               );
             })}
           </Listing>
-        </JextListingRoot>
+        </ListingRoot>
       </React.Fragment>
     );
   }

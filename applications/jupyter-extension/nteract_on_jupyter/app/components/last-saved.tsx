@@ -34,7 +34,7 @@ const Pretext = styled(Span)`
 `;
 
 class LastSaved extends React.Component<LastSavedProps, null> {
-  intervalId: NodeJS.Timeout;
+  intervalId: number;
   isStillMounted: boolean;
 
   constructor(props: LastSavedProps) {
@@ -78,7 +78,7 @@ class LastSaved extends React.Component<LastSavedProps, null> {
         <Pretext title={title}>
           Last Saved:{" "}
         </Pretext>
-        <Span className="timetext" title={title}>
+        <Span title={title}>
           {text}
         </Span>
       </React.Fragment>

@@ -10,7 +10,7 @@ import { EditableText } from "@blueprintjs/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
-import LastSaved from "../../components/last-saved.js";
+import LastSaved from "../../components/last-saved.jsx";
 import { default as Notebook } from "../notebook";
 
 import * as TextFile from "./text-file.js";
@@ -35,8 +35,8 @@ const JupyterExtensionChoiceContainer = styled.div`
   overflow: auto;
 `;
 
-const PaddedContainer = (children: React.ReactChildren) => (
-  <PaddedDiv>{children}</PaddedDiv>
+const PaddedContainer = ({ children: Element }) => (
+  <PaddedDiv>{this.props.children}</PaddedDiv>
 );
 
 type FileProps = {
@@ -45,14 +45,14 @@ type FileProps = {
   baseDir: string,
   appBase: string,
   displayName: string,
-  mimetype: ?string,
+  mimetype?: string,
   lastSavedStatement: string,
   saving: boolean,
   loading: boolean,
-  error: ?{}
+  error?: {}
 };
 
-export class File extends React.PureComponent<FileProps, *> {
+export class File extends React.PureComponent<FileProps> {
   render() {
     // Determine the file handler
     let choice = null;
