@@ -1,6 +1,5 @@
-/* @flow strict */
-
 import * as React from "react";
+import styled from "styled-components";
 import { selectors } from "@nteract/core";
 import { NewNotebookNavigation } from "@nteract/connected-components";
 import {
@@ -10,7 +9,7 @@ import {
   Name,
   LastSaved
 } from "@nteract/directory-listing";
-import type {
+import {
   AppState,
   KernelspecRecord,
   KernelspecProps,
@@ -25,6 +24,12 @@ import { openNotebook } from "../triggers/open-notebook";
 import { ThemedLogo } from "../components/themed-logo.js";
 
 const urljoin = require("url-join");
+
+const JextListingRoot = styled.div`
+  margin-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+`;
 
 type DirectoryProps = {
   content: DirectoryContentRecord,
@@ -73,7 +78,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
           </NavSection>
         </Nav>
         <NewNotebookNavigation onClick={this.openNotebook} />
-        <div className="jext-listing-root">
+        <JextListingRoot>
           <Listing>
             {atRoot ? null : (
               // TODO: Create a contentRef for `..`, even though it's a placeholder
@@ -102,14 +107,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
               );
             })}
           </Listing>
-        </div>
-        <style jsx>{`
-          .jext-listing-root {
-            margin-top: 2rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-          }
-        `}</style>
+        </JextListingRoot>
       </React.Fragment>
     );
   }
