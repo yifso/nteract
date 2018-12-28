@@ -1,4 +1,3 @@
-/* @flow strict */
 // NOTE: We _must_ load hot _before_ React, even though we don't use it in this file
 // eslint-disable-next-line no-unused-vars
 import { hot } from "react-hot-loader";
@@ -21,7 +20,7 @@ import {
   createHostRef,
   makeJupyterHostRecord
 } from "@nteract/core";
-import type { AppState } from "@nteract/core";
+import { AppState } from "@nteract/core";
 
 import configureStore from "./store";
 import App from "./app";

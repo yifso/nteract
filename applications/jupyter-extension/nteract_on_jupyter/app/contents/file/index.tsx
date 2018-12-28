@@ -1,34 +1,42 @@
-/* @flow strict */
-
 import { dirname } from "path";
 
 import * as React from "react";
+import styled from "styled-components";
 import { selectors } from "@nteract/core";
-import type { ContentRef, AppState } from "@nteract/core";
+import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { EditableText } from "@blueprintjs/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
-import LastSaved from "../../components/last-saved.js";
+import LastSaved from "../../components/last-saved";
 import { default as Notebook } from "../notebook";
 
-import * as TextFile from "./text-file.js";
+import * as TextFile from "./text-file";
 
 const urljoin = require("url-join");
 
-const PaddedContainer = ({ children }) => (
-  <div>
-    {children}
-    <style jsx>{`
-      div {
-        padding-left: var(--nt-spacing-l, 10px);
-        padding-top: var(--nt-spacing-m, 10px);
-        padding-right: var(--nt-spacing-m, 10px);
-      }
-    `}</style>
-  </div>
+const PaddedDiv = styled.div`
+  padding-left: var(--nt-spacing-l, 10px);
+  padding-top: var(--nt-spacing-m, 10px);
+  padding-right: var(--nt-spacing-m, 10px);
+`;
+
+const JupyterExtensionContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+  height: -webkit-fill-available;
+`;
+
+const JupyterExtensionChoiceContainer = styled.div`
+  flex: 1 1 auto;
+  overflow: auto;
+`;
+
+const PaddedContainer = ({ children: Element }) => (
+  <PaddedDiv>{this.props.children}</PaddedDiv>
 );
 
 type FileProps = {
@@ -37,14 +45,14 @@ type FileProps = {
   baseDir: string,
   appBase: string,
   displayName: string,
-  mimetype: ?string,
+  mimetype?: string,
   lastSavedStatement: string,
   saving: boolean,
   loading: boolean,
-  error: ?{}
+  error?: {}
 };
 
-export class File extends React.PureComponent<FileProps, *> {
+export class File extends React.PureComponent<FileProps> {
   render() {
     // Determine the file handler
     let choice = null;
@@ -82,7 +90,7 @@ export class File extends React.PureComponent<FileProps, *> {
     // If/when we support more modes, we would case them off here
     return (
       <React.Fragment>
-        <div className="jupyter-extension-container">
+        <JupyterExtensionContainer>
           <Nav contentRef={this.props.contentRef}>
             <NavSection>
               <a
@@ -102,23 +110,10 @@ export class File extends React.PureComponent<FileProps, *> {
               <LastSaved contentRef={this.props.contentRef} />
             </NavSection>
           </Nav>
-          <div className="jupyter-extension-choice-container">
+          <JupyterExtensionChoiceContainer>
             {choice}
-          </div>
-        </div>
-        <style jsx>{`
-          .jupyter-extension-container {
-            display: flex;
-            flex-flow: column;
-            align-items: stretch;
-            height: -webkit-fill-available;
-          }
-
-          .jupyter-extension-choice-container {
-            flex: 1 1 auto;
-            overflow: auto;
-          }
-        `}</style>
+          </JupyterExtensionChoiceContainer>
+        </JupyterExtensionContainer>
       </React.Fragment>
     );
   }

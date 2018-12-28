@@ -1,12 +1,10 @@
-/* @flow strict */
-
 // NOTE: We can safely install and use react-hot-loader as a regular dependency
 // instead of a dev dependency as it automatically ensures it is not executed
 // in production and the footprint is minimal.
 import { hot } from "react-hot-loader";
 import * as React from "react";
 import { selectors } from "@nteract/core";
-import type { AppState, ContentRef } from "@nteract/core";
+import { AppState, ContentRef } from "@nteract/core";
 import { connect } from "react-redux";
 
 import { ThemedLogo } from "../components/themed-logo";
