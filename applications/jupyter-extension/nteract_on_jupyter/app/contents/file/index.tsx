@@ -10,10 +10,10 @@ import { EditableText } from "@blueprintjs/core";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
-import LastSaved from "../../components/last-saved.jsx";
+import LastSaved from "../../components/last-saved";
 import { default as Notebook } from "../notebook";
 
-import * as TextFile from "./text-file.js";
+import * as TextFile from "./text-file";
 
 const urljoin = require("url-join");
 

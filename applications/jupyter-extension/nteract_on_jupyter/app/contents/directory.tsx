@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 
 import { Nav, NavSection } from "../components/nav";
 import { openNotebook } from "../triggers/open-notebook";
-import { ThemedLogo } from "../components/themed-logo.jsx";
+import { ThemedLogo } from "../components/themed-logo";
 
 const urljoin = require("url-join");
 
@@ -40,7 +40,7 @@ type DirectoryProps = {
     path: string,
     type: NotebookTypes,
     name: string,
-    last_modified: ?Date
+    last_modified?: Date
   }>
 };
 

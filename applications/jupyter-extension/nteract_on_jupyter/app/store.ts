@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 });
 
 export default function configureStore(initialState: AppState) {
-  const rootEpic = combineEpics<AppState, redux$AnyAction, *>(
+  const rootEpic = combineEpics<AppState, redux$AnyAction>(
     ...coreEpics.allEpics
   );
   const epicMiddleware = createEpicMiddleware();
