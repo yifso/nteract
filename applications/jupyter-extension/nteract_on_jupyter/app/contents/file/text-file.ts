@@ -1,11 +1,21 @@
-/* @flow strict */
 import * as React from "react";
-import type { AppState, ContentRef } from "@nteract/core";
+import styled from "styled-components";
+import { AppState, ContentRef } from "@nteract/core";
 import { selectors, actions } from "@nteract/core";
 import { connect } from "react-redux";
 
-// $FlowFixMe
-import type { MonacoEditorProps } from "../../../../../../node_modules/@nteract/monaco-editor";
+import { MonacoEditorProps } from "../../../../../../node_modules/@nteract/monaco-editor";
+
+const EditorContainer = styled.div`
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  
+  :global(.monaco) {
+    height: 100%;
+  }
+`;
 
 type MappedStateProps = {
   mimetype: string,
@@ -15,7 +25,7 @@ type MappedStateProps = {
 };
 
 type MappedDispatchProps = {
-  handleChange: string => void
+  handleChange: (value: string) => void
 };
 
 type TextFileProps = MappedStateProps & MappedDispatchProps;
@@ -46,7 +56,6 @@ export class TextFile extends React.PureComponent<
     this.props.handleChange(source);
   }
   componentDidMount() {
-    // $FlowFixMe
     import(/* webpackChunkName: "monaco-editor" */ "@nteract/monaco-editor").then(
       module => {
         this.setState({ Editor: module.default });
@@ -57,7 +66,7 @@ export class TextFile extends React.PureComponent<
     const Editor = this.state.Editor;
 
     return (
-      <div className="nteract-editor">
+      <EditorContainer className="nteract-editor">
         <Editor
           theme={this.props.theme === "dark" ? "vs-dark" : "vs"}
           mode={this.props.mimetype}
@@ -66,19 +75,7 @@ export class TextFile extends React.PureComponent<
           onChange={this.handleChange.bind(this)}
           contentRef={this.props.contentRef}
         />
-        <style jsx>{`
-          .nteract-editor {
-            position: absolute;
-            left: 0;
-            height: 100%;
-            width: 100%;
-          }
-
-          .nteract-editor :global(.monaco) {
-            height: 100%;
-          }
-        `}</style>
-      </div>
+      </EditorContainer>
     );
   }
 }
@@ -102,10 +99,7 @@ function mapStateToTextFileProps(
   };
 }
 
-const mapDispatchToTextFileProps = (
-  dispatch,
-  ownProps
-): MappedDispatchProps => ({
+const mapDispatchToTextFileProps = (dispatch, ownProps): MappedDispatchProps => ({
   handleChange: (source: string) => {
     dispatch(
       actions.updateFileText({
@@ -116,7 +110,6 @@ const mapDispatchToTextFileProps = (
   }
 });
 
-// $FlowFixMe: react-redux
 const ConnectedTextFile = connect(
   mapStateToTextFileProps,
   mapDispatchToTextFileProps
