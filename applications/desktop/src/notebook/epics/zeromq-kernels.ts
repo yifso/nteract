@@ -74,13 +74,15 @@ export function launchKernelObservable(
           "#707070"
         ]);
 
-        const logStd = text => {
+        const logStd = (text: string) => {
+          // tslint:disable-next-line no-console
           console.log(
             `%c${text}`,
             `color: ${logColor}; font-family: Source Code Pro, courier;`
           );
         };
 
+        // tslint:disable-next-line no-console
         console.log(
           `\n>>>> %cLogging kernel ${
             kernelSpec.name
@@ -158,7 +160,7 @@ interface Kernelspecs {
 export const kernelSpecsObservable: Observable<Kernelspecs> = new Observable<
   Kernelspecs
 >(observer => {
-  ipc.on("kernel_specs_reply", (event, specs: Kernelspecs) => {
+  ipc.on("kernel_specs_reply", (event: any, specs: Kernelspecs) => {
     observer.next(specs);
     observer.complete();
   });
@@ -361,6 +363,7 @@ export const killKernelEpic = (
       const kernel = selectors.kernel(state$.value, { kernelRef });
 
       if (!kernel) {
+        // tslint:disable-next-line:no-console
         console.warn("tried to kill a kernel that doesn't exist");
         return empty();
       }
@@ -388,7 +391,7 @@ export const killKernelEpic = (
         catchError(err =>
           of(actions.shutdownReplyTimedOut({ error: err, kernelRef }))
         ),
-        mergeMap(action => {
+        mergeMap(resultingAction => {
           // End all communication on the channels
           kernel.channels.complete();
 
@@ -398,7 +401,7 @@ export const killKernelEpic = (
 
           return merge(
             // Pass on our intermediate action (whether or not kernel ACK'd shutdown request promptly)
-            of(action),
+            of(resultingAction),
             // Indicate overall success (channels cleaned up)
             of(
               actions.killKernelSuccessful({
