@@ -1,6 +1,4 @@
-/* @flow strict */
-
-import type {
+import {
   KernelspecRecord,
   KernelspecProps,
   JupyterHostRecord
