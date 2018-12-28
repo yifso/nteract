@@ -1,7 +1,6 @@
-/* @flow strict */
 import { combineReducers, createStore, applyMiddleware, compose } from "redux";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
-import type { AppState } from "@nteract/core";
+import { AppState } from "@nteract/core";
 import { reducers, epics as coreEpics, middlewares as coreMiddlewares } from "@nteract/core";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
