@@ -15,37 +15,46 @@ const formCheckpointURI = (path: string, checkpointID: string) =>
 
 type FileType = "directory" | "file" | "notebook";
 
-/**
+/*********************************************
  * Contents API request and response payloads
+ *********************************************/
+
+/**
+ * Just the Stat call portion of the contents API
+ * (no content property)
  */
-export interface IContent<
-  FT extends FileType,
-  /*
-   * For directory listings and when a GET is performed against content with ?content=0
-   * the content field is null
-   */
-  Contentful extends boolean = false
-> {
-  /**
-   * Name of file or directory, equivalent to the last part of the path ,
-   */
+export interface IStatContent {
   name: string;
   path: string;
-  type: FT;
+  type: FileType;
   writable: boolean;
   created: string;
   last_modified: string;
   mimetype: string;
-  content: Contentful extends false
-    ? null
-    : FT extends "file"
+  format: string;
+}
+
+/**
+ * For directory listings and when a GET is performed against content with ?content=0
+ * the content field is null
+ */
+export interface IEmptyContent<FT = FileType> extends IStatContent {
+  type: FileType;
+  content: null;
+}
+
+/**
+ * Full Payloads from the contents API
+ */
+export interface IContent<FT extends FileType> extends IStatContent {
+  type: FT;
+  content: FT extends "file"
     ? string
     : FT extends "notebook"
     ? Notebook
     : FT extends "directory"
     ? Array<IContent<FileType>>
     : null;
-  format: string;
 }
 
 /*
@@ -97,7 +106,7 @@ interface IGetParams {
  *
  * @returns An Observable with the request response
  */
-export function get<Contentful extends boolean>(
+export function get(
   serverConfig: ServerConfig,
   path: string,
   params: Partial<IGetParams> = {}
@@ -108,9 +117,11 @@ export function get<Contentful extends boolean>(
     uri = `${uri}?${query}`;
   }
 
+  // NOTE: If the user requests with params.content === 0
+  // Then the response is IEmptyContent
   return ajax(
     createAJAXSettings(serverConfig, uri, { cache: false })
-  ) as Observable<JupyterAjaxResponse<IContent<FileType, Contentful>>>;
+  ) as Observable<JupyterAjaxResponse<IContent<FileType>>>;
 }
 
 /**
@@ -125,7 +136,7 @@ export function get<Contentful extends boolean>(
 export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT, true | false>>
+  model: Partial<IContent<FT>>
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -150,7 +161,7 @@ export function update<FT extends FileType>(
 export function create<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: IContent<FT, true>
+  model: IContent<FT>
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -176,7 +187,7 @@ export function create<FT extends FileType>(
 export function save<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT, true>>
+  model: Partial<IContent<FT>>
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {

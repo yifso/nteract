@@ -53,7 +53,7 @@ export function fetchContentEpic(
         .pipe(
           tap(xhr => {
             if (xhr.status !== 200) {
-              throw new Error(xhr.response as string);
+              throw new Error(xhr.response.toString());
             }
           }),
           map(xhr => {
@@ -244,9 +244,7 @@ export function saveContentEpic(
 
         // This could be object for notebook, or string for files
         let serializedData: Notebook | string;
-        let saveModel: Partial<
-          contents.IContent<"file" | "notebook", true>
-        > = {};
+        let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
         if (content.type === "notebook") {
           const appVersion = selectors.appVersion(state);
 
