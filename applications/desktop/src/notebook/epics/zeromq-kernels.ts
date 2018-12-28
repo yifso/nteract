@@ -14,21 +14,25 @@ import {
   first
 } from "rxjs/operators";
 import { launchSpec } from "spawnteract";
-import { ActionsObservable, ofType } from "redux-observable";
-import { StateObservable } from "redux-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { ipcRenderer as ipc } from "electron";
 import { createMainChannel } from "enchannel-zmq-backend";
 import * as jmp from "jmp";
-import { selectors, actions } from "@nteract/core";
 import {
+  selectors,
+  actions,
   AppState,
   KernelspecInfo,
   KernelRef,
   ContentRef,
   LocalKernelProps
 } from "@nteract/core";
-import { childOf, ofMessageType, shutdownRequest } from "@nteract/messaging";
-import { Channels } from "@nteract/messaging";
+import {
+  childOf,
+  ofMessageType,
+  shutdownRequest,
+  Channels
+} from "@nteract/messaging";
 
 import { Actions } from "../actions";
 
@@ -134,13 +138,19 @@ export function launchKernelObservable(
   });
 }
 
+interface Kernelspecs {
+  [name: string]: KernelspecInfo;
+}
+
 /**
  * Get kernel specs from main process
  *
  * @returns  {Observable}  The reply from main process
  */
-export const kernelSpecsObservable = Observable.create(observer => {
-  ipc.on("kernel_specs_reply", (event, specs) => {
+export const kernelSpecsObservable: Observable<Kernelspecs> = new Observable<
+  Kernelspecs
+>(observer => {
+  ipc.on("kernel_specs_reply", (event, specs: Kernelspecs) => {
     observer.next(specs);
     observer.complete();
   });
@@ -164,21 +174,21 @@ export const launchKernelByNameEpic = (
           if (kernelSpec) {
             // Defer to a launchKernel action to _actually_ launch
             return actions.launchKernel({
-              kernelSpec,
+              contentRef: action.payload.contentRef,
               cwd: action.payload.cwd,
               kernelRef: action.payload.kernelRef,
-              selectNextKernel: action.payload.selectNextKernel,
-              contentRef: action.payload.contentRef
+              kernelSpec,
+              selectNextKernel: action.payload.selectNextKernel
             });
           } else {
             return actions.launchKernelFailed({
+              contentRef: action.payload.contentRef,
               error: new Error(
                 `Kernel named ${
                   action.payload.kernelSpecName
                 } does not appear to be available.`
               ),
-              kernelRef: action.payload.kernelRef,
-              contentRef: action.payload.contentRef
+              kernelRef: action.payload.kernelRef
             });
           }
         })
