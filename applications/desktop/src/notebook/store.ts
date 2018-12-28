@@ -34,6 +34,5 @@ export default function configureStore(
     applyMiddleware(...middlewares)
   );
   epicMiddleware.run(rootEpic);
-  // TODO: Investigate what's causing type mismatches for Desktop's redux store
   return store as DesktopStore;
 }

@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false // Disable the project references for now, just for desktop
+  },
+  "include": ["src/notebook"]
+}
