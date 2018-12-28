@@ -11,6 +11,10 @@ const EditorContainer = styled.div`
   left: 0;
   height: 100%;
   width: 100%;
+
+  .monaco {
+    height: 100%;
+  }
 `;
 
 type MappedStateProps = {
