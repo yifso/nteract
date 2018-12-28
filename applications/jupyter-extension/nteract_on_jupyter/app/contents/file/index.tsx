@@ -17,7 +17,7 @@ import * as TextFile from "./text-file";
 
 const urljoin = require("url-join");
 
-const PaddedDiv = styled.div`
+const PaddedContainer = styled.div`
   padding-left: var(--nt-spacing-l, 10px);
   padding-top: var(--nt-spacing-m, 10px);
   padding-right: var(--nt-spacing-m, 10px);
@@ -34,10 +34,6 @@ const JupyterExtensionChoiceContainer = styled.div`
   flex: 1 1 auto;
   overflow: auto;
 `;
-
-const PaddedContainer = ({ children: Element }) => (
-  <PaddedDiv>{this.props.children}</PaddedDiv>
-);
 
 type FileProps = {
   type: "notebook" | "file" | "dummy",
