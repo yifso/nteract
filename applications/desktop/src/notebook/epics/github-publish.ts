@@ -54,7 +54,7 @@ function publishGist(
  * response from the Github API.
  */
 export const publishEpic = (
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actions.PublishGist>,
   state$: StateObservable<DesktopNotebookAppState>
 ) => {
   return action$.pipe(
@@ -172,12 +172,15 @@ export const publishEpic = (
         }),
         catchError(err => {
           // Turn the response headers into an object
-          var arr = err.xhr.getAllResponseHeaders().split("\r\n");
-          var headers = arr.reduce(function(acc, current) {
-            var parts = current.split(": ");
-            acc[parts[0]] = parts[1];
-            return acc;
-          }, {});
+          const arr: string[] = err.xhr.getAllResponseHeaders().split("\r\n");
+          const headers: { [header: string]: string } = arr.reduce(
+            (acc: { [header: string]: string }, current) => {
+              const parts = current.split(": ");
+              acc[parts[0]] = parts[1];
+              return acc;
+            },
+            {}
+          );
 
           // If we see the oauth scopes don't list gist, we know the problem is the token's access
           if (
