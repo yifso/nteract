@@ -213,4 +213,4 @@ class CSSVariables extends React.Component<
 // @deprecated
 const Styles = CSSVariables;
 
-export { Styles, CSSVariables };
+export { Styles, CSSVariables, GlobalCSSVariables };

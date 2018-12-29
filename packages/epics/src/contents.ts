@@ -57,6 +57,10 @@ export function fetchContentEpic(
             }
           }),
           map(xhr => {
+            if (typeof xhr.response === "string") {
+              throw new Error(`Invalid API response: ${xhr.response}`);
+            }
+
             return actions.fetchContentFulfilled({
               filepath: action.payload.filepath,
               model: xhr.response,

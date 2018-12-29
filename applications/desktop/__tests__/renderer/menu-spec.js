@@ -245,8 +245,10 @@ describe("dispatchSetTheme", () => {
 
     expect(store.dispatch).toHaveBeenCalledWith({
       type: actions.SET_CONFIG_AT_KEY,
-      key: "theme",
-      value: "test_theme"
+      payload: {
+        key: "theme",
+        value: "test_theme"
+      }
     });
   });
 });
@@ -263,8 +265,10 @@ describe("dispatchSetCursorBlink", () => {
 
     expect(store.dispatch).toHaveBeenCalledWith({
       type: actions.SET_CONFIG_AT_KEY,
-      key: "cursorBlinkRate",
-      value: 42
+      payload: {
+        key: "cursorBlinkRate",
+        value: 42
+      }
     });
   });
 });
@@ -811,10 +815,9 @@ describe("storeToPDF", () => {
     expect(notificationSystem.addNotification).toHaveBeenCalledWith({
       action: { callback: expect.any(Function), label: "Save As" },
       title: "File has not been saved!",
-      message: [
-        "Click the button below to save the notebook so that it can be ",
-        "exported as a PDF."
-      ],
+      message: expect.stringContaining(
+        "Click the button below to save the notebook"
+      ),
       dismissible: true,
       position: "tr",
       level: "warning"

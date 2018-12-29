@@ -67,6 +67,7 @@ describe("newNotebookEpic", () => {
     const action$ = ActionsObservable.of({
       type: actions.NEW_NOTEBOOK,
       payload: {
+        cwd: "/home/whatever",
         kernelSpec: {
           name: "hylang"
         },
@@ -87,7 +88,7 @@ describe("newNotebookEpic", () => {
           filepath: "",
           model: {
             type: "notebook",
-            mimetype: null,
+            mimetype: "application/x-ipynb+json",
             format: "json",
             content: toJS(
               monocellNotebook
@@ -95,10 +96,10 @@ describe("newNotebookEpic", () => {
                 .setIn(["metadata", "language_info", "name"], "hylang")
             ),
             writable: true,
-            name: null,
-            path: null,
-            created: expect.any(Date),
-            last_modified: expect.any(Date)
+            name: "Untitled.ipynb",
+            path: "/home/whatever/Untitled.ipynb",
+            created: expect.any(String),
+            last_modified: expect.any(String)
           }
         }
       }

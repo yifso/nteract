@@ -16,7 +16,7 @@ import { closeNotebookEpic } from "../../../src/notebook/epics/close-notebook";
 import {
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
-} from "../../../src/notebook/state.js";
+} from "../../../src/notebook/state";
 import * as actions from "../../../src/notebook/actions";
 
 const buildScheduler = () =>

@@ -152,14 +152,18 @@ export type CommMessageAction = {
 export const SET_CONFIG_AT_KEY = "SET_CONFIG_AT_KEY";
 export type SetConfigAction<T> = {
   type: "SET_CONFIG_AT_KEY";
-  key: string;
-  value: T;
+  payload: {
+    key: string;
+    value: T;
+  };
 };
 
 export const MERGE_CONFIG = "MERGE_CONFIG";
 export type MergeConfigAction = {
   type: "MERGE_CONFIG";
-  config: Map<string, ImmutableJSONType>;
+  payload: {
+    config: Map<string, ImmutableJSONType>;
+  };
 };
 
 export const LOAD_CONFIG = "LOAD_CONFIG";
@@ -192,13 +196,17 @@ export type SetExecutionStateAction = {
 export const SET_NOTIFICATION_SYSTEM = "SET_NOTIFICATION_SYSTEM";
 export type SetNotificationSystemAction = {
   type: "SET_NOTIFICATION_SYSTEM";
-  notificationSystem: NotificationSystem;
+  payload: {
+    notificationSystem: NotificationSystem;
+  };
 };
 
 export const SET_GITHUB_TOKEN = "SET_GITHUB_TOKEN";
 export type SetGithubTokenAction = {
   type: "SET_GITHUB_TOKEN";
-  githubToken: string;
+  payload: {
+    githubToken: string;
+  };
 };
 
 export const PUBLISH_GIST = "CORE/PUBLISH_GIST";

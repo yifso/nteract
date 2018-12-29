@@ -1,9 +1,9 @@
-// Flow goes crazy when this file is typed, raising errors throughout the project.
-// I believe it's related to the intersection type of DesktopNotebookAppState.
-// Lots of open bugs around intersection types, and they're used inside Immutable.js too, so layers upon layers.
-// https://github.com/facebook/flow/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+intersect
-
-import { actions as coreActions, selectors } from "@nteract/core";
+import {
+  actions as coreActions,
+  selectors,
+  DocumentRecordProps
+} from "@nteract/core";
+import { RecordOf } from "immutable";
 import { Observable, empty, of, zip, concat } from "rxjs";
 import {
   catchError,
@@ -14,26 +14,31 @@ import {
   tap,
   timeout
 } from "rxjs/operators";
-import { ActionsObservable, ofType } from "redux-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { ipcRenderer as ipc } from "electron";
 
 import {
+  DesktopNotebookAppState,
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
-} from "../state.js";
+} from "../state";
 import * as actionTypes from "../actionTypes";
 import * as actions from "../actions";
 
+import { Actions } from "../actions";
+
 export const closeNotebookEpic = (
-  action$: ActionsObservable<redux$Action>,
-  state$: *
+  action$: ActionsObservable<Actions>,
+  state$: StateObservable<DesktopNotebookAppState>
 ) =>
   action$.pipe(
     ofType(actionTypes.CLOSE_NOTEBOOK),
     exhaustMap((action: actionTypes.CloseNotebook) => {
       const contentRef = action.payload.contentRef;
       const state = state$.value;
-      const model = selectors.model(state, { contentRef });
+      const model = selectors.model(state, {
+        contentRef
+      }) as RecordOf<DocumentRecordProps>;
 
       var dirtyPromptObservable: Observable<boolean>;
       if (selectors.notebook.isDirty(model)) {

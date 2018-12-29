@@ -13,7 +13,7 @@ const formURI = (path: string) => urljoin("/api/contents/", path);
 const formCheckpointURI = (path: string, checkpointID: string) =>
   urljoin("/api/contents/", path, "checkpoints", checkpointID);
 
-type FileType = "directory" | "file" | "notebook";
+export type FileType = "directory" | "file" | "notebook";
 
 /*********************************************
  * Contents API request and response payloads
@@ -23,10 +23,10 @@ type FileType = "directory" | "file" | "notebook";
  * Just the Stat call portion of the contents API
  * (no content property)
  */
-export interface IStatContent {
+export interface IStatContent<FT extends FileType = FileType> {
   name: string;
   path: string;
-  type: FileType;
+  type: FT;
   writable: boolean;
   created: string;
   last_modified: string;
@@ -38,22 +38,22 @@ export interface IStatContent {
  * For directory listings and when a GET is performed against content with ?content=0
  * the content field is null
  */
-export interface IEmptyContent<FT = FileType> extends IStatContent {
-  type: FileType;
+export interface IEmptyContent<FT extends FileType = FileType>
+  extends IStatContent<FT> {
   content: null;
 }
 
 /**
  * Full Payloads from the contents API
  */
-export interface IContent<FT extends FileType> extends IStatContent {
-  type: FT;
+export interface IContent<FT extends FileType = FileType>
+  extends IStatContent<FT> {
   content: FT extends "file"
     ? string
     : FT extends "notebook"
     ? Notebook
     : FT extends "directory"
-    ? Array<IContent<FileType>>
+    ? Array<IEmptyContent<FT>>
     : null;
 }
 

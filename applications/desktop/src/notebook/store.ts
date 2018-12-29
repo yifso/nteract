@@ -1,15 +1,17 @@
-/* @flow strict */
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware, combineReducers, Store } from "redux";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
 
-import type { DesktopNotebookAppState } from "./state";
+import { DesktopNotebookAppState } from "./state";
 import { handleDesktopNotebook } from "./reducers";
 import epics from "./epics";
+import { Actions } from "./actions";
 
 const rootEpic = combineEpics(...epics);
 const epicMiddleware = createEpicMiddleware();
 const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
+
+export type DesktopStore = Store<DesktopNotebookAppState, Actions>;
 
 if (process.env.DEBUG === "true") {
   middlewares.push(coreMiddlewares.logger());
@@ -23,12 +25,14 @@ const rootReducer = combineReducers({
   desktopNotebook: handleDesktopNotebook
 });
 
-export default function configureStore(initialState: DesktopNotebookAppState) {
+export default function configureStore(
+  initialState: DesktopNotebookAppState
+): DesktopStore {
   const store = createStore(
     rootReducer,
     initialState,
     applyMiddleware(...middlewares)
   );
   epicMiddleware.run(rootEpic);
-  return store;
+  return store as DesktopStore;
 }

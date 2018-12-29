@@ -75,15 +75,17 @@ describe("launchKernelEpic", () => {
       .pipe(toArray())
       .toPromise();
 
-    expect(responses).toEqual([
+    expect(responses[0]).toEqual(
       actionsModule.setKernelspecInfo({
         kernelInfo: { spec: "hokey", name: "woohoo" },
         contentRef: "abc"
-      }),
+      })
+    );
+
+    expect(responses[1]).toEqual(
       actionsModule.launchKernelSuccessful({
         kernel: {
           info: null,
-          kernelRef: expect.any(String),
           lastActivity: null,
           type: "zeromq",
           cwd: "~",
@@ -97,12 +99,15 @@ describe("launchKernelEpic", () => {
         selectNextKernel: true,
         contentRef: "abc",
         kernelRef: "123"
-      }),
+      })
+    );
+
+    expect(responses[2]).toEqual(
       actionsModule.setExecutionState({
         kernelStatus: "launched",
         kernelRef: "123"
       })
-    ]);
+    );
   });
 });
 

@@ -1,5 +1,3 @@
-/* @flow strict */
-
 import * as path from "path";
 import * as fs from "fs";
 
@@ -12,29 +10,35 @@ import {
   catchError,
   timeout
 } from "rxjs/operators";
-import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
+import { ofType, ActionsObservable, StateObservable } from "redux-observable";
 import { readFileObservable, statObservable } from "fs-observable";
-import { monocellNotebook, toJS } from "@nteract/commutable";
-import type { ImmutableNotebook } from "@nteract/commutable";
-import { actions, selectors } from "@nteract/core";
-import type { AppState } from "@nteract/core";
+import {
+  monocellNotebook,
+  toJS,
+  ImmutableNotebook,
+  Notebook
+} from "@nteract/commutable";
+import { actions, selectors, AppState } from "@nteract/core";
+
+const notebookMediaType = "application/x-ipynb+json";
+
+import { contents } from "rx-jupyter";
 
 /**
  * Determines the right kernel to launch based on a notebook
  */
 export const extractNewKernel = (
-  filepath: ?string,
+  filepath: string | null,
   notebook: ImmutableNotebook
 ) => {
-  // TODO: There's some incongruence between desktop and web app here, regarding path vs. filename
+  // NOTE: There's some incongruence between desktop and web app here, regarding path vs. filename
   //       Instead, this function is slightly repeated between here and @nteract/core
   const cwd =
     (filepath != null && path.dirname(path.resolve(filepath))) || process.cwd();
-  const kernelSpecName = notebook.getIn(
-    ["metadata", "kernelspec", "name"],
-    notebook.getIn(["metadata", "language_info", "name"], "python3")
-  );
+  const kernelSpecName =
+    notebook.getIn(["metadata", "kernelspec", "name"]) ||
+    notebook.getIn(["metadata", "language_info", "name"]) ||
+    "python3";
   return {
     cwd,
     kernelSpecName
@@ -44,34 +48,26 @@ export const extractNewKernel = (
 function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
-  content: *
-): JupyterApi$Content {
+  content: Buffer
+): contents.IContent<"notebook"> {
   const parsedFilePath = path.parse(filePath);
 
   const name = parsedFilePath.base;
+  // tslint:disable-next-line no-bitwise
   const writable = Boolean(fs.constants.W_OK & stat.mode);
-  const created = stat.birthtime;
-  const last_modified = stat.mtime;
+  const created = stat.birthtime.toString();
+  // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
+  const last_modified = stat.mtime.toString();
 
   if (stat.isDirectory()) {
-    return {
-      type: "directory",
-      mimetype: null,
-      format: "json",
-      content,
-      writable,
-      name: name === "." ? "" : name,
-      path: filePath === "." ? "" : filePath,
-      created,
-      last_modified
-    };
+    throw new Error("Attempted to open a directory instead of a notebook");
   } else if (stat.isFile()) {
     if (parsedFilePath.ext === ".ipynb") {
       return {
         type: "notebook",
-        mimetype: null,
+        mimetype: notebookMediaType,
         format: "json",
-        content: content ? JSON.parse(content) : null,
+        content: content ? JSON.parse(content.toString()) : null,
         writable,
         name,
         path: filePath,
@@ -79,19 +75,7 @@ function createContentsResponse(
         last_modified
       };
     }
-
-    // TODO: Mimetype detection
-    return {
-      type: "file",
-      mimetype: null,
-      format: "text",
-      content,
-      writable,
-      name,
-      path: filePath,
-      created,
-      last_modified
-    };
+    throw new Error("File does not end in ipynb and will not be opened");
   }
 
   throw new Error(`Unsupported filetype at ${filePath}`);
@@ -102,7 +86,9 @@ function createContentsResponse(
  *
  * @param  {ActionObservable}  A LOAD action with the notebook filename
  */
-export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
+export const fetchContentEpic = (
+  action$: ActionsObservable<actions.FetchContent>
+) =>
   action$.pipe(
     ofType(actions.FETCH_CONTENT),
     tap((action: actions.FetchContent) => {
@@ -119,19 +105,28 @@ export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
         readFileObservable(filepath),
         statObservable(filepath),
         // Project onto the Contents API response
-        (content, stat): JupyterApi$Content =>
+        (content: Buffer, stat: fs.Stats): contents.IContent =>
           createContentsResponse(filepath, stat, content)
       ).pipe(
         // Timeout after one minute
         timeout(60 * 1000),
-        map(model =>
-          actions.fetchContentFulfilled({
+        map((model: contents.IContent<"notebook">) => {
+          if (model.type !== "notebook") {
+            throw new Error(
+              "Attempted to load a non-notebook type from desktop"
+            );
+          }
+          if (model.content === null) {
+            throw new Error("No content loaded for notebook");
+          }
+
+          return actions.fetchContentFulfilled({
             filepath: model.path,
             model,
             kernelRef: action.payload.kernelRef,
             contentRef: action.payload.contentRef
-          })
-        ),
+          });
+        }),
         catchError((err: Error) =>
           of(
             actions.fetchContentFailed({
@@ -147,7 +142,7 @@ export const fetchContentEpic = (action$: ActionsObservable<redux$Action>) =>
   );
 
 export const launchKernelWhenNotebookSetEpic = (
-  action$: ActionsObservable<redux$Action>,
+  action$: ActionsObservable<actions.FetchContentFulfilled>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -188,7 +183,9 @@ export const launchKernelWhenNotebookSetEpic = (
  *
  * @param  {ActionObservable}  ActionObservable for NEW_NOTEBOOK action
  */
-export const newNotebookEpic = (action$: ActionsObservable<redux$Action>) =>
+export const newNotebookEpic = (
+  action$: ActionsObservable<actions.NewNotebook>
+) =>
   action$.pipe(
     ofType(actions.NEW_NOTEBOOK),
     map((action: actions.NewNotebook) => {
@@ -214,21 +211,18 @@ export const newNotebookEpic = (action$: ActionsObservable<redux$Action>) =>
       const timestamp = new Date();
 
       return actions.fetchContentFulfilled({
-        // NOTE: A new notebook on desktop does not have a filepath, unlike
-        //       the web app which uses UntitledX.ipynb
         filepath: "",
         model: {
           type: "notebook",
-          mimetype: null,
+          mimetype: notebookMediaType,
           format: "json",
           // Back to JS, only to immutableify it inside of the reducer
           content: toJS(notebook),
           writable: true,
-          name: null,
-          // Since we have the filepath above, do we need it here (?)
-          path: null,
-          created: timestamp,
-          last_modified: timestamp
+          name: "Untitled.ipynb",
+          path: path.join(action.payload.cwd, "Untitled.ipynb"),
+          created: timestamp.toString(),
+          last_modified: timestamp.toString()
         },
         kernelRef: action.payload.kernelRef,
         contentRef: action.payload.contentRef

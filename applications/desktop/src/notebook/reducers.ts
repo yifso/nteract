@@ -1,7 +1,5 @@
-/* @flow strict */
-
 import * as actionTypes from "./actionTypes";
-import type { DesktopNotebookRecord } from "./state";
+import { DesktopNotebookRecord } from "./state";
 import {
   makeDesktopNotebookRecord,
   DESKTOP_NOTEBOOK_CLOSING_STARTED

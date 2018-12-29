@@ -1,21 +1,14 @@
-/* @flow strict */
-/* eslint-disable no-unused-vars, no-use-before-define */
-
 import * as path from "path";
 import * as fs from "fs";
 
 import { ipcRenderer as ipc, webFrame, shell, remote } from "electron";
 import { throttle } from "lodash";
-import {
-  actions,
-  actionTypes,
-  selectors,
-  createKernelRef
-} from "@nteract/core";
-import type { AppState, ContentRef, KernelRef } from "@nteract/core";
-import type { Store } from "redux";
+import { actions, selectors, createKernelRef, ContentRef } from "@nteract/core";
+import { DesktopStore } from "./store";
 
-import type { DesktopNotebookAppState } from "./state.js";
+type NotificationSystemRef = any;
+type KernelSpec = any;
+type Actions = any; // We have to combine all of @nteract/actions actionTypes + actionTypes.ts
 
 export function cwdKernelFallback() {
   // HACK: If we see they're at /, we assume that was the OS launching the Application
@@ -28,7 +21,7 @@ export function cwdKernelFallback() {
 
 export function dispatchSaveAs(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   evt: Event,
   filepath: string
 ) {
@@ -38,9 +31,9 @@ export function dispatchSaveAs(
 const dialog = remote.dialog;
 
 type SaveDialogOptions = {
-  title: string,
-  filters: Array<{ name: string, extensions: Array<string> }>,
-  defaultPath?: string
+  title: string;
+  filters: Array<{ name: string; extensions: Array<string> }>;
+  defaultPath?: string;
 };
 
 export function showSaveAsDialog(): Promise<string> {
@@ -79,7 +72,7 @@ export function showSaveAsDialog(): Promise<string> {
 
 export function triggerWindowRefresh(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   filepath: string
 ) {
   if (!filepath) {
@@ -91,8 +84,8 @@ export function triggerWindowRefresh(
 
 export function dispatchRestartKernel(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
-  outputHandling: actionTypes.RestartKernelOutputHandling
+  store: DesktopStore,
+  outputHandling: actions.RestartKernelOutputHandling
 ) {
   const state = store.getState();
   const kernelRef = selectors.kernelRefByContentRef(state, ownProps);
@@ -113,9 +106,9 @@ export function dispatchRestartKernel(
 
 export function promptUserAboutNewKernel(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   filepath: string
-): Promise<*> {
+): Promise<void> {
   return new Promise(resolve => {
     dialog.showMessageBox(
       {
@@ -168,7 +161,7 @@ export function promptUserAboutNewKernel(
 
 export function triggerSaveAs(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   showSaveAsDialog().then(filepath => {
     if (filepath) {
@@ -180,7 +173,7 @@ export function triggerSaveAs(
 
 export function dispatchSave(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   const state = store.getState();
 
@@ -195,7 +188,7 @@ export function dispatchSave(
 
 export function dispatchNewKernel(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   evt: Event,
   kernelSpec: KernelSpec
 ) {
@@ -222,7 +215,7 @@ export function dispatchNewKernel(
 
 export function dispatchPublishGist(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   event: Event
 ) {
   const state = store.getState();
@@ -249,12 +242,12 @@ export function dispatchPublishGist(
   // TODO: This needs to be moved to an epic
   win.webContents.on("dom-ready", () => {
     // When we're at our callback code page, keep the page hidden
-    if (win.getURL().indexOf("callback?code=") !== -1) {
+    if (win.webContents.getURL().indexOf("callback?code=") !== -1) {
       // Extract the text content
       win.webContents.executeJavaScript(
         `require('electron').ipcRenderer.send('auth', document.body.textContent);`
       );
-      remote.ipcMain.on("auth", (event, auth) => {
+      remote.ipcMain.on("auth", (event: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
@@ -284,28 +277,28 @@ export function dispatchPublishGist(
 
 export function dispatchRunAllBelow(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.executeAllCellsBelow(ownProps));
 }
 
 export function dispatchRunAll(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.executeAllCells(ownProps));
 }
 
 export function dispatchClearAll(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.clearAllOutputs(ownProps));
 }
 
 export function dispatchUnhideAll(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.unhideAll({
@@ -318,7 +311,7 @@ export function dispatchUnhideAll(
 
 export function dispatchKillKernel(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   const state = store.getState();
   const kernelRef = selectors.kernelRefByContentRef(state, ownProps);
@@ -332,7 +325,7 @@ export function dispatchKillKernel(
 
 export function dispatchInterruptKernel(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   const state = store.getState();
 
@@ -368,7 +361,7 @@ export function dispatchZoomReset() {
 
 export function dispatchSetTheme(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   evt: Event,
   theme: string
 ) {
@@ -377,44 +370,44 @@ export function dispatchSetTheme(
 
 export function dispatchSetCursorBlink(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   evt: Event,
-  value: *
+  value: string
 ) {
   store.dispatch(actions.setCursorBlink(value));
 }
 
 export function dispatchCopyCell(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.copyCell({ contentRef: ownProps.contentRef }));
 }
 
 export function dispatchCutCell(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.cutCell({ contentRef: ownProps.contentRef }));
 }
 
 export function dispatchPasteCell(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.pasteCell(ownProps));
 }
 
 export function dispatchDeleteCell(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.deleteCell({ contentRef: ownProps.contentRef }));
 }
 
 export function dispatchCreateCellAbove(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.createCellAbove({
@@ -426,7 +419,7 @@ export function dispatchCreateCellAbove(
 
 export function dispatchCreateCellBelow(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.createCellBelow({
@@ -439,7 +432,7 @@ export function dispatchCreateCellBelow(
 
 export function dispatchCreateTextCellBelow(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.createCellBelow({
@@ -452,7 +445,7 @@ export function dispatchCreateTextCellBelow(
 
 export function dispatchCreateCellBefore(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use createCellAbove() instead"
@@ -467,7 +460,7 @@ export function dispatchCreateCellBefore(
 
 export function dispatchCreateCellAfter(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use createCellBelow() instead"
@@ -483,7 +476,7 @@ export function dispatchCreateCellAfter(
 
 export function dispatchCreateTextCellAfter(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use createTextCellBelow() instead"
@@ -499,7 +492,7 @@ export function dispatchCreateTextCellAfter(
 
 export function dispatchChangeCellToCode(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.changeCellType({
@@ -511,7 +504,7 @@ export function dispatchChangeCellToCode(
 
 export function dispatchChangeCellToText(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(
     actions.changeCellType({
@@ -523,7 +516,7 @@ export function dispatchChangeCellToText(
 
 export function dispatchLoad(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   event: Event,
   filepath: string
 ) {
@@ -542,7 +535,7 @@ export function dispatchLoad(
 
 export function dispatchNewNotebook(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   event: Event,
   kernelSpec: KernelSpec
 ) {
@@ -573,9 +566,9 @@ export function dispatchNewNotebook(
  */
 export function exportPDF(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>,
+  store: DesktopStore,
   basepath: string,
-  notificationSystem: *
+  notificationSystem: NotificationSystemRef
 ): void {
   const state = store.getState();
 
@@ -593,7 +586,7 @@ export function exportPDF(
   //       and we especially shouldn't be relying on all these actions to
   //       run through before we print...
   // Expand unexpanded cells
-  unexpandedCells.map(cellId =>
+  unexpandedCells.map((cellId: string) =>
     store.dispatch(
       actions.toggleOutputExpansion({
         id: cellId,
@@ -610,7 +603,7 @@ export function exportPDF(
       if (error) throw error;
 
       // Restore the modified cells to their unexpanded state.
-      unexpandedCells.map(cellId =>
+      unexpandedCells.map((cellId: string) =>
         store.dispatch(
           actions.toggleOutputExpansion({
             id: cellId,
@@ -642,7 +635,7 @@ export function exportPDF(
 
 export function triggerSaveAsPDF(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   showSaveAsDialog()
     .then(filepath => {
@@ -657,7 +650,7 @@ export function triggerSaveAsPDF(
 
 export function storeToPDF(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
@@ -665,10 +658,8 @@ export function storeToPDF(
   if (notebookName == null) {
     notificationSystem.addNotification({
       title: "File has not been saved!",
-      message: [
-        "Click the button below to save the notebook so that it can be ",
-        "exported as a PDF."
-      ],
+      message: `Click the button below to save the notebook so that it can be
+       exported as a PDF.`,
       dismissible: true,
       position: "tr",
       level: "warning",
@@ -688,15 +679,12 @@ export function storeToPDF(
 
 export function dispatchLoadConfig(
   ownProps: { contentRef: ContentRef },
-  store: Store<DesktopNotebookAppState, *>
+  store: DesktopStore
 ) {
   store.dispatch(actions.loadConfig());
 }
 
-export function initMenuHandlers(
-  contentRef: ContentRef,
-  store: Store<DesktopNotebookAppState, *>
-) {
+export function initMenuHandlers(contentRef: ContentRef, store: DesktopStore) {
   const opts = {
     contentRef
   };

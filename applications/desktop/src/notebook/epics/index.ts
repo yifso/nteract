@@ -1,8 +1,7 @@
-/* @flow strict */
 import { catchError, startWith } from "rxjs/operators";
 import { epics as coreEpics } from "@nteract/core";
-import type { AppState } from "@nteract/core";
-import type { Epic } from "redux-observable";
+import { DesktopNotebookAppState } from "../state";
+import { Epic, ActionsObservable, StateObservable } from "redux-observable";
 
 import { saveEpic, saveAsEpic } from "./saving";
 import {
@@ -25,16 +24,22 @@ import {
 } from "./config";
 import { closeNotebookEpic } from "./close-notebook";
 
+import { Actions } from "../actions";
+
 export function retryAndEmitError(
   err: Error,
-  source: rxjs$Observable<redux$AnyAction>
+  source: ActionsObservable<Actions>
 ) {
   console.error(err);
   return source.pipe(startWith({ type: "ERROR", payload: err, error: true }));
 }
 
-export const wrapEpic = (epic: Epic<AppState, redux$AnyAction, *>) => (
-  ...args: *
+export const wrapEpic = (epic: Epic<Actions, Actions>) => (
+  ...args: [
+    ActionsObservable<Actions>,
+    StateObservable<DesktopNotebookAppState>,
+    undefined
+  ]
 ) => epic(...args).pipe(catchError(retryAndEmitError));
 
 const epics = [
@@ -63,8 +68,6 @@ const epics = [
   closeNotebookEpic
 ];
 
-// Type arguments are needed currently because of Flow export limitations
-// https://github.com/facebook/flow/issues/6828#issuecomment-418495625
-export default epics.map<Epic<AppState, redux$AnyAction, *>>(epic =>
-  wrapEpic(epic)
+export default epics.map<Epic<Actions, Actions, DesktopNotebookAppState>>(
+  epic => wrapEpic((epic as unknown) as any)
 );

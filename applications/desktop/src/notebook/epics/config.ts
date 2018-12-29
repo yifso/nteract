@@ -1,13 +1,13 @@
-/* @flow strict */
 import { remote } from "electron";
 import { actions } from "@nteract/core";
 import { readFileObservable, writeFileObservable } from "fs-observable";
 import { mapTo, mergeMap, map, switchMap } from "rxjs/operators";
-import { ofType } from "redux-observable";
-import type { ActionsObservable, StateObservable } from "redux-observable";
-import type { AppState } from "@nteract/core";
+import { ofType, ActionsObservable, StateObservable } from "redux-observable";
+import { DesktopNotebookAppState } from "../state";
 
-const path = require("path");
+import * as path from "path";
+
+import { Actions } from "../actions";
 
 const HOME = remote.app.getPath("home");
 
@@ -16,13 +16,12 @@ export const CONFIG_FILE_PATH = path.join(HOME, ".jupyter", "nteract.json");
 /**
  * An epic that loads the configuration.
  */
-export const loadConfigEpic = (action$: ActionsObservable<redux$Action>) =>
+export const loadConfigEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
     ofType(actions.LOAD_CONFIG),
     switchMap(() =>
-      // $FlowFixMe deal with after the typescript migration
       readFileObservable(CONFIG_FILE_PATH).pipe(
-        map(data => actions.configLoaded(JSON.parse(data)))
+        map(data => actions.configLoaded(JSON.parse(data.toString())))
       )
     )
   );
@@ -30,9 +29,7 @@ export const loadConfigEpic = (action$: ActionsObservable<redux$Action>) =>
 /**
  * An epic that saves the configuration if it has been changed.
  */
-export const saveConfigOnChangeEpic = (
-  action$: ActionsObservable<redux$Action>
-) =>
+export const saveConfigOnChangeEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
     ofType(actions.SET_CONFIG_AT_KEY),
     mapTo({ type: actions.SAVE_CONFIG })
@@ -42,8 +39,8 @@ export const saveConfigOnChangeEpic = (
  * An epic that saves the configuration.
  */
 export const saveConfigEpic = (
-  action$: ActionsObservable<redux$Action>,
-  state$: StateObservable<AppState>
+  action$: ActionsObservable<Actions>,
+  state$: StateObservable<DesktopNotebookAppState>
 ) =>
   action$.pipe(
     ofType(actions.SAVE_CONFIG),
