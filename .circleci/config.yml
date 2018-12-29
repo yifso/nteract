@@ -33,6 +33,20 @@ jobs:
       - run: yarn run test:lint
       - run: yarn run build:packages:ci
       - run: yarn run test --maxWorkers 1
+
+      - run:
+          name: Report on types for Applications
+          shell: /bin/bash
+          command: |
+            set +e # Allow failure for now
+            echo '**** Reporting on types for Jupyter Extension ****'
+            yarn report:jext
+            echo '**** Reporting on types for Desktop ****'
+            yarn report:desktop
+            echo '**** Reporting on types for Play ****'
+            yarn report:play
+            echo '**** Application type reporting finished ****'
+
       - run: yarn run test:flow
 
       - run:
