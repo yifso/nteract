@@ -162,7 +162,7 @@ export const MERGE_CONFIG = "MERGE_CONFIG";
 export type MergeConfigAction = {
   type: "MERGE_CONFIG";
   payload: {
-    config: Map<string, ImmutableJSONType>;
+    config: { [key: string]: any };
   };
 };
 
