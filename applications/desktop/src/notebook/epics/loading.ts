@@ -211,8 +211,6 @@ export const newNotebookEpic = (
       const timestamp = new Date();
 
       return actions.fetchContentFulfilled({
-        // NOTE: A new notebook on desktop does not have a filepath, unlike
-        //       the web app which uses UntitledX.ipynb
         filepath: "",
         model: {
           type: "notebook",
