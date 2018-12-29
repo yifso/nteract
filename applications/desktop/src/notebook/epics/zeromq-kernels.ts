@@ -168,7 +168,7 @@ export const kernelSpecsObservable: Observable<Kernelspecs> = new Observable<
 });
 
 export const launchKernelByNameEpic = (
-  action$: ActionsObservable<Actions>
+  action$: ActionsObservable<actions.LaunchKernelByNameAction>
 ): Observable<Actions> =>
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_BY_NAME),
@@ -216,7 +216,7 @@ type LaunchKernelResponseActions =
  * @param  {ActionObservable} action$  ActionObservable for LAUNCH_KERNEL action
  */
 export const launchKernelEpic = (
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actions.LaunchKernelAction>,
   state$: StateObservable<AppState>
 ): Observable<Actions> => {
   const response$ = action$.pipe(
@@ -287,7 +287,7 @@ type InterruptActions =
   | actions.InterruptKernelSuccessful;
 
 export const interruptKernelEpic = (
-  action$: ActionsObservable<InterruptActions>,
+  action$: ActionsObservable<actions.InterruptKernel>,
   state$: StateObservable<AppState>
 ): Observable<InterruptActions> =>
   action$.pipe(
@@ -353,7 +353,7 @@ function killSpawn(spawn: ChildProcess): void {
 // shutdown by sending a shutdown msg to the kernel, and only if the kernel
 // doesn't respond promptly does it SIGKILL the kernel.
 export const killKernelEpic = (
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actions.KillKernelAction>,
   state$: StateObservable<AppState>
 ): Observable<Actions> =>
   action$.pipe(
@@ -432,7 +432,9 @@ export const killKernelEpic = (
     })
   );
 
-export function watchSpawn(action$: ActionsObservable<Actions>) {
+export function watchSpawn(
+  action$: ActionsObservable<actions.NewKernelAction>
+) {
   return action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
     switchMap(
