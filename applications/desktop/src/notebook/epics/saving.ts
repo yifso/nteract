@@ -1,13 +1,9 @@
-import { ofType } from "redux-observable";
-import { ActionsObservable, StateObservable } from "redux-observable";
+import { ofType, ActionsObservable, StateObservable } from "redux-observable";
 import { writeFileObservable } from "fs-observable";
-import { selectors, actions } from "@nteract/core";
-import { AppState } from "@nteract/core";
+import { selectors, actions, AppState } from "@nteract/core";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 import { of } from "rxjs";
 import { mergeMap, catchError, map, concatMap } from "rxjs/operators";
-
-import { Actions } from "../actions";
 
 /**
  * Cleans up the notebook document and saves the file.
@@ -15,12 +11,12 @@ import { Actions } from "../actions";
  * @param  {ActionObservable}  action$ The SAVE action with the filename and notebook
  */
 export function saveEpic(
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actions.Save>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.SAVE),
-    mergeMap((action: actions.Save) => {
+    mergeMap(action => {
       const state = state$.value;
       const contentRef = action.payload.contentRef;
 
@@ -28,8 +24,8 @@ export function saveEpic(
       if (!content) {
         return of(
           actions.saveFailed({
-            error: new Error("no notebook loaded to save"),
-            contentRef: action.payload.contentRef
+            contentRef: action.payload.contentRef,
+            error: new Error("no notebook loaded to save")
           })
         );
       }
@@ -38,8 +34,8 @@ export function saveEpic(
       if (!model || model.type !== "notebook") {
         return of(
           actions.saveFailed({
-            error: new Error("no notebook loaded to save"),
-            contentRef: action.payload.contentRef
+            contentRef: action.payload.contentRef,
+            error: new Error("no notebook loaded to save")
           })
         );
       }
@@ -58,9 +54,9 @@ export function saveEpic(
               state$.value
             );
             notificationSystem.addNotification({
-              title: "Save successful!",
               autoDismiss: 2,
-              level: "success"
+              level: "success",
+              title: "Save successful!"
             });
           }
           return actions.saveFulfilled({
@@ -73,8 +69,8 @@ export function saveEpic(
         catchError((error: Error) =>
           of(
             actions.saveFailed({
-              error,
-              contentRef: action.payload.contentRef
+              contentRef: action.payload.contentRef,
+              error
             })
           )
         )
@@ -88,16 +84,16 @@ export function saveEpic(
  *
  * @param  {ActionObservable}  action$ The SAVE_AS action with the filename and notebook
  */
-export function saveAsEpic(action$: ActionsObservable<Actions>) {
+export function saveAsEpic(action$: ActionsObservable<actions.SaveAs>) {
   return action$.pipe(
     ofType(actions.SAVE_AS),
-    concatMap((action: actions.SaveAs) => {
+    concatMap(action => {
       return [
         // Using concatMap because order matters here.
         // Filename state MUST be updated before save in all cases
         actions.changeFilename({
-          filepath: action.payload.filepath,
-          contentRef: action.payload.contentRef
+          contentRef: action.payload.contentRef,
+          filepath: action.payload.filepath
         }),
         actions.save({
           contentRef: action.payload.contentRef
