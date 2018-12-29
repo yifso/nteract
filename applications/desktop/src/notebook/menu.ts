@@ -586,7 +586,7 @@ export function exportPDF(
   //       and we especially shouldn't be relying on all these actions to
   //       run through before we print...
   // Expand unexpanded cells
-  unexpandedCells.map(cellId =>
+  unexpandedCells.map((cellId: string) =>
     store.dispatch(
       actions.toggleOutputExpansion({
         id: cellId,
@@ -603,7 +603,7 @@ export function exportPDF(
       if (error) throw error;
 
       // Restore the modified cells to their unexpanded state.
-      unexpandedCells.map(cellId =>
+      unexpandedCells.map((cellId: string) =>
         store.dispatch(
           actions.toggleOutputExpansion({
             id: cellId,
