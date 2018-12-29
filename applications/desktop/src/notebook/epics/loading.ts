@@ -20,9 +20,9 @@ import {
 } from "@nteract/commutable";
 import { actions, selectors, AppState } from "@nteract/core";
 
-import { contents } from "rx-jupyter";
+const notebookMediaType = "application/x-ipynb+json";
 
-import { Actions } from "../actions";
+import { contents } from "rx-jupyter";
 
 /**
  * Determines the right kernel to launch based on a notebook
@@ -49,7 +49,7 @@ function createContentsResponse(
   filePath: string,
   stat: fs.Stats,
   content: Buffer
-): contents.IContent {
+): contents.IContent<"notebook"> {
   const parsedFilePath = path.parse(filePath);
 
   const name = parsedFilePath.base;
@@ -60,22 +60,12 @@ function createContentsResponse(
   const last_modified = stat.mtime.toString();
 
   if (stat.isDirectory()) {
-    return {
-      type: "directory",
-      mimetype: null,
-      format: "json",
-      content: null,
-      writable,
-      name: name === "." ? "" : name,
-      path: filePath === "." ? "" : filePath,
-      created,
-      last_modified
-    };
+    throw new Error("Attempted to open a directory instead of a notebook");
   } else if (stat.isFile()) {
     if (parsedFilePath.ext === ".ipynb") {
       return {
         type: "notebook",
-        mimetype: null,
+        mimetype: notebookMediaType,
         format: "json",
         content: content ? JSON.parse(content.toString()) : null,
         writable,
@@ -85,18 +75,7 @@ function createContentsResponse(
         last_modified
       };
     }
-
-    return {
-      type: "file",
-      mimetype: null,
-      format: "text",
-      content: content.toString(),
-      writable,
-      name,
-      path: filePath,
-      created,
-      last_modified
-    };
+    throw new Error("File does not end in ipynb and will not be opened");
   }
 
   throw new Error(`Unsupported filetype at ${filePath}`);
@@ -107,7 +86,9 @@ function createContentsResponse(
  *
  * @param  {ActionObservable}  A LOAD action with the notebook filename
  */
-export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
+export const fetchContentEpic = (
+  action$: ActionsObservable<actions.FetchContent>
+) =>
   action$.pipe(
     ofType(actions.FETCH_CONTENT),
     tap((action: actions.FetchContent) => {
@@ -129,7 +110,7 @@ export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
       ).pipe(
         // Timeout after one minute
         timeout(60 * 1000),
-        map((model: contents.IContent | contents.IEmptyContent) => {
+        map((model: contents.IContent<"notebook">) => {
           if (model.type !== "notebook") {
             throw new Error(
               "Attempted to load a non-notebook type from desktop"
@@ -161,7 +142,7 @@ export const fetchContentEpic = (action$: ActionsObservable<Actions>) =>
   );
 
 export const launchKernelWhenNotebookSetEpic = (
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actions.FetchContentFulfilled>,
   state$: StateObservable<AppState>
 ) =>
   action$.pipe(
@@ -202,7 +183,9 @@ export const launchKernelWhenNotebookSetEpic = (
  *
  * @param  {ActionObservable}  ActionObservable for NEW_NOTEBOOK action
  */
-export const newNotebookEpic = (action$: ActionsObservable<Actions>) =>
+export const newNotebookEpic = (
+  action$: ActionsObservable<actions.NewNotebook>
+) =>
   action$.pipe(
     ofType(actions.NEW_NOTEBOOK),
     map((action: actions.NewNotebook) => {
@@ -233,16 +216,15 @@ export const newNotebookEpic = (action$: ActionsObservable<Actions>) =>
         filepath: "",
         model: {
           type: "notebook",
-          mimetype: null,
+          mimetype: notebookMediaType,
           format: "json",
           // Back to JS, only to immutableify it inside of the reducer
           content: toJS(notebook),
           writable: true,
-          name: null,
-          // Since we have the filepath above, do we need it here (?)
-          path: null,
-          created: timestamp,
-          last_modified: timestamp
+          name: "Untitled.ipynb",
+          path: path.join(action.payload.cwd, "Untitled.ipynb"),
+          created: timestamp.toString(),
+          last_modified: timestamp.toString()
         },
         kernelRef: action.payload.kernelRef,
         contentRef: action.payload.contentRef

@@ -5,6 +5,8 @@ import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
 
+import { contents } from "rx-jupyter";
+
 // NOTE: de-any this file
 
 export const fetchContent = (payload: {
@@ -17,14 +19,9 @@ export const fetchContent = (payload: {
   payload
 });
 
-// rx-jupyter contents response ???
-type ContentModel = {
-  type: "notebook";
-};
-
 export const fetchContentFulfilled = (payload: {
   filepath: string;
-  model: ContentModel;
+  model: contents.IContent;
   kernelRef: KernelRef;
   contentRef: ContentRef;
 }): actionTypes.FetchContentFulfilled => ({
