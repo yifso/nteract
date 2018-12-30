@@ -1,6 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import { selectors } from "@nteract/core";
 import { NewNotebookNavigation } from "@nteract/connected-components";
 import {
   Entry,
@@ -10,6 +9,7 @@ import {
   LastSaved
 } from "@nteract/directory-listing";
 import {
+  selectors,
   AppState,
   KernelspecRecord,
   KernelspecProps,
@@ -31,26 +31,31 @@ const ListingRoot = styled.div`
   padding-right: 2rem;
 `;
 
+type LightDirectoryEntry = {
+  last_modified: Date | null;
+  name: string;
+  path: string;
+  type: "notebook" | "dummy" | "directory" | "file" | "unknown";
+};
+
+type LightDirectoryEntries = LightDirectoryEntry[];
+
 type DirectoryProps = {
-  content: DirectoryContentRecord,
-  host: JupyterHostRecord,
-  appVersion: string,
-  contentRef: ContentRef,
-  contents: Array<{
-    path: string,
-    type: NotebookTypes,
-    name: string,
-    last_modified?: Date
-  }>
+  appBase: string;
+  content: DirectoryContentRecord;
+  host: JupyterHostRecord;
+  appVersion: string;
+  contentRef: ContentRef;
+  contents: LightDirectoryEntries;
 };
 
 export class DirectoryApp extends React.PureComponent<DirectoryProps> {
   openNotebook = (ks: KernelspecRecord | KernelspecProps) => {
     openNotebook(this.props.host, ks, {
+      appBase: this.props.appBase,
       appVersion: this.props.appVersion,
       // Since we're looking at a directory, the base dir is the directory we are in
-      baseDir: this.props.content.filepath,
-      appPath: this.props.host.basePath
+      baseDir: this.props.content.filepath
     });
   };
 
@@ -58,20 +63,20 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
     const atRoot = this.props.content.filepath === "/";
 
     const dotdothref = urljoin(
-      this.props.host.basePath,
-      "/nteract/edit/",
+      this.props.appBase,
+      // Make sure leading / and .. don't navigate outside of the appBase
       urljoin(this.props.content.filepath, "..")
     );
-    const basePath = this.props.host.basePath;
-    const dotdotlink = <a href={dotdothref}>{".."}</a>;
+    const dotdotlink = (
+      <a href={dotdothref} title="Navigate down a directory" role="button">
+        {".."}
+      </a>
+    );
     return (
       <React.Fragment>
         <Nav contentRef={this.props.contentRef}>
           <NavSection>
-            <a
-              href={urljoin(this.props.host.basePath, "/nteract/edit")}
-              title="Home"
-            >
+            <a href={urljoin(this.props.appBase)} title="Home" role="button">
               <ThemedLogo />
             </a>
             <span>{this.props.content.filepath.split("/").pop()}</span>
@@ -91,7 +96,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
             {this.props.contents.map((entry, index) => {
               const link = (
                 <a
-                  href={urljoin(basePath, "/nteract/edit/", entry.path)}
+                  href={urljoin(this.props.appBase, entry.path)}
                   // When it's a notebook, we open a new tab
                   target={entry.type === "notebook" ? "_blank" : undefined}
                 >
@@ -115,11 +120,12 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
 
 const mapStateToDirectoryProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef }
+  ownProps: { contentRef: ContentRef; appBase: string }
 ): DirectoryProps => {
+  const { contentRef, appBase } = ownProps;
+
   const host = selectors.currentHost(state);
   const content = selectors.content(state, ownProps);
-  const contentRef = ownProps.contentRef;
 
   if (host.type !== "jupyter") {
     throw new Error("This component only works with jupyter servers");
@@ -131,9 +137,9 @@ const mapStateToDirectoryProps = (
     );
   }
 
-  let contents = [];
-  content.model.items.map(x => {
-    const row = selectors.content(state, { contentRef: x });
+  const contents: LightDirectoryEntry[] = [];
+  content.model.items.map(entryRef => {
+    const row = selectors.content(state, { contentRef: entryRef });
     if (!row) {
       return {
         last_modified: new Date(),
@@ -159,8 +165,9 @@ const mapStateToDirectoryProps = (
     appVersion: selectors.appVersion(state),
     content,
     contentRef,
-    host,
-    contents
+    contents,
+    appBase,
+    host
   };
 };
 

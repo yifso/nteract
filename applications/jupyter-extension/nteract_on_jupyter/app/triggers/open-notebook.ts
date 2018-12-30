@@ -8,25 +8,30 @@ import { selectors } from "@nteract/core";
 import { contents, sessions } from "rx-jupyter";
 import { first, map, mergeMap } from "rxjs/operators";
 import { forkJoin } from "rxjs";
+import { Notebook } from "@nteract/commutable";
 
 const urljoin = require("url-join");
 
 export function openNotebook(
   host: JupyterHostRecord,
   ks: KernelspecRecord | KernelspecProps,
-  props: { appVersion: string, baseDir: string, appPath: string }
+  props: {
+    appVersion: string;
+    baseDir: string;
+    appBase: string;
+  }
 ) {
   const serverConfig = selectors.serverConfig(host);
 
   // The notebook they get to start with
-  const notebook = {
+  const notebook: Notebook = {
     cells: [
       {
         cell_type: "code",
         execution_count: null,
         metadata: {},
         outputs: [],
-        source: []
+        source: [""]
       }
     ],
     metadata: {
@@ -47,7 +52,7 @@ export function openNotebook(
   //       happening here instead of an epic
   contents
     // Create UntitledXYZ.ipynb by letting the server do it
-    .create(serverConfig, props.baseDir, {
+    .create<"notebook">(serverConfig, props.baseDir, {
       type: "notebook"
       // NOTE: The contents API appears to ignore the content field for new
       // notebook creation.
@@ -81,8 +86,8 @@ export function openNotebook(
           sessions.create(serverConfig, sessionPayload),
           // Save the initial notebook document
           contents.save(serverConfig, filepath, {
-            type: "notebook",
-            content: notebook
+            content: notebook,
+            type: "notebook"
           })
         );
       }),
@@ -91,11 +96,24 @@ export function openNotebook(
       map(([session, content]) => {
         const { response } = content;
 
+        if (content.status > 299 || typeof response === "string") {
+          // hack around this old hack around for creating a notebook from the directory
+          // ideally this would be in a proper epic instead of leaky async code here
+          const message = ["Failed to create notebook due to: "];
+
+          if (typeof response === "string") {
+            message.push(response);
+          } else {
+            message.push(JSON.stringify(response));
+          }
+
+          alert(message.join(""));
+
+          return;
+        }
+
         const url = urljoin(
-          // User path
-          props.appPath,
-          // nteract edit path
-          "/nteract/edit",
+          props.appBase,
           // Actual file
           response.path
         );
