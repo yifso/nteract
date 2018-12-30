@@ -2,7 +2,7 @@
  * A simple contentRef aware component that renders a little lastSaved
  * display.
  *
- * import LastSaved from "./last-saved.js"
+ * import LastSaved from "./last-saved"
  * <LastSaved contentRef={someRef} />
  *
  * If the contentRef is available and has a lastSaved, will render something like:
@@ -12,14 +12,13 @@
  */
 
 import * as React from "react";
-import { selectors } from "@nteract/core";
-import { ContentRef, AppState } from "@nteract/core";
+import { selectors, ContentRef, AppState } from "@nteract/core";
 import moment from "moment";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
 type LastSavedProps = {
-  date: string | number | Date | null
+  date: string | number | Date | null;
 };
 
 const Span = styled.span`
@@ -33,8 +32,8 @@ const Pretext = styled(Span)`
   padding-right: 10px;
 `;
 
-class LastSaved extends React.Component<LastSavedProps, null> {
-  intervalId: number;
+class LastSaved extends React.PureComponent<LastSavedProps, null> {
+  intervalId!: number;
   isStillMounted: boolean;
 
   constructor(props: LastSavedProps) {
@@ -44,7 +43,7 @@ class LastSaved extends React.Component<LastSavedProps, null> {
 
   componentDidMount() {
     this.isStillMounted = true;
-    this.intervalId = setInterval(() => {
+    this.intervalId = window.setInterval(() => {
       if (this.isStillMounted && this.props.date !== null) {
         // React Component method. Forces component to update.
         // See https://reactjs.org/docs/react-component.html#forceupdate
@@ -75,28 +74,37 @@ class LastSaved extends React.Component<LastSavedProps, null> {
 
     return (
       <React.Fragment>
-        <Pretext title={title}>
-          Last Saved:{" "}
-        </Pretext>
-        <Span title={title}>
-          {text}
-        </Span>
+        <Pretext title={title}>Last Saved: </Pretext>
+        <Span title={title}>{text}</Span>
       </React.Fragment>
     );
   }
 }
 
-const ConnectedLastSaved = connect(
-  (
-    state: AppState,
-    ownProps: { contentRef: ContentRef }
-  ): { date: string | number | Date | null } => {
-    const content = selectors.content(state, ownProps);
+/**
+ * Create our state mapper using makeMapStateToProps
+ * Following https://twitter.com/dan_abramov/status/719971882280361985?lang=en
+ */
+const makeMapStateToProps = (
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
+) => {
+  const { contentRef } = initialProps;
+
+  const mapStateToProps = (state: AppState): LastSavedProps => {
+    const content = selectors.contentByRef(state).get(contentRef);
     if (!content || !content.lastSaved) {
       return { date: null };
     }
     return { date: content.lastSaved };
-  }
-)(LastSaved);
+  };
+
+  return mapStateToProps;
+};
+
+const ConnectedLastSaved = connect(
+  makeMapStateToProps,
+  LastSaved
+);
 
 export default ConnectedLastSaved;
