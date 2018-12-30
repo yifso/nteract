@@ -45,7 +45,7 @@ const transforms = {
   "application/vnd.dataresource+json": NullTransform
 };
 
-class NotebookPlaceholder extends React.Component<Props, null> {
+class NotebookPlaceholder extends React.Component<Props> {
   render() {
     // TODO: Show an approximated notebook
     return null;

@@ -44,7 +44,7 @@ type DirectoryProps = {
   }>
 };
 
-export class DirectoryApp extends React.PureComponent<DirectoryProps, null> {
+export class DirectoryApp extends React.PureComponent<DirectoryProps> {
   openNotebook = (ks: KernelspecRecord | KernelspecProps) => {
     openNotebook(this.props.host, ks, {
       appVersion: this.props.appVersion,

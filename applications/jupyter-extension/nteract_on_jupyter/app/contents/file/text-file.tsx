@@ -34,7 +34,7 @@ type TextFileState = {
   Editor: React.ComponentType<MonacoEditorProps>
 };
 
-class EditorPlaceholder extends React.Component<MonacoEditorProps, null> {
+class EditorPlaceholder extends React.Component<MonacoEditorProps> {
   render() {
     // TODO: Show a little blocky placeholder
     return null;

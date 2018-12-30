@@ -47,7 +47,7 @@ const mapStateToProps = (
   };
 };
 
-class Contents extends React.Component<ContentsProps, null> {
+class Contents extends React.Component<ContentsProps> {
   render() {
     const appBase = this.props.appBase;
 

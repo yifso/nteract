@@ -6,7 +6,7 @@ type Props = {
   mediaType: "text/plain";
 };
 
-export default class TextDisplay extends React.PureComponent<Props, null> {
+export default class TextDisplay extends React.PureComponent<Props> {
   static MIMETYPE = "text/plain";
 
   static defaultProps = {
