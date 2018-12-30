@@ -24,10 +24,10 @@ import { GlobalMenuStyle } from "./styles";
 const createActionKey = (action: string, ...args: any[]) =>
   [action, ...args].join(":");
 const parseActionKey = (key: string) => key.split(":");
+
 const StickyMenu = styled(Menu)`
   position: sticky;
   top: 0;
-  /* TODO: this is getting ridiculous... */
   z-index: 10000;
 `;
 
@@ -518,8 +518,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.interruptKernel(payload))
 });
 
-// $FlowFixMe: react-redux
-const NotebookMenu = connect(
+export const NotebookMenu = connect(
   mapStateToProps,
   mapDispatchToProps
 )(PureNotebookMenu);

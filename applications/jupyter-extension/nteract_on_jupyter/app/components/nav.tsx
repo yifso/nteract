@@ -22,7 +22,7 @@ const NavLi = styled.li`
    */
   :not(:first-child):last-child > :global(ul > li) {
     margin: 0px 0px 0px var(--nt-spacing-xl);
-  } 
+  }
 `;
 
 const NavSectionUl = styled.ul`
@@ -39,46 +39,38 @@ const NavSectionLi = styled.li`
 `;
 
 type NavSectionProps = {
-  children: React.ReactChildren
+  children: React.ReactNode;
 };
 
-export class NavSection extends React.Component<NavSectionProps, null> {
-  render() {
-    return (
-      <NavSectionUl>
-        {React.Children.map(this.props.children, child => {
-          if (child === null) {
-            return null;
-          }
-          return <NavSectionLi className="nav-item">{child}</NavSectionLi>;
-        })}
-      </NavSectionUl>
-    );
-  }
-}
+export const NavSection = (props: NavSectionProps) => (
+  <NavSectionUl>
+    {React.Children.map(props.children, child => {
+      if (child === null) {
+        return null;
+      }
+      return <NavSectionLi className="nav-item">{child}</NavSectionLi>;
+    })}
+  </NavSectionUl>
+);
 
 type NavProps = {
-  children: React.ReactChildren,
-  contentRef: ContentRef
+  children: React.ReactNode;
+  contentRef: ContentRef;
 };
 
-export class Nav extends React.Component<NavProps, null> {
-  render() {
-    return (
-      <div>
-        <div className="nteract-nav">
-          <NavUl>
-            {React.Children.map(this.props.children, child => {
-              return <NavLi>{child}</NavLi>;
-            })}
-          </NavUl>
-        </div>
-        <div>
-          <NotebookMenu contentRef={this.props.contentRef} />
-        </div>
-      </div>
-    );
-  }
-}
+export const Nav = (props: NavProps) => (
+  <div>
+    <div className="nteract-nav">
+      <NavUl>
+        {React.Children.map(props.children, child => {
+          return <NavLi>{child}</NavLi>;
+        })}
+      </NavUl>
+    </div>
+    <div>
+      <NotebookMenu contentRef={props.contentRef} />
+    </div>
+  </div>
+);
 
 export default Nav;

@@ -2,8 +2,8 @@ import * as React from "react";
 import { WideLogo } from "@nteract/logos";
 
 type ThemedLogoProps = {
-  height: number,
-  theme: "light" | "dark"
+  height: number;
+  theme: "light" | "dark";
 };
 
 const ThemedLogo = (props: ThemedLogoProps) => (
