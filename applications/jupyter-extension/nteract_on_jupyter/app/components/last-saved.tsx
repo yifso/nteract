@@ -32,7 +32,7 @@ const Pretext = styled(Span)`
   padding-right: 10px;
 `;
 
-class LastSaved extends React.PureComponent<LastSavedProps, null> {
+class LastSaved extends React.PureComponent<LastSavedProps> {
   intervalId!: number;
   isStillMounted: boolean;
 

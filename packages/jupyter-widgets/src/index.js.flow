@@ -6,4 +6,4 @@ type Props = {
   channels: Subject<*>
 };
 
-export type WidgetDisplay = React.Component<Props, null>;
+export type WidgetDisplay = React.Component<Props>;

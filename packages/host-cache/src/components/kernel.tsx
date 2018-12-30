@@ -109,7 +109,7 @@ type KernelProps = {
   cwd: string;
 };
 
-class Kernel extends React.Component<KernelProps, null> {
+class Kernel extends React.Component<KernelProps> {
   static Consumer = Consumer;
 
   static defaultProps = {

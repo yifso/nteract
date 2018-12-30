@@ -19,7 +19,7 @@ type Props = {
  * Even though it may appear to be pure, since it doesn't have react state, this
  * component's iframe maintains it's own state in communication with the kernel.
  */
-export class WidgetDisplay extends React.Component<Props, null> {
+export class WidgetDisplay extends React.Component<Props> {
   static MIMETYPE = "application/vnd.jupyter.widget-view+json";
 
   // TODO: Uncomment this and related code in a follow-up PR.

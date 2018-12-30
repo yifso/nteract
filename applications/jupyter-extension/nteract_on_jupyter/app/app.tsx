@@ -55,7 +55,7 @@ const GlobalAppStyle = createGlobalStyle`
   }
 `;
 
-class App extends React.Component<{ contentRef: ContentRef }, null> {
+class App extends React.Component<{ contentRef: ContentRef }> {
   notificationSystem!: ReactNotificationSystem;
 
   shouldComponentUpdate(nextProps: { contentRef: ContentRef }) {
