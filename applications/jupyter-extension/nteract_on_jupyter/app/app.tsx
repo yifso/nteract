@@ -1,10 +1,12 @@
 import { hot } from "react-hot-loader";
 import * as React from "react";
-import NotificationSystem from "react-notification-system";
-import { Styles, themes } from "@nteract/presentational-components";
+import NotificationSystem, {
+  System as ReactNotificationSystem
+} from "react-notification-system";
+import { themes, GlobalCSSVariables } from "@nteract/presentational-components";
 import { ContentRef } from "@nteract/core";
 import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 import { default as Contents } from "./contents";
 
@@ -54,15 +56,19 @@ const GlobalAppStyle = createGlobalStyle`
 `;
 
 class App extends React.Component<{ contentRef: ContentRef }, null> {
-  notificationSystem: NotificationSystem;
+  notificationSystem!: ReactNotificationSystem;
+
+  shouldComponentUpdate(nextProps: { contentRef: ContentRef }) {
+    return nextProps.contentRef !== this.props.contentRef;
+  }
+
   render() {
     return (
       <React.Fragment>
-        <Styles>
-          <Contents contentRef={this.props.contentRef} />
-        </Styles>
+        <GlobalCSSVariables />
+        <Contents contentRef={this.props.contentRef} />
         <NotificationSystem
-          ref={notificationSystem => {
+          ref={(notificationSystem: ReactNotificationSystem) => {
             this.notificationSystem = notificationSystem;
           }}
         />
