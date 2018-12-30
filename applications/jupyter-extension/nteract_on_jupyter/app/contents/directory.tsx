@@ -23,7 +23,7 @@ import { Nav, NavSection } from "../components/nav";
 import { openNotebook } from "../triggers/open-notebook";
 import { ThemedLogo } from "../components/themed-logo";
 
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 const ListingRoot = styled.div`
   margin-top: 2rem;
@@ -162,11 +162,11 @@ const mapStateToDirectoryProps = (
   });
 
   return {
+    appBase,
     appVersion: selectors.appVersion(state),
     content,
     contentRef,
     contents,
-    appBase,
     host
   };
 };

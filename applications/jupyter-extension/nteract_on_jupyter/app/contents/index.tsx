@@ -3,8 +3,7 @@
 // in production and the footprint is minimal.
 import { hot } from "react-hot-loader";
 import * as React from "react";
-import { selectors } from "@nteract/core";
-import { AppState, ContentRef } from "@nteract/core";
+import { selectors, AppState, ContentRef } from "@nteract/core";
 import { connect } from "react-redux";
 
 import { ThemedLogo } from "../components/themed-logo";
@@ -12,8 +11,7 @@ import { Nav, NavSection } from "../components/nav";
 
 import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
-
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 type ContentsProps = {
   contentType: "dummy" | "notebook" | "directory" | "file";
