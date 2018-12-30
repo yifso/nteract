@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 import { catchError, startWith } from "rxjs/operators";
 import { epics as coreEpics } from "@nteract/core";
 import { DesktopNotebookAppState } from "../state";
@@ -26,10 +27,7 @@ import { closeNotebookEpic } from "./close-notebook";
 
 import { Actions } from "../actions";
 
-export function retryAndEmitError(
-  err: Error,
-  source: ActionsObservable<Actions>
-) {
+export function retryAndEmitError(err: Error, source: Observable<Actions>) {
   console.error(err);
   return source.pipe(startWith({ type: "ERROR", payload: err, error: true }));
 }
