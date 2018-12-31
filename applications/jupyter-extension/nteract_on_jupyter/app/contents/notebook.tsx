@@ -45,31 +45,31 @@ const transforms = {
   "application/vnd.dataresource+json": NullTransform
 };
 
-class NotebookPlaceholder extends React.Component<Props> {
-  render() {
-    // TODO: Show an approximated notebook
-    return null;
-  }
-}
+// Show nothing while loading the notebook app
+const NotebookPlaceholder = (props: any) => null;
 
 type State = {
-  transforms: typeof defaultTransforms,
-  displayOrder: typeof defaultDisplayOrder,
-  App: React.ComponentType<Props>
+  transforms: typeof defaultTransforms;
+  displayOrder: typeof defaultDisplayOrder;
+  App: React.ComponentType<Props>;
 };
 
 type Props = {
-  contentRef: ContentRef
+  contentRef: ContentRef;
+  transforms: typeof defaultTransforms;
+  displayOrder: typeof defaultDisplayOrder;
 };
 
-export default class Notebook extends React.Component<Props, State> {
+export default class Notebook extends React.PureComponent<
+  { contentRef: ContentRef },
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      App: NotebookPlaceholder,
       displayOrder,
-      transforms,
-      // TODO: create a true placeholder element
-      App: NotebookPlaceholder
+      transforms
     };
   }
 
@@ -142,13 +142,11 @@ export default class Notebook extends React.Component<Props, State> {
     const App = this.state.App;
 
     return (
-      <React.Fragment>
-        <App
-          contentRef={this.props.contentRef}
-          displayOrder={this.state.displayOrder}
-          transforms={this.state.transforms}
-        />
-      </React.Fragment>
+      <App
+        contentRef={this.props.contentRef}
+        displayOrder={this.state.displayOrder}
+        transforms={this.state.transforms}
+      />
     );
   }
 }
