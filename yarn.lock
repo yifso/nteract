@@ -2078,10 +2078,10 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/url-join@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@types/url-join/-/url-join-0.8.2.tgz#1181ecbe1d97b7034e0ea1e35e62e86cc26b422d"
-  integrity sha1-EYHsvh2XtwNODqHjXmLobMJrQi0=
+"@types/url-join@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/url-join/-/url-join-4.0.0.tgz#72eff71648a429c7d4acf94e03780e06671369bd"
+  integrity sha512-awrJu8yML4E/xTwr2EMatC+HBnHGoDxc2+ImA9QyeUELI1S7dOCIZcyjki1rkwoA8P2D2NVgLAJLjnclkdLtAw==
 
 "@types/url-search-params@^1.0.0":
   version "1.1.0"
