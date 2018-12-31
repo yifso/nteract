@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import * as React from "react";
+import { styled } from "styled-components";
 
 const GitHubLogo = () => (
   <svg width="17" height="17" viewBox="0 0 17 17">
@@ -11,8 +12,16 @@ const GitHubLogo = () => (
   </svg>
 );
 
+const StyledLogo = styled.div`
+  line-height: 1.5;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 11px;
+`;
+
 export default () => (
-  <div>
+  <StyledLogo>
     <img
       alt="nteract"
       width="80%"
@@ -27,12 +36,5 @@ export default () => (
       Made with ❤️
       <br /> by <a href="https://nteract.io">nteract.io</a>
     </div>
-    <style jsx>{`
-      line-height: 1.5;
-      text-align: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-      font-size: 11px;
-    `}</style>
-  </div>
+  </StyledLogo>
 );
