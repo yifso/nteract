@@ -3,22 +3,20 @@
 // in production and the footprint is minimal.
 import { hot } from "react-hot-loader";
 import * as React from "react";
-import { selectors } from "@nteract/core";
-import { AppState, ContentRef } from "@nteract/core";
+import { selectors, AppState, ContentRef } from "@nteract/core";
 import { connect } from "react-redux";
 
 import { ThemedLogo } from "../components/themed-logo";
 import { Nav, NavSection } from "../components/nav";
 
-import { default as Directory } from "./directory";
+import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
-
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 type ContentsProps = {
-  contentType: "dummy" | "notebook" | "directory" | "file",
-  contentRef: ContentRef,
-  appBase: string
+  contentType: "dummy" | "notebook" | "directory" | "file";
+  contentRef: ContentRef;
+  appBase: string;
 };
 
 const mapStateToProps = (
@@ -47,7 +45,7 @@ const mapStateToProps = (
   };
 };
 
-class Contents extends React.Component<ContentsProps> {
+class Contents extends React.PureComponent<ContentsProps> {
   render() {
     const appBase = this.props.appBase;
 
@@ -58,7 +56,10 @@ class Contents extends React.Component<ContentsProps> {
         return <File contentRef={this.props.contentRef} appBase={appBase} />;
       case "directory":
         return (
-          <Directory contentRef={this.props.contentRef} appBase={appBase} />
+          <ConnectedDirectory
+            contentRef={this.props.contentRef}
+            appBase={appBase}
+          />
         );
       default:
         return (
@@ -71,7 +72,7 @@ class Contents extends React.Component<ContentsProps> {
               </NavSection>
             </Nav>
             <div>
-              {`content type ${ this.props.contentType } not implemented`}
+              {`content type ${this.props.contentType} not implemented`}
             </div>
           </React.Fragment>
         );

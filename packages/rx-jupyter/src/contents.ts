@@ -161,7 +161,7 @@ export function update<FT extends FileType>(
 export function create<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: IContent<FT>
+  model: Partial<IContent<FT>> & { type: FT }
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -197,7 +197,9 @@ export function save<FT extends FileType>(
       },
       method: "PUT"
     })
-  );
+  ) as Observable<
+    JupyterAjaxResponse<{ path: string; [property: string]: string }>
+  >;
 }
 
 /**
