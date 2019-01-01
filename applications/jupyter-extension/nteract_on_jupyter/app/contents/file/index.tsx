@@ -36,16 +36,16 @@ const JupyterExtensionChoiceContainer = styled.div`
 `;
 
 type FileProps = {
-  type: "notebook" | "file" | "dummy",
-  contentRef: ContentRef,
-  baseDir: string,
-  appBase: string,
-  displayName: string,
-  mimetype?: string,
-  lastSavedStatement: string,
-  saving: boolean,
-  loading: boolean,
-  error?: {}
+  type: "notebook" | "file" | "dummy";
+  contentRef: ContentRef;
+  baseDir: string;
+  appBase: string;
+  displayName?: string;
+  mimetype?: string | null;
+  lastSavedStatement: string;
+  saving: boolean;
+  loading: boolean;
+  error?: object | null;
 };
 
 export class File extends React.PureComponent<FileProps> {
@@ -117,7 +117,7 @@ export class File extends React.PureComponent<FileProps> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef, appBase: string }
+  ownProps: { contentRef: ContentRef; appBase: string }
 ): FileProps => {
   const content = selectors.content(state, ownProps);
 

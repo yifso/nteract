@@ -38,6 +38,7 @@
     "@nteract/transform-plotly": "^4.0.0-alpha.0",
     "@nteract/transform-vega": "^4.0.0-alpha.0",
     "@nteract/transforms": "^5.0.0-alpha.0",
+    "@nteract/types": "^3.1.0",
     "@nteract/webpack-configurator": "^2.0.0-alpha.0",
     "jquery": "^3.2.1",
     "moment": "^2.22.1",

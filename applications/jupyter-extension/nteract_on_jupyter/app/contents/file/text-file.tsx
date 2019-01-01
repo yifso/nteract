@@ -4,7 +4,7 @@ import { AppState, ContentRef } from "@nteract/core";
 import { selectors, actions } from "@nteract/core";
 import { MonacoEditorProps } from "@nteract/monaco-editor";
 import { connect } from "react-redux";
-
+import { Dispatch } from "redux";
 
 const EditorContainer = styled.div`
   position: absolute;
@@ -18,20 +18,20 @@ const EditorContainer = styled.div`
 `;
 
 type MappedStateProps = {
-  mimetype: string,
-  text: string,
-  contentRef: ContentRef,
-  theme: "light" | "dark"
+  mimetype: string;
+  text: string;
+  contentRef: ContentRef;
+  theme: "light" | "dark";
 };
 
 type MappedDispatchProps = {
-  handleChange: (value: string) => void
+  handleChange: (value: string) => void;
 };
 
 type TextFileProps = MappedStateProps & MappedDispatchProps;
 
 type TextFileState = {
-  Editor: React.ComponentType<MonacoEditorProps>
+  Editor: React.ComponentType<MonacoEditorProps>;
 };
 
 class EditorPlaceholder extends React.Component<MonacoEditorProps> {
@@ -99,7 +99,10 @@ function mapStateToTextFileProps(
   };
 }
 
-const mapDispatchToTextFileProps = (dispatch, ownProps): MappedDispatchProps => ({
+const mapDispatchToTextFileProps = (
+  dispatch: Dispatch,
+  ownProps: MappedStateProps
+): MappedDispatchProps => ({
   handleChange: (source: string) => {
     dispatch(
       actions.updateFileText({
