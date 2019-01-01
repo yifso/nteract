@@ -4,7 +4,7 @@ import {
   DocumentRecordProps
 } from "@nteract/core";
 import { RecordOf } from "immutable";
-import { Observable, empty, of, zip, concat } from "rxjs";
+import { Observable, Observer, empty, of, zip, concat } from "rxjs";
 import {
   catchError,
   concatMap,
@@ -26,9 +26,10 @@ import * as actionTypes from "../actionTypes";
 import * as actions from "../actions";
 
 import { Actions } from "../actions";
+import { KernelRef, KernelRecord } from "@nteract/types";
 
 export const closeNotebookEpic = (
-  action$: ActionsObservable<Actions>,
+  action$: ActionsObservable<actionTypes.CloseNotebook>,
   state$: StateObservable<DesktopNotebookAppState>
 ) =>
   action$.pipe(
@@ -42,55 +43,66 @@ export const closeNotebookEpic = (
 
       var dirtyPromptObservable: Observable<boolean>;
       if (selectors.notebook.isDirty(model)) {
-        dirtyPromptObservable = Observable.create(observer => {
+        dirtyPromptObservable = Observable.create((observer: Observer<any>) => {
           const promptDialog = {
             type: "question",
             buttons: ["Yes", "No"],
             title: "Confirm",
             message: "Unsaved data will be lost. Are you sure you want to quit?"
           };
-          ipc.once("show-message-box-response", (event, arg) => {
-            observer.next(arg === 0);
-            observer.complete();
-          });
+          ipc.once(
+            "show-message-box-response",
+            (_event: string, arg: number) => {
+              observer.next(arg === 0);
+              observer.complete();
+            }
+          );
           ipc.send("show-message-box", promptDialog);
         });
       } else {
         dirtyPromptObservable = of(true);
       }
 
-      const killKernelActions = [];
-      const killKernelAwaits = [];
-      state.core.entities.kernels.byRef.forEach((kernel, kernelRef) => {
-        // Skip if kernel unknown
-        if (!kernel || !kernel.type) {
-          return;
-        }
+      const killKernelActions: Actions[] = [];
+      const killKernelAwaits: Array<Observable<Actions>> = [];
+      state.core.entities.kernels.byRef.forEach(
+        (kernel: KernelRecord, kernelRef: KernelRef) => {
+          // Skip if kernel unknown
+          if (!kernel || !kernel.type) {
+            return;
+          }
 
-        if (kernel.type === "zeromq") {
-          killKernelActions.push(
-            coreActions.killKernel({
-              restarting: false,
-              kernelRef: kernelRef
-            })
-          );
+          if (kernel.type === "zeromq") {
+            killKernelActions.push(
+              coreActions.killKernel({
+                restarting: false,
+                kernelRef
+              })
+            );
 
-          killKernelAwaits.push(
-            action$.pipe(
-              ofType(
-                coreActions.KILL_KERNEL_SUCCESSFUL,
-                coreActions.KILL_KERNEL_FAILED
-              ),
-              filter(action => action.payload.kernelRef === kernelRef),
-              take(1)
-            )
-          );
-        } else if (kernel.type === "websocket") {
-          console.log(
-            "Need to implement a way to shutdown websocket kernels on desktop"
-          );
+            killKernelAwaits.push(
+              action$.pipe(
+                ofType(
+                  coreActions.KILL_KERNEL_SUCCESSFUL,
+                  coreActions.KILL_KERNEL_FAILED
+                ),
+                filter(
+                  (
+                    action:
+                      | coreActions.KillKernelSuccessful
+                      | coreActions.KillKernelFailed
+                  ) => action.payload.kernelRef === kernelRef
+                ),
+                take(1)
+              )
+            );
+          } else if (kernel.type === "websocket") {
+            console.log(
+              "Need to implement a way to shutdown websocket kernels on desktop"
+            );
+          }
         }
-      });
+      );
 
       const killKernels = of(...killKernelActions);
 
@@ -123,7 +135,7 @@ export const closeNotebookEpic = (
         })
       );
 
-      const initiateClose = Observable.create(observer => {
+      const initiateClose = Observable.create((observer: Observer<any>) => {
         if (action.payload.reloading) {
           console.log("Kernel shutdown complete; reloading notebook window...");
           ipc.send("reload");
