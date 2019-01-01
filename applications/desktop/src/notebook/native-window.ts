@@ -50,7 +50,7 @@ export function tildify(p?: string) {
 type Attributes = {
   fullpath: string;
   modified: boolean;
-  kernelStatus?: string;
+  kernelStatus?: string | null;
 };
 
 export function setTitleFromAttributes(attributes: Attributes) {
@@ -98,8 +98,9 @@ export function createTitleFeed(
   );
 
   const modified$ = content$.pipe(
-    map((content: NotebookContentRecord) => {
+    map(untypedContent => {
       // In desktop we can safely assume that the model is a notebook model
+      const content = untypedContent as NotebookContentRecord;
       return selectors.notebook.isDirty(content.model);
     }),
     distinctUntilChanged()
