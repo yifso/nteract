@@ -73,7 +73,6 @@ export class TextFile extends React.PureComponent<
           editorFocused={true}
           value={this.props.text}
           onChange={this.handleChange.bind(this)}
-          contentRef={this.props.contentRef}
         />
       </EditorContainer>
     );
