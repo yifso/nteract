@@ -8,7 +8,12 @@ import epics from "./epics";
 import { Actions } from "./actions";
 
 const rootEpic = combineEpics(...epics);
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<
+  Actions,
+  Actions,
+  DesktopNotebookAppState,
+  any
+>();
 const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
 export type DesktopStore = Store<DesktopNotebookAppState, Actions>;
