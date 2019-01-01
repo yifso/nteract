@@ -102,7 +102,7 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-const ConnectedLastSaved = connect<{ contentRef: ContentRef }>(
+const ConnectedLastSaved = connect(
   makeMapStateToProps,
   LastSaved
 );

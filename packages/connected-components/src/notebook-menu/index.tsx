@@ -45,7 +45,6 @@ type Props = {
   unhideAll?: (payload: object) => void;
   cutCell?: (payload: object) => void;
   copyCell?: (payload: object) => void;
-  notebook: Immutable.Map<string, any>;
   pasteCell?: (payload: object) => void;
   createCellBelow?: (payload: object) => void;
   changeCellType?: (payload: object) => void;
