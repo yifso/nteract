@@ -10,14 +10,14 @@ import {
 } from "@blueprintjs/core";
 import styled from "styled-components";
 
-export type EditableTitleOverlayProps = {
-  defaultValue: string;
+type EditableTitleOverlayProps = {
+  defaultValue: string | undefined;
   isOpen: boolean;
-  onCancel: () => void;
+  onCancel: (isCancelled: boolean) => void;
   onSave: (value: string) => void;
 };
 
-export type EditableTitleOverlayState = {
+type EditableTitleOverlayState = {
   value: string;
 };
 

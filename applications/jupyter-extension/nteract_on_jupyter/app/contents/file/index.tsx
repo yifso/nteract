@@ -8,15 +8,16 @@ import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { H4 } from "@blueprintjs/core";
-// $FlowFixMe
 import * as actions from "@nteract/actions";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
 import LastSaved from "../../components/last-saved";
+import { EditableTitleOverlay } from "../file/editable-title-overlay";
 import { default as Notebook } from "../notebook";
 
 import * as TextFile from "./text-file";
+import { ActionsObservable } from "redux-observable";
 
 const urljoin = require("url-join");
 
@@ -38,7 +39,7 @@ const JupyterExtensionChoiceContainer = styled.div`
   overflow: auto;
 `;
 
-type FileProps = {
+interface FileProps {
   type: "notebook" | "file" | "dummy";
   contentRef: ContentRef;
   baseDir: string;
@@ -49,6 +50,7 @@ type FileProps = {
   saving: boolean;
   loading: boolean;
   error?: object | null;
+  changeContentName?: (payload: actions.ChangeContentName) => void;
 };
 
 type State = { isDialogOpen: boolean };
@@ -121,8 +123,7 @@ export class File extends React.PureComponent<FileProps, State> {
 
   // Handles onConfirm callback for EditableText component
   confirmTitle = (value: string) => {
-    if (value !== this.props.displayName) {
-      // $FlowFixMe
+    if (this.props.changeContentName && value !== this.props.displayName) {
       this.props.changeContentName({
         filepath: `/${value ? this.addFileExtension(value) : ""}`,
         prevFilePath: `/${this.props.displayName}`,
@@ -180,7 +181,8 @@ const mapStateToProps = (
   state: AppState,
   ownProps: { 
     contentRef: ContentRef, 
-    appBase: string
+    appBase: string,
+    changeContentName: (payload: actions.ChangeContentName) => void
   }): FileProps => {
   const content = selectors.content(state, ownProps);
 
@@ -195,7 +197,6 @@ const mapStateToProps = (
     throw new Error("CommunicationByRef information not found");
   }
 
-  // $FlowFixMe
   return {
     type: content.type,
     mimetype: content.mimetype,
@@ -206,13 +207,14 @@ const mapStateToProps = (
     displayName: content.filepath.split("/").pop(),
     saving: comms.saving,
     loading: comms.loading,
-    error: comms.error
+    error: comms.error,
+    changeContentName: ownProps.changeContentName
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<*>) => ({
-    // $FlowFixMe
-    changeContentName: (payload) => dispatch(actions.changeContentName(payload))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  changeContentName: (payload: actions.ChangeContentName) => 
+    dispatch(actions.changeContentName(payload))
 });
 
 export const ConnectedFile = connect(
