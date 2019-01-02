@@ -264,7 +264,7 @@ export const SHUTDOWN_REPLY_SUCCEEDED = "SHUTDOWN_REPLY_SUCCEEDED";
 export type ShutdownReplySucceeded = {
   type: "SHUTDOWN_REPLY_SUCCEEDED";
   payload: {
-    text: string;
+    content: { restart: boolean };
     kernelRef: KernelRef;
   };
 };

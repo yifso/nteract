@@ -274,7 +274,7 @@ export function deleteConnectionFileSuccessful(payload: {
 }
 
 export function shutdownReplySucceeded(payload: {
-  text: string;
+  content: { restart: boolean };
   kernelRef: KernelRef;
 }): actionTypes.ShutdownReplySucceeded {
   return {
