@@ -10,10 +10,10 @@ import {
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 
 import buttonGroupStyle from "./css/button-group";
-import chartUIStyle from "./css/viz-controls";
 import { controlHelpText, ChartOptionTypes } from "./docs/chart-docs";
 
 import * as Dx from "./types";
+import styled, { css } from "styled-components";
 
 const NoResultsItem = <MenuItem disabled={true} text="No results." />;
 
@@ -130,6 +130,33 @@ const getIcon = (title: string) => {
   }
 };
 
+const commonCSS = css`
+  h2 {
+    text-transform: capitalize;
+    margin-bottom: 10px;
+  }
+  select {
+    height: 30px;
+  }
+
+  .selected {
+    background-color: #d8e1e8 !important;
+    background-image: none !important;
+  }
+`;
+
+const ControlWrapper = styled.div`
+  margin-right: 30px;
+  ${commonCSS}
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: left;
+  margin-bottom: 30px;
+  ${commonCSS}
+`;
+
 const metricDimSelector = (
   values: Array<string>,
   selectionFunction: (val: string) => void,
@@ -170,13 +197,13 @@ const metricDimSelector = (
   else displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
 
   return (
-    <div className="control-wrapper" title={contextTooltip}>
+    <ControlWrapper title={contextTooltip}>
       <div>
         <Code>{title}</Code>
       </div>
       {displayMetrics}
       <style jsx>{chartUIStyle}</style>
-    </div>
+    </ControlWrapper>
   );
 };
 
@@ -283,7 +310,7 @@ export default ({
 
   return (
     <React.Fragment>
-      <div className="wrapper">
+      <Wrapper>
         {(view === "summary" ||
           view === "scatter" ||
           view === "hexbin" ||
@@ -532,8 +559,7 @@ export default ({
             </ButtonGroup>
           </div>
         )}
-      </div>
-      <style jsx>{chartUIStyle}</style>
+      </Wrapper>
       <style jsx>{buttonGroupStyle}</style>
       <BlueprintCSS />
       <BlueprintSelectCSS />
