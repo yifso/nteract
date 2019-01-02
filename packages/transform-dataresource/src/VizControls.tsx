@@ -214,17 +214,10 @@ const availableAreaTypes = [
   }
 ];
 
-<<<<<<< HEAD
-type ChartTypes = { [key in ExplorationTypes]: string };
-type VizControlParams = {
-  view: string;
-  chart: ChartTypes;
-=======
 type ChartOptions = { [key in ChartOptionTypes]: string };
 type VizControlParams = {
   view: string;
   chart: ChartOptions;
->>>>>>> Update to remove errors reported in VS Code
   metrics: Array<{ name: string }>;
   dimensions: Array<{ name: string }>;
   updateChart: Function;
@@ -238,11 +231,7 @@ type VizControlParams = {
   updateDimensions: Function;
   lineType: string;
   areaType: string;
-<<<<<<< HEAD
-  setAreaType: (label: string) => void;
-=======
   setAreaType: (label: Dx.AreaType) => void;
->>>>>>> Update to remove errors reported in VS Code
   data: Array<Object>;
 };
 export default ({
@@ -274,11 +263,7 @@ export default ({
 
   const getControlHelpText = (view: string, metricOrDim: string) => {
     if (Object.keys(controlHelpText).find(mOrD => mOrD === metricOrDim)) {
-<<<<<<< HEAD
-      let mOrD = metricOrDim as ExplorationTypes;
-=======
       let mOrD = metricOrDim as ChartOptionTypes;
->>>>>>> Update to remove errors reported in VS Code
       const views =
         controlHelpText[mOrD] != null ? controlHelpText[mOrD] : null;
       if (views == null) {
