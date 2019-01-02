@@ -22,19 +22,28 @@ import {
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
 } from "../state";
-import * as actionTypes from "../actionTypes";
+import { CLOSE_NOTEBOOK, CloseNotebook } from "../actionTypes";
 import * as actions from "../actions";
 
 import { Actions } from "../actions";
 import { KernelRef, KernelRecord } from "@nteract/types";
 
 export const closeNotebookEpic = (
-  action$: ActionsObservable<actionTypes.CloseNotebook>,
+  action$: ActionsObservable<
+    | CloseNotebook
+    | coreActions.KillKernelFailed
+    | coreActions.KillKernelSuccessful
+  >,
   state$: StateObservable<DesktopNotebookAppState>
 ) =>
   action$.pipe(
-    ofType(actionTypes.CLOSE_NOTEBOOK),
-    exhaustMap((action: actionTypes.CloseNotebook) => {
+    ofType<
+      | CloseNotebook
+      | coreActions.KillKernelFailed
+      | coreActions.KillKernelSuccessful,
+      ReturnType<typeof actions.closeNotebook>
+    >(CLOSE_NOTEBOOK),
+    exhaustMap((action: CloseNotebook) => {
       const contentRef = action.payload.contentRef;
       const state = state$.value;
       const model = selectors.model(state, {
@@ -82,7 +91,15 @@ export const closeNotebookEpic = (
 
             killKernelAwaits.push(
               action$.pipe(
-                ofType(
+                ofType<
+                  | CloseNotebook
+                  | coreActions.KillKernelFailed
+                  | coreActions.KillKernelSuccessful,
+                  ReturnType<
+                    | typeof coreActions.killKernelSuccessful
+                    | typeof coreActions.killKernelFailed
+                  >
+                >(
                   coreActions.KILL_KERNEL_SUCCESSFUL,
                   coreActions.KILL_KERNEL_FAILED
                 ),

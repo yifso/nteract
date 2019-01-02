@@ -384,7 +384,7 @@ export const killKernelEpic = (
         first(),
         // If we got a reply, great! :)
         map((msg: { content: { restart: boolean } }) =>
-          actions.shutdownReplySucceeded({ text: msg.content, kernelRef })
+          actions.shutdownReplySucceeded({ content: msg.content, kernelRef })
         ),
         // If we don't get a response within 2s, assume failure :(
         timeout(1000 * 2),
