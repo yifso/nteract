@@ -202,7 +202,6 @@ const metricDimSelector = (
         <Code>{title}</Code>
       </div>
       {displayMetrics}
-      <style jsx>{chartUIStyle}</style>
     </ControlWrapper>
   );
 };
