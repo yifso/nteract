@@ -1,7 +1,7 @@
 /**
  * @module rx-jupyter
  */
-import { ajax } from "rxjs/ajax";
+import { ajax, AjaxRequest } from "rxjs/ajax";
 import querystring from "querystring";
 import urljoin from "url-join";
 import { ServerConfig, createAJAXSettings, JupyterAjaxResponse } from "./base";
@@ -149,8 +149,8 @@ export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
   model: Payload | Partial<Payload>
-) =>
-  ajax(
+) {
+  return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
       body: model,
       headers: {
@@ -159,6 +159,7 @@ export function update<FT extends FileType>(
       method: "PATCH"
     })
   );
+}
 
 /**
  * Creates an AjaxObservable for creating content

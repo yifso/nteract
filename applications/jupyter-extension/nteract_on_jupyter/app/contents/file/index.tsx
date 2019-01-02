@@ -50,7 +50,7 @@ interface FileProps {
   saving: boolean;
   loading: boolean;
   error?: object | null;
-  changeContentName?: (payload: actions.ChangeContentName) => void;
+  changeContentName: (payload: actions.ChangeContentName["payload"]) => void;
 };
 
 type State = { isDialogOpen: boolean };
@@ -123,7 +123,7 @@ export class File extends React.PureComponent<FileProps, State> {
 
   // Handles onConfirm callback for EditableText component
   confirmTitle = (value: string) => {
-    if (this.props.changeContentName && value !== this.props.displayName) {
+    if (value !== this.props.displayName) {
       this.props.changeContentName({
         filepath: `/${value ? this.addFileExtension(value) : ""}`,
         prevFilePath: `/${this.props.displayName}`,
@@ -181,9 +181,8 @@ const mapStateToProps = (
   state: AppState,
   ownProps: { 
     contentRef: ContentRef, 
-    appBase: string,
-    changeContentName: (payload: actions.ChangeContentName) => void
-  }): FileProps => {
+    appBase: string
+  }) => {
   const content = selectors.content(state, ownProps);
 
   if (!content || content.type === "directory") {
@@ -207,13 +206,12 @@ const mapStateToProps = (
     displayName: content.filepath.split("/").pop(),
     saving: comms.saving,
     loading: comms.loading,
-    error: comms.error,
-    changeContentName: ownProps.changeContentName
+    error: comms.error
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  changeContentName: (payload: actions.ChangeContentName) => 
+  changeContentName: (payload: actions.ChangeContentName["payload"]) => 
     dispatch(actions.changeContentName(payload))
 });
 
