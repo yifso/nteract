@@ -16,12 +16,6 @@ export type ChangeContentName = {
 export const CHANGE_CONTENT_NAME_FULFILLED = "CORE/CHANGE_CONTENT_NAME_FULFILLED";
 export type ChangeContentNameFulfilled = {
   type: "CORE/CHANGE_CONTENT_NAME_FULFILLED";
-  payload: {
-    basepath: string;
-    filepath: string;
-    prevFilePath: string;
-    contentRef: ContentRef;
-  };
 };
 
 export const CHANGE_CONTENT_NAME_FAILED = "CORE/CHANGE_CONTENT_NAME_FAILED";

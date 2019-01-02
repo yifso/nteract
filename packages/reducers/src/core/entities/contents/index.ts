@@ -29,18 +29,8 @@ const byRef = (
 ): Immutable.Map<ContentRef, ContentRecord> => {
   switch (action.type) {
     case actionTypes.CHANGE_CONTENT_NAME:
-      return state;
-    case actionTypes.CHANGE_CONTENT_NAME_FULFILLED:
-      const changeContentNameFulfilledAction = action as actionTypes.ChangeContentNameFulfilled;
-      const { contentRef, filepath } = changeContentNameFulfilledAction.payload;
-
-      /*
-       * Modifying the url's file name in the browser.
-       * This effects back button behavior.
-       * Is there a better way to accomplish this?
-      */
-      window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
-
+      const changeContentNameAction = action as actionTypes.ChangeContentName;
+      const { contentRef, filepath } = changeContentNameAction.payload;
       return state.setIn([contentRef, "filepath"], filepath);
     case actionTypes.CHANGE_CONTENT_NAME_FAILED:
       // TODO: Add to error component for alerting the user

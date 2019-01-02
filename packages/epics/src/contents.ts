@@ -53,12 +53,15 @@ export function updateContentEpic(
               throw new Error(xhr.response);
             }
           }),
-          map(() => actions.changeContentNameFulfilled({ 
-            basepath: host.basepath,
-            filepath, 
-            prevFilePath, 
-            contentRef 
-          })),
+          map(() => {
+            /*
+            * Modifying the url's file name in the browser.
+            * This effects back button behavior.
+            * Is there a better way to accomplish this?
+            */
+            window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
+            return actions.changeContentNameSucceeded({});
+          }),
           catchError((xhrError: any) =>
             of(actions.changeContentNameFailed({
               basepath: host.basepath,

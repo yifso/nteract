@@ -26,14 +26,8 @@ export const fetchContent = (
   payload
 });
 
-export const changeContentNameFulfilled = (payload: {
-  basepath: string,
-  filepath: string;
-  prevFilePath: string;
-  contentRef: ContentRef;
-}): actionTypes.ChangeContentNameFulfilled => ({
-  type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED,
-  payload
+export const changeContentNameFulfilled = () => ({
+  type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED
 });
 
 export const changeContentNameFailed = (payload: {
