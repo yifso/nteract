@@ -81,13 +81,17 @@ class LastSaved extends React.PureComponent<LastSavedProps> {
   }
 }
 
+interface OwnProps {
+  contentRef: string;
+}
+
 /**
  * Create our state mapper using makeMapStateToProps
  * Following https://twitter.com/dan_abramov/status/719971882280361985?lang=en
  */
 const makeMapStateToProps = (
   initialState: AppState,
-  initialProps: { contentRef: ContentRef }
+  initialProps: OwnProps
 ) => {
   const { contentRef } = initialProps;
 
@@ -102,9 +106,6 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-const ConnectedLastSaved = connect(
-  makeMapStateToProps,
-  LastSaved
-);
-
-export default ConnectedLastSaved;
+export default connect<LastSavedProps, typeof LastSaved, OwnProps, AppState>(
+  makeMapStateToProps
+)(LastSaved);

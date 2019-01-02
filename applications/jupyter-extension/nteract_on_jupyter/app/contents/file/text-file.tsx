@@ -79,9 +79,13 @@ export class TextFile extends React.PureComponent<
   }
 }
 
+interface OwnProps {
+  contentRef: ContentRef;
+}
+
 function mapStateToTextFileProps(
   state: AppState,
-  ownProps: { contentRef: ContentRef }
+  ownProps: OwnProps
 ): MappedStateProps {
   const content = selectors.content(state, ownProps);
   if (!content || content.type !== "file") {
@@ -100,7 +104,7 @@ function mapStateToTextFileProps(
 
 const mapDispatchToTextFileProps = (
   dispatch: Dispatch,
-  ownProps: MappedStateProps
+  ownProps: OwnProps
 ): MappedDispatchProps => ({
   handleChange: (source: string) => {
     dispatch(
@@ -112,7 +116,12 @@ const mapDispatchToTextFileProps = (
   }
 });
 
-const ConnectedTextFile = connect(
+const ConnectedTextFile = connect<
+  MappedStateProps,
+  MappedDispatchProps,
+  OwnProps,
+  AppState
+>(
   mapStateToTextFileProps,
   mapDispatchToTextFileProps
 )(TextFile);
