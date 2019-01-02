@@ -8,7 +8,7 @@ import TooltipContent from "../tooltip-content";
 
 import { sortByOrdinalRange } from "./shared";
 import * as Dx from "../types";
-import { JSONObject } from "@nteract/commutable/src";
+import { JSONObject } from "@nteract/commutable";
 
 const binHash = {
   heatmap: heatmapping,

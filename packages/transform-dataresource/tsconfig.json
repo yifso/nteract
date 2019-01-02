@@ -5,5 +5,10 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../commutable" }, { "path": "../types" }]
+  "references": [
+    { "path": "../commutable" },
+    { "path": "../types" },
+    { "path": "../octicons" },
+    { "path": "../styled-blueprintjsx" }
+  ]
 }
