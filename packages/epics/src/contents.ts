@@ -60,7 +60,7 @@ export function updateContentEpic(
             * Is there a better way to accomplish this?
             */
             window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
-            return actions.changeContentNameSucceeded({});
+            return actions.changeContentNameFulfilled;
           }),
           catchError((xhrError: any) =>
             of(actions.changeContentNameFailed({
