@@ -4,7 +4,7 @@ import { ResponsiveOrdinalFrame, Axis } from "semiotic";
 
 import HTMLLegend from "./HTMLLegend";
 import { numeralFormatting } from "./utilities";
-import buttonGroupStyle from "./css/button-group";
+import { StyledButtonGroup } from "./components/button-group";
 import TooltipContent from "./tooltip-content";
 
 import * as Dx from "./types";
@@ -227,7 +227,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
 
     return (
       <div>
-        <div className="button-group">
+        <StyledButtonGroup>
           <button
             className={`button-text ${filterMode ? "selected" : ""}`}
             onClick={() => this.setState({ filterMode: true })}
@@ -240,7 +240,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
           >
             Explore
           </button>
-        </div>
+        </StyledButtonGroup>
         <ResponsiveOrdinalFrame
           data={this.state.data}
           oAccessor="metric"
@@ -350,7 +350,6 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
           )}
           {...additionalSettings}
         />
-        <style jsx>{buttonGroupStyle}</style>
       </div>
     );
   }

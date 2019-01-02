@@ -1,15 +1,9 @@
 import * as React from "react";
 import { Select } from "@blueprintjs/select";
-import {
-  Button,
-  ButtonGroup,
-  MenuItem,
-  Code,
-  IconName
-} from "@blueprintjs/core";
+import { Button, MenuItem, Code, IconName } from "@blueprintjs/core";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 
-import buttonGroupStyle from "./css/button-group";
+import { StyledButtonGroup } from "./components/button-group";
 import { controlHelpText, ChartOptionTypes } from "./docs/chart-docs";
 
 import * as Dx from "./types";
@@ -448,7 +442,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <ButtonGroup vertical={true}>
+            <StyledButtonGroup vertical={true}>
               {availableLineTypes.map(lineTypeOption => (
                 <Button
                   key={lineTypeOption.type}
@@ -460,7 +454,7 @@ export default ({
                   {lineTypeOption.label}
                 </Button>
               ))}
-            </ButtonGroup>
+            </StyledButtonGroup>
           </div>
         )}
         {view === "hexbin" && (
@@ -471,7 +465,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <ButtonGroup vertical={true}>
+            <StyledButtonGroup vertical={true}>
               {availableAreaTypes.map(areaTypeOption => {
                 const areaTypeOptionType = areaTypeOption.type;
                 if (
@@ -494,7 +488,7 @@ export default ({
                   return <div />;
                 }
               })}
-            </ButtonGroup>
+            </StyledButtonGroup>
           </div>
         )}
         {view === "hierarchy" && (
@@ -518,7 +512,7 @@ export default ({
             <div>
               <Code>Categories</Code>
             </div>
-            <ButtonGroup vertical={true}>
+            <StyledButtonGroup vertical={true}>
               {dimensions.map(dim => (
                 <Button
                   key={`dimensions-select-${dim.name}`}
@@ -531,7 +525,7 @@ export default ({
                   {dim.name}
                 </Button>
               ))}
-            </ButtonGroup>
+            </StyledButtonGroup>
           </div>
         )}
         {view === "line" && (
@@ -542,7 +536,7 @@ export default ({
             <div>
               <Code>Metrics</Code>
             </div>
-            <ButtonGroup vertical={true}>
+            <StyledButtonGroup vertical={true}>
               {metrics.map(metric => (
                 <Button
                   key={`metrics-select-${metric.name}`}
@@ -555,11 +549,10 @@ export default ({
                   {metric.name}
                 </Button>
               ))}
-            </ButtonGroup>
+            </StyledButtonGroup>
           </div>
         )}
       </Wrapper>
-      <style jsx>{buttonGroupStyle}</style>
       <BlueprintCSS />
       <BlueprintSelectCSS />
     </React.Fragment>
