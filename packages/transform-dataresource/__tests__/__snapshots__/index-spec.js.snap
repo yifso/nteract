@@ -394,6 +394,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "Australia and New Zealand",
                 "Standard Error": 0.03371,
                 "Trust (Government Corruption)": 0.42922,
+                "coordinates": Array [],
                 "id": "New Zealand",
                 "index": 8,
                 "label": "New Zealand",
@@ -412,6 +413,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "Western Europe",
                 "Standard Error": 0.03157,
                 "Trust (Government Corruption)": 0.43844,
+                "coordinates": Array [],
                 "id": "Sweden",
                 "index": 7,
                 "label": "Sweden",
@@ -430,6 +432,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "Western Europe",
                 "Standard Error": 0.02799,
                 "Trust (Government Corruption)": 0.31814,
+                "coordinates": Array [],
                 "id": "Netherlands",
                 "index": 6,
                 "label": "Netherlands",
@@ -448,6 +451,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "Western Europe",
                 "Standard Error": 0.04884,
                 "Trust (Government Corruption)": 0.14145,
+                "coordinates": Array [],
                 "id": "Iceland",
                 "index": 1,
                 "label": "Iceland",
@@ -466,6 +470,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "Western Europe",
                 "Standard Error": 0.0388,
                 "Trust (Government Corruption)": 0.36503,
+                "coordinates": Array [],
                 "id": "Norway",
                 "index": 3,
                 "label": "Norway",
@@ -484,6 +489,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "Region": "North America",
                 "Standard Error": 0.03553,
                 "Trust (Government Corruption)": 0.32957,
+                "coordinates": Array [],
                 "id": "Canada",
                 "index": 4,
                 "label": "Canada",
@@ -499,6 +505,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
               "type": "scatterplot",
             }
           }
+          areas={false}
           axes={
             Array [
               Object {
