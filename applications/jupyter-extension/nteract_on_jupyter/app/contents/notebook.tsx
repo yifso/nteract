@@ -56,8 +56,8 @@ type State = {
 
 type Props = {
   contentRef: ContentRef;
-  transforms: typeof defaultTransforms;
-  displayOrder: typeof defaultDisplayOrder;
+  transforms?: typeof defaultTransforms;
+  displayOrder?: typeof defaultDisplayOrder;
 };
 
 export default class Notebook extends React.PureComponent<
