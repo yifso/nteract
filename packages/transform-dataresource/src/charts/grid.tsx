@@ -217,7 +217,7 @@ class DataResourceTransformGrid extends React.Component<Props, State> {
           className="-striped -highlight"
           filterable={showFilters}
         />
-        <style jsx>{ReactTableStyles}</style>
+        <ReactTableStyles />
         <BlueprintCSS />
       </div>
     );
