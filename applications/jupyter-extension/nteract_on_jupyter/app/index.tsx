@@ -21,6 +21,7 @@ import {
   makeJupyterHostRecord
 } from "@nteract/core";
 import { AppState } from "@nteract/core";
+import { HostRecord, ContentRecord } from "@nteract/types";
 
 import configureStore from "./store";
 import App from "./app";
@@ -30,12 +31,12 @@ const urljoin = require("url-join");
 require("./fonts");
 
 export type JupyterConfigData = {
-  token: string,
-  page: "tree" | "view" | "edit",
-  contentsPath: string,
-  baseUrl: string,
-  appVersion: string,
-  assetUrl: string
+  token: string;
+  page: "tree" | "view" | "edit";
+  contentsPath: string;
+  baseUrl: string;
+  appVersion: string;
+  assetUrl: string;
 };
 
 function main(rootEl: Element, dataEl: Node | null) {
@@ -57,6 +58,9 @@ function main(rootEl: Element, dataEl: Node | null) {
   let config: JupyterConfigData;
 
   try {
+    if (!dataEl.textContent) {
+      throw new Error("Unable to find Jupyter config data.");
+    }
     config = JSON.parse(dataEl.textContent);
   } catch (err) {
     ReactDOM.render(<ErrorPage error={err} />, rootEl);
@@ -64,8 +68,6 @@ function main(rootEl: Element, dataEl: Node | null) {
   }
 
   // Allow chunks from webpack to load from their built location
-  // eslint-disable-next-line no-unused-vars
-  declare var __webpack_public_path__: string;
   __webpack_public_path__ = urljoin(config.assetUrl, "nteract/static/dist/");
 
   const jupyterHostRecord = makeJupyterHostRecord({
@@ -93,10 +95,13 @@ function main(rootEl: Element, dataEl: Node | null) {
     core: makeStateRecord({
       entities: makeEntitiesRecord({
         hosts: makeHostsRecord({
-          byRef: Immutable.Map().set(hostRef, jupyterHostRecord)
+          byRef: Immutable.Map<string, HostRecord>().set(
+            hostRef,
+            jupyterHostRecord
+          )
         }),
         contents: makeContentsRecord({
-          byRef: Immutable.Map().set(
+          byRef: Immutable.Map<string, ContentRecord>().set(
             contentRef,
             makeDummyContentRecord({
               filepath: config.contentsPath
@@ -111,7 +116,7 @@ function main(rootEl: Element, dataEl: Node | null) {
   const kernelspecsRef = createKernelspecsRef();
 
   const store = configureStore(initialState);
-  window.store = store;
+  (window as any).store = store;
 
   store.dispatch(
     actions.fetchContent({

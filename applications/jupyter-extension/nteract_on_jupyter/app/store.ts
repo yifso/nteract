@@ -1,9 +1,20 @@
-import { combineReducers, createStore, applyMiddleware, compose } from "redux";
+import {
+  combineReducers,
+  createStore,
+  applyMiddleware,
+  compose,
+  Action
+} from "redux";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { AppState } from "@nteract/core";
-import { reducers, epics as coreEpics, middlewares as coreMiddlewares } from "@nteract/core";
+import {
+  reducers,
+  epics as coreEpics,
+  middlewares as coreMiddlewares
+} from "@nteract/core";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   app: reducers.app,
@@ -12,10 +23,8 @@ const rootReducer = combineReducers({
   core: reducers.core
 });
 
-export default function configureStore(initialState: AppState) {
-  const rootEpic = combineEpics<AppState, redux$AnyAction>(
-    ...coreEpics.allEpics
-  );
+export default function configureStore(initialState: Partial<AppState>) {
+  const rootEpic = combineEpics<Action, AppState>(...coreEpics.allEpics);
   const epicMiddleware = createEpicMiddleware();
   const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
