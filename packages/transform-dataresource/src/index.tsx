@@ -156,9 +156,9 @@ class DataResourceTransform extends React.Component<Props, State> {
 
     const { metadata, initialView } = props;
 
-    const { dx: baseDX } = metadata;
-
-    const { chart = {}, ...dx } = baseDX;
+    // Handle case of metadata being empty yet dx not set
+    const dx = metadata.dx || {};
+    const chart = dx.chart || {};
 
     const { fields = [], primaryKey = [] } = props.data.schema;
 
