@@ -4,5 +4,5 @@
     "noEmit": true,
     "composite": false
   },
-  "include": ["nteract_on_jupyter/app"]
+  "include": ["nteract_on_jupyter/app", "nteract_on_jupyter/global.d.ts"]
 }

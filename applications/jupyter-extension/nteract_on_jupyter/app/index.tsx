@@ -58,15 +58,16 @@ function main(rootEl: Element, dataEl: Node | null) {
   let config: JupyterConfigData;
 
   try {
-    config = JSON.parse(dataEl.textContent || "");
+    if (!dataEl.textContent) {
+      throw new Error("Unable to find Jupyter config data.");
+    }
+    config = JSON.parse(dataEl.textContent);
   } catch (err) {
     ReactDOM.render(<ErrorPage error={err} />, rootEl);
     return;
   }
 
   // Allow chunks from webpack to load from their built location
-  // eslint-disable-next-line no-unused-vars
-  var __webpack_public_path__: string;
   __webpack_public_path__ = urljoin(config.assetUrl, "nteract/static/dist/");
 
   const jupyterHostRecord = makeJupyterHostRecord({
