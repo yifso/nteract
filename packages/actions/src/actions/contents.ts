@@ -9,12 +9,9 @@ import { contents } from "rx-jupyter";
 
 // NOTE: de-any this file
 
-export const fetchContent = (payload: {
-  filepath: string;
-  params: Object;
-  kernelRef: KernelRef;
-  contentRef: ContentRef;
-}): actionTypes.FetchContent => ({
+export const fetchContent = (
+  payload: actionTypes.FetchContent["payload"]
+): actionTypes.FetchContent => ({
   type: actionTypes.FETCH_CONTENT,
   payload
 });
