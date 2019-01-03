@@ -8,5 +8,27 @@
     "noEmit": true,
     "composite": false
   },
-  "include": ["nteract_on_jupyter/app", "nteract_on_jupyter/global.d.ts"]
+  "include": ["nteract_on_jupyter/app", "nteract_on_jupyter/global.d.ts"],
+  "references": [
+    { "path": "../../packages/commutable" },
+    { "path": "../../packages/connected-components" },
+    { "path": "../../packages/core" },
+    { "path": "../../packages/directory-listing" },
+    { "path": "../../packages/editor" },
+    { "path": "../../packages/iron-icons" },
+    { "path": "../../packages/jupyter-widgets" },
+    { "path": "../../packages/logos" },
+    { "path": "../../packages/monaco-editor" },
+    { "path": "../../packages/notebook-app-component" },
+    { "path": "../../packages/notebook-preview" },
+    { "path": "../../packages/octicons" },
+    { "path": "../../packages/presentational-components" },
+    { "path": "../../packages/transform-dataresource" },
+    { "path": "../../packages/transform-geojson" },
+    { "path": "../../packages/transform-model-debug" },
+    { "path": "../../packages/transform-plotly" },
+    { "path": "../../packages/transform-vega" },
+    { "path": "../../packages/transforms" },
+    { "path": "../../packages/types" }
+  ]
 }
