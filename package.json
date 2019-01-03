@@ -22,7 +22,6 @@
   "scripts": {
     "app:desktop": "lerna run dev --stream --scope nteract",
     "app:play": "lerna run dev --stream --scope @nteract/play",
-    "app:commuter": "lerna run dev --stream --scope @nteract/commuter",
     "app:jupyter-extension": "lerna run dev --stream --scope nteract-on-jupyter",
     "start": "npm run app:desktop",
     "spawn": "lerna run spawn --scope nteract",
@@ -33,7 +32,7 @@
     "lint:ts:fix": "tslint --config tslint.json --project tsconfig.base.json --fix",
     "build": "NODE_ENV=production npm run build:packages",
     "build:clean": "npm run build:packages -- --clean",
-    "build:apps": "lerna run build --scope nteract --scope @nteract/play --scope @nteract/commuter --scope nteract-on-jupyter --parallel --stream",
+    "build:apps": "lerna run build --scope nteract --scope @nteract/play --scope nteract-on-jupyter --parallel --stream",
     "build:desktop": "lerna run build --scope nteract --stream",
     "build:desktop:watch": "lerna run build:watch --scope nteract --stream",
     "build:packages": "tsc -b packages",

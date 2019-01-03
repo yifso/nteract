@@ -6,10 +6,6 @@ const ignored = new Set([
   // we don't reuse the desktop app as a library
   "nteract",
 
-  // commuter is a next app -- if people need modules from it, they should be
-  // made into new packages
-  "@nteract/commuter",
-
   // It's this package, the one you're currently looking at! We must skip it.
   "@nteract/webpack-configurator",
 

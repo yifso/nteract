@@ -58,10 +58,6 @@ jobs:
           destination: styleguide
 
       - run:
-          name: Build Commuter
-          command: npx lerna run build --scope @nteract/commuter
-          no_output_timeout: 20m
-      - run:
           name: Build Play
           command: npx lerna run build --scope @nteract/play
           no_output_timeout: 20m
