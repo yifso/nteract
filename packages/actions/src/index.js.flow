@@ -1,0 +1,10 @@
+// @flow
+/* eslint-disable */
+
+declare module "@nteract/actions" {
+  declare module.exports: any;
+}
+
+declare module "@nteract/actionTypes" {
+  declare module.exports: any;
+}

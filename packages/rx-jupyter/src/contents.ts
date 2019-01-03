@@ -1,7 +1,7 @@
 /**
  * @module rx-jupyter
  */
-import { ajax } from "rxjs/ajax";
+import { ajax, AjaxRequest } from "rxjs/ajax";
 import querystring from "querystring";
 import urljoin from "url-join";
 import { ServerConfig, createAJAXSettings, JupyterAjaxResponse } from "./base";
@@ -56,22 +56,6 @@ export interface IContent<FT extends FileType = FileType>
     ? Array<IEmptyContent<FT>>
     : null;
 }
-
-/*
- *
- * name (string):
- * path (string): Full path for file or directory ,
- * type (string): Type of content = ['directory', 'file', 'notebook']
- *                stringEnum:"directory", "file", "notebook",
- * writable (boolean): indicates whether the requester has permission to edit the file ,
- * created (string): Creation timestamp ,
- * last_modified (string): Last modified timestamp ,
- * mimetype (string): The mimetype of a file. If content is not null, and type is 'file',
- *                    this will contain the mimetype of the file, otherwise this will be null. ,
- * content (string): The content, if requested (otherwise null). Will be an array
- *                   if type is 'directory' ,
- * format (string): Format of content (one of null, 'text', 'base64', 'json')
- */
 
 /**
  * Creates an AjaxObservable for removing content.
@@ -136,7 +120,7 @@ export function get(
 export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT>>
+  model: Partial<IContent>
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {

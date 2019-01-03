@@ -138,7 +138,7 @@ const mapStateToDirectoryProps = (
   }
 
   const contents: LightDirectoryEntry[] = [];
-  content.model.items.map(entryRef => {
+  content.model.items.map((entryRef: ContentRef) => {
     const row = selectors.content(state, { contentRef: entryRef });
     if (!row) {
       return {

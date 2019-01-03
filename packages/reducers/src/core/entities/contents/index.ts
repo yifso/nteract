@@ -28,6 +28,13 @@ const byRef = (
   action: Action
 ): Immutable.Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.CHANGE_CONTENT_NAME:
+      const changeContentNameAction = action as actionTypes.ChangeContentName;
+      const { contentRef, filepath } = changeContentNameAction.payload;
+      return state.setIn([contentRef, "filepath"], filepath);
+    case actionTypes.CHANGE_CONTENT_NAME_FAILED:
+      // TODO: Add to error component for alerting the user
+      return state;
     case actionTypes.FETCH_CONTENT:
       // TODO: we might be able to get around this by looking at the
       // communication state first and not requesting this information until

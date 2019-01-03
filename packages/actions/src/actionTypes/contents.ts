@@ -3,6 +3,38 @@
  */
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
+export const CHANGE_CONTENT_NAME = "CORE/CHANGE_CONTENT_NAME";
+export type ChangeContentName = {
+  type: "CORE/CHANGE_CONTENT_NAME";
+  payload: {
+    filepath: string;
+    prevFilePath: string;
+    contentRef: ContentRef;
+  };
+};
+
+export const CHANGE_CONTENT_NAME_FULFILLED = "CORE/CHANGE_CONTENT_NAME_FULFILLED";
+export type ChangeContentNameFulfilled = {
+  type: "CORE/CHANGE_CONTENT_NAME_FULFILLED";
+  payload: {
+    filepath: string;
+    prevFilePath: string;
+    contentRef: ContentRef;
+  };
+};
+
+export const CHANGE_CONTENT_NAME_FAILED = "CORE/CHANGE_CONTENT_NAME_FAILED";
+export type ChangeContentNameFailed = {
+  type: "CORE/CHANGE_CONTENT_NAME_FAILED";
+  payload: {
+    basepath: string;
+    filepath: string;
+    prevFilePath: string;
+    error: Error;
+    contentRef: ContentRef;
+  };
+};
+
 export const FETCH_CONTENT = "CORE/FETCH_CONTENT";
 export type FetchContent = {
   type: "CORE/FETCH_CONTENT";

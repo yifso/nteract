@@ -2,18 +2,22 @@ import { dirname } from "path";
 
 import * as React from "react";
 import styled from "styled-components";
+import { Dispatch } from "redux";
 import { selectors } from "@nteract/core";
 import { ContentRef, AppState } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
-import { EditableText } from "@blueprintjs/core";
+import { H4 } from "@blueprintjs/core";
+import * as actions from "@nteract/actions";
 
 import { ThemedLogo } from "../../components/themed-logo";
 import { Nav, NavSection } from "../../components/nav";
 import LastSaved from "../../components/last-saved";
+import { EditableTitleOverlay } from "../file/editable-title-overlay";
 import { default as Notebook } from "../notebook";
 
 import * as TextFile from "./text-file";
+import { ActionsObservable } from "redux-observable";
 
 const urljoin = require("url-join");
 
@@ -35,7 +39,7 @@ const JupyterExtensionChoiceContainer = styled.div`
   overflow: auto;
 `;
 
-type FileProps = {
+interface FileProps {
   type: "notebook" | "file" | "dummy";
   contentRef: ContentRef;
   baseDir: string;
@@ -46,13 +50,23 @@ type FileProps = {
   saving: boolean;
   loading: boolean;
   error?: object | null;
+  changeContentName: (payload: actions.ChangeContentName["payload"]) => void;
 };
 
-export class File extends React.PureComponent<FileProps> {
-  render() {
-    // Determine the file handler
-    let choice = null;
-    const icon = this.props.saving ? (
+type State = { isDialogOpen: boolean };
+
+export class File extends React.PureComponent<FileProps, State> {
+  constructor(props: FileProps) {
+    super(props);
+
+    this.state = { 
+      isDialogOpen: false 
+    };
+  };
+
+  // Determine the file handler
+  getFileHandlerIcon = () => {
+    return this.props.saving ? (
       <SavingIcon />
     ) : this.props.error ? (
       <ErrorIcon />
@@ -61,6 +75,28 @@ export class File extends React.PureComponent<FileProps> {
     ) : (
       ""
     );
+  }
+
+  // TODO: Add more acceptable file extensions
+  hasFileExtension = (fileName: string) => {
+    if (/\.ipynb/.exec(fileName) !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // TODO: Add logic for acceptable file extensions
+  addFileExtension = (fileName: string) => {
+    if (!this.hasFileExtension(fileName)) {
+      return `${fileName}.ipynb`;
+    } else {
+      return fileName;
+    }
+  }
+
+  getChoice = () => {
+    let choice = null;
 
     // notebooks don't report a mimetype so we'll use the content.type
     if (this.props.type === "notebook") {
@@ -82,6 +118,26 @@ export class File extends React.PureComponent<FileProps> {
       choice = <TextFile.default contentRef={this.props.contentRef} />;
     }
 
+    return choice;
+  }
+
+  // Handles onConfirm callback for EditableText component
+  confirmTitle = (value: string) => {
+    if (value !== this.props.displayName) {
+      this.props.changeContentName({
+        filepath: `/${value ? this.addFileExtension(value) : ""}`,
+        prevFilePath: `/${this.props.displayName}`,
+        contentRef: this.props.contentRef
+      });
+    }
+
+    this.setState({ isDialogOpen: false });
+  }
+
+  render() {
+    const icon = this.getFileHandlerIcon();
+    const choice = this.getChoice();
+
     // Right now we only handle one kind of editor
     // If/when we support more modes, we would case them off here
     return (
@@ -95,11 +151,17 @@ export class File extends React.PureComponent<FileProps> {
               >
                 <ThemedLogo />
               </a>
-              <EditableText
-                disabled={true}
-                placeholder={"Enter Title..."}
-                value={this.props.displayName}
-              />
+              <div>
+                <H4 onClick={() => this.setState({ isDialogOpen: true })}>
+                  {this.props.displayName}
+                </H4>
+                <EditableTitleOverlay 
+                  defaultValue={this.props.displayName}
+                  isOpen={this.state.isDialogOpen}
+                  onCancel={() => this.setState({ isDialogOpen: false })}
+                  onSave={this.confirmTitle}
+                />
+              </div>
             </NavSection>
             <NavSection>
               <span className="icon">{icon}</span>
@@ -117,8 +179,10 @@ export class File extends React.PureComponent<FileProps> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { contentRef: ContentRef; appBase: string }
-): FileProps => {
+  ownProps: { 
+    contentRef: ContentRef, 
+    appBase: string
+  }) => {
   const content = selectors.content(state, ownProps);
 
   if (!content || content.type === "directory") {
@@ -146,6 +210,14 @@ const mapStateToProps = (
   };
 };
 
-export const ConnectedFile = connect(mapStateToProps)(File);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  changeContentName: (payload: actions.ChangeContentName["payload"]) => 
+    dispatch(actions.changeContentName(payload))
+});
+
+export const ConnectedFile = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(File);
 
 export default ConnectedFile;

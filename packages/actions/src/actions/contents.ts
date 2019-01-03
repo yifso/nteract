@@ -7,7 +7,34 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
-// NOTE: de-any this file
+export const changeContentName = (payload: {
+  filepath: string;
+  contentRef: ContentRef;
+  prevFilePath: string;
+}): actionTypes.ChangeContentName => ({
+  type: actionTypes.CHANGE_CONTENT_NAME,
+  payload
+});
+
+export const changeContentNameFulfilled = (payload: {
+  filepath: string;
+  contentRef: ContentRef;
+  prevFilePath: string;
+}): actionTypes.ChangeContentNameFulfilled => ({
+  type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED,
+  payload
+});
+
+export const changeContentNameFailed = (payload: {
+  basepath: string;
+  filepath: string;
+  error: Error;
+  contentRef: ContentRef;
+  prevFilePath: string;
+}): actionTypes.ChangeContentNameFailed => ({
+  type: actionTypes.CHANGE_CONTENT_NAME_FAILED,
+  payload
+});
 
 export const fetchContent = (
   payload: actionTypes.FetchContent["payload"]

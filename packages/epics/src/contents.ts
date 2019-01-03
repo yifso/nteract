@@ -9,12 +9,77 @@ import FileSaver from "file-saver";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { Action } from "redux";
 import { contents, ServerConfig } from "rx-jupyter";
-import { toJS, stringifyNotebook, Notebook } from "@nteract/commutable";
+import { toJS, stringifyNotebook } from "@nteract/commutable";
+import { Notebook } from "@nteract/commutable";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
+
+import urljoin from "url-join";
+
+export function updateContentEpic(
+  action$: ActionsObservable<actions.ChangeContentName>,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.CHANGE_CONTENT_NAME),
+    switchMap(action => {
+      if (!action.payload || typeof action.payload.filepath !== "string") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: { error: new Error("updating content needs a payload") }
+        }) as any;
+      }
+
+      const state: any = state$.value;
+      const host: any = selectors.currentHost(state);
+
+      // Dismiss any usage that isn't targeting a jupyter server
+      if (host.type !== "jupyter") {
+        return empty();
+      }
+
+      const { contentRef, filepath, prevFilePath } = action.payload;
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      return contents
+        .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
+        .pipe(
+          tap(xhr => {
+            if (xhr.status !== 200) {
+              throw new Error(xhr.response);
+            }
+          }),
+          map(() => {
+            /*
+            * Modifying the url's file name in the browser.
+            * This effects back button behavior.
+            * Is there a better way to accomplish this?
+            */
+            window.history.replaceState({}, filepath, urljoin(host.basePath, `/nteract/edit${filepath}`));
+
+            return actions.changeContentNameFulfilled({
+              contentRef: action.payload.contentRef,
+              filepath: action.payload.filepath,
+              prevFilePath
+            });
+          }),
+          catchError((xhrError: any) =>
+            of(actions.changeContentNameFailed({
+              basepath: host.basepath,
+              filepath: action.payload.filepath,
+              prevFilePath,
+              error: xhrError,
+              contentRef: action.payload.contentRef
+            }))
+          )
+        );
+    })
+  );
+}
 
 export function fetchContentEpic(
   action$: ActionsObservable<
@@ -35,13 +100,14 @@ export function fetchContentEpic(
         }) as any;
       }
 
-      const state = state$.value;
+      const state: any = state$.value;
+      const host: any = selectors.currentHost(state);
 
-      const host = selectors.currentHost(state);
+      // Dismiss any usage that isn't targeting a jupyter server
       if (host.type !== "jupyter") {
-        // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
+
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
