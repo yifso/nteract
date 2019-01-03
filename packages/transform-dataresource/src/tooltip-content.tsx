@@ -8,38 +8,42 @@ type Props = {
 };
 
 // A little "mixin" for picking the :before on a tooltip
-const beforeContent = (props: Props) =>
-  props.x < 100
-    ? null
-    : props.y < 100
-    ? `
-border-left: inherit;
-border-top: inherit;
-top: -8px;
-left: calc(50% - 15px);
-background: inherit;
-content: "";
-padding: 0px;
-transform: rotate(45deg);
-width: 15px;
-height: 15px;
-position: absolute;
-z-index: 99;
-`
-    : `
-border-right: inherit;
-border-bottom: inherit;
-bottom: -8px;
-left: calc(50% - 15px);
-background: inherit;
-content: "";
-padding: 0px;
-transform: rotate(45deg);
-width: 15px;
-height: 15px;
-position: absolute;
-z-index: 99;
-`;
+const beforeContent = (props: Props) => {
+  if (props.x < 100) {
+    return null;
+  }
+  if (props.y < 100) {
+    return `
+      border-left: inherit;
+      border-top: inherit;
+      top: -8px;
+      left: calc(50% - 15px);
+      background: inherit;
+      content: "";
+      padding: 0px;
+      transform: rotate(45deg);
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      z-index: 99;
+    `;
+  }
+
+  return `
+    border-right: inherit;
+    border-bottom: inherit;
+    bottom: -8px;
+    left: calc(50% - 15px);
+    background: inherit;
+    content: "";
+    padding: 0px;
+    transform: rotate(45deg);
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    z-index: 99;
+  `;
+};
 
 const TooltipContent = styled.div`
   color: black;
