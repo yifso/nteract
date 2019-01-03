@@ -59,7 +59,7 @@ export function updateContentEpic(
             * This effects back button behavior.
             * Is there a better way to accomplish this?
             */
-            window.history.replaceState({}, filepath, `/nteract/edit${filepath}`);
+            window.history.replaceState({}, filepath, urljoin(host.basePath, `/nteract/edit${filepath}`));
             return actions.changeContentNameFulfilled;
           }),
           catchError((xhrError: any) =>
