@@ -74,7 +74,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
     );
     return (
       <React.Fragment>
-        <Nav contentRef={this.props.contentRef}>
+        <Nav contentRef={this.props.contentRef} showNotebookMenu={false}>
           <NavSection>
             <a href={urljoin(this.props.appBase)} title="Home" role="button">
               <ThemedLogo />

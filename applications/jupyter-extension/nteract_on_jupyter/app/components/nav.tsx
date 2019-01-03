@@ -56,6 +56,7 @@ export const NavSection = (props: NavSectionProps) => (
 type NavProps = {
   children: React.ReactNode;
   contentRef: ContentRef;
+  showNotebookMenu?: boolean;
 };
 
 export const Nav = (props: NavProps) => (
@@ -67,9 +68,13 @@ export const Nav = (props: NavProps) => (
         })}
       </NavUl>
     </div>
-    <div>
-      <NotebookMenu contentRef={props.contentRef} />
-    </div>
+    {/* Default notebook menu to display by default */}
+    { props.showNotebookMenu || props.showNotebookMenu === undefined ? (
+        <div>
+          <NotebookMenu contentRef={props.contentRef} />
+        </div>
+      ) : null
+    }
   </div>
 );
 
