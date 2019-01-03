@@ -9,38 +9,28 @@ import { contents } from "rx-jupyter";
 
 export const changeContentName = (payload: {
   filepath: string;
-  prevFilePath: string;
   contentRef: ContentRef;
-<<<<<<< HEAD
-}): actionTypes.UpdateContent => ({
-  type: actionTypes.UPDATE_CONTENT,
-  payload
-});
-
-export const fetchContent = (
-  payload: actionTypes.FetchContent["payload"]
-): actionTypes.FetchContent => ({
-=======
+  prevFilePath: string;
 }): actionTypes.ChangeContentName => ({
   type: actionTypes.CHANGE_CONTENT_NAME,
   payload
 });
 
 export const changeContentNameFulfilled = (payload: {
-  filepath: string,
+  filepath: string;
+  contentRef: ContentRef;
   prevFilePath: string;
-  contentRef: ContentRef,
 }): actionTypes.ChangeContentNameFulfilled => ({
   type: actionTypes.CHANGE_CONTENT_NAME_FULFILLED,
   payload
 });
 
 export const changeContentNameFailed = (payload: {
-  basepath: string,
-  filepath: string,
+  basePath: string;
+  filepath: string;
+  error: Error;
+  contentRef: ContentRef;
   prevFilePath: string;
-  error: Error,
-  contentRef: ContentRef,
 }): actionTypes.ChangeContentNameFailed => ({
   type: actionTypes.CHANGE_CONTENT_NAME_FAILED,
   payload
@@ -52,7 +42,6 @@ export const fetchContent = (payload: {
   kernelRef: KernelRef;
   contentRef: ContentRef;
 }): actionTypes.FetchContent => ({
->>>>>>> changing controlled component to uncomtrolled component, refactoring after PR review, troubleshooting the display name update
   type: actionTypes.FETCH_CONTENT,
   payload
 });
