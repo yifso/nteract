@@ -4,7 +4,6 @@ import { colors } from "./settings";
 import { semioticSettings } from "./charts/settings";
 import DataResourceTransformGrid from "./charts/grid";
 import VizControls from "./VizControls";
-import semioticStyle from "./css/semiotic";
 import { Toolbar } from "./components/Toolbar";
 
 const mediaType = "application/vnd.dataresource+json";
@@ -20,6 +19,7 @@ import {
   Chart,
   View
 } from "./types";
+import styled from "styled-components";
 
 type dxMetaProps = {
   view?: View;
@@ -138,6 +138,60 @@ const MetadataWarning = ({ metadata }: { metadata: Metadata }) => {
     </div>
   );
 };
+
+const SemioticWrapper = styled.div`
+  width: "calc(100vw - 200px)";
+  .html-legend-item {
+    color: var(--theme-app-fg);
+  }
+
+  .tick > path {
+    stroke: lightgray;
+  }
+
+  .axis-labels,
+  .ordinal-labels {
+    fill: var(--theme-app-fg);
+    font-size: 14px;
+  }
+
+  path.connector,
+  path.connector-end {
+    stroke: var(--theme-app-fg);
+  }
+
+  path.connector-end {
+    fill: var(--theme-app-fg);
+  }
+
+  text.annotation-note-label,
+  text.legend-title,
+  .legend-item text {
+    fill: var(--theme-app-fg);
+    stroke: none;
+  }
+
+  .xyframe-area > path {
+    stroke: var(--theme-app-fg);
+  }
+
+  .axis-baseline {
+    stroke-opacity: 0.25;
+    stroke: var(--theme-app-fg);
+  }
+  circle.frame-hover {
+    fill: none;
+    stroke: gray;
+  }
+  .rect {
+    stroke: green;
+    stroke-width: 5px;
+    stroke-opacity: 0.5;
+  }
+  rect.selection {
+    opacity: 0.5;
+  }
+`;
 
 class DataResourceTransform extends React.Component<Props, State> {
   static MIMETYPE = mediaType;
@@ -288,7 +342,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     });
 
     const display: React.ReactNode = (
-      <div style={{ width: "calc(100vw - 200px)" }}>
+      <SemioticWrapper>
         <Frame responsiveWidth={true} size={[500, 300]} {...frameSettings} />
         <VizControls
           {...{
@@ -311,8 +365,7 @@ class DataResourceTransform extends React.Component<Props, State> {
             areaType
           }}
         />
-        <style jsx>{semioticStyle}</style>
-      </div>
+      </SemioticWrapper>
     );
 
     //If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
