@@ -57,34 +57,6 @@ export interface IContent<FT extends FileType = FileType>
     : null;
 }
 
-/*
- *
- * name (string):
- * path (string): Full path for file or directory ,
- * type (string): Type of content = ['directory', 'file', 'notebook']
- *                stringEnum:"directory", "file", "notebook",
- * writable (boolean): indicates whether the requester has permission to edit the file ,
- * created (string): Creation timestamp ,
- * last_modified (string): Last modified timestamp ,
- * mimetype (string): The mimetype of a file. If content is not null, and type is 'file',
- *                    this will contain the mimetype of the file, otherwise this will be null. ,
- * content (string): The content, if requested (otherwise null). Will be an array
- *                   if type is 'directory' ,
- * format (string): Format of content (one of null, 'text', 'base64', 'json')
- */
-export type Payload = {
-  name: string;
-  path: string;
-  type: "directory" | "file" | "notebook";
-  writable: boolean;
-  created: string;
-  last_modified: string;
-  mimetype: string;
-  content: string | Notebook;
-  format: string;
-  kernel: any;
-};
-
 /**
  * Creates an AjaxObservable for removing content.
  *
@@ -148,7 +120,7 @@ export function get(
 export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Payload | Partial<Payload>
+  model: Partial<IContent>
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
