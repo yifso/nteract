@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 // NOTE: This could use the sessions API so these kernels aren't "on the loose"
 import { kernels } from "rx-jupyter";
