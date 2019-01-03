@@ -1,6 +1,6 @@
-import css from "styled-jsx/css";
+import { createGlobalStyle } from "styled-components";
 
-export default css.global`
+export default createGlobalStyle`
   .ReactTable {
     position: relative;
     display: -webkit-box;

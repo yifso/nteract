@@ -1,104 +1,79 @@
-/* @flow */
-import { hot } from "react-hot-loader";
 import * as React from "react";
 
 import { colors } from "./settings";
 import { semioticSettings } from "./charts/settings";
 import DataResourceTransformGrid from "./charts/grid";
 import VizControls from "./VizControls";
-import semioticStyle from "./css/semiotic";
 import { Toolbar } from "./components/Toolbar";
 
 const mediaType = "application/vnd.dataresource+json";
 
-type dataProps = {
-  schema: {
-    fields: Array<{ name: string, type: string }>,
-    pandas_version: string,
-    primaryKey: Array<string>
-  },
-  data: Array<Object>
-};
-
-type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
-
-type AreaType = "hexbin" | "heatmap" | "contour";
-
-type SummaryType = "violin" | "joy" | "histogram" | "heatmap" | "boxplot";
-
-type PieceType = "bar" | "point" | "swarm" | "clusterbar";
-
-type HierarchyType = "dendrogram" | "treemap" | "partition" | "sunburst";
-
-type NetworkType = "force" | "sankey" | "arc" | "matrix";
-
-export type View =
-  | "line"
-  | "bar"
-  | "scatter"
-  | "grid"
-  | "network"
-  | "summary"
-  | "hexbin"
-  | "parallel"
-  | "hierarchy";
+import * as Dx from "./types";
+import {
+  LineType,
+  AreaType,
+  PieceType,
+  SummaryType,
+  NetworkType,
+  HierarchyType,
+  Chart,
+  View
+} from "./types";
+import styled from "styled-components";
 
 type dxMetaProps = {
-  view?: View,
-  lineType?: LineType,
-  areaType?: AreaType,
-  selectedDimensions?: Array<string>,
-  selectedMetrics?: Array<string>,
-  pieceType?: PieceType,
-  summaryType?: SummaryType,
-  networkType?: NetworkType,
-  hierarchyType?: HierarchyType,
-  colors?: Array<string>,
-  chart?: {
-    metric1?: string,
-    metric2?: string,
-    metric3?: string,
-    dim1?: string,
-    dim2?: string,
-    dim3?: string,
-    networkLabel?: string,
-    timeseriesSort?: string
-  }
+  view?: View;
+  lineType?: LineType;
+  areaType?: AreaType;
+  selectedDimensions?: string[];
+  selectedMetrics?: string[];
+  pieceType?: PieceType;
+  summaryType?: SummaryType;
+  networkType?: NetworkType;
+  hierarchyType?: HierarchyType;
+  colors?: string[];
+  chart?: Chart;
+};
+
+type Metadata = {
+  dx: dxMetaProps;
+  sampled?: boolean;
 };
 
 type Props = {
-  data: dataProps,
-  metadata: { dx: dxMetaProps },
-  theme?: string,
-  expanded?: boolean,
-  height?: number,
-  mediaType: "application/vnd.dataresource+json",
-  initialView: View,
-  onMetadataChange?: ({ dx: dxMetaProps }) => void
+  data: Dx.DataProps;
+  metadata: Metadata;
+  theme?: string;
+  expanded?: boolean;
+  height?: number;
+  mediaType: "application/vnd.dataresource+json";
+  initialView: View;
+  onMetadataChange?: ({ dx }: { dx: dxMetaProps }) => void;
 };
 
 type State = {
-  view: View,
-  colors: Array<string>,
-  metrics: Array<Object>,
-  dimensions: Array<Object>,
-  selectedMetrics: Array<string>,
-  selectedDimensions: Array<string>,
-  networkType: NetworkType,
-  hierarchyType: HierarchyType,
-  pieceType: PieceType,
-  summaryType: SummaryType,
-  lineType: LineType,
-  areaType: AreaType,
-  chart: Object,
-  displayChart: Object,
-  primaryKey: Array<string>,
-  data: Array<Object>
+  view: View;
+  colors: string[];
+  metrics: Dx.Field[];
+  dimensions: Dx.Dimension[];
+  selectedMetrics: string[];
+  selectedDimensions: string[];
+  networkType: NetworkType;
+  hierarchyType: HierarchyType;
+  pieceType: PieceType;
+  summaryType: SummaryType;
+  lineType: LineType;
+  areaType: AreaType;
+  chart: Chart;
+  displayChart: DisplayChart;
+  primaryKey: string[];
+  data: Dx.Datapoint[];
 };
 
 const generateChartKey = ({
   view,
   lineType,
+  areaType,
   selectedDimensions,
   selectedMetrics,
   pieceType,
@@ -106,19 +81,35 @@ const generateChartKey = ({
   networkType,
   hierarchyType,
   chart
+}: {
+  view: View;
+  lineType: LineType;
+  areaType: AreaType;
+  selectedDimensions: string[];
+  selectedMetrics: string[];
+  pieceType: PieceType;
+  summaryType: SummaryType;
+  networkType: NetworkType;
+  hierarchyType: HierarchyType;
+  chart: Chart;
 }) =>
-  `${view}-${lineType}-${selectedDimensions.join(",")}-${selectedMetrics.join(
+  `${view}-${lineType}-${areaType}-${selectedDimensions.join(
+    ","
+  )}-${selectedMetrics.join(
     ","
   )}-${pieceType}-${summaryType}-${networkType}-${hierarchyType}-${JSON.stringify(
     chart
   )}`;
 
+type DisplayChart = {
+  [chartKey: string]: React.ReactNode;
+};
 /*
   contour is an option for scatterplot
   pie is a transform on bar
 */
 
-const MetadataWarning = ({ metadata }) => {
+const MetadataWarning = ({ metadata }: { metadata: Metadata }) => {
   const warning =
     metadata && metadata.sampled ? (
       <span>
@@ -148,12 +139,62 @@ const MetadataWarning = ({ metadata }) => {
   );
 };
 
-///////////////////////////////
+const SemioticWrapper = styled.div`
+  width: "calc(100vw - 200px)";
+  .html-legend-item {
+    color: var(--theme-app-fg);
+  }
+
+  .tick > path {
+    stroke: lightgray;
+  }
+
+  .axis-labels,
+  .ordinal-labels {
+    fill: var(--theme-app-fg);
+    font-size: 14px;
+  }
+
+  path.connector,
+  path.connector-end {
+    stroke: var(--theme-app-fg);
+  }
+
+  path.connector-end {
+    fill: var(--theme-app-fg);
+  }
+
+  text.annotation-note-label,
+  text.legend-title,
+  .legend-item text {
+    fill: var(--theme-app-fg);
+    stroke: none;
+  }
+
+  .xyframe-area > path {
+    stroke: var(--theme-app-fg);
+  }
+
+  .axis-baseline {
+    stroke-opacity: 0.25;
+    stroke: var(--theme-app-fg);
+  }
+  circle.frame-hover {
+    fill: none;
+    stroke: gray;
+  }
+  .rect {
+    stroke: green;
+    stroke-width: 5px;
+    stroke-opacity: 0.5;
+  }
+  rect.selection {
+    opacity: 0.5;
+  }
+`;
 
 class DataResourceTransform extends React.Component<Props, State> {
   static MIMETYPE = mediaType;
-
-  //FOR TESTING PURPOSES ONLY THE METADATA HAS SAMPLE SETTINGS FOR A GRADUATED SYMBOL PLOT
 
   static defaultProps = {
     metadata: {
@@ -169,9 +210,9 @@ class DataResourceTransform extends React.Component<Props, State> {
 
     const { metadata, initialView } = props;
 
-    const { dx: baseDX = {} } = metadata;
-
-    const { chart = {}, ...dx } = baseDX;
+    // Handle case of metadata being empty yet dx not set
+    const dx = metadata.dx || {};
+    const chart = dx.chart || {};
 
     const { fields = [], primaryKey = [] } = props.data.schema;
 
@@ -180,11 +221,13 @@ class DataResourceTransform extends React.Component<Props, State> {
         field.type === "string" ||
         field.type === "boolean" ||
         field.type === "datetime"
-    );
+    ) as Dx.Dimension[];
 
     //Should datetime data types be transformed into js dates before getting to this resource?
     const data = props.data.data.map(datapoint => {
-      const mappedDatapoint = { ...datapoint };
+      const mappedDatapoint: Dx.Datapoint = {
+        ...datapoint
+      };
       fields.forEach(field => {
         if (field.type === "datetime") {
           mappedDatapoint[field.name] = new Date(mappedDatapoint[field.name]);
@@ -200,8 +243,11 @@ class DataResourceTransform extends React.Component<Props, State> {
           field.type === "number" ||
           field.type === "datetime"
       )
-      .filter(field => !primaryKey.find(pkey => pkey === field.name));
+      .filter(
+        field => !primaryKey.find(pkey => pkey === field.name)
+      ) as Dx.Metric[];
 
+    const displayChart: DisplayChart = {};
     this.state = {
       view: initialView,
       lineType: "line",
@@ -215,7 +261,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       dimensions,
       metrics,
       colors,
-      ui: {},
+      // ui: {},
       chart: {
         metric1: (metrics[0] && metrics[0].name) || "none",
         metric2: (metrics[1] && metrics[1].name) || "none",
@@ -227,7 +273,7 @@ class DataResourceTransform extends React.Component<Props, State> {
         networkLabel: "none",
         ...chart
       },
-      displayChart: {},
+      displayChart,
       primaryKey,
       data,
       ...dx
@@ -241,7 +287,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     }
   }
 
-  updateChart = (updatedState: Object) => {
+  updateChart = (updatedState: Partial<State>) => {
     const {
       view,
       dimensions,
@@ -295,8 +341,8 @@ class DataResourceTransform extends React.Component<Props, State> {
       setColor: this.setColor
     });
 
-    const display = (
-      <div style={{ width: "calc(100vw - 200px)" }}>
+    const display: React.ReactNode = (
+      <SemioticWrapper>
         <Frame responsiveWidth={true} size={[500, 300]} {...frameSettings} />
         <VizControls
           {...{
@@ -319,8 +365,7 @@ class DataResourceTransform extends React.Component<Props, State> {
             areaType
           }}
         />
-        <style jsx>{semioticStyle}</style>
-      </div>
+      </SemioticWrapper>
     );
 
     //If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
@@ -343,17 +388,19 @@ class DataResourceTransform extends React.Component<Props, State> {
         }
       });
 
-    this.setState(() => {
-      return {
-        ...updatedState,
-        displayChart: {
-          ...this.state.displayChart,
-          [chartKey]: display
-        }
-      };
-    });
+    this.setState(
+      (prevState): any => {
+        return {
+          ...updatedState,
+          displayChart: {
+            ...prevState.displayChart,
+            [chartKey]: display
+          }
+        };
+      }
+    );
   };
-  setView = view => {
+  setView = (view: View) => {
     this.updateChart({ view });
   };
 
@@ -361,7 +408,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     this.setState({ view: "grid" });
   };
 
-  setColor = newColorArray => {
+  setColor = (newColorArray: string[]) => {
     this.updateChart({ colors: newColorArray });
   };
 
@@ -369,7 +416,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     this.updateChart({ lineType: selectedLineType });
   };
 
-  setAreaType = (selectedAreaType: LineType) => {
+  setAreaType = (selectedAreaType: AreaType) => {
     this.updateChart({ areaType: selectedAreaType });
   };
 
@@ -390,12 +437,13 @@ class DataResourceTransform extends React.Component<Props, State> {
     this.updateChart({ selectedMetrics: newMetrics });
   };
 
-  render(): ?React$Element<any> {
+  render() {
     const {
       view,
       dimensions,
       chart,
       lineType,
+      areaType,
       selectedDimensions,
       selectedMetrics,
       pieceType,
@@ -404,7 +452,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       hierarchyType
     } = this.state;
 
-    let display = null;
+    let display: React.ReactNode = null;
 
     if (view === "grid") {
       display = <DataResourceTransformGrid {...this.props} />;
@@ -423,6 +471,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       const chartKey = generateChartKey({
         view,
         lineType,
+        areaType,
         selectedDimensions,
         selectedMetrics,
         pieceType,
@@ -464,4 +513,4 @@ class DataResourceTransform extends React.Component<Props, State> {
   }
 }
 
-export default hot(module)(DataResourceTransform);
+export default DataResourceTransform;

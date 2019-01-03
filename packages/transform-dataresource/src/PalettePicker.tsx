@@ -1,20 +1,88 @@
-/* @flow */
 import * as React from "react";
 import { ChromePicker } from "react-color";
-
-import paletteStyle from "./css/palette-picker";
+import styled from "styled-components";
 
 type Props = {
-  colors: Array<string>,
-  updateColor: Function
+  colors: Array<string>;
+  updateColor: Function;
 };
 
 type State = {
-  colors: string,
-  selectedColor: string,
-  open: boolean,
-  selectedPosition: number
+  colors: string;
+  selectedColor: string;
+  open: boolean;
+  selectedPosition: number;
 };
+
+// NOTE: These styles could be extracted for each of the components used within.
+//       In order to get this typescript & styled-components transition in place though,
+//       For now this just matches the prior style structure exactly with one big wrapper
+//       and one extracted component -- <PaletteButton />
+const Wrapper = styled.div`
+  & {
+    margin: 30px 0;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+  }
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 40px;
+    line-height: 22px;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+  .grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  h3 {
+    margin: 0 0 20px;
+  }
+  .box {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 0 20px 20px 0;
+  }
+  textarea {
+    height: 184px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 5px;
+    font-size: 14px;
+    border-color: #ccc;
+  }
+`;
+
+const PaletteButton = styled.button`
+  & {
+    margin: 0 20px 10px 0;
+    -webkit-appearance: none;
+    padding: 5px 15px;
+    background: white;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #555;
+  }
+  &:hover {
+    border-color: #888;
+    color: #222;
+  }
+`;
 
 class PalettePicker extends React.Component<Props, State> {
   static defaultProps = {
@@ -43,7 +111,7 @@ class PalettePicker extends React.Component<Props, State> {
     this.setState({ selectedColor: color, selectedPosition: position });
   };
 
-  pickerChange = (color: Object) => {
+  pickerChange = (color: { hex: string }) => {
     const { colors } = this.props;
     colors[this.state.selectedPosition] = color.hex;
     this.props.updateColor(colors);
@@ -62,7 +130,7 @@ class PalettePicker extends React.Component<Props, State> {
     this.props.updateColor(parsedTextValue);
   };
 
-  updateTextArea = (e: Object) => {
+  updateTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ colors: e.target.value });
   };
 
@@ -70,8 +138,7 @@ class PalettePicker extends React.Component<Props, State> {
     if (!this.state.open) {
       return (
         <div style={{ display: "inline-block" }}>
-          <button onClick={this.openClose}>Adjust Palette</button>
-          <style jsx>{paletteStyle}</style>
+          <PaletteButton onClick={this.openClose}>Adjust Palette</PaletteButton>
         </div>
       );
     }
@@ -79,13 +146,13 @@ class PalettePicker extends React.Component<Props, State> {
     const { colors } = this.props;
 
     return (
-      <div className="wrapper">
+      <Wrapper>
         <div
           className="close"
           role="button"
-          tabIndex="0"
+          tabIndex={0}
           onClick={this.openClose}
-          onKeyPress={(e: Object) => {
+          onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
             if (e.keyCode === 13) {
               this.openClose();
             }
@@ -102,8 +169,8 @@ class PalettePicker extends React.Component<Props, State> {
                 className="box"
                 style={{ background: color }}
                 role="button"
-                tabIndex="0"
-                onKeyPress={(e: Object) => {
+                tabIndex={0}
+                onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
                   if (e.keyCode === 13) {
                     this.handleChange(color, index);
                   }
@@ -127,7 +194,9 @@ class PalettePicker extends React.Component<Props, State> {
               value={this.state.colors}
               onChange={this.updateTextArea}
             />
-            <button onClick={this.colorsFromTextarea}>Update Colors</button>
+            <PaletteButton onClick={this.colorsFromTextarea}>
+              Update Colors
+            </PaletteButton>
           </div>
         </div>
         <div style={{ marginTop: "30px" }}>
@@ -139,8 +208,7 @@ class PalettePicker extends React.Component<Props, State> {
             Evaluate This Palette with VIZ PALETTE
           </a>
         </div>
-        <style jsx>{paletteStyle}</style>
-      </div>
+      </Wrapper>
     );
   }
 }

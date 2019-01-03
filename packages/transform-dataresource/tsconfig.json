@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../commutable" },
+    { "path": "../types" },
+    { "path": "../octicons" },
+    { "path": "../styled-blueprintjsx" }
+  ]
+}

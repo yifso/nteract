@@ -243,6 +243,7 @@ describe("PureNotebookMenu ", () => {
       restartKernelItem.simulate("click");
       expect(props.restartKernel).toHaveBeenCalledTimes(1);
       expect(props.restartKernel).toHaveBeenCalledWith({
+        outputHandling: "None",
         contentRef: props.currentContentRef,
         kernelRef: props.currentKernelRef
       });
@@ -276,7 +277,8 @@ describe("PureNotebookMenu ", () => {
       killKernelItem.simulate("click");
       expect(props.killKernel).toHaveBeenCalledTimes(1);
       expect(props.killKernel).toHaveBeenCalledWith({
-        kernelRef: props.currentKernelRef
+        kernelRef: props.currentKernelRef,
+        restarting: false
       });
     });
   });

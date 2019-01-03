@@ -4,11 +4,11 @@ import * as React from "react";
 import PalettePicker from "./PalettePicker";
 
 type HTMLLegendProps = {
-  values: Array<string>,
-  colorHash: Object,
-  valueHash: Object,
-  colors?: Array<string>,
-  setColor?: Function
+  values: Array<string>;
+  colorHash: { [index: string]: string };
+  valueHash: { [index: string]: number };
+  colors?: Array<string>;
+  setColor?: Function;
 };
 
 const HTMLLegend = ({
@@ -52,7 +52,7 @@ const HTMLLegend = ({
     {setColor && (
       <PalettePicker
         colors={colors}
-        updateColor={newColorArray => {
+        updateColor={(newColorArray: string[]) => {
           setColor(newColorArray);
         }}
       />

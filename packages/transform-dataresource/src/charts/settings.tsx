@@ -1,5 +1,3 @@
-/* @flow */
-
 import {
   ResponsiveOrdinalFrame,
   ResponsiveXYFrame,
@@ -15,10 +13,12 @@ import { semioticBarChart } from "./bar";
 import { semioticScatterplot, semioticHexbin } from "./xyplot";
 import { semioticSummaryChart } from "./summary";
 
+import * as Dx from "../types";
+
 const semioticParallelCoordinates = (
-  data: Array<Object>,
-  schema: Object,
-  options: Object
+  data: Dx.Datapoint[],
+  schema: Dx.Schema,
+  options: Dx.ChartOptions
 ) => {
   return {
     data,
@@ -27,7 +27,7 @@ const semioticParallelCoordinates = (
   };
 };
 
-export const semioticSettings = {
+export const semioticSettings: any = {
   line: {
     Frame: ResponsiveXYFrame,
     controls: "switch between linetype",

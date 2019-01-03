@@ -36,19 +36,38 @@ type Props = {
   defaultOpenKeys?: Array<string>;
   openKeys?: Array<string>;
   currentKernelRef?: KernelRef | null;
-  saveNotebook?: (payload: object) => void;
-  downloadNotebook?: (payload: object) => void;
-  executeCell?: (payload: object) => void;
-  executeAllCells?: (payload: object) => void;
-  executeAllCellsBelow?: (payload: object) => void;
-  clearAllOutputs?: (payload: object) => void;
-  unhideAll?: (payload: object) => void;
-  cutCell?: (payload: object) => void;
-  copyCell?: (payload: object) => void;
-  pasteCell?: (payload: object) => void;
-  createCellBelow?: (payload: object) => void;
-  changeCellType?: (payload: object) => void;
-  setTheme?: (theme?: string) => void;
+  saveNotebook?: (payload: { contentRef: string }) => void;
+  downloadNotebook?: (payload: { contentRef: string }) => void;
+  executeCell?: (payload: { id: string; contentRef: string }) => void;
+  executeAllCells?: (payload: { contentRef: string }) => void;
+  executeAllCellsBelow?: (payload: { contentRef: string }) => void;
+  clearAllOutputs?: (payload: { contentRef: string }) => void;
+  unhideAll?: (
+    payload: {
+      outputHidden: boolean;
+      inputHidden: boolean;
+      contentRef: string;
+    }
+  ) => void;
+  cutCell?: (payload: { id?: string; contentRef: string }) => void;
+  copyCell?: (payload: { id?: string; contentRef: string }) => void;
+  pasteCell?: (payload: { contentRef: string }) => void;
+  createCellBelow?: (
+    payload: {
+      id?: string | undefined;
+      cellType: CellType;
+      source: string;
+      contentRef: string;
+    }
+  ) => void;
+  changeCellType?: (
+    payload: {
+      id?: string | undefined;
+      to: CellType;
+      contentRef: string;
+    }
+  ) => void;
+  setTheme?: (theme: string) => void;
   openAboutModal?: () => void;
   changeKernelByName?: (
     payload: {
@@ -57,11 +76,29 @@ type Props = {
       contentRef: ContentRef;
     }
   ) => void;
-  restartKernel?: (payload: object) => void;
-  restartKernelAndClearOutputs?: (payload: object) => void;
-  restartKernelAndRunAllOutputs?: (payload: object) => void;
-  killKernel?: (payload: object) => void;
-  interruptKernel?: (payload: object) => void;
+  restartKernel?: (
+    payload: {
+      outputHandling: actions.RestartKernelOutputHandling;
+      kernelRef?: string | null;
+      contentRef: string;
+    }
+  ) => void;
+  restartKernelAndClearOutputs?: (
+    payload: {
+      kernelRef?: string | null;
+      contentRef: string;
+    }
+  ) => void;
+  restartKernelAndRunAllOutputs?: (
+    payload: {
+      kernelRef?: string | null;
+      contentRef: string;
+    }
+  ) => void;
+  killKernel?: (
+    payload: { restarting: boolean; kernelRef?: string | null }
+  ) => void;
+  interruptKernel?: (payload: { kernelRef?: string | null }) => void;
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
   currentKernelspecs?: KernelspecsByRefRecord | null;
@@ -206,6 +243,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
       case MENU_ITEM_ACTIONS.RESTART_KERNEL:
         if (restartKernel) {
           restartKernel({
+            outputHandling: "None",
             kernelRef: currentKernelRef,
             contentRef: currentContentRef
           });
@@ -229,7 +267,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
         break;
       case MENU_ITEM_ACTIONS.KILL_KERNEL:
         if (killKernel) {
-          killKernel({ kernelRef: currentKernelRef });
+          killKernel({ restarting: false, kernelRef: currentKernelRef });
         }
         break;
       case MENU_ITEM_ACTIONS.CHANGE_KERNEL:
@@ -491,29 +529,29 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.openModal({ modalType: MODAL_TYPES.ABOUT })),
   changeKernelByName: (payload: {
     kernelSpecName: any;
-    oldKernelRef?: string | undefined;
+    oldKernelRef?: string | null;
     contentRef: string;
   }) => dispatch(actions.changeKernelByName(payload)),
   restartKernel: (payload: {
     outputHandling: actions.RestartKernelOutputHandling;
-    kernelRef: string;
+    kernelRef?: string | null;
     contentRef: string;
   }) => dispatch(actions.restartKernel(payload)),
   restartKernelAndClearOutputs: (payload: {
-    kernelRef: string;
+    kernelRef?: string | null;
     contentRef: string;
   }) =>
     dispatch(
       actions.restartKernel({ ...payload, outputHandling: "Clear All" })
     ),
   restartKernelAndRunAllOutputs: (payload: {
-    kernelRef: string;
+    kernelRef?: string | null;
     contentRef: string;
   }) =>
     dispatch(actions.restartKernel({ ...payload, outputHandling: "Run All" })),
-  killKernel: (payload: { restarting: boolean; kernelRef: string }) =>
+  killKernel: (payload: { restarting: boolean; kernelRef?: string | null }) =>
     dispatch(actions.killKernel(payload)),
-  interruptKernel: (payload: { kernelRef: string }) =>
+  interruptKernel: (payload: { kernelRef?: string | null }) =>
     dispatch(actions.interruptKernel(payload))
 });
 
