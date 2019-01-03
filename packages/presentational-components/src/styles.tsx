@@ -3,8 +3,7 @@
 import * as React from "react";
 import { createGlobalStyle } from "styled-components";
 
-// Built from `@nteract/styles`
-// When a change happens within `@nteract/styles`, we need to re-generate this
+// All the CSS variables used in nteract apps
 const GlobalCSSVariables = createGlobalStyle`
 :root {
   --nt-color-alabaster-darkest: var(--nt-color-alabaster-darker);
