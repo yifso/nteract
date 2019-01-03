@@ -87,7 +87,7 @@ export const INTERRUPT_KERNEL = "INTERRUPT_KERNEL";
 export type InterruptKernel = {
   type: "INTERRUPT_KERNEL";
   payload: {
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
 };
 
@@ -95,7 +95,7 @@ export const INTERRUPT_KERNEL_SUCCESSFUL = "INTERRUPT_KERNEL_SUCCESSFUL";
 export type InterruptKernelSuccessful = {
   type: "INTERRUPT_KERNEL_SUCCESSFUL";
   payload: {
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
 };
 
@@ -104,7 +104,7 @@ export type InterruptKernelFailed = {
   type: "INTERRUPT_KERNEL_FAILED";
   payload: {
     error: Error;
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
   error: true;
 };
@@ -114,7 +114,7 @@ export type KillKernelAction = {
   type: "KILL_KERNEL";
   payload: {
     restarting: boolean;
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
 };
 
@@ -123,7 +123,7 @@ export type KillKernelFailed = {
   type: "KILL_KERNEL_FAILED";
   payload: {
     error: Error;
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
   error: true;
 };
@@ -132,7 +132,7 @@ export const KILL_KERNEL_SUCCESSFUL = "KILL_KERNEL_SUCCESSFUL";
 export type KillKernelSuccessful = {
   type: "KILL_KERNEL_SUCCESSFUL";
   payload: {
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
   };
 };
 
@@ -142,7 +142,7 @@ export type RestartKernel = {
   type: "RESTART_KERNEL";
   payload: {
     outputHandling: RestartKernelOutputHandling;
-    kernelRef: KernelRef;
+    kernelRef?: KernelRef | null;
     contentRef: ContentRef;
   };
 };
@@ -184,7 +184,7 @@ export type ChangeKernelByName = {
   type: "CHANGE_KERNEL_BY_NAME";
   payload: {
     kernelSpecName: string;
-    oldKernelRef?: KernelRef;
+    oldKernelRef?: KernelRef | null;
     contentRef: ContentRef;
   };
 };
