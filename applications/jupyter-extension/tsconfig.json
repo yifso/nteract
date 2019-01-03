@@ -29,7 +29,6 @@
     { "path": "../../packages/transform-plotly" },
     { "path": "../../packages/transform-vega" },
     { "path": "../../packages/transforms" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/webpack-configurator" }
+    { "path": "../../packages/types" }
   ]
 }
