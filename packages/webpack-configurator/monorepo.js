@@ -11,11 +11,6 @@
 module.exports = {
   lernaModules: [
     {
-      name: "@nteract/commuter",
-      version: "5.7.0",
-      private: false
-    },
-    {
       name: "@nteract/play",
       version: "1.6.14",
       private: false
