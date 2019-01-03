@@ -26,7 +26,7 @@ export const changeContentNameFulfilled = (payload: {
 });
 
 export const changeContentNameFailed = (payload: {
-  basePath: string;
+  basepath: string;
   filepath: string;
   error: Error;
   contentRef: ContentRef;
