@@ -60,7 +60,12 @@ export function updateContentEpic(
             * Is there a better way to accomplish this?
             */
             window.history.replaceState({}, filepath, urljoin(host.basePath, `/nteract/edit${filepath}`));
-            return actions.changeContentNameFulfilled;
+
+            return actions.changeContentNameFulfilled({
+              contentRef: action.payload.contentRef,
+              filepath: action.payload.filepath,
+              prevFilePath
+            });
           }),
           catchError((xhrError: any) =>
             of(actions.changeContentNameFailed({
