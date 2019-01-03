@@ -17,7 +17,7 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
