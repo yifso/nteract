@@ -1,3 +1,0 @@
-// @flow
-declare export var BlueprintCSS: React.Component;
-declare export var BlueprintSelectCSS: React.Component;
