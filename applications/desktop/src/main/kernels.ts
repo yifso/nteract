@@ -14,7 +14,7 @@ import { KernelspecInfo } from "@nteract/core";
 /**
  * ipyKernelTryObservable checks for the existence of ipykernel in the environment.
  */
-export function ipyKernelTryObservable(env: { prefix: string }) {
+export function ipyKernelTryObservable(env: { prefix: string; name: string }) {
   const executable = path.join(env.prefix, "bin", "python");
   return (spawn(executable, ["-m", "ipykernel", "--version"], {
     split: true // When split is true the observable's return value is { source: 'stdout', text: '...' }
@@ -25,11 +25,55 @@ export function ipyKernelTryObservable(env: { prefix: string }) {
   );
 }
 
+interface CondaInfoJSON {
+  GID: number;
+  UID: number;
+  active_prefix: null;
+  active_prefix_name: null;
+  channels: string[];
+  conda_build_version: string;
+  conda_env_version: string;
+  conda_location: string;
+  conda_prefix: string;
+  conda_private: boolean;
+  conda_shlvl: number;
+  conda_version: string;
+  config_files: string[];
+  default_prefix: string;
+  env_vars: EnvVars;
+  envs: string[];
+  envs_dirs: string[];
+  netrc_file: null;
+  offline: boolean;
+  pkgs_dirs: string[];
+  platform: string;
+  python_version: string;
+  rc_path: string;
+  requests_version: string;
+  root_prefix: string;
+  root_writable: boolean;
+  site_dirs: string[];
+  "sys.executable": string;
+  "sys.prefix": string;
+  "sys.version": string;
+  sys_rc_path: string;
+  user_agent: string;
+  user_rc_path: string;
+}
+interface EnvVars {
+  CIO_TEST: string;
+  CONDA_ROOT: string;
+  GOPATH: string;
+  PATH: string;
+  REQUESTS_CA_BUNDLE: string;
+  SSL_CERT_FILE: string;
+}
+
 /**
  * condaInfoObservable executes the conda info --json command and maps the
  * result to an observable that parses through the environmental informaiton.
  */
-export function condaInfoObservable() {
+export function condaInfoObservable(): Observable<CondaInfoJSON> {
   return spawn("conda", ["info", "--json"]).pipe(map(info => JSON.parse(info)));
 }
 
@@ -37,7 +81,7 @@ export function condaInfoObservable() {
  * condaEnvsObservable will return an observable that emits the environmental
  * paths of the passed in observable.
  */
-export function condaEnvsObservable(condaInfo$: Observable<any>) {
+export function condaEnvsObservable(condaInfo$: Observable<CondaInfoJSON>) {
   return condaInfo$.pipe(
     map(info => {
       const envs = info.envs.map((env: string) => ({
@@ -49,6 +93,7 @@ export function condaEnvsObservable(condaInfo$: Observable<any>) {
     }),
     map(envs => envs.map(ipyKernelTryObservable)),
     mergeAll(),
+    mergeAll(),
     toArray()
   );
 }
@@ -57,7 +102,9 @@ export function condaEnvsObservable(condaInfo$: Observable<any>) {
  * createKernelSpecsFromEnvs generates a dictionary with the supported langauge
  * paths.
  */
-export function createKernelSpecsFromEnvs(envs: any) {
+export function createKernelSpecsFromEnvs(
+  envs: Array<{ name: string; prefix: string }>
+) {
   const displayPrefix = "Python"; // Or R
   const languageKey = "py"; // or r
 
@@ -67,7 +114,7 @@ export function createKernelSpecsFromEnvs(envs: any) {
     [name: string]: KernelspecInfo["spec"] & { argv: string[] };
   } = {};
 
-  Object.keys(envs).forEach(env => {
+  envs.forEach(env => {
     const base = env.prefix;
     const exePath = path.join(base, languageExe);
     const envName = env.name;
