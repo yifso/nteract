@@ -230,14 +230,21 @@ ipc.on("close-notebook-canceled", () => {
   store.dispatch(setQuittingState(QUITTING_STATE_NOT_STARTED));
 });
 
-const openFile$ = new Observable(observer => {
-  app.on("open-file", (event: Event, filename: string) => {
-    observer.next({
-      event,
-      filename
-    });
-  });
-});
+const openFile$ = new Observable(
+  (observer: Subscriber<{ filename: string; event: Event }>) => {
+    const eventName = "open-file";
+
+    const handler = (event: Event, filename: string) => {
+      observer.next({
+        event,
+        filename
+      });
+    };
+    app.on(eventName, handler);
+
+    return () => app.removeListener(eventName, handler);
+  }
+);
 
 function openFileFromEvent({
   event,
