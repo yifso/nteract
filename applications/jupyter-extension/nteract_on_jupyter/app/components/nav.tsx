@@ -1,7 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import { NotebookMenu } from "@nteract/connected-components";
-import { ContentRef } from "@nteract/core";
 
 const NavUl = styled.ul`
   display: flex;
@@ -55,26 +53,15 @@ export const NavSection = (props: NavSectionProps) => (
 
 type NavProps = {
   children: React.ReactNode;
-  contentRef: ContentRef;
-  showNotebookMenu?: boolean;
 };
 
 export const Nav = (props: NavProps) => (
-  <div>
-    <div className="nteract-nav">
-      <NavUl>
-        {React.Children.map(props.children, child => {
-          return <NavLi>{child}</NavLi>;
-        })}
-      </NavUl>
-    </div>
-    {/* Default notebook menu to display by default */}
-    { props.showNotebookMenu || props.showNotebookMenu === undefined ? (
-        <div>
-          <NotebookMenu contentRef={props.contentRef} />
-        </div>
-      ) : null
-    }
+  <div className="nteract-nav">
+    <NavUl>
+      {React.Children.map(props.children, child => {
+        return <NavLi>{child}</NavLi>;
+      })}
+    </NavUl>
   </div>
 );
 
