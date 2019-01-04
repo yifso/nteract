@@ -7,7 +7,11 @@ import { manifest } from "@nteract/examples";
 import { launch, launchNewNotebook } from "./launch";
 import { installShellCommand } from "./cli";
 
-function send(focusedWindow, eventName, obj) {
+function send(
+  focusedWindow: BrowserWindow,
+  eventName: string,
+  obj?: object | string | number
+) {
   if (!focusedWindow) {
     console.error("renderer window not in focus (are your devtools open?)");
     return;
@@ -15,7 +19,7 @@ function send(focusedWindow, eventName, obj) {
   focusedWindow.webContents.send(eventName, obj);
 }
 
-function createSender(eventName, obj) {
+function createSender(eventName: string, obj?: object | string | number) {
   return (item, focusedWindow) => {
     send(focusedWindow, eventName, obj);
   };
