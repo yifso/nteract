@@ -4,7 +4,9 @@ function writeConnectionFile(config) {
 }
 
 module.exports = {
-  launchSpec: (kernelSpec: Object): Promise<*> => {
+  launchSpec: (
+    kernelSpec: Object
+  ): Promise<{ config: any; connectionFile: string }> => {
     return writeConnectionFile("config").then(c => {
       return {
         spawn: {
@@ -18,7 +20,9 @@ module.exports = {
       };
     });
   },
-  launch: (kernelSpecName: string): Promise<*> => {
+  launch: (
+    kernelSpecName: string
+  ): Promise<{ config: any; connectionFile: string }> => {
     return writeConnectionFile("config").then(c => {
       return {
         spawn: "runningKernel",
