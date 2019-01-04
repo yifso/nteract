@@ -1,6 +1,14 @@
 import * as path from "path";
 
-import { dialog, app, shell, Menu, BrowserWindow, FileFilter } from "electron";
+import {
+  dialog,
+  app,
+  shell,
+  Menu,
+  BrowserWindow,
+  FileFilter,
+  WebContents
+} from "electron";
 import { sortBy } from "lodash";
 import { manifest } from "@nteract/examples";
 
@@ -487,7 +495,7 @@ export function loadFullMenu(store = global.store) {
           }
           return "Ctrl+Shift+I";
         })(),
-        click: (item: object, focusedWindow) => {
+        click: (item: object, focusedWindow: WebContents) => {
           if (focusedWindow) {
             focusedWindow.toggleDevTools();
           }
