@@ -1511,10 +1511,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@nteract/examples@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.0.0.tgz#08686a5305d528ff3625e048b48f6655b7c91c81"
-  integrity sha512-xTa0hEBc52KTZDGWIaxkVqiLTvrENP3WQEoV7WK/u3u9tMaNVDY8hJNvL0ARbPjWfbq5KktvlE7eFFAb8JRSqw==
+"@nteract/examples@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.1.0.tgz#b957703acc514a4e8c399b8f95a92428965301f8"
+  integrity sha512-e9rGmZ7MkYR/3OzY40xtaTedn6K4/ixsi1iVXA9rIg0pdMTjNNYRYIkNJIAvgMQNk76oLj38fnQisMVEmSXuEg==
 
 "@nteract/plotly@^1.0.0":
   version "1.43.0"
