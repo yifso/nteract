@@ -1,10 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
 import { dirname } from "path";
-import { Dispatch } from "redux";
-import { ContentRef, AppState, selectors } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import { connect } from "react-redux";
-import * as actions from "@nteract/actions";
 
 import { default as Notebook } from "../notebook";
 import * as TextFile from "./text-file";
@@ -38,7 +36,6 @@ type FileProps = {
   saving: boolean;
   loading: boolean;
   error?: object | null;
-  changeContentName: (payload: actions.ChangeContentName["payload"]) => void;
 };
 
 export class File extends React.PureComponent<FileProps> {
@@ -75,7 +72,11 @@ export class File extends React.PureComponent<FileProps> {
     // If/when we support more modes, we would case them off here
     return (
       <React.Fragment>
-        <JupyterExtensionContainer>{choice}</JupyterExtensionContainer>
+        <JupyterExtensionContainer>
+          <JupyterExtensionChoiceContainer>
+            {choice}
+          </JupyterExtensionChoiceContainer>
+        </JupyterExtensionContainer>
       </React.Fragment>
     );
   }

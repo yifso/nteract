@@ -7,19 +7,20 @@ export const CHANGE_CONTENT_NAME = "CORE/CHANGE_CONTENT_NAME";
 export type ChangeContentName = {
   type: "CORE/CHANGE_CONTENT_NAME";
   payload: {
+    contentRef: ContentRef;
     filepath: string;
     prevFilePath: string;
-    contentRef: ContentRef;
   };
 };
 
-export const CHANGE_CONTENT_NAME_FULFILLED = "CORE/CHANGE_CONTENT_NAME_FULFILLED";
+export const CHANGE_CONTENT_NAME_FULFILLED =
+  "CORE/CHANGE_CONTENT_NAME_FULFILLED";
 export type ChangeContentNameFulfilled = {
   type: "CORE/CHANGE_CONTENT_NAME_FULFILLED";
   payload: {
+    contentRef: ContentRef;
     filepath: string;
     prevFilePath: string;
-    contentRef: ContentRef;
   };
 };
 
@@ -28,10 +29,10 @@ export type ChangeContentNameFailed = {
   type: "CORE/CHANGE_CONTENT_NAME_FAILED";
   payload: {
     basepath: string;
+    contentRef: ContentRef;
+    error: Error;
     filepath: string;
     prevFilePath: string;
-    error: Error;
-    contentRef: ContentRef;
   };
 };
 

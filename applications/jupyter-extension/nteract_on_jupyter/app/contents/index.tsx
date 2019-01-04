@@ -4,7 +4,10 @@
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
-import { selectors, AppState, ContentRef } from "@nteract/core";
+import { Dispatch } from "redux";
+import { dirname } from "path";
+import * as actions from "@nteract/actions";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { H4 } from "@blueprintjs/core";
 import urljoin from "url-join";
@@ -16,22 +19,37 @@ import { Nav, NavSection } from "../components/nav";
 import LastSaved from "../components/last-saved";
 import { default as File } from "./file";
 
-type ContentsProps = {
+interface IContentsProps {
+  appBase: string;
+  baseDir: string;
+  changeContentName: (value: actions.ChangeContentName) => {};
   contentType: "dummy" | "notebook" | "directory" | "file";
   contentRef: ContentRef;
-  appBase: string;
-};
+  displayName?: string;
+  error?: object | null;
+  lastSavedStatement: string;
+  loading: boolean;
+  mimetype?: string | null;
+  saving: boolean;
+  type: "notebook" | "file" | "dummy";
+}
 
-type ContentsState = {
+interface IContentsState {
   isDialogOpen: boolean;
-};
+}
 
 const mapStateToProps = (
   state: AppState,
   ownProps: { contentRef: ContentRef }
-): ContentsProps => {
+) => {
   const contentRef = ownProps.contentRef;
   const host = state.app.host;
+  const comms = selectors.communication(state, ownProps);
+
+  if (!comms) {
+    throw new Error("CommunicationByRef information not found");
+  }
+
   if (host.type !== "jupyter") {
     throw new Error("this component only works with jupyter apps");
   }
@@ -41,14 +59,23 @@ const mapStateToProps = (
   }
 
   const content = selectors.content(state, { contentRef });
+
   if (!content) {
     throw new Error("need content to view content, check your contentRefs");
   }
 
   return {
     appBase: urljoin(host.basePath, "/nteract/edit"),
+    baseDir: dirname(content.filepath),
     contentRef,
-    contentType: content.type
+    contentType: content.type,
+    displayName: content.filepath.split("/").pop(),
+    error: comms.error,
+    lastSavedStatement: "recently",
+    loading: comms.loading,
+    mimetype: content.mimetype,
+    saving: comms.saving,
+    type: content.type
   };
 };
 
@@ -57,8 +84,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(actions.changeContentName(payload))
 });
 
-class Contents extends React.PureComponent<ContentsProps, ContentsState> {
-  constructor(props: ContentsProps) {
+class Contents extends React.PureComponent<IContentsProps, IContentsState> {
+  constructor(props: IContentsProps) {
     super(props);
 
     this.state = {
@@ -98,6 +125,7 @@ class Contents extends React.PureComponent<ContentsProps, ContentsState> {
   };
 
   openDialog = () => this.setState({ isDialogOpen: true });
+
   closeDialog = () => this.setState({ isDialogOpen: false });
 
   // Handles onConfirm callback for EditableText component
@@ -127,7 +155,7 @@ class Contents extends React.PureComponent<ContentsProps, ContentsState> {
           <React.Fragment>
             <Nav>
               <NavSection>
-                <a href={themeLogoLink} title="Home">
+                <a href={themeLogoLink} role="button" title="Home">
                   <ThemedLogo />
                 </a>
                 <div>
@@ -160,7 +188,7 @@ class Contents extends React.PureComponent<ContentsProps, ContentsState> {
                 >
                   <ThemedLogo />
                 </a>
-                <span>{this.props.content.filepath.split("/").pop()}</span>
+                <span>{this.props.displayName}</span>
               </NavSection>
             </Nav>
             <ConnectedDirectory
@@ -174,7 +202,11 @@ class Contents extends React.PureComponent<ContentsProps, ContentsState> {
           <React.Fragment>
             <Nav>
               <NavSection>
-                <a href={urljoin(this.props.appBase)} title="Home">
+                <a
+                  href={urljoin(this.props.appBase)}
+                  role="button"
+                  title="Home"
+                >
                   <ThemedLogo />
                 </a>
               </NavSection>
