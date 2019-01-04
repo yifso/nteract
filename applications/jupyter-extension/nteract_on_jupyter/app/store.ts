@@ -5,7 +5,7 @@ import {
   compose,
   Action
 } from "redux";
-import { createEpicMiddleware, combineEpics } from "redux-observable";
+import { createEpicMiddleware, combineEpics, Epic } from "redux-observable";
 import { AppState } from "@nteract/core";
 import {
   reducers,
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
 });
 
 export default function configureStore(initialState: Partial<AppState>) {
-  const rootEpic = combineEpics<Action, AppState>(...coreEpics.allEpics);
+  const rootEpic = combineEpics<Epic>(...coreEpics.allEpics);
   const epicMiddleware = createEpicMiddleware();
   const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
