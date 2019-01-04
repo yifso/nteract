@@ -20,10 +20,16 @@ type KernelspecMetadata = {
   language: string;
 };
 
-// Note: this is the kernelspec as formed by spawnteract and jupyter kernelspecs --json
+/**
+ * This is the kernelspec as formed by spawnteract and jupyter kernelspecs --json
+ */
 export type KernelspecInfo = {
   name: string;
   spec: KernelspecMetadata;
+};
+
+export type Kernelspecs = {
+  [name: string]: KernelspecInfo;
 };
 
 export type LanguageInfoMetadata = {
