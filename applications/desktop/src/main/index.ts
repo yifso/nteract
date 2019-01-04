@@ -1,5 +1,11 @@
 import { resolve, join } from "path";
 import { existsSync } from "fs";
+import * as log from "electron-log";
+import * as kernelspecs from "kernelspecs";
+import * as jupyterPaths from "jupyter-paths";
+import * as yargs from "yargs/yargs";
+
+import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 
 import {
   Menu,
@@ -7,9 +13,10 @@ import {
   app,
   ipcMain as ipc,
   BrowserWindow,
-  Tray
+  Tray,
+  Event
 } from "electron";
-import { Subscriber, fromEvent, forkJoin, zip } from "rxjs";
+import { Subscriber, fromEvent, forkJoin, zip, Observable } from "rxjs";
 import {
   mergeMap,
   takeUntil,
@@ -37,15 +44,9 @@ import {
 import configureStore from "./store";
 
 const store = configureStore();
+
 // HACK: The main process store should not be stored in a global.
-global.store = store;
-
-const path = require("path");
-
-const log = require("electron-log");
-const kernelspecs = require("kernelspecs");
-const jupyterPaths = require("jupyter-paths");
-const yargs = require("yargs/yargs");
+(global as any).store = store;
 
 type Arguments = {
   /**
@@ -82,37 +83,41 @@ const notebooks = argv._.filter(x => /(.ipynb)$/.test(x)).filter(x =>
   existsSync(resolve(x))
 );
 
-ipc.on("new-kernel", (event, k) => {
+ipc.on("new-kernel", (_event: any, k: KernelspecInfo) => {
   launchNewNotebook(k);
 });
 
-ipc.on("open-notebook", (event, filename) => {
+ipc.on("open-notebook", (_event: any, filename: string) => {
   launch(resolve(filename));
 });
 
-ipc.on("reload", event => {
-  // Based on https://github.com/electron/electron/blob/b50f86ef43b17f90c295349d8ca93751ad9045a6/lib/browser/rpc-server.js#L411-L418
-  const window = event.sender.getOwnerBrowserWindow();
-  if (window) {
-    window.reload();
-  }
+ipc.on("reload", (event: Event) => {
+  event.sender.reload();
   event.returnValue = null;
 });
 
-ipc.on("show-message-box", (event, arg) => {
+ipc.on("show-message-box", (event: Event, arg: any) => {
   const response = dialog.showMessageBox(arg);
   event.sender.send("show-message-box-response", response);
 });
 
+function fromApp<T>(eventName: T) {
+  return new Observable(observer => {
+    app.on(eventName, (event: Event) => observer.next(event));
+  });
+}
+
 app.on("ready", initAutoUpdater);
 
-const electronReady$ = fromEvent(app, "ready");
+const electronReady$ = new Observable(observer => {
+  app.on("ready", (event: Event) => observer.next(event));
+});
 const windowReady$ = fromEvent(ipc, "react-ready");
 
 const fullAppReady$ = zip(electronReady$, prepareEnv).pipe(first());
 
-const jupyterConfigDir = path.join(app.getPath("home"), ".jupyter");
-const nteractConfigFilename = path.join(jupyterConfigDir, "nteract.json");
+const jupyterConfigDir = join(app.getPath("home"), ".jupyter");
+const nteractConfigFilename = join(jupyterConfigDir, "nteract.json");
 
 const prepJupyterObservable = prepareEnv.pipe(
   mergeMap(() =>
@@ -155,7 +160,7 @@ const kernelSpecsPromise = prepJupyterObservable
  * @return {Rx.Subscriber} Splash Window subscriber
  */
 export function createSplashSubscriber() {
-  let win;
+  let win: BrowserWindow;
 
   return Subscriber.create(
     () => {
@@ -219,7 +224,10 @@ app.on("before-quit", e => {
   }
 });
 
-const windowAllClosed = fromEvent(app, "window-all-closed");
+const windowAllClosed = new Observable(observer => {
+  app.on("window-all-closed", (event: Event) => observer.next(event));
+});
+
 windowAllClosed.pipe(skipUntil(appAndKernelSpecsReady)).subscribe(() => {
   // On macOS:
   // - If user manually closed the last window, we want to keep the app and
@@ -265,7 +273,7 @@ openFile$
     // based on if arguments went through argv or through open-file events
     if (notebooks.length <= 0 && buffer.length <= 0) {
       log.info("launching an empty notebook by default");
-      kernelSpecsPromise.then((specs: KernelSpecs) => {
+      kernelSpecsPromise.then((specs: Kernelspecs) => {
         let kernel: string;
 
         if (argv.kernel in specs) {
