@@ -1,4 +1,3 @@
-/* @flow strict */
 import { createStore, applyMiddleware, compose } from "redux";
 import { electronEnhancer } from "redux-electron-store";
 import { middlewares as coreMiddlewares } from "@nteract/core";

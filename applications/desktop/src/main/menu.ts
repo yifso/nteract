@@ -1,4 +1,3 @@
-/* @flow strict */
 import * as path from "path";
 
 import { dialog, app, shell, Menu, BrowserWindow } from "electron";

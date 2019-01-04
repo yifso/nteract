@@ -1,6 +1,4 @@
-// @flow strict
-
-import type { QuittingState } from "./reducers.js";
+import { QuittingState } from "./reducers";
 
 export function setKernelSpecs(kernelSpecs: KernelSpecs) {
   return {

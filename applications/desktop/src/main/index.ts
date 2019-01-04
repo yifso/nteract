@@ -1,4 +1,3 @@
-/* @flow strict */
 import { resolve, join } from "path";
 import { existsSync } from "fs";
 
@@ -52,15 +51,15 @@ type Arguments = {
   /**
    * Actual string arguments
    */
-  _: Array<string>,
+  _: Array<string>;
   /**
    * Kernel selected by user, defaults to python3
    */
-  kernel: string,
+  kernel: string;
   /**
    * Version of the app
    */
-  version: string
+  version: string;
 };
 
 const argv: Arguments = yargs()

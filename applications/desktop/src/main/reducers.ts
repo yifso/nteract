@@ -1,23 +1,21 @@
-/* @flow strict */
-
 import { Map } from "immutable";
 
-type MainState = Map<string, *>;
+type MainState = Map<string, any>;
 
-export opaque type QuittingState =
+export type QuittingState =
   | "Not Started" // Not currently orchestrating a quit
   | "Quitting"; // In the process of closing notebooks in preparation to quit
 export const QUITTING_STATE_NOT_STARTED: QuittingState = "Not Started";
 export const QUITTING_STATE_QUITTING: QuittingState = "Quitting";
 
 type SetKernelSpecsAction = {
-  type: "SET_KERNELSPECS",
-  kernelSpecs: KernelSpecs
+  type: "SET_KERNELSPECS";
+  kernelSpecs: KernelSpecs;
 };
 
 type SetQuittingStateAction = {
-  type: "SET_QUITTING_STATE",
-  newState: QuittingState
+  type: "SET_QUITTING_STATE";
+  newState: QuittingState;
 };
 
 function setKernelSpecs(state: MainState, action: SetKernelSpecsAction) {

@@ -1,11 +1,10 @@
-/* @flow strict */
 import * as path from "path";
 
 import { Menu, shell, BrowserWindow } from "electron";
 
 import { loadFullMenu } from "./menu";
 
-let launchIpynb;
+let launchIpynb: Function;
 
 export function getPath(url: string) {
   const nUrl = url.substring(url.indexOf("static"));

@@ -1,4 +1,3 @@
-/* @flow strict */
 import { join } from "path";
 
 import { catchError, mergeMap } from "rxjs/operators";
@@ -11,7 +10,7 @@ import { writeFileObservable, createSymlinkObservable } from "fs-observable";
 // https://electronjs.org/docs/api/process
 // eslint-disable-next-line no-unused-vars
 declare var ElectronProcess: typeof process & {
-  resourcesPath: string
+  resourcesPath: string;
 };
 declare var process: ElectronProcess;
 

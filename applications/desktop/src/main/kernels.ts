@@ -1,4 +1,3 @@
-/* @flow strict */
 import { empty } from "rxjs";
 import {
   mapTo,
@@ -14,8 +13,6 @@ const path = require("path");
 
 /**
  * ipyKernelTryObservable checks for the existence of ipykernel in the environment.
- * @param  {Object} env - Current environment
- * @returns {Observable}  Source environment
  */
 export function ipyKernelTryObservable(env: { prefix: string }) {
   const executable = path.join(env.prefix, "bin", "python");
@@ -31,7 +28,6 @@ export function ipyKernelTryObservable(env: { prefix: string }) {
 /**
  * condaInfoObservable executes the conda info --json command and maps the
  * result to an observable that parses through the environmental informaiton.
- * @returns {Observable}  JSON parsed information
  */
 export function condaInfoObservable() {
   return spawn("conda", ["info", "--json"]).pipe(map(info => JSON.parse(info)));
@@ -40,8 +36,6 @@ export function condaInfoObservable() {
 /**
  * condaEnvsObservable will return an observable that emits the environmental
  * paths of the passed in observable.
- * @param {Observable} condaInfo$ - Environmental information
- * @returns {Observable}  List of envionmental variables
  */
 export function condaEnvsObservable(condaInfo$: *) {
   return condaInfo$.pipe(
@@ -63,10 +57,8 @@ export function condaEnvsObservable(condaInfo$: *) {
 /**
  * createKernelSpecsFromEnvs generates a dictionary with the supported langauge
  * paths.
- * @param {Object} envs - Environmental elements
- * @returns {Object}   Dictionary containing supported langauges paths.
  */
-export function createKernelSpecsFromEnvs(envs: *) {
+export function createKernelSpecsFromEnvs(envs: any) {
   const displayPrefix = "Python"; // Or R
   const languageKey = "py"; // or r
 

@@ -18,7 +18,7 @@ const nodeModules = {
 const mainConfig = {
   mode: "development",
   entry: {
-    main: "./src/main/index.js"
+    main: "./src/main/index.ts"
   },
   target: "electron-main",
   output: {

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["src/notebook"],
+  "include": ["src"],
   "references": [
     { "path": "../../packages/core" },
     { "path": "../../packages/types" },
