@@ -1,7 +1,7 @@
-/** tslint:disable:jsdoc-format */
 /**
  * @module rx-jupyter
  */
+/** tslint:disable:jsdoc-format */
 import Cookies from "js-cookie";
 import { AjaxRequest, AjaxResponse } from "rxjs/ajax";
 
