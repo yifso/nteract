@@ -1,3 +1,6 @@
+/**
+ * @module types
+ */
 import uuid from "uuid/v4";
 
 export type HostRef = string;

@@ -1,3 +1,6 @@
+/**
+ * @module types
+ */
 import * as Immutable from "immutable";
 
 export type ModalsRecordProps = { modalType: string };
