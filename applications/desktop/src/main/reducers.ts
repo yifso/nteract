@@ -1,5 +1,7 @@
 import { Map } from "immutable";
 
+import { Kernelspecs } from "@nteract/types";
+
 type MainState = Map<string, any>;
 
 export type QuittingState =
@@ -10,7 +12,7 @@ export const QUITTING_STATE_QUITTING: QuittingState = "Quitting";
 
 type SetKernelSpecsAction = {
   type: "SET_KERNELSPECS";
-  kernelSpecs: KernelSpecs;
+  kernelSpecs: Kernelspecs;
 };
 
 type SetQuittingStateAction = {

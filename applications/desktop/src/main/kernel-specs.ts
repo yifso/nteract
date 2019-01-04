@@ -1,6 +1,8 @@
 import { join } from "path";
 
-import { ipcMain as ipc } from "electron";
+import { ipcMain as ipc, Event } from "electron";
+
+import { Kernelspecs } from "@nteract/types";
 
 const KERNEL_SPECS = {
   node_nteract: {
@@ -29,11 +31,11 @@ const KERNEL_SPECS = {
   }
 };
 
-export default function initializeKernelSpecs(kernelSpecs: KernelSpecs) {
+export default function initializeKernelSpecs(kernelSpecs: Kernelspecs) {
   Object.assign(KERNEL_SPECS, kernelSpecs);
   return KERNEL_SPECS;
 }
 
-ipc.on("kernel_specs_request", event => {
+ipc.on("kernel_specs_request", (event: Event) => {
   event.sender.send("kernel_specs_reply", KERNEL_SPECS);
 });

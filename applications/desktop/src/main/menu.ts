@@ -7,14 +7,6 @@ import { manifest } from "@nteract/examples";
 import { launch, launchNewNotebook } from "./launch";
 import { installShellCommand } from "./cli";
 
-// Overwrite the type for `process` to match Electron's process
-// https://electronjs.org/docs/api/process
-// eslint-disable-next-line no-unused-vars
-declare var ElectronProcess: typeof process & {
-  resourcesPath: string
-};
-declare var process: ElectronProcess;
-
 function send(focusedWindow, eventName, obj) {
   if (!focusedWindow) {
     console.error("renderer window not in focus (are your devtools open?)");
