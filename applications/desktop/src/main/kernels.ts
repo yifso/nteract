@@ -9,6 +9,7 @@ import {
 } from "rxjs/operators";
 import { spawn } from "spawn-rx";
 import * as path from "path";
+import { KernelspecInfo } from "@nteract/core";
 
 /**
  * ipyKernelTryObservable checks for the existence of ipykernel in the environment.
@@ -39,7 +40,7 @@ export function condaInfoObservable() {
 export function condaEnvsObservable(condaInfo$: Observable<any>) {
   return condaInfo$.pipe(
     map(info => {
-      const envs = info.envs.map(env => ({
+      const envs = info.envs.map((env: string) => ({
         name: path.basename(env),
         prefix: env
       }));
@@ -47,7 +48,6 @@ export function condaEnvsObservable(condaInfo$: Observable<any>) {
       return envs;
     }),
     map(envs => envs.map(ipyKernelTryObservable)),
-    mergeAll(),
     mergeAll(),
     toArray()
   );
@@ -63,7 +63,9 @@ export function createKernelSpecsFromEnvs(envs: any) {
 
   const languageExe = "bin/python";
 
-  const langEnvs = {};
+  const langEnvs: {
+    [name: string]: KernelspecInfo["spec"] & { argv: string[] };
+  } = {};
 
   Object.keys(envs).forEach(env => {
     const base = env.prefix;
@@ -71,6 +73,7 @@ export function createKernelSpecsFromEnvs(envs: any) {
     const envName = env.name;
     const name = `conda-env-${envName}-${languageKey}`;
     langEnvs[name] = {
+      name,
       display_name: `${displayPrefix} [conda env:${envName}]`,
       argv: [exePath, "-m", "ipykernel", "-f", "{connection_file}"],
       language: "python"
