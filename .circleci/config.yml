@@ -43,8 +43,6 @@ jobs:
             yarn report:jext
             echo '**** Reporting on types for Desktop ****'
             yarn report:desktop
-            echo '**** Reporting on types for Play ****'
-            yarn report:play
             echo '**** Application type reporting finished ****'
 
       - run: yarn run test:flow
@@ -57,10 +55,6 @@ jobs:
           path: styleguide
           destination: styleguide
 
-      - run:
-          name: Build Play
-          command: npx lerna run build --scope @nteract/play
-          no_output_timeout: 20m
       - run:
           name: Build Jupyter Extension
           command: npx lerna run build:asap --scope nteract-on-jupyter

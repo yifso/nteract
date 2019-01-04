@@ -11,11 +11,6 @@
 module.exports = {
   lernaModules: [
     {
-      name: "@nteract/play",
-      version: "1.6.14",
-      private: false
-    },
-    {
       name: "ansi-to-react",
       version: "4.0.0-alpha.0",
       private: false
