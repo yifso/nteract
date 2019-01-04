@@ -32,7 +32,7 @@ import {
 } from "fs-observable";
 
 import { launch, launchNewNotebook } from "./launch";
-import { initAutoUpdater } from "./auto-updater.js";
+import { initAutoUpdater } from "./auto-updater";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
 import initializeKernelSpecs from "./kernel-specs";
