@@ -1,32 +1,35 @@
 import * as React from "react";
-import { 
-  Button, 
-  Classes, 
+import {
+  Button,
+  Classes,
   EditableText,
-  Icon, 
-  Intent, 
-  Label, 
-  Overlay 
+  Icon,
+  Intent,
+  Label,
+  Overlay
 } from "@blueprintjs/core";
 import styled from "styled-components";
 
-type EditableTitleOverlayProps = {
+interface IEditableTitleOverlayProps {
   defaultValue: string | undefined;
   isOpen: boolean;
   onCancel: (isCancelled: boolean) => void;
   onSave: (value: string) => void;
-};
+}
 
-type EditableTitleOverlayState = {
+interface IEditableTitleOverlayState {
   value: string;
-};
+}
 
 // styled blueprintjs `Icon`
 const CloseIcon = styled(Icon)`
   cursor: pointer;
-`; 
+`;
 
-export class EditableTitleOverlay extends React.Component<EditableTitleOverlayProps, EditableTitleOverlayState> {
+export class EditableTitleOverlay extends React.PureComponent<
+  IEditableTitleOverlayProps,
+  IEditableTitleOverlayState
+> {
   // Needs to track the input value because in order to handle save
   // when the save button is clicked, we needed to know what the value
   // that was last entered is.
@@ -42,7 +45,7 @@ export class EditableTitleOverlay extends React.Component<EditableTitleOverlayPr
 
   render() {
     return (
-      <Overlay 
+      <Overlay
         canEscapeKeyClose={true}
         canOutsideClickClose={true}
         usePortal={false}
@@ -53,7 +56,7 @@ export class EditableTitleOverlay extends React.Component<EditableTitleOverlayPr
           <div className="bp3-dialog">
             <div className="bp3-dialog-header">
               <h4 className="bp3-heading">Rename Notebook</h4>
-              <CloseIcon icon="small-cross" onClick={this.handleClose}/>
+              <CloseIcon icon="small-cross" onClick={this.handleClose} />
             </div>
             <div className="bp3-dialog-body">
               <Label>Enter a new notebook name:</Label>
