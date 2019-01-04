@@ -3,8 +3,7 @@ import { dirname } from "path";
 import * as React from "react";
 import styled from "styled-components";
 import { Dispatch } from "redux";
-import { selectors } from "@nteract/core";
-import { ContentRef, AppState } from "@nteract/core";
+import { ContentRef, AppState, selectors } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { connect } from "react-redux";
 import { H4 } from "@blueprintjs/core";
@@ -19,7 +18,7 @@ import { default as Notebook } from "../notebook";
 import * as TextFile from "./text-file";
 import { ActionsObservable } from "redux-observable";
 
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 const PaddedContainer = styled.div`
   padding-left: var(--nt-spacing-l, 10px);
@@ -39,7 +38,7 @@ const JupyterExtensionChoiceContainer = styled.div`
   overflow: auto;
 `;
 
-interface FileProps {
+interface IFileProps {
   type: "notebook" | "file" | "dummy";
   contentRef: ContentRef;
   baseDir: string;
@@ -51,18 +50,20 @@ interface FileProps {
   loading: boolean;
   error?: object | null;
   changeContentName: (payload: actions.ChangeContentName["payload"]) => void;
-};
+}
 
-type State = { isDialogOpen: boolean };
+interface IState {
+  isDialogOpen: boolean;
+}
 
-export class File extends React.PureComponent<FileProps, State> {
-  constructor(props: FileProps) {
+export class File extends React.PureComponent<IFileProps, IState> {
+  constructor(props: IFileProps) {
     super(props);
 
-    this.state = { 
-      isDialogOpen: false 
+    this.state = {
+      isDialogOpen: false
     };
-  };
+  }
 
   // Determine the file handler
   getFileHandlerIcon = () => {
@@ -75,7 +76,7 @@ export class File extends React.PureComponent<FileProps, State> {
     ) : (
       ""
     );
-  }
+  };
 
   // TODO: Add more acceptable file extensions
   hasFileExtension = (fileName: string) => {
@@ -84,7 +85,7 @@ export class File extends React.PureComponent<FileProps, State> {
     } else {
       return false;
     }
-  }
+  };
 
   // TODO: Add logic for acceptable file extensions
   addFileExtension = (fileName: string) => {
@@ -93,7 +94,7 @@ export class File extends React.PureComponent<FileProps, State> {
     } else {
       return fileName;
     }
-  }
+  };
 
   getChoice = () => {
     let choice = null;
@@ -119,24 +120,28 @@ export class File extends React.PureComponent<FileProps, State> {
     }
 
     return choice;
-  }
+  };
 
   // Handles onConfirm callback for EditableText component
   confirmTitle = (value: string) => {
     if (value !== this.props.displayName) {
       this.props.changeContentName({
+        contentRef: this.props.contentRef,
         filepath: `/${value ? this.addFileExtension(value) : ""}`,
-        prevFilePath: `/${this.props.displayName}`,
-        contentRef: this.props.contentRef
+        prevFilePath: `/${this.props.displayName}`
       });
     }
 
     this.setState({ isDialogOpen: false });
-  }
+  };
+
+  openDialog = () => this.setState({ isDialogOpen: true });
+  closeDialog = () => this.setState({ isDialogOpen: false });
 
   render() {
     const icon = this.getFileHandlerIcon();
     const choice = this.getChoice();
+    const themeLogoLink = urljoin(this.props.appBase, this.props.baseDir);
 
     // Right now we only handle one kind of editor
     // If/when we support more modes, we would case them off here
@@ -145,20 +150,15 @@ export class File extends React.PureComponent<FileProps, State> {
         <JupyterExtensionContainer>
           <Nav contentRef={this.props.contentRef}>
             <NavSection>
-              <a
-                href={urljoin(this.props.appBase, this.props.baseDir)}
-                title="Home"
-              >
+              <a href={themeLogoLink} title="Home">
                 <ThemedLogo />
               </a>
               <div>
-                <H4 onClick={() => this.setState({ isDialogOpen: true })}>
-                  {this.props.displayName}
-                </H4>
-                <EditableTitleOverlay 
+                <H4 onClick={this.openDialog}>{this.props.displayName}</H4>
+                <EditableTitleOverlay
                   defaultValue={this.props.displayName}
                   isOpen={this.state.isDialogOpen}
-                  onCancel={() => this.setState({ isDialogOpen: false })}
+                  onCancel={this.closeDialog}
                   onSave={this.confirmTitle}
                 />
               </div>
@@ -179,10 +179,11 @@ export class File extends React.PureComponent<FileProps, State> {
 
 const mapStateToProps = (
   state: AppState,
-  ownProps: { 
-    contentRef: ContentRef, 
-    appBase: string
-  }) => {
+  ownProps: {
+    contentRef: ContentRef;
+    appBase: string;
+  }
+) => {
   const content = selectors.content(state, ownProps);
 
   if (!content || content.type === "directory") {
@@ -197,21 +198,21 @@ const mapStateToProps = (
   }
 
   return {
-    type: content.type,
-    mimetype: content.mimetype,
-    contentRef: ownProps.contentRef,
-    lastSavedStatement: "recently",
     appBase: ownProps.appBase,
     baseDir: dirname(content.filepath),
+    contentRef: ownProps.contentRef,
     displayName: content.filepath.split("/").pop(),
-    saving: comms.saving,
+    error: comms.error,
+    lastSavedStatement: "recently",
     loading: comms.loading,
-    error: comms.error
+    mimetype: content.mimetype,
+    saving: comms.saving,
+    type: content.type
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  changeContentName: (payload: actions.ChangeContentName["payload"]) => 
+  changeContentName: (payload: actions.ChangeContentName["payload"]) =>
     dispatch(actions.changeContentName(payload))
 });
 
