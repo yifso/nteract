@@ -25,11 +25,13 @@ import {
   selectors,
   actions,
   AppState,
-  KernelspecInfo,
   KernelRef,
   ContentRef,
   LocalKernelProps
 } from "@nteract/core";
+
+import { KernelspecInfo, Kernelspecs } from "@nteract/types";
+
 import {
   childOf,
   ofMessageType,
@@ -146,10 +148,6 @@ export function launchKernelObservable(
       }
     );
   });
-}
-
-interface Kernelspecs {
-  [name: string]: KernelspecInfo;
 }
 
 /**
