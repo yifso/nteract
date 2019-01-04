@@ -171,11 +171,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/styles",
-      version: "1.2.5",
-      private: false
-    },
-    {
       name: "@nteract/transform-dataresource",
       version: "5.0.0-alpha.0",
       private: false

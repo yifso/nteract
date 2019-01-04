@@ -80,7 +80,6 @@
       "./scripts/test-setup"
     ],
     "moduleNameMapper": {
-      "^@nteract/styles$": "<rootDir>/packages/styles/lib",
       "^@nteract/vega-embed-v2": "@nteract/vega-embed-v2",
       "^@nteract/([^/]*)$": "<rootDir>/packages/$1/src",
       "^(ansi-to-react|enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",

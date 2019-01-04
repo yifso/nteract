@@ -15,10 +15,7 @@ const ignored = new Set([
   // The jupyter extension will rely on this package
   "nteract-on-jupyter",
   // The nbextension is the metapackage (python bits) and isn't used by anything
-  "@nteract/nbextension",
-
-  // TODO: Build @nteract/styles using webpack or some other means
-  "@nteract/styles"
+  "@nteract/nbextension"
 ]);
 
 const aliases = lernaModules
