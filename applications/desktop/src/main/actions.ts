@@ -1,6 +1,8 @@
+import { Kernelspecs } from "@nteract/types";
+
 import { QuittingState } from "./reducers";
 
-export function setKernelSpecs(kernelSpecs: KernelSpecs) {
+export function setKernelSpecs(kernelSpecs: Kernelspecs) {
   return {
     type: "SET_KERNELSPECS",
     kernelSpecs: kernelSpecs
