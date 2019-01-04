@@ -1,40 +1,41 @@
-import { Map } from "immutable";
+import { Record, RecordOf } from "immutable";
 
 import { Kernelspecs } from "@nteract/types";
 
-type MainState = Map<string, any>;
+import {
+  SetKernelSpecsAction,
+  SetQuittingStateAction,
+  QUITTING_STATE_NOT_STARTED,
+  QuittingState
+} from "./actions";
 
-export type QuittingState =
-  | "Not Started" // Not currently orchestrating a quit
-  | "Quitting"; // In the process of closing notebooks in preparation to quit
-export const QUITTING_STATE_NOT_STARTED: QuittingState = "Not Started";
-export const QUITTING_STATE_QUITTING: QuittingState = "Quitting";
-
-type SetKernelSpecsAction = {
-  type: "SET_KERNELSPECS";
+type MainStateProps = {
   kernelSpecs: Kernelspecs;
+  quittingState: QuittingState;
 };
 
-type SetQuittingStateAction = {
-  type: "SET_QUITTING_STATE";
-  newState: QuittingState;
-};
+type MainStateRecord = RecordOf<MainStateProps>;
 
-function setKernelSpecs(state: MainState, action: SetKernelSpecsAction) {
-  return state.set("kernelSpecs", action.kernelSpecs);
+const makeMainStateRecord = Record<MainStateProps>({
+  kernelSpecs: {},
+  quittingState: QUITTING_STATE_NOT_STARTED
+});
+
+function setKernelSpecs(state: MainStateRecord, action: SetKernelSpecsAction) {
+  return state.set("kernelSpecs", action.payload.kernelSpecs);
 }
 
-function setQuittingState(state: MainState, action: SetQuittingStateAction) {
-  return state.set("quittingState", action.newState);
+function setQuittingState(
+  state: MainStateRecord,
+  action: SetQuittingStateAction
+) {
+  return state.set("quittingState", action.payload.newState);
 }
 
 type MainAction = SetKernelSpecsAction | SetQuittingStateAction;
 
-export default function handleApp(
-  state: MainState = Map({
-    kernelSpecs: {},
-    quittingState: QUITTING_STATE_NOT_STARTED
-  }),
+export default function rootReducer(
+  state: MainStateRecord = makeMainStateRecord(),
   action: MainAction
 ) {
   switch (action.type) {

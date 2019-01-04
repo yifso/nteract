@@ -36,11 +36,13 @@ import { initAutoUpdater } from "./auto-updater.js";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
 import initializeKernelSpecs from "./kernel-specs";
-import { setKernelSpecs, setQuittingState } from "./actions";
 import {
+  setKernelSpecs,
+  setQuittingState,
   QUITTING_STATE_NOT_STARTED,
   QUITTING_STATE_QUITTING
-} from "./reducers.js";
+} from "./actions";
+
 import configureStore from "./store";
 
 const store = configureStore();

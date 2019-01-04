@@ -1,17 +1,41 @@
 import { Kernelspecs } from "@nteract/types";
 
-import { QuittingState } from "./reducers";
+export type QuittingState =
+  | "Not Started" // Not currently orchestrating a quit
+  | "Quitting"; // In the process of closing notebooks in preparation to quit
+export const QUITTING_STATE_NOT_STARTED: QuittingState = "Not Started";
+export const QUITTING_STATE_QUITTING: QuittingState = "Quitting";
 
-export function setKernelSpecs(kernelSpecs: Kernelspecs) {
+export type SetKernelSpecsAction = {
+  type: "SET_KERNELSPECS";
+  payload: {
+    kernelSpecs: Kernelspecs;
+  };
+};
+
+export function setKernelSpecs(kernelSpecs: Kernelspecs): SetKernelSpecsAction {
   return {
     type: "SET_KERNELSPECS",
-    kernelSpecs: kernelSpecs
+    payload: {
+      kernelSpecs
+    }
   };
 }
 
-export function setQuittingState(newState: QuittingState) {
+export type SetQuittingStateAction = {
+  type: "SET_QUITTING_STATE";
+  payload: {
+    newState: QuittingState;
+  };
+};
+
+export function setQuittingState(
+  newState: QuittingState
+): SetQuittingStateAction {
   return {
     type: "SET_QUITTING_STATE",
-    newState: newState
+    payload: {
+      newState
+    }
   };
 }
