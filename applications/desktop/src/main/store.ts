@@ -1,10 +1,10 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, Middleware } from "redux";
 import { electronEnhancer } from "redux-electron-store";
 import { middlewares as coreMiddlewares } from "@nteract/core";
 
 import reducers from "./reducers.js";
 
-const middlewares = [];
+const middlewares: Middleware[] = [];
 
 /* istanbul ignore if -- only used for debugging */
 if (process.env.DEBUG === "true") {
