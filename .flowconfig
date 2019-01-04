@@ -1,6 +1,5 @@
 [libs]
 flow-typed
-types
 
 [options]
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe

@@ -1,4 +1,3 @@
-// @flow
 import * as Immutable from "immutable";
 import { combineReducers } from "redux-immutable";
 import { Action } from "redux";

@@ -1,4 +1,3 @@
-// @flow
 export default `
 
   --theme-app-bg: #2b2b2b;

@@ -1,4 +1,3 @@
-// @flow
 /*
  * App level declarations that do not have static/hover/focus states.
  * Primary content that lives in the app and can potentially be interactive.
