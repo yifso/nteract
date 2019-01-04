@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import { dialog, app, shell, Menu, BrowserWindow } from "electron";
+import { dialog, app, shell, Menu, BrowserWindow, FileFilter } from "electron";
 import { sortBy } from "lodash";
 import { manifest } from "@nteract/examples";
 
@@ -20,7 +20,7 @@ function send(
 }
 
 function createSender(eventName: string, obj?: object | string | number) {
-  return (item, focusedWindow) => {
+  return (item, focusedWindow: BrowserWindow) => {
     send(focusedWindow, eventName, obj);
   };
 }
@@ -234,7 +234,7 @@ export function loadFullMenu(store = global.store) {
           opts.defaultPath = app.getPath("home");
         }
 
-        dialog.showOpenDialog(opts, fname => {
+        dialog.showOpenDialog(opts, (fname: string) => {
           if (fname) {
             launch(fname[0]);
             app.addRecentDocument(fname[0]);
@@ -253,7 +253,7 @@ export function loadFullMenu(store = global.store) {
     saveAs: {
       label: "Save &As",
       enabled: BrowserWindow.getAllWindows().length > 0,
-      click: (item, focusedWindow) => {
+      click: (item, focusedWindow: BrowserWindow) => {
         const opts = {
           title: "Save Notebook As",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
@@ -462,7 +462,7 @@ export function loadFullMenu(store = global.store) {
           }
           return "F11";
         })(),
-        click: (item, focusedWindow) => {
+        click: (item, focusedWindow: BrowserWindow) => {
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
@@ -625,7 +625,12 @@ export function loadTrayMenu(store = global.store) {
   const open = {
     label: "&Open",
     click: () => {
-      const opts = {
+      const opts: {
+        title: string;
+        filters: FileFilter[];
+        properties: ["openFile"];
+        defaultPath?: string;
+      } = {
         title: "Open a notebook",
         filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
         properties: ["openFile"],
@@ -635,7 +640,7 @@ export function loadTrayMenu(store = global.store) {
         opts.defaultPath = app.getPath("home");
       }
 
-      dialog.showOpenDialog(opts, fname => {
+      dialog.showOpenDialog(opts, (fname?: string[]) => {
         if (fname) {
           launch(fname[0]);
           app.addRecentDocument(fname[0]);
