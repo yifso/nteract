@@ -360,6 +360,11 @@ export const killKernelEpic = (
       const kernelRef = action.payload.kernelRef;
       const kernel = selectors.kernel(state$.value, { kernelRef });
 
+      if (!kernelRef) {
+        console.warn("tried to kill a kernel without a kernelRef");
+        return empty();
+      }
+
       if (!kernel) {
         // tslint:disable-next-line:no-console
         console.warn("tried to kill a kernel that doesn't exist");

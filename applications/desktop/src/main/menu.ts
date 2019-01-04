@@ -1,22 +1,26 @@
-/* @flow strict */
 import * as path from "path";
 
-import { dialog, app, shell, Menu, BrowserWindow } from "electron";
+import {
+  dialog,
+  app,
+  shell,
+  Menu,
+  BrowserWindow,
+  FileFilter,
+  WebContents
+} from "electron";
 import { sortBy } from "lodash";
 import { manifest } from "@nteract/examples";
 
 import { launch, launchNewNotebook } from "./launch";
 import { installShellCommand } from "./cli";
+import { KernelspecInfo } from "@nteract/types";
 
-// Overwrite the type for `process` to match Electron's process
-// https://electronjs.org/docs/api/process
-// eslint-disable-next-line no-unused-vars
-declare var ElectronProcess: typeof process & {
-  resourcesPath: string
-};
-declare var process: ElectronProcess;
-
-function send(focusedWindow, eventName, obj) {
+function send(
+  focusedWindow: BrowserWindow,
+  eventName: string,
+  obj?: object | string | number
+) {
   if (!focusedWindow) {
     console.error("renderer window not in focus (are your devtools open?)");
     return;
@@ -24,8 +28,8 @@ function send(focusedWindow, eventName, obj) {
   focusedWindow.webContents.send(eventName, obj);
 }
 
-function createSender(eventName, obj) {
-  return (item, focusedWindow) => {
+function createSender(eventName: string, obj?: object | string | number) {
+  return (item: object, focusedWindow: BrowserWindow) => {
     send(focusedWindow, eventName, obj);
   };
 }
@@ -67,7 +71,7 @@ const windowDraft = {
       accelerator: "CmdOrCtrl+W",
       role: "close"
     }
-  ]
+  ] as any[]
 };
 
 if (process.platform === "darwin") {
@@ -115,7 +119,7 @@ const helpDraft = {
         );
       }
     }
-  ]
+  ] as any[]
 };
 
 if (process.platform !== "darwin") {
@@ -174,13 +178,13 @@ export const named = {
   ]
 };
 
-export function loadFullMenu(store: * = global.store) {
+export function loadFullMenu(store = global.store) {
   // NOTE for those looking for selectors -- this state is not the same as the
   //      "core" state -- it's a main process side model in the electron app
   const state = store.getState();
   const kernelSpecs = state.get("kernelSpecs") ? state.get("kernelSpecs") : {};
 
-  function generateSubMenu(kernel) {
+  function generateSubMenu(kernel: KernelspecInfo) {
     return {
       label: kernel.spec.display_name,
       click: createSender("menu:new-kernel", kernel)
@@ -229,7 +233,12 @@ export function loadFullMenu(store: * = global.store) {
     open: {
       label: "&Open",
       click: () => {
-        const opts = {
+        const opts: {
+          title: string;
+          filters: FileFilter[];
+          properties: ["openFile"];
+          defaultPath?: string;
+        } = {
           title: "Open a notebook",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
           properties: ["openFile"],
@@ -239,7 +248,7 @@ export function loadFullMenu(store: * = global.store) {
           opts.defaultPath = app.getPath("home");
         }
 
-        dialog.showOpenDialog(opts, fname => {
+        dialog.showOpenDialog(opts, (fname?: string[]) => {
           if (fname) {
             launch(fname[0]);
             app.addRecentDocument(fname[0]);
@@ -258,8 +267,12 @@ export function loadFullMenu(store: * = global.store) {
     saveAs: {
       label: "Save &As",
       enabled: BrowserWindow.getAllWindows().length > 0,
-      click: (item, focusedWindow) => {
-        const opts = {
+      click: (item: object, focusedWindow: BrowserWindow) => {
+        const opts: {
+          title: string;
+          filters: FileFilter[];
+          defaultPath?: string;
+        } = {
           title: "Save Notebook As",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
           defaultPath: undefined
@@ -308,7 +321,7 @@ export function loadFullMenu(store: * = global.store) {
       fileSubMenus.saveAs,
       fileSubMenus.publish,
       fileSubMenus.exportPDF
-    ]
+    ] as any[]
   };
 
   if (process.platform === "win32") {
@@ -467,7 +480,7 @@ export function loadFullMenu(store: * = global.store) {
           }
           return "F11";
         })(),
-        click: (item, focusedWindow) => {
+        click: (item: object, focusedWindow: BrowserWindow) => {
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
@@ -482,7 +495,7 @@ export function loadFullMenu(store: * = global.store) {
           }
           return "Ctrl+Shift+I";
         })(),
-        click: (item, focusedWindow) => {
+        click: (item: object, focusedWindow: WebContents) => {
           if (focusedWindow) {
             focusedWindow.toggleDevTools();
           }
@@ -573,7 +586,7 @@ export function loadFullMenu(store: * = global.store) {
       fileSubMenus.saveAs,
       fileSubMenus.publish,
       fileSubMenus.exportPDF
-    ]
+    ] as any[]
   };
 
   if (process.platform === "win32") {
@@ -614,7 +627,7 @@ export function loadFullMenu(store: * = global.store) {
   return menu;
 }
 
-export function loadTrayMenu(store: * = global.store) {
+export function loadTrayMenu(store = global.store) {
   // NOTE for those looking for selectors -- this state is not the same as the
   //      "core" state -- it's a main process side model in the electron app
   const state = store.getState();
@@ -630,7 +643,12 @@ export function loadTrayMenu(store: * = global.store) {
   const open = {
     label: "&Open",
     click: () => {
-      const opts = {
+      const opts: {
+        title: string;
+        filters: FileFilter[];
+        properties: ["openFile"];
+        defaultPath?: string;
+      } = {
         title: "Open a notebook",
         filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
         properties: ["openFile"],
@@ -640,7 +658,7 @@ export function loadTrayMenu(store: * = global.store) {
         opts.defaultPath = app.getPath("home");
       }
 
-      dialog.showOpenDialog(opts, fname => {
+      dialog.showOpenDialog(opts, (fname?: string[]) => {
         if (fname) {
           launch(fname[0]);
           app.addRecentDocument(fname[0]);

@@ -28,7 +28,9 @@ describe("setKernelSpecs", () => {
     };
     expect(actions.setKernelSpecs(kernelSpecs)).toEqual({
       type: "SET_KERNELSPECS",
-      kernelSpecs: kernelSpecs
+      payload: {
+        kernelSpecs: kernelSpecs
+      }
     });
   });
 });

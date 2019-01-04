@@ -1,11 +1,10 @@
-/* @flow strict */
 import * as path from "path";
-
 import { Menu, shell, BrowserWindow } from "electron";
+import { KernelspecInfo } from "@nteract/types";
 
 import { loadFullMenu } from "./menu";
 
-let launchIpynb;
+let launchIpynb: Function;
 
 export function getPath(url: string) {
   const nUrl = url.substring(url.indexOf("static"));
@@ -30,7 +29,7 @@ const initContextMenu = require("electron-context-menu");
 // Setup right-click context menu for all BrowserWindows
 initContextMenu();
 
-export function launch(filename: ?string) {
+export function launch(filename?: string) {
   const win = new BrowserWindow({
     width: 800,
     height: 1000,
@@ -75,7 +74,7 @@ export function launch(filename: ?string) {
 }
 launchIpynb = launch;
 
-export function launchNewNotebook(kernelSpec: KernelSpec) {
+export function launchNewNotebook(kernelSpec: KernelspecInfo) {
   const win = launch();
   win.webContents.on("did-finish-load", () => {
     win.webContents.send("main:new", kernelSpec);

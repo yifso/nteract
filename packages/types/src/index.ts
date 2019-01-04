@@ -18,9 +18,13 @@ export * from "./ids";
 export * from "./refs";
 
 type KernelspecMetadata = {
-  name: string;
   display_name: string;
   language: string;
+  argv: string[];
+  name?: string;
+  env?: {
+    [variable: string]: string;
+  };
 };
 
 /**
