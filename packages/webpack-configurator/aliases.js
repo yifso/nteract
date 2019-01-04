@@ -9,9 +9,6 @@ const ignored = new Set([
   // It's this package, the one you're currently looking at! We must skip it.
   "@nteract/webpack-configurator",
 
-  // Play is a next.js app
-  "@nteract/play",
-
   // The jupyter extension will rely on this package
   "nteract-on-jupyter",
   // The nbextension is the metapackage (python bits) and isn't used by anything

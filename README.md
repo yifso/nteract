@@ -76,11 +76,11 @@ case, we have two main directories:
 
 ```
 packages/ -- components used as an individual library
-applications/ -- all the user facing applications (i.e. desktop, play)
+applications/ -- all the user facing applications (i.e. desktop)
 ```
 
 The `packages` directory has the components needed to build new applications,
-and the `applications` has the desktop app, the play app, and a few more.
+and the `applications` has the desktop app and the Jupyter extension.
 
 _Why have a monorepo?_ The monorepo contains many components and packages that
 can be mixed and remixed to create new applications. The monorepo keeps these
@@ -169,20 +169,6 @@ regular Dev Tools console (accessible from the View menu). Set
 ELECTRON_ENABLE_LOGGING=1 to pipe renderer `console.log` to the launching
 terminal as well. This is useful for debugging crashes and notebook closing
 behaviors.
-
-### Hacking on `play`
-
-Run:
-
-```
-yarn app:play
-```
-
-Then open `127.0.0.1:3000` in your browser. You'll be able to make changes to
-`play` and see the changes update live.
-
-If you make changes to any `packages/` while hacking on `play`, you'll want to
-rebuild those using [the instructions for building specific packages](#building-a-specific-package).
 
 ### Troubleshooting
 
