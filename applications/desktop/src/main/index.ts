@@ -249,12 +249,22 @@ ipc.on("close-notebook-canceled", () => {
   store.dispatch(setQuittingState(QUITTING_STATE_NOT_STARTED));
 });
 
-const openFile$ = fromEvent(app, "open-file", (event, filename: string) => ({
+const openFile$ = fromEvent(
+  app,
+  "open-file",
+  (event: Event, filename: string) => ({
+    event,
+    filename
+  })
+);
+
+function openFileFromEvent({
   event,
   filename
-}));
-
-function openFileFromEvent({ event, filename }) {
+}: {
+  event: Event;
+  filename: string;
+}) {
   event.preventDefault();
   launch(resolve(filename));
 }
@@ -267,7 +277,7 @@ openFile$
     buffer(fullAppReady$),
     first()
   )
-  .subscribe((buffer: Array<{ filename: string; event }>) => {
+  .subscribe((buffer: Array<{ filename: string; event: Event }>) => {
     // Form an array of open-file events from before app-ready // Should only be the first
     // Now we can choose whether to open the default notebook
     // based on if arguments went through argv or through open-file events
