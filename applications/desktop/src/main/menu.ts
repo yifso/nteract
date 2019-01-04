@@ -62,7 +62,7 @@ const windowDraft = {
       accelerator: "CmdOrCtrl+W",
       role: "close"
     }
-  ]
+  ] as any[]
 };
 
 if (process.platform === "darwin") {
@@ -110,7 +110,7 @@ const helpDraft = {
         );
       }
     }
-  ]
+  ] as any[]
 };
 
 if (process.platform !== "darwin") {
@@ -303,7 +303,7 @@ export function loadFullMenu(store = global.store) {
       fileSubMenus.saveAs,
       fileSubMenus.publish,
       fileSubMenus.exportPDF
-    ]
+    ] as any[]
   };
 
   if (process.platform === "win32") {
@@ -568,7 +568,7 @@ export function loadFullMenu(store = global.store) {
       fileSubMenus.saveAs,
       fileSubMenus.publish,
       fileSubMenus.exportPDF
-    ]
+    ] as any[]
   };
 
   if (process.platform === "win32") {
