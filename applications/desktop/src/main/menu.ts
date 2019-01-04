@@ -165,7 +165,7 @@ export const named = {
   ]
 };
 
-export function loadFullMenu(store: * = global.store) {
+export function loadFullMenu(store = global.store) {
   // NOTE for those looking for selectors -- this state is not the same as the
   //      "core" state -- it's a main process side model in the electron app
   const state = store.getState();
@@ -605,7 +605,7 @@ export function loadFullMenu(store: * = global.store) {
   return menu;
 }
 
-export function loadTrayMenu(store: * = global.store) {
+export function loadTrayMenu(store = global.store) {
   // NOTE for those looking for selectors -- this state is not the same as the
   //      "core" state -- it's a main process side model in the electron app
   const state = store.getState();
