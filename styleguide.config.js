@@ -61,12 +61,7 @@ module.exports = {
   ],
   // For overriding the components styleguidist uses
   styleguideComponents: {
-    LogoRenderer: path.join(
-      __dirname,
-      "packages",
-      "styleguide-components",
-      "logo.js"
-    )
+    LogoRenderer: path.join(__dirname, "styleguide-components", "logo.tsx")
   },
   compilerConfig: {
     // Allow us to use {...props}
