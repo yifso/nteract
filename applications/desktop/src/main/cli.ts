@@ -1,22 +1,18 @@
 import { join } from "path";
 
-import { catchError, mergeMap } from "rxjs/operators";
-import { merge } from "rxjs";
+import { catchError, mergeMap, map } from "rxjs/operators";
+import { Observable, merge } from "rxjs";
 import { dialog } from "electron";
 import { spawn } from "spawn-rx";
 import { writeFileObservable, createSymlinkObservable } from "fs-observable";
 
-// Overwrite the type for `process` to match Electron's process
-// https://electronjs.org/docs/api/process
-// eslint-disable-next-line no-unused-vars
-declare var ElectronProcess: typeof process & {
-  resourcesPath: string;
-};
-declare var process: ElectronProcess;
-
-const fs = require("fs");
+import * as fs from "fs";
 
 const getStartCommand = () => {
+  if (!process.resourcesPath) {
+    throw new Error("resources path not set for nteract electron app");
+  }
+
   const subdir = process.platform === "darwin" ? "MacOS" : "";
   const ext = process.platform === "win32" ? ".exe" : "";
   const win = process.platform === "win32" ? "win" : "";
@@ -35,9 +31,10 @@ const getStartCommand = () => {
   return null;
 };
 
-const setWinPathObservable = (exe, rootDir, binDir) => {
+const setWinPathObservable = (exe: string, rootDir: string, binDir: string) => {
   // Remove duplicates because SETX throws a error if path is to long
-  const env = process.env.PATH.split(";")
+  const env = (process.env.PATH || "")
+    .split(";")
     .filter(item => !/nteract/.test(item))
     .filter((item, index, array) => array.indexOf(item) === index);
   env.push(binDir);
@@ -46,14 +43,14 @@ const setWinPathObservable = (exe, rootDir, binDir) => {
     spawn("SETX", ["PATH", `${envPath}`]),
     spawn("SETX", ["NTERACT_EXE", exe]),
     spawn("SETX", ["NTERACT_DIR", rootDir])
-  );
+  ) as Observable<void>; // Return value is not used
 };
 
 const installShellCommandsObservable = (
   exe: string,
   rootDir: string,
   binDir: string
-) => {
+): Observable<void> => {
   if (process.platform === "win32") {
     return setWinPathObservable(exe, rootDir, binDir);
   }
@@ -66,6 +63,9 @@ const installShellCommandsObservable = (
       const target = join(binDir, "nteract.sh");
       return createSymlinkObservable(target, "/usr/local/bin/nteract").pipe(
         catchError(() => {
+          if (!process.env.HOME) {
+            throw new Error("HOME not defined");
+          }
           const dest = join(process.env.HOME, ".local/bin/nteract");
           return createSymlinkObservable(target, dest);
         })
@@ -86,7 +86,8 @@ export const installShellCommand = () => {
 
   const [exe, rootDir, binDir] = directories;
 
-  installShellCommandsObservable(exe, rootDir, binDir).subscribe(
+  const obs = installShellCommandsObservable(exe, rootDir, binDir);
+  obs.subscribe(
     () => {},
     err => dialog.showErrorBox("Could not write shell script.", err.message),
     () =>
