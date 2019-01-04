@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import * as log from "electron-log";
 import * as kernelspecs from "kernelspecs";
 import * as jupyterPaths from "jupyter-paths";
-import * as yargs from "yargs/yargs";
+import yargs from "yargs/yargs";
 
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 
@@ -86,12 +86,6 @@ ipc.on("show-message-box", (event: Event, arg: any) => {
   event.sender.send("show-message-box-response", response);
 });
 
-function fromApp<T>(eventName: T) {
-  return new Observable(observer => {
-    app.on(eventName, (event: Event) => observer.next(event));
-  });
-}
-
 app.on("ready", initAutoUpdater);
 
 const electronReady$ = new Observable(observer => {
@@ -135,7 +129,7 @@ const prepJupyterObservable = prepareEnv.pipe(
 const kernelSpecsPromise = prepJupyterObservable
   .toPromise()
   .then(() => kernelspecs.findAll())
-  .then(specs => {
+  .then((specs: Kernelspecs) => {
     return initializeKernelSpecs(specs);
   });
 

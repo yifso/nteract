@@ -2,26 +2,21 @@ import { join } from "path";
 
 import { ipcMain as ipc, Event } from "electron";
 
-import { Kernelspecs } from "@nteract/types";
+import { Kernelspecs, KernelspecInfo } from "@nteract/types";
 
-const KERNEL_SPECS = {
+const builtInNodeArgv: string[] = [
+  process.execPath,
+  join(__dirname, "..", "node_modules", "ijavascript", "lib", "kernel.js"),
+  "{connection_file}",
+  "--protocol=5.0",
+  "--hide-undefined"
+];
+
+const KERNEL_SPECS: Kernelspecs = {
   node_nteract: {
     name: "node_nteract",
     spec: {
-      argv: [
-        process.execPath,
-        join(
-          __dirname,
-          "..",
-          "node_modules",
-          "ijavascript",
-          "lib",
-          "kernel.js"
-        ),
-        "{connection_file}",
-        "--protocol=5.0",
-        "--hide-undefined"
-      ],
+      argv: builtInNodeArgv,
       display_name: "Node.js (nteract)",
       language: "javascript",
       env: {
@@ -31,7 +26,9 @@ const KERNEL_SPECS = {
   }
 };
 
-export default function initializeKernelSpecs(kernelSpecs: Kernelspecs) {
+export default function initializeKernelSpecs(
+  kernelSpecs: Kernelspecs
+): Kernelspecs {
   Object.assign(KERNEL_SPECS, kernelSpecs);
   return KERNEL_SPECS;
 }
