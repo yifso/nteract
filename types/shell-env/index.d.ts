@@ -1,4 +1,4 @@
 declare module "shell-env" {
-  export function shell(): Object;
+  export default function shell(): any;
   export function sync(shell: Object): object;
 }
