@@ -48,22 +48,7 @@ const store = configureStore();
 // HACK: The main process store should not be stored in a global.
 (global as any).store = store;
 
-type Arguments = {
-  /**
-   * Actual string arguments
-   */
-  _: Array<string>;
-  /**
-   * Kernel selected by user, defaults to python3
-   */
-  kernel: string;
-  /**
-   * Version of the app
-   */
-  version: string;
-};
-
-const argv: Arguments = yargs()
+const argv = yargs()
   .version((() => require("./../../package.json").version)())
   .usage("Usage: nteract <notebooks> [options]")
   .example("nteract notebook1.ipynb notebook2.ipynb", "Open notebooks")
