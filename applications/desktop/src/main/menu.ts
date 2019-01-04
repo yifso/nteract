@@ -20,7 +20,7 @@ function send(
 }
 
 function createSender(eventName: string, obj?: object | string | number) {
-  return (item, focusedWindow: BrowserWindow) => {
+  return (item: object, focusedWindow: BrowserWindow) => {
     send(focusedWindow, eventName, obj);
   };
 }
@@ -224,7 +224,12 @@ export function loadFullMenu(store = global.store) {
     open: {
       label: "&Open",
       click: () => {
-        const opts = {
+        const opts: {
+          title: string;
+          filters: FileFilter[];
+          properties: ["openFile"];
+          defaultPath?: string;
+        } = {
           title: "Open a notebook",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
           properties: ["openFile"],
@@ -234,7 +239,7 @@ export function loadFullMenu(store = global.store) {
           opts.defaultPath = app.getPath("home");
         }
 
-        dialog.showOpenDialog(opts, (fname: string) => {
+        dialog.showOpenDialog(opts, (fname?: string[]) => {
           if (fname) {
             launch(fname[0]);
             app.addRecentDocument(fname[0]);
@@ -253,8 +258,12 @@ export function loadFullMenu(store = global.store) {
     saveAs: {
       label: "Save &As",
       enabled: BrowserWindow.getAllWindows().length > 0,
-      click: (item, focusedWindow: BrowserWindow) => {
-        const opts = {
+      click: (item: object, focusedWindow: BrowserWindow) => {
+        const opts: {
+          title: string;
+          filters: FileFilter[];
+          defaultPath?: string;
+        } = {
           title: "Save Notebook As",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
           defaultPath: undefined
@@ -462,7 +471,7 @@ export function loadFullMenu(store = global.store) {
           }
           return "F11";
         })(),
-        click: (item, focusedWindow: BrowserWindow) => {
+        click: (item: object, focusedWindow: BrowserWindow) => {
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
@@ -477,7 +486,7 @@ export function loadFullMenu(store = global.store) {
           }
           return "Ctrl+Shift+I";
         })(),
-        click: (item, focusedWindow) => {
+        click: (item: object, focusedWindow) => {
           if (focusedWindow) {
             focusedWindow.toggleDevTools();
           }
