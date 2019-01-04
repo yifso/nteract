@@ -6,6 +6,7 @@ import { manifest } from "@nteract/examples";
 
 import { launch, launchNewNotebook } from "./launch";
 import { installShellCommand } from "./cli";
+import { KernelspecInfo } from "@nteract/types";
 
 function send(
   focusedWindow: BrowserWindow,
@@ -175,7 +176,7 @@ export function loadFullMenu(store = global.store) {
   const state = store.getState();
   const kernelSpecs = state.get("kernelSpecs") ? state.get("kernelSpecs") : {};
 
-  function generateSubMenu(kernel) {
+  function generateSubMenu(kernel: KernelspecInfo) {
     return {
       label: kernel.spec.display_name,
       click: createSender("menu:new-kernel", kernel)
