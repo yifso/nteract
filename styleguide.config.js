@@ -32,10 +32,10 @@ module.exports = {
       content: "packages/outputs/src/components/media/index.md",
       ignore: "packages/outputs/src/components/media/index.tsx"
     },
-    {
-      name: "@mybinder/host-cache",
-      components: "packages/host-cache/src/components/*.tsx"
-    },
+    // {
+    //   name: "@mybinder/host-cache",
+    //   components: "packages/host-cache/src/components/*.tsx"
+    // },
     {
       name: "@nteract/directory-listing",
       components: "packages/directory-listing/src/components/*.tsx"
