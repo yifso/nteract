@@ -5,8 +5,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc -b",
-    "build:watch": "tsc -b --watch",
     "start": "node lib/index.js",
     "dev": "nodemon lib/index.js"
   },
