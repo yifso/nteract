@@ -3,6 +3,11 @@ const path = require("path");
 const webpack = require("webpack");
 const configurator = require("@nteract/webpack-configurator");
 
+const tsLoaderConfig = {
+  loader: "ts-loader",
+  options: { transpileOnly: true }
+};
+
 const nodeModules = {
   jmp: "commonjs jmp",
   canvas: "commonjs canvas",
@@ -30,7 +35,7 @@ const mainConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{ loader: "ts-loader", options: { transpileOnly: true } }]
+        use: [tsLoaderConfig]
       }
     ]
   },
@@ -58,7 +63,7 @@ const rendererConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{ loader: "ts-loader", options: { transpileOnly: true } }]
+        use: [tsLoaderConfig]
       }
     ]
   },
