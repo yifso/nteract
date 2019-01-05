@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 const configurator = require("@nteract/webpack-configurator");
 
-const babelFlowConfig = require("../../babel.flow.config");
 const babelTypescriptConfig = require("../../babel.typescript.config");
 
 const nodeModules = {
@@ -18,7 +17,7 @@ const nodeModules = {
 const mainConfig = {
   mode: "development",
   entry: {
-    main: "./src/main/index.js"
+    main: "./src/main/index.ts"
   },
   target: "electron-main",
   output: {
@@ -31,12 +30,6 @@ const mainConfig = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelFlowConfig()
-      },
       {
         test: /\.tsx?$/,
         exclude: configurator.exclude,
@@ -80,12 +73,6 @@ const rendererConfig = {
   externals: nodeModules,
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelFlowConfig()
-      },
       {
         test: /\.tsx?$/,
         exclude: configurator.exclude,

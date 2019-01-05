@@ -6,7 +6,6 @@ const reactDocgenTypescript = require("react-docgen-typescript").withCustomConfi
   "./tsconfig.base.json"
 );
 
-const babelFlowConfig = require("./babel.flow.config");
 const babelTypescriptConfig = require("./babel.typescript.config");
 var {
   exclude,
@@ -97,12 +96,6 @@ module.exports = {
     },
     module: {
       rules: [
-        {
-          test: /\.jsx?$/,
-          exclude,
-          loader: "babel-loader",
-          options: babelFlowConfig()
-        },
         {
           test: /\.tsx?$/,
           exclude,
