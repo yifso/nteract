@@ -55,11 +55,15 @@ export function updateContentEpic(
           }),
           map(() => {
             /*
-            * Modifying the url's file name in the browser.
-            * This effects back button behavior.
-            * Is there a better way to accomplish this?
-            */
-            window.history.replaceState({}, filepath, urljoin(host.basePath, `/nteract/edit${filepath}`));
+             * Modifying the url's file name in the browser.
+             * This effects back button behavior.
+             * Is there a better way to accomplish this?
+             */
+            window.history.replaceState(
+              {},
+              filepath,
+              urljoin(host.basePath, `/nteract/edit${filepath}`)
+            );
 
             return actions.changeContentNameFulfilled({
               contentRef: action.payload.contentRef,
@@ -68,13 +72,15 @@ export function updateContentEpic(
             });
           }),
           catchError((xhrError: any) =>
-            of(actions.changeContentNameFailed({
-              basepath: host.basepath,
-              filepath: action.payload.filepath,
-              prevFilePath,
-              error: xhrError,
-              contentRef: action.payload.contentRef
-            }))
+            of(
+              actions.changeContentNameFailed({
+                basepath: host.basepath,
+                filepath: action.payload.filepath,
+                prevFilePath,
+                error: xhrError,
+                contentRef: action.payload.contentRef
+              })
+            )
           )
         );
     })
@@ -430,7 +436,7 @@ export function saveContentEpic(
             );
           }
           default:
-            // NOTE: Flow types and our ofType should prevent reaching here, this
+            // NOTE: Our ofType should prevent reaching here, this
             // is here merely as safety
             return empty();
         }

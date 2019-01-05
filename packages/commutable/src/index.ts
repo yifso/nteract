@@ -3,7 +3,6 @@
  */
 // .....................................
 // API Exports
-// Make sure the index.js.flow types stay in sync with this section
 //
 
 export * from "./primitives";

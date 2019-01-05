@@ -241,7 +241,6 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   return keyPaths
     .reduce(
       (currState: NotebookModel, kp: KeyPath) =>
-        // $FlowFixMe
         currState.setIn(kp, immutableOutput),
       state
     )
@@ -271,7 +270,6 @@ function updateDisplay(
 
   return keyPaths.reduce(
     (currState: NotebookModel, kp: KeyPath) =>
-      // $FlowFixMe: gnarly one we need to FIXME
       currState.updateIn(kp, output => {
         return output.merge(updatedContent);
       }),
@@ -551,7 +549,6 @@ function acceptPayloadMessage(
       // these reducers should just handle the original action.
       return createCellBelow(state, {
         type: actionTypes.CREATE_CELL_BELOW,
-        // $FlowFixMe: Switch this over to creating a cell after without having to take an action
         payload: {
           cellType: "code",
           // TODO: is payload.text guaranteed to be defined?
@@ -585,7 +582,6 @@ function sendExecuteRequest(
   // these reducers should just handle the original action.
   return clearOutputs(state, {
     type: "CLEAR_OUTPUTS",
-    // $FlowFixMe: Switch this over to clearing outputs without having to take an action
     payload: {
       id,
       contentRef
@@ -597,7 +593,6 @@ function setInCell(
   state: NotebookModel,
   action: actionTypes.SetInCell<string>
 ) {
-  // $FlowFixMe: Flow is complaining because the first arg has unknown length?
   return state.setIn(
     ["notebook", "cellMap", action.payload.id].concat(action.payload.path),
     action.payload.value
@@ -770,7 +765,6 @@ function changeCellType(
 
   const { to } = action.payload;
 
-  // $FlowFixMe: flow types in immutable need to be updated
   const cell = state.getIn(["notebook", "cellMap", id]);
 
   const from = cell.cell_type;

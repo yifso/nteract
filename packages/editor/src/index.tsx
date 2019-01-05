@@ -12,7 +12,6 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
-// $FlowFixMe
 import { RichestMime } from "@nteract/display-area";
 import { debounce } from "lodash";
 import CodeMirror from "codemirror";
@@ -109,7 +108,6 @@ class CodeMirrorEditor extends React.Component<
     (this.hint as any).async = true;
     this.tips = this.tips.bind(this);
     this.deleteTip = this.deleteTip.bind(this);
-    // $FlowFixMe: weirdness in the codemirror API
     this.debounceNextCompletionRequest = true;
     this.state = { isFocused: true, tipElement: null };
 
@@ -121,7 +119,6 @@ class CodeMirrorEditor extends React.Component<
         theme: "composition",
         autofocus: false,
         hintOptions: {
-          // $FlowFixMe: weirdness in the codemirror API
           hint: this.hint,
           completeSingle: false, // In automatic autocomplete mode we don't want override
           extraKeys: {
