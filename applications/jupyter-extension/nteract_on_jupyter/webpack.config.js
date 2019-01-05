@@ -8,16 +8,6 @@ const isProd = nodeEnv === "production";
 
 const ASSET_PATH = process.env.ASSET_PATH || "/nteract/static/dist";
 
-const tsLoaderConfig = {
-  loader: "ts-loader",
-  options: {
-    transpileOnly: true,
-    compilerOptions: {
-      noEmit: false
-    }
-  }
-};
-
 module.exports = {
   externals: ["canvas"],
   mode: isProd ? "production" : "development",
@@ -34,6 +24,7 @@ module.exports = {
   target: "web",
   output: {
     // Note: this gets overriden by our use of __webpack_public_path__ later
+    // to allow serving the notebook at e.g. /user/c/nteract/edit
     publicPath: ASSET_PATH,
     chunkFilename: "[name]-[chunkhash].bundle.js"
   },
@@ -45,7 +36,7 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: [tsLoaderConfig]
+        use: [configurator.tsLoaderConfig]
       }
     ]
   },
