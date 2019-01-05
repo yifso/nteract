@@ -1,11 +1,10 @@
 {
   "name": "@nteract/transform-dataresource",
-  "version": "5.0.1-alpha.0",
+  "version": "5.0.2-alpha.0",
   "description": "Transform for data resource JSON",
   "main": "lib/",
   "nteractDesktop": "src/index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
   "repository": "https://github.com/nteract/nteract/tree/master/packages/transform-dataresource",
   "publishConfig": {
@@ -23,8 +22,8 @@
   "dependencies": {
     "@blueprintjs/core": "^3.7.0",
     "@blueprintjs/select": "^3.2.0",
-    "@nteract/octicons": "^1.0.1-alpha.0",
-    "@nteract/styled-blueprintjsx": "^1.1.2-alpha.0",
+    "@nteract/octicons": "^1.0.2-alpha.0",
+    "@nteract/styled-blueprintjsx": "^1.1.3-alpha.0",
     "d3-collection": "^1.0.7",
     "d3-scale": "^2.1.2",
     "d3-shape": "^1.2.2",

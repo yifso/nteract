@@ -1,11 +1,10 @@
 {
   "name": "rx-binder",
-  "version": "3.0.1-alpha.0",
+  "version": "3.0.2-alpha.0",
   "description": "RxJS bindings to Binder",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nteract/nteract.git"

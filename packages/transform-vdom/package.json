@@ -1,12 +1,11 @@
 {
   "name": "@nteract/transform-vdom",
-  "version": "3.0.1-alpha.0",
+  "version": "3.0.2-alpha.0",
   "description": "VDOM Transform for jupyter outputs",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": "https://github.com/nteract/nteract/tree/master/packages/transform-vdom",
   "author": "",
   "publishConfig": {

@@ -1,23 +1,22 @@
 {
   "name": "@nteract/notebook-preview",
-  "version": "11.0.1-alpha.0",
+  "version": "11.0.2-alpha.0",
   "description": "View a notebook using a React Component",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": "https://github.com/nteract/nteract/tree/master/packages/notebook-preview",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@nteract/commutable": "^6.0.1-alpha.0",
-    "@nteract/display-area": "^5.0.1-alpha.0",
-    "@nteract/markdown": "^3.0.2-alpha.0",
-    "@nteract/mathjax": "^3.0.2-alpha.0",
-    "@nteract/presentational-components": "^2.0.1-alpha.0",
-    "@nteract/transforms": "^5.0.1-alpha.0"
+    "@nteract/commutable": "^6.0.2-alpha.0",
+    "@nteract/display-area": "^5.0.2-alpha.0",
+    "@nteract/markdown": "^3.0.3-alpha.0",
+    "@nteract/mathjax": "^3.0.3-alpha.0",
+    "@nteract/presentational-components": "^2.0.2-alpha.0",
+    "@nteract/transforms": "^5.0.2-alpha.0"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12",
