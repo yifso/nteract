@@ -9,7 +9,7 @@
     "build:watch": "webpack --watch",
     "dev": "concurrently \"npm run hot\" \"jupyter nteract --dev\"",
     "hot": "webpack-dev-server --hot",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "echo it would be nice to npm run build once we are ready"
   },
   "publishConfig": {
     "access": "public"
