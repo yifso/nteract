@@ -1,9 +1,12 @@
 {
   "name": "@nteract/webpack-configurator",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.1-alpha.0",
   "main": "index.js",
   "description": "a common webpack configurator for nteract applications",
-  "files": ["./config/babel.config.js", "./config/babel.typescript.config.js"],
+  "files": [
+    "./config/babel.config.js",
+    "./config/babel.typescript.config.js"
+  ],
   "scripts": {
     "test": "echo 'write a basic integration test please' && node -e 'process.exit(1)'",
     "copyConfig": "bash ./copy_config.sh",

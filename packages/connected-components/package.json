@@ -1,6 +1,6 @@
 {
   "name": "@nteract/connected-components",
-  "version": "5.0.0-alpha.0",
+  "version": "5.0.1-alpha.0",
   "description": "Connected components exported from @nteract/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,9 +19,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@nteract/commutable": "^6.0.0-alpha.0",
-    "@nteract/core": "^9.0.0-alpha.0",
-    "@nteract/types": "^3.1.0",
+    "@nteract/commutable": "^6.0.1-alpha.0",
+    "@nteract/core": "^9.0.1-alpha.0",
+    "@nteract/types": "^3.1.1-alpha.0",
     "rc-menu": "6.2.11",
     "react-redux": "^6.0.0",
     "redux": "^4.0.0",

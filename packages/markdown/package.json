@@ -1,6 +1,6 @@
 {
   "name": "@nteract/markdown",
-  "version": "3.0.1",
+  "version": "3.0.2-alpha.0",
   "description": "Markdown/MathJax renderer for nteract",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
   "author": "Trevor Lyon <github.com/tlyon3>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@nteract/mathjax": "^3.0.1",
+    "@nteract/mathjax": "^3.0.2-alpha.0",
     "react-markdown": "^4.0.0"
   }
 }

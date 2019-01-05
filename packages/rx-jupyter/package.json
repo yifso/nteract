@@ -1,6 +1,6 @@
 {
   "name": "rx-jupyter",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.1-alpha.0",
   "description": "RxJS 5 bindings for the Jupyter Notebook API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,8 +26,8 @@
     "url": "https://github.com/nteract/nteract/issues"
   },
   "dependencies": {
-    "@nteract/commutable": "6.0.0-alpha.0",
-    "@nteract/messaging": "5.0.0-alpha.0",
+    "@nteract/commutable": "^6.0.1-alpha.0",
+    "@nteract/messaging": "^5.0.1-alpha.0",
     "js-cookie": "^2.2.0",
     "rxjs": "^6.3.3",
     "url-join": "^4.0.0",
