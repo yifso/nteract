@@ -111,9 +111,19 @@
       "/__tests__/.*types\\.tsx?"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      ".*": "babel-jest"
     }
   },
+  "comment:jest": [
+    "when all the test's types are fixed, the transform field can be",
+    {
+      "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+      }
+    },
+    "until then, if you want to check types to see how close we are, replace",
+    "the transform field directly with the above"
+  ],
   "lint-staged": {
     "*.tsx,*.ts,*.js,!*js.snap": [
       "prettier --write",
