@@ -26,6 +26,5 @@
     "rx-binder": "^3.0.4-alpha.0",
     "rx-jupyter": "^4.0.4-alpha.0",
     "rxjs": "^6.3.3"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }

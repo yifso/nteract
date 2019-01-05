@@ -41,8 +41,6 @@ jobs:
             set +e # Allow failure for now
             echo '**** Reporting on types for Jupyter Extension ****'
             yarn report:jext
-            echo '**** Reporting on types for Desktop ****'
-            yarn report:desktop
             echo '**** Application type reporting finished ****'
 
       - run:

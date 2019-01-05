@@ -19,6 +19,5 @@
     "redux": "^4.0.1",
     "redux-immutable": "^4.0.0",
     "uuid": "^3.3.2"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }
