@@ -3,12 +3,20 @@ const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const webpack = require("webpack");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
-const babelTypescriptConfig = require("../../../babel.typescript.config");
-
 const nodeEnv = process.env.NODE_ENV || "development";
 const isProd = nodeEnv === "production";
 
 const ASSET_PATH = process.env.ASSET_PATH || "/nteract/static/dist";
+
+const tsLoaderConfig = {
+  loader: "ts-loader",
+  options: {
+    transpileOnly: true,
+    compilerOptions: {
+      noEmit: false
+    }
+  }
+};
 
 module.exports = {
   externals: ["canvas"],
@@ -37,9 +45,7 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelTypescriptConfig()
+        use: [tsLoaderConfig]
       }
     ]
   },
