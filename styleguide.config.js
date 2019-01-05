@@ -94,7 +94,8 @@ module.exports = {
               jsx: "react",
               composite: true
             },
-            projectReferences: true
+            projectReferences: true,
+            transpileOnly: true
           }
         }
       ]
