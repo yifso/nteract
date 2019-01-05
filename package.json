@@ -57,7 +57,7 @@
     "test:coverage": "npm run test -- --coverage",
     "test:lint": "npm run lint",
     "diagnostics": "scripts/kernelspecs-diagnostics.js",
-    "verifyBeforePublish": "lerna run prepublishOnly && lerna run prepare",
+    "verifyBeforePublish": "echo 'we need to setup a good verify script'",
     "prepublishOnly": "npm run verifyBeforePublish",
     "publish": "lerna run publish",
     "prettify": "prettier --write '**/*.{ts,tsx,js,json}' '!**/{dist,lib.git,.next,package.json,build,mathjax-electron}/**'",
