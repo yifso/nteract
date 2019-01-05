@@ -6,14 +6,13 @@ const reactDocgenTypescript = require("react-docgen-typescript").withCustomConfi
   "./tsconfig.base.json"
 );
 
-var { mergeDefaultAliases } = require("./packages/webpack-configurator");
-
 const typescriptPropsParser = reactDocgenTypescript.parse;
 
 module.exports = {
   title: "nteract components",
   defaultExample: false,
   propsParser: typescriptPropsParser,
+  resolver: require("react-docgen").resolver.findAllComponentDefinitions,
   sections: [
     {
       name: "Introduction",
@@ -82,16 +81,13 @@ module.exports = {
       net: "empty"
     },
     resolve: {
-      mainFields: ["nteractDesktop", "es2015", "jsnext:main", "module", "main"],
-      extensions: [".js", ".jsx", ".ts", ".tsx"],
-      alias: mergeDefaultAliases()
+      extensions: [".ts", ".tsx"]
     },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: "ts-loader",
-          exclude: /node_modules/
+          loader: "ts-loader"
         }
       ]
     }
