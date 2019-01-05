@@ -1,6 +1,6 @@
 {
   "name": "@nteract/transform-model-debug",
-  "version": "4.0.2-alpha.0",
+  "version": "4.0.3-alpha.0",
   "description": "Transform for debug usage with nteract models",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

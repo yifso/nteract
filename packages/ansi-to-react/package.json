@@ -1,6 +1,6 @@
 {
   "name": "ansi-to-react",
-  "version": "4.0.2-alpha.0",
+  "version": "4.0.3-alpha.0",
   "description": "ANSI to React Elements",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
