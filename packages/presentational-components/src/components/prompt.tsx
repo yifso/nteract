@@ -37,7 +37,7 @@ interface PromptProps {
 /**
  * Generate what text goes inside the prompt based on the props to the prompt
  */
-export function promptText(props: PromptProps): string {
+function promptText(props: PromptProps): string {
   if (props.running) {
     return "[*]";
   }
