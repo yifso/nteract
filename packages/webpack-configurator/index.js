@@ -9,7 +9,6 @@ opaque type Aliases = {[string]: string }
 
 const rxAliases /* : Aliases */ = require("rxjs/_esm5/path-mapping")();
 
-const babelFlowConfig = require("./config/babel.flow.config");
 const babelTypescriptConfig = require("./config/babel.typescript.config");
 const { aliases } = require("./aliases");
 
@@ -78,20 +77,12 @@ function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
     return rule;
   });
 
-  config.module.rules.push(
-    {
-      test: /\.js$/,
-      exclude: exclude,
-      loader: "babel-loader",
-      options: babelFlowConfig()
-    },
-    {
-      test: /\.tsx?$/,
-      exclude: exclude,
-      loader: "babel-loader",
-      options: babelTypescriptConfig()
-    }
-  );
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    exclude: exclude,
+    loader: "babel-loader",
+    options: babelTypescriptConfig()
+  });
 
   config.resolve = Object.assign({}, config.resolve, {
     mainFields: ["nteractDesktop", "jsnext:main", "module", "main"],

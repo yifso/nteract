@@ -1,20 +1,12 @@
 {
   "extends": [
     "prettier",
-    "prettier/flowtype",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-perf/recommended"
   ],
   "parser": "babel-eslint",
-  "plugins": [
-    "prettier",
-    "flowtype",
-    "react",
-    "jsx-a11y",
-    "react-perf",
-    "import"
-  ],
+  "plugins": ["prettier", "react", "jsx-a11y", "react-perf", "import"],
   "env": {
     "browser": true,
     "node": true,
@@ -38,8 +30,7 @@
   },
   "settings": {
     "react": {
-      "version": "16.3.2",
-      "flowVersion": "0.81"
+      "version": "16.3.2"
     }
   }
 }
