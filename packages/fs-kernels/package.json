@@ -27,6 +27,5 @@
     "pidusage": "^2.0.17",
     "portfinder": "^1.0.20",
     "uuid": "^3.3.2"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }

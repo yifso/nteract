@@ -17,6 +17,5 @@
     "immutable": "^4.0.0-rc.12",
     "reselect": "^4.0.0",
     "rx-jupyter": "^4.0.4-alpha.0"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }

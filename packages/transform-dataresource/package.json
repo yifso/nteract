@@ -48,6 +48,5 @@
     "@types/numeral": "^0.0.25",
     "@types/react-color": "^2.13.6",
     "@types/react-table": "^6.7.18"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }

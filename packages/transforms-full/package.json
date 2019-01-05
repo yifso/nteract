@@ -32,6 +32,5 @@
     "@nteract/transform-plotly": "^4.0.4-alpha.0",
     "@nteract/transform-vega": "^4.0.4-alpha.0",
     "@nteract/transforms": "^5.0.4-alpha.0"
-  },
-  "gitHead": "c0926cd5e3de55b5ffac9bb975cb5a9e817cb14f"
+  }
 }
