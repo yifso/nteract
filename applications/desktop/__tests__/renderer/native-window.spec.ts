@@ -56,7 +56,6 @@ describe("createTitleFeed", () => {
         entities: stateModule.makeEntitiesRecord({
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
-              // $FlowFixMe: This really is a content ref, Flow can't handle typing it though
               [contentRef]: stateModule.makeNotebookContentRecord({
                 filepath: "titled.ipynb"
               })
@@ -64,7 +63,6 @@ describe("createTitleFeed", () => {
           }),
           kernels: stateModule.makeKernelsRecord({
             byRef: Immutable.Map({
-              // $FlowFixMe: This really is a kernel ref, Flow can't handle typing it though
               [kernelRef]: stateModule.makeRemoteKernelRecord({
                 status: "not connected"
               })

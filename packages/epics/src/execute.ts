@@ -318,7 +318,6 @@ export function executeCellEpic(
     catchError((error: Error, source) => {
       // Either we ensure that all errors are caught when the action.payload.contentRef
       // is in scope or we make this be a generic ERROR
-      // $FlowFixMe: see above
       return merge(
         of(
           actions.executeFailed({

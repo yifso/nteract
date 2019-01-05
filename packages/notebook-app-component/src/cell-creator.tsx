@@ -176,7 +176,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }) => dispatch(actions.createCellBelow(payload))
 });
 
-// $FlowFixMe: react-redux typings
 export default connect(
   null,
   mapDispatchToProps

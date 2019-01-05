@@ -21,7 +21,6 @@ class ModalController extends React.Component<Props> {
   };
   render() {
     const Modal = this.getModal();
-    // $FlowFixMe
     return Modal ? <Modal /> : null;
   }
 }

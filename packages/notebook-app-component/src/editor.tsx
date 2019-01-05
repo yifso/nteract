@@ -54,7 +54,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props) => {
   };
 };
 
-// $FlowFixMe: react-redux typings
 export default connect(
   mapStateToProps,
   mapDispatchToProps

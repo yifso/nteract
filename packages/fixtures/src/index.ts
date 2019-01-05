@@ -125,7 +125,6 @@ export function fixtureStore(config: JSONObject) {
         }),
         kernels: makeKernelsRecord({
           byRef: Immutable.Map({
-            // $FlowFixMe: This really is a kernel ref, Flow can't handle typing it though
             [kernelRef]: makeRemoteKernelRecord({
               channels,
               status: "not connected"

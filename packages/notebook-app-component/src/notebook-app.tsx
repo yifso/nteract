@@ -396,7 +396,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
   }
 }
 
-// $FlowFixMe: react-redux typings
 export const ConnectedCell = connect(
   mapStateToCellProps,
   mapDispatchToCellProps
@@ -668,7 +667,6 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
 }
 
 export const ConnectedNotebook = dragDropContext(HTML5Backend)(NotebookApp);
-// $FlowFixMe: react-redux typings
 export default connect(
   mapStateToProps,
   mapDispatchToProps

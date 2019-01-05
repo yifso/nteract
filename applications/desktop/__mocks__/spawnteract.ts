@@ -1,4 +1,3 @@
-// @flow
 function writeConnectionFile(config) {
   return Promise.resolve({ config, connectionFile: "connectionFile.json" });
 }

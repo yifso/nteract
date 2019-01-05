@@ -41,7 +41,7 @@ to run the tests locally while watching to all changes in the records setup.
 If your editor isn't already helping you with this, use
 
 ```
-npm run flow
+npx tsc -b packages
 ```
 
 ## Documentation

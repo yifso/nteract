@@ -96,7 +96,6 @@ export class PlotlyTransform extends React.Component<Props> {
     if (layout && layout.height && !layout.autosize) {
       style.height = layout.height;
     }
-    // $FlowFixMe: a normal div doesn't have the properties that plotly puts on it
     return <div ref={this.plotDivRef} style={style} />;
   }
 }
