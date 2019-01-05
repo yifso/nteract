@@ -5,7 +5,12 @@ const configurator = require("@nteract/webpack-configurator");
 
 const tsLoaderConfig = {
   loader: "ts-loader",
-  options: { transpileOnly: true }
+  options: {
+    transpileOnly: true,
+    compilerOptions: {
+      noEmit: false
+    }
+  }
 };
 
 const nodeModules = {
