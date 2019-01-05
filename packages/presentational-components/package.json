@@ -28,5 +28,6 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@types/styled-components": "^4.1.4"
-  }
+  },
+  "gitHead": "9ef8b723c581862d5c56b7ffd62a21393e7d83b9"
 }

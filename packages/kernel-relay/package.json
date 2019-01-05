@@ -13,6 +13,9 @@
     "graphql",
     "server"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "nteract Contributors",
   "license": "BSD-3-Clause",
   "dependencies": {
@@ -25,5 +28,6 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
-  }
+  },
+  "gitHead": "9ef8b723c581862d5c56b7ffd62a21393e7d83b9"
 }

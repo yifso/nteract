@@ -29,5 +29,6 @@
     "@types/js-cookie": "^2.2.0",
     "@types/url-join": "^4.0.0",
     "@types/url-search-params": "^1.0.0"
-  }
+  },
+  "gitHead": "9ef8b723c581862d5c56b7ffd62a21393e7d83b9"
 }

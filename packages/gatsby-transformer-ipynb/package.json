@@ -20,5 +20,6 @@
     "@nteract/notebook-render": "^5.0.2-alpha.0"
   },
   "author": "Benjamin Abel <dev.abel@laposte.net>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "gitHead": "9ef8b723c581862d5c56b7ffd62a21393e7d83b9"
 }

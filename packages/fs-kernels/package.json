@@ -10,6 +10,9 @@
     "jupyter",
     "kernels"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "nteract Contributors",
   "license": "BSD-3-Clause",
   "bugs": {
@@ -24,5 +27,6 @@
     "pidusage": "^2.0.17",
     "portfinder": "^1.0.20",
     "uuid": "^3.3.2"
-  }
+  },
+  "gitHead": "9ef8b723c581862d5c56b7ffd62a21393e7d83b9"
 }
