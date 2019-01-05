@@ -34,8 +34,12 @@ jobs:
       - run: yarn run build:packages:ci
       - run: yarn run test --maxWorkers 1
 
+      # Check types for non-emitting TypeScript builds (applications)
+      - run: yarn report:desktop
+
+      # Until Jupyter extension has the last error fixed we can only report on it
       - run:
-          name: Report on types for Applications
+          name: Report on types for Jupyter Extension
           shell: /bin/bash
           command: |
             set +e # Allow failure for now
