@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { dirname } from "path";
 import * as actions from "@nteract/actions";
+import { NotebookMenu } from "@nteract/connected-components";
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
 import { H4 } from "@blueprintjs/core";
@@ -15,7 +16,7 @@ import urljoin from "url-join";
 import { ConnectedDirectory } from "./directory";
 import { EditableTitleOverlay } from "../components/editable-title-overlay";
 import { ThemedLogo } from "../components/themed-logo";
-import { Nav, NavSection } from "../components/nav";
+import { Nav, NavRow, NavSection } from "../components/nav";
 import LastSaved from "../components/last-saved";
 import { default as File } from "./file";
 
@@ -173,6 +174,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
                 <LastSaved contentRef={this.props.contentRef} />
               </NavSection>
             </Nav>
+            <NotebookMenu contentRef={this.props.contentRef} />
             <File contentRef={this.props.contentRef} appBase={appBase} />;
           </React.Fragment>
         );

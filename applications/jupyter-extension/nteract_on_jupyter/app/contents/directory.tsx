@@ -1,5 +1,7 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import urljoin from "url-join";
 import { NewNotebookNavigation } from "@nteract/connected-components";
 import {
   Entry,
@@ -17,13 +19,8 @@ import {
   ContentRef,
   DirectoryContentRecord
 } from "@nteract/core";
-import { connect } from "react-redux";
 
-import { Nav, NavSection } from "../components/nav";
 import { openNotebook } from "../triggers/open-notebook";
-import { ThemedLogo } from "../components/themed-logo";
-
-import urljoin from "url-join";
 
 const ListingRoot = styled.div`
   margin-top: 2rem;
@@ -61,7 +58,6 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
 
   render() {
     const atRoot = this.props.content.filepath === "/";
-
     const dotdothref = urljoin(
       this.props.appBase,
       // Make sure leading / and .. don't navigate outside of the appBase
@@ -72,16 +68,9 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
         {".."}
       </a>
     );
+
     return (
       <React.Fragment>
-        <Nav contentRef={this.props.contentRef} showNotebookMenu={false}>
-          <NavSection>
-            <a href={urljoin(this.props.appBase)} title="Home" role="button">
-              <ThemedLogo />
-            </a>
-            <span>{this.props.content.filepath.split("/").pop()}</span>
-          </NavSection>
-        </Nav>
         <NewNotebookNavigation onClick={this.openNotebook} />
         <ListingRoot>
           <Listing>
@@ -103,6 +92,7 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
                   {entry.name}
                 </a>
               );
+
               return (
                 <Entry key={index}>
                   <Icon fileType={entry.type} />
@@ -123,9 +113,9 @@ const mapStateToDirectoryProps = (
   ownProps: { contentRef: ContentRef; appBase: string }
 ): DirectoryProps => {
   const { contentRef, appBase } = ownProps;
-
-  const host = selectors.currentHost(state);
   const content = selectors.content(state, ownProps);
+  const contents: LightDirectoryEntry[] = [];
+  const host = selectors.currentHost(state);
 
   if (host.type !== "jupyter") {
     throw new Error("This component only works with jupyter servers");
@@ -137,7 +127,6 @@ const mapStateToDirectoryProps = (
     );
   }
 
-  const contents: LightDirectoryEntry[] = [];
   content.model.items.map((entryRef: ContentRef) => {
     const row = selectors.content(state, { contentRef: entryRef });
     if (!row) {

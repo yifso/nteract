@@ -39,7 +39,6 @@ const NavSectionLi = styled.li`
 type NavSectionProps = {
   children: React.ReactNode;
 };
-
 export const NavSection = (props: NavSectionProps) => (
   <NavSectionUl>
     {React.Children.map(props.children, child => {
@@ -51,10 +50,7 @@ export const NavSection = (props: NavSectionProps) => (
   </NavSectionUl>
 );
 
-type NavProps = {
-  children: React.ReactNode;
-};
-
+type NavProps = NavSectionProps;
 export const Nav = (props: NavProps) => (
   <div className="nteract-nav">
     <NavUl>
