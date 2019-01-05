@@ -262,7 +262,6 @@ const mapDispatchToProps = (
 
 // TODO: This toolbar could easily make use of ownProps (contentRef, cellId)
 //       and pluck exactly the state it wants
-// $FlowFixMe: react-redux typings
 export default connect(
   null,
   mapDispatchToProps

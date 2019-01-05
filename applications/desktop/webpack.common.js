@@ -3,7 +3,15 @@ const path = require("path");
 const webpack = require("webpack");
 const configurator = require("@nteract/webpack-configurator");
 
-const babelTypescriptConfig = require("../../babel.typescript.config");
+const tsLoaderConfig = {
+  loader: "ts-loader",
+  options: {
+    transpileOnly: true,
+    compilerOptions: {
+      noEmit: false
+    }
+  }
+};
 
 const nodeModules = {
   jmp: "commonjs jmp",
@@ -32,9 +40,7 @@ const mainConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelTypescriptConfig()
+        use: [tsLoaderConfig]
       }
     ]
   },
@@ -49,20 +55,7 @@ const mainConfig = {
 const rendererConfig = {
   mode: "development",
   entry: {
-    app: "./src/notebook/index.tsx",
-    vendor: [
-      "react",
-      "react-dnd",
-      "react-dnd-html5-backend",
-      "react-dom",
-      "react-redux",
-      "redux",
-      "redux-logger",
-      "redux-observable",
-      "immutable",
-      "rxjs",
-      "date-fns"
-    ]
+    app: "./src/notebook/index.tsx"
   },
   target: "electron-renderer",
   output: {
@@ -75,9 +68,7 @@ const rendererConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelTypescriptConfig()
+        use: [tsLoaderConfig]
       }
     ]
   },
