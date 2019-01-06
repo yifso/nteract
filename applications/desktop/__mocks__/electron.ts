@@ -18,7 +18,7 @@ module.exports = {
       };
     },
     app: {
-      getPath: key => {
+      getPath: (key: string) => {
         if (key === "home") {
           return "/home/home/on/the/range";
         }
@@ -32,7 +32,8 @@ module.exports = {
     getCurrentWindow: () => {
       return {
         webContents: {
-          printToPDF: (options, callback) => callback(null, null)
+          printToPDF: (options: object, callback: Function) =>
+            callback(null, null)
         }
       };
     }
@@ -44,7 +45,7 @@ module.exports = {
     }
   },
   ipcRenderer: {
-    on: (message, callback) => {
+    on: (message: string, callback: Function) => {
       if (message === "kernel_specs_reply") {
         const specs = {
           python3: {
