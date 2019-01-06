@@ -1163,7 +1163,7 @@ exports[`Markdown Should render markdown 1`] = `
 `;
 
 exports[`Plain Should render markdown 1`] = `
-<Plain
+<Component
   data="The text in Spain is mainly plain"
   mediaType="text/plain"
 >
@@ -1181,5 +1181,5 @@ exports[`Plain Should render markdown 1`] = `
       </code>
     </Ansi>
   </pre>
-</Plain>
+</Component>
 `;
