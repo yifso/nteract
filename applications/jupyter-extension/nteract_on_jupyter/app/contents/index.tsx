@@ -34,38 +34,45 @@ interface IContentsState {
 
 class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   render() {
-    const appBase = this.props.appBase;
+    const {
+      appBase,
+      baseDir,
+      contentRef,
+      contentType,
+      displayName,
+      loading,
+      saving
+    } = this.props;
 
-    switch (this.props.contentType) {
+    switch (contentType) {
       case "notebook":
       case "file":
       case "dummy":
         return (
           <React.Fragment>
             <FileHeader
-              contentRef={this.props.contentRef}
-              displayName={this.props.displayName}
+              appBase={appBase}
+              baseDir={baseDir}
+              contentRef={contentRef}
+              displayName={displayName}
+              loading={loading}
+              saving={saving}
             />
-            <File contentRef={this.props.contentRef} appBase={appBase} />
+            <File contentRef={contentRef} appBase={appBase} />
           </React.Fragment>
         );
       case "directory":
         return (
           <React.Fragment>
-            <DirectoryHeader appBase={this.props.appBase} />
-            <ConnectedDirectory
-              appBase={appBase}
-              contentRef={this.props.contentRef}
-            />
+            <DirectoryHeader appBase={appBase} />
+            <ConnectedDirectory appBase={appBase} contentRef={contentRef} />
           </React.Fragment>
         );
       default:
         return (
           <React.Fragment>
-            <DirectoryHeader appBase={this.props.appBase} />
-            <div>
-              {`content type ${this.props.contentType} not implemented`}
-            </div>
+            <DirectoryHeader appBase={appBase} />
+            <div>{`content type ${contentType} not implemented`}</div>
           </React.Fragment>
         );
     }
