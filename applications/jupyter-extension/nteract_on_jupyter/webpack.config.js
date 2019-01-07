@@ -18,6 +18,7 @@ module.exports = {
   devServer: isProd
     ? {}
     : {
+        disableHostCheck: true,
         hot: true,
         headers: { "Access-Control-Allow-Origin": "*" }
       },
