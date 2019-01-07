@@ -12,7 +12,14 @@ import {
 } from "../src";
 
 import { EventEmitter } from "events";
-import { Socket } from "jmp";
+import { Socket as _Socket } from "jmp";
+import * as zmq from "zeromq";
+
+type Socket = typeof _Socket &
+  zmq.Socket &
+  EventEmitter & { unmonitor: Function };
+
+import { JupyterMessage, MessageType } from "@nteract/messaging";
 
 interface Sockets {
   [id: string]: Socket;
@@ -196,14 +203,14 @@ describe("createMainChannelFromSockets", () => {
     });
   });
 
-  test("propagates header information through", () => {
+  test("propagates header information through", async done => {
     // Mock a jmp socket
     class HokeySocket extends EventEmitter {
       constructor() {
         super();
         this.send = jest.fn();
       }
-      send() {}
+      send = jest.fn();
     }
 
     const shellSocket = new HokeySocket();
@@ -218,14 +225,14 @@ describe("createMainChannelFromSockets", () => {
       username: "dj"
     });
 
-    const p = channels
+    const responses = channels
       .pipe(
         take(2),
         toArray()
       )
       .toPromise();
 
-    channels.next({ channel: "shell" });
+    channels.next({ channel: "shell" } as JupyterMessage<any>);
 
     expect(shellSocket.send).toHaveBeenCalledWith({
       buffers: [],
@@ -245,13 +252,16 @@ describe("createMainChannelFromSockets", () => {
         applesauce: "mcgee"
       },
       header: {
+        version: "3",
+        msg_type: "random" as MessageType,
+        date: new Date().toISOString(),
         msg_id: "XYZ",
 
         // NOTE: we'll be checking that we use the set username for the
         //       channels, no overrides
         username: "kitty"
       }
-    });
+    } as JupyterMessage);
 
     expect(shellSocket.send).toHaveBeenLastCalledWith({
       buffers: [],
@@ -259,9 +269,12 @@ describe("createMainChannelFromSockets", () => {
         applesauce: "mcgee"
       },
       header: {
+        msg_type: "random",
         session: "spinning",
         username: "dj",
-        msg_id: "XYZ"
+        msg_id: "XYZ",
+        date: expect.any(String),
+        version: "3"
       },
       idents: [],
       metadata: {},
@@ -271,11 +284,13 @@ describe("createMainChannelFromSockets", () => {
     shellSocket.emit("message", { yolo: false });
     iopubSocket.emit("message", { yolo: true });
 
-    return p.then((modifiedMessages: any) => {
-      expect(modifiedMessages).toEqual([
-        { channel: "shell", yolo: false },
-        { channel: "iopub", yolo: true }
-      ]);
-    });
+    const modifiedMessages = await responses;
+
+    expect(modifiedMessages).toEqual([
+      { channel: "shell", yolo: false },
+      { channel: "iopub", yolo: true }
+    ]);
+
+    done();
   });
 });

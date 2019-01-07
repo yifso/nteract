@@ -231,7 +231,7 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
         theme="light"
       />
     </div>
-    <Toolbar
+    <Component
       currentView="grid"
       dimensions={
         Array [
@@ -682,7 +682,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
           xAccessor="Happiness Rank"
           yAccessor="Standard Error"
         />
-        <_default
+        <Component
           areaType="hexbin"
           chart={
             Object {
@@ -905,7 +905,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
         />
       </styled.div>
     </div>
-    <Toolbar
+    <Component
       currentView="scatter"
       dimensions={
         Array [

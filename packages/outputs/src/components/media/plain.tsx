@@ -16,3 +16,5 @@ Plain.defaultProps = {
   data: "",
   mediaType: "text/plain"
 };
+
+Plain.displayName = "Plaintext";
