@@ -203,7 +203,7 @@ describe("createMainChannelFromSockets", () => {
     });
   });
 
-  test("propagates header information through", async () => {
+  test("propagates header information through", async done => {
     // Mock a jmp socket
     class HokeySocket extends EventEmitter {
       constructor() {
@@ -225,7 +225,7 @@ describe("createMainChannelFromSockets", () => {
       username: "dj"
     });
 
-    const p = channels
+    const responses = channels
       .pipe(
         take(2),
         toArray()
@@ -284,11 +284,13 @@ describe("createMainChannelFromSockets", () => {
     shellSocket.emit("message", { yolo: false });
     iopubSocket.emit("message", { yolo: true });
 
-    return p.then((modifiedMessages: any) => {
-      expect(modifiedMessages).toEqual([
-        { channel: "shell", yolo: false },
-        { channel: "iopub", yolo: true }
-      ]);
-    });
+    const modifiedMessages = await responses;
+
+    expect(modifiedMessages).toEqual([
+      { channel: "shell", yolo: false },
+      { channel: "iopub", yolo: true }
+    ]);
+
+    done();
   });
 });

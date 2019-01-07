@@ -131,7 +131,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                   className="octicon"
                 >
                   <Component>
-                    <Component
+                    <SVGWrapper
                       height={16}
                       outerProps={Object {}}
                       viewBox="0 0 6 16"
@@ -160,7 +160,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                           />
                         </svg>
                       </span>
-                    </Component>
+                    </SVGWrapper>
                   </Component>
                 </span>
               </button>
@@ -245,7 +245,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                                   className="octicon toggle-menu"
                                 >
                                   <Component>
-                                    <Component
+                                    <SVGWrapper
                                       height={16}
                                       outerProps={Object {}}
                                       viewBox="0 0 10 16"
@@ -274,7 +274,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                                           />
                                         </svg>
                                       </span>
-                                    </Component>
+                                    </SVGWrapper>
                                   </Component>
                                 </span>
                               </button>
@@ -297,7 +297,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                   className="octicon"
                 >
                   <Component>
-                    <Component
+                    <SVGWrapper
                       height={16}
                       outerProps={Object {}}
                       viewBox="0 0 12 16"
@@ -326,7 +326,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                           />
                         </svg>
                       </span>
-                    </Component>
+                    </SVGWrapper>
                   </Component>
                 </span>
               </button>
@@ -470,7 +470,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   className="octicon"
                 >
                   <Component>
-                    <Component
+                    <SVGWrapper
                       height={16}
                       outerProps={Object {}}
                       viewBox="0 0 6 16"
@@ -499,7 +499,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                           />
                         </svg>
                       </span>
-                    </Component>
+                    </SVGWrapper>
                   </Component>
                 </span>
               </button>
@@ -584,7 +584,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                   className="octicon toggle-menu"
                                 >
                                   <Component>
-                                    <Component
+                                    <SVGWrapper
                                       height={16}
                                       outerProps={Object {}}
                                       viewBox="0 0 10 16"
@@ -613,7 +613,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                           />
                                         </svg>
                                       </span>
-                                    </Component>
+                                    </SVGWrapper>
                                   </Component>
                                 </span>
                               </button>
@@ -781,7 +781,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   className="octicon"
                 >
                   <Component>
-                    <Component
+                    <SVGWrapper
                       height={16}
                       outerProps={Object {}}
                       viewBox="0 0 12 16"
@@ -810,7 +810,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                           />
                         </svg>
                       </span>
-                    </Component>
+                    </SVGWrapper>
                   </Component>
                 </span>
               </button>
