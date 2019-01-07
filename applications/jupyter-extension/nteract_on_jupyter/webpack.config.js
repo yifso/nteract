@@ -3,8 +3,6 @@ const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const webpack = require("webpack");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
-const babelTypescriptConfig = require("../../../babel.typescript.config");
-
 const nodeEnv = process.env.NODE_ENV || "development";
 const isProd = nodeEnv === "production";
 
@@ -26,6 +24,7 @@ module.exports = {
   target: "web",
   output: {
     // Note: this gets overriden by our use of __webpack_public_path__ later
+    // to allow serving the notebook at e.g. /user/c/nteract/edit
     publicPath: ASSET_PATH,
     chunkFilename: "[name]-[chunkhash].bundle.js"
   },
@@ -37,9 +36,7 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        exclude: configurator.exclude,
-        loader: "babel-loader",
-        options: babelTypescriptConfig()
+        use: [configurator.tsLoaderConfig]
       }
     ]
   },

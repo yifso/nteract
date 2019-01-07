@@ -1,19 +1,11 @@
 {
   "name": "@nteract/editor",
-  "version": "8.0.0-alpha.0",
+  "version": "8.0.4-alpha.0",
   "description": "The editor that lives inside cells in nteract",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.tsx",
-  "scripts": {
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run build",
-    "build": "npm run build:clean && npm run build:lib",
-    "build:clean": "tsc -b --clean",
-    "build:lib": "tsc -b",
-    "build:lib:watch": "tsc -b --watch",
-    "build:watch": "npm run build:clean && npm run build:lib:watch"
-  },
+  "scripts": {},
   "repository": "https://github.com/nteract/nteract/tree/master/packages/editor",
   "keywords": [
     "nteract",
@@ -25,8 +17,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@nteract/display-area": "^5.0.0-alpha.0",
-    "@nteract/messaging": "^5.0.0-alpha.0",
+    "@nteract/display-area": "^5.0.4-alpha.0",
+    "@nteract/messaging": "^5.0.4-alpha.0",
     "codemirror": "5.42.0",
     "lodash": "^4.17.4",
     "rxjs": "^6.3.3",
