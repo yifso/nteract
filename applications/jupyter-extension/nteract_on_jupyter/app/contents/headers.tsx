@@ -13,11 +13,11 @@ import { ThemedLogo } from "../components/themed-logo";
 import { Nav, NavSection } from "../components/nav";
 import LastSaved from "../components/last-saved";
 
-interface IDirectoryHeaderProps {
+export interface DirectoryHeaderProps {
   appBase: string;
 }
 
-export const DirectoryHeader = (props: IDirectoryHeaderProps) => (
+export const DirectoryHeader: React.SFC<DirectoryHeaderProps> = props => (
   <Nav>
     <NavSection>
       {props.appBase ? (
@@ -29,7 +29,7 @@ export const DirectoryHeader = (props: IDirectoryHeaderProps) => (
   </Nav>
 );
 
-interface IFileHeaderProps {
+export interface FileHeaderProps {
   appBase: string;
   baseDir: string;
   changeContentName: (value: actions.ChangeContentName) => {};
@@ -40,15 +40,12 @@ interface IFileHeaderProps {
   saving: boolean;
 }
 
-interface IFileHeaderState {
+export interface State {
   isDialogOpen: boolean;
 }
 
-class FileHeader extends React.PureComponent<
-  IFileHeaderProps,
-  IFileHeaderState
-> {
-  constructor(props: IFileHeaderProps) {
+class FileHeader extends React.PureComponent<FileHeaderProps, State> {
+  constructor(props: FileHeaderProps) {
     super(props);
 
     this.state = {
