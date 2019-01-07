@@ -25,7 +25,6 @@ interface IContentsProps {
   loading: boolean;
   mimetype?: string | null;
   saving: boolean;
-  type: "notebook" | "file" | "dummy";
 }
 
 interface IContentsState {
@@ -115,8 +114,7 @@ const mapStateToProps = (
     lastSavedStatement: "recently",
     loading: comms.loading,
     mimetype: content.mimetype,
-    saving: comms.saving,
-    type: content.type
+    saving: comms.saving
   };
 };
 

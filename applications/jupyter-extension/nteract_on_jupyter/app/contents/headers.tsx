@@ -32,7 +32,7 @@ export const DirectoryHeader: React.SFC<DirectoryHeaderProps> = props => (
 export interface FileHeaderProps {
   appBase: string;
   baseDir: string;
-  changeContentName: (value: actions.ChangeContentName) => {};
+  changeContentName: (value: actions.ChangeContentName["payload"]) => {};
   contentRef: ContentRef;
   displayName?: string;
   error?: object | null;
