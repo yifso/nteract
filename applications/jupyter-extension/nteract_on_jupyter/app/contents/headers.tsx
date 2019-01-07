@@ -13,6 +13,7 @@ import { ThemedLogo } from "../components/themed-logo";
 import { Nav, NavSection } from "../components/nav";
 import LastSaved from "../components/last-saved";
 
+/* Returns a header for the Directory view, which only consists of the Nav. */
 export interface DirectoryHeaderProps {
   appBase: string;
 }
@@ -29,6 +30,9 @@ export const DirectoryHeader: React.SFC<DirectoryHeaderProps> = props => (
   </Nav>
 );
 
+/* Returns a header for a Notebook/File/Dummy view, which consists of the Nav
+ * and the NotebookMenu components.
+ */
 export interface FileHeaderProps {
   appBase: string;
   baseDir: string;
