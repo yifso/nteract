@@ -70,29 +70,29 @@ class FileHeader extends React.PureComponent<FileHeaderProps, State> {
     );
   };
 
-  // TODO: Add more acceptable file extensions
-  hasFileExtension = (fileName: string) => {
-    if (/\.ipynb/.exec(fileName) !== null) {
-      return true;
+  getFileExtension = (filename: string): string | null | undefined => {
+    const dot = /[.]/.exec(filename);
+    const ext = /[^.]+$/.exec(filename);
+
+    return dot && ext ? ext[0] : undefined;
+  };
+
+  addFileExtension = (filename: string): string => {
+    const fileExtension = this.getFileExtension(filename);
+
+    if (fileExtension) {
+      return filename;
     } else {
-      return false;
+      // Assume `.ipynb` file
+      return `${filename}.ipynb`;
     }
   };
 
-  // TODO: Add logic for acceptable file extensions
-  addFileExtension = (fileName: string) => {
-    if (!this.hasFileExtension(fileName)) {
-      return `${fileName}.ipynb`;
-    } else {
-      return fileName;
-    }
-  };
-
-  openDialog = () => this.setState({ isDialogOpen: true });
-  closeDialog = () => this.setState({ isDialogOpen: false });
+  openDialog = (): void => this.setState({ isDialogOpen: true });
+  closeDialog = (): void => this.setState({ isDialogOpen: false });
 
   // Handles onConfirm callback for EditableText component
-  confirmTitle = (value: string) => {
+  confirmTitle = (value: string): void => {
     if (value !== this.props.displayName) {
       this.props.changeContentName({
         contentRef: this.props.contentRef,
@@ -103,7 +103,8 @@ class FileHeader extends React.PureComponent<FileHeaderProps, State> {
 
     this.setState({ isDialogOpen: false });
   };
-  render() {
+
+  render(): JSX.Element {
     const themeLogoLink = urljoin(this.props.appBase, this.props.baseDir);
     const icon = this.getFileHandlerIcon();
 
