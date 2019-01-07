@@ -39,6 +39,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
       contentRef,
       contentType,
       displayName,
+      error,
       loading,
       saving
     } = this.props;
@@ -54,6 +55,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
               baseDir={baseDir}
               contentRef={contentRef}
               displayName={displayName}
+              error={error}
               loading={loading}
               saving={saving}
             />
