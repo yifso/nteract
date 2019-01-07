@@ -5,8 +5,6 @@
 // With new packages, we'll want to run this again, and add to ignores
 // Instead of opting for a fully discovered setup from the monorepo, I've opted
 // for this package to work when used outside of the monorepo.
-//
-// Developers still have to use the same babel setup as us.
 
 module.exports = {
   lernaModules: [

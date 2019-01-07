@@ -130,7 +130,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 <span
                   className="octicon"
                 >
-                  <TriangleRightOcticon>
+                  <Component>
                     <SVGWrapper
                       height={16}
                       outerProps={Object {}}
@@ -161,7 +161,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                         </svg>
                       </span>
                     </SVGWrapper>
-                  </TriangleRightOcticon>
+                  </Component>
                 </span>
               </button>
               <DropdownMenu>
@@ -244,7 +244,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                                 <span
                                   className="octicon toggle-menu"
                                 >
-                                  <ChevronDownOcticon>
+                                  <Component>
                                     <SVGWrapper
                                       height={16}
                                       outerProps={Object {}}
@@ -275,7 +275,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                                         </svg>
                                       </span>
                                     </SVGWrapper>
-                                  </ChevronDownOcticon>
+                                  </Component>
                                 </span>
                               </button>
                             </div>
@@ -296,7 +296,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 <span
                   className="octicon"
                 >
-                  <TrashOcticon>
+                  <Component>
                     <SVGWrapper
                       height={16}
                       outerProps={Object {}}
@@ -327,7 +327,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                         </svg>
                       </span>
                     </SVGWrapper>
-                  </TrashOcticon>
+                  </Component>
                 </span>
               </button>
             </div>
@@ -469,7 +469,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 <span
                   className="octicon"
                 >
-                  <TriangleRightOcticon>
+                  <Component>
                     <SVGWrapper
                       height={16}
                       outerProps={Object {}}
@@ -500,7 +500,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                         </svg>
                       </span>
                     </SVGWrapper>
-                  </TriangleRightOcticon>
+                  </Component>
                 </span>
               </button>
               <DropdownMenu>
@@ -583,7 +583,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                 <span
                                   className="octicon toggle-menu"
                                 >
-                                  <ChevronDownOcticon>
+                                  <Component>
                                     <SVGWrapper
                                       height={16}
                                       outerProps={Object {}}
@@ -614,7 +614,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                         </svg>
                                       </span>
                                     </SVGWrapper>
-                                  </ChevronDownOcticon>
+                                  </Component>
                                 </span>
                               </button>
                             </div>
@@ -780,7 +780,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 <span
                   className="octicon"
                 >
-                  <TrashOcticon>
+                  <Component>
                     <SVGWrapper
                       height={16}
                       outerProps={Object {}}
@@ -811,7 +811,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                         </svg>
                       </span>
                     </SVGWrapper>
-                  </TrashOcticon>
+                  </Component>
                 </span>
               </button>
             </div>
