@@ -98,7 +98,19 @@ const helpDraft = {
   role: "help",
   submenu: [
     {
-      label: "Learn More",
+      label: "Documentation",
+      click: () => {
+        shell.openExternal("https://docs.nteract.io");
+      }
+    },
+    {
+      label: "Keyboard Shortcuts",
+      click: () => {
+        shell.openExternal("https://docs.nteract.io/#/desktop/shortcut-keys");
+      }
+    },
+    {
+      label: "View nteract on GitHub",
       click: () => {
         shell.openExternal("http://github.com/nteract/nteract");
       }
@@ -114,9 +126,7 @@ const helpDraft = {
     {
       label: "Install Additional Kernels",
       click: () => {
-        shell.openExternal(
-          "https://ipython.readthedocs.io/en/latest/install/kernel_install.html"
-        );
+        shell.openExternal("https://nteract.io/kernels");
       }
     }
   ] as any[]
