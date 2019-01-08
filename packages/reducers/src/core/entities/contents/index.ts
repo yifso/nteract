@@ -141,7 +141,7 @@ const byRef = (
           );
         }
         case "notebook": {
-          const notebook = fromJS(
+          const immutableNotebook = fromJS(
             fetchContentFulfilledAction.payload.model.content
           );
 
@@ -152,13 +152,13 @@ const byRef = (
               lastSaved: fetchContentFulfilledAction.payload.lastSaved,
               filepath: fetchContentFulfilledAction.payload.filepath,
               model: makeDocumentRecord({
-                notebook,
-                savedNotebook: notebook,
+                notebook: immutableNotebook,
+                savedNotebook: immutableNotebook,
                 transient: Immutable.Map({
                   keyPathsForDisplays: Immutable.Map(),
                   cellMap: Immutable.Map()
                 }),
-                cellFocused: notebook.getIn(["cellOrder", 0])
+                cellFocused: immutableNotebook.getIn(["cellOrder", 0])
               })
             })
           );
@@ -179,7 +179,7 @@ const byRef = (
           })
       );
     }
-    case actionTypes.SAVE_FULFILLED:
+    case actionTypes.SAVE_FULFILLED: {
       const saveFulfilledAction = action as actionTypes.SaveFulfilled;
       return state
         .updateIn(
@@ -197,6 +197,7 @@ const byRef = (
           [saveFulfilledAction.payload.contentRef, "lastSaved"],
           saveFulfilledAction.payload.model.last_modified
         );
+    }
     // Defer all notebook actions to the notebook reducer
     case actionTypes.SEND_EXECUTE_REQUEST:
     case actionTypes.FOCUS_CELL:
@@ -233,7 +234,6 @@ const byRef = (
     case actionTypes.CHANGE_CELL_TYPE:
     case actionTypes.TOGGLE_OUTPUT_EXPANSION:
     case actionTypes.TOGGLE_TAG_IN_CELL:
-    //should this be added into this list of cases
     case actionTypes.UPDATE_OUTPUT_METADATA:
     case actionTypes.UNHIDE_ALL: {
       const cellAction = action as actionTypes.FocusCell;
