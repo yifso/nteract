@@ -30,7 +30,8 @@ export const DirectoryHeader: React.SFC<DirectoryHeaderProps> = props => (
   </Nav>
 );
 
-/* Returns a header for a Notebook/File/Dummy view, which consists of the Nav
+/*
+ * Returns a header for a Notebook/File/Dummy view, which consists of the Nav
  * and the NotebookMenu components.
  */
 export interface FileHeaderProps {
@@ -78,10 +79,15 @@ class FileHeader extends React.PureComponent<FileHeaderProps, State> {
   };
 
   addFileExtension = (filename: string): string => {
+    const { displayName } = this.props;
     const fileExtension = this.getFileExtension(filename);
+    const prevFileExtension = this.getFileExtension(displayName);
 
     if (fileExtension) {
       return filename;
+    } else if (prevFileExtension) {
+      // Get file extension from props.displayName
+      return `${filename}.${prevFileExtension}`;
     } else {
       // Assume `.ipynb` file
       return `${filename}.ipynb`;
