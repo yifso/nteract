@@ -14,7 +14,7 @@ we've got some resources to help you out.
 - [Building a voting app with Redux and React](http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html)
 - [Introduction to Reactive Programming](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
 - [Examples, Explanations, and Resources for RxJS 5](https://github.com/btroncone/learn-rxjs)
-- [TypeScript in 5 Minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.htmls)
+- [TypeScript in 5 Minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
 
 ### Jupyter and ZeroMQ (Optional)
 
