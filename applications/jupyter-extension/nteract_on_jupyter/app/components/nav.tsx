@@ -1,7 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import { NotebookMenu } from "@nteract/connected-components";
-import { ContentRef } from "@nteract/core";
 
 const NavUl = styled.ul`
   display: flex;
@@ -41,7 +39,6 @@ const NavSectionLi = styled.li`
 type NavSectionProps = {
   children: React.ReactNode;
 };
-
 export const NavSection = (props: NavSectionProps) => (
   <NavSectionUl>
     {React.Children.map(props.children, child => {
@@ -53,23 +50,14 @@ export const NavSection = (props: NavSectionProps) => (
   </NavSectionUl>
 );
 
-type NavProps = {
-  children: React.ReactNode;
-  contentRef: ContentRef;
-};
-
+type NavProps = NavSectionProps;
 export const Nav = (props: NavProps) => (
-  <div>
-    <div className="nteract-nav">
-      <NavUl>
-        {React.Children.map(props.children, child => {
-          return <NavLi>{child}</NavLi>;
-        })}
-      </NavUl>
-    </div>
-    <div>
-      <NotebookMenu contentRef={props.contentRef} />
-    </div>
+  <div className="nteract-nav">
+    <NavUl>
+      {React.Children.map(props.children, child => {
+        return <NavLi>{child}</NavLi>;
+      })}
+    </NavUl>
   </div>
 );
 
