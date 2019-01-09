@@ -23,9 +23,12 @@ import { Options, EditorChange, CMI, CMDoc } from "./types";
 
 export { EditorChange, Options };
 
-import { CodeMirrorContainer } from "./styled/codemirror";
+import InitialTextArea from "./components/initial-text-area";
 
 import styled from "styled-components";
+
+import CodeMirrorCSS from "./vendored/codemirror";
+import ShowHintCSS from "./vendored/show-hint";
 
 const TipButton = styled.button`
   float: right;
@@ -102,6 +105,8 @@ class CodeMirrorEditor extends React.Component<
     channels: null
   };
 
+  textareaRef = React.createRef<HTMLTextAreaElement>();
+
   constructor(props: CodeMirrorEditorProps) {
     super(props);
     this.hint = this.hint.bind(this);
@@ -116,6 +121,7 @@ class CodeMirrorEditor extends React.Component<
         autoCloseBrackets: true,
         lineNumbers: false,
         matchBrackets: true,
+        // This sets the class on the codemirror <div> that gets created to cm-s-composition
         theme: "composition",
         autofocus: false,
         hintOptions: {
@@ -180,7 +186,7 @@ class CodeMirrorEditor extends React.Component<
     require("./mode/ipython");
 
     this.cm = require("codemirror").fromTextArea(
-      this.textarea,
+      this.textareaRef.current,
       this.defaultOptions
     );
 
@@ -440,18 +446,19 @@ class CodeMirrorEditor extends React.Component<
 
   render() {
     return (
-      <CodeMirrorContainer className="CodeMirror cm-s-composition ">
+      <React.Fragment>
+        {/* Global CodeMirror CSS packaged up by styled-components */}
+        <CodeMirrorCSS />
+        <ShowHintCSS />
+
         <div className="tip-holder" />
-        <textarea
-          ref={ta => {
-            this.textarea = ta;
-          }}
+        <InitialTextArea
+          ref={this.textareaRef}
           defaultValue={this.props.value}
-          autoComplete="off"
-          className="initialTextAreaForCodeMirror"
         />
+        {/* CodeMirror will inject a div right below the TextArea above */}
         {this.state.tipElement}
-      </CodeMirrorContainer>
+      </React.Fragment>
     );
   }
 }
