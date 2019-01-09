@@ -1,6 +1,7 @@
 import * as React from "react";
 import L from "leaflet";
 import { GeoJsonObject } from "geojson";
+import LeafletCSS from "./leafletCss";
 
 interface Metadata {
   url_template: string;
@@ -126,16 +127,13 @@ export class GeoJSONTransform extends React.Component<Props> {
   render(): React.ReactElement<any> {
     return (
       <React.Fragment>
-        <link
-          rel="stylesheet"
-          href="../node_modules/leaflet/dist/leaflet.css"
-        />
         <div
           ref={el => {
             this.el = el;
           }}
           style={{ height: 600, width: "100%" }}
         />
+        <LeafletCSS />
       </React.Fragment>
     );
   }
