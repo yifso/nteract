@@ -1,4 +1,3 @@
-import { hot } from "react-hot-loader";
 import * as React from "react";
 import NotificationSystem, {
   System as ReactNotificationSystem
@@ -79,4 +78,4 @@ class App extends React.Component<{ contentRef: ContentRef }> {
   }
 }
 
-export default hot(module)(App);
+export default App;

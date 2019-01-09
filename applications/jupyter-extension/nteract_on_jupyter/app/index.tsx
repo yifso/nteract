@@ -1,6 +1,3 @@
-// NOTE: We _must_ load hot _before_ React, even though we don't use it in this file
-// eslint-disable-next-line no-unused-vars
-import { hot } from "react-hot-loader";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
