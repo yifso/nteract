@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 
-import { Doc, Position } from "codemirror";
+import { Doc, Position, Editor } from "codemirror";
 import { Observable, Observer } from "rxjs";
 import { first, map, timeout } from "rxjs/operators";
 import {
@@ -26,53 +26,31 @@ export function formChangeObject(cm: CMI, change: EditorChange) {
   };
 }
 
-// ipykernel may return experimental completion in the metadata field,
-// experiment with these. We use codemirror ability to take a rendering function
-// on a per completion basis (we can't give a global one :-( to render not only
-// the text, but the type as well.
-// as this is not documented in CM the DOM structure of the completer will be
-//
-// <ul class="CodeMirror-hints" >
-//  <li class="CodeMirror-hint"></li>
-//  <li class="CodeMirror-hint CodeMirror-hint-active"></li>
-//  <li class="CodeMirror-hint"></li>
-//  <li class="CodeMirror-hint"></li>
-// </ul>
-// with each <li/> passed as the first argument of render.
-const _expand_experimental_completions = (
-  editor: Doc,
-  matches: any,
-  cursor: Position
-) => ({
-  to: cursor,
-  from: cursor,
-  list: matches.map((completion: any) => ({
-    text: completion.text,
-    to: editor.posFromIndex(completion.end),
-    from: editor.posFromIndex(completion.start),
-    type: completion.type,
-    render: (elt: HTMLElement, data: any, completion: any) => {
-      ReactDOM.render(<Hint {...completion} />, elt);
-    }
-  }))
-});
+type CompletionMatch =
+  | string
+  | {
+      end: number;
+      start: number;
+      type: string;
+      text: string;
+      displayText?: string;
+    };
+
+type CompletionResults = {
+  cursor_start: number;
+  cursor_end: number;
+  matches: CompletionMatch[];
+  metadata?: {
+    _jupyter_types_experimental?: any;
+  };
+};
 
 // duplicate of default codemirror rendering logic for completions,
 // except if the completion have a metadata._experimental key, dispatch to a new
 // completer for these new values.
-export const expand_completions = (editor: any) => (results: any) => {
-  if ((results.metadata || {})._jupyter_types_experimental != undefined) {
-    try {
-      return _expand_experimental_completions(
-        editor,
-        results.metadata._jupyter_types_experimental,
-        editor.getCursor()
-      );
-    } catch (e) {
-      console.error("Exprimental completion failed :", e);
-    }
-  }
-
+export const expand_completions = (editor: Doc) => (
+  results: CompletionResults
+) => {
   let start = results.cursor_start;
   let end = results.cursor_end;
 
@@ -96,14 +74,53 @@ export const expand_completions = (editor: any) => (results: any) => {
     start = char_idx_to_js_idx(start, text);
   }
 
+  const from = editor.posFromIndex(start);
+  const to = editor.posFromIndex(end);
+
+  let matches: CompletionMatch[] = results.matches;
+
+  // ipykernel may return experimental completion in the metadata field,
+  // experiment with these. We use codemirror ability to take a rendering function
+  // on a per completion basis (we can't give a global one :-( to render not only
+  // the text, but the type as well.
+  // as this is not documented in CM the DOM structure of the completer will be
+  //
+  // <ul class="CodeMirror-hints" >
+  //  <li class="CodeMirror-hint"></li>
+  //  <li class="CodeMirror-hint CodeMirror-hint-active"></li>
+  //  <li class="CodeMirror-hint"></li>
+  //  <li class="CodeMirror-hint"></li>
+  // </ul>
+  // with each <li/> passed as the first argument of render.
+  if (results.metadata && results.metadata._jupyter_types_experimental) {
+    matches = results.metadata._jupyter_types_experimental;
+  }
+
+  const render = (
+    elt: HTMLElement,
+    data: any, // Not used, it's the overall list of results
+    // The "completion" result here is literally whatever object we return as elements to
+    // the list return below, as CodeMirror uses this render callback later
+    completion: { text: string; type?: string }
+  ) => {
+    ReactDOM.render(<Hint {...completion} />, elt);
+  };
+
   return {
-    list: results.matches.map((match: string) => ({
-      text: match,
-      render: (elt: HTMLElement, data: any, current: any) =>
-        elt.appendChild(document.createTextNode(current.text))
-    })),
-    from: editor.posFromIndex(start),
-    to: editor.posFromIndex(end)
+    list: matches.map((match: CompletionMatch) => {
+      if (typeof match === "string") {
+        return { to, from, text: match, render };
+      }
+
+      return {
+        to,
+        from,
+        render,
+        ...match
+      };
+    }),
+    from,
+    to
   };
 };
 

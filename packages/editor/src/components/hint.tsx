@@ -10,12 +10,13 @@ type TypeIconProps = {
     | "function"
     | "instance"
     | "null"
-    | "class";
+    | "class"
+    | string; // Allow others we may not support yet
 };
 
 type HintProps = {
   text: string;
-  type: TypeIconProps["type"];
+  type?: TypeIconProps["type"];
   displayText?: string;
   [other: string]: any;
 };
@@ -23,11 +24,14 @@ type HintProps = {
 // Completion to us, "hint" to codemirror
 export const Hint = (props: HintProps) => (
   <React.Fragment>
-    <TypeIcon type={props.type} />
+    {props.type ? <TypeIcon type={props.type} /> : null}
     {props.displayText || props.text}
   </React.Fragment>
 );
 
+/**
+ * An Icon to show before a code hint to show the type (e.g. Module, Keyword, etc.)
+ */
 export const TypeIcon = styled.span.attrs<TypeIconProps>(props => ({
   title: props.type,
   className: `completion-type-${props.type}`
@@ -95,4 +99,4 @@ export const TypeIcon = styled.span.attrs<TypeIconProps>(props => ({
   &.completion-type-null {
     background-color: black;
   }
-` as StyledComponent<"span", any, TypeIconProps, never>; // Somehow setting the type on `attrs` isn't propagating
+` as StyledComponent<"span", any, TypeIconProps, never>; // Somehow setting the type on `attrs` isn't propagating properly
