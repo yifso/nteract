@@ -1,4 +1,7 @@
 import * as React from "react";
+// react-hot-loader uses proxies to the original elements so we need to use
+// their comparison function in case a consumer of these components is
+// using hot module reloading
 import { areComponentsEqual } from "react-hot-loader";
 import styled from "styled-components";
 

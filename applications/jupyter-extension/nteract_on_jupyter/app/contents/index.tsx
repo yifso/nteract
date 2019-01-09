@@ -1,8 +1,4 @@
-// NOTE: We can safely install and use react-hot-loader as a regular dependency
-// instead of a dev dependency as it automatically ensures it is not executed
-// in production and the footprint is minimal.
 import * as React from "react";
-import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { dirname } from "path";
 import * as actions from "@nteract/actions";
@@ -120,4 +116,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(hot(module)(Contents));
+export default connect(mapStateToProps)(Contents);
