@@ -2,7 +2,19 @@
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/nteract/examples/master?urlpath=%2Fnteract%2Fedit%2Fpython%2Fhappiness.ipynb)
 # nteract Data Explorer
 
-[Read](https://blog.nteract.io/designing-the-nteract-data-explorer-f4476d53f897) @emeeks's post on designing the data explorer.
+[Read @emeek's post on designing the data explorer](https://blog.nteract.io/designing-the-nteract-data-explorer-f4476d53f897).
+
+## Using the Data Explorer
+
+```
+yarn install @nteract/transform-dataresource
+```
+
+```jsx
+import DataExplorer from "@nteract/transform-dataresource";
+
+<DataExplorer />
+```
 
 ## Hacking on the nteract Data Explorer
 For expedited development, we recommend using the [Jupyter Extension](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension) to contribute.
