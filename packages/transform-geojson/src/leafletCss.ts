@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-export default createGlobalStyle`/* required styles */
-
+export default createGlobalStyle`
 .leaflet-pane,
 .leaflet-tile,
 .leaflet-marker-icon,
