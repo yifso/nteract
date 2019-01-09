@@ -447,7 +447,7 @@ export function dispatchCreateRawCellBelow(
   store: DesktopStore
 ) {
   store.dispatch(
-    actions.createRawBelow({
+    actions.createCellBelow({
       cellType: "raw",
       source: "",
       contentRef: ownProps.contentRef

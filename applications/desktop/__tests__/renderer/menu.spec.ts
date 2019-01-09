@@ -74,7 +74,7 @@ describe("dispatchCreateRawCellBelow", () => {
 
     menu.dispatchCreateRawCellBelow(props, store);
     expect(store.dispatch).toHaveBeenCalledWith(
-      actions.createRawBelow({
+      actions.createCellBelow({
         cellType: "raw",
         source: "",
         contentRef: "123"
