@@ -26,15 +26,15 @@ export function formChangeObject(cm: CMI, change: EditorChange) {
   };
 }
 
-type CompletionMatch =
-  | string
-  | {
-      end: number;
-      start: number;
-      type: string;
-      text: string;
-      displayText?: string;
-    };
+type CompletionResult = {
+  end: number;
+  start: number;
+  type: string;
+  text: string;
+  displayText?: string;
+};
+
+type CompletionMatch = string | CompletionResult;
 
 type CompletionResults = {
   cursor_start: number;
