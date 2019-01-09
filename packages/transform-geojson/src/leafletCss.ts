@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-const leafletCSS = `/* required styles */
+export default createGlobalStyle`/* required styles */
 
 .leaflet-pane,
 .leaflet-tile,
@@ -635,5 +635,3 @@ const leafletCSS = `/* required styles */
 	margin-left: -12px;
 	border-right-color: #fff;
 	}`;
-
-export default createGlobalStyle`${leafletCSS}`;
