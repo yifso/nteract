@@ -1,11 +1,9 @@
 import styled from "styled-components";
 
 export const CodeMirrorContainer = styled.div`
-  &.CodeMirror {
-    height: 100%;
-  }
-
-  &.CodeMirror {
+  /* Force an increase in specificity to override these styles*/
+  .CodeMirror {
+    height: "100%";
     font-family: "Source Code Pro";
     font-size: 14px;
     line-height: 20px;
@@ -15,27 +13,27 @@ export const CodeMirrorContainer = styled.div`
     background: none;
   }
 
-  &.CodeMirror-cursor {
+  .CodeMirror-cursor {
     border-left-width: 1px;
     border-left-style: solid;
     border-left-color: var(--cm-color, black);
   }
 
-  &.CodeMirror-scroll {
+  .CodeMirror-scroll {
     overflow-x: auto !important;
     overflow-y: hidden !important;
     width: 100%;
   }
 
-  &.CodeMirror-lines {
+  .CodeMirror-lines {
     padding: 0.4em;
   }
 
-  &.CodeMirror-linenumber {
+  .CodeMirror-linenumber {
     padding: 0 8px 0 4px;
   }
 
-  &.CodeMirror-gutters {
+  .CodeMirror-gutters {
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
@@ -104,33 +102,5 @@ export const CodeMirrorContainer = styled.div`
   &.cm-s-composition .CodeMirror-matchingbracket {
     border-bottom: 1px solid var(--cm-matchingbracket-outline, grey);
     color: var(--cm-matchingbracket-color, black) !important;
-  }
-
-  & .initialTextAreaForCodeMirror {
-    font-family: "Source Code Pro", "Monaco", monospace;
-    font-size: 14px;
-    line-height: 20px;
-
-    height: inherit;
-
-    background: none;
-
-    border: none;
-    overflow: hidden;
-
-    -webkit-scrollbar: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    width: 100%;
-    resize: none;
-    padding: 10px 0 5px 10px;
-    letter-spacing: 0.3px;
-    word-spacing: 0px;
-  }
-
-  & .initialTextAreaForCodeMirror:focus {
-    outline: none;
-    border: none;
   }
 `;

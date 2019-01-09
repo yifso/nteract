@@ -119,6 +119,7 @@ class CodeMirrorEditor extends React.Component<
         autoCloseBrackets: true,
         lineNumbers: false,
         matchBrackets: true,
+        // This sets the class on the codemirror <div> that gets created to cm-s-composition
         theme: "composition",
         autofocus: false,
         hintOptions: {
@@ -444,8 +445,11 @@ class CodeMirrorEditor extends React.Component<
   render() {
     return (
       <React.Fragment>
+        {/* Global CodeMirror CSS packaged up by styled-components */}
         <CodeMirrorCSS />
         <ShowHintCSS />
+
+        {/* The container for CodeMirror to mostly take over */}
         <CodeMirrorContainer className="CodeMirror cm-s-composition ">
           <div className="tip-holder" />
           <textarea
