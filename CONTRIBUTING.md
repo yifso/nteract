@@ -26,7 +26,7 @@ advised to understand the overall system.
 - [ZeroMQ](http://zguide.zeromq.org/page:all)
 
 If you want a gentle guide to Rx + Jupyter messaging at the same time, we have
-a [build your own REPL with enchannel](https://github.com/nteract/docs/blob/master/enchannel/build-your-own-repl.md)
+a [build your own REPL with enchannel](https://github.com/nteract/docs-old/blob/master/enchannel/build-your-own-repl.md)
 tutorial. This allows you to work without React while learning concepts,
 leading to implementing a light version of [ick](https://github.com/nteract/ick),
 an interactive console.
