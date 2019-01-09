@@ -1,11 +1,19 @@
+import * as React from "react";
+import ReactDOM from "react-dom";
+
 import { Doc, Position } from "codemirror";
 import { Observable, Observer } from "rxjs";
 import { first, map, timeout } from "rxjs/operators";
-import { createMessage, childOf, ofMessageType, JupyterMessage } from "@nteract/messaging";
+import {
+  createMessage,
+  childOf,
+  ofMessageType,
+  JupyterMessage
+} from "@nteract/messaging";
 import { Channels } from "@nteract/messaging";
 
+import { Hint } from "../components/hint";
 import { EditorChange, CMI } from "../types";
-
 import { js_idx_to_char_idx, char_idx_to_js_idx } from "./surrogate";
 
 // Hint picker
@@ -31,7 +39,11 @@ export function formChangeObject(cm: CMI, change: EditorChange) {
 //  <li class="CodeMirror-hint"></li>
 // </ul>
 // with each <li/> passed as the first argument of render.
-const _expand_experimental_completions = (editor: Doc, matches: any, cursor: Position) => ({
+const _expand_experimental_completions = (
+  editor: Doc,
+  matches: any,
+  cursor: Position
+) => ({
   to: cursor,
   from: cursor,
   list: matches.map((completion: any) => ({
@@ -40,12 +52,7 @@ const _expand_experimental_completions = (editor: Doc, matches: any, cursor: Pos
     from: editor.posFromIndex(completion.start),
     type: completion.type,
     render: (elt: HTMLElement, data: any, completion: any) => {
-      const span = document.createElement("span");
-      const text = document.createTextNode(completion.text);
-      span.className += "completion-type completion-type-" + completion.type;
-      span.setAttribute("title", completion.type);
-      elt.appendChild(span);
-      elt.appendChild(text);
+      ReactDOM.render(<Hint {...completion} />, elt);
     }
   }))
 });

@@ -1,7 +1,9 @@
-import { css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 // This file contains the base codemirror styles for including in the base editor
-export default css`
+// Copied directly from codemirror/lib/codemirror.css
+
+export default createGlobalStyle`
   /* BASICS */
 
   .CodeMirror {

@@ -27,6 +27,9 @@ import { CodeMirrorContainer } from "./styled/codemirror";
 
 import styled from "styled-components";
 
+import CodeMirrorCSS from "./vendored/codemirror";
+import ShowHintCSS from "./vendored/show-hint";
+
 const TipButton = styled.button`
   float: right;
   display: inline-block;
@@ -440,18 +443,22 @@ class CodeMirrorEditor extends React.Component<
 
   render() {
     return (
-      <CodeMirrorContainer className="CodeMirror cm-s-composition ">
-        <div className="tip-holder" />
-        <textarea
-          ref={ta => {
-            this.textarea = ta;
-          }}
-          defaultValue={this.props.value}
-          autoComplete="off"
-          className="initialTextAreaForCodeMirror"
-        />
-        {this.state.tipElement}
-      </CodeMirrorContainer>
+      <React.Fragment>
+        <CodeMirrorCSS />
+        <ShowHintCSS />
+        <CodeMirrorContainer className="CodeMirror cm-s-composition ">
+          <div className="tip-holder" />
+          <textarea
+            ref={ta => {
+              this.textarea = ta;
+            }}
+            defaultValue={this.props.value}
+            autoComplete="off"
+            className="initialTextAreaForCodeMirror"
+          />
+          {this.state.tipElement}
+        </CodeMirrorContainer>
+      </React.Fragment>
     );
   }
 }
