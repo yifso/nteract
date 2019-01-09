@@ -23,7 +23,7 @@ import { Options, EditorChange, CMI, CMDoc } from "./types";
 
 export { EditorChange, Options };
 
-import { CodeMirrorContainer } from "./styled/codemirror";
+import InitialTextArea from "./components/initial-text-area";
 
 import styled from "styled-components";
 
@@ -105,6 +105,8 @@ class CodeMirrorEditor extends React.Component<
     channels: null
   };
 
+  textareaRef = React.createRef<HTMLTextAreaElement>();
+
   constructor(props: CodeMirrorEditorProps) {
     super(props);
     this.hint = this.hint.bind(this);
@@ -184,7 +186,7 @@ class CodeMirrorEditor extends React.Component<
     require("./mode/ipython");
 
     this.cm = require("codemirror").fromTextArea(
-      this.textarea,
+      this.textareaRef.current,
       this.defaultOptions
     );
 
@@ -449,19 +451,13 @@ class CodeMirrorEditor extends React.Component<
         <CodeMirrorCSS />
         <ShowHintCSS />
 
-        {/* The container for CodeMirror to mostly take over */}
-        <CodeMirrorContainer className="CodeMirror cm-s-composition ">
-          <div className="tip-holder" />
-          <textarea
-            ref={ta => {
-              this.textarea = ta;
-            }}
-            defaultValue={this.props.value}
-            autoComplete="off"
-            className="initialTextAreaForCodeMirror"
-          />
-          {this.state.tipElement}
-        </CodeMirrorContainer>
+        <div className="tip-holder" />
+        <InitialTextArea
+          ref={this.textareaRef}
+          defaultValue={this.props.value}
+        />
+        {/* CodeMirror will inject a div right below the TextArea above */}
+        {this.state.tipElement}
       </React.Fragment>
     );
   }
