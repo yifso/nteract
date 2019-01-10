@@ -30,7 +30,8 @@ export default function configureStore(initialState: Partial<AppState>) {
 
   const store = createStore(
     rootReducer,
-    initialState,
+    // TODO: Properly type redux store for jupyter-extension
+    (initialState as unknown) as any,
     composeEnhancers(applyMiddleware(...middlewares))
   );
 

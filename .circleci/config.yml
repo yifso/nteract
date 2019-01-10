@@ -36,16 +36,7 @@ jobs:
 
       # Check types for non-emitting TypeScript builds (applications)
       - run: yarn report:desktop
-
-      # Until Jupyter extension has the last error fixed we can only report on it
-      - run:
-          name: Report on types for Jupyter Extension
-          shell: /bin/bash
-          command: |
-            set +e # Allow failure for now
-            echo '**** Reporting on types for Jupyter Extension ****'
-            yarn report:jext
-            echo '**** Application type reporting finished ****'
+      - run: yarn report:jext
 
       - run:
           name: Build Docs
