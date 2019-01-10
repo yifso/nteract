@@ -76,44 +76,48 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   }
 }
 
-const mapStateToProps = (
-  state: AppState,
-  ownProps: { contentRef: ContentRef }
+const makeMapStateToProps = (
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
 ) => {
-  const contentRef = ownProps.contentRef;
-  const host = state.app.host;
-  const comms = selectors.communication(state, ownProps);
-
-  if (!comms) {
-    throw new Error("CommunicationByRef information not found");
-  }
-
+  const host = initialState.app.host;
   if (host.type !== "jupyter") {
     throw new Error("this component only works with jupyter apps");
   }
+  const appBase = urljoin(host.basePath, "/nteract/edit");
 
-  if (!contentRef) {
-    throw new Error("cant display without a contentRef");
-  }
+  const mapStateToProps = (state: AppState) => {
+    const contentRef = initialProps.contentRef;
+    const comms = selectors.communication(state, initialProps);
 
-  const content = selectors.content(state, { contentRef });
+    if (!comms) {
+      throw new Error("CommunicationByRef information not found");
+    }
 
-  if (!content) {
-    throw new Error("need content to view content, check your contentRefs");
-  }
+    if (!contentRef) {
+      throw new Error("cant display without a contentRef");
+    }
 
-  return {
-    appBase: urljoin(host.basePath, "/nteract/edit"),
-    baseDir: dirname(content.filepath),
-    contentRef,
-    contentType: content.type,
-    displayName: content.filepath.split("/").pop(),
-    error: comms.error,
-    lastSavedStatement: "recently",
-    loading: comms.loading,
-    mimetype: content.mimetype,
-    saving: comms.saving
+    const content = selectors.content(state, { contentRef });
+
+    if (!content) {
+      throw new Error("need content to view content, check your contentRefs");
+    }
+
+    return {
+      appBase,
+      contentRef,
+      baseDir: dirname(content.filepath),
+      contentType: content.type,
+      displayName: content.filepath.split("/").pop(),
+      error: comms.error,
+      lastSavedStatement: "recently",
+      loading: comms.loading,
+      mimetype: content.mimetype,
+      saving: comms.saving
+    };
   };
+  return mapStateToProps;
 };
 
-export default connect(mapStateToProps)(Contents);
+export default connect(makeMapStateToProps)(Contents);
