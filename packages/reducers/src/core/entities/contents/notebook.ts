@@ -137,8 +137,15 @@ function toggleTagInCell(
 ): NotebookModel {
   const { id, tag } = action.payload;
 
-  return state.updateIn(["notebook", "cellMap", id, "metadata", "tags"], tags =>
-    tags.has(tag) ? tags.remove(tag) : tags.add(tag)
+  return state.updateIn(
+    ["notebook", "cellMap", id, "metadata", "tags"],
+    tags => {
+      if (tags) {
+        return tags.has(tag) ? tags.remove(tag) : tags.add(tag);
+      } else {
+        return Immutable.Set([tag]);
+      }
+    }
   );
 }
 
