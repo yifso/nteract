@@ -82,40 +82,50 @@ export class File extends React.PureComponent<FileProps> {
   }
 }
 
-const mapStateToProps = (
-  state: AppState,
-  ownProps: {
-    contentRef: ContentRef;
-    appBase: string;
-  }
-) => {
-  const content = selectors.content(state, ownProps);
-
-  if (!content || content.type === "directory") {
-    throw new Error(
-      "The file component should only be used with files and notebooks"
-    );
-  }
-
-  const comms = selectors.communication(state, ownProps);
-  if (!comms) {
-    throw new Error("CommunicationByRef information not found");
-  }
-
-  return {
-    appBase: ownProps.appBase,
-    baseDir: dirname(content.filepath),
-    contentRef: ownProps.contentRef,
-    displayName: content.filepath.split("/").pop(),
-    error: comms.error,
-    lastSavedStatement: "recently",
-    loading: comms.loading,
-    mimetype: content.mimetype,
-    saving: comms.saving,
-    type: content.type
-  };
+type InitialProps = {
+  contentRef: ContentRef;
+  appBase: string;
 };
 
-export const ConnectedFile = connect(mapStateToProps)(File);
+// Since the contentRef stays unique for the duration of this file,
+// we use the makeMapStateToProps pattern to optimize re-render
+const makeMapStateToProps = (
+  initialState: AppState,
+  initialProps: InitialProps
+) => {
+  const { contentRef, appBase } = initialProps;
+
+  const mapStateToProps = (state: AppState) => {
+    const content = selectors.content(state, initialProps);
+
+    if (!content || content.type === "directory") {
+      throw new Error(
+        "The file component should only be used with files and notebooks"
+      );
+    }
+
+    const comms = selectors.communication(state, initialProps);
+    if (!comms) {
+      throw new Error("CommunicationByRef information not found");
+    }
+
+    return {
+      appBase,
+      contentRef,
+      baseDir: dirname(content.filepath),
+      displayName: content.filepath.split("/").pop(),
+      error: comms.error,
+      lastSavedStatement: "recently",
+      loading: comms.loading,
+      mimetype: content.mimetype,
+      saving: comms.saving,
+      type: content.type
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export const ConnectedFile = connect(makeMapStateToProps)(File);
 
 export default ConnectedFile;
