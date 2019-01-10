@@ -31,12 +31,9 @@ jobs:
 
       # run tests!
       - run: yarn run test:lint
-      - run: yarn run build:packages:ci
+      # build all packages and applications
+      - run: yarn build:all:ci
       - run: yarn run test --maxWorkers 1
-
-      # Check types for non-emitting TypeScript builds (applications)
-      - run: yarn report:desktop
-      - run: yarn report:jext
 
       - run:
           name: Build Docs
