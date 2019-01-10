@@ -231,38 +231,46 @@ type ConnectedProps = {
   toggleOutputExpansion: () => void;
 };
 
-const mapDispatchToProps = (
-  dispatch: Dispatch,
-  {
-    id,
-    type,
-    contentRef
-  }: { id: string; type: "markdown" | "code" | "raw"; contentRef: ContentRef }
-) => ({
-  toggleParameterCell: () =>
-    dispatch(actions.toggleParameterCell({ id, contentRef })),
-  deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
-  executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
-  clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
-  toggleCellOutputVisibility: () =>
-    dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
-  toggleCellInputVisibility: () =>
-    dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
-  changeCellType: () =>
-    dispatch(
-      actions.changeCellType({
-        id,
-        to: type === "markdown" ? "code" : "markdown",
-        contentRef
-      })
-    ),
-  toggleOutputExpansion: () =>
-    dispatch(actions.toggleOutputExpansion({ id, contentRef }))
-});
+type InitialProps = {
+  id: string;
+  type: "markdown" | "code" | "raw";
+  contentRef: ContentRef;
+};
+
+const makeMapDispatchToProps = (
+  initialDispatch: Dispatch,
+  initialProps: InitialProps
+) => {
+  const { contentRef, id, type } = initialProps;
+  const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+      toggleParameterCell: () =>
+        dispatch(actions.toggleParameterCell({ id, contentRef })),
+      deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
+      executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
+      clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
+      toggleCellOutputVisibility: () =>
+        dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
+      toggleCellInputVisibility: () =>
+        dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
+      changeCellType: () =>
+        dispatch(
+          actions.changeCellType({
+            id,
+            to: type === "markdown" ? "code" : "markdown",
+            contentRef
+          })
+        ),
+      toggleOutputExpansion: () =>
+        dispatch(actions.toggleOutputExpansion({ id, contentRef }))
+    };
+  };
+  return mapDispatchToProps;
+};
 
 // TODO: This toolbar could easily make use of ownProps (contentRef, cellId)
 //       and pluck exactly the state it wants
 export default connect(
   null,
-  mapDispatchToProps
+  makeMapDispatchToProps
 )(PureToolbar);

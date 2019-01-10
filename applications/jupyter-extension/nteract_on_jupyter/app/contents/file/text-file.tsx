@@ -78,51 +78,63 @@ export class TextFile extends React.PureComponent<
   }
 }
 
-type OwnProps = {
+type InitialProps = {
   contentRef: ContentRef;
 };
 
-function mapStateToTextFileProps(
-  state: AppState,
-  ownProps: OwnProps
-): MappedStateProps {
-  const content = selectors.content(state, ownProps);
-  if (!content || content.type !== "file") {
-    throw new Error("The text file component must have content");
-  }
+function makeMapStateToTextFileProps(
+  initialState: AppState,
+  initialProps: InitialProps
+): (state: AppState) => MappedStateProps {
+  const { contentRef } = initialProps;
 
-  const text = content.model ? content.model.text : "";
+  const mapStateToTextFileProps = (state: AppState) => {
+    const content = selectors.content(state, { contentRef });
+    if (!content || content.type !== "file") {
+      throw new Error("The text file component must have content");
+    }
 
-  return {
-    contentRef: ownProps.contentRef,
-    mimetype: content.mimetype != null ? content.mimetype : "text/plain",
-    text,
-    theme: selectors.currentTheme(state)
+    const text = content.model ? content.model.text : "";
+
+    return {
+      contentRef: contentRef,
+      mimetype: content.mimetype != null ? content.mimetype : "text/plain",
+      text,
+      theme: selectors.currentTheme(state)
+    };
   };
+  return mapStateToTextFileProps;
 }
 
-const mapDispatchToTextFileProps = (
-  dispatch: Dispatch,
-  ownProps: OwnProps
-): MappedDispatchProps => ({
-  handleChange: (source: string) => {
-    dispatch(
-      actions.updateFileText({
-        contentRef: ownProps.contentRef,
-        text: source
-      })
-    );
-  }
-});
+const makeMapDispatchToTextFileProps = (
+  initialDispatch: Dispatch,
+  initialProps: InitialProps
+): ((dispatch: Dispatch) => MappedDispatchProps) => {
+  const { contentRef } = initialProps;
+
+  const mapDispatchToTextFileProps = (dispatch: Dispatch) => {
+    return {
+      handleChange: (source: string) => {
+        dispatch(
+          actions.updateFileText({
+            contentRef,
+            text: source
+          })
+        );
+      }
+    };
+  };
+  return mapDispatchToTextFileProps;
+};
 
 const ConnectedTextFile = connect<
   MappedStateProps,
   MappedDispatchProps,
-  OwnProps,
+  InitialProps,
   AppState
 >(
-  mapStateToTextFileProps,
-  mapDispatchToTextFileProps
+  makeMapStateToTextFileProps,
+  makeMapDispatchToTextFileProps
 )(TextFile);
 
 export function handles(mimetype: string) {

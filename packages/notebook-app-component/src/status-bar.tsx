@@ -69,38 +69,48 @@ export class StatusBar extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (
-  state: AppState,
-  ownProps: { contentRef: ContentRef; kernelRef?: KernelRef | null }
-): Props => {
-  const { contentRef, kernelRef } = ownProps;
-  const content = selectors.content(state, { contentRef });
-  const kernel =
-    // check for undefined or null kernelRef (using double equal)
-    kernelRef == null ? selectors.kernel(state, { kernelRef }) : null;
-
-  const lastSaved = content && content.lastSaved ? content.lastSaved : null;
-
-  const kernelStatus =
-    kernel != null && kernel.status != null ? kernel.status : NOT_CONNECTED;
-
-  // TODO: We need kernels associated to the kernelspec they came from
-  //       so we can pluck off the display_name and provide it here
-  let kernelSpecDisplayName = " ";
-  if (kernelStatus === NOT_CONNECTED) {
-    kernelSpecDisplayName = "no kernel";
-  } else if (kernel != null && kernel.kernelSpecName != null) {
-    kernelSpecDisplayName = kernel.kernelSpecName;
-  } else if (content != null && content.type === "notebook") {
-    kernelSpecDisplayName =
-      selectors.notebook.displayName(content.model) || " ";
-  }
-
-  return {
-    lastSaved,
-    kernelStatus,
-    kernelSpecDisplayName
-  };
+type InitialProps = {
+  contentRef: ContentRef;
+  kernelRef?: KernelRef | null;
 };
 
-export default connect(mapStateToProps)(StatusBar);
+const makeMapStateToProps = (
+  initialState: AppState,
+  initialProps: InitialProps
+): ((state: AppState) => Props) => {
+  const { contentRef, kernelRef } = initialProps;
+
+  const mapStateToProps = (state: AppState) => {
+    const content = selectors.content(state, { contentRef });
+    const kernel =
+      // check for undefined or null kernelRef (using double equal)
+      kernelRef == null ? selectors.kernel(state, { kernelRef }) : null;
+
+    const lastSaved = content && content.lastSaved ? content.lastSaved : null;
+
+    const kernelStatus =
+      kernel != null && kernel.status != null ? kernel.status : NOT_CONNECTED;
+
+    // TODO: We need kernels associated to the kernelspec they came from
+    //       so we can pluck off the display_name and provide it here
+    let kernelSpecDisplayName = " ";
+    if (kernelStatus === NOT_CONNECTED) {
+      kernelSpecDisplayName = "no kernel";
+    } else if (kernel != null && kernel.kernelSpecName != null) {
+      kernelSpecDisplayName = kernel.kernelSpecName;
+    } else if (content != null && content.type === "notebook") {
+      kernelSpecDisplayName =
+        selectors.notebook.displayName(content.model) || " ";
+    }
+
+    return {
+      lastSaved,
+      kernelStatus,
+      kernelSpecDisplayName
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default connect(makeMapStateToProps)(StatusBar);
