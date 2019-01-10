@@ -12,10 +12,9 @@ import { default as File } from "./file";
 interface IContentsProps {
   appBase: string;
   baseDir: string;
-  changeContentName: (value: actions.ChangeContentName) => {};
   contentType: "dummy" | "notebook" | "directory" | "file";
   contentRef: ContentRef;
-  displayName?: string;
+  displayName: string;
   error?: object | null;
   lastSavedStatement: string;
   loading: boolean;
@@ -109,7 +108,7 @@ const makeMapStateToProps = (
       contentRef,
       baseDir: dirname(content.filepath),
       contentType: content.type,
-      displayName: content.filepath.split("/").pop(),
+      displayName: content.filepath.split("/").pop() || "",
       error: comms.error,
       lastSavedStatement: "recently",
       loading: comms.loading,

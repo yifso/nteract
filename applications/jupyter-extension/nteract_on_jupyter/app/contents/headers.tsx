@@ -39,7 +39,7 @@ export interface FileHeaderProps {
   baseDir: string;
   changeContentName: (value: actions.ChangeContentName["payload"]) => {};
   contentRef: ContentRef;
-  displayName?: string;
+  displayName: string;
   error?: object | null;
   loading: boolean;
   saving: boolean;
