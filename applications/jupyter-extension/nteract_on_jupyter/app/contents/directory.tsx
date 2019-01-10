@@ -119,7 +119,7 @@ const makeMapStateToDirectoryProps = (
 ): ((state: AppState) => DirectoryProps) => {
   const { contentRef, appBase } = initialProps;
   const mapStateToDirectoryProps = (state: AppState) => {
-    const content = selectors.content(state, ownProps);
+    const content = selectors.content(state, initialProps);
     const contents: LightDirectoryEntry[] = [];
     const host = selectors.currentHost(state);
 
