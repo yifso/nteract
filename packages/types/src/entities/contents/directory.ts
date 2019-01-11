@@ -41,9 +41,9 @@ export const makeDirectoryContentRecord = Immutable.Record<
   lastSaved: null,
   filepath: "",
   model: makeDirectoryModel(),
-  saving: false
-  loading: false
-  error: null,
+  saving: false,
+  loading: false,
+  error: null
 });
 export type DirectoryContentRecord = Immutable.RecordOf<
   DirectoryContentRecordProps

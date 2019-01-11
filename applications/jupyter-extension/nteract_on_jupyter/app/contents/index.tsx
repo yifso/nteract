@@ -50,6 +50,9 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
               baseDir={baseDir}
               contentRef={contentRef}
               displayName={displayName}
+              error={error}
+              loading={loading}
+              saving={saving}
             />
             <File contentRef={contentRef} appBase={appBase} />
           </React.Fragment>
@@ -102,7 +105,10 @@ const makeMapStateToProps = (
       contentType: content.type,
       displayName: content.filepath.split("/").pop() || "",
       lastSavedStatement: "recently",
-      mimetype: content.mimetype
+      mimetype: content.mimetype,
+      error: content.error,
+      loading: content.loading,
+      saving: content.saving
     };
   };
   return mapStateToProps;
