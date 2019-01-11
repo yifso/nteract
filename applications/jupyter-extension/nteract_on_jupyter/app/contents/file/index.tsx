@@ -33,9 +33,6 @@ interface FileProps {
   displayName?: string;
   mimetype?: string | null;
   lastSavedStatement: string;
-  saving: boolean;
-  loading: boolean;
-  error?: object | null;
 }
 
 export class File extends React.PureComponent<FileProps> {
@@ -104,21 +101,13 @@ const makeMapStateToProps = (
       );
     }
 
-    const comms = selectors.communication(state, initialProps);
-    if (!comms) {
-      throw new Error("CommunicationByRef information not found");
-    }
-
     return {
       appBase,
       contentRef,
       baseDir: dirname(content.filepath),
       displayName: content.filepath.split("/").pop(),
-      error: comms.error,
       lastSavedStatement: "recently",
-      loading: comms.loading,
       mimetype: content.mimetype,
-      saving: comms.saving,
       type: content.type
     };
   };

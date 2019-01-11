@@ -50,9 +50,6 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
               baseDir={baseDir}
               contentRef={contentRef}
               displayName={displayName}
-              error={error}
-              loading={loading}
-              saving={saving}
             />
             <File contentRef={contentRef} appBase={appBase} />
           </React.Fragment>
@@ -87,11 +84,6 @@ const makeMapStateToProps = (
 
   const mapStateToProps = (state: AppState) => {
     const contentRef = initialProps.contentRef;
-    const comms = selectors.communication(state, initialProps);
-
-    if (!comms) {
-      throw new Error("CommunicationByRef information not found");
-    }
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
@@ -109,11 +101,8 @@ const makeMapStateToProps = (
       baseDir: dirname(content.filepath),
       contentType: content.type,
       displayName: content.filepath.split("/").pop() || "",
-      error: comms.error,
       lastSavedStatement: "recently",
-      loading: comms.loading,
-      mimetype: content.mimetype,
-      saving: comms.saving
+      mimetype: content.mimetype
     };
   };
   return mapStateToProps;
