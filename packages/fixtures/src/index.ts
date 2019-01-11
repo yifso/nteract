@@ -25,7 +25,8 @@ import {
   makeEntitiesRecord,
   makeStateRecord,
   createContentRef,
-  createKernelRef
+  createKernelRef,
+  AppState
 } from "@nteract/types";
 
 export { fixtureCommutable, fixture, fixtureJSON } from "./fixture-nb";
@@ -99,7 +100,7 @@ export function fixtureStore(config: JSONObject) {
   const kernelRef = createKernelRef();
   const contentRef = createContentRef();
 
-  return createStore(rootReducer, {
+  const initialAppState: AppState = {
     core: makeStateRecord({
       kernelRef,
       entities: makeEntitiesRecord({
@@ -132,7 +133,7 @@ export function fixtureStore(config: JSONObject) {
           })
         })
       })
-    }) as any,
+    }),
     app: makeAppRecord({
       notificationSystem: {
         addNotification: () => {} // most of the time you'll want to mock this
@@ -143,5 +144,7 @@ export function fixtureStore(config: JSONObject) {
       theme: "light"
     }),
     comms: makeCommsRecord()
-  });
+  };
+
+  return createStore(rootReducer, initialAppState as any);
 }
