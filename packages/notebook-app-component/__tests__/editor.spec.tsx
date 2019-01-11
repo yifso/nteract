@@ -2,7 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { fixtureStore } from "@nteract/fixtures";
-import { actions } from "@nteract/core";
+import { actions, ContentModel } from "@nteract/core";
 
 import Editor from "../src/editor";
 
@@ -16,10 +16,14 @@ describe("EditorProvider", () => {
   if (!content) {
     throw new Error("Content not set up properly for test");
   }
+  const model: ContentModel = content.model;
+  if (model.type !== "notebook") {
+    throw new Error("Content not set up properly for test");
+  }
 
-  console.log(contentRef);
+  const id: string = model.notebook.cellOrder.first();
 
-  const setup = (id, cellFocused = true) =>
+  const setup = (cellFocused = true) =>
     mount(
       <Provider store={store}>
         <Editor
@@ -32,19 +36,19 @@ describe("EditorProvider", () => {
     );
 
   test("can be constructed", () => {
-    const component = setup("test");
+    const component = setup();
     expect(component).not.toBeNull();
   });
   test("onChange updates cell source", () =>
     new Promise(resolve => {
       const dispatch = action => {
-        expect(action.payload.id).toBe("test");
+        expect(action.payload.id).toBe(id);
         expect(action.payload.value).toBe("i love nteract");
         expect(action.type).toBe(actions.SET_IN_CELL);
         resolve();
       };
       store.dispatch = dispatch as any;
-      const wrapper = setup("test");
+      const wrapper = setup();
       const onChange = wrapper
         .findWhere(n => n.prop("onChange") !== undefined)
         .first()
@@ -54,12 +58,12 @@ describe("EditorProvider", () => {
   test("onFocusChange can update editor focus", () =>
     new Promise(resolve => {
       const dispatch = action => {
-        expect(action.payload.id).toBe("test");
+        expect(action.payload.id).toBe(id);
         expect(action.type).toBe(actions.FOCUS_CELL_EDITOR);
         resolve();
       };
       store.dispatch = dispatch;
-      const wrapper = setup("test");
+      const wrapper = setup();
       const onFocusChange = wrapper
         .findWhere(n => n.prop("onFocusChange") !== undefined)
         .first()
