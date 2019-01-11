@@ -45,8 +45,7 @@ const byRef = (
         makeDummyContentRecord({
           filepath: fetchContentAction.payload.filepath || ""
           // TODO: we can set kernelRef when the content record uses it.
-        })
-      );
+        })).setIn([fetchContentAction.payload.filepath, "loading"], true);
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
       // TODO: is this reasonable? We launched the kernel on behalf of this
       // content... so it makes sense to swap it, right?
@@ -205,7 +204,10 @@ const byRef = (
         .setIn(
           [saveFulfilledAction.payload.contentRef, "lastSaved"],
           saveFulfilledAction.payload.model.last_modified
-        );
+        )
+        .setIn([saveFulfilledAction.payload.contentRef, "loading"], false)
+        .setIn([saveFulfilledAction.payload.contentRef, "saving"], false)
+        ..setIn([saveFulfilledAction.payload.contentRef, "error"], null);
     }
     // Defer all notebook actions to the notebook reducer
     case actionTypes.SEND_EXECUTE_REQUEST:
