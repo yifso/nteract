@@ -2,8 +2,7 @@
   "files": [],
   "references": [
     { "path": "packages" },
-    { "path": "applications/desktop" }
-    // Enable this once reporting passes
-    // { "path": "applications/jupyter-extension"}
+    { "path": "applications/desktop" },
+    { "path": "applications/jupyter-extension"}
   ]
 }
