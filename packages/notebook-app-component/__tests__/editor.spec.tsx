@@ -7,12 +7,27 @@ import { actions } from "@nteract/core";
 import Editor from "../src/editor";
 
 describe("EditorProvider", () => {
-  const store = fixtureStore();
+  const store = fixtureStore({});
+
+  const state = store.getState();
+  const contentRef = state.core.entities.contents.byRef.keySeq().first();
+
+  const content = state.core.entities.contents.byRef.get(contentRef);
+  if (!content) {
+    throw new Error("Content not set up properly for test");
+  }
+
+  console.log(contentRef);
 
   const setup = (id, cellFocused = true) =>
     mount(
       <Provider store={store}>
-        <Editor id={id} cellFocused={cellFocused} />
+        <Editor
+          contentRef={contentRef}
+          id={id}
+          focusAbove={jest.fn()}
+          focusBelow={jest.fn()}
+        />
       </Provider>
     );
 
@@ -28,7 +43,7 @@ describe("EditorProvider", () => {
         expect(action.type).toBe(actions.SET_IN_CELL);
         resolve();
       };
-      store.dispatch = dispatch;
+      store.dispatch = dispatch as any;
       const wrapper = setup("test");
       const onChange = wrapper
         .findWhere(n => n.prop("onChange") !== undefined)

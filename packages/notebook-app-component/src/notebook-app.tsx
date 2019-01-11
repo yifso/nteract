@@ -107,30 +107,6 @@ type AnyCellProps = {
   metadata: Object;
 };
 
-const markdownEditorOptions = {
-  // Markdown should always be line wrapped
-  lineWrapping: true,
-  // Rely _directly_ on the codemirror mode
-  mode: {
-    name: "gfm",
-    tokenTypeOverrides: {
-      emoji: "emoji"
-    }
-  }
-};
-
-const rawEditorOptions = {
-  // Markdown should always be line wrapped
-  lineWrapping: true,
-  // Rely _directly_ on the codemirror mode
-  mode: {
-    name: "text/plain",
-    tokenTypeOverrides: {
-      emoji: "emoji"
-    }
-  }
-};
-
 const mapStateToCellProps = (
   state: AppState,
   { id, contentRef }: { id: string; contentRef: ContentRef }
@@ -267,21 +243,10 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               />
               <Source>
                 <Editor
-                  tip
-                  completion
                   id={id}
                   contentRef={contentRef}
-                  value={this.props.source}
-                  cellFocused={cellFocused}
-                  editorFocused={editorFocused}
-                  theme={this.props.theme}
                   focusAbove={focusAboveCell}
                   focusBelow={focusBelowCell}
-                  options={{
-                    mode: Immutable.isImmutable(this.props.codeMirrorMode)
-                      ? this.props.codeMirrorMode.toJS()
-                      : this.props.codeMirrorMode
-                  }}
                 />
               </Source>
             </Input>
@@ -335,14 +300,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             <Source>
               <Editor
                 id={id}
-                value={this.props.source}
-                theme={this.props.theme}
+                contentRef={contentRef}
                 focusAbove={focusAboveCell}
                 focusBelow={focusBelowCell}
-                cellFocused={cellFocused}
-                editorFocused={editorFocused}
-                contentRef={contentRef}
-                options={markdownEditorOptions}
               />
             </Source>
           </MarkdownPreviewer>
@@ -354,14 +314,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
           <Source>
             <Editor
               id={id}
-              value={this.props.source}
-              theme={this.props.theme}
+              contentRef={contentRef}
               focusAbove={focusAboveCell}
               focusBelow={focusBelowCell}
-              cellFocused={cellFocused}
-              editorFocused={editorFocused}
-              contentRef={contentRef}
-              options={rawEditorOptions}
             />
           </Source>
         );
