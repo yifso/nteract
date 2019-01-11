@@ -6,7 +6,6 @@ import {
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
-import { Output, RichestMime } from "@nteract/display-area";
 import {
   Cell as PlainCell,
   Input,
@@ -16,6 +15,18 @@ import {
   Source,
   themes as rawThemeVars
 } from "@nteract/presentational-components";
+import { DragDropContext as dragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import {
+  Media,
+  Output,
+  DisplayData,
+  ExecuteResult,
+  KernelOutputError,
+  StreamText
+} from "@nteract/outputs";
 import {
   displayOrder as defaultDisplayOrder,
   transforms as defaultTransforms
@@ -23,10 +34,6 @@ import {
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
-import { DragDropContext as dragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Subject } from "rxjs";
 
 import CellCreator from "./cell-creator";
@@ -267,18 +274,21 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               expanded={this.props.outputExpanded}
             >
               {this.props.outputs.map((output, index) => (
-                <Output
-                  key={index}
-                  output={output}
-                  displayOrder={this.props.displayOrder}
-                  transforms={this.props.transforms}
-                  theme={this.props.theme}
-                  models={this.props.models}
-                  channels={this.props.channels}
-                  onMetadataChange={this.props.updateOutputMetadata}
-                  index={index}
-                  metadata={metadata}
-                />
+                <Output output={output} key={index}>
+                  <DisplayData>
+                    <Media.HTML />
+                    <Media.Image {...output} />
+                    <Media.JavaScript />
+                    <Media.Json />
+                    <Media.LaTeX />
+                    <Media.Markdown />
+                    <Media.Plain />
+                    <Media.SVG />
+                  </DisplayData>
+                  <ExecuteResult {...output} />
+                  <KernelOutputError {...output} />
+                  <StreamText />
+                </Output>
               ))}
             </Outputs>
           </React.Fragment>
