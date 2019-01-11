@@ -100,7 +100,7 @@ export type CommsRecordProps = {
 
 export type CommsRecord = Immutable.RecordOf<CommsRecordProps>;
 
-export const makeCommsRecord = Immutable.Record({
+export const makeCommsRecord = Immutable.Record<CommsRecordProps>({
   targets: Immutable.Map(),
   info: Immutable.Map(),
   models: Immutable.Map()
@@ -112,7 +112,7 @@ const version: string = require("../package.json").version;
 export type ConfigState = Immutable.Map<string, any>;
 
 export type StateRecordProps = {
-  kernelRef?: KernelRef | null;
+  kernelRef: KernelRef | null;
   currentKernelspecsRef?: KernelspecsRef | null;
   communication: Immutable.RecordOf<CommunicationRecordProps>;
   entities: Immutable.RecordOf<EntitiesRecordProps>;
@@ -124,6 +124,7 @@ export const makeStateRecord = Immutable.Record<StateRecordProps>({
   communication: makeCommunicationRecord(),
   entities: makeEntitiesRecord()
 });
+export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 
 export type AppRecordProps = {
   host: HostRecord;
@@ -162,10 +163,9 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
   error: null,
   // set the default version to @nteract/core's version
   version: `@nteract/core@${version}`
-} );
+});
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
-export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 
 export type AppState = {
   app: AppRecord;
@@ -173,3 +173,12 @@ export type AppState = {
   config: ConfigState;
   core: CoreRecord;
 };
+
+export type AppStateRecord = Immutable.RecordOf<AppState>;
+
+export const makeAppStateRecord = Immutable.Record<AppState>({
+  app: makeAppRecord(),
+  comms: makeCommsRecord(),
+  config: Immutable.Map<string, any>(),
+  core: makeStateRecord()
+});
