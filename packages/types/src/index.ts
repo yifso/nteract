@@ -123,7 +123,7 @@ export const makeStateRecord = Immutable.Record<StateRecordProps>({
   currentKernelspecsRef: null,
   communication: makeCommunicationRecord(),
   entities: makeEntitiesRecord()
-} as StateRecordProps);
+});
 
 export type AppRecordProps = {
   host: HostRecord;
@@ -162,7 +162,7 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
   error: null,
   // set the default version to @nteract/core's version
   version: `@nteract/core@${version}`
-} as AppRecordProps);
+} );
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
