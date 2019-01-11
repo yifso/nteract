@@ -69,7 +69,10 @@ const byRef = (
               filepath: fetchContentFulfilledAction.payload.filepath,
               model: makeFileModelRecord({
                 text: fetchContentFulfilledAction.payload.model.content
-              })
+              }),
+              loading: false,
+              saving: false,
+              error: null
             })
           );
         case "directory": {
@@ -135,7 +138,10 @@ const byRef = (
                   filepath: fetchContentFulfilledAction.payload.filepath,
                   lastSaved:
                     fetchContentFulfilledAction.payload.model.last_modified,
-                  created: fetchContentFulfilledAction.payload.model.created
+                  created: fetchContentFulfilledAction.payload.model.created,
+                  loading: false,
+                  saving: false,
+                  error: null
                 })
               )
           );
@@ -159,7 +165,10 @@ const byRef = (
                   cellMap: Immutable.Map()
                 }),
                 cellFocused: immutableNotebook.getIn(["cellOrder", 0])
-              })
+              }),
+              loading: false,
+              saving: false,
+              error: null
             })
           );
         }
