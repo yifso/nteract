@@ -3,30 +3,30 @@ import appendOutput, { mutate } from "../src/outputs/append-output";
 describe("appendOutput", () => {
   test("puts new outputs at the end by default", () => {
     const outputs = [
-      { outputType: "stream", name: "stdout", text: "Woo" },
+      { output_type: "stream", name: "stdout", text: "Woo" },
       {
-        outputType: "error",
+        output_type: "error",
         ename: "well",
         evalue: "actually",
         traceback: []
       }
     ];
     const newOutputs = appendOutput(outputs, {
-      outputType: "displayData",
+      output_type: "displayData",
       data: {},
       metadata: {}
     });
 
     expect(newOutputs).toEqual([
-      { outputType: "stream", name: "stdout", text: "Woo" },
+      { output_type: "stream", name: "stdout", text: "Woo" },
       {
-        outputType: "error",
+        output_type: "error",
         ename: "well",
         evalue: "actually",
         traceback: []
       },
       {
-        outputType: "displayData",
+        output_type: "displayData",
         data: {},
         metadata: {}
       }
@@ -34,15 +34,15 @@ describe("appendOutput", () => {
   });
 
   test("handles the case of a single stream output", () => {
-    const outputs = [{ name: "stdout", text: "hello", outputType: "stream" }];
+    const outputs = [{ name: "stdout", text: "hello", output_type: "stream" }];
     const newOutputs = appendOutput(outputs, {
       name: "stdout",
       text: " world",
-      outputType: "stream"
+      output_type: "stream"
     });
 
     expect(newOutputs).toEqual([
-      { name: "stdout", text: "hello world", outputType: "stream" }
+      { name: "stdout", text: "hello world", output_type: "stream" }
     ]);
   });
 
@@ -52,52 +52,52 @@ describe("appendOutput", () => {
     outputs = appendOutput(outputs, {
       name: "stdout",
       text: "hello",
-      outputType: "stream"
+      output_type: "stream"
     });
 
     expect(outputs).toEqual([
-      { name: "stdout", text: "hello", outputType: "stream" }
+      { name: "stdout", text: "hello", output_type: "stream" }
     ]);
   });
 
   test("keeps respective streams together", () => {
     const outputs = [
-      { name: "stdout", text: "hello", outputType: "stream" },
-      { name: "stderr", text: "errors are", outputType: "stream" }
+      { name: "stdout", text: "hello", output_type: "stream" },
+      { name: "stderr", text: "errors are", output_type: "stream" }
     ];
     const newOutputs = appendOutput(outputs, {
       name: "stdout",
       text: " world",
-      outputType: "stream"
+      output_type: "stream"
     });
 
     expect(newOutputs).toEqual([
-      { name: "stdout", text: "hello world", outputType: "stream" },
-      { name: "stderr", text: "errors are", outputType: "stream" }
+      { name: "stdout", text: "hello world", output_type: "stream" },
+      { name: "stderr", text: "errors are", output_type: "stream" }
     ]);
 
     const evenNewerOutputs = appendOutput(newOutputs, {
       name: "stderr",
       text: " informative",
-      outputType: "stream"
+      output_type: "stream"
     });
 
     expect(evenNewerOutputs).toEqual([
-      { name: "stdout", text: "hello world", outputType: "stream" },
+      { name: "stdout", text: "hello world", output_type: "stream" },
       {
         name: "stderr",
 
         text: "errors are informative",
-        outputType: "stream"
+        output_type: "stream"
       }
     ]);
   });
 
   test("outputs are actually immutable now", () => {
     const outputs = [
-      { outputType: "stream", name: "stdout", text: "Woo" },
+      { output_type: "stream", name: "stdout", text: "Woo" },
       {
-        outputType: "error",
+        output_type: "error",
         ename: "well",
         evalue: "actually",
         traceback: []
@@ -105,13 +105,13 @@ describe("appendOutput", () => {
     ];
 
     const newOutputs = appendOutput(outputs, {
-      outputType: "displayData",
+      output_type: "displayData",
       data: {},
       metadata: {}
     });
 
     expect(() => {
-      newOutputs[0] = { outputType: "stream", name: "stdout", text: "Boo" };
+      newOutputs[0] = { output_type: "stream", name: "stdout", text: "Boo" };
     }).toThrow(
       "Cannot assign to read only property '0' of object '[object Array]'"
     );
@@ -119,9 +119,9 @@ describe("appendOutput", () => {
 
   test("outputs are appended and mutable", () => {
     const outputs = [
-      { outputType: "stream", name: "stdout", text: "Woo" },
+      { output_type: "stream", name: "stdout", text: "Woo" },
       {
-        outputType: "error",
+        output_type: "error",
         ename: "well",
         evalue: "actually",
         traceback: []
@@ -129,23 +129,23 @@ describe("appendOutput", () => {
     ];
 
     const newOutputs = mutate.appendOutput(outputs, {
-      outputType: "displayData",
+      output_type: "displayData",
       data: {},
       metadata: {}
     });
 
-    newOutputs[0] = { outputType: "stream", name: "stdout", text: "Boo" };
+    newOutputs[0] = { output_type: "stream", name: "stdout", text: "Boo" };
 
     expect(newOutputs).toEqual([
-      { outputType: "stream", name: "stdout", text: "Boo" },
+      { output_type: "stream", name: "stdout", text: "Boo" },
       {
-        outputType: "error",
+        output_type: "error",
         ename: "well",
         evalue: "actually",
         traceback: []
       },
       {
-        outputType: "displayData",
+        output_type: "displayData",
         data: {},
         metadata: {}
       }

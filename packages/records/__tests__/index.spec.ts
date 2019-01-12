@@ -14,7 +14,7 @@ describe("stream output", () => {
       })
     ).toEqual(
       streamOutput({
-        outputType: "stream",
+        output_type: "stream",
         name: "stdout",
         text: "sup\nyall"
       })
@@ -34,7 +34,7 @@ describe("stream output", () => {
       })
     ).toEqual(
       streamOutput({
-        outputType: "stream",
+        output_type: "stream",
         name: "stdout",
         text: "it is love we must hold on to\nnever easy but we try"
       })
@@ -61,7 +61,7 @@ describe("display_data output", () => {
       })
     ).toEqual(
       displayData({
-        outputType: "display_data",
+        output_type: "display_data",
         data: {
           "text/plain": "mind\ntime\nspace\nreality\npower\nsoul"
         },
@@ -85,7 +85,7 @@ describe("display_data output", () => {
       })
     ).toEqual(
       displayData({
-        outputType: "display_data",
+        output_type: "display_data",
         data: { "text/plain": "another\nDoug" },
         metadata: { "application/json": { expanded: true } }
       })
@@ -94,7 +94,7 @@ describe("display_data output", () => {
 
   test("has default values", () => {
     expect(displayData()).toEqual({
-      outputType: "display_data",
+      output_type: "display_data",
       data: {},
       metadata: {}
     });

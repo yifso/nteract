@@ -45,7 +45,7 @@ export interface DisplayDataMessage {
 }
 
 export function displayData(displayDataOutput?: {
-  outputType?: DisplayDataType;
+  output_type?: DisplayDataType;
   data?: common.MimeBundle;
   metadata?: {};
 }): DisplayDataOutput {
@@ -66,7 +66,7 @@ displayData.fromNbformat = function fromNbformat(
   s: NbformatDisplayDataOutput
 ): DisplayDataOutput {
   return displayData({
-    outputType: s.output_type,
+    output_type: s.output_type,
     data: common.createImmutableMimeBundle(s.data),
     metadata: s.metadata
   });
@@ -76,7 +76,7 @@ displayData.fromJupyterMessage = function displayDataRecordFromMessage(
   msg: DisplayDataMessage
 ): DisplayDataOutput {
   return displayData({
-    outputType: DISPLAYDATA,
+    output_type: DISPLAYDATA,
     // The data field in a display data output type on the message spec is the same as we need
     // We could do additional checking here though
     data: msg.content.data,
