@@ -3,7 +3,7 @@
 
 // In-memory version
 export interface UnrecognizedOutput {
-  outputType: "unrecognized";
+  output_type: "unrecognized";
   raw: any;
 }
 
@@ -16,7 +16,7 @@ const UNRECOGNIZED = "unrecognized";
 
 export function unrecognized(raw: any) {
   return Object.freeze({
-    outputType: UNRECOGNIZED,
+    output_type: UNRECOGNIZED,
     raw
   });
 }

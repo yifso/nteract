@@ -17,40 +17,38 @@ export const ERROR: ErrorType = "error";
 
 // In-memory version
 export interface ErrorOutput {
-  outputType: ErrorType,
-  ename: string,
-  evalue: string,
-  traceback: string[] |  ReadonlyArray<string>
+  output_type: ErrorType;
+  ename: string;
+  evalue: string;
+  traceback: string[] | ReadonlyArray<string>;
 }
 
 // On disk
 export interface NbformatErrorOutput {
-  output_type: "error" | "pyerr",
-  ename: string,
-  evalue: string,
-  traceback: string[]
+  output_type: "error" | "pyerr";
+  ename: string;
+  evalue: string;
+  traceback: string[];
 }
 
 export interface ErrorMessage {
   header: {
-    msg_type: "error" | "pyerr"
-  },
+    msg_type: "error" | "pyerr";
+  };
   content: {
-    ename: string,
-    evalue: string,
-    traceback: string[]
-  }
+    ename: string;
+    evalue: string;
+    traceback: string[];
+  };
 }
 
-export function errorOutput(
-  eOut: {
-    ename?: string,
-    evalue?: string,
-    traceback?: string[]
-  }
-): Readonly<ErrorOutput> {
+export function errorOutput(eOut: {
+  ename?: string;
+  evalue?: string;
+  traceback?: string[];
+}): Readonly<ErrorOutput> {
   return Object.freeze({
-    outputType: ERROR,
+    output_type: ERROR,
     ename: eOut.ename || "",
     evalue: eOut.evalue || "",
     // Freeze a copy of the traceback array

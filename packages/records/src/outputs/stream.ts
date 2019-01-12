@@ -24,36 +24,36 @@ export const STREAM: StreamType = "stream";
 
 // In-memory version
 export interface StreamOutput {
-  outputType: StreamType,
-  name: StreamName,
-  text: string
+  output_type: StreamType;
+  name: StreamName;
+  text: string;
 }
 
 // On disk
 export interface NbformatStreamOutput {
-  output_type: StreamType,
-  name: StreamName,
-  text: common.MultilineString
+  output_type: StreamType;
+  name: StreamName;
+  text: common.MultilineString;
 }
 
 export interface StreamMessage {
   header: {
-    msg_type: StreamType
-  },
+    msg_type: StreamType;
+  };
   content: {
-    name: StreamName,
-    text: string
-  }
+    name: StreamName;
+    text: string;
+  };
 }
 
 export function streamOutput(
   s: Readonly<{
-    name?: StreamName,
-    text?: string
+    name?: StreamName;
+    text?: string;
   }>
 ): StreamOutput {
   return Object.freeze(
-    Object.assign({}, { outputType: STREAM, name: STDOUT, text: "" }, s)
+    Object.assign({}, { output_type: STREAM, name: STDOUT, text: "" }, s)
   );
 }
 

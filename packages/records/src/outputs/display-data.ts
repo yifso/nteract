@@ -22,35 +22,35 @@ export const outputType = DISPLAYDATA;
 
 // In-memory version
 export interface DisplayDataOutput {
-  outputType: DisplayDataType,
-  data: common.MimeBundle,
-  metadata: {}
+  output_type: DisplayDataType;
+  data: common.MimeBundle;
+  metadata: {};
 }
 
 // On disk
 export interface NbformatDisplayDataOutput {
-  output_type: DisplayDataType,
-  data: common.OnDiskMimebundle,
-  metadata: {}
+  output_type: DisplayDataType;
+  data: common.OnDiskMimebundle;
+  metadata: {};
 }
 
 export interface DisplayDataMessage {
   header: {
-    msg_type: DisplayDataType
-  },
+    msg_type: DisplayDataType;
+  };
   content: {
-    data: common.MimeBundle,
-    metadata: {}
-  }
+    data: common.MimeBundle;
+    metadata: {};
+  };
 }
 
 export function displayData(displayDataOutput?: {
-  outputType?: DisplayDataType,
-  data?: common.MimeBundle,
-  metadata?: {}
+  outputType?: DisplayDataType;
+  data?: common.MimeBundle;
+  metadata?: {};
 }): DisplayDataOutput {
   const defaultDisplayData = {
-    outputType: DISPLAYDATA,
+    output_type: DISPLAYDATA,
     data: {},
     metadata: {}
   };
