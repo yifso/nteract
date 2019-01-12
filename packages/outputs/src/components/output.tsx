@@ -46,10 +46,6 @@ export class Output extends React.Component<Props, State> {
         childElement.props.output_type &&
         childElement.props.output_type === output_type
       ) {
-        if (output_type === "error") {
-          console.log(output_type);
-          console.log(childElement);
-        }
         chosenOne = childElement;
         return;
       }

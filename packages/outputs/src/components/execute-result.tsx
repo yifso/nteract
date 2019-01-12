@@ -7,7 +7,7 @@ interface Props {
   /**
    * The literal type of output, used for routing with the `<Output />` element
    */
-  output_type: "pyout";
+  output_type: "execute_result";
   /**
    * Object of media type → data
    *
@@ -45,7 +45,7 @@ export const ExecuteResult = (props: Props) => {
 };
 
 ExecuteResult.defaultProps = {
-  output_type: "pyout",
+  output_type: "execute_result",
   data: {},
   metadata: {}
 };

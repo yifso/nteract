@@ -287,6 +287,15 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.SVG />
                   </DisplayData>
                   <ExecuteResult>
+                    <Media.HTML />
+                    <Media.Image />
+                    <Media.JavaScript />
+                    <Media.Json />
+                    <Media.LaTeX />
+                    <Media.Markdown />
+                    <Media.Plain />
+                    <Media.SVG />
+                  </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
                 </Output>
