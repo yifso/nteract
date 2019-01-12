@@ -6,23 +6,23 @@ interface Props {
   /**
    *  The name of the exception. This value is returned by the kernel.
    */
-  ename?: string;
+  ename: string;
   /**
    * The value of the exception. This value is returned by the kernel.
    */
-  evalue?: string;
+  evalue: string;
   /**
    * The output type passed to the Output component. This should be `error`
    * if you would like to render a KernelOutputError component.
    */
-  output_type: "error";
+  output_type?: "error";
   /**
    * The tracebook of the exception. This value is returned by the kernel.
    */
   traceback: string[];
 }
 
-const PlainKernelOutputError = (props: Props) => {
+const PlainKernelOutputError = (props: Partial<Props>) => {
   const { ename, evalue, traceback } = props;
 
   const joinedTraceback = Array.isArray(traceback)

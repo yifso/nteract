@@ -2,10 +2,10 @@ import { cloneDeep } from "lodash";
 import * as React from "react";
 
 import {
-  objectToReactElement,
-  VDOMEl,
   Attributes,
-  EventPayload
+  EventPayload,
+  objectToReactElement,
+  VDOMEl
 } from "./object-to-react";
 
 interface Props {
@@ -19,7 +19,7 @@ export { objectToReactElement, VDOMEl, Attributes, EventPayload };
 
 const mediaType = "application/vdom.v1+json";
 
-export default class VDOM extends React.PureComponent<Props> {
+export default class VDOM extends React.PureComponent<Partial<Props>> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -34,8 +34,12 @@ export default class VDOM extends React.PureComponent<Props> {
   render(): React.ReactElement<any> {
     try {
       // objectToReactElement is mutatitve so we'll clone our object
-      const obj = cloneDeep(this.props.data);
-      return objectToReactElement(obj, this.props.onVDOMEvent);
+      if (this.props.data && this.props.onVDOMEvent) {
+        const obj = cloneDeep(this.props.data);
+        return objectToReactElement(obj, this.props.onVDOMEvent);
+      } else {
+        throw new Error("No VDOM data provided.");
+      }
     } catch (err) {
       return (
         <React.Fragment>

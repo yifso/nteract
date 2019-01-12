@@ -193,7 +193,7 @@ const SemioticWrapper = styled.div`
   }
 `;
 
-class DataResourceTransform extends React.Component<Props, State> {
+class DataResourceTransform extends React.Component<Partial<Props>, State> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -306,6 +306,10 @@ class DataResourceTransform extends React.Component<Props, State> {
       data: stateData
     } = { ...this.state, ...updatedState };
 
+    if (!this.props.data && !this.props.metadata && !this.props.initialView) {
+      return;
+    }
+
     const { data, height, onMetadataChange } = this.props;
 
     const { Frame, chartGenerator } = semioticSettings[view];
@@ -323,7 +327,7 @@ class DataResourceTransform extends React.Component<Props, State> {
       chart
     });
 
-    const frameSettings = chartGenerator(stateData, data.schema, {
+    const frameSettings = chartGenerator(stateData, data!.schema, {
       metrics,
       dimensions,
       chart,
@@ -455,7 +459,7 @@ class DataResourceTransform extends React.Component<Props, State> {
     let display: React.ReactNode = null;
 
     if (view === "grid") {
-      display = <DataResourceTransformGrid {...this.props} />;
+      display = <DataResourceTransformGrid {...this.props as Props} />;
     } else if (
       [
         "line",
@@ -486,7 +490,7 @@ class DataResourceTransform extends React.Component<Props, State> {
 
     return (
       <div>
-        <MetadataWarning metadata={this.props.metadata} />
+        <MetadataWarning metadata={this.props.metadata!} />
         <div
           style={{
             display: "flex",

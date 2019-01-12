@@ -14023,13 +14023,6 @@ vega-tooltip@^0.11.0:
   dependencies:
     vega-util "^1.7.0"
 
-vega-tooltip@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.14.0.tgz#4b8655bf3ea0bdf8c527238f41c69d1bd8f0d988"
-  integrity sha512-lcse840tvMmg909LlJGPwQY4qB4GvOgyiYu3slCc6kPLjiG6eDmtSX9qtDSFYK4V8zifZOHMobEPz/kmNy7jUA==
-  dependencies:
-    vega-util "^1.7.0"
-
 vega-tooltip@^0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.15.0.tgz#2606a95b46f0aa6a70f03d18f919dc13696c4d44"
