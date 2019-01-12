@@ -258,15 +258,16 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             </Input>
             <Pagers>
               {this.props.pager.map((pager, key) => (
-                <RichestMime
-                  metadata={expanded}
-                  className="pager"
-                  displayOrder={this.props.displayOrder}
-                  transforms={this.props.transforms}
-                  bundle={pager}
-                  theme={this.props.theme}
-                  key={key}
-                />
+                <DisplayData {...pager}>
+                  <Media.HTML />
+                  <Media.Image {...pager} />
+                  <Media.JavaScript />
+                  <Media.Json />
+                  <Media.LaTeX />
+                  <Media.Markdown />
+                  <Media.Plain />
+                  <Media.SVG />
+                </DisplayData>
               ))}
             </Pagers>
             <Outputs
@@ -275,9 +276,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             >
               {this.props.outputs.map((output, index) => (
                 <Output output={output} key={index}>
-                  <DisplayData>
+                  <DisplayData {...output.toJS()}>
                     <Media.HTML />
-                    <Media.Image {...output} />
+                    <Media.Image />
                     <Media.JavaScript />
                     <Media.Json />
                     <Media.LaTeX />
@@ -285,9 +286,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.Plain />
                     <Media.SVG />
                   </DisplayData>
-                  <ExecuteResult {...output} />
-                  <KernelOutputError {...output} />
-                  <StreamText />
+                  <ExecuteResult {...output.toJS()} />
+                  <KernelOutputError {...output.toJS()} />
+                  <StreamText {...output.toJS()} />
                 </Output>
               ))}
             </Outputs>
