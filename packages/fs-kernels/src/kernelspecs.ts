@@ -63,17 +63,25 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
 
 /**
  * Gets a list of kernelInfo objects for a given directory of kernels
- * @param  {string}   directory path to a directory full of kernels
- * @return {Promise<Object[]>}  Promise for an array of kernelInfo objects
+ * @param  {string}   directory         path to a directory full of kernels
+ * @param  {boolean}  [mustExist=false] does the directory have to exist?
+ * @return {Promise<Object[]>}          Promise for an array of kernelInfo objects
  */
-function getKernelInfos(directory: string): Promise<KernelInfo[]> {
+function getKernelInfos(directory: string, mustExist: boolean = false): Promise<KernelInfo[]> {
   const readdir = promisify(fs.readdir);
-  return readdir(directory).then((files: string[]) => {
-    return files.map(fileName => ({
-      name: fileName,
-      resourceDir: path.join(directory, fileName)
-    }));
-  });
+  return readdir(directory)
+    .then((files: string[]) => {
+      return files.map(fileName => ({
+        name: fileName,
+        resourceDir: path.join(directory, fileName)
+      }));
+    })
+    .catch((error) => {
+      if (!mustExist && error.code === 'ENOENT') {
+        return [];
+      }
+      throw error;
+    });
 }
 
 /**
