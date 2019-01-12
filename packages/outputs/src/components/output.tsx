@@ -21,6 +21,7 @@ export class Output extends React.Component<Props, State> {
   };
 
   render() {
+    console.log(this.props.output);
     // We must pick only one child to render
     let chosenOne: React.ReactChild | null = null;
 
@@ -28,7 +29,7 @@ export class Output extends React.Component<Props, State> {
       return null;
     }
 
-    const outputType = this.props.output.outputType;
+    const output_type = this.props.output.output_type;
 
     // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
@@ -43,13 +44,15 @@ export class Output extends React.Component<Props, State> {
       }
       if (
         childElement.props &&
-        childElement.props.outputType &&
-        childElement.props.outputType === outputType
+        childElement.props.output_type &&
+        childElement.props.output_type === output_type
       ) {
         chosenOne = childElement;
         return;
       }
     });
+
+    console.log(chosenOne.props);
 
     // If we didn't find a match, render nothing
     if (chosenOne === null) {

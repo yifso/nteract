@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface Props {
   data: string;
   mediaType: "image/png" | "image/jpeg" | "image/gif";
-  metadata: any;
+  metadata?: any;
 }
 
 const ImageStyle = styled.img`

@@ -15,7 +15,7 @@ interface Props {
    * The output type passed to the Output component. This should be `error`
    * if you would like to render a KernelOutputError component.
    */
-  outputType: string;
+  output_type: "error";
   /**
    * The tracebook of the exception. This value is returned by the kernel.
    */
@@ -45,7 +45,7 @@ const PlainKernelOutputError = (props: Props) => {
 PlainKernelOutputError.defaultProps = {
   ename: "",
   evalue: "",
-  outputType: "error",
+  output_type: "error",
   traceback: []
 };
 

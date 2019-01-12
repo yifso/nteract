@@ -7,7 +7,7 @@ interface Props {
   /**
    * The literal type of output, used for routing with the `<Output />` element
    */
-  outputType: "display_data";
+  output_type: "display_data";
   /**
    * Object of media type → data
    *
@@ -45,7 +45,7 @@ export const DisplayData = (props: Props) => {
 };
 
 DisplayData.defaultProps = {
-  outputType: "display_data",
+  output_type: "display_data",
   data: {},
   metadata: {}
 };
