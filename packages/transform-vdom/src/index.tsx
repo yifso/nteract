@@ -1,16 +1,21 @@
 import { cloneDeep } from "lodash";
 import * as React from "react";
 
-import { Attributes, objectToReactElement, SerializedEvent, VDOMEl } from "./object-to-react";
+import {
+  objectToReactElement,
+  VDOMEl,
+  Attributes,
+  EventPayload
+} from "./object-to-react";
 
 interface Props {
   mediaType: "application/vdom.v1+json";
   data: VDOMEl;
-  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void;
+  onVDOMEvent: (event: EventPayload) => void;
 }
 
 // Provide object-to-react as an available helper on the library
-export { objectToReactElement, VDOMEl, Attributes, SerializedEvent };
+export { objectToReactElement, VDOMEl, Attributes, EventPayload };
 
 const mediaType = "application/vdom.v1+json";
 
@@ -20,7 +25,9 @@ export default class VDOM extends React.PureComponent<Props> {
   static defaultProps = {
     mediaType,
     onVDOMEvent: () => {
-      console.log("This app doesn't support vdom events ☹️ See @nteract/transform-vdom for more info: https://github.com/nteract/nteract/tree/master/packages/transform-vdom");
+      console.log(
+        "This app doesn't support vdom events ☹️ See @nteract/transform-vdom for more info: https://github.com/nteract/nteract/tree/master/packages/transform-vdom"
+      );
     }
   };
 
