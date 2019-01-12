@@ -24,7 +24,7 @@ describe("Output", () => {
 
   it("handles errors/tracebacks", () => {
     const output = {
-      output_Type: "error",
+      output_type: "error",
       traceback: ["Yikes, Will is in the upsidedown again!"],
       ename: "NameError",
       evalue: "Yikes!"

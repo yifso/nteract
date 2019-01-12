@@ -23,18 +23,18 @@ interface Props {
    * for more detail.
    *
    */
-  data?: MediaBundle;
+  data: MediaBundle;
   /**
    * custom settings, typically keyed by media type
    */
-  metadata?: {};
+  metadata: {};
   /**
    * React elements that accept mimebundle data, will get passed data[mimetype]
    */
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export const ExecuteResult = (props: Props) => {
+export const ExecuteResult = (props: Partial<Props>) => {
   const { data, metadata, children } = props;
 
   return (
