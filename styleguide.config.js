@@ -74,16 +74,17 @@ module.exports = {
         </script>`
     }
   },
-  webpackConfig: {
-    node: {
+  dangerouslyUpdateWebpackConfig(webpackConfig, env) {
+    webpackConfig.node = {
       fs: "empty",
       child_process: "empty",
-      net: "empty"
-    },
-    resolve: {
-      extensions: [".ts", ".tsx"]
-    },
-    module: {
+      net: "empty",
+      canvas: "empty"
+    };
+    webpackConfig.resolve.extensions = [".ts", ".tsx", ".js", ".jsx", ".json"];
+    webpackConfig.externals = ["canvas"];
+    webpackConfig.module = {
+      ...webpackConfig.module,
       rules: [
         {
           test: /\.tsx?$/,
@@ -99,6 +100,7 @@ module.exports = {
           }
         }
       ]
-    }
+    };
+    return webpackConfig;
   }
 };
