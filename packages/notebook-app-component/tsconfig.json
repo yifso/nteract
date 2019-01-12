@@ -17,6 +17,14 @@
     { "path": "../presentational-components" },
     { "path": "../selectors" },
     { "path": "../transforms" },
-    { "path": "../types" }
+    { "path": "../types" },
+    { "path": "../outputs" },
+    { "path": "../transform-plotly" },
+    { "path": "../transform-geojson" },
+    { "path": "../transform-model-debug" },
+    { "path": "../transform-dataresource" },
+    { "path": "../transform-vega" },
+    { "path": "../transform-vdom" },
+    { "path": "../jupyter-widgets" }
   ]
 }

@@ -43,6 +43,7 @@ import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
 import DataResourceTransform from "@nteract/transform-dataresource";
 import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
+import VDOMDisplay from "@nteract/transform-vdom";
 import { WidgetDisplay } from "@nteract/jupyter-widgets";
 
 import CellCreator from "./cell-creator";
@@ -303,6 +304,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <VegaLite2 />
                     <Vega2 />
                     <Vega3 />
+                    <VDOMDisplay />
+                    <WidgetDisplay />
                   </DisplayData>
                   <ExecuteResult>
                     <Media.HTML />
@@ -322,6 +325,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <VegaLite2 />
                     <Vega2 />
                     <Vega3 />
+                    <VDOMDisplay />
+                    <WidgetDisplay />
                   </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
