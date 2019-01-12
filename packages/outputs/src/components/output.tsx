@@ -21,7 +21,6 @@ export class Output extends React.Component<Props, State> {
   };
 
   render() {
-    console.log(this.props.output);
     // We must pick only one child to render
     let chosenOne: React.ReactChild | null = null;
 
@@ -47,12 +46,14 @@ export class Output extends React.Component<Props, State> {
         childElement.props.output_type &&
         childElement.props.output_type === output_type
       ) {
+        if (output_type === "error") {
+          console.log(output_type);
+          console.log(childElement);
+        }
         chosenOne = childElement;
         return;
       }
     });
-
-    console.log(chosenOne.props);
 
     // If we didn't find a match, render nothing
     if (chosenOne === null) {

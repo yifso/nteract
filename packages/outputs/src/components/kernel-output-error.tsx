@@ -6,11 +6,11 @@ interface Props {
   /**
    *  The name of the exception. This value is returned by the kernel.
    */
-  ename: string;
+  ename?: string;
   /**
    * The value of the exception. This value is returned by the kernel.
    */
-  evalue: string;
+  evalue?: string;
   /**
    * The output type passed to the Output component. This should be `error`
    * if you would like to render a KernelOutputError component.
@@ -42,17 +42,17 @@ const PlainKernelOutputError = (props: Props) => {
   return <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>;
 };
 
-PlainKernelOutputError.defaultProps = {
-  ename: "",
-  evalue: "",
-  output_type: "error",
-  traceback: []
-};
-
 export const KernelOutputError = styled(PlainKernelOutputError)`
   & code {
     white-space: pre-wrap;
   }
 `;
+
+KernelOutputError.defaultProps = {
+  output_type: "error",
+  ename: "",
+  evalue: "",
+  traceback: []
+};
 
 KernelOutputError.displayName = "KernelOutputError";

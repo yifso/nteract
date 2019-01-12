@@ -258,9 +258,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             </Input>
             <Pagers>
               {this.props.pager.map((pager, key) => (
-                <DisplayData {...pager}>
+                <DisplayData {...pager.toJS()}>
                   <Media.HTML />
-                  <Media.Image {...pager} />
+                  <Media.Image />
                   <Media.JavaScript />
                   <Media.Json />
                   <Media.LaTeX />
@@ -275,8 +275,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               expanded={this.props.outputExpanded}
             >
               {this.props.outputs.map((output, index) => (
-                <Output output={output} key={index}>
-                  <DisplayData {...output.toJS()}>
+                <Output output={output.toJS()} key={index}>
+                  <DisplayData>
                     <Media.HTML />
                     <Media.Image />
                     <Media.JavaScript />
@@ -286,9 +286,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.Plain />
                     <Media.SVG />
                   </DisplayData>
-                  <ExecuteResult {...output.toJS()} />
-                  <KernelOutputError {...output.toJS()} />
-                  <StreamText {...output.toJS()} />
+                  <ExecuteResult>
+                  <KernelOutputError />
+                  <StreamText />
                 </Output>
               ))}
             </Outputs>
