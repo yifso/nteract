@@ -36,6 +36,15 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import { Subject } from "rxjs";
 
+import PlotlyTransform, {
+  PlotlyNullTransform
+} from "@nteract/transform-plotly";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+
 import CellCreator from "./cell-creator";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
@@ -285,6 +294,15 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.Markdown />
                     <Media.Plain />
                     <Media.SVG />
+                    <DataResourceTransform />
+                    <ModelDebug />
+                    <PlotlyNullTransform />
+                    <PlotlyTransform />
+                    <GeoJSONTransform />
+                    <VegaLite1 />
+                    <VegaLite2 />
+                    <Vega2 />
+                    <Vega3 />
                   </DisplayData>
                   <ExecuteResult>
                     <Media.HTML />
@@ -295,6 +313,15 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.Markdown />
                     <Media.Plain />
                     <Media.SVG />
+                    <DataResourceTransform />
+                    <ModelDebug />
+                    <PlotlyNullTransform />
+                    <PlotlyTransform />
+                    <GeoJSONTransform />
+                    <VegaLite1 />
+                    <VegaLite2 />
+                    <Vega2 />
+                    <Vega3 />
                   </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
