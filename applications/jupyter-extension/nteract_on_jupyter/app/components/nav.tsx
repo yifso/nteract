@@ -36,9 +36,9 @@ const NavSectionLi = styled.li`
   margin: 0px var(--nt-spacing-xl) 0px 0px;
 `;
 
-type NavSectionProps = {
+interface NavSectionProps {
   children: React.ReactNode;
-};
+}
 export const NavSection = (props: NavSectionProps) => (
   <NavSectionUl>
     {React.Children.map(props.children, child => {

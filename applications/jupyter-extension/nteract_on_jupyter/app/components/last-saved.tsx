@@ -17,9 +17,9 @@ import moment from "moment";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-type LastSavedProps = {
+interface LastSavedProps {
   date: string | number | Date | null;
-};
+}
 
 const Span = styled.span`
   margin: 0 auto;

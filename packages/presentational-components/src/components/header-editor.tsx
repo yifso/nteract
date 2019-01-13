@@ -26,17 +26,17 @@ const authorStyle = {
 
 const authorStyleBlack = { ...authorStyle, color: "black" };
 
-export type AuthorObject = {
+export interface AuthorObject {
   name: string;
-};
-export type HeaderDataProps = {
+}
+export interface HeaderDataProps {
   authors: Array<AuthorObject>;
   title: string;
   description: string;
   tags: Array<string>;
-};
+}
 
-export type HeaderEditorProps = {
+export interface HeaderEditorProps {
   /**
    * The data that the header should be populated with.
    */
@@ -53,11 +53,11 @@ export type HeaderEditorProps = {
    * The theme of the header.
    */
   theme: "light" | "dark";
-};
+}
 
-export type HeaderEditorState = {
+export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
-};
+}
 
 const addTagMessage = <span>Add a tag</span>;
 const addAuthorMessage = <span>Add an author</span>;

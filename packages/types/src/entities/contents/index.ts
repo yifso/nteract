@@ -27,9 +27,9 @@ export type ContentRecord =
   | FileContentRecord
   | DirectoryContentRecord;
 
-export type ContentsRecordProps = {
+export interface ContentsRecordProps {
   byRef: Immutable.Map<ContentRef, ContentRecord>;
-};
+}
 
 export const makeContentsRecord = Immutable.Record<ContentsRecordProps>({
   byRef: Immutable.Map<ContentRef, ContentRecord>()

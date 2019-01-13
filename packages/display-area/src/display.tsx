@@ -4,7 +4,7 @@ import { Map as ImmutableMap } from "immutable";
 
 import Output from "./output";
 
-type Props = {
+interface Props {
   displayOrder: string[];
   outputs: any[];
   transforms: Transforms;
@@ -12,7 +12,7 @@ type Props = {
   expanded: boolean;
   isHidden: boolean;
   models: Object;
-};
+}
 
 export const DEFAULT_SCROLL_HEIGHT = 600;
 

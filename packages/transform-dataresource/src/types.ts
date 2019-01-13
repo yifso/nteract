@@ -40,24 +40,24 @@ export interface Dimension extends Field {
   type: "string" | "boolean" | "datetime";
 }
 
-export type Datapoint = { [fieldName: string]: any };
+export interface Datapoint { [fieldName: string]: any }
 
-export type LineCoordinate = {
+export interface LineCoordinate {
   value: number;
   x: number;
   label: string;
   color: string;
   originalData: Datapoint;
-};
+}
 
-export type LineData = {
+export interface LineData {
   color: string;
   label: string;
   type: "number" | "integer" | "datetime";
   coordinates: LineCoordinate[];
-};
+}
 
-export type Chart = {
+export interface Chart {
   metric1: string;
   metric2: string;
   metric3: string;
@@ -66,7 +66,7 @@ export type Chart = {
   dim3: string;
   networkLabel: string;
   timeseriesSort: string;
-};
+}
 export type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
 export type AreaType = "hexbin" | "heatmap" | "contour";
 

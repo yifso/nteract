@@ -77,14 +77,14 @@ const iconHash: { [key in "Y" | "X" | "Size" | "Color"]: JSX.Element } = {
   Color: colorIcon
 };
 
-type MenuItemType = {
+interface MenuItemType {
   label: string;
-};
-type ModifiersType = {
+}
+interface ModifiersType {
   matchesPredicate: boolean;
   active: boolean;
   disabled: boolean;
-};
+}
 
 const renderMenuItem = (
   item: MenuItemType,
@@ -235,7 +235,7 @@ const availableAreaTypes = [
 ];
 
 type ChartOptions = { [key in ChartOptionTypes]: string };
-type VizControlParams = {
+interface VizControlParams {
   view: string;
   chart: ChartOptions;
   metrics: Array<{ name: string }>;
@@ -253,7 +253,7 @@ type VizControlParams = {
   areaType: string;
   setAreaType: (label: Dx.AreaType) => void;
   data: Array<Object>;
-};
+}
 export default ({
   view,
   chart,

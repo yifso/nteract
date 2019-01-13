@@ -146,13 +146,13 @@ async function launchSpec(kernelSpec: KernelSpec, spawnOptions?: Options) {
   );
 }
 
-export type LaunchedKernel = {
+export interface LaunchedKernel {
   spawn: execa.ExecaChildProcess;
   connectionFile: string;
   config: JupyterConnectionInfo;
   kernelSpec: KernelSpec;
   channels: Channels;
-};
+}
 
 /**
  * Launch a kernel for a given kernelSpec and connection info

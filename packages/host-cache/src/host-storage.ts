@@ -11,34 +11,34 @@ import { tap, map, catchError, filter } from "rxjs/operators";
 // For TypeScript we can get the same behavior with the unknown type
 type BinderKey = string;
 
-type BinderOptions = {
+interface BinderOptions {
   repo: string;
   ref?: string;
   binderURL?: string;
-};
+}
 
-export type ServerConfig = {
+export interface ServerConfig {
   endpoint: string;
   token: string;
   // Assume always cross domain
   crossDomain: true;
-};
+}
 
 export const PROVISIONING = "PROVISIONING";
-type IsItUpHost = {
+interface IsItUpHost {
   type: "PROVISIONING";
-};
+}
 
 export const UP = "HOST_UP";
-type UpHost = {
+interface UpHost {
   type: "HOST_UP";
   config: ServerConfig;
-};
+}
 
 export const NOHOST = "NOHOST";
-type NoHost = {
+interface NoHost {
   type: "NOHOST";
-};
+}
 
 function makeHost({
   endpoint,

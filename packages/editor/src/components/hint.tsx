@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled, { StyledComponent } from "styled-components";
 
-type TypeIconProps = {
+interface TypeIconProps {
   type:
     | undefined
     | "module"
@@ -12,14 +12,14 @@ type TypeIconProps = {
     | "null"
     | "class"
     | string; // Allow others we may not support yet
-};
+}
 
-type HintProps = {
+interface HintProps {
   text: string;
   type?: TypeIconProps["type"];
   displayText?: string;
   [other: string]: any;
-};
+}
 
 // Completion to us, "hint" to codemirror
 export const Hint = (props: HintProps) => (

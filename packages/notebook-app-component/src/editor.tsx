@@ -5,12 +5,12 @@ import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState } from "@nteract/types";
 import EditorView from "@nteract/editor";
 
-type InitialProps = {
+interface InitialProps {
   id: string;
   contentRef: ContentRef;
   focusAbove: () => void;
   focusBelow: () => void;
-};
+}
 
 const markdownEditorOptions = {
   // Markdown should always be line wrapped

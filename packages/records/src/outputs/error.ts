@@ -16,22 +16,22 @@ export type ErrorType = "error";
 export const ERROR: ErrorType = "error";
 
 // In-memory version
-export type ErrorOutput = {
+export interface ErrorOutput {
   outputType: ErrorType,
   ename: string,
   evalue: string,
   traceback: Array<string> |  ReadonlyArray<string>
-};
+}
 
 // On disk
-export type NbformatErrorOutput = {
+export interface NbformatErrorOutput {
   output_type: "error" | "pyerr",
   ename: string,
   evalue: string,
   traceback: Array<string>
-};
+}
 
-export type ErrorMessage = {
+export interface ErrorMessage {
   header: {
     msg_type: "error" | "pyerr"
   },
@@ -40,7 +40,7 @@ export type ErrorMessage = {
     evalue: string,
     traceback: Array<string>
   }
-};
+}
 
 export function errorOutput(
   eOut: {

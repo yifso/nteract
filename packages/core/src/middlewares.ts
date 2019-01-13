@@ -8,11 +8,11 @@ import { Middleware } from "redux";
 
 import * as selectors from "@nteract/selectors";
 
-type ErrorAction = {
+interface ErrorAction {
   type: string;
   error?: boolean;
   payload?: any;
-};
+}
 
 export const errorMiddleware = (store: any, console = global.console) => (
   next: any

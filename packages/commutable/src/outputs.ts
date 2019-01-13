@@ -22,7 +22,7 @@ export type ImmutableMimeBundle = ImmutableMap<string, any>;
 //   "text/plain": "Hey"
 // }
 //
-export type MimeBundle = { [key: string]: string | string[] | undefined };
+export interface MimeBundle { [key: string]: string | string[] | undefined }
 
 /**
  * Map over all the mimetypes, turning them into our in-memory format.
@@ -106,12 +106,12 @@ export const isJSONKey = (key: string) =>
   /^application\/(.*\+)?json$/.test(key);
 
 /** ExecuteResult Record Boilerplate */
-type ExecuteResultParams = {
+interface ExecuteResultParams {
   output_type: "execute_result";
   execution_count: ExecutionCount;
   data: ImmutableMimeBundle;
   metadata?: any;
-};
+}
 
 export const makeExecuteResult = Record<ExecuteResultParams>({
   output_type: "execute_result",
@@ -124,11 +124,11 @@ type ImmutableExecuteResult = RecordOf<ExecuteResultParams>;
 
 /** DisplayData Record Boilerplate */
 
-type DisplayDataParams = {
+interface DisplayDataParams {
   output_type: "display_data";
   data: ImmutableMimeBundle;
   metadata?: any;
-};
+}
 
 export const makeDisplayData = Record<DisplayDataParams>({
   output_type: "display_data",
@@ -140,11 +140,11 @@ type ImmutableDisplayData = RecordOf<DisplayDataParams>;
 
 /** StreamOutput Record Boilerplate */
 
-type StreamOutputParams = {
+interface StreamOutputParams {
   output_type: "stream";
   name: "stdout" | "stderr";
   text: string;
-};
+}
 
 export const makeStreamOutput = Record<StreamOutputParams>({
   output_type: "stream",
@@ -156,12 +156,12 @@ type ImmutableStreamOutput = RecordOf<StreamOutputParams>;
 
 /** ErrorOutput Record Boilerplate */
 
-type ErrorOutputParams = {
+interface ErrorOutputParams {
   output_type: "error";
   ename: string;
   evalue: string;
   traceback: ImmutableList<string>;
-};
+}
 
 export const makeErrorOutput = Record<ErrorOutputParams>({
   output_type: "error",

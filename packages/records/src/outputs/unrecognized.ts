@@ -2,15 +2,15 @@
 // frontends are able to have a known fallback when an output type isn't known.
 
 // In-memory version
-export type UnrecognizedOutput = {
+export interface UnrecognizedOutput {
   outputType: "unrecognized";
   raw: any;
-};
+}
 
 // On disk
-export type NbformatUnrecognizedOutput = {
+export interface NbformatUnrecognizedOutput {
   output_type: string; // Technically, not one of "execute_result", "display_data", "stream", or "error"
-};
+}
 
 const UNRECOGNIZED = "unrecognized";
 

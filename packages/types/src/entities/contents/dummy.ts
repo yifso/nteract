@@ -3,9 +3,9 @@
  */
 import * as Immutable from "immutable";
 
-export type EmptyModelRecordProps = {
+export interface EmptyModelRecordProps {
   type: "unknown";
-};
+}
 
 export const makeEmptyModel = Immutable.Record<EmptyModelRecordProps>({
   type: "unknown"
@@ -14,14 +14,14 @@ export type EmptyModelRecord = Immutable.RecordOf<EmptyModelRecordProps>;
 
 type NotebookTypes = "unknown" | "directory" | "notebook" | "file";
 
-export type DummyContentRecordProps = {
+export interface DummyContentRecordProps {
   type: "dummy";
   assumedType: NotebookTypes;
   mimetype?: string | null;
   lastSaved: null;
   filepath: string;
   model: EmptyModelRecord;
-};
+}
 export const makeDummyContentRecord = Immutable.Record<DummyContentRecordProps>(
   {
     type: "dummy",

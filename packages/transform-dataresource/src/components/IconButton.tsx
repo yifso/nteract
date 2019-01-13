@@ -1,12 +1,12 @@
 import * as React from "react";
 
-type IconButtonProps = {
+interface IconButtonProps {
   message: string;
   onClick: () => void;
   children?: React.ReactNode;
   title: string;
   selected: boolean;
-};
+}
 
 export class IconButton extends React.Component<IconButtonProps> {
   render() {

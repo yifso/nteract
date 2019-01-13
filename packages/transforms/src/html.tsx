@@ -1,9 +1,9 @@
 import React from "react";
 
-type Props = {
+interface Props {
   data: string;
   mediaType: "text/html";
-};
+}
 
 // Note: createRange and Range must be polyfilled on older browsers with
 //       https://github.com/timdown/rangy

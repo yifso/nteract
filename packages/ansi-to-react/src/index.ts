@@ -72,11 +72,11 @@ function convertBundleIntoReact(
   return React.createElement("span", { style, key }, words);
 }
 
-declare type Props = {
+declare interface Props {
   children: string;
   className?: string;
   linkify: boolean;
-};
+}
 
 export default function Ansi(props: Props) {
   return React.createElement(

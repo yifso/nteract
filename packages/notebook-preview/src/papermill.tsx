@@ -1,10 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
 
-type PapermillMetadata = {
+interface PapermillMetadata {
   status?: "pending" | "running" | "completed";
   // TODO: Acknowledge / use other papermill metadata
-};
+}
 
 const PlainPapermillView = (props: PapermillMetadata) => {
   if (!props.status) {

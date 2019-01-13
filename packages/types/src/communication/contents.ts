@@ -5,11 +5,11 @@ import * as Immutable from "immutable";
 
 import { ContentRef } from "../refs";
 
-export type ContentCommunicationRecordProps = {
+export interface ContentCommunicationRecordProps {
   loading: boolean;
   saving: boolean;
   error?: object | null;
-};
+}
 
 export const makeContentCommunicationRecord = Immutable.Record<
   ContentCommunicationRecordProps
@@ -19,12 +19,12 @@ export const makeContentCommunicationRecord = Immutable.Record<
   error: null
 });
 
-export type ContentsCommunicationRecordProps = {
+export interface ContentsCommunicationRecordProps {
   byRef: Immutable.Map<
     ContentRef,
     Immutable.RecordOf<ContentCommunicationRecordProps>
   >;
-};
+}
 
 export const makeContentsCommunicationRecord = Immutable.Record<
   ContentsCommunicationRecordProps

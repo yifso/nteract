@@ -2,7 +2,7 @@ import * as React from "react";
 // We might only need this as a devDependency as it is only here for flow
 import { OutputType } from "@nteract/records";
 
-type Props = {
+interface Props {
   /**
    * React elements that accept Output
    */
@@ -11,9 +11,9 @@ type Props = {
    * The raw output, as expected from @nteract/records
    */
   output: OutputType;
-};
+}
 
-type State = {};
+interface State {}
 
 export class Output extends React.Component<Props, State> {
   static defaultProps = {

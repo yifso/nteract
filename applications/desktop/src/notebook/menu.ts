@@ -30,11 +30,11 @@ export function dispatchSaveAs(
 
 const dialog = remote.dialog;
 
-type SaveDialogOptions = {
+interface SaveDialogOptions {
   title: string;
   filters: Array<{ name: string; extensions: Array<string> }>;
   defaultPath?: string;
-};
+}
 
 export function showSaveAsDialog(): Promise<string> {
   return new Promise((resolve, reject) => {

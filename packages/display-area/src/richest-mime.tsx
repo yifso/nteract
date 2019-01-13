@@ -8,7 +8,7 @@ import {
 
 import { Subject } from "rxjs";
 
-type Props = {
+interface Props {
   displayOrder: string[];
   transforms: { [key: string]: any };
   bundle: { [key: string]: any };
@@ -17,21 +17,21 @@ type Props = {
   models?: object;
   channels?: Subject<any>;
   onMetadataChange?: Function;
-};
+}
 
-type ErrorInfo = {
+interface ErrorInfo {
   componentStack: string;
-};
+}
 
-type State = {
+interface State {
   error: Error | null | undefined;
   info: ErrorInfo | null | undefined;
-};
+}
 
-type FallbackProps = {
+interface FallbackProps {
   componentStack: string;
   error: Error;
-};
+}
 
 const Fallback = ({ componentStack, error }: FallbackProps) => (
   <div

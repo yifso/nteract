@@ -8,12 +8,12 @@ import { ContentRef } from "@nteract/types";
 
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   above: boolean;
   createCell: (type: "code" | "markdown") => void;
-};
+}
 
-type ConnectedProps = {
+interface ConnectedProps {
   above: boolean;
   createCellAppend: (
     payload: { cellType: CellType; contentRef: ContentRef }
@@ -35,7 +35,7 @@ type ConnectedProps = {
   ) => void;
   id?: string;
   contentRef: ContentRef;
-};
+}
 
 export const CellCreatorMenu = styled.div`
   display: none;

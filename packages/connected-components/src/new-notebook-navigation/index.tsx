@@ -20,9 +20,9 @@ import * as Immutable from "immutable";
 
 import { default as Logo } from "./logos";
 
-export type AvailableNotebook = {
+export interface AvailableNotebook {
   kernelspec: KernelspecRecord | KernelspecProps;
-};
+}
 
 export type AvailableNotebooks =
   | Array<AvailableNotebook>

@@ -2,10 +2,10 @@ import * as React from "react";
 
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   x: number;
   y: number;
-};
+}
 
 // A little "mixin" for picking the :before on a tooltip
 const beforeContent = (props: Props) => {

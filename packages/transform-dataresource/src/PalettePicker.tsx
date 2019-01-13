@@ -2,17 +2,17 @@ import * as React from "react";
 import { ChromePicker } from "react-color";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   colors: Array<string>;
   updateColor: Function;
-};
+}
 
-type State = {
+interface State {
   colors: string;
   selectedColor: string;
   open: boolean;
   selectedPosition: number;
-};
+}
 
 // NOTE: These styles could be extracted for each of the components used within.
 //       In order to get this typescript & styled-components transition in place though,

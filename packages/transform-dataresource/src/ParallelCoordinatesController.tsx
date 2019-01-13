@@ -10,18 +10,18 @@ import TooltipContent from "./tooltip-content";
 import * as Dx from "./types";
 import { JSONObject } from "@nteract/commutable/src";
 
-type State = {
+interface State {
   filterMode: boolean;
   data: Array<Object>;
   dataScales: { [index: string]: Function };
   columnExtent: { [index: string]: number[] };
-};
+}
 
-type Props = {
+interface Props {
   data: Dx.DataProps["data"];
   schema: Dx.DataProps["schema"];
   options: Dx.DataProps["options"];
-};
+}
 
 const axisSize = [40, 380];
 

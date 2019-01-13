@@ -9,7 +9,7 @@ function stringOrFnAccessor(
     : datapoint[accessor];
 }
 
-type SubsortObject = { array: Dx.Datapoint[]; value: number; label: string };
+interface SubsortObject { array: Dx.Datapoint[]; value: number; label: string }
 
 export const sortByOrdinalRange = (
   oAccessor: Function | string,

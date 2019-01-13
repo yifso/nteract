@@ -1,6 +1,6 @@
 import React from "react";
 
-type Props = {
+interface Props {
   /**
    * The JavaScript code that we would like to execute.
    */
@@ -9,7 +9,7 @@ type Props = {
    * The media type associated with our component.
    */
   mediaType: "text/javascript";
-};
+}
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {
   if (!el) return;

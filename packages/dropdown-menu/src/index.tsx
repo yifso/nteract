@@ -8,13 +8,13 @@ import { areComponentsEqual } from "react-hot-loader";
 import * as React from "react";
 import styled from "styled-components";
 
-type DropdownMenuProps = {
+interface DropdownMenuProps {
   children: React.ReactNode;
-};
+}
 
-type DropdownMenuState = {
+interface DropdownMenuState {
   menuHidden: boolean;
-};
+}
 
 const DropdownDiv = styled.div`
   z-index: 10000;

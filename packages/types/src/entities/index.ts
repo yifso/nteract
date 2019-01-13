@@ -21,13 +21,13 @@ export * from "./kernel-info";
 export * from "./kernelspecs";
 export * from "./modals";
 
-export type EntitiesRecordProps = {
+export interface EntitiesRecordProps {
   contents: Immutable.RecordOf<ContentsRecordProps>;
   hosts: Immutable.RecordOf<HostsRecordProps>;
   kernels: Immutable.RecordOf<KernelsRecordProps>;
   kernelspecs: Immutable.RecordOf<KernelspecsRecordProps>;
   modals: Immutable.RecordOf<ModalsRecordProps>;
-};
+}
 
 export type EntitiesRecord = Immutable.RecordOf<EntitiesRecordProps>;
 

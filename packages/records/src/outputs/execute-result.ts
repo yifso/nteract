@@ -21,22 +21,22 @@ export type ExecutionCount = number | null | undefined;
 export const EXECUTE_RESULT: ExecuteResultType = "execute_result";
 
 // In-memory version
-export type ExecuteResultOutput = {
+export interface ExecuteResultOutput {
   outputType: ExecuteResultType,
   executionCount: ExecutionCount,
   data: common.MimeBundle,
   metadata: {}
-};
+}
 
 // On disk
-export type NbformatExecuteResult = {
+export interface NbformatExecuteResult {
   output_type: ExecuteResultType,
   execution_count: ExecutionCount,
   data: common.OnDiskMimebundle,
   metadata: {}
-};
+}
 
-export type ExecuteResultMessage = {
+export interface ExecuteResultMessage {
   header: {
     msg_type: ExecuteResultType
   },
@@ -45,7 +45,7 @@ export type ExecuteResultMessage = {
     data: common.MimeBundle,
     metadata: {}
   }
-};
+}
 
 export function executeResult(
   executeResultOutput?: Readonly<{
