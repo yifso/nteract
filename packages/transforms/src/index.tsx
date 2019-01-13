@@ -15,7 +15,7 @@ type ObjectType = object;
 export interface Transforms extends ObjectType {
   [transform: string]: Transform;
 }
-type DisplayOrder = Array<string>;
+type DisplayOrder = string[];
 
 export interface TransformRegister {
   transforms: Transforms;

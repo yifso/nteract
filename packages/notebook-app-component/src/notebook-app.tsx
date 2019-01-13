@@ -359,7 +359,7 @@ export const ConnectedCell = connect(
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
 interface PureNotebookProps {
-  displayOrder?: Array<string>;
+  displayOrder?: string[];
   cellOrder?: Immutable.List<any>;
   transforms?: Object;
   theme?: string;
@@ -369,7 +369,7 @@ interface PureNotebookProps {
 }
 
 interface NotebookStateProps {
-  displayOrder: Array<string>;
+  displayOrder: string[];
   cellOrder: Immutable.List<any>;
   transforms: Object;
   theme: string;

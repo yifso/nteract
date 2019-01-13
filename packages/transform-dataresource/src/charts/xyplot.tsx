@@ -21,8 +21,8 @@ const thresholds = scaleThreshold<number, string>()
   .range(steps);
 
 function combineTopAnnotations(
-  topQ: Array<Dx.Datapoint>,
-  topSecondQ: Array<Dx.Datapoint>,
+  topQ: Dx.Datapoint[],
+  topSecondQ: Dx.Datapoint[],
   dim2: string
 ): any[] {
   const combinedAnnotations: JSONObject[] = [];
@@ -77,7 +77,7 @@ export const semioticScatterplot = (
   const { chart, primaryKey, colors, setColor, dimensions } = options;
 
   const { dim1, dim2, dim3, metric1, metric2, metric3 } = chart;
-  const filteredData: Array<Dx.Datapoint> = data.filter(
+  const filteredData: Dx.Datapoint[] = data.filter(
     (datapoint: Dx.Datapoint) =>
       datapoint[metric1] &&
       datapoint[metric2] &&
@@ -222,7 +222,7 @@ export const semioticScatterplot = (
     );
   }
 
-  let areas: { coordinates: Dx.Datapoint[] }[] = [];
+  let areas: Array<{ coordinates: Dx.Datapoint[] }> = [];
 
   if (
     type === "heatmap" ||

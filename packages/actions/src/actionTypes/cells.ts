@@ -21,7 +21,7 @@ export interface SetInCell<T> {
   type: "SET_IN_CELL";
   payload: {
     id: CellId;
-    path: Array<string>;
+    path: string[];
     value: T;
     contentRef: ContentRef;
   };

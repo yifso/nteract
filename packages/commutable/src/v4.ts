@@ -85,7 +85,7 @@ export interface RawCell {
 export type Cell = CodeCell | MarkdownCell | RawCell;
 
 export interface Notebook {
-  cells: Array<Cell>;
+  cells: Cell[];
   metadata: Object;
   nbformat: 4;
   nbformat_minor: number;

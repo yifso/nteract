@@ -51,7 +51,7 @@ export interface KernelInfo {
   //       actions, we allow this type to be an array of plain objects or the
   //       fully immutable variety
   // SPEC: help_links
-  helpLinks?: Array<HelpLink> | Immutable.List<HelpLinkRecord>;
+  helpLinks?: HelpLink[] | Immutable.List<HelpLinkRecord>;
 
   // This section is all from the language_info object, flattened to the top
   // level here

@@ -27,7 +27,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { PapermillView } from "./papermill";
 
 interface Props {
-  displayOrder: Array<string>;
+  displayOrder: string[];
   notebook: any;
   transforms: Transforms;
   theme: "light" | "dark";

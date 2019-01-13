@@ -25,7 +25,7 @@ export interface DataProps {
 export interface Schema {
   fields: Field[];
   pandas_version: string;
-  primaryKey: Array<string>;
+  primaryKey: string[];
 }
 export interface Field {
   name: string;

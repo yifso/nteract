@@ -258,7 +258,7 @@ export function executeResult(content: {
 export function error(content: {
   ename?: string;
   evalue?: string;
-  traceback?: Array<string>;
+  traceback?: string[];
 }) {
   return message(
     {
@@ -299,7 +299,7 @@ export function stream(content: { name: "stdout" | "stderr"; text: string }) {
 export function executeReply(content: {
   status: string;
   execution_count: number;
-  payload?: Array<object>;
+  payload?: object[];
   user_expressions?: object;
 }) {
   // TODO: This function could be better typed. It's a bit dual headed though since:

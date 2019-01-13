@@ -12,6 +12,6 @@ export function numeralFormatting(tickValue: number): string {
   return numeral(tickValue).format(format);
 }
 
-export function createLabelItems(uniqueValues: Array<string>): any[] {
+export function createLabelItems(uniqueValues: string[]): any[] {
   return uniqueValues.map(value => ({ label: value }));
 }

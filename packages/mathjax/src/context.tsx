@@ -8,7 +8,7 @@ export interface MathJaxObject {
       StartupHook(str: string, cb: () => void): void;
       MessageHook(str: string, cb: (msg: string) => void): void;
     };
-    Queue(elements: Array<any>, onRender?: Function): void;
+    Queue(elements: any[], onRender?: Function): void;
     processSectionDelay: number;
   };
 }

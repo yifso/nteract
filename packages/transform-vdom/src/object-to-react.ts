@@ -150,7 +150,7 @@ export function objectToReactElement(
  * @return {Array}     - The array of mixed values.
  */
 function arrayToReactChildren(
-  arr: Array<VDOMEl>,
+  arr: VDOMEl[],
   onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactNodeArray {
   let result: React.ReactNodeArray = [];

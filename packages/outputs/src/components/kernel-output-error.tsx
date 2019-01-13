@@ -19,7 +19,7 @@ interface Props {
   /**
    * The tracebook of the exception. This value is returned by the kernel.
    */
-  traceback: Array<string>;
+  traceback: string[];
 }
 
 const PlainKernelOutputError = (props: Props) => {

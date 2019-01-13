@@ -12,7 +12,7 @@ import * as Dx from "./types";
 
 interface State {
   filterMode: boolean;
-  data: Array<Object>;
+  data: Object[];
   dataScales: { [index: string]: Function };
   columnExtent: { [index: string]: number[] };
 }
@@ -27,8 +27,8 @@ const axisSize = [40, 380];
 
 function parallelizeData(
   data: Dx.Datapoint[],
-  metrics: { name: string }[],
-  schemaFields: { name: string; type: string }[],
+  metrics: Array<{ name: string }>,
+  schemaFields: Array<{ name: string; type: string }>,
   primaryKey: string[]
 ) {
   const minmax: { [index: string]: Function } = {};
@@ -114,7 +114,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
     return true;
   }
 
-  brushing = (selectedExtent: Array<number>, columnName: string) => {
+  brushing = (selectedExtent: number[], columnName: string) => {
     const columnExtent = this.state.columnExtent;
     columnExtent[columnName] = selectedExtent;
     this.setState({ columnExtent });

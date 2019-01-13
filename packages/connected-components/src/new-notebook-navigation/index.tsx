@@ -25,7 +25,7 @@ export interface AvailableNotebook {
 }
 
 export type AvailableNotebooks =
-  | Array<AvailableNotebook>
+  | AvailableNotebook[]
   | Immutable.List<AvailableNotebook>;
 
 const DisplayNameLong = styled.p`
@@ -172,7 +172,7 @@ export const PureNewNotebookNavigation = (props: {
   <Banner>
     <div>Start a new notebook</div>
     <NotebookCollection>
-      {(props.availableNotebooks as Array<AvailableNotebook>).map(
+      {(props.availableNotebooks as AvailableNotebook[]).map(
         (an: AvailableNotebook) => (
           <NewNotebook
             kernelspec={an.kernelspec}

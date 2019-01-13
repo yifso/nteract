@@ -30,10 +30,10 @@ export interface AuthorObject {
   name: string;
 }
 export interface HeaderDataProps {
-  authors: Array<AuthorObject>;
+  authors: AuthorObject[];
   title: string;
   description: string;
-  tags: Array<string>;
+  tags: string[];
 }
 
 export interface HeaderEditorProps {

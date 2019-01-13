@@ -98,7 +98,7 @@ export const semioticHierarchicalChart = (
   });
 
   const colorHash: { [index: string]: string } = {};
-  const sanitizedData: {}[] = [];
+  const sanitizedData: Array<{}> = [];
 
   data.forEach((datapoint: Dx.Datapoint) => {
     if (!colorHash[datapoint[selectedDimensions[0]]])
@@ -129,7 +129,7 @@ export const semioticHierarchicalChart = (
       type: hierarchyType,
       projection: baseHierarchyType === "sunburst" && "radial",
       hierarchySum: (node: { [index: string]: number }) => node[metric1],
-      hierarchyChildren: (node: { values: {}[] }) => node.values,
+      hierarchyChildren: (node: { values: Array<{}> }) => node.values,
       padding: hierarchyType === "treemap" ? 3 : 0
     },
     edgeRenderKey: (edge: Object, index: number) => {

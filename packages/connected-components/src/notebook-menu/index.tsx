@@ -33,8 +33,8 @@ const StickyMenu = styled(Menu)`
 
 interface Props {
   persistAfterClick?: boolean;
-  defaultOpenKeys?: Array<string>;
-  openKeys?: Array<string>;
+  defaultOpenKeys?: string[];
+  openKeys?: string[];
   currentKernelRef?: KernelRef | null;
   saveNotebook?: (payload: { contentRef: string }) => void;
   downloadNotebook?: (payload: { contentRef: string }) => void;
@@ -105,7 +105,7 @@ interface Props {
 }
 
 interface State {
-  openKeys?: Array<string>;
+  openKeys?: string[];
 }
 
 class PureNotebookMenu extends React.Component<Props, State> {
@@ -287,7 +287,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
       this.setState({ openKeys: [] });
     }
   };
-  handleOpenChange = (openKeys: Array<string>) => {
+  handleOpenChange = (openKeys: string[]) => {
     if (!this.props.persistAfterClick) {
       this.setState({ openKeys });
     }

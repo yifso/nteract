@@ -152,7 +152,7 @@ const Wrapper = styled.div`
 `;
 
 const metricDimSelector = (
-  values: Array<string>,
+  values: string[],
   selectionFunction: (val: string) => void,
   title: string,
   required: boolean,
@@ -241,8 +241,8 @@ interface VizControlParams {
   metrics: Array<{ name: string }>;
   dimensions: Array<{ name: string }>;
   updateChart: Function;
-  selectedDimensions: Array<string>;
-  selectedMetrics: Array<string>;
+  selectedDimensions: string[];
+  selectedMetrics: string[];
   hierarchyType: string;
   summaryType: string;
   networkType: string;
@@ -252,7 +252,7 @@ interface VizControlParams {
   lineType: string;
   areaType: string;
   setAreaType: (label: Dx.AreaType) => void;
-  data: Array<Object>;
+  data: Object[];
 }
 export default ({
   view,
