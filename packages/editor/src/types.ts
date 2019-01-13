@@ -8,12 +8,12 @@ declare class TextMarker {
   find(): { from: Position, to: Position };
 }
 
-export type TextMarkerOptions = {
+export interface TextMarkerOptions {
   atomic?: boolean,
   className?: string,
   css?: string,
   readOnly?: boolean
-};
+}
 
 export type LineHandle = any;
 
@@ -34,7 +34,7 @@ export declare class CMDoc {
   ): TextMarker;
 };
 
-export type EditorChange = {
+export interface EditorChange {
   /** Position (in the pre-change coordinate system) where the change started. */
   from: Position,
   /** Position (in the pre-change coordinate system) where the change ended. */
@@ -45,25 +45,25 @@ export type EditorChange = {
   removed: Array<string>,
   /**  String representing the origin of the change event and wether it can be merged with history */
   origin: string
-};
+}
 
-export type ScrollInfo = {
+export interface ScrollInfo {
   top: number,
   left: number,
   width: number,
   height: number,
   clientWidth: number,
   clientHeight: number
-};
+}
 
-export type Position = {
+export interface Position {
   ch: number,
   line: number
-};
+}
 
-export type Options = {
+export interface Options {
   cursorBlinkRate?: number,
   mode?: string,
   preserveScrollPosition?: boolean,
   [key: string]: any,
-};
+}

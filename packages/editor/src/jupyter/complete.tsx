@@ -26,24 +26,24 @@ export function formChangeObject(cm: CMI, change: EditorChange) {
   };
 }
 
-type CompletionResult = {
+interface CompletionResult {
   end: number;
   start: number;
   type: string;
   text: string;
   displayText?: string;
-};
+}
 
 type CompletionMatch = string | CompletionResult;
 
-type CompletionResults = {
+interface CompletionResults {
   cursor_start: number;
   cursor_end: number;
   matches: CompletionMatch[];
   metadata?: {
     _jupyter_types_experimental?: any;
   };
-};
+}
 
 // duplicate of default codemirror rendering logic for completions,
 // except if the completion have a metadata._experimental key, dispatch to a new

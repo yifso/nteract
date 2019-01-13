@@ -5,21 +5,21 @@ import TooltipContent from "../tooltip-content";
 import { JSONObject } from "@nteract/commutable";
 import * as Dx from "../types";
 
-type NodeObject = {
+interface NodeObject {
   id: string;
   nodeSize?: number;
   degree: number;
   x: number;
   y: number;
   value: number;
-};
+}
 
-type EdgeObject = {
+interface EdgeObject {
   source: NodeObject;
   target: NodeObject;
   weight: number;
   value: number;
-};
+}
 
 const fontScale = scaleLinear()
   .domain([5, 30])

@@ -33,9 +33,9 @@ const Mutation = gql`
   }
 `;
 
-type StartKernel = {
+interface StartKernel {
   name: string;
-};
+}
 
 const kernels: { [id: string]: Kernel } = {};
 

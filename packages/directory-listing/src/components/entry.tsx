@@ -9,9 +9,9 @@ import { Icon } from "./icon";
 import { Name } from "./name";
 import { LastSaved } from "./lastsaved";
 
-type EntryProps = {
+interface EntryProps {
   children: React.ReactNode;
-};
+}
 
 const DirectoryEntry = styled.tr`
   border-top: 1px solid #eaecef;

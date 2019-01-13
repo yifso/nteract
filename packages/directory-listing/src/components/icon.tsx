@@ -2,10 +2,10 @@ import * as React from "react";
 import styled from "styled-components";
 import { Book, FileText, FileDirectory } from "@nteract/octicons";
 
-type IconProps = {
+interface IconProps {
   color: string;
   fileType: "unknown" | "notebook" | "directory" | "file" | "dummy";
-};
+}
 
 const IconTD = styled.td`
   padding-right: 2px;

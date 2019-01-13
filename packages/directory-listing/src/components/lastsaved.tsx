@@ -2,9 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 import TimeAgo from "react-timeago";
 
-type LastSavedProps = {
+interface LastSavedProps {
   lastModified?: Date | null;
-};
+}
 
 const TimeAgoTD = styled.td`
   text-align: right;

@@ -13,9 +13,9 @@ export const DESKTOP_NOTEBOOK_CLOSING_STARTED: DesktopNotebookClosingState =
 export const DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE: DesktopNotebookClosingState =
   "Ready to Close";
 
-export type DesktopNotebookProps = {
+export interface DesktopNotebookProps {
   closingState: DesktopNotebookClosingState;
-};
+}
 
 export type DesktopNotebookRecord = Immutable.RecordOf<DesktopNotebookProps>;
 

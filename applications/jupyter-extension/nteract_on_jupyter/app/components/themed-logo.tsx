@@ -1,10 +1,10 @@
 import * as React from "react";
 import { WideLogo } from "@nteract/logos";
 
-type ThemedLogoProps = {
+interface ThemedLogoProps {
   height?: number;
   theme?: "light" | "dark";
-};
+}
 
 const ThemedLogo = (props: ThemedLogoProps) => (
   <WideLogo height={props.height} theme={props.theme} />

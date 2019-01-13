@@ -47,11 +47,11 @@ export function tildify(p?: string) {
   ).slice(0, -1);
 }
 
-type Attributes = {
+interface Attributes {
   fullpath: string;
   modified: boolean;
   kernelStatus?: string | null;
-};
+}
 
 export function setTitleFromAttributes(attributes: Attributes) {
   const filename = tildify(attributes.fullpath);

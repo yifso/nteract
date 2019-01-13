@@ -3,11 +3,11 @@
 
 import * as React from "react";
 
-type HijackScrollProps = {
+interface HijackScrollProps {
   focused: boolean;
   onClick: () => void;
   children: React.ReactNode;
-};
+}
 
 export class HijackScroll extends React.Component<HijackScrollProps> {
   el: HTMLDivElement | null = null;

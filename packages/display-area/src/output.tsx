@@ -9,7 +9,7 @@ import RichestMime from "./richest-mime";
 
 import { JSONObject } from "@nteract/commutable";
 
-type Props = {
+interface Props {
   displayOrder: Array<string>;
   output: any;
   transforms: Transforms;
@@ -19,7 +19,7 @@ type Props = {
   metadata: Object;
   index: number;
   onMetadataChange?: (index: number, metadata: JSONObject) => void;
-};
+}
 
 const classPrefix = "nteract-display-area-";
 

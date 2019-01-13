@@ -5,10 +5,10 @@ import * as Immutable from "immutable";
 
 import { KernelRef } from "../refs";
 
-export type KernelCommunicationRecordProps = {
+export interface KernelCommunicationRecordProps {
   loading: boolean;
   error?: object | null;
-};
+}
 
 export const makeKernelCommunicationRecord = Immutable.Record<
   KernelCommunicationRecordProps
@@ -17,12 +17,12 @@ export const makeKernelCommunicationRecord = Immutable.Record<
   error: null
 });
 
-export type KernelsCommunicationRecordProps = {
+export interface KernelsCommunicationRecordProps {
   byRef: Immutable.Map<
     KernelRef,
     Immutable.RecordOf<KernelCommunicationRecordProps>
   >;
-};
+}
 
 export const makeKernelsCommunicationRecord = Immutable.Record<
   KernelsCommunicationRecordProps

@@ -1,9 +1,9 @@
 import React from "react";
 
-type Props = {
+interface Props {
   data: string;
   mediaType: "text/javascript";
-};
+}
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {
   if (!el) return;

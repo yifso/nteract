@@ -27,14 +27,14 @@ const urljoin = require("url-join");
 
 require("./fonts");
 
-export type JupyterConfigData = {
+export interface JupyterConfigData {
   token: string;
   page: "tree" | "view" | "edit";
   contentsPath: string;
   baseUrl: string;
   appVersion: string;
   assetUrl: string;
-};
+}
 
 function main(rootEl: Element, dataEl: Node | null) {
   // When the data element isn't there, provide an error message

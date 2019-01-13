@@ -22,14 +22,14 @@ import * as React from "react";
  * is to add another logo in a PR. 🎉
  */
 
-type WrapperProps = {
+interface WrapperProps {
   children: React.ReactNode;
   outerProps?: any;
   width?: number | string;
   height?: number | string;
   preserveAspectRatio?: string;
   viewBox: string;
-};
+}
 
 export const SVGWrapper = (props: WrapperProps) => {
   return (

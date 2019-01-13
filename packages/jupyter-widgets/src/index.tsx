@@ -3,10 +3,10 @@ import { Subject } from "rxjs";
 
 // import { OuterShim } from "./outer-shim";
 
-type Props = {
+interface Props {
   data: { model_id: string };
   channels: Subject<any>;
-};
+}
 
 /**
  * Component used to render a widget view.

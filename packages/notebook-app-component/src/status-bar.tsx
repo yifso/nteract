@@ -4,11 +4,11 @@ import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import * as selectors from "@nteract/selectors";
 import { ContentRef, AppState, KernelRef } from "@nteract/types";
 
-type Props = {
+interface Props {
   lastSaved?: Date | null;
   kernelSpecDisplayName: string;
   kernelStatus: string;
-};
+}
 
 const NOT_CONNECTED = "not connected";
 
@@ -69,10 +69,10 @@ export class StatusBar extends React.Component<Props> {
   }
 }
 
-type InitialProps = {
+interface InitialProps {
   contentRef: ContentRef;
   kernelRef?: KernelRef | null;
-};
+}
 
 const makeMapStateToProps = (
   initialState: AppState,

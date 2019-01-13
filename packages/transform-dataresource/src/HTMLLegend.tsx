@@ -2,13 +2,13 @@ import * as React from "react";
 
 import PalettePicker from "./PalettePicker";
 
-type HTMLLegendProps = {
+interface HTMLLegendProps {
   values: Array<string>;
   colorHash: { [index: string]: string };
   valueHash: { [index: string]: number };
   colors?: Array<string>;
   setColor?: Function;
-};
+}
 
 const HTMLLegend = ({
   values,

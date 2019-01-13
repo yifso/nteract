@@ -25,10 +25,10 @@ export const defaultNotebook = makeNotebookRecord();
 export const createNotebook = makeNotebookRecord;
 export const emptyNotebook = makeNotebookRecord();
 
-export type CellStructure = {
+export interface CellStructure {
   cellOrder: ImmutableList<CellId>;
   cellMap: ImmutableMap<CellId, ImmutableCell>;
-};
+}
 
 /**
  * A function that appends a new cell to a CellStructure object.

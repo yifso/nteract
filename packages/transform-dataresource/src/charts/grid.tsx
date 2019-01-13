@@ -25,12 +25,12 @@ type OnChangeProps = (input: number | string) => void;
 
 type FilterIndexSignature = "integer" | "number" | "string";
 
-type NumberFilterProps = {
+interface NumberFilterProps {
   onChange: OnChangeProps;
   filterState: { [key: string]: string };
   filterName: string;
   updateFunction: (input: JSONObject) => void;
-};
+}
 
 const NumberFilter = (props: NumberFilterProps) => {
   const { filterState, filterName, updateFunction, onChange } = props;
@@ -122,24 +122,24 @@ const filterMethod: FilterMethodType = {
   string: filterStrings
 };
 
-type FilterObject = {
+interface FilterObject {
   id: string;
   value: string;
-};
+}
 
-type RowObject = {
+interface RowObject {
   [key: string]: string;
-};
+}
 
-type State = {
+interface State {
   filters: { [key: string]: Function };
   showFilters: boolean;
-};
+}
 
-type Props = {
+interface Props {
   data: { data: Dx.Datapoint[]; schema: Dx.Schema };
   height: number;
-};
+}
 
 class DataResourceTransformGrid extends React.Component<Props, State> {
   static defaultProps = {

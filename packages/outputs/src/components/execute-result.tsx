@@ -3,7 +3,7 @@ import { MediaBundle } from "@nteract/records";
 
 import { RichMedia } from "./rich-media";
 
-type Props = {
+interface Props {
   /**
    * The literal type of output, used for routing with the `<Output />` element
    */
@@ -32,7 +32,7 @@ type Props = {
    * React elements that accept mimebundle data, will get passed data[mimetype]
    */
   children: React.ReactNode;
-};
+}
 
 export const ExecuteResult = (props: Props) => {
   const { data, metadata, children } = props;

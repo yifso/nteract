@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   data: string;
   metadata: any;
   mediaType: "image/png" | "image/jpeg" | "image/gif";
-};
+}
 
 type ImageDisplayProps = Props & {
   mimetype?: "image/png" | "image/jpeg" | "image/gif";

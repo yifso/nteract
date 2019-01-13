@@ -17,12 +17,12 @@ import { View } from "../types";
 
 import { IconButton } from "./IconButton";
 
-type Props = {
+interface Props {
   setGrid: () => void;
   dimensions: Array<Object>;
   setView: (view: View) => void;
   currentView: string;
-};
+}
 
 export const Toolbar = ({
   dimensions,

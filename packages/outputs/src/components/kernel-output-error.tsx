@@ -2,7 +2,7 @@ import * as React from "react";
 import Ansi from "ansi-to-react";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   /**
    *  The name of the exception. This value is returned by the kernel.
    */
@@ -20,7 +20,7 @@ type Props = {
    * The tracebook of the exception. This value is returned by the kernel.
    */
   traceback: Array<string>;
-};
+}
 
 const PlainKernelOutputError = (props: Props) => {
   const { ename, evalue, traceback } = props;

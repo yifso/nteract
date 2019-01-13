@@ -1,9 +1,9 @@
 import React from "react";
 
-type Props = {
+interface Props {
   data: string;
   mediaType: "image/svg+xml";
-};
+}
 
 export default class SVGDisplay extends React.PureComponent<Props> {
   el?: HTMLElement | null;

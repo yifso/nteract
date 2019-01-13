@@ -16,7 +16,7 @@ interface Props {
 }
 
 type TileTheme = "dark" | "light";
-type TileLayer = { urlTemplate: string; layerOptions: object };
+interface TileLayer { urlTemplate: string; layerOptions: object }
 
 const MIMETYPE = "application/geo+json";
 

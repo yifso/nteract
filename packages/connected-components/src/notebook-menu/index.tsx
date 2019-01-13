@@ -31,7 +31,7 @@ const StickyMenu = styled(Menu)`
   z-index: 10000;
 `;
 
-type Props = {
+interface Props {
   persistAfterClick?: boolean;
   defaultOpenKeys?: Array<string>;
   openKeys?: Array<string>;
@@ -102,11 +102,11 @@ type Props = {
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
   currentKernelspecs?: KernelspecsByRefRecord | null;
-};
+}
 
-type State = {
+interface State {
   openKeys?: Array<string>;
-};
+}
 
 class PureNotebookMenu extends React.Component<Props, State> {
   state: State = {};

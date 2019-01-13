@@ -90,12 +90,12 @@ export interface Worksheet {
   metadata: object;
 }
 
-export type Notebook = {
+export interface Notebook {
   worksheets: Worksheet[];
   metadata: object;
   nbformat: 3;
   nbformat_minor: number;
-};
+}
 
 const createImmutableMarkdownCell = (
   cell: MarkdownCell

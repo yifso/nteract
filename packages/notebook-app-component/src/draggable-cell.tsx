@@ -47,28 +47,28 @@ const cellDragPreviewImage = [
   "Haa1+w2+iFqx0aIgvgAAAABJRU5ErkJggg=="
 ].join("");
 
-type Props = {
+interface Props {
   focusCell: (payload: any) => void;
   id: string;
   moveCell: (payload: any) => void;
   children: React.ReactNode;
   contentRef: ContentRef;
-};
+}
 
-type DnDSourceProps = {
+interface DnDSourceProps {
   connectDragPreview: ConnectDragPreview;
   connectDragSource: ConnectDragSource;
   isDragging: boolean;
-};
+}
 
-type DnDTargetProps = {
+interface DnDTargetProps {
   connectDropTarget: ConnectDropTarget;
   isOver: boolean;
-};
+}
 
-type State = {
+interface State {
   hoverUpperHalf: boolean;
-};
+}
 
 const cellSource = {
   beginDrag(props: Props) {
@@ -88,11 +88,11 @@ const DragHandle = styled.div.attrs({
   cursor: move;
 `;
 
-type DragAreaProps = {
+interface DragAreaProps {
   isDragging: boolean;
   isOver: boolean;
   hoverUpperHalf: boolean;
-};
+}
 
 const DragArea = styled.div`
   position: relative;
