@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import Highlighter from "../syntax-highlighter";
 import styled from "styled-components";
+import Highlighter from "../syntax-highlighter";
 
 export type SourceProps = {
   language?: string;

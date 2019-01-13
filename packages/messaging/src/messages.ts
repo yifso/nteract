@@ -3,10 +3,10 @@
  */
 import uuid from "uuid/v4";
 import {
+  ExecuteRequest,
   JupyterMessage,
-  MessageType,
   JupyterMessageHeader,
-  ExecuteRequest
+  MessageType
 } from "./types";
 
 /**

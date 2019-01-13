@@ -1,19 +1,19 @@
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 
+import { ContentRef } from "@nteract/types";
 import * as React from "react";
 import {
-  DragSource,
-  DropTarget,
-  DragSourceMonitor,
-  ConnectDragSource,
   ConnectDragPreview,
+  ConnectDragSource,
   ConnectDropTarget,
-  DropTargetMonitor,
+  DragSource,
   DragSourceConnector,
-  DropTargetConnector
+  DragSourceMonitor,
+  DropTarget,
+  DropTargetConnector,
+  DropTargetMonitor
 } from "react-dnd";
-import { ContentRef } from "@nteract/types";
 
 import styled from "styled-components";
 

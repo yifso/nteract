@@ -2,20 +2,20 @@ import produce from "immer";
 import uuid from "uuid/v4";
 
 import {
+  CODECELL,
+  CodeCellType,
+  MARKDOWNCELL,
+  MarkdownCellType,
   NbformatCell,
   NbformatCodeCell,
-  CodeCellType,
-  MarkdownCellType,
-  NbformatMarkdownCell,
-  CODECELL,
-  MARKDOWNCELL
+  NbformatMarkdownCell
 } from "./cells";
 import { NbformatOutput } from "./outputs";
 import {
-  ImmutableNotebook,
-  ImmutableCellOrder,
+  ExecutionCount,
   ImmutableCellMap,
-  ExecutionCount
+  ImmutableCellOrder,
+  ImmutableNotebook
 } from "./types";
 
 export type v4NotebookVersionType = 4;

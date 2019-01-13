@@ -3,10 +3,10 @@ import { Record, RecordOf } from "immutable";
 import { Kernelspecs } from "@nteract/types";
 
 import {
-  SetKernelSpecsAction,
-  SetQuittingStateAction,
   QUITTING_STATE_NOT_STARTED,
-  QuittingState
+  QuittingState,
+  SetKernelSpecsAction,
+  SetQuittingStateAction
 } from "./actions";
 
 type MainStateProps = {

@@ -1,6 +1,6 @@
 jest.mock("fs");
-import { webFrame, ipcRenderer as ipc } from "electron";
 import { actions } from "@nteract/core";
+import { ipcRenderer as ipc, webFrame } from "electron";
 import * as Immutable from "immutable";
 
 import * as menu from "../../src/notebook/menu";

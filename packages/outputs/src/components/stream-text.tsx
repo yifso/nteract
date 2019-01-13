@@ -1,6 +1,6 @@
-import * as React from "react";
-import Ansi from "ansi-to-react";
 import { StreamOutput } from "@nteract/records";
+import Ansi from "ansi-to-react";
+import * as React from "react";
 
 type Props = StreamOutput;
 

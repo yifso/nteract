@@ -1,17 +1,17 @@
-import * as Immutable from "immutable";
-import * as React from "react";
-import styled from "styled-components";
-import Menu, { SubMenu, Divider, MenuItem } from "rc-menu";
 import { CellType } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
   AppState,
   ContentRef,
   KernelRef,
-  KernelspecsRef,
-  KernelspecsByRefRecord
+  KernelspecsByRefRecord,
+  KernelspecsRef
 } from "@nteract/types";
+import * as Immutable from "immutable";
+import Menu, { Divider, MenuItem, SubMenu } from "rc-menu";
+import * as React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 import { MODAL_TYPES } from "../modal-controller";
 

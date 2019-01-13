@@ -1,12 +1,12 @@
-import { AppRecord, makeAppRecord } from "@nteract/types";
 import * as actions from "@nteract/actions";
 import {
-  SetNotificationSystemAction,
-  SetGithubTokenAction,
   Save,
   SaveFailed,
-  SaveFulfilled
+  SaveFulfilled,
+  SetGithubTokenAction,
+  SetNotificationSystemAction
 } from "@nteract/actions";
+import { AppRecord, makeAppRecord } from "@nteract/types";
 
 function setGithubToken(state: AppRecord, action: SetGithubTokenAction) {
   return state.set("githubToken", action.payload.githubToken);

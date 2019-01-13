@@ -1,6 +1,6 @@
-import * as React from "react";
-import { transforms, displayOrder, Transforms } from "@nteract/transforms";
+import { displayOrder, transforms, Transforms } from "@nteract/transforms";
 import { Map as ImmutableMap } from "immutable";
+import * as React from "react";
 
 import Output from "./output";
 

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux-immutable";
 
 import {
-  makeEntitiesRecord,
   EntitiesRecord,
-  EntitiesRecordProps
+  EntitiesRecordProps,
+  makeEntitiesRecord
 } from "@nteract/types";
 
 import { Action } from "redux";

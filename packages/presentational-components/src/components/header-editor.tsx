@@ -1,14 +1,14 @@
-import * as React from "react";
 import {
-  H1,
-  Tag,
-  EditableText,
   Button,
+  EditableText,
+  H1,
+  ITagProps,
   Position,
-  Tooltip,
-  ITagProps
+  Tag,
+  Tooltip
 } from "@blueprintjs/core";
 import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
+import * as React from "react";
 
 // https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
 

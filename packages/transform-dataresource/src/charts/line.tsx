@@ -1,10 +1,10 @@
-import * as React from "react";
-import { curveMonotoneX } from "d3-shape";
 import { scaleLinear, scaleTime } from "d3-scale";
+import { curveMonotoneX } from "d3-shape";
+import * as React from "react";
 
 import TooltipContent from "../tooltip-content";
-import { numeralFormatting } from "../utilities";
 import * as Dx from "../types";
+import { numeralFormatting } from "../utilities";
 
 interface LineOptions {
   chart: Dx.Chart;

@@ -1,5 +1,5 @@
-import { errorMiddleware } from "../src/middlewares";
 import { Action } from "redux";
+import { errorMiddleware } from "../src/middlewares";
 
 const fakeConsole = {
   error: () => {}

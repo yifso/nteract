@@ -6,8 +6,8 @@ import { ChildProcess } from "child_process";
 import * as Immutable from "immutable";
 import { Observable, Subject } from "rxjs";
 
-import { HostRef, KernelRef } from "../refs";
 import { KernelId, SessionId } from "../ids";
+import { HostRef, KernelRef } from "../refs";
 
 import { KernelInfo } from "./kernel-info";
 

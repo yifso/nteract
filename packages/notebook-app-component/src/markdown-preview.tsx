@@ -1,13 +1,13 @@
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint jsx-a11y/no-noninteractive-tabindex: 0 */
 
-import React from "react";
 import Markdown from "@nteract/markdown";
 import {
+  Input,
   Outputs,
-  PromptBuffer,
-  Input
+  PromptBuffer
 } from "@nteract/presentational-components";
+import React from "react";
 
 type Props = {
   source: string;

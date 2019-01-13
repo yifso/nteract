@@ -11,11 +11,11 @@
  *
  */
 
-import * as React from "react";
-import { selectors, ContentRef, AppState } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import moment from "moment";
-import styled from "styled-components";
+import * as React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 type LastSavedProps = {
   date: string | number | Date | null;

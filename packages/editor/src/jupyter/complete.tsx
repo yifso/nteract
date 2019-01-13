@@ -1,20 +1,20 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 
-import { Doc, Position, Editor } from "codemirror";
-import { Observable, Observer } from "rxjs";
-import { first, map, timeout } from "rxjs/operators";
 import {
-  createMessage,
   childOf,
-  ofMessageType,
-  JupyterMessage
+  createMessage,
+  JupyterMessage,
+  ofMessageType
 } from "@nteract/messaging";
 import { Channels } from "@nteract/messaging";
+import { Doc, Editor, Position } from "codemirror";
+import { Observable, Observer } from "rxjs";
+import { first, map, timeout } from "rxjs/operators";
 
 import { Hint } from "../components/hint";
-import { EditorChange, CMI } from "../types";
-import { js_idx_to_char_idx, char_idx_to_js_idx } from "./surrogate";
+import { CMI, EditorChange } from "../types";
+import { char_idx_to_js_idx, js_idx_to_char_idx } from "./surrogate";
 
 // Hint picker
 export const pick = (cm: any, handle: { pick: () => void }) => handle.pick();

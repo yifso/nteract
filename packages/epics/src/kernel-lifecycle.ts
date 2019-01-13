@@ -1,32 +1,32 @@
 /**
  * @module epics
  */
-import { Observable, Observer, of, empty, merge } from "rxjs";
-import {
-  createMessage,
-  childOf,
-  ofMessageType,
-  Channels,
-  JupyterMessage
-} from "@nteract/messaging";
 import { ImmutableNotebook } from "@nteract/commutable";
 import {
+  Channels,
+  childOf,
+  createMessage,
+  JupyterMessage,
+  ofMessageType
+} from "@nteract/messaging";
+import { ActionsObservable, ofType } from "redux-observable";
+import { empty, merge, Observable, Observer, of } from "rxjs";
+import {
+  catchError,
+  concatMap,
   filter,
+  first,
   map,
   mergeMap,
-  concatMap,
-  catchError,
-  first,
   switchMap,
   take,
   timeout
 } from "rxjs/operators";
-import { ActionsObservable, ofType } from "redux-observable";
 
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
 import { ContentRef, KernelRef } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
-import * as selectors from "@nteract/selectors";
-import * as actions from "@nteract/actions";
 import { AppState, KernelInfo } from "@nteract/types";
 
 const path = require("path");

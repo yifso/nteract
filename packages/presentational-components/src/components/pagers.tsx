@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Outputs } from "./outputs";
 import styled from "styled-components";
+import { Outputs } from "./outputs";
 /**
  * Description
  */

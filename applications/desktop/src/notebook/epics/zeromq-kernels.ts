@@ -1,42 +1,42 @@
 import { ChildProcess } from "child_process";
 
-import { Observable, of, merge, empty, Subscriber } from "rxjs";
-import { sample } from "lodash";
 import {
-  filter,
-  map,
-  tap,
-  mergeMap,
-  catchError,
-  switchMap,
-  concatMap,
-  timeout,
-  first
-} from "rxjs/operators";
-import { launchSpec } from "spawnteract";
-import { ActionsObservable, ofType, StateObservable } from "redux-observable";
+  actions,
+  AppState,
+  ContentRef,
+  KernelRef,
+  LocalKernelProps,
+  selectors
+} from "@nteract/core";
 import { ipcRenderer as ipc } from "electron";
 import {
   createMainChannel,
   JupyterConnectionInfo
 } from "enchannel-zmq-backend";
 import * as jmp from "jmp";
+import { sample } from "lodash";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
+import { empty, merge, Observable, of, Subscriber } from "rxjs";
 import {
-  selectors,
-  actions,
-  AppState,
-  KernelRef,
-  ContentRef,
-  LocalKernelProps
-} from "@nteract/core";
+  catchError,
+  concatMap,
+  filter,
+  first,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  timeout
+} from "rxjs/operators";
+import { launchSpec } from "spawnteract";
 
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 
 import {
+  Channels,
   childOf,
   ofMessageType,
-  shutdownRequest,
-  Channels
+  shutdownRequest
 } from "@nteract/messaging";
 
 import { Actions } from "../actions";

@@ -1,8 +1,8 @@
-import * as React from "react";
-import styled from "styled-components";
-import { dirname } from "path";
 import { AppState, ContentRef, selectors } from "@nteract/core";
+import { dirname } from "path";
+import * as React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 import { default as Notebook } from "../notebook";
 import * as TextFile from "./text-file";

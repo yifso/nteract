@@ -1,6 +1,6 @@
 /* eslint class-methods-use-this: 0 */
-import React from "react";
 import { cloneDeep } from "lodash";
+import React from "react";
 
 type Props = {
   data: string | object;

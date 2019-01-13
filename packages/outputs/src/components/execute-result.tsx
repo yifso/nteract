@@ -1,5 +1,5 @@
-import * as React from "react";
 import { MediaBundle } from "@nteract/records";
+import * as React from "react";
 
 import { RichMedia } from "./rich-media";
 

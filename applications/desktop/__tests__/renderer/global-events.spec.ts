@@ -1,22 +1,23 @@
-import * as Immutable from "immutable";
 import {
   createContentRef,
-  makeStateRecord,
-  makeEntitiesRecord,
   makeContentsRecord,
+  makeDocumentRecord,
+  makeEntitiesRecord,
   makeNotebookContentRecord,
-  makeDocumentRecord
+  makeStateRecord
 } from "@nteract/core";
+import * as Immutable from "immutable";
 
 import { ipcRenderer as ipc } from "../../__mocks__/electron";
+import * as actions from "../../src/notebook/actions";
 import * as globalEvents from "../../src/notebook/global-events";
 import {
-  makeDesktopNotebookRecord,
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
+  DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE,
   DESKTOP_NOTEBOOK_CLOSING_STARTED,
-  DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
+  DesktopNotebookClosingState,
+  makeDesktopNotebookRecord
 } from "../../src/notebook/state";
-import * as actions from "../../src/notebook/actions";
 
 const createStore = (
   contentRef,

@@ -3,8 +3,8 @@
  */
 import { exec } from "child_process";
 import fs from "fs";
-import path from "path";
 import { homedir } from "os";
+import path from "path";
 
 let sysPrefixGuess: string | null | undefined = undefined;
 

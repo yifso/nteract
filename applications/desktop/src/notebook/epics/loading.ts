@@ -1,24 +1,24 @@
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
 
-import { empty, of, forkJoin } from "rxjs";
 import {
-  map,
-  tap,
-  switchMap,
-  mergeMap,
+  ImmutableNotebook,
+  monocellNotebook,
+  Notebook,
+  toJS
+} from "@nteract/commutable";
+import { actions, AppState, selectors } from "@nteract/core";
+import { readFileObservable, statObservable } from "fs-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
+import { empty, forkJoin, of } from "rxjs";
+import {
   catchError,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
   timeout
 } from "rxjs/operators";
-import { ofType, ActionsObservable, StateObservable } from "redux-observable";
-import { readFileObservable, statObservable } from "fs-observable";
-import {
-  monocellNotebook,
-  toJS,
-  ImmutableNotebook,
-  Notebook
-} from "@nteract/commutable";
-import { actions, selectors, AppState } from "@nteract/core";
 
 const notebookMediaType = "application/x-ipynb+json";
 

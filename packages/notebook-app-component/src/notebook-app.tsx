@@ -1,41 +1,41 @@
 /* eslint-disable no-return-assign */
-import * as Immutable from "immutable";
-import * as React from "react";
-import { Subject } from "rxjs";
-import { actions, selectors } from "@nteract/core";
 import {
   CellId,
-  ImmutableCodeCell,
   ExecutionCount,
+  ImmutableCodeCell,
   JSONObject
 } from "@nteract/commutable";
-import { AppState, ContentRef, KernelRef } from "@nteract/types";
+import { actions, selectors } from "@nteract/core";
+import { Output, RichestMime } from "@nteract/display-area";
 import {
+  Cell as PlainCell,
   Input,
+  Outputs,
+  Pagers,
   Prompt,
   Source,
-  Pagers,
-  Outputs,
-  Cell as PlainCell,
   themes as rawThemeVars
 } from "@nteract/presentational-components";
-import { DragDropContext as dragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { RichestMime, Output } from "@nteract/display-area";
 import {
   displayOrder as defaultDisplayOrder,
   transforms as defaultTransforms
 } from "@nteract/transforms";
+import { AppState, ContentRef, KernelRef } from "@nteract/types";
+import * as Immutable from "immutable";
+import * as React from "react";
+import { DragDropContext as dragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { Subject } from "rxjs";
 
-import DraggableCell from "./draggable-cell";
 import CellCreator from "./cell-creator";
-import StatusBar from "./status-bar";
-import MarkdownPreviewer from "./markdown-preview";
+import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
-import Toolbar from "./toolbar";
 import { HijackScroll } from "./hijack-scroll";
+import MarkdownPreviewer from "./markdown-preview";
+import StatusBar from "./status-bar";
+import Toolbar from "./toolbar";
 
 import styled, { createGlobalStyle } from "styled-components";
 

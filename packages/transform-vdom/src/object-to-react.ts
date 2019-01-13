@@ -32,7 +32,7 @@
  */
 
 import * as React from "react";
-import { serializeEvent, SerializedEvent } from "./event-to-object";
+import { SerializedEvent, serializeEvent } from "./event-to-object";
 
 export { SerializedEvent } from "./event-to-object";
 

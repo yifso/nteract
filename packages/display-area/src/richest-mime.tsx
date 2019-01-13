@@ -1,10 +1,10 @@
-import * as React from "react";
 import {
+  displayOrder,
   richestMimetype,
   transforms,
-  displayOrder,
   Transforms
 } from "@nteract/transforms";
+import * as React from "react";
 
 import { Subject } from "rxjs";
 

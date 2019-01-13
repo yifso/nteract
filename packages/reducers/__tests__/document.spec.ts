@@ -1,24 +1,24 @@
 /* eslint-disable max-len */
 
-import uuid from "uuid/v4";
 import {
+  appendCellToNotebook,
   emptyCodeCell,
   emptyMarkdownCell,
-  appendCellToNotebook,
   emptyNotebook,
   makeDisplayData,
   makeStreamOutput
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
+import uuid from "uuid/v4";
 
 import * as actions from "@nteract/actions";
-import {
-  notebook as reducers,
-  reduceOutputs,
-  cleanCellTransient
-} from "../src/core/entities/contents/notebook";
-import { makeDocumentRecord } from "@nteract/types";
 import { fixtureCommutable } from "@nteract/fixtures";
+import { makeDocumentRecord } from "@nteract/types";
+import {
+  cleanCellTransient,
+  notebook as reducers,
+  reduceOutputs
+} from "../src/core/entities/contents/notebook";
 
 const initialDocument = Immutable.Map();
 const monocellDocument = initialDocument

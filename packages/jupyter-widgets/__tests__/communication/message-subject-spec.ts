@@ -1,6 +1,6 @@
+import { EventEmitter } from "events";
 import { Subject } from "rxjs";
 import { first } from "rxjs/operators";
-import { EventEmitter } from "events";
 import { MakePostMessageSubject } from "../../src/communication/message-subject";
 
 /**

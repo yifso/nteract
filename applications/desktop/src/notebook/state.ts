@@ -1,5 +1,5 @@
-import * as Immutable from "immutable";
 import { AppState } from "@nteract/core";
+import * as Immutable from "immutable";
 
 export type DesktopNotebookClosingState =
   | "Not Started" // Attempts to close BrowserWindow will initiate closeNotebookEpic and the window will be left open

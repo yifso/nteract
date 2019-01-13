@@ -1,6 +1,6 @@
-import * as React from "react";
-import L from "leaflet";
 import { GeoJsonObject } from "geojson";
+import L from "leaflet";
+import * as React from "react";
 import LeafletCSS from "./leafletCss";
 
 interface Metadata {

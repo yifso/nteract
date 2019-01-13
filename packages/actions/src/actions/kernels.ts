@@ -9,8 +9,8 @@ import {
   RemoteKernelProps
 } from "@nteract/types";
 
-import * as actionTypes from "../actionTypes";
 import { ExecuteRequest } from "@nteract/messaging";
+import * as actionTypes from "../actionTypes";
 
 export function launchKernelFailed(payload: {
   error: Error;

@@ -1,21 +1,21 @@
 import { JupyterMessage } from "@nteract/messaging";
 
 import {
-  NbformatDisplayDataOutput,
-  DisplayDataOutput
+  DisplayDataOutput,
+  NbformatDisplayDataOutput
 } from "./display-data";
-import { NbformatStreamOutput, StreamOutput } from "./stream";
-import { NbformatErrorOutput, ErrorOutput } from "./error";
+import { displayData, DisplayDataMessage } from "./display-data";
+import { ErrorOutput, NbformatErrorOutput } from "./error";
+import { ErrorMessage, errorOutput } from "./error";
 import {
-  NbformatExecuteResult,
-  ExecuteResultOutput
+  ExecuteResultOutput,
+  NbformatExecuteResult
 } from "./execute-result";
+import { executeResult, ExecuteResultMessage } from "./execute-result";
+import { NbformatStreamOutput, StreamOutput } from "./stream";
+import { StreamMessage, streamOutput } from "./stream";
 import { UnrecognizedOutput } from "./unrecognized";
 import { unrecognized } from "./unrecognized";
-import { displayData, DisplayDataMessage } from "./display-data";
-import { streamOutput, StreamMessage } from "./stream";
-import { errorOutput, ErrorMessage } from "./error";
-import { executeResult, ExecuteResultMessage } from "./execute-result";
 
 export * from "./append-output";
 

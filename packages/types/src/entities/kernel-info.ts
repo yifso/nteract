@@ -1,8 +1,8 @@
 /**
  * @module types
  */
-import * as Immutable from "immutable";
 import { JSONType } from "@nteract/commutable";
+import * as Immutable from "immutable";
 
 export type HelpLink = {
   text: string;

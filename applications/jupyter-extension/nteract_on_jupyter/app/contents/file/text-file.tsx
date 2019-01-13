@@ -1,9 +1,9 @@
-import * as React from "react";
-import styled from "styled-components";
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 import { MonacoEditorProps } from "@nteract/monaco-editor";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import styled from "styled-components";
 
 const EditorContainer = styled.div`
   position: absolute;

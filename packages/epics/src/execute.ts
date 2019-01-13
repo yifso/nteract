@@ -2,39 +2,39 @@
  * @module epics
  */
 import {
-  createExecuteRequest,
-  ofMessageType,
+  Channels,
   childOf,
-  outputs,
-  payloads,
-  kernelStatuses,
+  createExecuteRequest,
+  ExecuteRequest,
   executionCounts,
   JupyterMessage,
-  Channels,
-  ExecuteRequest
+  kernelStatuses,
+  ofMessageType,
+  outputs,
+  payloads
 } from "@nteract/messaging";
-import { Observable, of, merge, empty, throwError, Observer } from "rxjs";
-import {
-  groupBy,
-  filter,
-  map,
-  mapTo,
-  switchMap,
-  mergeMap,
-  mergeAll,
-  takeUntil,
-  catchError,
-  concatMap,
-  tap,
-  share
-} from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
+import { empty, merge, Observable, Observer, of, throwError } from "rxjs";
+import {
+  catchError,
+  concatMap,
+  filter,
+  groupBy,
+  map,
+  mapTo,
+  mergeAll,
+  mergeMap,
+  share,
+  switchMap,
+  takeUntil,
+  tap
+} from "rxjs/operators";
 
-import { AppState, ContentRef, PayloadMessage } from "@nteract/types";
 import * as actions from "@nteract/actions";
-import * as selectors from "@nteract/selectors";
 import { CellId, Output } from "@nteract/commutable";
+import * as selectors from "@nteract/selectors";
+import { AppState, ContentRef, PayloadMessage } from "@nteract/types";
 
 const Immutable = require("immutable");
 

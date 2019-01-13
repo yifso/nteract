@@ -1,7 +1,7 @@
 import { binder } from "rx-binder";
 import { kernels } from "rx-jupyter";
 import { of } from "rxjs";
-import { tap, map, catchError, filter } from "rxjs/operators";
+import { catchError, filter, map, tap } from "rxjs/operators";
 
 // NOTE: The old flow type for BinderKey was an opaque type so that you couldn't use _any_ string,
 // it had to use our special Binder key type from this module.

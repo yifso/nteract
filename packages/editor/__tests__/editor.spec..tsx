@@ -1,7 +1,7 @@
+import { createMessage } from "@nteract/messaging";
+import { mount } from "enzyme";
 import React from "react";
 import { empty, Subject } from "rxjs";
-import { mount } from "enzyme";
-import { createMessage } from "@nteract/messaging";
 
 import Editor from "../src/";
 

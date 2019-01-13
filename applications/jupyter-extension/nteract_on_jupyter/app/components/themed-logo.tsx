@@ -1,5 +1,5 @@
-import * as React from "react";
 import { WideLogo } from "@nteract/logos";
+import * as React from "react";
 
 type ThemedLogoProps = {
   height?: number;

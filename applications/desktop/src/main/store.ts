@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware, compose, Middleware } from "redux";
-import { electronEnhancer } from "redux-electron-store";
 import { middlewares as coreMiddlewares } from "@nteract/core";
+import { applyMiddleware, compose, createStore, Middleware } from "redux";
+import { electronEnhancer } from "redux-electron-store";
 
 import reducers from "./reducers";
 

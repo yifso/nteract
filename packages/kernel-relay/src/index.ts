@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 
-import { findAll, launchKernel, Kernel } from "@nteract/fs-kernels";
+import { findAll, Kernel, launchKernel } from "@nteract/fs-kernels";
 
 import { JupyterMessage } from "@nteract/messaging";
 

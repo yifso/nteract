@@ -1,6 +1,6 @@
-import * as path from "path";
-import { Menu, shell, BrowserWindow } from "electron";
 import { KernelspecInfo } from "@nteract/types";
+import { BrowserWindow, Menu, shell } from "electron";
+import * as path from "path";
 
 import { loadFullMenu } from "./menu";
 

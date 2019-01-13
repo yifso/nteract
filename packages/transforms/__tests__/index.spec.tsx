@@ -1,5 +1,5 @@
-import TextDisplay from "../src/text";
 import { richestMimetype, transforms } from "../src";
+import TextDisplay from "../src/text";
 
 describe("richestMimetype", () => {
   it("picks the richest of the mimetypes from a bundle with defaults", () => {

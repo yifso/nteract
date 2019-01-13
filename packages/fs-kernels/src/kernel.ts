@@ -8,8 +8,8 @@ import { Channels } from "@nteract/messaging";
 
 import { JupyterConnectionInfo } from "enchannel-zmq-backend";
 
-import { launch, launchSpec, LaunchedKernel, cleanup } from "./spawnteract";
 import { KernelSpec } from "./kernelspecs";
+import { cleanup, launch, LaunchedKernel, launchSpec } from "./spawnteract";
 
 export class Kernel {
   kernelSpec: KernelSpec;

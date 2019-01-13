@@ -1,6 +1,6 @@
-import * as React from "react";
 import { debounce } from "lodash";
 import { editor } from "monaco-editor";
+import * as React from "react";
 
 export interface MonacoEditorProps {
   theme: string;

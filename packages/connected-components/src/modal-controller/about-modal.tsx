@@ -5,11 +5,11 @@
 // We want to allow the user to click on the modal-backdrop to escape.
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 
+import { actions, selectors } from "@nteract/core";
+import { AppState } from "@nteract/types";
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { actions, selectors } from "@nteract/core";
-import { AppState } from "@nteract/types";
 
 type Props = {
   appVersion?: string;

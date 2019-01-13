@@ -1,8 +1,8 @@
-import { remote } from "electron";
 import { actions } from "@nteract/core";
+import { remote } from "electron";
 import { readFileObservable, writeFileObservable } from "fs-observable";
-import { mapTo, mergeMap, map, switchMap } from "rxjs/operators";
-import { ofType, ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
+import { map, mapTo, mergeMap, switchMap } from "rxjs/operators";
 import { DesktopNotebookAppState } from "../state";
 
 import * as path from "path";

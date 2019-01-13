@@ -1,10 +1,10 @@
 /**
  * @module fs-kernels
  */
-import jp from "./jupyter-paths";
-import path from "path";
 import fs from "fs";
+import path from "path";
 import { promisify } from "util";
+import jp from "./jupyter-paths";
 
 type KernelInfo = {
   name: string;

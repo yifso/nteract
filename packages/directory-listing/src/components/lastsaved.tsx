@@ -1,6 +1,6 @@
 import * as React from "react";
-import styled from "styled-components";
 import TimeAgo from "react-timeago";
+import styled from "styled-components";
 
 type LastSavedProps = {
   lastModified?: Date | null;

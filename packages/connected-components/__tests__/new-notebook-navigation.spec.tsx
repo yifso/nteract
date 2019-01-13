@@ -1,6 +1,6 @@
+import * as Immutable from "immutable";
 import React from "react";
 import renderer from "react-test-renderer";
-import * as Immutable from "immutable";
 
 import { PureNewNotebookNavigation } from "../src/new-notebook-navigation";
 

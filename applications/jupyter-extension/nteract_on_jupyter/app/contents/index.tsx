@@ -1,13 +1,13 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { dirname } from "path";
 import * as actions from "@nteract/actions";
 import { AppState, ContentRef, selectors } from "@nteract/core";
+import { dirname } from "path";
+import * as React from "react";
+import { connect } from "react-redux";
 import urljoin from "url-join";
 
 import { ConnectedDirectory } from "./directory";
-import { DirectoryHeader, ConnectedFileHeader as FileHeader } from "./headers";
 import { default as File } from "./file";
+import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
 
 interface IContentsProps {
   appBase: string;

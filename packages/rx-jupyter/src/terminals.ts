@@ -1,9 +1,9 @@
 /**
  * @module rx-jupyter
  */
+import { Observable } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
-import { Observable } from "rxjs";
 
 import { createAJAXSettings, normalizeBaseURL, ServerConfig } from "./base";
 

@@ -1,8 +1,8 @@
 import { join } from "path";
 
-import { ipcMain as ipc, Event } from "electron";
+import { Event, ipcMain as ipc } from "electron";
 
-import { Kernelspecs, KernelspecInfo } from "@nteract/types";
+import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 
 const builtInNodeArgv: string[] = [
   process.execPath,

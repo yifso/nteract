@@ -1,25 +1,25 @@
 import * as React from "react";
 
-import { colors } from "./settings";
-import { semioticSettings } from "./charts/settings";
 import DataResourceTransformGrid from "./charts/grid";
-import VizControls from "./VizControls";
+import { semioticSettings } from "./charts/settings";
 import { Toolbar } from "./components/Toolbar";
+import { colors } from "./settings";
+import VizControls from "./VizControls";
 
 const mediaType = "application/vnd.dataresource+json";
 
+import styled from "styled-components";
 import * as Dx from "./types";
 import {
-  LineType,
   AreaType,
+  Chart,
+  HierarchyType,
+  LineType,
+  NetworkType,
   PieceType,
   SummaryType,
-  NetworkType,
-  HierarchyType,
-  Chart,
   View
 } from "./types";
-import styled from "styled-components";
 
 type dxMetaProps = {
   view?: View;

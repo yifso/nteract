@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from "immutable";
 
+import { MergeConfigAction, SetConfigAction } from "@nteract/actions";
 import { ConfigState } from "@nteract/types";
-import { SetConfigAction, MergeConfigAction } from "@nteract/actions";
 
 type ConfigAction = SetConfigAction<any> | MergeConfigAction;
 

@@ -1,4 +1,4 @@
-import { unlinkObservable, readdirObservable } from "../src";
+import { readdirObservable, unlinkObservable } from "../src";
 
 jest.mock("fs");
 const fs = require("fs");

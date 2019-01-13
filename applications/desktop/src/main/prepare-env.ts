@@ -1,6 +1,6 @@
-import shellEnv from "shell-env";
 import { ConnectableObservable, from } from "rxjs";
-import { first, tap, publishReplay } from "rxjs/operators";
+import { first, publishReplay, tap } from "rxjs/operators";
+import shellEnv from "shell-env";
 
 // Bring in the current user's environment variables from running a shell session so that
 // launchctl on the mac and the windows process manager propagate the proper values for the

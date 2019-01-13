@@ -1,31 +1,31 @@
 import path from "path";
 
-import { remote } from "electron";
 import {
-  selectors,
+  AppState,
   ContentRecord,
-  NotebookContentRecord,
   ContentRef,
   KernelRef,
-  AppState
+  NotebookContentRecord,
+  selectors
 } from "@nteract/core";
+import { remote } from "electron";
+import { Store } from "redux";
 import {
-  empty,
-  of,
-  from,
   combineLatest,
+  empty,
+  from,
+  Observable,
   ObservableInput,
-  Observable
+  of
 } from "rxjs";
 import {
-  map,
-  distinctUntilChanged,
   debounceTime,
-  switchMap,
+  distinctUntilChanged,
+  map,
   mergeMap,
-  share
+  share,
+  switchMap
 } from "rxjs/operators";
-import { Store } from "redux";
 
 import { Actions } from "./actions";
 

@@ -1,7 +1,10 @@
 /* eslint-disable class-methods-use-this */
+import { RichestMime } from "@nteract/display-area";
+import CodeMirror from "codemirror";
+import { debounce } from "lodash";
 import * as React from "react";
 import ReactDOM from "react-dom";
-import { empty, of, fromEvent, merge, Subject, Observable } from "rxjs";
+import { empty, fromEvent, merge, Observable, of, Subject } from "rxjs";
 import { Subscription } from "rxjs";
 import {
   catchError,
@@ -12,14 +15,11 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
-import { RichestMime } from "@nteract/display-area";
-import { debounce } from "lodash";
-import CodeMirror from "codemirror";
 
 import excludedIntelliSenseTriggerKeys from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
 import { tool } from "./jupyter/tooltip";
-import { Options, EditorChange, CMI, CMDoc } from "./types";
+import { CMDoc, CMI, EditorChange, Options } from "./types";
 
 export { EditorChange, Options };
 

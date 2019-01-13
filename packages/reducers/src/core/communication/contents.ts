@@ -1,12 +1,12 @@
-import { combineReducers } from "redux-immutable";
-import { Action } from "redux";
 import * as Immutable from "immutable";
+import { Action } from "redux";
+import { combineReducers } from "redux-immutable";
 
+import * as actions from "@nteract/actions";
 import {
   makeContentCommunicationRecord,
   makeContentsCommunicationRecord
 } from "@nteract/types";
-import * as actions from "@nteract/actions";
 
 const byRef = (state = Immutable.Map(), action: Action) => {
   let typedAction;

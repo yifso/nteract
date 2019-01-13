@@ -1,34 +1,34 @@
-import * as React from "react";
-import ReactMarkdown from "react-markdown";
-import math from "remark-math";
-import remark2rehype from "remark-rehype";
-import katex from "rehype-katex";
-import stringify from "rehype-stringify";
-import { InlineMath, BlockMath } from "react-katex";
-import styled, { createGlobalStyle } from "styled-components";
-import { Display } from "@nteract/display-area";
 import {
-  displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms,
-  Transforms
-} from "@nteract/transforms";
-import {
-  emptyNotebook,
   appendCellToNotebook,
-  fromJS,
   createCodeCell,
+  emptyNotebook,
+  fromJS,
   ImmutableCodeCell,
   ImmutableNotebook
 } from "@nteract/commutable";
+import { Display } from "@nteract/display-area";
 import {
-  themes,
   Cell,
+  Cells,
   Input,
+  Outputs,
   Prompt,
   Source,
-  Outputs,
-  Cells
+  themes
 } from "@nteract/presentational-components";
+import {
+  displayOrder as defaultDisplayOrder,
+  Transforms,
+  transforms as defaultTransforms
+} from "@nteract/transforms";
+import * as React from "react";
+import { BlockMath, InlineMath } from "react-katex";
+import ReactMarkdown from "react-markdown";
+import katex from "rehype-katex";
+import stringify from "rehype-stringify";
+import math from "remark-math";
+import remark2rehype from "remark-rehype";
+import styled, { createGlobalStyle } from "styled-components";
 
 interface Props {
   displayOrder: string[];

@@ -1,14 +1,14 @@
+import { Notebook } from "@nteract/commutable";
 import {
-  KernelspecRecord,
+  JupyterHostRecord,
   KernelspecProps,
-  JupyterHostRecord
+  KernelspecRecord
 } from "@nteract/core";
 import { selectors } from "@nteract/core";
 // TODO: Make a proper epic
 import { contents, sessions } from "rx-jupyter";
-import { first, map, mergeMap } from "rxjs/operators";
 import { forkJoin } from "rxjs";
-import { Notebook } from "@nteract/commutable";
+import { first, map, mergeMap } from "rxjs/operators";
 
 const urljoin = require("url-join");
 

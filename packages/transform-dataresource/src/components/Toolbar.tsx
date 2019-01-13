@@ -1,16 +1,16 @@
-import * as React from "react";
 import { DatabaseOcticon } from "@nteract/octicons";
+import * as React from "react";
 
 import { chartHelpText } from "../docs/chart-docs";
 import {
-  TreeIcon,
-  NetworkIcon,
-  BoxplotIcon,
-  ScatterplotIcon,
-  LineChartIcon,
   BarChartIcon,
+  BoxplotIcon,
   HexbinIcon,
-  ParallelCoordinatesIcon
+  LineChartIcon,
+  NetworkIcon,
+  ParallelCoordinatesIcon,
+  ScatterplotIcon,
+  TreeIcon
 } from "../icons";
 
 import { View } from "../types";

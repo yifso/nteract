@@ -1,17 +1,17 @@
 import {
+  ResponsiveNetworkFrame,
   ResponsiveOrdinalFrame,
-  ResponsiveXYFrame,
-  ResponsiveNetworkFrame
+  ResponsiveXYFrame
 } from "semiotic";
 
 import ParallelCoordinatesController from "../ParallelCoordinatesController";
 
+import { semioticBarChart } from "./bar";
+import { semioticHierarchicalChart } from "./hierarchical";
 import { semioticLineChart } from "./line";
 import { semioticNetwork } from "./network";
-import { semioticHierarchicalChart } from "./hierarchical";
-import { semioticBarChart } from "./bar";
-import { semioticScatterplot, semioticHexbin } from "./xyplot";
 import { semioticSummaryChart } from "./summary";
+import { semioticHexbin, semioticScatterplot } from "./xyplot";
 
 import * as Dx from "../types";
 

@@ -1,10 +1,10 @@
-import * as actions from "../src/actions";
-import * as actionTypes from "../src/actionTypes";
 import {
   createContentRef,
   createKernelRef,
   LanguageInfoMetadata
 } from "@nteract/types";
+import * as actions from "../src/actions";
+import * as actionTypes from "../src/actionTypes";
 
 describe("setLanguageInfo", () => {
   test("creates a SET_LANGUAGE_INFO action", () => {

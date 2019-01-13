@@ -1,6 +1,6 @@
-import * as React from "react";
-import { ansiToJson, AnserJsonEntry } from "anser";
+import { AnserJsonEntry, ansiToJson } from "anser";
 import { escapeCarriageReturn } from "escape-carriage";
+import * as React from "react";
 
 const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
 

@@ -2,19 +2,19 @@
  * Thus begins our path for custom mimetypes and future extensions
  */
 
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform, {
   PlotlyNullTransform
 } from "@nteract/transform-plotly";
-import GeoJSONTransform from "@nteract/transform-geojson";
-import ModelDebug from "@nteract/transform-model-debug";
-import DataResourceTransform from "@nteract/transform-dataresource";
-import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
 import {
-  standardTransforms,
-  standardDisplayOrder,
   registerTransform,
-  richestMimetype
+  richestMimetype,
+  standardDisplayOrder,
+  standardTransforms
 } from "@nteract/transforms";
 
 const additionalTransforms = [

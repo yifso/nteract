@@ -4,10 +4,10 @@
 import * as Immutable from "immutable";
 
 import { ContentsCommunicationRecordProps } from "./contents";
-import { KernelsCommunicationRecordProps } from "./kernels";
-import { KernelspecsCommunicationRecordProps } from "./kernelspecs";
 import { makeContentsCommunicationRecord } from "./contents";
+import { KernelsCommunicationRecordProps } from "./kernels";
 import { makeKernelsCommunicationRecord } from "./kernels";
+import { KernelspecsCommunicationRecordProps } from "./kernelspecs";
 import { makeKernelspecsCommunicationRecord } from "./kernelspecs";
 
 export * from "./contents";

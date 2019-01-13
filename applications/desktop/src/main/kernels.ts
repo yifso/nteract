@@ -1,15 +1,15 @@
+import { KernelspecInfo } from "@nteract/core";
+import * as path from "path";
 import { empty, Observable } from "rxjs";
 import {
-  mapTo,
-  filter,
   catchError,
+  filter,
   map,
+  mapTo,
   mergeAll,
   toArray
 } from "rxjs/operators";
 import { spawn } from "spawn-rx";
-import * as path from "path";
-import { KernelspecInfo } from "@nteract/core";
 
 /**
  * ipyKernelTryObservable checks for the existence of ipykernel in the environment.

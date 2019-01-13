@@ -1,7 +1,7 @@
-import * as React from "react";
 import { cloneDeep } from "lodash";
+import * as React from "react";
 
-import { objectToReactElement, VDOMEl, Attributes, SerializedEvent } from "./object-to-react";
+import { Attributes, objectToReactElement, SerializedEvent, VDOMEl } from "./object-to-react";
 
 interface Props {
   mediaType: "application/vdom.v1+json";

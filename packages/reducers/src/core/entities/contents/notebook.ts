@@ -1,29 +1,29 @@
-import uuid from "uuid/v4";
-import * as Immutable from "immutable";
 import {
+  CellId,
   ImmutableCell,
   ImmutableCodeCell,
+  ImmutableMarkdownCell,
   ImmutableNotebook,
-  CellId,
   Output,
-  StreamOutput,
-  ImmutableMarkdownCell
+  StreamOutput
 } from "@nteract/commutable";
 import {
-  makeCodeCell,
-  makeRawCell,
-  makeMarkdownCell,
+  createImmutableMimeBundle,
+  createImmutableOutput,
+  deleteCell,
   emptyCodeCell,
   emptyMarkdownCell,
-  insertCellAt,
-  insertCellAfter,
-  deleteCell,
   emptyNotebook,
-  createImmutableOutput,
-  createImmutableMimeBundle
+  insertCellAfter,
+  insertCellAt,
+  makeCodeCell,
+  makeMarkdownCell,
+  makeRawCell
 } from "@nteract/commutable";
-import { has } from "lodash";
 import { escapeCarriageReturnSafe } from "escape-carriage";
+import * as Immutable from "immutable";
+import { has } from "lodash";
+import uuid from "uuid/v4";
 
 import * as actionTypes from "@nteract/actions";
 import { makeDocumentRecord, PayloadMessage } from "@nteract/types";

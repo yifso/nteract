@@ -1,9 +1,9 @@
 import * as Immutable from "immutable";
 
 import {
-  RegisterCommTargetAction,
+  CommMessageAction,
   CommOpenAction,
-  CommMessageAction
+  RegisterCommTargetAction
 } from "@nteract/actions";
 import { CommsRecord, makeCommsRecord } from "@nteract/types";
 

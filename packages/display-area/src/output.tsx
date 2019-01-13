@@ -1,7 +1,7 @@
-import * as React from "react";
+import { displayOrder, transforms, Transforms } from "@nteract/transforms";
 import Ansi from "ansi-to-react";
-import { transforms, displayOrder, Transforms } from "@nteract/transforms";
 import { isImmutable } from "immutable";
+import * as React from "react";
 
 import { Subject } from "rxjs";
 

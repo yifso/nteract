@@ -1,12 +1,12 @@
-import { combineReducers } from "redux-immutable";
-import { Action } from "redux";
 import * as Immutable from "immutable";
+import { Action } from "redux";
+import { combineReducers } from "redux-immutable";
 
+import * as actions from "@nteract/actions";
 import {
   makeKernelCommunicationRecord,
   makeKernelsCommunicationRecord
 } from "@nteract/types";
-import * as actions from "@nteract/actions";
 
 // TODO: we should spec out a way to watch the killKernel lifecycle.
 const byRef = (state = Immutable.Map(), action: Action) => {

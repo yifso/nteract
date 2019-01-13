@@ -5,17 +5,17 @@ import {
   state as stateModule
 } from "@nteract/core";
 import * as Immutable from "immutable";
-import { toArray } from "rxjs/operators";
 import { ActionsObservable } from "redux-observable";
+import { toArray } from "rxjs/operators";
 import { TestScheduler } from "rxjs/testing";
 
 import { ipcRenderer as ipc } from "../../../__mocks__/electron";
+import * as actions from "../../../src/notebook/actions";
 import { closeNotebookEpic } from "../../../src/notebook/epics/close-notebook";
 import {
   DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
   DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
 } from "../../../src/notebook/state";
-import * as actions from "../../../src/notebook/actions";
 
 const buildScheduler = () =>
   new TestScheduler((actual, expected) => expect(actual).toEqual(expected));

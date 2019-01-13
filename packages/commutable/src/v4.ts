@@ -15,45 +15,45 @@
  */
 
 import {
-  Map as ImmutableMap,
   fromJS as immutableFromJS,
   List as ImmutableList,
+  Map as ImmutableMap,
   Set as ImmutableSet
 } from "immutable";
 
 import {
-  makeNotebookRecord,
   ImmutableNotebook,
+  makeNotebookRecord,
   NotebookRecordParams
 } from "./notebook";
 
-import { JSONObject, MultiLineString, ExecutionCount } from "./primitives";
+import { ExecutionCount, JSONObject, MultiLineString } from "./primitives";
 
 import {
+  ImmutableCell,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
-  ImmutableCell,
   makeCodeCell,
-  makeRawCell,
-  makeMarkdownCell
+  makeMarkdownCell,
+  makeRawCell
 } from "./cells";
 
 import {
   createImmutableMimeBundle,
-  ImmutableOutput,
-  makeExecuteResult,
-  makeDisplayData,
-  makeStreamOutput,
-  makeErrorOutput,
+  createImmutableOutput,
   demultiline,
-  remultiline,
-  isJSONKey,
-  MimeBundle,
   ImmutableMimeBundle,
+  ImmutableOutput,
+  isJSONKey,
+  makeDisplayData,
+  makeErrorOutput,
+  makeExecuteResult,
+  makeStreamOutput,
+  MimeBundle,
   Output,
-  StreamOutput,
-  createImmutableOutput
+  remultiline,
+  StreamOutput
 } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";

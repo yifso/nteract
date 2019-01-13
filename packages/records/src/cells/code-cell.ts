@@ -1,10 +1,10 @@
 import produce from "immer";
 
-import { outputFromNbformat } from "../outputs";
-import { JSONObject } from "../types";
 import { MultilineString } from "../common";
-import { OutputType, NbformatOutput } from "../outputs";
+import { outputFromNbformat } from "../outputs";
+import { NbformatOutput, OutputType } from "../outputs";
 import { ExecutionCount } from "../outputs/execute-result";
+import { JSONObject } from "../types";
 
 export type CodeCellType = "code";
 export const CODECELL: CodeCellType = "code";

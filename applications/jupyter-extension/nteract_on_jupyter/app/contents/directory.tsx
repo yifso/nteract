@@ -1,24 +1,24 @@
+import { NewNotebookNavigation } from "@nteract/connected-components";
+import {
+  AppState,
+  ContentRef,
+  DirectoryContentRecord,
+  JupyterHostRecord,
+  KernelspecProps,
+  KernelspecRecord,
+  selectors
+} from "@nteract/core";
+import {
+  Entry,
+  Icon,
+  LastSaved,
+  Listing,
+  Name
+} from "@nteract/directory-listing";
 import * as React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import urljoin from "url-join";
-import { NewNotebookNavigation } from "@nteract/connected-components";
-import {
-  Entry,
-  Listing,
-  Icon,
-  Name,
-  LastSaved
-} from "@nteract/directory-listing";
-import {
-  selectors,
-  AppState,
-  KernelspecRecord,
-  KernelspecProps,
-  JupyterHostRecord,
-  ContentRef,
-  DirectoryContentRecord
-} from "@nteract/core";
 
 import { openNotebook } from "../triggers/open-notebook";
 

@@ -1,20 +1,20 @@
 /**
  * @module epics
  */
-import { empty, from, of, interval, Observable, ObservableInput } from "rxjs";
-import { tap, map, mergeMap, switchMap, catchError } from "rxjs/operators";
-import { ofType } from "redux-observable";
-import { sample } from "lodash";
-import FileSaver from "file-saver";
-import { ActionsObservable, StateObservable } from "redux-observable";
-import { Action } from "redux";
-import { contents, ServerConfig } from "rx-jupyter";
-import { toJS, stringifyNotebook } from "@nteract/commutable";
+import { stringifyNotebook, toJS } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
+import FileSaver from "file-saver";
+import { sample } from "lodash";
+import { Action } from "redux";
+import { ofType } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
+import { contents, ServerConfig } from "rx-jupyter";
+import { empty, from, interval, Observable, ObservableInput, of } from "rxjs";
+import { catchError, map, mergeMap, switchMap, tap } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, AppState } from "@nteract/types";
+import { AppState, ContentRef } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 import urljoin from "url-join";

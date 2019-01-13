@@ -1,9 +1,9 @@
+import * as actions from "@nteract/actions";
+import EditorView from "@nteract/editor";
+import * as selectors from "@nteract/selectors";
+import { AppState, ContentRef } from "@nteract/types";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as actions from "@nteract/actions";
-import * as selectors from "@nteract/selectors";
-import { ContentRef, AppState } from "@nteract/types";
-import EditorView from "@nteract/editor";
 
 type InitialProps = {
   id: string;

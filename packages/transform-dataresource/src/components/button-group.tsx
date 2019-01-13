@@ -1,5 +1,5 @@
+import { Button, ButtonGroup } from "@blueprintjs/core";
 import styled from "styled-components";
-import { ButtonGroup, Button } from "@blueprintjs/core";
 
 /**
  * This ports over some of the overridden styles within the data

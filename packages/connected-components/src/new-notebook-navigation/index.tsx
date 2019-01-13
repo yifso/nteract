@@ -12,11 +12,11 @@
  * Showcase the directory navigator
  */
 
+import { AppState, KernelspecProps, KernelspecRecord } from "@nteract/types";
+import * as Immutable from "immutable";
 import * as React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { AppState, KernelspecRecord, KernelspecProps } from "@nteract/types";
-import * as Immutable from "immutable";
 
 import { default as Logo } from "./logos";
 

@@ -1,5 +1,5 @@
-import * as React from "react";
 import Ansi from "ansi-to-react";
+import * as React from "react";
 import styled from "styled-components";
 
 type Props = {

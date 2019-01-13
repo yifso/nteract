@@ -1,38 +1,38 @@
+import * as MathJax from "@nteract/mathjax";
+import { GlobalCSSVariables } from "@nteract/presentational-components";
+import { ipcRenderer as ipc, remote } from "electron";
+import { mathJaxPath } from "mathjax-electron";
 import * as React from "react";
 import ReactDOM from "react-dom";
-import { ipcRenderer as ipc, remote } from "electron";
-import { Provider } from "react-redux";
-import * as MathJax from "@nteract/mathjax";
-import { mathJaxPath } from "mathjax-electron";
 import NotificationSystem, {
   System as ReactNotificationSystem
 } from "react-notification-system";
-import { GlobalCSSVariables } from "@nteract/presentational-components";
+import { Provider } from "react-redux";
 
 import {
   actions,
+  ContentRecord,
+  ContentRef,
   createContentRef,
   makeAppRecord,
-  makeStateRecord,
-  makeContentsRecord,
-  makeNotebookContentRecord,
   makeCommsRecord,
-  makeLocalHostRecord,
+  makeContentsRecord,
   makeEntitiesRecord,
-  ContentRef,
-  ContentRecord
+  makeLocalHostRecord,
+  makeNotebookContentRecord,
+  makeStateRecord
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
 import { displayOrder, transforms } from "@nteract/transforms-full";
 import * as Immutable from "immutable";
 
+import { Store } from "redux";
+import { Actions } from "./actions";
+import { initGlobalHandlers } from "./global-events";
 import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
-import { initGlobalHandlers } from "./global-events";
-import { makeDesktopNotebookRecord, DesktopNotebookAppState } from "./state";
+import { DesktopNotebookAppState, makeDesktopNotebookRecord } from "./state";
 import configureStore, { DesktopStore } from "./store";
-import { Actions } from "./actions";
-import { Store } from "redux";
 
 import { createGlobalStyle } from "styled-components";
 

@@ -1,27 +1,27 @@
+import {
+  actions,
+  createContentRef,
+  createHostRef,
+  createKernelRef,
+  createKernelspecsRef,
+  makeAppRecord,
+  makeCommsRecord,
+  makeContentsRecord,
+  makeDummyContentRecord,
+  makeEntitiesRecord,
+  makeHostsRecord,
+  makeJupyterHostRecord,
+  makeStateRecord
+} from "@nteract/core";
+import { AppState } from "@nteract/core";
+import { ContentRecord, HostRecord } from "@nteract/types";
+import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import * as Immutable from "immutable";
-import {
-  actions,
-  createKernelspecsRef,
-  createKernelRef,
-  makeDummyContentRecord,
-  makeContentsRecord,
-  makeEntitiesRecord,
-  makeStateRecord,
-  makeHostsRecord,
-  makeCommsRecord,
-  makeAppRecord,
-  createContentRef,
-  createHostRef,
-  makeJupyterHostRecord
-} from "@nteract/core";
-import { AppState } from "@nteract/core";
-import { HostRecord, ContentRecord } from "@nteract/types";
 
-import configureStore from "./store";
 import App from "./app";
+import configureStore from "./store";
 
 const urljoin = require("url-join");
 

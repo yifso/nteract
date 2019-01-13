@@ -7,13 +7,13 @@
  * and allows converting from on-disk v4 and v3 Jupyter Notebooks
  *
  */
-import * as v4 from "./v4";
 import * as v3 from "./v3";
+import * as v4 from "./v4";
 
-import { Map as ImmutableMap, List as ImmutableList, Record } from "immutable";
+import { List as ImmutableList, Map as ImmutableMap, Record } from "immutable";
 
 import { ImmutableCell } from "./cells";
-import { JSONType, CellId } from "./primitives";
+import { CellId, JSONType } from "./primitives";
 
 export type NotebookRecordParams = {
   cellOrder: ImmutableList<CellId>;

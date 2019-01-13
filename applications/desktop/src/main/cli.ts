@@ -1,10 +1,10 @@
 import { join } from "path";
 
-import { catchError, mergeMap, map } from "rxjs/operators";
-import { Observable, merge } from "rxjs";
 import { dialog } from "electron";
+import { createSymlinkObservable, writeFileObservable } from "fs-observable";
+import { merge, Observable } from "rxjs";
+import { catchError, map, mergeMap } from "rxjs/operators";
 import { spawn } from "spawn-rx";
-import { writeFileObservable, createSymlinkObservable } from "fs-observable";
 
 import * as fs from "fs";
 

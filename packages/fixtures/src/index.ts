@@ -1,32 +1,32 @@
 /* eslint-disable no-plusplus */
 
-import * as Immutable from "immutable";
-import { Subject } from "rxjs";
 import {
-  monocellNotebook,
-  emptyCodeCell,
   appendCellToNotebook,
-  emptyNotebook,
+  emptyCodeCell,
   emptyMarkdownCell,
+  emptyNotebook,
   ImmutableNotebook,
-  JSONObject
+  JSONObject,
+  monocellNotebook
 } from "@nteract/commutable";
+import * as Immutable from "immutable";
 import { combineReducers, createStore } from "redux";
+import { Subject } from "rxjs";
 
 import { comms, config, core } from "@nteract/reducers";
 import {
-  makeNotebookContentRecord,
-  makeRemoteKernelRecord,
-  makeAppRecord,
-  makeCommsRecord,
-  makeKernelsRecord,
-  makeDocumentRecord,
-  makeContentsRecord,
-  makeEntitiesRecord,
-  makeStateRecord,
+  AppState,
   createContentRef,
   createKernelRef,
-  AppState
+  makeAppRecord,
+  makeCommsRecord,
+  makeContentsRecord,
+  makeDocumentRecord,
+  makeEntitiesRecord,
+  makeKernelsRecord,
+  makeNotebookContentRecord,
+  makeRemoteKernelRecord,
+  makeStateRecord
 } from "@nteract/types";
 
 export { fixtureCommutable, fixture, fixtureJSON } from "./fixture-nb";
