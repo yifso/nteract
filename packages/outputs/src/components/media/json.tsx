@@ -22,12 +22,12 @@ const defaultTheme = {
 
 const darkTheme = Object.assign({}, defaultTheme, { base0B: "#EDF3F7" });
 
-type Props = {
+interface Props {
   data: Object;
   mediaType: "application/json";
   theme: string;
   metadata: { expanded: boolean };
-};
+}
 
 /** @component */
 export class Json extends React.PureComponent<Props> {

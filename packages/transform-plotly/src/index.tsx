@@ -2,10 +2,10 @@
 import { cloneDeep } from "lodash";
 import React from "react";
 
-type Props = {
+interface Props {
   data: string | object;
   mediaType: "application/vnd.plotly.v1+json";
-};
+}
 
 type ObjectType = object;
 

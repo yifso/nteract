@@ -1,10 +1,10 @@
 import Ansi from "ansi-to-react";
 import * as React from "react";
 
-type Props = {
+interface Props {
   data: string;
   mediaType: "text/plain";
-};
+}
 
 export const Plain = (props: Props) => (
   <pre>

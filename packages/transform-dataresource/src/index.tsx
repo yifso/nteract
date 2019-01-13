@@ -21,7 +21,7 @@ import {
   View
 } from "./types";
 
-type dxMetaProps = {
+interface dxMetaProps {
   view?: View;
   lineType?: LineType;
   areaType?: AreaType;
@@ -33,14 +33,14 @@ type dxMetaProps = {
   hierarchyType?: HierarchyType;
   colors?: string[];
   chart?: Chart;
-};
+}
 
-type Metadata = {
+interface Metadata {
   dx: dxMetaProps;
   sampled?: boolean;
-};
+}
 
-type Props = {
+interface Props {
   data: Dx.DataProps;
   metadata: Metadata;
   theme?: string;
@@ -49,9 +49,9 @@ type Props = {
   mediaType: "application/vnd.dataresource+json";
   initialView: View;
   onMetadataChange?: ({ dx }: { dx: dxMetaProps }) => void;
-};
+}
 
-type State = {
+interface State {
   view: View;
   colors: string[];
   metrics: Dx.Field[];
@@ -68,7 +68,7 @@ type State = {
   displayChart: DisplayChart;
   primaryKey: string[];
   data: Dx.Datapoint[];
-};
+}
 
 const generateChartKey = ({
   view,
@@ -101,9 +101,9 @@ const generateChartKey = ({
     chart
   )}`;
 
-type DisplayChart = {
+interface DisplayChart {
   [chartKey: string]: React.ReactNode;
-};
+}
 /*
   contour is an option for scatterplot
   pie is a transform on bar

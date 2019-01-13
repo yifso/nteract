@@ -77,7 +77,7 @@ const Cell = styled(PlainCell)`
 
 Cell.displayName = "Cell";
 
-type AnyCellProps = {
+interface AnyCellProps {
   id: string;
   tags: Immutable.Set<string>;
   contentRef: ContentRef;
@@ -105,7 +105,7 @@ type AnyCellProps = {
   focusBelowCell: () => void;
   updateOutputMetadata: (index: number, metadata: JSONObject) => void;
   metadata: Object;
-};
+}
 
 const mapStateToCellProps = (
   state: AppState,
@@ -358,7 +358,7 @@ export const ConnectedCell = connect(
 
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
-type PureNotebookProps = {
+interface PureNotebookProps {
   displayOrder?: Array<string>;
   cellOrder?: Immutable.List<any>;
   transforms?: Object;
@@ -366,9 +366,9 @@ type PureNotebookProps = {
   codeMirrorMode?: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
   kernelRef?: KernelRef;
-};
+}
 
-type NotebookStateProps = {
+interface NotebookStateProps {
   displayOrder: Array<string>;
   cellOrder: Immutable.List<any>;
   transforms: Object;
@@ -376,9 +376,9 @@ type NotebookStateProps = {
   codeMirrorMode: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
   kernelRef?: KernelRef | null;
-};
+}
 
-type NotebookDispatchProps = {
+interface NotebookDispatchProps {
   moveCell: (
     payload: {
       id: CellId;
@@ -407,7 +407,7 @@ type NotebookDispatchProps = {
       index: number;
     }
   ) => void;
-};
+}
 
 const mapStateToProps = (
   state: AppState,

@@ -3,16 +3,16 @@ import * as React from "react";
 import styled from "styled-components";
 
 /** Error handling types */
-type ReactErrorInfo = {
+interface ReactErrorInfo {
   componentStack: string;
-};
+}
 
-type Caught = {
+interface Caught {
   error: Error;
   info: ReactErrorInfo;
-};
+}
 
-type RichMediaProps = {
+interface RichMediaProps {
   /**
    * Object of media type → data
    *
@@ -45,12 +45,12 @@ type RichMediaProps = {
     metadata: object;
     children: React.ReactNode;
   }): React.ReactElement<any>;
-};
+}
 
 /* We make the RichMedia component an error boundary in case of any <Media /> component erroring */
-type State = {
+interface State {
   caughtError?: Caught | null;
-};
+}
 
 const ErrorFallbackDiv = styled.div`
   backgroundcolor: ghostwhite;

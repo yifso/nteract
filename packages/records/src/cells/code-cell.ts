@@ -10,22 +10,22 @@ export type CodeCellType = "code";
 export const CODECELL: CodeCellType = "code";
 
 // In-memory version
-type CodeCell = {
+interface CodeCell {
   cellType: CodeCellType,
   metadata: JSONObject,
   executionCount: ExecutionCount,
   source: string,
   outputs: Array<OutputType>
-};
+}
 
 // On disk
-export type NbformatCodeCell = {
+export interface NbformatCodeCell {
   cell_type: CodeCellType,
   metadata: JSONObject,
   execution_count: ExecutionCount,
   source: MultilineString,
   outputs: Array<NbformatOutput>
-};
+}
 
 export type CodeCellRecord = JSONObject;
 

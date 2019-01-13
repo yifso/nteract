@@ -28,23 +28,23 @@ const ListingRoot = styled.div`
   padding-right: 2rem;
 `;
 
-type LightDirectoryEntry = {
+interface LightDirectoryEntry {
   last_modified: Date | null;
   name: string;
   path: string;
   type: "notebook" | "dummy" | "directory" | "file" | "unknown";
-};
+}
 
 type LightDirectoryEntries = LightDirectoryEntry[];
 
-type DirectoryProps = {
+interface DirectoryProps {
   appBase: string;
   content: DirectoryContentRecord;
   host: JupyterHostRecord;
   appVersion: string;
   contentRef: ContentRef;
   contents: LightDirectoryEntries;
-};
+}
 
 export class DirectoryApp extends React.PureComponent<DirectoryProps> {
   openNotebook = (ks: KernelspecRecord | KernelspecProps) => {
@@ -108,10 +108,10 @@ export class DirectoryApp extends React.PureComponent<DirectoryProps> {
   }
 }
 
-type InitialProps = {
+interface InitialProps {
   contentRef: ContentRef;
   appBase: string;
-};
+}
 
 const makeMapStateToDirectoryProps = (
   initialState: AppState,

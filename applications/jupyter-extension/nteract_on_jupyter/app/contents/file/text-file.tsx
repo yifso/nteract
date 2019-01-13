@@ -16,22 +16,22 @@ const EditorContainer = styled.div`
   }
 `;
 
-type MappedStateProps = {
+interface MappedStateProps {
   mimetype: string;
   text: string;
   contentRef: ContentRef;
   theme: "light" | "dark";
-};
+}
 
-type MappedDispatchProps = {
+interface MappedDispatchProps {
   handleChange: (value: string) => void;
-};
+}
 
 type TextFileProps = MappedStateProps & MappedDispatchProps;
 
-type TextFileState = {
+interface TextFileState {
   Editor: React.ComponentType<MonacoEditorProps>;
-};
+}
 
 class EditorPlaceholder extends React.PureComponent<MonacoEditorProps> {
   render() {
@@ -78,9 +78,9 @@ export class TextFile extends React.PureComponent<
   }
 }
 
-type InitialProps = {
+interface InitialProps {
   contentRef: ContentRef;
-};
+}
 
 function makeMapStateToTextFileProps(
   initialState: AppState,

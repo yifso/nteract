@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   data: string;
   mediaType: "image/png" | "image/jpeg" | "image/gif";
   metadata: any;
-};
+}
 
 const ImageStyle = styled.img`
   display: block;

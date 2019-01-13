@@ -15,13 +15,13 @@ import { List as ImmutableList, Map as ImmutableMap, Record } from "immutable";
 import { ImmutableCell } from "./cells";
 import { CellId, JSONType } from "./primitives";
 
-export type NotebookRecordParams = {
+export interface NotebookRecordParams {
   cellOrder: ImmutableList<CellId>;
   cellMap: ImmutableMap<CellId, ImmutableCell>;
   nbformat_minor: number;
   nbformat: number;
   metadata: ImmutableMap<string, any>;
-};
+}
 
 export const makeNotebookRecord = Record<NotebookRecordParams>({
   cellOrder: ImmutableList(),

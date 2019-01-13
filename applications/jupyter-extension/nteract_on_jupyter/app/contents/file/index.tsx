@@ -25,7 +25,7 @@ const JupyterExtensionChoiceContainer = styled.div`
   overflow: auto;
 `;
 
-type FileProps = {
+interface FileProps {
   type: "notebook" | "file" | "dummy";
   contentRef: ContentRef;
   baseDir: string;
@@ -36,7 +36,7 @@ type FileProps = {
   saving: boolean;
   loading: boolean;
   error?: object | null;
-};
+}
 
 export class File extends React.PureComponent<FileProps> {
   getChoice = () => {
@@ -82,10 +82,10 @@ export class File extends React.PureComponent<FileProps> {
   }
 }
 
-type InitialProps = {
+interface InitialProps {
   contentRef: ContentRef;
   appBase: string;
-};
+}
 
 // Since the contentRef stays unique for the duration of this file,
 // we use the makeMapStateToProps pattern to optimize re-render

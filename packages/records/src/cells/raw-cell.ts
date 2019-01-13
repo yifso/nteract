@@ -7,18 +7,18 @@ export type RawCellType = "raw";
 export const RAWCELL: RawCellType = "raw";
 
 // In-memory version
-type RawCell = {
+interface RawCell {
   cellType: RawCellType,
   metadata: JSONObject,
   source: string
-};
+}
 
 // On disk
-export type NbformatRawCell = {
+export interface NbformatRawCell {
   cell_type: RawCellType,
   metadata: JSONObject,
   source: MultilineString
-};
+}
 
 export type RawCellRecord = JSONObject;
 

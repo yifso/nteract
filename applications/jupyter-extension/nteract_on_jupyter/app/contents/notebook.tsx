@@ -48,17 +48,17 @@ const transforms = {
 // Show nothing while loading the notebook app
 const NotebookPlaceholder = (props: any) => null;
 
-type State = {
+interface State {
   transforms: typeof defaultTransforms;
   displayOrder: typeof defaultDisplayOrder;
   App: React.ComponentType<Props>;
-};
+}
 
-type Props = {
+interface Props {
   contentRef: ContentRef;
   transforms?: typeof defaultTransforms;
   displayOrder?: typeof defaultDisplayOrder;
-};
+}
 
 export default class Notebook extends React.PureComponent<
   { contentRef: ContentRef },

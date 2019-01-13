@@ -11,11 +11,11 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-type Props = {
+export interface Props {
   appVersion?: string;
   hostType: "local" | "empty" | "jupyter" | null;
   closeModal?: () => void;
-};
+}
 
 // We need to do this so that you can immediately `Escape` out of the dialog.
 // Otherwise, we'd need to (a) put an event listener on the document or (b)

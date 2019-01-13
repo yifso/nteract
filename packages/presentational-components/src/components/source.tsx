@@ -3,12 +3,12 @@ import * as React from "react";
 import styled from "styled-components";
 import Highlighter from "../syntax-highlighter";
 
-export type SourceProps = {
+export interface SourceProps {
   language?: string;
   children?: React.ReactNode;
   className?: string;
   theme?: "light" | "dark";
-};
+}
 
 class BareSource extends React.Component<SourceProps> {
   static defaultProps = {

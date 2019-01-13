@@ -84,12 +84,12 @@ export interface RawCell {
 
 export type Cell = CodeCell | MarkdownCell | RawCell;
 
-export type Notebook = {
+export interface Notebook {
   cells: Array<Cell>;
   metadata: Object;
   nbformat: 4;
   nbformat_minor: number;
-};
+}
 
 /**
  * Converts a mutable representation of metadata to an immutable representation.

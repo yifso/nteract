@@ -14,11 +14,11 @@ export * from "./contents";
 export * from "./kernels";
 export * from "./kernelspecs";
 
-export type CommunicationRecordProps = {
+export interface CommunicationRecordProps {
   contents: Immutable.RecordOf<ContentsCommunicationRecordProps>;
   kernels: Immutable.RecordOf<KernelsCommunicationRecordProps>;
   kernelspecs: Immutable.RecordOf<KernelspecsCommunicationRecordProps>;
-};
+}
 
 export const makeCommunicationRecord = Immutable.Record<
   CommunicationRecordProps

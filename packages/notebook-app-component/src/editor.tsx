@@ -5,12 +5,12 @@ import { AppState, ContentRef } from "@nteract/types";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-type InitialProps = {
+interface InitialProps {
   id: string;
   contentRef: ContentRef;
   focusAbove: () => void;
   focusBelow: () => void;
-};
+}
 
 const markdownEditorOptions = {
   // Markdown should always be line wrapped

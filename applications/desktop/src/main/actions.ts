@@ -6,12 +6,12 @@ export type QuittingState =
 export const QUITTING_STATE_NOT_STARTED: QuittingState = "Not Started";
 export const QUITTING_STATE_QUITTING: QuittingState = "Quitting";
 
-export type SetKernelSpecsAction = {
+export interface SetKernelSpecsAction {
   type: "SET_KERNELSPECS";
   payload: {
     kernelSpecs: Kernelspecs;
   };
-};
+}
 
 export function setKernelSpecs(kernelSpecs: Kernelspecs): SetKernelSpecsAction {
   return {
@@ -22,12 +22,12 @@ export function setKernelSpecs(kernelSpecs: Kernelspecs): SetKernelSpecsAction {
   };
 }
 
-export type SetQuittingStateAction = {
+export interface SetQuittingStateAction {
   type: "SET_QUITTING_STATE";
   payload: {
     newState: QuittingState;
   };
-};
+}
 
 export function setQuittingState(
   newState: QuittingState

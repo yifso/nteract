@@ -14,9 +14,9 @@ interface OutputsProps {
   hidden?: boolean;
 }
 
-type OutputWrapperProps = {
+interface OutputWrapperProps {
   expanded?: boolean;
-};
+}
 
 const OutputWrapper = styled.div<OutputWrapperProps>`
   padding: 10px 10px 10px calc(var(--prompt-width, 50px) + 10px);

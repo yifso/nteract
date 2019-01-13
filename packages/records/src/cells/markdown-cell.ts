@@ -7,18 +7,18 @@ export type MarkdownCellType = "markdown";
 export const MARKDOWNCELL: MarkdownCellType = "markdown";
 
 // In-memory version
-type MarkdownCell = {
+interface MarkdownCell {
   cellType: MarkdownCellType,
   metadata: JSONObject,
   source: string
-};
+}
 
 // On disk
-export type NbformatMarkdownCell = {
+export interface NbformatMarkdownCell {
   cell_type: MarkdownCellType,
   metadata: JSONObject,
   source: MultilineString
-};
+}
 
 export type MarkdownCellRecord = JSONObject;
 

@@ -15,12 +15,12 @@ interface EmbedData {
   config: object;
 }
 
-type EmbedProps = {
+interface EmbedProps {
   data: EmbedData;
   embedMode?: "vega" | "vega-lite";
   version: string;
   renderedCallback: (err: any, result: any) => any;
-};
+}
 
 const defaultCallback = (): any => {};
 
@@ -127,10 +127,10 @@ export class VegaEmbed extends React.Component<EmbedProps> {
   }
 }
 
-type Props<MediaType> = {
+interface Props<MediaType> {
   data: EmbedData;
   mediaType: MediaType;
-};
+}
 
 export function VegaLite1(props: Props<"application/vnd.vegalite.v1+json">) {
   return <VegaEmbed data={props.data} embedMode="vega-lite" version="vega2" />;

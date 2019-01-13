@@ -8,11 +8,11 @@ import path from "path";
 
 let sysPrefixGuess: string | null | undefined = undefined;
 
-type JupyterPaths = {
+interface JupyterPaths {
   config: string[];
   runtime: string;
   data: string[];
-};
+}
 
 function home(subDir?: string) {
   const baseDir = homedir();

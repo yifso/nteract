@@ -6,12 +6,12 @@ const { Provider, Consumer } = React.createContext<ServerConfig | null>(null);
 
 export { Consumer };
 
-type HostProps = {
+interface HostProps {
   children?: React.ReactNode;
   repo: string;
   gitRef?: string;
   binderURL?: string;
-};
+}
 
 class Host extends React.Component<HostProps, ServerConfig> {
   private lhs?: LocalHostStorage;

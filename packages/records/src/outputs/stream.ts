@@ -23,20 +23,20 @@ export const STDERR: StreamName = "stderr";
 export const STREAM: StreamType = "stream";
 
 // In-memory version
-export type StreamOutput = {
+export interface StreamOutput {
   outputType: StreamType,
   name: StreamName,
   text: string
-};
+}
 
 // On disk
-export type NbformatStreamOutput = {
+export interface NbformatStreamOutput {
   output_type: StreamType,
   name: StreamName,
   text: common.MultilineString
-};
+}
 
-export type StreamMessage = {
+export interface StreamMessage {
   header: {
     msg_type: StreamType
   },
@@ -44,7 +44,7 @@ export type StreamMessage = {
     name: StreamName,
     text: string
   }
-};
+}
 
 export function streamOutput(
   s: Readonly<{

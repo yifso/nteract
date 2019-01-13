@@ -21,20 +21,20 @@ export const DISPLAYDATA: DisplayDataType = "display_data";
 export const outputType = DISPLAYDATA;
 
 // In-memory version
-export type DisplayDataOutput = {
+export interface DisplayDataOutput {
   outputType: DisplayDataType,
   data: common.MimeBundle,
   metadata: {}
-};
+}
 
 // On disk
-export type NbformatDisplayDataOutput = {
+export interface NbformatDisplayDataOutput {
   output_type: DisplayDataType,
   data: common.OnDiskMimebundle,
   metadata: {}
-};
+}
 
-export type DisplayDataMessage = {
+export interface DisplayDataMessage {
   header: {
     msg_type: DisplayDataType
   },
@@ -42,7 +42,7 @@ export type DisplayDataMessage = {
     data: common.MimeBundle,
     metadata: {}
   }
-};
+}
 
 export function displayData(displayDataOutput?: {
   outputType?: DisplayDataType,

@@ -11,14 +11,14 @@ import { Actions } from "../actions";
 
 import * as path from "path";
 
-type GithubFiles = {
+interface GithubFiles {
   [result: string]: {
     // Raw file as string
     content: string;
     // Specify the filename on update to rename it
     filename?: string;
   } | null; // Null allows for deletes
-};
+}
 
 function publishGist(
   model: { files: GithubFiles; description: string; public: boolean },

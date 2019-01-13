@@ -6,17 +6,17 @@ import { ServerConfig } from "../host-storage";
 
 import Host from "./host";
 
-type KernelAllocatorProps = {
+interface KernelAllocatorProps {
   children?: React.ReactNode;
   host: ServerConfig;
   kernelName: string;
   cwd: string;
-};
+}
 
-type KernelAllocatorState = {
+interface KernelAllocatorState {
   channels: Object | null;
   error: boolean;
-};
+}
 
 const { Provider, Consumer } = React.createContext<KernelAllocatorState | null>(
   null
@@ -99,14 +99,14 @@ class KernelAllocator extends React.Component<
   }
 }
 
-type KernelProps = {
+interface KernelProps {
   children?: React.ReactNode;
   repo: string;
   gitRef?: string;
   binderURL?: string;
   kernelName: string;
   cwd: string;
-};
+}
 
 class Kernel extends React.Component<KernelProps> {
   static Consumer = Consumer;

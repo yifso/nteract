@@ -53,7 +53,7 @@ function normalizeLineEndings(str: string) {
   return str.replace(/\r\n|\r/g, "\n");
 }
 
-export type CodeMirrorEditorProps = {
+export interface CodeMirrorEditorProps {
   editorFocused: boolean;
   completion: boolean;
   tip?: boolean;
@@ -70,18 +70,18 @@ export type CodeMirrorEditorProps = {
   value: string;
   defaultValue?: string;
   options: Options;
-};
+}
 
-type CodeMirrorEditorState = {
+interface CodeMirrorEditorState {
   isFocused: boolean;
   tipElement?: any;
-};
+}
 
-type CodeCompletionEvent = {
+interface CodeCompletionEvent {
   editor: CodeMirror.Editor;
   callback: Function;
   debounce: boolean;
-};
+}
 
 class CodeMirrorEditor extends React.Component<
   CodeMirrorEditorProps,

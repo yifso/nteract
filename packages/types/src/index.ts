@@ -17,7 +17,7 @@ export * from "./entities";
 export * from "./ids";
 export * from "./refs";
 
-type KernelspecMetadata = {
+interface KernelspecMetadata {
   display_name: string;
   language: string;
   argv: string[];
@@ -25,29 +25,29 @@ type KernelspecMetadata = {
   env?: {
     [variable: string]: string;
   };
-};
+}
 
 /**
  * This is the kernelspec as formed by spawnteract and jupyter kernelspecs --json
  */
-export type KernelspecInfo = {
+export interface KernelspecInfo {
   name: string;
   spec: KernelspecMetadata;
-};
+}
 
-export type Kernelspecs = {
+export interface Kernelspecs {
   [name: string]: KernelspecInfo;
-};
+}
 
-export type LanguageInfoMetadata = {
+export interface LanguageInfoMetadata {
   name: string;
   codemirror_mode?: string | Immutable.Map<string, any> | object;
   file_extension?: string;
   mimetype?: string;
   pygments_lexer?: string;
-};
+}
 
-export type NotebookMetadata = {
+export interface NotebookMetadata {
   kernelspec: KernelspecMetadata;
   language_info: LanguageInfoMetadata;
   // NOTE: We're not currently using orig_nbformat in nteract. Based on the comment
@@ -61,30 +61,30 @@ export type NotebookMetadata = {
   // handled as separate state.
   //
   // orig_nbformat?: number,
-};
+}
 
-type PagePayloadMessage = {
+interface PagePayloadMessage {
   source: "page";
   data: MimeBundle;
   start: number;
-};
+}
 
-type SetNextInputPayloadMessage = {
+interface SetNextInputPayloadMessage {
   source: "set_next_input";
   text: string;
   replace: boolean;
-};
+}
 
-type EditPayloadMessage = {
+interface EditPayloadMessage {
   source: "edit";
   filename: string;
   line_number: number;
-};
+}
 
-type AskExitPayloadMessage = {
+interface AskExitPayloadMessage {
   source: "ask_exit";
   keepkernel: boolean;
-};
+}
 
 export type PayloadMessage =
   | PagePayloadMessage
@@ -92,11 +92,11 @@ export type PayloadMessage =
   | EditPayloadMessage
   | AskExitPayloadMessage;
 
-export type CommsRecordProps = {
+export interface CommsRecordProps {
   targets: Immutable.Map<any, any>;
   info: Immutable.Map<any, any>;
   models: Immutable.Map<any, any>;
-};
+}
 
 export type CommsRecord = Immutable.RecordOf<CommsRecordProps>;
 
@@ -111,12 +111,12 @@ const version: string = require("../package.json").version;
 
 export type ConfigState = Immutable.Map<string, any>;
 
-export type StateRecordProps = {
+export interface StateRecordProps {
   kernelRef: KernelRef | null;
   currentKernelspecsRef?: KernelspecsRef | null;
   communication: Immutable.RecordOf<CommunicationRecordProps>;
   entities: Immutable.RecordOf<EntitiesRecordProps>;
-};
+}
 
 export const makeStateRecord = Immutable.Record<StateRecordProps>({
   kernelRef: null,
@@ -126,7 +126,7 @@ export const makeStateRecord = Immutable.Record<StateRecordProps>({
 });
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 
-export type AppRecordProps = {
+export interface AppRecordProps {
   host: HostRecord;
   githubToken?: string | null;
   notificationSystem: {
@@ -138,7 +138,7 @@ export type AppRecordProps = {
   error: any;
   // The version number should be provided by an app on boot
   version: string;
-};
+}
 
 export const makeAppRecord = Immutable.Record<AppRecordProps>({
   host: makeEmptyHostRecord(),
@@ -167,12 +167,12 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 
-export type AppState = {
+export interface AppState {
   app: AppRecord;
   comms: CommsRecord;
   config: ConfigState;
   core: CoreRecord;
-};
+}
 
 export type AppStateRecord = Immutable.RecordOf<AppState>;
 

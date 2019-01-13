@@ -9,10 +9,10 @@ import {
   SetQuittingStateAction
 } from "./actions";
 
-type MainStateProps = {
+interface MainStateProps {
   kernelSpecs: Kernelspecs;
   quittingState: QuittingState;
-};
+}
 
 type MainStateRecord = RecordOf<MainStateProps>;
 

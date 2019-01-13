@@ -17,10 +17,10 @@ export interface Transforms extends ObjectType {
 }
 type DisplayOrder = Array<string>;
 
-export type TransformRegister = {
+export interface TransformRegister {
   transforms: Transforms;
   displayOrder: DisplayOrder;
-};
+}
 
 const tfs = [
   VDOMDisplay,

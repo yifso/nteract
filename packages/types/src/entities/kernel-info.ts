@@ -4,10 +4,10 @@
 import { JSONType } from "@nteract/commutable";
 import * as Immutable from "immutable";
 
-export type HelpLink = {
+export interface HelpLink {
   text: string;
   url: string;
-};
+}
 export const makeHelpLinkRecord = Immutable.Record<HelpLink>({
   text: "",
   url: "#"
@@ -22,7 +22,7 @@ export type HelpLinkRecord = Immutable.RecordOf<HelpLink>;
 // We've adapted to both camelCase instead of snake_case here as well as flattened
 // the structure. The original naming is labeled `SPEC`
 //
-export type KernelInfo = {
+export interface KernelInfo {
   // Version of the messaging protocol.
   // The first integer indicates major version.  It is incremented when
   // there is any backward incompatible change.
@@ -90,7 +90,7 @@ export type KernelInfo = {
   // exporter.
   // SPEC: language_info.nbconvert_exporter
   nbconvertExporter: string;
-};
+}
 
 export type KernelInfoRecord = Immutable.RecordOf<KernelInfo>;
 

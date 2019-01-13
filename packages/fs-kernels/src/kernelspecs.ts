@@ -6,26 +6,26 @@ import path from "path";
 import { promisify } from "util";
 import jp from "./jupyter-paths";
 
-type KernelInfo = {
+interface KernelInfo {
   name: string;
   resourceDir: string;
-};
+}
 
-export type KernelSpec = {
+export interface KernelSpec {
   display_name: string;
   argv: string[];
   language: string;
   env?: { [varialbe: string]: string };
-};
+}
 
-type KernelResource = {
+interface KernelResource {
   name: string;
   files: string[];
   resources_dir: string;
   spec: KernelSpec;
-};
+}
 
-export type KernelResourceByName = { [name: string]: KernelResource };
+export interface KernelResourceByName { [name: string]: KernelResource }
 
 function flatten(array: Array<any>) {
   return [].concat(...array);

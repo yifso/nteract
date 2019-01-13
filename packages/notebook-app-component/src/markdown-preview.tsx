@@ -9,7 +9,7 @@ import {
 } from "@nteract/presentational-components";
 import React from "react";
 
-type Props = {
+interface Props {
   source: string;
   focusEditor: () => void;
   unfocusEditor: () => void;
@@ -18,11 +18,11 @@ type Props = {
   cellFocused: boolean;
   editorFocused: boolean;
   children: React.ReactNode;
-};
+}
 
-type State = {
+interface State {
   view: boolean;
-};
+}
 
 const noop = function() {};
 

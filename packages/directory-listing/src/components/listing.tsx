@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 
-type ListingProps = {
+interface ListingProps {
   children: React.ReactNode;
-};
+}
 
 const ListingRoot = styled.table`
   margin: 0px 0px 20px 0px;

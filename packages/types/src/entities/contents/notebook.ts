@@ -11,7 +11,7 @@ import * as Immutable from "immutable";
 
 import { KernelRef } from "../..";
 
-export type DocumentRecordProps = {
+export interface DocumentRecordProps {
   type: "notebook";
   notebook: ImmutableNotebook;
   savedNotebook: ImmutableNotebook;
@@ -24,7 +24,7 @@ export type DocumentRecordProps = {
   cellFocused?: CellId | null;
   copied: ImmutableCell | null;
   kernelRef?: KernelRef | null;
-};
+}
 export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   type: "notebook",
   notebook: emptyNotebook,
@@ -40,7 +40,7 @@ export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
 });
 export type NotebookModel = Immutable.RecordOf<DocumentRecordProps>;
 
-export type NotebookContentRecordProps = {
+export interface NotebookContentRecordProps {
   mimetype?: string | null;
   created?: Date | null;
   format: "json";
@@ -49,7 +49,7 @@ export type NotebookContentRecordProps = {
   filepath: string;
   type: "notebook";
   writable: boolean;
-};
+}
 
 export const makeNotebookContentRecord = Immutable.Record<
   NotebookContentRecordProps

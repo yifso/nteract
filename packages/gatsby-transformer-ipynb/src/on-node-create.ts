@@ -3,7 +3,7 @@ import crypto from "crypto";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 
-export type Node = {
+export interface Node {
   extension: string;
   absolutePath: string;
   id: string;
@@ -19,7 +19,7 @@ export type Node = {
     contentDigest?: string;
     type?: string;
   };
-};
+}
 
 module.exports = async function onCreateNode(
   {

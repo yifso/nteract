@@ -26,16 +26,16 @@ import styled, { createGlobalStyle } from "styled-components";
 
 import { PapermillView } from "./papermill";
 
-type Props = {
+interface Props {
   displayOrder: Array<string>;
   notebook: any;
   transforms: Transforms;
   theme: "light" | "dark";
-};
+}
 
-type State = {
+interface State {
   notebook: any;
-};
+}
 
 const RawCell = styled.pre`
   background: repeating-linear-gradient(

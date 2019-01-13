@@ -23,7 +23,7 @@ import { Dispatch } from "redux";
 
 import styled from "styled-components";
 
-export type PureToolbarProps = {
+export interface PureToolbarProps {
   type: "markdown" | "code" | "raw";
   executeCell?: () => void;
   deleteCell?: () => void;
@@ -35,7 +35,7 @@ export type PureToolbarProps = {
   changeCellType?: () => void;
   sourceHidden: boolean;
   contentRef: ContentRef;
-};
+}
 
 export const CellToolbar = styled.div`
   background-color: var(--theme-cell-toolbar-bg);
@@ -219,7 +219,7 @@ export class PureToolbar extends React.Component<PureToolbarProps> {
 }
 
 // eslint-disable-next-line no-unused-vars
-type ConnectedProps = {
+interface ConnectedProps {
   id: string;
   type: "markdown" | "code" | "raw";
   executeCell: () => void;
@@ -229,13 +229,13 @@ type ConnectedProps = {
   toggleCellInputVisibility: () => void;
   changeCellType: () => void;
   toggleOutputExpansion: () => void;
-};
+}
 
-type InitialProps = {
+interface InitialProps {
   id: string;
   type: "markdown" | "code" | "raw";
   contentRef: ContentRef;
-};
+}
 
 const makeMapDispatchToProps = (
   initialDispatch: Dispatch,

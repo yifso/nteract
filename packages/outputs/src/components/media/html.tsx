@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   /**
    * The HTML string that will be rendered.
    */
@@ -10,7 +10,7 @@ type Props = {
    * string. This defaults to text/html.
    */
   mediaType: "text/html";
-};
+}
 
 // Note: createRange and Range must be polyfilled on older browsers with
 //       https://github.com/timdown/rangy

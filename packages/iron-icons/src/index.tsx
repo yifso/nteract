@@ -1,12 +1,12 @@
 import * as React from "react";
 
-type WrapperProps = {
+interface WrapperProps {
   children: React.ReactNode;
   outerProps: React.SVGAttributes<any>;
   width: number;
   height: number;
   viewBox: string;
-};
+}
 
 export const SVGWrapper = (props: WrapperProps) => {
   return (
