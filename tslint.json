@@ -12,7 +12,7 @@
     "no-unnecessary-type-assertion": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "no-duplicate-imports": true,
     "max-line-length": false,
     "trailing-comma": false,
