@@ -1,27 +1,27 @@
-import * as Immutable from "immutable";
 import { fromJS } from "@nteract/commutable";
+import * as Immutable from "immutable";
 import { Action } from "redux";
 
 import * as actionTypes from "@nteract/actions";
 import {
   ContentModel,
   ContentRecord,
+  ContentRef,
   ContentsRecord,
-  makeFileContentRecord,
-  makeFileModelRecord,
-  makeDummyContentRecord,
+  createContentRef,
+  DummyContentRecordProps,
   makeContentsRecord,
   makeDirectoryContentRecord,
   makeDirectoryModel,
   makeDocumentRecord,
-  makeNotebookContentRecord,
-  createContentRef,
-  DummyContentRecordProps,
-  ContentRef
+  makeDummyContentRecord,
+  makeFileContentRecord,
+  makeFileModelRecord,
+  makeNotebookContentRecord
 } from "@nteract/types";
 
-import { notebook } from "./notebook";
 import { file } from "./file";
+import { notebook } from "./notebook";
 
 const byRef = (
   state: Immutable.Map<ContentRef, ContentRecord>,

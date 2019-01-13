@@ -1,6 +1,6 @@
 import * as actions from "@nteract/actions";
 
-import { makeKernelsRecord, KernelsRecordProps } from "@nteract/types";
+import { KernelsRecordProps, makeKernelsRecord } from "@nteract/types";
 import { kernels } from "../../../src/core/entities/kernels";
 
 describe("LAUNCH_KERNEL reducers", () => {

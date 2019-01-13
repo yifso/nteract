@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ServerConfig, LocalHostStorage } from "../host-storage";
+import { LocalHostStorage, ServerConfig } from "../host-storage";
 
 const { Provider, Consumer } = React.createContext<ServerConfig | null>(null);
 

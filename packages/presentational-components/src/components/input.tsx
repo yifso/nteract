@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import styled from "styled-components";
 import { Prompt } from "./prompt";
 import { Source } from "./source";
-import styled from "styled-components";
 
 interface InputProps {
   children: React.ReactNode;

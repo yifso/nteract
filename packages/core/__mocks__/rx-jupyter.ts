@@ -1,4 +1,4 @@
-import { Subject, of } from "rxjs";
+import { of, Subject } from "rxjs";
 
 // Mock response generated 01/24/2018, may need updating.
 const mockListReponse = {

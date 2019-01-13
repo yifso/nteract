@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import TooltipContent from "../tooltip-content";
 import HTMLLegend from "../HTMLLegend";
+import TooltipContent from "../tooltip-content";
 import { numeralFormatting } from "../utilities";
 
-import { sortByOrdinalRange } from "./shared";
 import * as Dx from "../types";
+import { sortByOrdinalRange } from "./shared";
 
 interface BarOptions {
   selectedDimensions: string[];

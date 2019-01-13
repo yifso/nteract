@@ -5,8 +5,8 @@ import { createSelector } from "reselect";
 
 import {
   AppState,
-  JupyterHostRecord,
   ContentRef,
+  JupyterHostRecord,
   KernelRef,
   KernelspecsByRefRecord
 } from "@nteract/types";

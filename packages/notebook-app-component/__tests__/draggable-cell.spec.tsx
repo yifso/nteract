@@ -1,7 +1,7 @@
-import React from "react";
-import { shallow } from "enzyme";
 import { emptyMarkdownCell } from "@nteract/commutable";
 import { displayOrder, transforms } from "@nteract/transforms";
+import { shallow } from "enzyme";
+import React from "react";
 
 import DraggableCell from "../src/draggable-cell";
 

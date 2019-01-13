@@ -4,16 +4,16 @@ export * from "./common";
 import * as outputs from "./outputs";
 import { Notebook as v4Notebook } from "./structures";
 import {
-  ImmutableNotebook,
+  ImmutableCell,
+  ImmutableCellMap,
+  ImmutableCellOrder,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
-  ImmutableRawCell,
-  ImmutableCell,
+  ImmutableMimeBundle,
+  ImmutableNotebook,
   ImmutableOutput,
   ImmutableOutputs,
-  ImmutableMimeBundle,
-  ImmutableCellOrder,
-  ImmutableCellMap,
+  ImmutableRawCell,
   JSONObject,
   JSONType
 } from "./types";

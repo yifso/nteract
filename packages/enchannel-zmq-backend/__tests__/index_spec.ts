@@ -1,14 +1,14 @@
-import uuid from "uuid/v4";
 import { Subject } from "rxjs";
-import { toArray, take } from "rxjs/operators";
+import { take, toArray } from "rxjs/operators";
+import uuid from "uuid/v4";
 
 import {
-  createSocket,
-  ZMQType,
-  getUsername,
   createMainChannelFromSockets,
+  createSocket,
+  getUsername,
+  JupyterConnectionInfo,
   verifiedConnect,
-  JupyterConnectionInfo
+  ZMQType
 } from "../src";
 
 import { EventEmitter } from "events";

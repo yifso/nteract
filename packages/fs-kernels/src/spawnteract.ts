@@ -24,24 +24,24 @@
 /**
  *
  */
-import path from "path";
 import fs from "fs";
+import path from "path";
 
-import uuid from "uuid";
-import { getPorts } from "portfinder";
 import jsonfile from "jsonfile";
+import { getPorts } from "portfinder";
+import uuid from "uuid";
 
 import execa, { Options } from "execa";
 import mkdirp from "mkdirp";
 
-import { findAll, KernelResourceByName, KernelSpec } from "./kernelspecs";
 import jp from "./jupyter-paths";
+import { findAll, KernelResourceByName, KernelSpec } from "./kernelspecs";
 
-import {
-  JupyterConnectionInfo,
-  createMainChannel
-} from "enchannel-zmq-backend";
 import { Channels } from "@nteract/messaging";
+import {
+  createMainChannel,
+  JupyterConnectionInfo
+} from "enchannel-zmq-backend";
 
 export function cleanup(connectionFile: fs.PathLike) {
   try {

@@ -1,8 +1,8 @@
-import React from "react";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { fixtureStore } from "@nteract/fixtures";
 import { actions, ContentModel } from "@nteract/core";
+import { fixtureStore } from "@nteract/fixtures";
+import { mount } from "enzyme";
+import React from "react";
+import { Provider } from "react-redux";
 
 import Editor from "../src/editor";
 

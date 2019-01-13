@@ -1,10 +1,10 @@
+import { actions, selectors } from "@nteract/core";
 import { shell } from "electron";
-import { selectors, actions } from "@nteract/core";
-import { of, empty } from "rxjs";
-import { ajax } from "rxjs/ajax";
-import { mergeMap, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
+import { empty, of } from "rxjs";
+import { ajax } from "rxjs/ajax";
+import { catchError, mergeMap } from "rxjs/operators";
 import { DesktopNotebookAppState } from "../state";
 
 import { Actions } from "../actions";

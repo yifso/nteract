@@ -1,13 +1,13 @@
 import VDOMDisplay from "@nteract/transform-vdom";
 
-import TextDisplay from "./text";
-import JsonDisplay from "./json";
-import JavaScriptDisplay from "./javascript";
 import HTMLDisplay from "./html";
-import MarkdownDisplay from "./markdown";
+import { GIFDisplay, JPEGDisplay, PNGDisplay } from "./image";
+import JavaScriptDisplay from "./javascript";
+import JsonDisplay from "./json";
 import LaTeXDisplay from "./latex";
+import MarkdownDisplay from "./markdown";
 import SVGDisplay from "./svg";
-import { PNGDisplay, JPEGDisplay, GIFDisplay } from "./image";
+import TextDisplay from "./text";
 
 type Transform = { MIMETYPE: string } & React.ComponentType<any>;
 

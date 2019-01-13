@@ -1,7 +1,7 @@
-import { ActionsObservable } from "redux-observable";
 import { monocellNotebook, toJS } from "@nteract/commutable";
-import { fixtureCommutable } from "@nteract/fixtures";
 import { actions } from "@nteract/core";
+import { fixtureCommutable } from "@nteract/fixtures";
+import { ActionsObservable } from "redux-observable";
 import { toArray } from "rxjs/operators";
 
 import {

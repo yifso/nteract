@@ -1,8 +1,8 @@
 /**
  * @module commutable
  */
-import uuid from "uuid/v4";
 import * as Immutable from "immutable";
+import uuid from "uuid/v4";
 
 export type ExecutionCount = number | null;
 

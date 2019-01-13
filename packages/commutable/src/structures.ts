@@ -5,11 +5,11 @@ import uuid from "uuid/v4";
 
 import { CellId, createCellId } from "./primitives";
 
-import { makeNotebookRecord, ImmutableNotebook } from "./notebook";
+import { ImmutableNotebook, makeNotebookRecord } from "./notebook";
 
-import { makeCodeCell, makeMarkdownCell, ImmutableCell } from "./cells";
+import { ImmutableCell, makeCodeCell, makeMarkdownCell } from "./cells";
 
-import { Map as ImmutableMap, List as ImmutableList } from "immutable";
+import { List as ImmutableList, Map as ImmutableMap } from "immutable";
 
 // The cell creators here are a bit duplicative
 export const createCodeCell = makeCodeCell;

@@ -1,47 +1,47 @@
-import { resolve, join } from "path";
-import { existsSync } from "fs";
 import * as log from "electron-log";
-import * as kernelspecs from "kernelspecs";
+import { existsSync } from "fs";
 import * as jupyterPaths from "jupyter-paths";
+import * as kernelspecs from "kernelspecs";
+import { join, resolve } from "path";
 import yargs from "yargs/yargs";
 
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 
 import {
-  Menu,
-  dialog,
   app,
-  ipcMain as ipc,
   BrowserWindow,
-  Tray,
-  Event
+  dialog,
+  Event,
+  ipcMain as ipc,
+  Menu,
+  Tray
 } from "electron";
-import { Subscriber, fromEvent, forkJoin, zip, Observable } from "rxjs";
-import {
-  mergeMap,
-  takeUntil,
-  skipUntil,
-  buffer,
-  catchError,
-  first
-} from "rxjs/operators";
 import {
   mkdirpObservable,
   readFileObservable,
   writeFileObservable
 } from "fs-observable";
+import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
+import {
+  buffer,
+  catchError,
+  first,
+  mergeMap,
+  skipUntil,
+  takeUntil
+} from "rxjs/operators";
 
-import { launch, launchNewNotebook } from "./launch";
+import {
+  QUITTING_STATE_NOT_STARTED,
+  QUITTING_STATE_QUITTING,
+  setKernelSpecs,
+  setQuittingState
+} from "./actions";
 import { initAutoUpdater } from "./auto-updater";
+import initializeKernelSpecs from "./kernel-specs";
+import { launch, launchNewNotebook } from "./launch";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
-import initializeKernelSpecs from "./kernel-specs";
-import {
-  setKernelSpecs,
-  setQuittingState,
-  QUITTING_STATE_NOT_STARTED,
-  QUITTING_STATE_QUITTING
-} from "./actions";
 
 import configureStore from "./store";
 

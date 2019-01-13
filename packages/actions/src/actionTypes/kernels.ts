@@ -6,8 +6,8 @@ import { ExecuteRequest } from "@nteract/messaging";
 import {
   ContentRef,
   KernelInfo,
-  KernelspecInfo,
   KernelRef,
+  KernelspecInfo,
   LocalKernelProps,
   RemoteKernelProps
 } from "@nteract/types";

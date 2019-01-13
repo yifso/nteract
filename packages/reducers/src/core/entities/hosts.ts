@@ -1,6 +1,6 @@
 import * as Immutable from "immutable";
-import { combineReducers } from "redux-immutable";
 import { Action } from "redux";
+import { combineReducers } from "redux-immutable";
 
 import * as actions from "@nteract/actions";
 import {

@@ -1,8 +1,8 @@
 import * as actionTypes from "./actionTypes";
 import { DesktopNotebookRecord } from "./state";
 import {
-  makeDesktopNotebookRecord,
-  DESKTOP_NOTEBOOK_CLOSING_STARTED
+  DESKTOP_NOTEBOOK_CLOSING_STARTED,
+  makeDesktopNotebookRecord
 } from "./state";
 
 export function handleDesktopNotebook(

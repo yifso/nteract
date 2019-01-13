@@ -1,12 +1,12 @@
 /**
  * @module enchannel-zmq-backend
  */
-import { Subject, Subscriber, fromEvent, merge, Observable } from "rxjs";
-import { map, publish, refCount } from "rxjs/operators";
-import * as moduleJMP from "jmp";
-import uuid from "uuid/v4";
 import { Channels, JupyterMessage } from "@nteract/messaging";
+import * as moduleJMP from "jmp";
+import { fromEvent, merge, Observable, Subject, Subscriber } from "rxjs";
 import { FromEventTarget } from "rxjs/internal/observable/fromEvent";
+import { map, publish, refCount } from "rxjs/operators";
+import uuid from "uuid/v4";
 
 export const ZMQType = {
   frontend: {

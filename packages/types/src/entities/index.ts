@@ -4,14 +4,14 @@
 import * as Immutable from "immutable";
 
 import { ContentsRecordProps } from "./contents";
-import { HostsRecordProps } from "./hosts";
-import { KernelsRecordProps } from "./kernels";
-import { KernelspecsRecordProps } from "./kernelspecs";
-import { ModalsRecordProps } from "./modals";
 import { makeContentsRecord } from "./contents";
+import { HostsRecordProps } from "./hosts";
 import { makeHostsRecord } from "./hosts";
+import { KernelsRecordProps } from "./kernels";
 import { makeKernelsRecord } from "./kernels";
+import { KernelspecsRecordProps } from "./kernelspecs";
 import { makeKernelspecsRecord } from "./kernelspecs";
+import { ModalsRecordProps } from "./modals";
 import { makeModalsRecord } from "./modals";
 
 export * from "./contents";

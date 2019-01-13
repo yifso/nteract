@@ -1,8 +1,8 @@
 import * as nteractRecords from "@nteract/records";
-import { executeResult } from "@nteract/records/src/outputs/execute-result";
-import { streamOutput } from "@nteract/records/src/outputs/stream";
 import { displayData } from "@nteract/records/src/outputs/display-data";
 import { errorOutput } from "@nteract/records/src/outputs/error";
+import { executeResult } from "@nteract/records/src/outputs/execute-result";
+import { streamOutput } from "@nteract/records/src/outputs/stream";
 
 describe("stream output", () => {
   test("can be converted from nbformat", () => {

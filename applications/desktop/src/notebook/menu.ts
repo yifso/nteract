@@ -1,9 +1,9 @@
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
 
-import { ipcRenderer as ipc, webFrame, shell, remote } from "electron";
+import { actions, ContentRef, createKernelRef, selectors } from "@nteract/core";
+import { ipcRenderer as ipc, remote, shell, webFrame } from "electron";
 import { throttle } from "lodash";
-import { actions, selectors, createKernelRef, ContentRef } from "@nteract/core";
 import { DesktopStore } from "./store";
 
 type NotificationSystemRef = any;

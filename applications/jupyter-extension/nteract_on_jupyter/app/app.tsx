@@ -1,10 +1,10 @@
+import { ContentRef } from "@nteract/core";
+import { GlobalCSSVariables, themes } from "@nteract/presentational-components";
+import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 import * as React from "react";
 import NotificationSystem, {
   System as ReactNotificationSystem
 } from "react-notification-system";
-import { themes, GlobalCSSVariables } from "@nteract/presentational-components";
-import { ContentRef } from "@nteract/core";
-import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 import { createGlobalStyle } from "styled-components";
 
 import { default as Contents } from "./contents";

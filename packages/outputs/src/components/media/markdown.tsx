@@ -1,5 +1,5 @@
-import * as React from "react";
 import MarkdownComponent from "@nteract/markdown";
+import * as React from "react";
 
 interface Props {
   /**

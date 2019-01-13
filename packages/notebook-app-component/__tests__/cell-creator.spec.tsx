@@ -1,12 +1,12 @@
-import React from "react";
-import { mount, shallow } from "enzyme";
-import { Provider } from "react-redux";
 import { actions } from "@nteract/core";
 import { fixtureStore } from "@nteract/fixtures";
+import { mount, shallow } from "enzyme";
+import React from "react";
+import { Provider } from "react-redux";
 
 import CellCreator, {
-  PureCellCreator,
-  CellCreatorMenu
+  CellCreatorMenu,
+  PureCellCreator
 } from "../src/cell-creator";
 
 describe("CellCreatorView", () => {

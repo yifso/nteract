@@ -1,8 +1,8 @@
+import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
+import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
-import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
-import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 
 import ReactTableStyles from "../css/react-table";
 

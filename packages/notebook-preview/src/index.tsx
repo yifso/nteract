@@ -1,28 +1,28 @@
-import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import { Display } from "@nteract/display-area";
 import {
-  displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms,
-  Transforms
-} from "@nteract/transforms";
-import {
-  emptyNotebook,
   appendCellToNotebook,
-  fromJS,
-  createCodeCell
+  createCodeCell,
+  emptyNotebook,
+  fromJS
 } from "@nteract/commutable";
-import {
-  themes,
-  Cell,
-  Input,
-  Prompt,
-  Source,
-  Outputs,
-  Cells
-} from "@nteract/presentational-components";
+import { Display } from "@nteract/display-area";
 import Markdown from "@nteract/markdown";
 import * as MathJax from "@nteract/mathjax";
+import {
+  Cell,
+  Cells,
+  Input,
+  Outputs,
+  Prompt,
+  Source,
+  themes
+} from "@nteract/presentational-components";
+import {
+  displayOrder as defaultDisplayOrder,
+  Transforms,
+  transforms as defaultTransforms
+} from "@nteract/transforms";
+import * as React from "react";
+import styled, { createGlobalStyle } from "styled-components";
 
 import { PapermillView } from "./papermill";
 

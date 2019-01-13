@@ -6,8 +6,8 @@ import { areComponentsEqual } from "react-hot-loader";
 import styled from "styled-components";
 
 import { Icon } from "./icon";
-import { Name } from "./name";
 import { LastSaved } from "./lastsaved";
+import { Name } from "./name";
 
 interface EntryProps {
   children: React.ReactNode;

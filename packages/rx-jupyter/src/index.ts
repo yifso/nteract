@@ -4,12 +4,12 @@
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { createAJAXSettings, ServerConfig } from "./base";
 
+import { Observable } from "rxjs";
+import * as contents from "./contents";
 import * as kernels from "./kernels";
 import * as kernelspecs from "./kernelspecs";
 import * as sessions from "./sessions";
-import * as contents from "./contents";
 import * as terminals from "./terminals";
-import { Observable } from "rxjs";
 
 /**
  * Get the version of the API for a given server.

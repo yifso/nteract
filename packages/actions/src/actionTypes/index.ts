@@ -3,10 +3,10 @@
  */
 import {
   CellId,
-  MimeBundle,
-  Output,
+  ImmutableJSONType,
   JSONObject,
-  ImmutableJSONType
+  MimeBundle,
+  Output
 } from "@nteract/commutable";
 
 import { ContentRef, HostRef, KernelRef, PayloadMessage } from "@nteract/types";

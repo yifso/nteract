@@ -1,11 +1,11 @@
-import { createStore, applyMiddleware, combineReducers, Store } from "redux";
-import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
+import { combineEpics, createEpicMiddleware } from "redux-observable";
 
-import { DesktopNotebookAppState } from "./state";
-import { handleDesktopNotebook } from "./reducers";
-import epics from "./epics";
 import { Actions } from "./actions";
+import epics from "./epics";
+import { handleDesktopNotebook } from "./reducers";
+import { DesktopNotebookAppState } from "./state";
 
 const rootEpic = combineEpics(...epics);
 const epicMiddleware = createEpicMiddleware<

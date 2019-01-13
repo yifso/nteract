@@ -1,6 +1,6 @@
+import { Book, FileDirectory, FileText } from "@nteract/octicons";
 import * as React from "react";
 import styled from "styled-components";
-import { Book, FileText, FileDirectory } from "@nteract/octicons";
 
 interface IconProps {
   color: string;

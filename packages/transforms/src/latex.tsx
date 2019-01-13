@@ -1,5 +1,5 @@
-import React from "react";
 import * as MathJax from "@nteract/mathjax";
+import React from "react";
 
 interface Props {
   data: string;

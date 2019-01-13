@@ -1,14 +1,14 @@
-import { combineReducers } from "redux-immutable";
-import { Action } from "redux";
 import * as Immutable from "immutable";
+import { Action } from "redux";
+import { combineReducers } from "redux-immutable";
 
+import * as actionTypes from "@nteract/actions";
 import {
+  KernelspecProps,
   makeKernelspec,
   makeKernelspecsByRefRecord,
-  makeKernelspecsRecord,
-  KernelspecProps
+  makeKernelspecsRecord
 } from "@nteract/types";
-import * as actionTypes from "@nteract/actions";
 
 const byRef = (state = Immutable.Map(), action: Action) => {
   let typedAction = action as actionTypes.FetchKernelspecsFulfilled;

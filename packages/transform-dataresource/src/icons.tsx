@@ -1,5 +1,5 @@
-import * as React from "react";
 import { SVGWrapper } from "@nteract/octicons";
+import * as React from "react";
 
 export const BoxplotIcon = (props: React.SVGAttributes<any>) => (
   <SVGWrapper width={16} height={16} viewBox="0 0 16 16" outerProps={props}>

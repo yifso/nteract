@@ -1,13 +1,13 @@
 /**
  * @module rx-jupyter
  */
-import { ajax } from "rxjs/ajax";
-import { webSocket } from "rxjs/webSocket";
 import { Subject, Subscriber } from "rxjs";
-import { retryWhen, tap, delay, share } from "rxjs/operators";
-import { createAJAXSettings, ServerConfig } from "./base";
+import { ajax } from "rxjs/ajax";
+import { delay, retryWhen, share, tap } from "rxjs/operators";
+import { webSocket } from "rxjs/webSocket";
 import urljoin from "url-join";
 import URLSearchParams from "url-search-params";
+import { createAJAXSettings, ServerConfig } from "./base";
 
 import { JupyterMessage } from "@nteract/messaging";
 

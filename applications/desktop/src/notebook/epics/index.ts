@@ -1,29 +1,29 @@
+import { epics as coreEpics } from "@nteract/core";
+import { ActionsObservable, Epic, StateObservable } from "redux-observable";
 import { Observable } from "rxjs";
 import { catchError, startWith } from "rxjs/operators";
-import { epics as coreEpics } from "@nteract/core";
 import { DesktopNotebookAppState } from "../state";
-import { Epic, ActionsObservable, StateObservable } from "redux-observable";
 
-import { saveEpic, saveAsEpic } from "./saving";
-import {
-  fetchContentEpic,
-  newNotebookEpic,
-  launchKernelWhenNotebookSetEpic
-} from "./loading";
-import {
-  launchKernelEpic,
-  launchKernelByNameEpic,
-  interruptKernelEpic,
-  killKernelEpic,
-  watchSpawn
-} from "./zeromq-kernels";
-import { publishEpic } from "./github-publish";
+import { closeNotebookEpic } from "./close-notebook";
 import {
   loadConfigEpic,
   saveConfigEpic,
   saveConfigOnChangeEpic
 } from "./config";
-import { closeNotebookEpic } from "./close-notebook";
+import { publishEpic } from "./github-publish";
+import {
+  fetchContentEpic,
+  launchKernelWhenNotebookSetEpic,
+  newNotebookEpic
+} from "./loading";
+import { saveAsEpic, saveEpic } from "./saving";
+import {
+  interruptKernelEpic,
+  killKernelEpic,
+  launchKernelByNameEpic,
+  launchKernelEpic,
+  watchSpawn
+} from "./zeromq-kernels";
 
 import { Actions } from "../actions";
 

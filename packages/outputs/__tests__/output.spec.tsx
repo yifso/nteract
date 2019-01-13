@@ -1,12 +1,12 @@
-import * as React from "react";
 import { shallow } from "enzyme";
+import * as React from "react";
 
 import {
-  Output,
-  StreamText,
-  KernelOutputError,
   DisplayData,
-  ExecuteResult
+  ExecuteResult,
+  KernelOutputError,
+  Output,
+  StreamText
 } from "../src";
 
 describe("Output", () => {

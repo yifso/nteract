@@ -1,6 +1,6 @@
 import * as actions from "@nteract/actions";
-import * as reducers from "../src";
 import * as stateModule from "@nteract/types";
+import * as reducers from "../src";
 
 describe("save", () => {
   test("should set isSaving to true", () => {

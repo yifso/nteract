@@ -1,10 +1,10 @@
-import * as React from "react";
 import { scaleLinear } from "d3-scale";
+import * as React from "react";
 
 import HTMLLegend from "../HTMLLegend";
-import { numeralFormatting } from "../utilities";
 import TooltipContent from "../tooltip-content";
 import * as Dx from "../types";
+import { numeralFormatting } from "../utilities";
 
 const fontScale = scaleLinear()
   .domain([8, 25])

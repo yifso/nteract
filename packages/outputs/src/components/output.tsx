@@ -1,6 +1,6 @@
-import * as React from "react";
 // We might only need this as a devDependency as it is only here for flow
 import { OutputType } from "@nteract/records";
+import * as React from "react";
 
 interface Props {
   /**

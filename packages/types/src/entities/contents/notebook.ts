@@ -1,13 +1,13 @@
 /**
  * @module types
  */
-import * as Immutable from "immutable";
 import {
-  ImmutableCell,
-  ImmutableNotebook,
+  CellId,
   emptyNotebook,
-  CellId
+  ImmutableCell,
+  ImmutableNotebook
 } from "@nteract/commutable";
+import * as Immutable from "immutable";
 
 import { KernelRef } from "../..";
 

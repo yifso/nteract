@@ -4,8 +4,8 @@
 import { CellId, CellType } from "@nteract/commutable";
 import { ContentRef, KernelRef } from "@nteract/types";
 
-import * as actionTypes from "../actionTypes";
 import { JSONObject } from "@nteract/commutable";
+import * as actionTypes from "../actionTypes";
 
 export function setExecutionState(payload: {
   kernelStatus: string;

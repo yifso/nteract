@@ -5,10 +5,10 @@ import * as Immutable from "immutable";
 
 import { ContentRef } from "../../refs";
 
-import { NotebookContentRecord, NotebookModel } from "./notebook";
 import { DirectoryContentRecord, DirectoryModelRecord } from "./directory";
 import { DummyContentRecord, EmptyModelRecord } from "./dummy";
 import { FileContentRecord, FileModelRecord } from "./file";
+import { NotebookContentRecord, NotebookModel } from "./notebook";
 
 export * from "./notebook";
 export * from "./directory";

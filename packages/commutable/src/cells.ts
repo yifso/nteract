@@ -6,8 +6,8 @@ import { ImmutableOutput } from "./outputs";
 import { ExecutionCount } from "./primitives";
 
 import {
-  Map as ImmutableMap,
   List as ImmutableList,
+  Map as ImmutableMap,
   Record,
   RecordOf
 } from "immutable";

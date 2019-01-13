@@ -1,10 +1,12 @@
 import {
   actions as coreActions,
-  selectors,
-  DocumentRecordProps
+  DocumentRecordProps,
+  selectors
 } from "@nteract/core";
+import { ipcRenderer as ipc } from "electron";
 import { RecordOf } from "immutable";
-import { Observable, Observer, empty, of, zip, concat } from "rxjs";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
+import { concat, empty, Observable, Observer, of, zip } from "rxjs";
 import {
   catchError,
   concatMap,
@@ -14,19 +16,17 @@ import {
   tap,
   timeout
 } from "rxjs/operators";
-import { ActionsObservable, ofType, StateObservable } from "redux-observable";
-import { ipcRenderer as ipc } from "electron";
 
-import {
-  DesktopNotebookAppState,
-  DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
-  DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE
-} from "../state";
-import { CLOSE_NOTEBOOK, CloseNotebook } from "../actionTypes";
 import * as actions from "../actions";
+import { CLOSE_NOTEBOOK, CloseNotebook } from "../actionTypes";
+import {
+  DESKTOP_NOTEBOOK_CLOSING_NOT_STARTED,
+  DESKTOP_NOTEBOOK_CLOSING_READY_TO_CLOSE,
+  DesktopNotebookAppState
+} from "../state";
 
+import { KernelRecord, KernelRef } from "@nteract/types";
 import { Actions } from "../actions";
-import { KernelRef, KernelRecord } from "@nteract/types";
 
 export const closeNotebookEpic = (
   action$: ActionsObservable<

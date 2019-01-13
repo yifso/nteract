@@ -5,21 +5,21 @@
 // TODO: Fix up a11y eslint here
 // TODO: All the `<li>` below that have role button should just be `<button>` with proper styling
 
+import * as actions from "@nteract/actions";
+import {
+  DropdownContent,
+  DropdownMenu,
+  DropdownTrigger
+} from "@nteract/dropdown-menu";
+import {
+  ChevronDownOcticon,
+  TrashOcticon,
+  TriangleRightOcticon
+} from "@nteract/octicons";
+import { ContentRef } from "@nteract/types";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as actions from "@nteract/actions";
-import { ContentRef } from "@nteract/types";
-import {
-  DropdownMenu,
-  DropdownTrigger,
-  DropdownContent
-} from "@nteract/dropdown-menu";
-import {
-  TrashOcticon,
-  ChevronDownOcticon,
-  TriangleRightOcticon
-} from "@nteract/octicons";
 
 import styled from "styled-components";
 

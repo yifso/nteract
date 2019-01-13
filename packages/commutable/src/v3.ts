@@ -2,12 +2,12 @@
  * @module commutable
  */
 import {
-  Map as ImmutableMap,
   fromJS as immutableFromJS,
-  List as ImmutableList
+  List as ImmutableList,
+  Map as ImmutableMap
 } from "immutable";
 
-import { MultiLineString, JSONObject } from "./primitives";
+import { JSONObject, MultiLineString } from "./primitives";
 
 import { makeNotebookRecord } from "./notebook";
 
@@ -16,24 +16,24 @@ import {
   ImmutableMarkdownCell,
   ImmutableRawCell,
   makeCodeCell,
-  makeRawCell,
-  makeMarkdownCell
+  makeMarkdownCell,
+  makeRawCell
 } from "./cells";
 
 import {
-  ImmutableOutput,
-  ImmutableMimeBundle,
-  makeExecuteResult,
-  makeDisplayData,
-  makeStreamOutput,
-  makeErrorOutput,
-  demultiline,
   cleanMimeAtKey,
-  ErrorOutput
+  demultiline,
+  ErrorOutput,
+  ImmutableMimeBundle,
+  ImmutableOutput,
+  makeDisplayData,
+  makeErrorOutput,
+  makeExecuteResult,
+  makeStreamOutput
 } from "./outputs";
 
-import { CellStructure, appendCell } from "./structures";
-import { RawCell, MarkdownCell } from "./v4";
+import { appendCell, CellStructure } from "./structures";
+import { MarkdownCell, RawCell } from "./v4";
 
 const VALID_MIMETYPES = {
   text: "text/plain",

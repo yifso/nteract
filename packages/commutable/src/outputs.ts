@@ -2,11 +2,11 @@
  * @module commutable
  */
 import {
-  Map as ImmutableMap,
+  fromJS as immutableFromJS,
   List as ImmutableList,
+  Map as ImmutableMap,
   Record,
-  RecordOf,
-  fromJS as immutableFromJS
+  RecordOf
 } from "immutable";
 
 import { ExecutionCount, JSONObject, MultiLineString } from "./primitives";

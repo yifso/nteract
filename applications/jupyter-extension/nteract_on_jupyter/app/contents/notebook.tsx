@@ -1,9 +1,9 @@
-import * as React from "react";
 import { ContentRef } from "@nteract/core";
 import {
   displayOrder as defaultDisplayOrder,
   transforms as defaultTransforms
 } from "@nteract/transforms";
+import * as React from "react";
 
 const displayOrder = [
   "application/vnd.jupyter.widget-view+json",

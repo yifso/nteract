@@ -1,5 +1,5 @@
-import * as common from "../common";
 import { Stream } from "stream";
+import * as common from "../common";
 
 /**
  * Let this declare the way for well typed records for outputs

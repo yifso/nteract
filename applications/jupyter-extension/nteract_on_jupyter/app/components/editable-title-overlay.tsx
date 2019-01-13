@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Button,
   Classes,
@@ -8,6 +7,7 @@ import {
   Label,
   Overlay
 } from "@blueprintjs/core";
+import * as React from "react";
 import styled from "styled-components";
 
 interface IEditableTitleOverlayProps {

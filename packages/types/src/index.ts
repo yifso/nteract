@@ -3,14 +3,14 @@
  */
 import * as Immutable from "immutable";
 
-import { CommunicationRecordProps } from "./communication";
-import { EntitiesRecordProps } from "./entities";
-import { KernelRef, KernelspecsRef } from "./refs";
-import { HostRecord } from "./entities/hosts";
-import { makeCommunicationRecord } from "./communication";
-import { makeEntitiesRecord, makeEmptyHostRecord } from "./entities";
-import { Notification } from "react-notification-system";
 import { MimeBundle } from "@nteract/commutable/src";
+import { Notification } from "react-notification-system";
+import { CommunicationRecordProps } from "./communication";
+import { makeCommunicationRecord } from "./communication";
+import { EntitiesRecordProps } from "./entities";
+import { makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
+import { HostRecord } from "./entities/hosts";
+import { KernelRef, KernelspecsRef } from "./refs";
 
 export * from "./communication";
 export * from "./entities";

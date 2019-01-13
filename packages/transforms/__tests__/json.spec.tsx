@@ -1,6 +1,6 @@
+import { shallow } from "enzyme";
 import React from "react";
 import JSONTree from "react-json-tree";
-import { shallow } from "enzyme";
 
 import JsonDisplay from "../src/json";
 

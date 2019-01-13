@@ -1,10 +1,10 @@
+import * as actions from "@nteract/actions";
+import { CellType } from "@nteract/commutable";
+import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
+import { ContentRef } from "@nteract/types";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { CellType } from "@nteract/commutable";
-import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
-import * as actions from "@nteract/actions";
-import { ContentRef } from "@nteract/types";
 
 import styled from "styled-components";
 

@@ -1,7 +1,7 @@
-import { Store } from "redux";
-import { ipcRenderer as ipc } from "electron";
 import { selectors } from "@nteract/core";
 import { ContentRef } from "@nteract/core";
+import { ipcRenderer as ipc } from "electron";
+import { Store } from "redux";
 
 import { Actions, closeNotebook } from "./actions";
 import { DesktopNotebookAppState } from "./state";

@@ -1,8 +1,8 @@
-import * as Immutable from "immutable";
-import { ActionsObservable } from "redux-observable";
 import { actions as actionsModule, state as stateModule } from "@nteract/core";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
-import { Subject, of } from "rxjs";
+import * as Immutable from "immutable";
+import { ActionsObservable } from "redux-observable";
+import { of, Subject } from "rxjs";
 import { toArray } from "rxjs/operators";
 import { TestScheduler } from "rxjs/testing";
 

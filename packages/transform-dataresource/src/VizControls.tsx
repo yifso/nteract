@@ -1,13 +1,13 @@
-import * as React from "react";
+import { Button, Code, IconName, MenuItem } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
-import { Button, MenuItem, Code, IconName } from "@blueprintjs/core";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import * as React from "react";
 
 import { StyledButtonGroup } from "./components/button-group";
-import { controlHelpText, ChartOptionTypes } from "./docs/chart-docs";
+import { ChartOptionTypes, controlHelpText } from "./docs/chart-docs";
 
-import * as Dx from "./types";
 import styled, { css } from "styled-components";
+import * as Dx from "./types";
 
 const NoResultsItem = <MenuItem disabled={true} text="No results." />;
 

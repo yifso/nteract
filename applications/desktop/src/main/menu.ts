@@ -1,20 +1,20 @@
 import * as path from "path";
 
+import { manifest } from "@nteract/examples";
 import {
-  dialog,
   app,
-  shell,
-  Menu,
   BrowserWindow,
+  dialog,
   FileFilter,
+  Menu,
+  shell,
   WebContents
 } from "electron";
 import { sortBy } from "lodash";
-import { manifest } from "@nteract/examples";
 
-import { launch, launchNewNotebook } from "./launch";
-import { installShellCommand } from "./cli";
 import { KernelspecInfo } from "@nteract/types";
+import { installShellCommand } from "./cli";
+import { launch, launchNewNotebook } from "./launch";
 
 function send(
   focusedWindow: BrowserWindow,

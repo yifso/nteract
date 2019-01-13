@@ -2,8 +2,8 @@ import FileSaver from "file-saver";
 
 import { stringifyNotebook } from "@nteract/commutable";
 
-import { downloadString } from "../src/contents";
 import { fixtureJSON } from "@nteract/fixtures";
+import { downloadString } from "../src/contents";
 
 describe("downloadString", () => {
   it("calls FileSaver.saveAs with notebook and filename", () => {

@@ -1,17 +1,17 @@
+import { H4 } from "@blueprintjs/core";
+import * as actions from "@nteract/actions";
+import { NotebookMenu } from "@nteract/connected-components";
+import { ContentRef } from "@nteract/core";
+import { ErrorIcon, LoadingIcon, SavingIcon } from "@nteract/iron-icons";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as actions from "@nteract/actions";
-import { NotebookMenu } from "@nteract/connected-components";
-import { LoadingIcon, SavingIcon, ErrorIcon } from "@nteract/iron-icons";
-import { ContentRef } from "@nteract/core";
-import { H4 } from "@blueprintjs/core";
 import urljoin from "url-join";
 
 import { EditableTitleOverlay } from "../components/editable-title-overlay";
-import { ThemedLogo } from "../components/themed-logo";
-import { Nav, NavSection } from "../components/nav";
 import LastSaved from "../components/last-saved";
+import { Nav, NavSection } from "../components/nav";
+import { ThemedLogo } from "../components/themed-logo";
 
 /* Returns a header for the Directory view, which only consists of the Nav. */
 export interface DirectoryHeaderProps {

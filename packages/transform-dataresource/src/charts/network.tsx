@@ -1,8 +1,8 @@
-import * as React from "react";
 import { scaleLinear } from "d3-scale";
+import * as React from "react";
 
-import TooltipContent from "../tooltip-content";
 import { JSONObject } from "@nteract/commutable";
+import TooltipContent from "../tooltip-content";
 import * as Dx from "../types";
 
 interface NodeObject {

@@ -1,14 +1,14 @@
-import * as React from "react";
 import { scaleLinear, scaleThreshold } from "d3-scale";
+import * as React from "react";
 import { heatmapping, hexbinning } from "semiotic";
 
-import { numeralFormatting } from "../utilities";
 import HTMLLegend from "../HTMLLegend";
 import TooltipContent from "../tooltip-content";
+import { numeralFormatting } from "../utilities";
 
-import { sortByOrdinalRange } from "./shared";
-import * as Dx from "../types";
 import { JSONObject } from "@nteract/commutable";
+import * as Dx from "../types";
+import { sortByOrdinalRange } from "./shared";
 
 const binHash = {
   heatmap: heatmapping,

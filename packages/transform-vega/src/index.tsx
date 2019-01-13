@@ -1,6 +1,6 @@
-import * as React from "react";
-import { merge } from "lodash";
 import vegaEmbed2 from "@nteract/vega-embed-v2";
+import { merge } from "lodash";
+import * as React from "react";
 import vegaEmbed3 from "vega-embed";
 
 const MIMETYPE_VEGA2 = "application/vnd.vega.v2+json";

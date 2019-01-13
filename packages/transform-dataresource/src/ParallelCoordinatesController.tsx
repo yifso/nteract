@@ -1,14 +1,14 @@
-import * as React from "react";
 import { scaleLinear } from "d3-scale";
-import { ResponsiveOrdinalFrame, Axis } from "semiotic";
+import * as React from "react";
+import { Axis, ResponsiveOrdinalFrame } from "semiotic";
 
-import HTMLLegend from "./HTMLLegend";
-import { numeralFormatting } from "./utilities";
 import { StyledButtonGroup } from "./components/button-group";
+import HTMLLegend from "./HTMLLegend";
 import TooltipContent from "./tooltip-content";
+import { numeralFormatting } from "./utilities";
 
-import * as Dx from "./types";
 import { JSONObject } from "@nteract/commutable/src";
+import * as Dx from "./types";
 
 interface State {
   filterMode: boolean;

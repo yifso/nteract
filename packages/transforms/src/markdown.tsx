@@ -1,5 +1,5 @@
-import * as React from "react";
 import Markdown from "@nteract/markdown";
+import * as React from "react";
 
 interface Props {
   data: string;

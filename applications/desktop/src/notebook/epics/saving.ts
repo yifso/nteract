@@ -1,9 +1,9 @@
-import { ofType, ActionsObservable, StateObservable } from "redux-observable";
+import { stringifyNotebook, toJS } from "@nteract/commutable";
+import { actions, AppState, selectors } from "@nteract/core";
 import { writeFileObservable } from "fs-observable";
-import { selectors, actions, AppState } from "@nteract/core";
-import { toJS, stringifyNotebook } from "@nteract/commutable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { of } from "rxjs";
-import { mergeMap, catchError, map, concatMap } from "rxjs/operators";
+import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 
 /**
  * Cleans up the notebook document and saves the file.

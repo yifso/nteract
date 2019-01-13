@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { Observable, bindNodeCallback } from "rxjs";
+import { bindNodeCallback, Observable } from "rxjs";
 import { mergeMap } from "rxjs/operators";
 
 import mkdirp from "mkdirp";

@@ -1,20 +1,20 @@
-import { combineReducers } from "redux-immutable";
-import { Action } from "redux";
 import * as Immutable from "immutable";
+import { Action } from "redux";
+import { combineReducers } from "redux-immutable";
 
-import {
-  makeKernelNotStartedRecord,
-  makeLocalKernelRecord,
-  makeRemoteKernelRecord,
-  makeKernelsRecord
-} from "@nteract/types";
-import {
-  makeKernelInfoRecord,
-  makeHelpLinkRecord,
-  HelpLink
-} from "@nteract/types";
 import * as actionTypes from "@nteract/actions";
 import { JSONObject } from "@nteract/commutable/src";
+import {
+  makeKernelNotStartedRecord,
+  makeKernelsRecord,
+  makeLocalKernelRecord,
+  makeRemoteKernelRecord
+} from "@nteract/types";
+import {
+  HelpLink,
+  makeHelpLinkRecord,
+  makeKernelInfoRecord
+} from "@nteract/types";
 
 // TODO: we need to clean up references to old kernels at some point. Listening
 // for KILL_KERNEL_SUCCESSFUL seems like a good candidate, but I think you can

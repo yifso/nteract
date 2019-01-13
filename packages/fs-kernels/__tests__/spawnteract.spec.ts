@@ -1,7 +1,7 @@
 import fs from "fs";
 
-import { launch } from "../src/spawnteract";
 import { findAll } from "../src/kernelspecs";
+import { launch } from "../src/spawnteract";
 
 function cleanup(connectionFile) {
   // cleanup after our test, fail silently if the test failed

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { shallow } from "enzyme";
 import Ansi from "ansi-to-react";
+import { shallow } from "enzyme";
+import * as React from "react";
 
 import Output from "../src/output";
 import RichestMime from "../src/richest-mime";
