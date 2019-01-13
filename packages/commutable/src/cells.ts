@@ -14,7 +14,7 @@ import {
 
 /* CodeCell Record Boilerplate */
 
-interface CodeCellParams {
+export interface CodeCellParams {
   cell_type: "code";
   // Sadly untyped and widely unspecced
   metadata: ImmutableMap<string, any>;
@@ -22,6 +22,7 @@ interface CodeCellParams {
   source: string;
   outputs: ImmutableList<ImmutableOutput>;
 }
+
 export const makeCodeCell = Record<CodeCellParams>({
   cell_type: "code",
   execution_count: null,
@@ -38,7 +39,7 @@ export type ImmutableCodeCell = RecordOf<CodeCellParams>;
 
 /* MarkdownCell Record Boilerplate */
 
-interface MarkdownCellParams {
+export interface MarkdownCellParams {
   cell_type: "markdown";
   source: string;
   metadata: ImmutableMap<string, any>;
@@ -54,7 +55,7 @@ export type ImmutableMarkdownCell = RecordOf<MarkdownCellParams>;
 
 /* RawCell Record Boilerplate */
 
-interface RawCellParams {
+export interface RawCellParams {
   cell_type: "raw";
   source: string;
   metadata: ImmutableMap<string, any>;

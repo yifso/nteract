@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { actions, selectors } from "@nteract/core";
 import { AppState } from "@nteract/types";
 
-interface Props {
+export interface Props {
   appVersion?: string;
   hostType: "local" | "empty" | "jupyter" | null;
   closeModal?: () => void;
