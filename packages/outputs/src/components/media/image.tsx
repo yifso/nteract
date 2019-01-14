@@ -12,7 +12,7 @@ const ImageStyle = styled.img`
   max-width: 100%;
 `;
 
-export function Image(props: Props) {
+export function Image(props: Partial<Props>) {
   let size = {};
 
   if (props.metadata) {

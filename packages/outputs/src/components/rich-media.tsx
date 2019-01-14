@@ -1,4 +1,3 @@
-import { MediaBundle } from "@nteract/records";
 import * as React from "react";
 import styled from "styled-components";
 import { MediaBundle } from "@nteract/records";
