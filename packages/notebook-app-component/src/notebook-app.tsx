@@ -281,46 +281,46 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               {this.props.outputs.map((output, index) => (
                 <Output output={output.toJS()} key={index}>
                   <DisplayData>
-                    <VDOMDisplay />
-                    <Media.Json />
-                    <Media.JavaScript />
-                    <Media.HTML />
-                    <Media.Markdown />
-                    <Media.LaTeX />
-                    <Media.SVG />
-                    <Media.Image />
-                    <Media.Plain />
-                    <WidgetDisplay />
-                    <DataResourceTransform />
-                    <ModelDebug />
-                    <PlotlyNullTransform />
-                    <PlotlyTransform />
-                    <GeoJSONTransform />
-                    <VegaLite1 />
-                    <VegaLite2 />
-                    <Vega2 />
                     <Vega3 />
+                    <Vega2 />
+                    <VegaLite2 />
+                    <VegaLite1 />
+                    <GeoJSONTransform />
+                    <PlotlyTransform />
+                    <PlotlyNullTransform />
+                    <ModelDebug />
+                    <DataResourceTransform />
+                    <WidgetDisplay />
+                    <VDOMDisplay />
+                    <Media.Image />
+                    <Media.SVG />
+                    <Media.LaTeX />
+                    <Media.Markdown />
+                    <Media.HTML />
+                    <Media.JavaScript />
+                    <Media.Json />
+                    <Media.Plain />
                   </DisplayData>
                   <ExecuteResult>
-                    <VDOMDisplay />
-                    <Media.Json />
-                    <Media.JavaScript />
-                    <Media.HTML />
-                    <Media.Markdown />
-                    <Media.LaTeX />
-                    <Media.SVG />
-                    <Media.Image />
-                    <Media.Plain />
-                    <WidgetDisplay />
-                    <DataResourceTransform />
-                    <ModelDebug />
-                    <PlotlyNullTransform />
-                    <PlotlyTransform />
-                    <GeoJSONTransform />
-                    <VegaLite1 />
-                    <VegaLite2 />
-                    <Vega2 />
                     <Vega3 />
+                    <Vega2 />
+                    <VegaLite2 />
+                    <VegaLite1 />
+                    <GeoJSONTransform />
+                    <PlotlyTransform />
+                    <PlotlyNullTransform />
+                    <ModelDebug />
+                    <DataResourceTransform />
+                    <WidgetDisplay />
+                    <VDOMDisplay />
+                    <Media.Image />
+                    <Media.SVG />
+                    <Media.LaTeX />
+                    <Media.Markdown />
+                    <Media.HTML />
+                    <Media.JavaScript />
+                    <Media.Json />
+                    <Media.Plain />
                   </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
