@@ -39,11 +39,15 @@ const PlainKernelOutputError = (props: Partial<Props>) => {
     }
   }
 
-  return <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>;
+  return (
+    <Ansi className="stacktrace" linkify={false}>
+      {kernelOutputError.join("\n")}
+    </Ansi>
+  );
 };
 
 export const KernelOutputError = styled(PlainKernelOutputError)`
-  & code {
+  & .stracktrace {
     white-space: pre-wrap;
   }
 `;
