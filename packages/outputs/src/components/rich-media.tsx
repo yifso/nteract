@@ -1,11 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
 import { MediaBundle } from "@nteract/records";
-import {
-  richestMimetype,
-  displayOrder,
-  transforms
-} from "@nteract/transforms-full";
 
 /** Error handling types */
 interface ReactErrorInfo {
@@ -103,7 +98,6 @@ export class RichMedia extends React.Component<RichMediaProps, State> {
     let chosenOne: React.ReactChild | null = null;
 
     const data = this.props.data;
-    const mimetype = richestMimetype(data, displayOrder, transforms);
 
     // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
@@ -115,7 +109,7 @@ export class RichMedia extends React.Component<RichMediaProps, State> {
       if (
         childElement.props &&
         childElement.props.mediaType &&
-        childElement.props.mediaType === mimetype
+        childElement.props.mediaType in data
       ) {
         chosenOne = childElement;
         return;

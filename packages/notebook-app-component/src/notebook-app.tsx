@@ -269,14 +269,14 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             <Pagers>
               {this.props.pager.map((pager, key) => (
                 <DisplayData {...pager.toJS()}>
-                  <Media.HTML />
-                  <Media.Image />
-                  <Media.JavaScript />
                   <Media.Json />
-                  <Media.LaTeX />
+                  <Media.JavaScript />
+                  <Media.HTML />
                   <Media.Markdown />
-                  <Media.Plain />
+                  <Media.LaTeX />
                   <Media.SVG />
+                  <Media.Image />
+                  <Media.Plain />
                 </DisplayData>
               ))}
             </Pagers>
@@ -287,14 +287,16 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               {this.props.outputs.map((output, index) => (
                 <Output output={output.toJS()} key={index}>
                   <DisplayData>
-                    <Media.HTML />
-                    <Media.Image />
-                    <Media.JavaScript />
+                    <VDOMDisplay />
                     <Media.Json />
-                    <Media.LaTeX />
+                    <Media.JavaScript />
+                    <Media.HTML />
                     <Media.Markdown />
-                    <Media.Plain />
+                    <Media.LaTeX />
                     <Media.SVG />
+                    <Media.Image />
+                    <Media.Plain />
+                    <WidgetDisplay />
                     <DataResourceTransform />
                     <ModelDebug />
                     <PlotlyNullTransform />
@@ -304,18 +306,18 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <VegaLite2 />
                     <Vega2 />
                     <Vega3 />
-                    <VDOMDisplay />
-                    <WidgetDisplay />
                   </DisplayData>
                   <ExecuteResult>
-                    <Media.HTML />
-                    <Media.Image />
-                    <Media.JavaScript />
+                    <VDOMDisplay />
                     <Media.Json />
-                    <Media.LaTeX />
+                    <Media.JavaScript />
+                    <Media.HTML />
                     <Media.Markdown />
-                    <Media.Plain />
+                    <Media.LaTeX />
                     <Media.SVG />
+                    <Media.Image />
+                    <Media.Plain />
+                    <WidgetDisplay />
                     <DataResourceTransform />
                     <ModelDebug />
                     <PlotlyNullTransform />
@@ -325,8 +327,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <VegaLite2 />
                     <Vega2 />
                     <Vega3 />
-                    <VDOMDisplay />
-                    <WidgetDisplay />
                   </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
