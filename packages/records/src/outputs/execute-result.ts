@@ -23,7 +23,7 @@ export const EXECUTE_RESULT: ExecuteResultType = "execute_result";
 // In-memory version
 export interface ExecuteResultOutput {
   output_type: ExecuteResultType;
-  executionCount: ExecutionCount;
+  execution_count: ExecutionCount;
   data: common.MimeBundle;
   metadata: {};
 }

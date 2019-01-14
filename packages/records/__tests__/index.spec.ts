@@ -114,7 +114,7 @@ describe("execute_result output", () => {
       })
     ).toEqual(
       executeResult({
-        executionCount: 7,
+        execution_count: 7,
         data: {
           "text/plain": "xandar\nnidavellir\nterra"
         },
