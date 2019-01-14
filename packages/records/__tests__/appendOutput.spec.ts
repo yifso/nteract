@@ -12,7 +12,7 @@ describe("appendOutput", () => {
       }
     ];
     const newOutputs = appendOutput(outputs, {
-      output_type: "displayData",
+      output_type: "display_data",
       data: {},
       metadata: {}
     });
@@ -26,7 +26,7 @@ describe("appendOutput", () => {
         traceback: []
       },
       {
-        output_type: "displayData",
+        output_type: "display_data",
         data: {},
         metadata: {}
       }
@@ -105,7 +105,7 @@ describe("appendOutput", () => {
     ];
 
     const newOutputs = appendOutput(outputs, {
-      output_type: "displayData",
+      output_type: "display_data",
       data: {},
       metadata: {}
     });
@@ -129,7 +129,7 @@ describe("appendOutput", () => {
     ];
 
     const newOutputs = mutate.appendOutput(outputs, {
-      output_type: "displayData",
+      output_type: "display_data",
       data: {},
       metadata: {}
     });
@@ -145,7 +145,7 @@ describe("appendOutput", () => {
         traceback: []
       },
       {
-        output_type: "displayData",
+        output_type: "display_data",
         data: {},
         metadata: {}
       }

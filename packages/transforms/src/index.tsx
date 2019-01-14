@@ -80,7 +80,7 @@ export function richestMimetype(
       .sort((a, b) => order.indexOf(a) - order.indexOf(b))[0]
   );
 }
-export const transforms = standardTransforms;
+export const transforms = tfs;
 export const displayOrder = standardDisplayOrder;
 export const TextTransform = TextDisplay;
 export const JSONTransform = JsonDisplay;
