@@ -15,7 +15,7 @@
     "access": "public"
   },
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "license": "MPL-2.0",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "anser": "^1.4.1",
     "escape-carriage": "^1.3.0"
