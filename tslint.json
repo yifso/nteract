@@ -9,6 +9,7 @@
   ],
   "jsRules": {},
   "rules": {
+    "interface-name": false,
     "no-unnecessary-type-assertion": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
