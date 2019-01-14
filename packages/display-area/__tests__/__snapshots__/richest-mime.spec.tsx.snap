@@ -1,17 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RichestMime renders a mimebundle 1`] = `
-<TextDisplay
-  data="THE DATA"
-  mediaType="text/plain"
-  metadata={
-    Object {
-      "alright": "alright alright",
-      "matthewMcconaughey": true,
-    }
-  }
-  models={Object {}}
-  onMetadataChange={[Function]}
-  theme="light"
-/>
-`;
+exports[`RichestMime renders a mimebundle 1`] = `""`;

@@ -106,19 +106,19 @@ print('hey')
           }
           theme="light"
           transforms={
-            Object {
-              "application/javascript": [Function],
-              "application/json": [Function],
-              "application/vdom.v1+json": [Function],
-              "image/gif": [Function],
-              "image/jpeg": [Function],
-              "image/png": [Function],
-              "image/svg+xml": [Function],
-              "text/html": [Function],
-              "text/latex": [Function],
-              "text/markdown": [Function],
-              "text/plain": [Function],
-            }
+            Array [
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+            ]
           }
         />
       </Outputs>
@@ -234,19 +234,19 @@ print('hey')
           }
           theme="light"
           transforms={
-            Object {
-              "application/javascript": [Function],
-              "application/json": [Function],
-              "application/vdom.v1+json": [Function],
-              "image/gif": [Function],
-              "image/jpeg": [Function],
-              "image/png": [Function],
-              "image/svg+xml": [Function],
-              "text/html": [Function],
-              "text/latex": [Function],
-              "text/markdown": [Function],
-              "text/plain": [Function],
-            }
+            Array [
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+            ]
           }
         />
       </Outputs>
