@@ -1,4 +1,4 @@
-import { richestMimetype, transforms } from "../src";
+import { richestMimetype, standardTransforms } from "../src";
 import TextDisplay from "../src/text";
 
 describe("richestMimetype", () => {
@@ -38,7 +38,7 @@ describe("transforms", () => {
     };
 
     const mimetype = richestMimetype(mimeBundle, ["text/plain"]);
-    const Element = transforms[mimetype];
+    const Element = standardTransforms[mimetype];
 
     expect(Element).toEqual(TextDisplay);
   });
