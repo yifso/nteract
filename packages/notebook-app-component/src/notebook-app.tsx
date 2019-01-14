@@ -7,6 +7,14 @@ import {
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
+  DisplayData,
+  ExecuteResult,
+  KernelOutputError,
+  Media,
+  Output,
+  StreamText
+} from "@nteract/outputs";
+import {
   Cell as PlainCell,
   Input,
   Outputs,
@@ -15,36 +23,24 @@ import {
   Source,
   themes as rawThemeVars
 } from "@nteract/presentational-components";
+import { AppState, ContentRef, KernelRef } from "@nteract/types";
+import * as Immutable from "immutable";
+import * as React from "react";
 import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  Media,
-  Output,
-  DisplayData,
-  ExecuteResult,
-  KernelOutputError,
-  StreamText
-} from "@nteract/outputs";
-import {
-  displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms
-} from "@nteract/transforms";
-import { AppState, ContentRef, KernelRef } from "@nteract/types";
-import * as Immutable from "immutable";
-import * as React from "react";
 import { Subject } from "rxjs";
 
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform, {
   PlotlyNullTransform
 } from "@nteract/transform-plotly";
-import GeoJSONTransform from "@nteract/transform-geojson";
-import ModelDebug from "@nteract/transform-model-debug";
-import DataResourceTransform from "@nteract/transform-dataresource";
-import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
 import VDOMDisplay from "@nteract/transform-vdom";
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
 
 import CellCreator from "./cell-creator";
 import DraggableCell from "./draggable-cell";
@@ -109,8 +105,6 @@ interface AnyCellProps {
   sourceHidden: boolean;
   outputHidden: boolean;
   outputExpanded: boolean;
-  displayOrder: string[];
-  transforms: typeof defaultTransforms;
   models: Immutable.Map<string, any>;
   codeMirrorMode: string | Immutable.Map<string, any>;
   selectCell: () => void;
@@ -410,9 +404,7 @@ export const ConnectedCell = connect(
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
 interface PureNotebookProps {
-  displayOrder?: string[];
   cellOrder?: Immutable.List<any>;
-  transforms?: object;
   theme?: string;
   codeMirrorMode?: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -420,9 +412,7 @@ interface PureNotebookProps {
 }
 
 interface NotebookStateProps {
-  displayOrder: string[];
   cellOrder: Immutable.List<any>;
-  transforms: object;
   theme: string;
   codeMirrorMode: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -559,9 +549,7 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
 // tslint:disable max-classes-per-file
 export class NotebookApp extends React.PureComponent<NotebookProps> {
   static defaultProps = {
-    displayOrder: defaultTransforms,
-    theme: "light",
-    transforms: defaultDisplayOrder
+    theme: "light"
   };
 
   constructor(props: NotebookProps) {
@@ -622,8 +610,6 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     return (
       <ConnectedCell
         id={id}
-        transforms={this.props.transforms}
-        displayOrder={this.props.displayOrder}
         codeMirrorMode={this.props.codeMirrorMode}
         contentRef={contentRef}
       />
@@ -658,7 +644,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
         <Cells>
           <CellCreator
             id={this.props.cellOrder.get(0)}
-            above
+            above={true}
             contentRef={this.props.contentRef}
           />
           {this.props.cellOrder.map(this.createCellElement)}

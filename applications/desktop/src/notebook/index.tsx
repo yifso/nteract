@@ -122,8 +122,6 @@ export default class App extends React.PureComponent {
           <NotebookApp
             // The desktop app always keeps the same contentRef in a browser window
             contentRef={contentRef}
-            transforms={transforms}
-            displayOrder={displayOrder}
           />
         </MathJax.Provider>
 
