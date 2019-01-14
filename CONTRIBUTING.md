@@ -36,39 +36,44 @@ an interactive console.
 Never made an open source contribution before? Wondering how contributions work
 in the nteract world? Here's a quick rundown!
 
-1.  Find an issue that you are interested in addressing or a feature that you
-    would like to address.
-2.  Fork the repository associated with the issue to your local GitHub
-    organization.
-3.  Clone the repository to your local machine using:
+1.  Find an issue that you are interested in addressing or a feature that you would like to address.
+2.  Fork the repository associated with the issue to your local GitHub organization.
+3.  Install the `ipykernel` on your machine using the instructions outlined [on the kernels guide](https://nteract.io/kernels).
+4.  Clone the repository to your local machine using:
 
-    git clone https://github.com/github-username/repository-name.git
+```
+$ git clone https://github.com/github-username/repository-name.git
+```
 
-4.  Create a new branch for your fix using:
+5.  Install the dependencies required for the project by running `yarn`.
+6.  Create a new branch for your fix using:
 
-    git checkout -b branch-name-here
+```
+$ git checkout -b branch-name-here
+```
 
-5.  Make the appropriate changes for the issue you are trying to address or the
-    feature that you want to add.
-6.  Confirm that unit tests and linting still pass successfully with:
+7.  Make the appropriate changes for the issue you are trying to address or the feature that you want to add.
+8.  Confirm that unit tests still pass successfully with:
 
-        yarn test
+```
+$ yarn test
+```
 
-    If tests fail, don't hesitate to ask for help.
+If tests fail, don't hesitate to ask for help.
 
-7.  Add and commit the changed files using `git add` and `git commit`.
-8.  Push the changes to the remote repository using:
+9.  Add and commit the changed files using `git add` and `git commit`.
+10. Push the changes to the remote repository using:
 
-    git push origin branch-name-here
+```
+$ git push origin branch-name-here
+```
 
-9.  Submit a pull request to the upstream repository.
-10. Title the pull request per the requirements outlined in the section below.
-11. Set the description of the pull request with a brief description of what you
-    did and any questions you might have about what you did.
-12. Wait for the pull request to be reviewed by a maintainer.
-13. Make changes to the pull request if the reviewing maintainer recommends
-    them.
-14. Celebrate your success after your pull request is merged! :tada:
+11. Submit a pull request to the upstream repository.
+12. Title the pull request per the requirements outlined in the section below.
+13. Set the description of the pull request with a brief description of what you did and any questions you might have about what you did.
+14. Wait for the pull request to be reviewed by a maintainer.
+15. Make changes to the pull request if the reviewing maintainer recommends them.
+16. Celebrate your success after your pull request is merged! :tada:
 
 ## How should I write my commit messages and PR titles?
 
