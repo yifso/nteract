@@ -7,17 +7,24 @@ interface IconProps {
   fileType: "unknown" | "notebook" | "directory" | "file" | "dummy";
 }
 
-const IconTD = styled.td`
+const IconTD = styled.td.attrs(props => ({
+  style: {
+    color: props.color
+  }
+}))`
   padding-right: 2px;
   padding-left: 10px;
   width: 17px;
   vertical-align: middle;
   text-align: center;
   opacity: 0.95;
-  color: ${props => props.color || "#0366d6"};
+  color: "#0366d6";
 `;
 
 IconTD.displayName = "IconTD";
+IconTD.defaultProps = {
+  color: "#0366d6"
+};
 
 export class Icon extends React.Component<IconProps> {
   static defaultProps: Partial<IconProps> = {
