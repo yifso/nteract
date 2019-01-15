@@ -161,7 +161,6 @@ const metricDimSelector = (
 ) => {
   const metricsList = required ? values : ["none", ...values];
   let displayMetrics;
-  const icon;
 
   if (metricsList.length > 1)
     displayMetrics = (
