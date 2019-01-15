@@ -19,7 +19,7 @@ interface Props extends OwnProps {
   Media: React.Component;
 }
 
-class PureTransformMedia extends React.Component {
+class PureTransformMedia extends React.Component<Props> {
   render() {
     const { Media, mediaActions } = this.props;
     return <Media {...mediaActions} />;
@@ -33,17 +33,20 @@ const makeMapStateToProps = (
   const { id, index, contentRef } = initialProps;
   const mapStateToProps = (state: AppState) => {
     const model = selectors.model(state, { contentRef });
-    const cell = selectors.notebook.cellById(model, id);
-    if (cell) {
-      const output = cell.get("outputs").get(index);
-      const mediaType = richestMediaType(output);
-      const Media = selectors.getTransform(mediaType);
-      return {
-        Media,
-        mediaType,
-        output
-      };
+    if (model) {
+      const cell = selectors.notebook.cellById(model, id);
+      if (cell) {
+        const output = cell.get("outputs").get(index);
+        const mediaType = richestMediaType(output);
+        const Media = selectors.getTransform(mediaType);
+        return {
+          Media,
+          mediaType,
+          output
+        };
+      }
     }
+
     return {};
   };
   return mapStateToProps;
@@ -53,7 +56,7 @@ const makeMapDispatchToProps = (
   initialDispath: Dispatch,
   initialProps: OwnProps
 ) => {
-  const { id, contentRef } = initialProps;
+  const { id, contentRef, index } = initialProps;
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       mediaActions: {

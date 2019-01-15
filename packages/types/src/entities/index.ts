@@ -8,7 +8,7 @@ import { HostsRecordProps, makeHostsRecord } from "./hosts";
 import { KernelsRecordProps, makeKernelsRecord } from "./kernels";
 import { KernelspecsRecordProps, makeKernelspecsRecord } from "./kernelspecs";
 import { makeModalsRecord, ModalsRecordProps } from "./modals";
-import { makeTransformsRecord, TransformsRecordProps } from "./tranforms";
+import { makeTransformsRecord, TransformsRecordProps } from "./transforms";
 
 export * from "./contents";
 export * from "./hosts";
@@ -16,7 +16,7 @@ export * from "./kernels";
 export * from "./kernel-info";
 export * from "./kernelspecs";
 export * from "./modals";
-export * from ".transforms";
+export * from "./transforms";
 
 export interface EntitiesRecordProps {
   contents: Immutable.RecordOf<ContentsRecordProps>;

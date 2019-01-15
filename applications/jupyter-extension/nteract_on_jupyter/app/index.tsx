@@ -11,10 +11,22 @@ import {
   makeEntitiesRecord,
   makeHostsRecord,
   makeJupyterHostRecord,
-  makeStateRecord
+  makeStateRecord,
+  makeTransfromsRecord
 } from "@nteract/core";
 import { AppState } from "@nteract/core";
 import { ContentRecord, HostRecord } from "@nteract/types";
+
+import PlotlyTransform, {
+  PlotlyNullTransform
+} from "@nteract/transform-plotly";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
+import VDOMDisplay from "@nteract/transform-vdom";
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -104,6 +116,20 @@ function main(rootEl: Element, dataEl: Node | null) {
               filepath: config.contentsPath
             })
           )
+        }),
+        transforms: makeTransfromsRecord({
+          transforms: Immutable.List([
+            PlotlyTransform,
+            GeoJSONTransform,
+            ModelDebug,
+            DataResourceTransform,
+            VegaLite1,
+            VegaLite2,
+            Vega2,
+            Vega3,
+            VDOMDisplay,
+            WidgetDisplay
+          ])
         })
       })
     })

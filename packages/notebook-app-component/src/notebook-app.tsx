@@ -32,16 +32,6 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Subject } from "rxjs";
 
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
-import DataResourceTransform from "@nteract/transform-dataresource";
-import GeoJSONTransform from "@nteract/transform-geojson";
-import ModelDebug from "@nteract/transform-model-debug";
-import PlotlyTransform, {
-  PlotlyNullTransform
-} from "@nteract/transform-plotly";
-import VDOMDisplay from "@nteract/transform-vdom";
-import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
-
 import CellCreator from "./cell-creator";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
