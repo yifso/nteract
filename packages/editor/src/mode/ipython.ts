@@ -4,6 +4,10 @@ import CodeMirror from "codemirror";
 import "codemirror/mode/meta";
 import "codemirror/mode/python/python";
 
+// The TypeScript definitions are missing these versions
+// of the codemirror define* functions that IPython uses for
+// highlighting magics
+// @ts-ignore
 CodeMirror.defineMode(
   "ipython",
   (
@@ -22,4 +26,5 @@ CodeMirror.defineMode(
   "python"
 );
 
+// @ts-ignore
 CodeMirror.defineMIME("text/x-ipython", "ipython");
