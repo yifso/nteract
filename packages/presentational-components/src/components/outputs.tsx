@@ -20,7 +20,7 @@ interface OutputWrapperProps {
 
 const OutputWrapper = styled.div.attrs<OutputWrapperProps>(props => ({
   style: {
-    "max-height": props.expanded ? "100%" : null
+    maxHeight: props.expanded ? "100%" : null
   }
 }))`
   padding: 10px 10px 10px calc(var(--prompt-width, 50px) + 10px);
