@@ -32,7 +32,7 @@ const DirectoryEntry = styled.tr`
 
 DirectoryEntry.displayName = "DirectoryEntry";
 
-export class Entry extends React.Component<EntryProps> {
+export class Entry extends React.PureComponent<EntryProps> {
   static defaultProps = {
     children: null
   };

@@ -14,7 +14,7 @@ const TimeAgoTD = styled.td`
 
 TimeAgoTD.displayName = "TimeAgoTD";
 
-export class LastSaved extends React.Component<LastSavedProps> {
+export class LastSaved extends React.PureComponent<LastSavedProps> {
   static defaultProps = {
     lastModified: null
   };

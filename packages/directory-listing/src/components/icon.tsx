@@ -26,13 +26,14 @@ IconTD.defaultProps = {
   color: "#0366d6"
 };
 
-export class Icon extends React.Component<IconProps> {
+export class Icon extends React.PureComponent<IconProps> {
   static defaultProps: Partial<IconProps> = {
-    fileType: "file",
-    color: "#0366d6"
+    color: "#0366d6",
+    fileType: "file"
   };
 
   render() {
+    const styles = { color: this.props.color };
     let icon = <FileText />;
     switch (this.props.fileType) {
       case "notebook":
@@ -48,6 +49,6 @@ export class Icon extends React.Component<IconProps> {
         icon = <FileText />;
     }
 
-    return <IconTD style={{ color: this.props.color }}>{icon}</IconTD>;
+    return <IconTD>{icon}</IconTD>;
   }
 }
