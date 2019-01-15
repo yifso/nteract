@@ -98,8 +98,8 @@ export interface Notebook {
  *
  * @returns ImmutableMetadata An immutable representation of the metadata.
  */
-const createImmutableMetadata = (metadata: JSONObject) =>
-  ImmutableMap(metadata).map((v, k: string) => {
+function createImmutableMetadata(metadata: JSONObject) {
+  return ImmutableMap(metadata).map((v, k: string) => {
     if (k !== "tags") {
       return v;
     }
@@ -111,31 +111,35 @@ const createImmutableMetadata = (metadata: JSONObject) =>
     // The notebook spec requires that this field is an Array of strings
     return ImmutableSet();
   });
+}
 
-const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
-  makeRawCell({
+function createImmutableRawCell(cell: RawCell): ImmutableRawCell {
+  return makeRawCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
   });
+}
 
-const createImmutableMarkdownCell = (
+function createImmutableMarkdownCell(
   cell: MarkdownCell
-): ImmutableMarkdownCell =>
-  makeMarkdownCell({
+): ImmutableMarkdownCell {
+  return makeMarkdownCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: createImmutableMetadata(cell.metadata)
   });
+}
 
-const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
-  makeCodeCell({
+function createImmutableCodeCell(cell: CodeCell): ImmutableCodeCell {
+  return makeCodeCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
     execution_count: cell.execution_count,
     metadata: createImmutableMetadata(cell.metadata)
   });
+}
 
 /**
  * Converts a JSON representation of a cell of any type to the correct
@@ -145,7 +149,7 @@ const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
  *
  * @returns An immutable representation of the same cell.
  */
-const createImmutableCell = (cell: Cell): ImmutableCell => {
+function createImmutableCell(cell: Cell): ImmutableCell {
   switch (cell.cell_type) {
     case "markdown":
       return createImmutableMarkdownCell(cell);
@@ -156,9 +160,9 @@ const createImmutableCell = (cell: Cell): ImmutableCell => {
     default:
       throw new TypeError(`Cell type ${(cell as any).cell_type} unknown`);
   }
-};
+}
 
-export const fromJS = (notebook: Notebook) => {
+export function fromJS(notebook: Notebook) {
   if (notebook.nbformat !== 4 || notebook.nbformat_minor < 0) {
     throw new TypeError(
       `Notebook is not a valid v4 notebook. v4 notebooks must be of form 4.x
@@ -185,12 +189,13 @@ export const fromJS = (notebook: Notebook) => {
     nbformat: 4,
     metadata: immutableFromJS(notebook.metadata)
   });
-};
+}
 
-const metadataToJS = (immMetadata: ImmutableMap<string, any>) =>
-  immMetadata.toJS() as JSONObject;
+function metadataToJS(immMetadata: ImmutableMap<string, any>) {
+  return immMetadata.toJS() as JSONObject;
+}
 
-const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
+function mimeBundleToJS(immMimeBundle: ImmutableMimeBundle): MimeBundle {
   const bundle = immMimeBundle.toObject();
 
   Object.keys(bundle).map(key => {
@@ -213,9 +218,9 @@ const mimeBundleToJS = (immMimeBundle: ImmutableMimeBundle): MimeBundle => {
   });
 
   return bundle;
-};
+}
 
-const outputToJS = (output: ImmutableOutput): Output => {
+function outputToJS(output: ImmutableOutput): Output {
   switch (output.output_type) {
     case "execute_result":
       return {
@@ -246,13 +251,15 @@ const outputToJS = (output: ImmutableOutput): Output => {
         traceback: output.traceback.toJS()
       };
   }
-};
+}
 
-const markdownCellToJS = (immCell: ImmutableMarkdownCell): MarkdownCell => ({
-  cell_type: "markdown",
-  source: remultiline(immCell.source),
-  metadata: metadataToJS(immCell.metadata)
-});
+function markdownCellToJS(immCell: ImmutableMarkdownCell): MarkdownCell {
+  return {
+    cell_type: "markdown",
+    source: remultiline(immCell.source),
+    metadata: metadataToJS(immCell.metadata)
+  };
+}
 
 /**
  * Converts an immutable representation of a code cell to a JSON representation.
@@ -261,7 +268,7 @@ const markdownCellToJS = (immCell: ImmutableMarkdownCell): MarkdownCell => ({
  *
  * @returns A JSON representation of the same code cell.
  */
-const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
+function codeCellToJS(immCell: ImmutableCodeCell): CodeCell {
   return {
     cell_type: "code",
     source: remultiline(immCell.source),
@@ -269,7 +276,7 @@ const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
     execution_count: immCell.execution_count,
     metadata: metadataToJS(immCell.metadata)
   };
-};
+}
 
 /**
  * Converts an immutable representation of a raw cell to a JSON representation.
@@ -278,13 +285,13 @@ const codeCellToJS = (immCell: ImmutableCodeCell): CodeCell => {
  *
  * @returns A JSON representation of the same raw cell.
  */
-const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
+function rawCellToJS(immCell: ImmutableRawCell): RawCell {
   return {
     cell_type: "raw",
     source: remultiline(immCell.source),
     metadata: metadataToJS(immCell.get("metadata", ImmutableMap()))
   };
-};
+}
 
 /**
  * Converts an immutable cell to a JSON cell.
@@ -293,7 +300,7 @@ const rawCellToJS = (immCell: ImmutableRawCell): RawCell => {
  *
  * @returns A JSON representation of the same cell.
  */
-const cellToJS = (immCell: ImmutableCell): Cell => {
+function cellToJS(immCell: ImmutableCell): Cell {
   switch (immCell.cell_type) {
     case "markdown":
       return markdownCellToJS(immCell);
@@ -304,7 +311,7 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
     default:
       throw new TypeError(`Cell type unknown at runtime`);
   }
-};
+}
 
 /**
  * Converts an immutable representation of a notebook to a JSON representation.
@@ -313,7 +320,7 @@ const cellToJS = (immCell: ImmutableCell): Cell => {
  *
  * @returns The JSON representation of a notebook.
  */
-export const toJS = (immnb: ImmutableNotebook): Notebook => {
+export function toJS(immnb: ImmutableNotebook): Notebook {
   const plainNotebook = immnb.toObject() as NotebookRecordParams;
   const plainCellOrder: string[] = plainNotebook.cellOrder.toArray();
   const plainCellMap: {
@@ -330,4 +337,4 @@ export const toJS = (immnb: ImmutableNotebook): Notebook => {
     nbformat: 4,
     nbformat_minor: plainNotebook.nbformat_minor
   };
-};
+}
