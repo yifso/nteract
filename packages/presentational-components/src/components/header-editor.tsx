@@ -13,15 +13,15 @@ import * as React from "react";
 // https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
 
 const tagStyle = {
-  marginRight: "5px",
+  background: "#f1f8ff",
   color: "#0366d6",
-  background: "#f1f8ff"
+  marginRight: "5px"
 };
 
 const authorStyle = {
-  marginRight: "5px",
+  background: "#E5E5E5",
   fontStyle: "italic",
-  background: "#E5E5E5"
+  marginRight: "5px"
 };
 
 const authorStyleBlack = { ...authorStyle, color: "black" };
@@ -62,7 +62,7 @@ export interface HeaderEditorState {
 const addTagMessage = <span>Add a tag</span>;
 const addAuthorMessage = <span>Add an author</span>;
 
-export class HeaderEditor extends React.Component<
+export class HeaderEditor extends React.PureComponent<
   HeaderEditorProps,
   HeaderEditorState
 > {

@@ -49,7 +49,9 @@ const Tip = styled.div`
 `;
 
 function normalizeLineEndings(str: string) {
-  if (!str) return str;
+  if (!str) {
+    return str;
+  }
   return str.replace(/\r\n|\r/g, "\n");
 }
 

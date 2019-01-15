@@ -93,7 +93,7 @@ const CreatorHoverRegion = styled.div`
   }
 `;
 
-export class PureCellCreator extends React.Component<Props> {
+export class PureCellCreator extends React.PureComponent<Props> {
   createMarkdownCell = () => {
     this.props.createCell("markdown");
   };
@@ -132,7 +132,8 @@ export class PureCellCreator extends React.Component<Props> {
   }
 }
 
-class CellCreator extends React.Component<ConnectedProps> {
+// tslint:disable max-classes-per-file
+class CellCreator extends React.PureComponent<ConnectedProps> {
   createCell = (type: "code" | "markdown"): void => {
     const {
       above,
@@ -161,13 +162,13 @@ class CellCreator extends React.Component<ConnectedProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  createCellAppend: (payload: { cellType: CellType; contentRef: ContentRef }) =>
-    dispatch(actions.createCellAppend(payload)),
   createCellAbove: (payload: {
     cellType: CellType;
     id?: string;
     contentRef: ContentRef;
   }) => dispatch(actions.createCellAbove(payload)),
+  createCellAppend: (payload: { cellType: CellType; contentRef: ContentRef }) =>
+    dispatch(actions.createCellAppend(payload)),
   createCellBelow: (payload: {
     cellType: CellType;
     id?: string;

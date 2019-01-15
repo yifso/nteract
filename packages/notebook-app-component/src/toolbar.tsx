@@ -101,7 +101,7 @@ export const CellToolbarMask = styled.div`
   padding: 0px 0px 0px 50px;
 `;
 
-export class PureToolbar extends React.Component<PureToolbarProps> {
+export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   static defaultProps: Partial<PureToolbarProps> = {
     type: "code"
   };
@@ -244,25 +244,25 @@ const makeMapDispatchToProps = (
   const { contentRef, id, type } = initialProps;
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-      toggleParameterCell: () =>
-        dispatch(actions.toggleParameterCell({ id, contentRef })),
-      deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
-      executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
-      clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
-      toggleCellOutputVisibility: () =>
-        dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
-      toggleCellInputVisibility: () =>
-        dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
       changeCellType: () =>
         dispatch(
           actions.changeCellType({
+            contentRef,
             id,
-            to: type === "markdown" ? "code" : "markdown",
-            contentRef
+            to: type === "markdown" ? "code" : "markdown"
           })
         ),
+      clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
+      deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
+      executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
+      toggleCellInputVisibility: () =>
+        dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
+      toggleCellOutputVisibility: () =>
+        dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
       toggleOutputExpansion: () =>
-        dispatch(actions.toggleOutputExpansion({ id, contentRef }))
+        dispatch(actions.toggleOutputExpansion({ id, contentRef })),
+      toggleParameterCell: () =>
+        dispatch(actions.toggleParameterCell({ id, contentRef }))
     };
   };
   return mapDispatchToProps;
