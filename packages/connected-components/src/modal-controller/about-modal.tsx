@@ -87,7 +87,7 @@ const ModalContentOverlay = styled.div`
   z-index: 10000;
 `;
 
-class PureAboutModal extends React.Component<Props> {
+class PureAboutModal extends React.PureComponent<Props> {
   handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { closeModal } = this.props;
     const { key, metaKey, altKey, ctrlKey, repeat, shiftKey } = event;

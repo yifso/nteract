@@ -79,31 +79,31 @@ interface CodeMirrorEditorState {
 
 interface CodeCompletionEvent {
   editor: CodeMirror.Editor;
-  callback: Function;
+  callback: () => {};
   debounce: boolean;
 }
 
-class CodeMirrorEditor extends React.Component<
+class CodeMirrorEditor extends React.PureComponent<
   CodeMirrorEditorProps,
   CodeMirrorEditorState
 > {
+  static defaultProps: Partial<CodeMirrorEditorProps> = {
+    channels: null,
+    completion: false,
+    editorFocused: false,
+    kernelStatus: "not connected",
+    options: {},
+    theme: "light",
+    tip: false
+  };
+
   textarea?: HTMLTextAreaElement | null;
   cm: CMI;
-  defaultOptions: Object;
+  defaultOptions: object;
   keyupEventsSubscriber!: Subscription;
   completionSubject!: Subject<CodeCompletionEvent>;
   completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
-
-  static defaultProps: Partial<CodeMirrorEditorProps> = {
-    theme: "light",
-    completion: false,
-    tip: false,
-    kernelStatus: "not connected",
-    options: {},
-    editorFocused: false,
-    channels: null
-  };
 
   textareaRef = React.createRef<HTMLTextAreaElement>();
 
@@ -119,35 +119,35 @@ class CodeMirrorEditor extends React.Component<
     this.defaultOptions = Object.assign(
       {
         autoCloseBrackets: true,
-        lineNumbers: false,
-        matchBrackets: true,
-        // This sets the class on the codemirror <div> that gets created to cm-s-composition
-        theme: "composition",
         autofocus: false,
-        hintOptions: {
-          hint: this.hint,
-          completeSingle: false, // In automatic autocomplete mode we don't want override
-          extraKeys: {
-            Right: pick
-          }
-        },
         extraKeys: {
+          "Cmd-.": this.tips,
+          "Cmd-/": "toggleComment",
+          "Ctrl-.": this.tips,
+          "Ctrl-/": "toggleComment",
           "Ctrl-Space": (editor: CodeMirror.Editor) => {
             this.debounceNextCompletionRequest = false;
             return editor.execCommand("autocomplete");
           },
-          Tab: this.executeTab,
+          Down: this.goLineDownOrEmit,
           "Shift-Tab": (editor: CodeMirror.Editor) =>
             editor.execCommand("indentLess"),
-          Up: this.goLineUpOrEmit,
-          Down: this.goLineDownOrEmit,
-          "Cmd-/": "toggleComment",
-          "Ctrl-/": "toggleComment",
-          "Cmd-.": this.tips,
-          "Ctrl-.": this.tips
+          Tab: this.executeTab,
+          Up: this.goLineUpOrEmit
+        },
+        hintOptions: {
+          completeSingle: false, // In automatic autocomplete mode we don't want override
+          extraKeys: {
+            Right: pick
+          },
+          hint: this.hint
         },
         indentUnit: 4,
-        preserveScrollPosition: false
+        lineNumbers: false,
+        matchBrackets: true,
+        preserveScrollPosition: false,
+        // This sets the class on the codemirror <div> that gets created to cm-s-composition
+        theme: "composition"
       },
       props.options
     );
@@ -235,6 +235,7 @@ class CodeMirrorEditor extends React.Component<
 
     this.completionSubject = new Subject();
 
+    // tslint:disable no-shadowed-variable
     const [debounce, immediate] = partition(
       (ev: CodeCompletionEvent) => ev.debounce === true
     )(this.completionSubject);
@@ -250,7 +251,9 @@ class CodeMirrorEditor extends React.Component<
       )
     );
 
-    const completionResults: Observable<Function> = mergedCompletionEvents.pipe(
+    const completionResults: Observable<
+      () => void
+    > = mergedCompletionEvents.pipe(
       switchMap((ev: any) => {
         const { channels } = this.props;
         if (!channels) {
@@ -270,12 +273,14 @@ class CodeMirrorEditor extends React.Component<
     );
 
     this.completionEventsSubscriber = completionResults.subscribe(
-      (callback: Function) => callback()
+      (callback: () => void) => callback()
     );
   }
 
   componentDidUpdate(prevProps: CodeMirrorEditorProps): void {
-    if (!this.cm) return;
+    if (!this.cm) {
+      return;
+    }
     const { editorFocused, theme } = this.props;
     const { cursorBlinkRate } = this.props.options;
 
@@ -311,7 +316,7 @@ class CodeMirrorEditor extends React.Component<
         normalizeLineEndings(nextProps.value)
     ) {
       if (this.props.options.preserveScrollPosition) {
-        var prevScrollPosition = this.cm.getScrollInfo();
+        const prevScrollPosition = this.cm.getScrollInfo();
         this.cm.setValue(nextProps.value);
         this.cm.scrollTo(prevScrollPosition.left, prevScrollPosition.top);
       } else {
@@ -319,7 +324,7 @@ class CodeMirrorEditor extends React.Component<
       }
     }
     if (typeof nextProps.options === "object") {
-      for (let optionName in nextProps.options) {
+      for (const optionName in nextProps.options) {
         if (
           nextProps.options.hasOwnProperty(optionName) &&
           this.props.options[optionName] === nextProps.options[optionName]
@@ -346,15 +351,15 @@ class CodeMirrorEditor extends React.Component<
     this.props.onFocusChange && this.props.onFocusChange(focused);
   }
 
-  hint(editor: CodeMirror.Editor, callback: Function): void {
+  hint(editor: CodeMirror.Editor, callback: () => {}): void {
     const { completion, channels } = this.props;
     const debounceThisCompletionRequest = this.debounceNextCompletionRequest;
     this.debounceNextCompletionRequest = true;
     if (completion && channels) {
       const el = {
-        editor: editor,
-        callback: callback,
-        debounce: debounceThisCompletionRequest
+        callback,
+        debounce: debounceThisCompletionRequest,
+        editor
       };
       this.completionSubject.next(el);
     }
@@ -380,9 +385,10 @@ class CodeMirrorEditor extends React.Component<
           "tip-holder"
         )[0] as HTMLElement;
 
+        const expanded = { expanded: true };
         const tipElement = ReactDOM.createPortal(
           <Tip className="CodeMirror-hint">
-            <RichestMime bundle={bundle} metadata={{ expanded: true }} />
+            <RichestMime bundle={bundle} metadata={expanded} />
             <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
           </Tip>,
           node

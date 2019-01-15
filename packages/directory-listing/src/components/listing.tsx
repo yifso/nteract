@@ -15,7 +15,7 @@ const ListingRoot = styled.table`
 
 ListingRoot.displayName = "ListingRoot";
 
-export class Listing extends React.Component<ListingProps> {
+export class Listing extends React.PureComponent<ListingProps> {
   static defaultProps = {
     children: null
   };

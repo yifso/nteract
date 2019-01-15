@@ -23,7 +23,7 @@ const DropdownDiv = styled.div`
 
 DropdownDiv.displayName = "DropdownDiv";
 
-export class DropdownMenu extends React.Component<
+export class DropdownMenu extends React.PureComponent<
   DropdownMenuProps,
   DropdownMenuState
 > {
@@ -85,7 +85,8 @@ const DropdownTriggerDiv = styled.div`
 
 DropdownTriggerDiv.displayName = "DropdownTriggerDiv";
 
-export class DropdownTrigger extends React.Component<{
+// tslint:disable max-classes-per-file
+export class DropdownTrigger extends React.PureComponent<{
   children: React.ReactNode;
   onClick?: (ev: React.MouseEvent<HTMLElement>) => void;
 }> {
@@ -137,7 +138,7 @@ const DropdownContentDiv = styled.div`
 
 DropdownContentDiv.displayName = "DropdownContentDiv";
 
-export class DropdownContent extends React.Component<{
+export class DropdownContent extends React.PureComponent<{
   children: React.ReactNode;
   onItemClick: (ev: React.MouseEvent<HTMLElement>) => void;
 }> {
