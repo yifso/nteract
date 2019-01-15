@@ -3,6 +3,7 @@
  */
 import {
   actions,
+  AppState,
   createContentRef,
   createHostRef,
   createKernelRef,
@@ -17,7 +18,6 @@ import {
   makeStateRecord,
   makeTransformsRecord
 } from "@nteract/core";
-import { AppState } from "@nteract/core";
 import { Media } from "@nteract/outputs";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
@@ -33,6 +33,7 @@ import { Provider } from "react-redux";
 import urljoin from "url-join";
 
 import App from "./app";
+import "./fonts";
 import configureStore from "./store";
 
 require("./fonts");
