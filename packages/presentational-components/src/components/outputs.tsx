@@ -18,7 +18,11 @@ interface OutputWrapperProps {
   expanded?: boolean;
 }
 
-const OutputWrapper = styled.div<OutputWrapperProps>`
+const OutputWrapper = styled.div.attrs<OutputWrapperProps>(props => ({
+  style: {
+    "max-height": props.expanded ? "100%" : null
+  }
+}))`
   padding: 10px 10px 10px calc(var(--prompt-width, 50px) + 10px);
   word-wrap: break-word;
   overflow-y: hidden;
@@ -26,8 +30,6 @@ const OutputWrapper = styled.div<OutputWrapperProps>`
   /* When expanded, this is overtaken to 100% */
   max-height: 600px;
   text-overflow: ellipsis;
-
-  ${props => (props.expanded ? `max-height: 100%;` : null)}
 
   &:empty {
     display: none;
@@ -157,7 +159,7 @@ const OutputWrapper = styled.div<OutputWrapperProps>`
   }
 `;
 
-export class Outputs extends React.Component<OutputsProps> {
+export class Outputs extends React.PureComponent<OutputsProps> {
   static defaultProps = {
     children: null,
     expanded: false,
@@ -170,11 +172,7 @@ export class Outputs extends React.Component<OutputsProps> {
     }
 
     if (this.props.children) {
-      return (
-        <OutputWrapper expanded={this.props.expanded}>
-          {this.props.children}
-        </OutputWrapper>
-      );
+      return <OutputWrapper>{this.props.children}</OutputWrapper>;
     }
 
     return null;

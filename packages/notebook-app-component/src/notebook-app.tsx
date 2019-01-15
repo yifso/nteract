@@ -35,11 +35,9 @@ import Editor from "./editor";
 import { HijackScroll } from "./hijack-scroll";
 import MarkdownPreviewer from "./markdown-preview";
 import StatusBar from "./status-bar";
-import Toolbar from "./toolbar";
+import Toolbar, { CellToolbarMask } from "./toolbar";
 
 import styled, { createGlobalStyle } from "styled-components";
-
-import { CellToolbarMask } from "./toolbar";
 
 const Themes = {
   dark: createGlobalStyle`
@@ -104,7 +102,7 @@ interface AnyCellProps {
   focusAboveCell: () => void;
   focusBelowCell: () => void;
   updateOutputMetadata: (index: number, metadata: JSONObject) => void;
-  metadata: Object;
+  metadata: object;
 }
 
 const mapStateToCellProps = (
@@ -155,23 +153,23 @@ const mapStateToCellProps = (
   }
 
   return {
-    contentRef,
-    channels,
-    cellType,
-    tags,
-    source: cell.get("source", ""),
-    theme: selectors.userTheme(state),
-    executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
-    outputs,
-    models: selectors.models(state),
-    pager,
     cellFocused: model.cellFocused === id,
-    editorFocused: model.editorFocused === id,
-    sourceHidden,
-    outputHidden,
-    outputExpanded,
     cellStatus: model.transient.getIn(["cellMap", id, "status"]),
-    metadata
+    cellType,
+    channels,
+    contentRef,
+    editorFocused: model.editorFocused === id,
+    executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
+    metadata,
+    models: selectors.models(state),
+    outputExpanded,
+    outputHidden,
+    outputs,
+    pager,
+    source: cell.get("source", ""),
+    sourceHidden,
+    tags,
+    theme: selectors.userTheme(state)
   };
 };
 
@@ -179,10 +177,6 @@ const mapDispatchToCellProps = (
   dispatch: Dispatch,
   { id, contentRef }: { id: string; contentRef: ContentRef }
 ) => ({
-  selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
-  focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
-  unfocusEditor: () =>
-    dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
   focusAboveCell: () => {
     dispatch(actions.focusPreviousCell({ id, contentRef }));
     dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
@@ -193,6 +187,10 @@ const mapDispatchToCellProps = (
     );
     dispatch(actions.focusNextCellEditor({ id, contentRef }));
   },
+  focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
+  selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
+  unfocusEditor: () =>
+    dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
   updateOutputMetadata: (index: number, metadata: JSONObject) => {
     dispatch(actions.updateOutputMetadata({ id, contentRef, metadata, index }));
   }
@@ -227,6 +225,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       sourceHidden,
       metadata
     } = this.props;
+    const expanded = { expanded: true };
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
     let element = null;
@@ -253,7 +252,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             <Pagers>
               {this.props.pager.map((pager, key) => (
                 <RichestMime
-                  metadata={{ expanded: true }}
+                  metadata={expanded}
                   className="pager"
                   displayOrder={this.props.displayOrder}
                   transforms={this.props.transforms}
@@ -361,7 +360,7 @@ type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 interface PureNotebookProps {
   displayOrder?: string[];
   cellOrder?: Immutable.List<any>;
-  transforms?: Object;
+  transforms?: object;
   theme?: string;
   codeMirrorMode?: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -371,7 +370,7 @@ interface PureNotebookProps {
 interface NotebookStateProps {
   displayOrder: string[];
   cellOrder: Immutable.List<any>;
-  transforms: Object;
+  transforms: object;
   theme: string;
   codeMirrorMode: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -428,13 +427,13 @@ const mapStateToProps = (
   }
   if ((model as any).type === "dummy" || model.type === "unknown") {
     return {
-      theme: selectors.userTheme(state),
       cellOrder: Immutable.List(),
-      transforms: ownProps.transforms || defaultTransforms,
-      displayOrder: ownProps.displayOrder || defaultDisplayOrder,
       codeMirrorMode: Immutable.Map({ name: "text/plain" }),
+      contentRef,
+      displayOrder: ownProps.displayOrder || defaultDisplayOrder,
       kernelRef: null,
-      contentRef
+      theme: selectors.userTheme(state),
+      transforms: ownProps.transforms || defaultTransforms
     };
   }
 
@@ -463,13 +462,13 @@ const mapStateToProps = (
     : selectors.notebook.codeMirrorMode(model);
 
   return {
-    theme: selectors.userTheme(state),
     cellOrder: selectors.notebook.cellOrder(model),
-    transforms: ownProps.transforms || defaultTransforms,
-    displayOrder: ownProps.displayOrder || defaultDisplayOrder,
     codeMirrorMode,
     contentRef,
-    kernelRef
+    displayOrder: ownProps.displayOrder || defaultDisplayOrder,
+    kernelRef,
+    theme: selectors.userTheme(state),
+    transforms: ownProps.transforms || defaultTransforms
   };
 };
 
@@ -480,16 +479,10 @@ const Cells = styled.div`
 `;
 
 const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
-  moveCell: (payload: {
-    id: CellId;
-    destinationId: CellId;
-    above: boolean;
-    contentRef: ContentRef;
-  }) => dispatch(actions.moveCell(payload)),
-  focusCell: (payload: { id: CellId; contentRef: ContentRef }) =>
-    dispatch(actions.focusCell(payload)),
   executeFocusedCell: (payload: { contentRef: ContentRef }) =>
     dispatch(actions.executeFocusedCell(payload)),
+  focusCell: (payload: { id: CellId; contentRef: ContentRef }) =>
+    dispatch(actions.focusCell(payload)),
   focusNextCell: (payload: {
     id?: CellId;
     createCellIfUndefined: boolean;
@@ -497,6 +490,12 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
   }) => dispatch(actions.focusNextCell(payload)),
   focusNextCellEditor: (payload: { id?: CellId; contentRef: ContentRef }) =>
     dispatch(actions.focusNextCellEditor(payload)),
+  moveCell: (payload: {
+    id: CellId;
+    destinationId: CellId;
+    above: boolean;
+    contentRef: ContentRef;
+  }) => dispatch(actions.moveCell(payload)),
   updateOutputMetadata: (payload: {
     id: CellId;
     contentRef: ContentRef;
@@ -505,10 +504,11 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
   }) => dispatch(actions.updateOutputMetadata(payload))
 });
 
+// tslint:disable max-classes-per-file
 export class NotebookApp extends React.PureComponent<NotebookProps> {
   static defaultProps = {
-    theme: "light",
     displayOrder: defaultTransforms,
+    theme: "light",
     transforms: defaultDisplayOrder
   };
 
