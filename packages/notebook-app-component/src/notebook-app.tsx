@@ -39,6 +39,7 @@ import { HijackScroll } from "./hijack-scroll";
 import MarkdownPreviewer from "./markdown-preview";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
+import TransformMedia from "./transform-media";
 
 import styled, { createGlobalStyle } from "styled-components";
 
@@ -279,6 +280,12 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.JavaScript />
                     <Media.Json />
                     <Media.Plain />
+                    <TransformMedia
+                      output={output}
+                      id={id}
+                      contentRef={contentRef}
+                      index={index}
+                    />
                   </DisplayData>
                   <ExecuteResult>
                     <Media.Image />
@@ -289,6 +296,12 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.JavaScript />
                     <Media.Json />
                     <Media.Plain />
+                    <TransformMedia
+                      output={output}
+                      id={id}
+                      contentRef={contentRef}
+                      index={index}
+                    />
                   </ExecuteResult>
                   <KernelOutputError />
                   <StreamText />
@@ -440,10 +453,8 @@ const mapStateToProps = (
       cellOrder: Immutable.List(),
       codeMirrorMode: Immutable.Map({ name: "text/plain" }),
       contentRef,
-      displayOrder: ownProps.displayOrder || defaultDisplayOrder,
       kernelRef: null,
-      theme: selectors.userTheme(state),
-      transforms: ownProps.transforms || defaultTransforms
+      theme: selectors.userTheme(state)
     };
   }
 
@@ -475,10 +486,8 @@ const mapStateToProps = (
     cellOrder: selectors.notebook.cellOrder(model),
     codeMirrorMode,
     contentRef,
-    displayOrder: ownProps.displayOrder || defaultDisplayOrder,
     kernelRef,
-    theme: selectors.userTheme(state),
-    transforms: ownProps.transforms || defaultTransforms
+    theme: selectors.userTheme(state)
   };
 };
 
