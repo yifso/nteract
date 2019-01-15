@@ -12,7 +12,7 @@ import {
   makeHostsRecord,
   makeJupyterHostRecord,
   makeStateRecord,
-  makeTransfromsRecord
+  makeTransformsRecord
 } from "@nteract/core";
 import { AppState } from "@nteract/core";
 import { ContentRecord, HostRecord } from "@nteract/types";
@@ -117,7 +117,7 @@ function main(rootEl: Element, dataEl: Node | null) {
             })
           )
         }),
-        transforms: makeTransfromsRecord({
+        transforms: makeTransformsRecord({
           transforms: Immutable.List([
             PlotlyTransform,
             GeoJSONTransform,

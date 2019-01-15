@@ -252,7 +252,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             </Input>
             <Pagers>
               {this.props.pager.map((pager, key) => (
-                <DisplayData {...pager}>
+                <DisplayData data={pager.data} metadata={pager.metadata}>
                   <Media.Json />
                   <Media.JavaScript />
                   <Media.HTML />
