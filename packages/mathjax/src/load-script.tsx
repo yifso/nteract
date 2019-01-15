@@ -60,7 +60,7 @@ function setAttributes(
   script: HTMLScriptElement,
   attrs: { [key: string]: any }
 ) {
-  for (let attr in attrs) {
+  for (const attr in attrs) {
     script.setAttribute(attr, attrs[attr]);
   }
 }

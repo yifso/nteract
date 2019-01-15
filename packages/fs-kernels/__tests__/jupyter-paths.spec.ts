@@ -32,7 +32,7 @@ describe("dataDirs", () => {
   it("works even in the absence of python", done => {
     jp.guessSysPrefix = jest.fn(() => null);
 
-    var result = jp.dataDirs({ withSysPrefix: true }).then(dirs => {
+    const result = jp.dataDirs({ withSysPrefix: true }).then(dirs => {
       dirs = dirs.map(dir => {
         return dir.toLowerCase();
       });
@@ -62,7 +62,7 @@ describe("dataDirs", () => {
     });
   });
   it("returns immediately with a guess by default", async done => {
-    var dirs = await jp.dataDirs();
+    let dirs = await jp.dataDirs();
     dirs = dirs.map(dir => {
       return dir.toLowerCase();
     });
@@ -112,7 +112,7 @@ describe("configDirs", () => {
       });
   });
   it("returns immediately with a guess by default", async done => {
-    var dirs = await jp.configDirs();
+    let dirs = await jp.configDirs();
     dirs = dirs.map(dir => {
       return dir.toLowerCase();
     });

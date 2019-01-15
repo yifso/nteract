@@ -29,7 +29,7 @@ type Manifest = Array<{
 }>;
 
 async function processManifest(manifest: Manifest) {
-  for (var entry of manifest) {
+  for (const entry of manifest) {
     console.log(`Processing CSS of ${entry.cssIn}`);
 
     const result = await loadCSS(entry.cssIn);
@@ -39,7 +39,7 @@ async function processManifest(manifest: Manifest) {
   }
 }
 
-var manifest = [
+const manifest = [
   {
     cssIn: require.resolve("@blueprintjs/core/lib/css/blueprint.css"),
     tsOut: path.join(__dirname, "..", "src/vendor/blueprint-css.ts")

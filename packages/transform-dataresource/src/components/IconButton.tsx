@@ -14,7 +14,7 @@ export class IconButton extends React.Component<IconButtonProps> {
 
     const { title = message } = this.props;
 
-    let style = {
+    const style = {
       width: "32px",
       height: "32px",
       cursor: "pointer",

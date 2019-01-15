@@ -129,7 +129,7 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                     cell.get("outputs").size === 0 ||
                     cell.getIn(["metadata", "outputHidden"]);
 
-                  let papermillStatus = cell.getIn(
+                  const papermillStatus = cell.getIn(
                     ["metadata", "papermill", "status"],
                     null
                   );

@@ -219,7 +219,7 @@ export function dispatchPublishGist(
   event: Event
 ) {
   const state = store.getState();
-  let githubToken = state.app.get("githubToken");
+  const githubToken = state.app.get("githubToken");
 
   // The simple case -- we have a token and can publish
   if (githubToken != null) {

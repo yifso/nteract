@@ -49,7 +49,7 @@ describe("editor.hint CodeMirror callback", () => {
 
     complete.codeComplete = jest.fn().mockImplementation(() => empty());
 
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       editor.hint(cm, () => {});
     }
 
@@ -74,7 +74,7 @@ describe("editor.hint CodeMirror callback", () => {
 
     complete.codeComplete = jest.fn().mockImplementation(() => empty());
 
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       editor.debounceNextCompletionRequest = false;
       editor.hint(cm, () => {});
       expect(editor.debounceNextCompletionRequest).toBe(true);

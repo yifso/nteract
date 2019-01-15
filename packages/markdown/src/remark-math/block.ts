@@ -38,7 +38,7 @@ export function blockPlugin(this: any, opts: Object) {
     }
 
     index++;
-    let marker = character;
+    const marker = character;
     let fenceCount = 1;
     subvalue += character;
 

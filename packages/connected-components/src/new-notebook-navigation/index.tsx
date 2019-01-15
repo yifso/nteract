@@ -201,7 +201,7 @@ const mapStateToProps = (state: AppState) => {
       );
 
       // Effectively, group by language then sort by display name within
-      let comparison = langCompare > 0 ? displayCompare : langCompare;
+      const comparison = langCompare > 0 ? displayCompare : langCompare;
 
       return comparison;
     })

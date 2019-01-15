@@ -164,7 +164,7 @@ describe("createMainChannelFromSockets", () => {
       )
       .toPromise();
 
-    for (var message of messages) {
+    for (const message of messages) {
       hokeySocket.emit("message", message);
     }
 

@@ -50,7 +50,7 @@ export const closeNotebookEpic = (
         contentRef
       }) as RecordOf<DocumentRecordProps>;
 
-      var dirtyPromptObservable: Observable<boolean>;
+      let dirtyPromptObservable: Observable<boolean>;
       if (selectors.notebook.isDirty(model)) {
         dirtyPromptObservable = Observable.create((observer: Observer<any>) => {
           const promptDialog = {
@@ -126,7 +126,7 @@ export const closeNotebookEpic = (
       const awaitKillKernelResults = zip(...killKernelAwaits).pipe(
         timeout(1000 * 5), // This should be at least as long as the timeout used to wait for kernel to reply to shutdown msgs
         tap(result => {
-          for (let r of result) {
+          for (const r of result) {
             console.log(JSON.stringify(r)); // To see these in terminal, set ELECTRON_ENABLE_LOGGING=1. Could also start more explicitly routing them to main process stdout.
           }
         }),

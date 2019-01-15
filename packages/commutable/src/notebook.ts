@@ -41,9 +41,9 @@ export type Notebook = v4.Notebook | v3.Notebook;
 
 /**
  * Converts a string representation of a notebook into a JSON representation.
- * 
+ *
  * @param notebookString A string representation of a notebook.
- * 
+ *
  * @returns A JSON representation of the same notebook.
  */
 export const parseNotebook = (notebookString: string): Notebook =>
@@ -62,7 +62,7 @@ export const fromJS = (
   }
 
   if (notebook.nbformat === 4 && notebook.nbformat_minor >= 0) {
-    var v4Notebook = notebook as v4.Notebook;
+    const v4Notebook = notebook as v4.Notebook;
 
     if (
       Array.isArray(v4Notebook.cells) &&
@@ -85,9 +85,9 @@ export const fromJS = (
 /**
  * Converts an immutable representation of a notebook to a JSON representation of the
  * notebook using the v4 of the nbformat specification.
- * 
+ *
  * @param immnb The immutable representation of a notebook.
- * 
+ *
  * @returns The JSON representation of a notebook.
  */
 export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
@@ -105,9 +105,9 @@ export const toJS = (immnb: ImmutableNotebook): v4.Notebook => {
 
 /**
  * Converts a JSON representation of a notebook into a string representation.
- * 
+ *
  * @param notebook The JSON representation of a notebook.
- * 
+ *
  * @returns A string containing the notebook data.
  */
 export const stringifyNotebook = (notebook: v4.Notebook) =>
