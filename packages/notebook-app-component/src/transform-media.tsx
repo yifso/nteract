@@ -4,17 +4,19 @@ import { Dispatch } from "redux";
 
 import { JSONObject } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
+import { ImmutableOutput } from "@nteract/records";
 import { AppState, ContentRef } from "@nteract/types";
 
 interface OwnProps {
   id: string;
   contentRef: ContentRef;
+  output: ImmutableOutput;
   index: number;
 }
 
 interface Props extends OwnProps {
   mediaActions: {
-    updateOutputMetadata: (index: number, metadata: JSONObject) => void;
+    updateOutputMetadata: (metadata: JSONObject) => void;
   };
   Media: React.Component;
 }
@@ -30,24 +32,15 @@ const makeMapStateToProps = (
   initialState: AppState,
   initialProps: OwnProps
 ) => {
-  const { id, index, contentRef } = initialProps;
+  const { output } = initialProps;
   const mapStateToProps = (state: AppState) => {
-    const model = selectors.model(state, { contentRef });
-    if (model) {
-      const cell = selectors.notebook.cellById(model, id);
-      if (cell) {
-        const output = cell.get("outputs").get(index);
-        const mediaType = richestMediaType(output);
-        const Media = selectors.transform(state, { id: mediaType });
-        return {
-          Media,
-          mediaType,
-          output
-        };
-      }
-    }
-
-    return {};
+    const mediaType = richestMediaType(output);
+    const Media = selectors.transform(state, { id: mediaType });
+    return {
+      Media,
+      mediaType,
+      output
+    };
   };
   return mapStateToProps;
 };
