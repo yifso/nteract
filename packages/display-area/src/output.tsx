@@ -10,7 +10,7 @@ import RichestMime from "./richest-mime";
 import { JSONObject } from "@nteract/commutable";
 
 interface Props {
-  displayOrder: Array<string>;
+  displayOrder: string[];
   output: any;
   transforms: Transforms;
   theme: string;

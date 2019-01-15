@@ -85,7 +85,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
 
       const helpLinks = typedAction.payload.info.helpLinks
         ? Immutable.List(
-            (typedAction.payload.info.helpLinks as Array<HelpLink>).map(
+            (typedAction.payload.info.helpLinks as HelpLink[]).map(
               makeHelpLinkRecord
             )
           )

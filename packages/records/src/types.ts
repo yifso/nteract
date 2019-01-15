@@ -17,9 +17,9 @@ export interface ImmutableMarkdownCell { [key: string]: any }
 export interface ImmutableRawCell { [key: string]: any }
 export type ImmutableCell = ImmutableCodeCell | ImmutableMarkdownCell;
 export interface ImmutableOutput { [key: string]: any }
-export type ImmutableOutputs = Array<ImmutableOutput>;
+export type ImmutableOutputs = ImmutableOutput[];
 
 export interface ImmutableMimeBundle { [key: string]: any }
 
-export type ImmutableCellOrder = Array<CellId>;
+export type ImmutableCellOrder = CellId[];
 export interface ImmutableCellMap { [key: string]: any }

@@ -20,7 +20,7 @@ export interface ErrorOutput {
   outputType: ErrorType,
   ename: string,
   evalue: string,
-  traceback: Array<string> |  ReadonlyArray<string>
+  traceback: string[] |  ReadonlyArray<string>
 }
 
 // On disk
@@ -28,7 +28,7 @@ export interface NbformatErrorOutput {
   output_type: "error" | "pyerr",
   ename: string,
   evalue: string,
-  traceback: Array<string>
+  traceback: string[]
 }
 
 export interface ErrorMessage {
@@ -38,7 +38,7 @@ export interface ErrorMessage {
   content: {
     ename: string,
     evalue: string,
-    traceback: Array<string>
+    traceback: string[]
   }
 }
 
@@ -46,7 +46,7 @@ export function errorOutput(
   eOut: {
     ename?: string,
     evalue?: string,
-    traceback?: Array<string>
+    traceback?: string[]
   }
 ): Readonly<ErrorOutput> {
   return Object.freeze({

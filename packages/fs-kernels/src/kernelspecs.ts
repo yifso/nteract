@@ -27,7 +27,7 @@ interface KernelResource {
 
 export interface KernelResourceByName { [name: string]: KernelResource }
 
-function flatten(array: Array<any>) {
+function flatten(array: any[]) {
   return [].concat(...array);
 }
 

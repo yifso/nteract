@@ -15,7 +15,7 @@ interface CodeCell {
   metadata: JSONObject,
   executionCount: ExecutionCount,
   source: string,
-  outputs: Array<OutputType>
+  outputs: OutputType[]
 }
 
 // On disk
@@ -24,7 +24,7 @@ export interface NbformatCodeCell {
   metadata: JSONObject,
   execution_count: ExecutionCount,
   source: MultilineString,
-  outputs: Array<NbformatOutput>
+  outputs: NbformatOutput[]
 }
 
 export type CodeCellRecord = JSONObject;

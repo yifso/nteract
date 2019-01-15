@@ -1,7 +1,7 @@
 import { deepFreeze } from "./freeze";
 
 // Straight from nbformat
-export type MultilineString = string | Array<string>;
+export type MultilineString = string | string[];
 
 export interface OnDiskMimebundle {
   "text/plain"?: MultilineString;
@@ -20,7 +20,7 @@ export interface OnDiskMimebundle {
   //   * A string; which would be deserialized
   //   * An array; which would have to be assumed to be a multiline string
   //
-  "application/json"?: string | Array<string> | {};
+  "application/json"?: string | string[] | {};
   "application/vdom.v1+json"?: {};
   "application/vnd.dataresource+json"?: {};
   "text/vnd.plotly.v1+html"?: MultilineString | {};
@@ -32,7 +32,7 @@ export interface OnDiskMimebundle {
   "application/vnd.vegalite.v1+json"?: {};
   "application/vnd.vegalite.v2+json"?: {};
 
-  [key: string]: string | Array<string> | {} | undefined | undefined;
+  [key: string]: string | string[] | {} | undefined | undefined;
 }
 
 // Enumerating over all the media types we currently accept
@@ -57,7 +57,7 @@ export interface MediaBundle {
   "application/vnd.vega.v3+json"?: {};
   "application/vnd.vegalite.v1+json"?: {};
   "application/vnd.vegalite.v2+json"?: {};
-  [key: string]: string | Array<string> | {} | undefined; // all others
+  [key: string]: string | string[] | {} | undefined; // all others
 }
 
 export type MimeBundle = MediaBundle; // Partial<MediaBundle>;
@@ -65,7 +65,7 @@ export type MimeBundle = MediaBundle; // Partial<MediaBundle>;
 /**
  * Turn nbformat multiline strings (arrays of strings for simplifying diffs) into strings
  */
-export function demultiline(s: string | Array<string>): string {
+export function demultiline(s: string | string[]): string {
   if (Array.isArray(s)) {
     return s.join("");
   }
@@ -76,7 +76,7 @@ export function demultiline(s: string | Array<string>): string {
  * Split string into a list of strings delimited by newlines; useful for on-disk git comparisons;
  * and is the expectation for jupyter notebooks on disk
  */
-export function remultiline(s: string | Array<string>): Array<string> {
+export function remultiline(s: string | string[]): string[] {
   if (Array.isArray(s)) {
     // Assume
     return s;

@@ -173,7 +173,7 @@ export function toggleTagInCell(payload: {
  */
 export function setInCell<T>(payload: {
   id: CellId;
-  path: Array<string>;
+  path: string[];
   value: T;
   contentRef: ContentRef;
 }): actionTypes.SetInCell<T> {

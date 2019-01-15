@@ -3,7 +3,7 @@ import { ChromePicker } from "react-color";
 import styled from "styled-components";
 
 interface Props {
-  colors: Array<string>;
+  colors: string[];
   updateColor: Function;
 }
 

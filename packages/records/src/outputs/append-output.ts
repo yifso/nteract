@@ -14,9 +14,9 @@ export function mutate() {}
  * @return {Array<Object>} updated-outputs - Outputs + Output
  */
 mutate.appendOutput = function appendOutput(
-  outputs: Array<OutputType>,
+  outputs: OutputType[],
   output: OutputType
-): Array<OutputType> {
+): OutputType[] {
   const last = outputs[outputs.length - 1];
 
   if (

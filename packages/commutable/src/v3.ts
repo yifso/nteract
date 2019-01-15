@@ -80,7 +80,7 @@ export interface CodeCell {
   metadata: JSONObject;
   input: MultiLineString;
   prompt_number: number;
-  outputs: Array<Output>;
+  outputs: Output[];
 }
 
 export type Cell = RawCell | MarkdownCell | HeadingCell | CodeCell;

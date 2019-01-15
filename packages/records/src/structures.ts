@@ -26,7 +26,7 @@ export interface Notebook {
   nbformat: v4NotebookVersionType;
   nbformat_minor: v4NotebookVersionType;
   metadata: object;
-  cellOrder: Array<string>;
+  cellOrder: string[];
   cellMap: object;
 }
 
@@ -35,7 +35,7 @@ export interface CodeCell {
   metadata: object;
   execution_count: ExecutionCount;
   source: string;
-  outputs: Array<NbformatOutput>;
+  outputs: NbformatOutput[];
 }
 
 export interface MarkdownCell {

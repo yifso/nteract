@@ -32,7 +32,7 @@ const dialog = remote.dialog;
 
 interface SaveDialogOptions {
   title: string;
-  filters: Array<{ name: string; extensions: Array<string> }>;
+  filters: Array<{ name: string; extensions: string[] }>;
   defaultPath?: string;
 }
 

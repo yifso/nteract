@@ -3,10 +3,10 @@ import * as React from "react";
 import PalettePicker from "./PalettePicker";
 
 interface HTMLLegendProps {
-  values: Array<string>;
+  values: string[];
   colorHash: { [index: string]: string };
   valueHash: { [index: string]: number };
-  colors?: Array<string>;
+  colors?: string[];
   setColor?: Function;
 }
 
