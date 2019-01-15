@@ -129,7 +129,19 @@ function main(rootEl: Element, dataEl: Node | null) {
             Vega3,
             VDOMDisplay,
             WidgetDisplay
-          ])
+          ]),
+          byId: Immutable.Map({
+            [PlotlyTransform.MIMETYPE]: PlotlyTransform,
+            [GeoJSONTransform.MIMETYPE]: GeoJSONTransform,
+            [ModelDebug.MIMETYPE]: ModelDebug,
+            [DataResourceTransform.MIMETYPE]: DataResourceTransform,
+            [VegaLite1.MIMETYPE]: VegaLite1,
+            [VegaLite2.MIMETYPE]: VegaLite2,
+            [Vega2.MIMETYPE]: Vega2,
+            [Vega3.MIMETYPE]: Vega3,
+            [VDOMDisplay.MIMETYPE]: VDOMDisplay,
+            [WidgetDisplay.MIMETYPE]: WidgetDisplay
+          })
         })
       })
     })

@@ -271,17 +271,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               {this.props.outputs.map((output, index) => (
                 <Output output={output} key={index}>
                   <DisplayData>
-                    <Vega3 />
-                    <Vega2 />
-                    <VegaLite2 />
-                    <VegaLite1 />
-                    <GeoJSONTransform />
-                    <PlotlyTransform />
-                    <PlotlyNullTransform />
-                    <ModelDebug />
-                    <DataResourceTransform />
-                    <WidgetDisplay />
-                    <VDOMDisplay />
                     <Media.Image />
                     <Media.SVG />
                     <Media.LaTeX />
@@ -292,17 +281,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                     <Media.Plain />
                   </DisplayData>
                   <ExecuteResult>
-                    <Vega3 />
-                    <Vega2 />
-                    <VegaLite2 />
-                    <VegaLite1 />
-                    <GeoJSONTransform />
-                    <PlotlyTransform />
-                    <PlotlyNullTransform />
-                    <ModelDebug />
-                    <DataResourceTransform />
-                    <WidgetDisplay />
-                    <VDOMDisplay />
                     <Media.Image />
                     <Media.SVG />
                     <Media.LaTeX />

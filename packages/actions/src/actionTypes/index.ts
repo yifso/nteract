@@ -167,13 +167,19 @@ export interface MergeConfigAction {
 }
 
 export const LOAD_CONFIG = "LOAD_CONFIG";
-export interface LoadConfigAction { type: "LOAD_CONFIG" }
+export interface LoadConfigAction {
+  type: "LOAD_CONFIG";
+}
 
 export const SAVE_CONFIG = "SAVE_CONFIG";
-export interface SaveConfigAction { type: "SAVE_CONFIG" }
+export interface SaveConfigAction {
+  type: "SAVE_CONFIG";
+}
 
 export const DONE_SAVING_CONFIG = "DONE_SAVING_CONFIG";
-export interface DoneSavingConfigAction { type: "DONE_SAVING_CONFIG" }
+export interface DoneSavingConfigAction {
+  type: "DONE_SAVING_CONFIG";
+}
 
 export const TOGGLE_OUTPUT_EXPANSION = "TOGGLE_OUTPUT_EXPANSION";
 export interface ToggleCellExpansion {
@@ -214,6 +220,24 @@ export interface PublishGist {
   type: "CORE/PUBLISH_GIST";
   payload: {
     contentRef: ContentRef;
+  };
+}
+
+export const ADD_TRANSFORM = "ADD_TRANSFORM";
+export interface AddTransform {
+  type: "ADD_TRANSFORM";
+  payload: {
+    mediaType: string;
+    component: any;
+  };
+}
+
+export const REMOVE_TRANSFORM = "REMOVE_TRANSFORM";
+export interface RemoveTransform {
+  type: "REMOVE_TRANSFORM";
+  payload: {
+    mediaType: string;
+    component: any;
   };
 }
 

@@ -28,6 +28,8 @@ class PureTransformMedia extends React.Component<Props> {
   }
 }
 
+const richestMediaType = (output: ImmutableOutput) => {};
+
 const makeMapStateToProps = (
   initialState: AppState,
   initialProps: OwnProps
