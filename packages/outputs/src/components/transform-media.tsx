@@ -38,7 +38,7 @@ const makeMapStateToProps = (
       if (cell) {
         const output = cell.get("outputs").get(index);
         const mediaType = richestMediaType(output);
-        const Media = selectors.getTransform(mediaType);
+        const Media = selectors.transform(state, { id: mediaType });
         return {
           Media,
           mediaType,
