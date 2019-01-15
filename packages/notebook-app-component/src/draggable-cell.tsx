@@ -94,18 +94,21 @@ interface DragAreaProps {
   hoverUpperHalf: boolean;
 }
 
-const DragArea = styled.div`
+const DragArea = styled.div.attrs((props: DragAreaProps) => ({
+  style: {
+    opacity: props.isDragging ? 0.25 : 1,
+    borderTop:
+      props.isOver && props.hoverUpperHalf
+        ? "3px lightgray solid"
+        : "3px transparent solid",
+    borderBottom:
+      props.isOver && !props.hoverUpperHalf
+        ? "3px lightgray solid"
+        : "3px transparent solid"
+  }
+}))`
   position: relative;
   padding: 10px;
-  opacity: ${(props: DragAreaProps) => (props.isDragging ? 0.25 : 1)};
-  border-top: ${(props: DragAreaProps) =>
-    props.isOver && props.hoverUpperHalf
-      ? "3px lightgray solid"
-      : "3px transparent solid"};
-  border-bottom: ${(props: DragAreaProps) =>
-    props.isOver && !props.hoverUpperHalf
-      ? "3px lightgray solid"
-      : "3px transparent solid"};
 `;
 
 function isDragUpper(
