@@ -1,3 +1,4 @@
+import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -28,7 +29,19 @@ class PureTransformMedia extends React.Component<Props> {
   }
 }
 
-const richestMediaType = (output: ImmutableOutput) => {};
+const richestMediaType = (
+  output: ImmutableOutput,
+  order: Immutable.List<string>,
+  handlers: any
+) => {
+  return (
+    [...Object.keys(output)]
+      // we can only use those we have a transform for
+      .filter(mediaType => handlers[mediaType] && order.includes(mediaType))
+      // the richest is based on the order in displayOrder
+      .sort((a, b) => order.indexOf(a) - order.indexOf(b))[0]
+  );
+};
 
 const makeMapStateToProps = (
   initialState: AppState,
@@ -36,7 +49,9 @@ const makeMapStateToProps = (
 ) => {
   const { output } = initialProps;
   const mapStateToProps = (state: AppState) => {
-    const mediaType = richestMediaType(output);
+    const handlers = selectors.transformsById(state);
+    const order = selectors.displayOrder(state);
+    const mediaType = richestMediaType(output, order, handlers);
     const Media = selectors.transform(state, { id: mediaType });
     return {
       Media,

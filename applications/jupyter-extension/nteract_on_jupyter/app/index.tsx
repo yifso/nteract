@@ -17,15 +17,15 @@ import {
 import { AppState } from "@nteract/core";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform, {
   PlotlyNullTransform
 } from "@nteract/transform-plotly";
-import GeoJSONTransform from "@nteract/transform-geojson";
-import ModelDebug from "@nteract/transform-model-debug";
-import DataResourceTransform from "@nteract/transform-dataresource";
-import { VegaLite1, VegaLite2, Vega2, Vega3 } from "@nteract/transform-vega";
 import VDOMDisplay from "@nteract/transform-vdom";
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
 
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -118,7 +118,7 @@ function main(rootEl: Element, dataEl: Node | null) {
           )
         }),
         transforms: makeTransformsRecord({
-          transforms: Immutable.List([
+          handlers: Immutable.List([
             PlotlyTransform,
             GeoJSONTransform,
             ModelDebug,
