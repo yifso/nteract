@@ -15,7 +15,7 @@ import {
   DropTargetMonitor
 } from "react-dnd";
 
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 /**
   The cell drag preview image is just a little stylized version of
@@ -94,7 +94,7 @@ interface DragAreaProps {
   hoverUpperHalf: boolean;
 }
 
-const DragArea = styled.div.attrs((props: DragAreaProps) => ({
+const DragArea = styled.div.attrs<DragAreaProps>(props => ({
   style: {
     opacity: props.isDragging ? 0.25 : 1,
     borderTop:
@@ -109,7 +109,7 @@ const DragArea = styled.div.attrs((props: DragAreaProps) => ({
 }))`
   position: relative;
   padding: 10px;
-`;
+` as StyledComponent<"div", any, DragAreaProps, never>; // Somehow setting the type on `attrs` isn't propagating properly;
 
 function isDragUpper(
   props: Props,
