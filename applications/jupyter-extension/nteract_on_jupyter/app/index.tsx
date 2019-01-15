@@ -30,11 +30,10 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import urljoin from "url-join";
 
 import App from "./app";
 import configureStore from "./store";
-
-const urljoin = require("url-join");
 
 require("./fonts");
 
