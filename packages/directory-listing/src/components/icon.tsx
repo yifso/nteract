@@ -1,7 +1,6 @@
 import { Book, FileDirectory, FileText } from "@nteract/octicons";
 import * as React from "react";
 import styled from "styled-components";
-import { ProgressPlugin } from "webpack";
 
 interface IconProps {
   color: string;
@@ -50,6 +49,6 @@ export class Icon extends React.PureComponent<IconProps> {
         icon = <FileText />;
     }
 
-    return <IconTD style={styles}>{icon}</IconTD>;
+    return <IconTD>{icon}</IconTD>;
   }
 }
