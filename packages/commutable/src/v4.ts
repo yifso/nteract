@@ -21,13 +21,14 @@ import {
   Set as ImmutableSet
 } from "immutable";
 
-import {
-  ImmutableNotebook,
-  makeNotebookRecord,
-  NotebookRecordParams
-} from "./notebook";
+import { ImmutableNotebook, makeNotebookRecord } from "./notebook";
 
-import { ExecutionCount, JSONObject, MultiLineString } from "./primitives";
+import {
+  CellId,
+  ExecutionCount,
+  JSONObject,
+  MultiLineString
+} from "./primitives";
 
 import {
   ImmutableCell,
@@ -40,25 +41,19 @@ import {
 } from "./cells";
 
 import {
-  createImmutableMimeBundle,
   createImmutableOutput,
   demultiline,
   ImmutableMimeBundle,
   ImmutableOutput,
   isJSONKey,
-  makeDisplayData,
-  makeErrorOutput,
-  makeExecuteResult,
-  makeStreamOutput,
   MimeBundle,
   Output,
-  remultiline,
-  StreamOutput
+  remultiline
 } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";
 
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                              Cell Types
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -84,9 +79,9 @@ export interface RawCell {
 
 export type Cell = CodeCell | MarkdownCell | RawCell;
 
-export interface Notebook {
+export interface NotebookV4 {
   cells: Cell[];
-  metadata: Object;
+  metadata: object;
   nbformat: 4;
   nbformat_minor: number;
 }
@@ -162,8 +157,9 @@ function createImmutableCell(cell: Cell): ImmutableCell {
   }
 }
 
-export function fromJS(notebook: Notebook) {
-  if (notebook.nbformat !== 4 || notebook.nbformat_minor < 0) {
+export function fromJS(notebook: NotebookV4) {
+  if (!isNotebookV4(notebook)) {
+    notebook = notebook as any;
     throw new TypeError(
       `Notebook is not a valid v4 notebook. v4 notebooks must be of form 4.x
        It lists nbformat v${notebook.nbformat}.${notebook.nbformat_minor}`
@@ -172,14 +168,14 @@ export function fromJS(notebook: Notebook) {
 
   // Since we're doing N cell operations all at once, switch to mutable then
   // switch back after.
-  const starterCellStructure = {
-    cellOrder: ImmutableList().asMutable(),
-    cellMap: ImmutableMap().asMutable()
+  const starterCellStructure: CellStructure = {
+    cellOrder: ImmutableList<CellId>().asMutable(),
+    cellMap: ImmutableMap<CellId, ImmutableCell>().asMutable()
   };
 
   const cellStructure = notebook.cells.reduce(
     (cellStruct, cell) => appendCell(cellStruct, createImmutableCell(cell)),
-    starterCellStructure as CellStructure
+    starterCellStructure
   );
 
   return makeNotebookRecord({
@@ -309,7 +305,7 @@ function cellToJS(immCell: ImmutableCell): Cell {
     case "raw":
       return rawCellToJS(immCell);
     default:
-      throw new TypeError(`Cell type unknown at runtime`);
+      throw new TypeError("Cell type unknown at runtime");
   }
 }
 
@@ -320,8 +316,8 @@ function cellToJS(immCell: ImmutableCell): Cell {
  *
  * @returns The JSON representation of a notebook.
  */
-export function toJS(immnb: ImmutableNotebook): Notebook {
-  const plainNotebook = immnb.toObject() as NotebookRecordParams;
+export function toJS(immnb: ImmutableNotebook): NotebookV4 {
+  const plainNotebook = immnb.toObject();
   const plainCellOrder: string[] = plainNotebook.cellOrder.toArray();
   const plainCellMap: {
     [key: string]: ImmutableCell;
@@ -337,4 +333,13 @@ export function toJS(immnb: ImmutableNotebook): Notebook {
     nbformat: 4,
     nbformat_minor: plainNotebook.nbformat_minor
   };
+}
+
+export function isNotebookV4(value: any): value is NotebookV4 {
+  return (
+    value &&
+    typeof value === "object" &&
+    value.nbformat === 4 &&
+    value.nbformat_minor >= 0
+  );
 }
