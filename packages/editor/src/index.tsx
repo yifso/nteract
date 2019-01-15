@@ -311,7 +311,7 @@ class CodeMirrorEditor extends React.Component<
         normalizeLineEndings(nextProps.value)
     ) {
       if (this.props.options.preserveScrollPosition) {
-        var prevScrollPosition = this.cm.getScrollInfo();
+        const prevScrollPosition = this.cm.getScrollInfo();
         this.cm.setValue(nextProps.value);
         this.cm.scrollTo(prevScrollPosition.left, prevScrollPosition.top);
       } else {
@@ -319,7 +319,7 @@ class CodeMirrorEditor extends React.Component<
       }
     }
     if (typeof nextProps.options === "object") {
-      for (let optionName in nextProps.options) {
+      for (const optionName in nextProps.options) {
         if (
           nextProps.options.hasOwnProperty(optionName) &&
           this.props.options[optionName] === nextProps.options[optionName]

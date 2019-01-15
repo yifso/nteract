@@ -104,7 +104,7 @@ export function objectToReactElement(
   // `onVDOMEvent` will send a comm message to a comm channel of target name
   // with a body of serialized event and vdom on kernel will handle the event.
   if (obj.eventHandlers) {
-    for (let eventType in obj.eventHandlers) {
+    for (const eventType in obj.eventHandlers) {
       const targetName = obj.eventHandlers[eventType];
       obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
         const serializedEvent = serializeEvent(event);
@@ -153,7 +153,7 @@ function arrayToReactChildren(
   arr: VDOMEl[],
   onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactNodeArray {
-  let result: React.ReactNodeArray = [];
+  const result: React.ReactNodeArray = [];
 
   // iterate through the `children`
   for (let i = 0, len = arr.length; i < len; i++) {

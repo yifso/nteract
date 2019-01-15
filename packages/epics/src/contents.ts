@@ -316,7 +316,7 @@ export function saveContentEpic(
           return empty();
         }
 
-        let filepath = content.filepath;
+        const filepath = content.filepath;
 
         // This could be object for notebook, or string for files
         let serializedData: Notebook | string;

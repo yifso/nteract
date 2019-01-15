@@ -29,7 +29,7 @@ const PlainKernelOutputError = (props: Props) => {
     ? traceback.join("\n")
     : traceback;
 
-  let kernelOutputError = [];
+  const kernelOutputError = [];
 
   if (joinedTraceback) {
     kernelOutputError.push(joinedTraceback);

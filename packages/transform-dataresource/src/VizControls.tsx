@@ -161,7 +161,6 @@ const metricDimSelector = (
 ) => {
   const metricsList = required ? values : ["none", ...values];
   let displayMetrics;
-  let icon;
 
   if (metricsList.length > 1)
     displayMetrics = (
@@ -283,7 +282,7 @@ export default ({
 
   const getControlHelpText = (view: string, metricOrDim: string) => {
     if (Object.keys(controlHelpText).find(mOrD => mOrD === metricOrDim)) {
-      let mOrD = metricOrDim as ChartOptionTypes;
+      const mOrD = metricOrDim as ChartOptionTypes;
       const views =
         controlHelpText[mOrD] != null ? controlHelpText[mOrD] : null;
       if (views == null) {

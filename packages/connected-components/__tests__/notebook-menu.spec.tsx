@@ -9,7 +9,7 @@ describe("PureNotebookMenu ", () => {
   describe("snapshots", () => {
     test("renders the default", () => {
       const component = renderer.create(<PureNotebookMenu />);
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });
   });
