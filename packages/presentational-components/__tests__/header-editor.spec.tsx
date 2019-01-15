@@ -2,7 +2,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import renderer from "react-test-renderer";
 
-import { HeaderEditor } from "../src/";
+import { HeaderEditor } from "../src/components/header-editor";
 
 jest.mock("styled-components", () => {
   const styled = () => () => () => {};

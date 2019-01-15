@@ -18,7 +18,7 @@ interface OutputWrapperProps {
   expanded?: boolean;
 }
 
-const OutputWrapper = styled.div.attrs<OutputWrapperProps>(props => ({
+const OutputWrapper = styled.div.attrs((props: OutputWrapperProps) => ({
   style: {
     maxHeight: props.expanded ? "100%" : null
   }
