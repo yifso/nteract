@@ -10,7 +10,7 @@ interface IconProps {
 
 const IconTD = styled.td.attrs(props => ({
   style: {
-    color: props.color || "#0366d6"
+    color: props.color
   }
 }))`
   padding-right: 2px;
@@ -19,9 +19,13 @@ const IconTD = styled.td.attrs(props => ({
   vertical-align: middle;
   text-align: center;
   opacity: 0.95;
+  color: "#0366d6";
 `;
 
 IconTD.displayName = "IconTD";
+IconTD.defaultProps = {
+  color: "#0366d6"
+};
 
 export class Icon extends React.PureComponent<IconProps> {
   static defaultProps: Partial<IconProps> = {
