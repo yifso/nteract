@@ -2,15 +2,14 @@ import { Notebook } from "@nteract/commutable";
 import {
   JupyterHostRecord,
   KernelspecProps,
-  KernelspecRecord
+  KernelspecRecord,
+  selectors
 } from "@nteract/core";
-import { selectors } from "@nteract/core";
 // TODO: Make a proper epic
 import { contents, sessions } from "rx-jupyter";
 import { forkJoin } from "rxjs";
 import { first, map, mergeMap } from "rxjs/operators";
-
-const urljoin = require("url-join");
+import urljoin from "url-join";
 
 export function openNotebook(
   host: JupyterHostRecord,
