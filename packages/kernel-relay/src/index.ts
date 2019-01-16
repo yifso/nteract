@@ -56,7 +56,7 @@ const resolvers = {
     startKernel: async (parentValue: any, args: StartKernel) => {
       const kernel = await launchKernel(args.name);
 
-      console.log("kernel launched", kernel);
+      console.log(`kernel ${args.name}:${kernel.connectionInfo.key} launched`);
 
       // NOTE: we should generate IDs
       // We're also setting a session ID within the enchannel-zmq setup, I wonder
@@ -64,11 +64,11 @@ const resolvers = {
       const id = kernel.connectionInfo.key;
 
       messages[id] = [];
+      kernels[id] = kernel;
 
       const subscription = kernel.channels.subscribe(
         (message: JupyterMessage) => {
           messages[id].push(message);
-          console.log(message);
         }
       );
 
@@ -84,7 +84,6 @@ const resolvers = {
       //
       //   Within our cleanup code
 
-      kernels[kernel.connectionInfo.key] = kernel;
       return {
         id,
         status: "launched"
