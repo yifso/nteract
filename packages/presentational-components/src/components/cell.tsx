@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 import { Prompt } from "./prompt";
 
@@ -20,28 +20,18 @@ interface CellProps {
 }
 
 const shadowLevels = {
-  FLAT: `box-shadow: "none";`,
-  HOVERED: `box-shadow: var(
+  FLAT: "none",
+  HOVERED: `var(
     --theme-cell-shadow-hover,
     1px 1px 3px rgba(0, 0, 0, 0.12),
     -1px -1px 3px rgba(0, 0, 0, 0.12)
-  );`,
-  SELECTED: `box-shadow: var(
+  )`,
+  SELECTED: `var(
     --theme-cell-shadow-focus,
     3px 3px 9px rgba(0, 0, 0, 0.12),
     -3px -3px 9px rgba(0, 0, 0, 0.12)
-  );`
+  )`
 };
-
-const selectedPrompt = `
-  background-color: var(--theme-cell-prompt-bg-focus, hsl(0, 0%, 90%));
-  color: var(--theme-cell-prompt-fg-focus, hsl(0, 0%, 51%));
-`;
-
-const hoveredPrompt = `
-  background-color: var(--theme-cell-prompt-bg-hover, hsl(0, 0%, 94%));
-  color: var(--theme-cell-prompt-fg-hover, hsl(0, 0%, 15%));
-`;
 
 function cellShadowLevel(props: CellProps): string {
   if (props.isSelected) {
@@ -54,19 +44,21 @@ function cellShadowLevel(props: CellProps): string {
   return shadowLevels.FLAT;
 }
 
-export const Cell = styled.div`
+export const Cell = styled.div.attrs<CellProps>(props => ({
+  className: props.isSelected ? "selected" : "",
+  style: {
+    boxShadow: cellShadowLevel(props)
+  }
+}))`
   & {
     position: relative;
     background: var(--theme-cell-bg, white);
     transition: all 0.1s ease-in-out;
-
-    ${cellShadowLevel}
   }
 
-  &:hover {
-    ${(props: CellProps) =>
-      // When selected, let that take precedence over hovered
-      props.isSelected ? shadowLevels.SELECTED : shadowLevels.HOVERED}
+  /* The box shadow for hovered should only apply when not already selected */
+  &:hover:not(.selected) {
+    box-shadow: ${shadowLevels.HOVERED};
   }
 
   /*
@@ -78,24 +70,23 @@ export const Cell = styled.div`
 
   */
   & ${Prompt} {
-    ${(props: CellProps) =>
-      props.isSelected ? selectedPrompt : props._hovered ? hoveredPrompt : ``}
+    /* We change nothing when the cell is not selected, focused, or hovered */
+  }
+  &.selected ${Prompt} {
+    background-color: var(--theme-cell-prompt-bg-focus, hsl(0, 0%, 90%));
+    color: var(--theme-cell-prompt-fg-focus, hsl(0, 0%, 51%));
   }
 
-  &:hover ${Prompt}, &:active ${Prompt} {
-    ${(props: CellProps) =>
-      props.isSelected
-        ? // Allow isSelected to take precedence over hover
-          ``
-        : `background-color: var(--theme-cell-prompt-bg-hover, hsl(0, 0%, 94%));
-    color: var(--theme-cell-prompt-fg-hover, hsl(0, 0%, 15%));`}
+  &:hover:not(.selected) ${Prompt}, &:active:not(.selected) ${Prompt} {
+    background-color: var(--theme-cell-prompt-bg-hover, hsl(0, 0%, 94%));
+    color: var(--theme-cell-prompt-fg-hover, hsl(0, 0%, 15%));
   }
 
   &:focus ${Prompt} {
     background-color: var(--theme-cell-prompt-bg-focus, hsl(0, 0%, 90%));
     color: var(--theme-cell-prompt-fg-focus, hsl(0, 0%, 51%));
   }
-`;
+` as StyledComponent<"div", any, CellProps, never>;
 
 Cell.displayName = "Cell";
 
