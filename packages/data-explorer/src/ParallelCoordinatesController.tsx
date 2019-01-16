@@ -12,8 +12,8 @@ import * as Dx from "./types";
 
 interface State {
   filterMode: boolean;
-  data: Object[];
-  dataScales: { [index: string]: Function };
+  data: object[];
+  dataScales: { [index: string]: () => void };
   columnExtent: { [index: string]: number[] };
 }
 

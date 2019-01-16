@@ -132,7 +132,7 @@ export const semioticHierarchicalChart = (
       hierarchyChildren: (node: { values: Array<{}> }) => node.values,
       padding: hierarchyType === "treemap" ? 3 : 0
     },
-    edgeRenderKey: (edge: Object, index: number) => {
+    edgeRenderKey: (edge: object, index: number) => {
       return index;
     },
     baseMarkProps: { forceUpdate: true },

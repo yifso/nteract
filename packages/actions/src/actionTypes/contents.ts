@@ -41,7 +41,7 @@ export interface FetchContent {
   type: "CORE/FETCH_CONTENT";
   payload: {
     filepath: string;
-    params: Object;
+    params: object;
     kernelRef: KernelRef;
     contentRef: ContentRef;
   };

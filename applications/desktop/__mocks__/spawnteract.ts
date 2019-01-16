@@ -4,7 +4,7 @@ function writeConnectionFile(config) {
 
 module.exports = {
   launchSpec: (
-    kernelSpec: Object
+    kernelSpec: object
   ): Promise<{ config: any; connectionFile: string }> => {
     return writeConnectionFile("config").then(c => {
       return {

@@ -162,7 +162,7 @@ const metricDimSelector = (
   const metricsList = required ? values : ["none", ...values];
   let displayMetrics;
 
-  if (metricsList.length > 1)
+  if (metricsList.length > 1) {
     displayMetrics = (
       <Select
         items={metricsList.map((metricName: string) => ({
@@ -187,7 +187,9 @@ const metricDimSelector = (
         />
       </Select>
     );
-  else displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
+  } else {
+    displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
+  }
 
   return (
     <ControlWrapper title={contextTooltip}>
@@ -239,19 +241,19 @@ interface VizControlParams {
   chart: ChartOptions;
   metrics: Array<{ name: string }>;
   dimensions: Array<{ name: string }>;
-  updateChart: Function;
+  updateChart: () => void;
   selectedDimensions: string[];
   selectedMetrics: string[];
   hierarchyType: string;
   summaryType: string;
   networkType: string;
-  setLineType: Function;
-  updateMetrics: Function;
-  updateDimensions: Function;
+  setLineType: () => void;
+  updateMetrics: () => void;
+  updateDimensions: () => void;
   lineType: string;
   areaType: string;
   setAreaType: (label: Dx.AreaType) => void;
-  data: Object[];
+  data: object[];
 }
 export default ({
   view,

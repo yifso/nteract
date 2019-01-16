@@ -9,7 +9,7 @@ const MIN_FENCE_COUNT = 2;
 const CODE_INDENT_COUNT = 4;
 
 // eslint-disable-next-line no-unused-vars
-export function blockPlugin(this: any, opts: Object) {
+export function blockPlugin(this: any, opts: object) {
   function blockTokenizer(eat: any, value: string, silent: boolean) {
     const length = value.length + 1;
     let index = 0;

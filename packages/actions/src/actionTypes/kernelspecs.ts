@@ -34,7 +34,7 @@ export interface FetchKernelspecsFailed {
   type: "CORE/FETCH_KERNELSPECS_FAILED";
   payload: {
     kernelspecsRef: KernelspecsRef;
-    error: Object;
+    error: object;
   };
 }
 

@@ -136,7 +136,7 @@ export const semioticBarChart = (
     oLabel:
       uniqueValues.length > 30
         ? false
-        : (columnLabel: Object) => {
+        : (columnLabel: object) => {
             return <text transform="rotate(90)">{columnLabel}</text>;
           },
     hoverAnnotation: true,

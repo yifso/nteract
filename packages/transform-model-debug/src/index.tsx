@@ -3,7 +3,7 @@ import * as React from "react";
 interface Props {
   data: string;
   mediaType: "application/x-nteract-model-debug+json";
-  models: { [modelID: string]: Object };
+  models: { [modelID: string]: object };
   modelID: string;
 }
 

@@ -19,7 +19,7 @@ import { IconButton } from "./IconButton";
 
 interface Props {
   setGrid: () => void;
-  dimensions: Object[];
+  dimensions: object[];
   setView: (view: View) => void;
   currentView: string;
 }

@@ -14,7 +14,7 @@ interface KernelAllocatorProps {
 }
 
 interface KernelAllocatorState {
-  channels: Object | null;
+  channels: object | null;
   error: boolean;
 }
 
