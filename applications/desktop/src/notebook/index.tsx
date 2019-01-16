@@ -104,7 +104,7 @@ const store = configureStore({
           "application/vnd.vegalite.v2+json": VegaLite2,
           "application/vnd.vega.v2+json": Vega2,
           "application/vnd.vega.v3+json": Vega3,
-          "application/vdom.v1+json": VDOMDispaly,
+          "application/vdom.v1+json": VDOMDisplay,
           "application/json": Media.Json,
           "application/javascript": Media.JavaScript,
           "text/html": Media.HTML,

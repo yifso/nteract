@@ -7,6 +7,8 @@
   "include": ["src"],
   "references": [
     { "path": "../commutable" },
-    { "path": "../presentational-components" }
+    { "path": "../presentational-components" },
+    { "path": "../outputs" },
+    { "path": "../records" }
   ]
 }

@@ -9,6 +9,8 @@
     { "path": "../commutable" },
     { "path": "../markdown" },
     { "path": "../mathjax" },
-    { "path": "../presentational-components" }
+    { "path": "../presentational-components" },
+    { "path": "../outputs" },
+    { "path": "../records" }
   ]
 }
