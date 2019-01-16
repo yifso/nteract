@@ -18,7 +18,7 @@ interface OwnProps {
 
 interface Props extends OwnProps {
   mediaActions: {
-    updateOutputMetadata: (metadata: JSONObject) => void;
+    onMetadataChange: (metadata: JSONObject) => void;
   };
   Media: React.ComponentType<any>;
   mediaType?: string;
@@ -89,7 +89,7 @@ const makeMapDispatchToProps = (
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       mediaActions: {
-        updateOutputMetadata: (metadata: JSONObject) => {
+        onMetadataChange: (metadata: JSONObject) => {
           dispatch(
             actions.updateOutputMetadata({ id, contentRef, metadata, index })
           );
