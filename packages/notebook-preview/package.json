@@ -14,7 +14,9 @@
     "@nteract/commutable": "^6.0.4-alpha.0",
     "@nteract/markdown": "^3.0.5-alpha.0",
     "@nteract/mathjax": "^3.0.5-alpha.0",
+    "@nteract/outputs": "^1.0.4-alpha.0",
     "@nteract/presentational-components": "^2.0.4-alpha.0",
+    "@nteract/records": "^1.0.4-alpha.0"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12",

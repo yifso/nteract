@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@nteract/commutable": "^6.0.4-alpha.0",
+    "@nteract/outputs": "^1.0.4-alpha.0",
     "@nteract/presentational-components": "^2.0.4-alpha.0",
+    "@nteract/records": "^1.0.4-alpha.0",
     "katex": "^0.10.0-alpha",
     "react-katex": "^2.0.2",
     "react-markdown": "^4.0.0",
