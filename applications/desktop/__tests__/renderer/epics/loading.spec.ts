@@ -97,7 +97,10 @@ describe("newNotebookEpic", () => {
             ),
             writable: true,
             name: "Untitled.ipynb",
-            path: "/home/whatever/Untitled.ipynb",
+            path:
+              process.platform === "win32"
+                ? "\\home\\whatever\\Untitled.ipynb"
+                : "/home/whatever/Untitled.ipynb",
             created: expect.any(String),
             last_modified: expect.any(String)
           }
