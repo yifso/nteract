@@ -91,7 +91,7 @@ const makeMapDispatchToProps = (
 ) => {
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-      addTransform: (transform: React.ComponentType) => {
+      addTransform: (transform: React.ComponentType & { MIMETYPE: string }) => {
         return dispatch(
           actions.addTransform({
             mediaType: transform.MIMETYPE,
