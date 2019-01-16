@@ -60,16 +60,15 @@ function getTheme(theme: string) {
   }
 }
 
-const Cell = styled(PlainCell)`
+const Cell = styled(PlainCell).attrs((props: { isSelected: boolean }) => ({
+  className: props.isSelected ? "selected" : ""
+}))`
   /*
    * Show the cell-toolbar-mask if hovering on cell,
-   * cell was the last clicked (has .focused class).
+   * cell was the last clicked
    */
-  &:hover ${CellToolbarMask} {
+  &:hover ${CellToolbarMask}, &.selected ${CellToolbarMask} {
     display: block;
-  }
-  & ${CellToolbarMask} {
-    ${props => (props.isSelected ? `display: block;` : ``)}
   }
 `;
 
