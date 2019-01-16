@@ -70,7 +70,9 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
     e: KeyboardEvent,
     handle: IHotkeysKeyDownHandle
   ): void => {
-    this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
+    if (this.hotkeysMap.get(keyName)) {
+      this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
+    }
   };
 
   render() {
