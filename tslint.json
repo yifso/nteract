@@ -44,6 +44,12 @@
     "ordered-imports": true,
     "prefer-template": true,
     "quotemark": [true, "double", "avoid-escape", "avoid-template"],
+    "react-a11y-anchors": {
+      "severity": "warn"
+    },
+    "react-a11y-titles": {
+      "severity": "warn"
+    },
     "strict-type-predicates": true,
     "typedef": {
       "options": [
