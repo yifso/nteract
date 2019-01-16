@@ -271,38 +271,20 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             >
               {this.props.outputs.map((output, index) => (
                 <Output output={output} key={index}>
-                  <DisplayData>
-                    <Media.Image />
-                    <Media.SVG />
-                    <Media.LaTeX />
-                    <Media.Markdown />
-                    <Media.HTML />
-                    <Media.JavaScript />
-                    <Media.Json />
-                    <Media.Plain />
-                    <TransformMedia
-                      output={output}
-                      id={id}
-                      contentRef={contentRef}
-                      index={index}
-                    />
-                  </DisplayData>
-                  <ExecuteResult>
-                    <Media.Image />
-                    <Media.SVG />
-                    <Media.LaTeX />
-                    <Media.Markdown />
-                    <Media.HTML />
-                    <Media.JavaScript />
-                    <Media.Json />
-                    <Media.Plain />
-                    <TransformMedia
-                      output={output}
-                      id={id}
-                      contentRef={contentRef}
-                      index={index}
-                    />
-                  </ExecuteResult>
+                  <TransformMedia
+                    output_type={"display_data"}
+                    output={output}
+                    id={id}
+                    contentRef={contentRef}
+                    index={index}
+                  />
+                  <TransformMedia
+                    output_type={"execute_result"}
+                    output={output}
+                    id={id}
+                    contentRef={contentRef}
+                    index={index}
+                  />
                   <KernelOutputError />
                   <StreamText />
                 </Output>

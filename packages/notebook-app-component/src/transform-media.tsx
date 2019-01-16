@@ -9,6 +9,7 @@ import { ImmutableOutput } from "@nteract/records";
 import { AppState, ContentRef } from "@nteract/types";
 
 interface OwnProps {
+  output_type: string;
   id: string;
   contentRef: ContentRef;
   output: ImmutableOutput;
@@ -19,13 +20,19 @@ interface Props extends OwnProps {
   mediaActions: {
     updateOutputMetadata: (metadata: JSONObject) => void;
   };
-  Media: React.Component;
+  Media: React.ComponentType;
 }
 
 class PureTransformMedia extends React.Component<Props> {
   render() {
     const { Media, mediaActions } = this.props;
-    return <Media {...mediaActions} />;
+    return (
+      <Media
+        {...mediaActions}
+        data={this.props.output.get("data")}
+        metadata={this.props.output.get("metadata")}
+      />
+    );
   }
 }
 
@@ -34,13 +41,17 @@ const richestMediaType = (
   order: Immutable.List<string>,
   handlers: any
 ) => {
-  return (
-    [...Object.keys(output)]
-      // we can only use those we have a transform for
-      .filter(mediaType => handlers[mediaType] && order.includes(mediaType))
-      // the richest is based on the order in displayOrder
-      .sort((a, b) => order.indexOf(a) - order.indexOf(b))[0]
+  const outputData = output.get("data");
+  const validMediaTypes = Immutable.List(
+    outputData.keys((mediaType: string) => {
+      if (handlers[mediaType] && order.includes(mediaType)) {
+        return mediaType;
+      }
+    })
   );
+  return validMediaTypes
+    .sort((a: string, b: string) => order.indexOf(a) - order.indexOf(b))
+    .get(0);
 };
 
 const makeMapStateToProps = (
