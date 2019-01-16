@@ -27,7 +27,10 @@ export interface DirectoryContentRecordProps {
   lastSaved: Date | null;
   filepath: string;
   model: DirectoryModelRecord;
-}
+  saving: boolean;
+  loading: boolean;
+  error?: object | null;
+};
 export const makeDirectoryContentRecord = Immutable.Record<
   DirectoryContentRecordProps
 >({
@@ -37,7 +40,10 @@ export const makeDirectoryContentRecord = Immutable.Record<
   format: "json",
   lastSaved: null,
   filepath: "",
-  model: makeDirectoryModel()
+  model: makeDirectoryModel(),
+  saving: false,
+  loading: false,
+  error: null
 });
 export type DirectoryContentRecord = Immutable.RecordOf<
   DirectoryContentRecordProps

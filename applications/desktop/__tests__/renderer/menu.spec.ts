@@ -63,6 +63,25 @@ describe("dispatchCreateTextCellBelow", () => {
     );
   });
 });
+describe("dispatchCreateRawCellBelow", () => {
+  test("dispatches a CREATE_RAW_BELOW with raw action", () => {
+    const store = {
+      dispatch: jest.fn()
+    };
+    const props = {
+      contentRef: "123"
+    };
+
+    menu.dispatchCreateRawCellBelow(props, store);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      actions.createCellBelow({
+        cellType: "raw",
+        source: "",
+        contentRef: "123"
+      })
+    );
+  });
+});
 
 describe("dispatchCreateCellBefore", () => {
   test("WARNING: DEPRECATED. Use createCellAbove() instead. dispatches a CREATE_CELL_BEFORE with code action", () => {
@@ -713,6 +732,7 @@ describe("initMenuHandlers", () => {
       "menu:save",
       "menu:save-as",
       "menu:new-text-cell-below",
+      "menu:new-raw-cell-below",
       "menu:new-code-cell-above",
       "menu:new-code-cell-below",
       "menu:copy-cell",

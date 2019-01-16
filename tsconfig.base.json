@@ -10,6 +10,7 @@
     "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
+    "plugins": [{ "name": "typescript-tslint-plugin" }],
     "resolveJsonModule": true,
     "preserveWatchOutput": true,
     "jsx": "react",

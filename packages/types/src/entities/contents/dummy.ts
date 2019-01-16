@@ -21,6 +21,9 @@ export interface DummyContentRecordProps {
   lastSaved: null;
   filepath: string;
   model: EmptyModelRecord;
+  saving: boolean;
+  loading: boolean;
+  error?: object | null;
 }
 export const makeDummyContentRecord = Immutable.Record<DummyContentRecordProps>(
   {
@@ -29,7 +32,10 @@ export const makeDummyContentRecord = Immutable.Record<DummyContentRecordProps>(
     assumedType: "unknown",
     lastSaved: null,
     filepath: "",
-    model: makeEmptyModel()
+    model: makeEmptyModel(),
+    saving: false,
+    loading: false,
+    error: null
   }
 );
 export type DummyContentRecord = Immutable.RecordOf<DummyContentRecordProps>;

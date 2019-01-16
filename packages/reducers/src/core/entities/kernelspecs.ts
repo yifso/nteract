@@ -11,7 +11,7 @@ import {
 } from "@nteract/types";
 
 const byRef = (state = Immutable.Map(), action: Action) => {
-  let typedAction = action as actionTypes.FetchKernelspecsFulfilled;
+  const typedAction = action as actionTypes.FetchKernelspecsFulfilled;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
       return state.set(

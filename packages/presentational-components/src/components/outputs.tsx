@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 interface OutputsProps {
   children?: React.ReactNode;
@@ -18,16 +18,17 @@ interface OutputWrapperProps {
   expanded?: boolean;
 }
 
-const OutputWrapper = styled.div<OutputWrapperProps>`
+const OutputWrapper = styled.div.attrs<OutputWrapperProps>(props => ({
+  style: {
+    maxHeight: props.expanded ? "100%" : null
+  }
+}))`
   padding: 10px 10px 10px calc(var(--prompt-width, 50px) + 10px);
   word-wrap: break-word;
   overflow-y: hidden;
   outline: none;
   /* When expanded, this is overtaken to 100% */
-  max-height: 600px;
   text-overflow: ellipsis;
-
-  ${props => (props.expanded ? `max-height: 100%;` : null)}
 
   &:empty {
     display: none;
@@ -155,9 +156,9 @@ const OutputWrapper = styled.div<OutputWrapperProps>`
     padding-right: 20px;
     text-align: center;
   }
-`;
+` as StyledComponent<"div", any, OutputWrapperProps, never>;
 
-export class Outputs extends React.Component<OutputsProps> {
+export class Outputs extends React.PureComponent<OutputsProps> {
   static defaultProps = {
     children: null,
     expanded: false,

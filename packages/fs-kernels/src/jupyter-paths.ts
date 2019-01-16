@@ -42,24 +42,24 @@ function guessSysPrefix() {
   // only run once:
   if (sysPrefixGuess !== undefined) return sysPrefixGuess;
 
-  var PATH = (process.env.PATH || "").split(path.delimiter);
+  const PATH = (process.env.PATH || "").split(path.delimiter);
   if (PATH.length === 0) {
     sysPrefixGuess = null;
     return;
   }
 
-  var pathext = [""];
+  let pathext = [""];
   if (process.platform === "win32") {
     pathext = (process.env.PATHEXT || "").split(path.delimiter);
   }
 
   PATH.some(bin => {
     bin = path.resolve(bin);
-    var python = path.join(bin, "python");
+    const python = path.join(bin, "python");
 
     return pathext.some(
       (ext: string): boolean => {
-        var exe = python + ext;
+        const exe = python + ext;
         if (accessCheck(exe)) {
           // PREFIX/bin/python exists, return PREFIX
           // following symlinks
@@ -83,7 +83,7 @@ function guessSysPrefix() {
   return sysPrefixGuess;
 }
 
-var askJupyterPromise: Promise<JupyterPaths> | null = null;
+let askJupyterPromise: Promise<JupyterPaths> | null = null;
 
 function askJupyter() {
   // ask Jupyter where the paths are
@@ -103,7 +103,7 @@ function askJupyter() {
 }
 
 function systemConfigDirs() {
-  var paths: string[] = [];
+  const paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
     const defaultProgramDataPath = "C:\\ProgramData";
@@ -133,7 +133,7 @@ async function configDirs(opts?: {
     }
   }
 
-  var paths: string[] = [];
+  const paths: string[] = [];
   if (process.env.JUPYTER_CONFIG_DIR) {
     pushIfExists(paths, process.env.JUPYTER_CONFIG_DIR);
   }
@@ -149,8 +149,8 @@ async function configDirs(opts?: {
     });
   }
   // inexpensive guess, based on location of `python` executable
-  var sysPrefix = guessSysPrefix() || "/usr/local/";
-  var sysPathed = path.join(sysPrefix, "etc", "jupyter");
+  const sysPrefix = guessSysPrefix() || "/usr/local/";
+  const sysPathed = path.join(sysPrefix, "etc", "jupyter");
   if (systemDirs.indexOf(sysPathed) === -1) {
     pushIfExists(paths, sysPathed);
   }
@@ -158,7 +158,7 @@ async function configDirs(opts?: {
 }
 
 function systemDataDirs() {
-  var paths: string[] = [];
+  const paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
     const defaultProgramDataPath = "C:\\ProgramData";
@@ -216,7 +216,7 @@ async function dataDirs(opts?: {
     }
   }
 
-  var paths: string[] = [];
+  const paths: string[] = [];
   if (process.env.JUPYTER_PATH) {
     pushIfExists(paths, process.env.JUPYTER_PATH);
   }
@@ -233,9 +233,9 @@ async function dataDirs(opts?: {
     });
   }
   // inexpensive guess, based on location of `python` executable
-  var sysPrefix = guessSysPrefix();
+  const sysPrefix = guessSysPrefix();
   if (sysPrefix) {
-    var sysPathed = path.join(sysPrefix, "share", "jupyter");
+    const sysPathed = path.join(sysPrefix, "share", "jupyter");
     if (systemDirs.indexOf(sysPathed) === -1) {
       pushIfExists(paths, sysPathed);
     }

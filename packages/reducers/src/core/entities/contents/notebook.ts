@@ -714,7 +714,7 @@ function deleteMetadataField(
 }
 
 function copyCell(state: NotebookModel, action: actionTypes.CopyCell) {
-  let id = action.payload.id || state.cellFocused;
+  const id = action.payload.id || state.cellFocused;
 
   const cell = state.getIn(["notebook", "cellMap", id]);
   if (!cell) {

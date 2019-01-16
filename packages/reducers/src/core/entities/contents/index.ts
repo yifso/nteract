@@ -40,13 +40,15 @@ const byRef = (
       // communication state first and not requesting this information until
       // the communication state shows that it should exist.
       const fetchContentAction = action as actionTypes.FetchContent;
-      return state.set(
-        fetchContentAction.payload.contentRef,
-        makeDummyContentRecord({
-          filepath: fetchContentAction.payload.filepath || ""
-          // TODO: we can set kernelRef when the content record uses it.
-        })
-      );
+      return state
+        .set(
+          fetchContentAction.payload.contentRef,
+          makeDummyContentRecord({
+            filepath: fetchContentAction.payload.filepath || ""
+            // TODO: we can set kernelRef when the content record uses it.
+          })
+        )
+        .setIn([fetchContentAction.payload.filepath, "loading"], true);
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
       // TODO: is this reasonable? We launched the kernel on behalf of this
       // content... so it makes sense to swap it, right?
@@ -69,7 +71,10 @@ const byRef = (
               filepath: fetchContentFulfilledAction.payload.filepath,
               model: makeFileModelRecord({
                 text: fetchContentFulfilledAction.payload.model.content
-              })
+              }),
+              loading: false,
+              saving: false,
+              error: null
             })
           );
         case "directory": {
@@ -135,7 +140,10 @@ const byRef = (
                   filepath: fetchContentFulfilledAction.payload.filepath,
                   lastSaved:
                     fetchContentFulfilledAction.payload.model.last_modified,
-                  created: fetchContentFulfilledAction.payload.model.created
+                  created: fetchContentFulfilledAction.payload.model.created,
+                  loading: false,
+                  saving: false,
+                  error: null
                 })
               )
           );
@@ -159,7 +167,10 @@ const byRef = (
                   cellMap: Immutable.Map()
                 }),
                 cellFocused: immutableNotebook.getIn(["cellOrder", 0])
-              })
+              }),
+              loading: false,
+              saving: false,
+              error: null
             })
           );
         }
@@ -196,7 +207,10 @@ const byRef = (
         .setIn(
           [saveFulfilledAction.payload.contentRef, "lastSaved"],
           saveFulfilledAction.payload.model.last_modified
-        );
+        )
+        .setIn([saveFulfilledAction.payload.contentRef, "loading"], false)
+        .setIn([saveFulfilledAction.payload.contentRef, "saving"], false)
+        .setIn([saveFulfilledAction.payload.contentRef, "error"], null);
     }
     // Defer all notebook actions to the notebook reducer
     case actionTypes.SEND_EXECUTE_REQUEST:

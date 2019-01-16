@@ -13,15 +13,15 @@ import * as React from "react";
 // https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
 
 const tagStyle = {
-  marginRight: "5px",
+  background: "#f1f8ff",
   color: "#0366d6",
-  background: "#f1f8ff"
+  marginRight: "5px"
 };
 
 const authorStyle = {
-  marginRight: "5px",
+  background: "#E5E5E5",
   fontStyle: "italic",
-  background: "#E5E5E5"
+  marginRight: "5px"
 };
 
 const authorStyleBlack = { ...authorStyle, color: "black" };
@@ -62,10 +62,24 @@ export interface HeaderEditorState {
 const addTagMessage = <span>Add a tag</span>;
 const addAuthorMessage = <span>Add an author</span>;
 
-export class HeaderEditor extends React.Component<
+export class HeaderEditor extends React.PureComponent<
   HeaderEditorProps,
   HeaderEditorState
 > {
+  static defaultProps = {
+    editable: true,
+    headerData: {
+      authors: [],
+      description: "",
+      tags: [],
+      title: ""
+    },
+    // tslint:disable no-empty
+    onChange: () => {},
+    onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {},
+    theme: "light"
+  };
+
   constructor(props: HeaderEditorProps) {
     super(props);
 
@@ -73,36 +87,77 @@ export class HeaderEditor extends React.Component<
       editMode: "none"
     };
   }
-  static defaultProps = {
-    editable: true,
-    theme: "light",
-    headerData: {
-      authors: [],
-      title: "",
-      description: "",
-      tags: []
-    },
-    onChange: () => {},
-    onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {}
-  };
 
   render() {
     // Otherwise assume they have their own editor component
     const { editable, headerData, onChange } = this.props;
+    const marginStyles = { marginTop: "10px" };
+    const styles = { background: "#EEE", padding: "10px" };
+    const onTextChange = (newText: string): void => {
+      this.props.onChange({
+        ...headerData,
+        title: newText
+      });
+    };
+    const onEditorChange = (newText: string) => {
+      onChange({
+        ...headerData,
+        description: newText
+      });
+    };
+    const onAuthorsRemove = (t: any) => (
+      evt: React.MouseEvent<HTMLButtonElement>,
+      props: ITagProps
+    ) => {
+      if (editable === true) {
+        onChange({
+          ...headerData,
+          authors: headerData.authors.filter(p => p.name !== t.name)
+        });
+        return;
+      }
+      return;
+    };
+    const onTagsRemove = (t: any) => (
+      e: React.MouseEvent<HTMLButtonElement>,
+      props: ITagProps
+    ) => {
+      if (editable) {
+        onChange({
+          ...headerData,
+          tags: headerData.tags.filter(p => p !== t)
+        });
+        return;
+      }
+      return;
+    };
+    const onTagsConfirm = (e: any) => {
+      onChange({
+        ...headerData,
+        tags: [...headerData.tags, e]
+      });
+      this.setState({ editMode: "none" });
+    };
+    const onAuthorsConfirm = (e: any) => {
+      onChange({
+        ...headerData,
+        authors: [...headerData.authors, { name: e }]
+      });
+      this.setState({ editMode: "none" });
+    };
+    const onCancel = () => this.setState({ editMode: "none" });
+    const onClick = () => this.setState({ editMode: "author" });
+    const onAdd = () => this.setState({ editMode: "tag" });
+
     return (
       <header>
-        <div style={{ background: "#EEE", padding: "10px" }}>
+        <div style={styles}>
           <H1>
             <EditableText
               value={headerData.title}
               placeholder="Edit title..."
               disabled={!editable}
-              onChange={newText => {
-                onChange({
-                  ...headerData,
-                  title: newText
-                });
-              }}
+              onChange={onTextChange}
             />
           </H1>
           <div>
@@ -113,19 +168,7 @@ export class HeaderEditor extends React.Component<
                 large={true}
                 minimal={true}
                 style={authorStyle}
-                onRemove={(
-                  evt: React.MouseEvent<HTMLButtonElement>,
-                  props: ITagProps
-                ) => {
-                  if (editable === true) {
-                    onChange({
-                      ...headerData,
-                      authors: headerData.authors.filter(p => p.name !== t.name)
-                    });
-                    return;
-                  }
-                  return;
-                }}
+                onRemove={onAuthorsRemove(t)}
               >
                 {t.name}
               </Tag>
@@ -137,14 +180,8 @@ export class HeaderEditor extends React.Component<
                   className="author-entry"
                   placeholder="Enter Author Name..."
                   selectAllOnFocus={true}
-                  onConfirm={e => {
-                    onChange({
-                      ...headerData,
-                      authors: [...headerData.authors, { name: e }]
-                    });
-                    this.setState({ editMode: "none" });
-                  }}
-                  onCancel={() => this.setState({ editMode: "none" })}
+                  onConfirm={onAuthorsConfirm}
+                  onCancel={onCancel}
                 />
               </Tag>
             )) || (
@@ -157,7 +194,7 @@ export class HeaderEditor extends React.Component<
                 <Button
                   icon="add"
                   className="author-button"
-                  onClick={() => this.setState({ editMode: "author" })}
+                  onClick={onClick}
                   minimal={true}
                   disabled={!editable}
                 />
@@ -167,23 +204,7 @@ export class HeaderEditor extends React.Component<
 
           <div>
             {headerData.tags.map(t => (
-              <Tag
-                key={t}
-                style={tagStyle}
-                onRemove={(
-                  e: React.MouseEvent<HTMLButtonElement>,
-                  props: ITagProps
-                ) => {
-                  if (editable) {
-                    onChange({
-                      ...headerData,
-                      tags: headerData.tags.filter(p => p !== t)
-                    });
-                    return;
-                  }
-                  return;
-                }}
-              >
+              <Tag key={t} style={tagStyle} onRemove={onTagsRemove}>
                 {t}
               </Tag>
             ))}
@@ -193,14 +214,8 @@ export class HeaderEditor extends React.Component<
                   maxLength={20}
                   placeholder="Enter Tag Name..."
                   selectAllOnFocus={true}
-                  onConfirm={e => {
-                    onChange({
-                      ...headerData,
-                      tags: [...headerData.tags, e]
-                    });
-                    this.setState({ editMode: "none" });
-                  }}
-                  onCancel={() => this.setState({ editMode: "none" })}
+                  onConfirm={onTagsConfirm}
+                  onCancel={onCancel}
                 />
               </Tag>
             )) || (
@@ -214,14 +229,14 @@ export class HeaderEditor extends React.Component<
                   <Button
                     icon="add"
                     minimal={true}
-                    onClick={() => this.setState({ editMode: "tag" })}
+                    onClick={onAdd}
                     disabled={!editable}
                   />
                 }
               </Tooltip>
             )}
           </div>
-          <div style={{ marginTop: "10px" }}>
+          <div style={marginStyles}>
             <EditableText
               maxLength={280}
               maxLines={12}
@@ -231,12 +246,7 @@ export class HeaderEditor extends React.Component<
               selectAllOnFocus={false}
               value={headerData.description}
               disabled={!editable}
-              onChange={newText => {
-                onChange({
-                  ...headerData,
-                  description: newText
-                });
-              }}
+              onChange={onEditorChange}
             />
           </div>
         </div>

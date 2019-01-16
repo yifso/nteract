@@ -29,7 +29,7 @@ const PlainKernelOutputError = (props: Props) => {
     ? traceback.join("\n")
     : traceback;
 
-  let kernelOutputError = [];
+  const kernelOutputError = [];
 
   if (joinedTraceback) {
     kernelOutputError.push(joinedTraceback);
@@ -43,9 +43,9 @@ const PlainKernelOutputError = (props: Props) => {
 };
 
 PlainKernelOutputError.defaultProps = {
-  outputType: "error",
   ename: "",
   evalue: "",
+  outputType: "error",
   traceback: []
 };
 

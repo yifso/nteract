@@ -33,8 +33,8 @@ export const Hint = (props: HintProps) => (
  * An Icon to show before a code hint to show the type (e.g. Module, Keyword, etc.)
  */
 export const TypeIcon = styled.span.attrs<TypeIconProps>(props => ({
-  title: props.type,
-  className: `completion-type-${props.type}`
+  className: `completion-type-${props.type}`,
+  title: props.type
 }))`
   & {
     background: transparent;

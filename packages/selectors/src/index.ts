@@ -350,28 +350,3 @@ export const notificationSystem = createSelector(
   (state: AppState) => state.app.get("notificationSystem"),
   identity
 );
-
-/**
- * Returns a Map of comms data keyed by the content refs in the current
- * application state.
- *
- * @param   state   The state of the nteract application
- *
- * @returns          Comms data keyed by content refs
- */
-export const communicationByRef = (state: AppState) =>
-  state.core.communication.contents.byRef;
-
-/**
- * Returns the comms data associated with a particular content object, such
- * as a notebook, in the nteract application.
- *
- * @param   state   The state of the nteract application
- * @param           The content ref
- *
- * @returns         The comms data associated with a content
- */
-export const communication = (
-  state: AppState,
-  { contentRef }: { contentRef: ContentRef }
-) => communicationByRef(state).get(contentRef);

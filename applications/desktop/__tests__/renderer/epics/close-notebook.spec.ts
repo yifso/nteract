@@ -50,7 +50,7 @@ const buildState = (dirty: boolean = false) => ({
 describe("closeNotebookEpic", () => {
   describe("when notebook is dirty, prompts user to abort", () => {
     test("and allows continuing", async () => {
-      var registeredCallback;
+      let registeredCallback;
       ipc.once = (event, callback) => {
         if (event == "show-message-box-response") registeredCallback = callback;
       };
@@ -83,7 +83,7 @@ describe("closeNotebookEpic", () => {
     });
 
     test("and allows aborting, triggering IPC close-notebook-canceled for app-wide quit orchestration", async () => {
-      var registeredCallback;
+      let registeredCallback;
       ipc.once = (event, callback) => {
         if (event == "show-message-box-response") registeredCallback = callback;
       };
