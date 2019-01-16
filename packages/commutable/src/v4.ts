@@ -81,7 +81,7 @@ export type Cell = CodeCell | MarkdownCell | RawCell;
 
 export interface NotebookV4 {
   cells: Cell[];
-  metadata: object;
+  metadata: JSONObject;
   nbformat: 4;
   nbformat_minor: number;
 }
