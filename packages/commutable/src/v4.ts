@@ -329,7 +329,7 @@ export function toJS(immnb: ImmutableNotebook): NotebookV4 {
 
   return {
     cells,
-    metadata: plainNotebook.metadata.toJS(),
+    metadata: plainNotebook.metadata.toJS() as JSONObject,
     nbformat: 4,
     nbformat_minor: plainNotebook.nbformat_minor
   };
