@@ -1,3 +1,6 @@
+/**
+ * @module kernel-relay
+ */
 import { ApolloServer, gql } from "apollo-server";
 
 import { findAll, Kernel, launchKernel } from "@nteract/fs-kernels";
