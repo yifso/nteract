@@ -119,18 +119,6 @@ function main(rootEl: Element, dataEl: Node | null) {
           )
         }),
         transforms: makeTransformsRecord({
-          handlers: Immutable.List([
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform,
-            NullTransform
-          ]),
           displayOrder: Immutable.List([
             "application/vnd.jupyter.widget-view+json",
             "application/vnd.vega.v3+json",
