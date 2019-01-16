@@ -72,14 +72,17 @@ const resolvers = {
         }
       );
 
-      // THOUGHT: Should we track our own messages sent out too?
-      //          Hmmmm
-      kernel.channels.next(kernelInfoRequest());
+      const request = kernelInfoRequest();
+      messages[id].push(request);
+      kernel.channels.next(request);
 
       // NOTE: We are going to want to both:
+      //
       //   subscription.unsubscribe()
       //   AND
       //   kernel.channels.complete()
+      //
+      //   Within our cleanup code
 
       kernels[kernel.connectionInfo.key] = kernel;
       return {
