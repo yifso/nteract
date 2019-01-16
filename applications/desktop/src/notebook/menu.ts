@@ -442,7 +442,18 @@ export function dispatchCreateTextCellBelow(
     })
   );
 }
-
+export function dispatchCreateRawCellBelow(
+  ownProps: { contentRef: ContentRef },
+  store: DesktopStore
+) {
+  store.dispatch(
+    actions.createCellBelow({
+      cellType: "raw",
+      source: "",
+      contentRef: ownProps.contentRef
+    })
+  );
+}
 export function dispatchCreateCellBefore(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore
@@ -700,6 +711,10 @@ export function initMenuHandlers(contentRef: ContentRef, store: DesktopStore) {
   ipc.on(
     "menu:new-text-cell-below",
     dispatchCreateTextCellBelow.bind(null, opts, store)
+  );
+  ipc.on(
+    "menu:new-raw-cell-below",
+    dispatchCreateRawCellBelow.bind(null, opts, store)
   );
   ipc.on(
     "menu:new-code-cell-above",

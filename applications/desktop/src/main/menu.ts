@@ -402,6 +402,11 @@ export function loadFullMenu(store = global.store) {
         click: createSender("menu:new-text-cell-below")
       },
       {
+        label: "Insert Raw Cell Below",
+        enabled: BrowserWindow.getAllWindows().length > 0,
+        click: createSender("menu:new-raw-cell-below")
+      },
+      {
         type: "separator"
       },
       {
