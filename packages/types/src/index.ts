@@ -5,14 +5,14 @@ import * as Immutable from "immutable";
 
 import { MimeBundle } from "@nteract/commutable/src";
 import { Notification } from "react-notification-system";
-import { CommunicationRecordProps } from "./communication";
-import { makeCommunicationRecord } from "./communication";
-import { EntitiesRecordProps } from "./entities";
-import { makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
+import {
+  EntitiesRecordProps,
+  makeEmptyHostRecord,
+  makeEntitiesRecord
+} from "./entities";
 import { HostRecord } from "./entities/hosts";
 import { KernelRef, KernelspecsRef } from "./refs";
 
-export * from "./communication";
 export * from "./entities";
 export * from "./ids";
 export * from "./refs";
@@ -114,14 +114,12 @@ export type ConfigState = Immutable.Map<string, any>;
 export interface StateRecordProps {
   kernelRef: KernelRef | null;
   currentKernelspecsRef?: KernelspecsRef | null;
-  communication: Immutable.RecordOf<CommunicationRecordProps>;
   entities: Immutable.RecordOf<EntitiesRecordProps>;
 }
 
 export const makeStateRecord = Immutable.Record<StateRecordProps>({
   kernelRef: null,
   currentKernelspecsRef: null,
-  communication: makeCommunicationRecord(),
   entities: makeEntitiesRecord()
 });
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;

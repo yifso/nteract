@@ -49,6 +49,9 @@ export interface NotebookContentRecordProps {
   filepath: string;
   type: "notebook";
   writable: boolean;
+  saving: boolean;
+  loading: boolean;
+  error?: object | null;
 }
 
 export const makeNotebookContentRecord = Immutable.Record<
@@ -61,7 +64,10 @@ export const makeNotebookContentRecord = Immutable.Record<
   model: makeDocumentRecord(),
   filepath: "",
   type: "notebook",
-  writable: true
+  writable: true,
+  saving: false,
+  loading: false,
+  error: null
 });
 
 export type NotebookContentRecord = Immutable.RecordOf<
