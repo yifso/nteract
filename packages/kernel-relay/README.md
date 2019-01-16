@@ -1,6 +1,12 @@
 # @nteract/kernel-relay
 
-This package provides a GraphQL API for managing communication between a Jupyter kernel and clients. The package allows users to launch kernels, subscribe to the status of a kernel, send Jupyter messages from a client to a kernel, and more.
+This package provides a GraphQL API for managing communication between a
+Jupyter kernel and front-end clients. The package allows users to control and
+monitor kernels.
+
+Through GraphQL queries and mutations, the API enables the user to launch
+kernels, subscribe to the status of a kernel, send Jupyter messages from a
+client to a kernel, and more.
 
 ## Installation
 
@@ -14,7 +20,8 @@ $ npm install --save @nteract/kernel-relay
 
 ## Usage
 
-The example below showcases how to use the GraphQL API to get the status of a kernel.
+The query example below showcases how to use the GraphQL API to get the status
+of a kernel.
 
 ```
 # Query
@@ -37,11 +44,14 @@ query Kernel {
 
 ## Documentation
 
-We're working on adding more documentation for this component. Stay tuned by watching this repository!
+We're working on adding more documentation for this component. Stay tuned by
+watching this repository!
 
 ## Support
 
-If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:kernel-relay` label.
+If you experience an issue while using this package or have a feature request,
+please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose)
+and, if possible, add the `pkg:kernel-relay` label.
 
 ## License
 
