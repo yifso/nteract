@@ -1,6 +1,7 @@
 # @nteract/fs-kernels
 
-This package contains functions for launching, getting stats on, and shutting down a Jupyter kernel.
+This package contains functions for launching a Jupyter kernel, getting stats
+on it, and shutting it down.
 
 ## Installation
 
@@ -14,7 +15,12 @@ $ npm install --save @nteract/fs-kernels
 
 ## Usage
 
-The example below shows how we can use this package to launch and connect to a new kernel and retrieve usage stats about the kernel's process.
+The example below shows how we can use this package to:
+
+- create a new kernel (`new Kernel(kernelName)`)
+- launch and connect to the kernel (`kernel.launch()`)
+- retrieve usage stats about the kernel's process (`kernel.getUsage()`)
+- terminate the kernel (`kernel.shutdown()`).
 
 ```javascript
 import Kernel from "@nteract/fs-kernels";
@@ -30,11 +36,14 @@ export default async () => {
 
 ## Documentation
 
-You can view the reference documentation for `@nteract/fs-kernels` in the [package docs](https://packages.nteract.io/modules/fs-kernels).
+You can view the reference documentation for `@nteract/fs-kernels` in the
+[package docs](https://packages.nteract.io/modules/fs-kernels).
 
 ## Support
 
-If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:fs-kernels` label.
+If you experience an issue while using this package or have a feature request,
+please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose)
+and, if possible, add the `pkg:fs-kernels` label.
 
 ## License
 
