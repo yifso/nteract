@@ -1,3 +1,11 @@
+/**
+ * Mocks the window object
+ *
+ * Jest doesn't have direct access to the window object like the browser does.
+ * Mocking the window object allows Jest tests to interact with the window
+ * object.
+ */
+
 // For some reason, this property does not get set above.
 global.Image = global.window.Image;
 
