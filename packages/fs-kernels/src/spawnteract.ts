@@ -2,12 +2,13 @@
  * @module fs-kernels
  */
 /**
- * This module contains methods that allow you to spawn Jupyter kernels.  You
- * can spawn kernels either by name or by a kernelSpec object (see the
- * `kernelspecs` npm package for more information).
+ * This module contains methods that allow you to launch ("spawn") Jupyter
+ * kernels.  You can spawn kernels either by name, by a `kernelSpec` or
+ * by a `kernelSpec` and its connection information.
  *
  * Usage example:
  * ```js
+ * // Spawn a kernel by name
  * var spawnResults = require('spawnteract').launch('python3');
  *
  * // Print the ip address and port for the shell channel
@@ -52,11 +53,11 @@ export function cleanup(connectionFile: fs.PathLike) {
 }
 
 /**
- * Creates a connectionInfo object given an array of ports
+ * Creates a JupyterConnectionInfo object for a kernel given an array of comm channel ports
  * @private
- * @param  {number[]} ports array of ports to use for the connection, [hb_port,
- *                          control_port, shell_port, stdin_port, iopub_port]
- * @return {object}         connectionInfo object
+ * @param  {number[]} ports array of comm channel ports to use for the connection,
+ *                          [hb_port, control_port, shell_port, stdin_port, iopub_port]
+ * @return {object}         JupyterConnectionInfo object
  */
 function createConnectionInfo(
   ports: number[]
@@ -99,7 +100,7 @@ function writeConnectionFile(portFinderOptions?: {
       if (err) {
         reject(err);
       } else {
-        // Make sure the kernel runtime dir exists before trying to write the
+        // Make sure the kernel runtime directory exists before trying to write the
         // kernel file.
         const runtimeDir = await jp.runtimeDir();
         mkdirp(runtimeDir, error => {
@@ -130,9 +131,7 @@ function writeConnectionFile(portFinderOptions?: {
 /**
  * Launch a kernel for a given kernelSpec
  * @public
- * @param  kernelSpec      describes a specific
- *                         kernel, see the npm
- *                         package `kernelspecs`
+ * @param  kernelSpec      describes a specific kernel
  * @param  [spawnOptions] `child_process`-like {@link https://github.com/sindresorhus/execa#options options for execa}
  *                         use `{ cleanupConnectionFile: false }` to disable automatic connection file cleanup
  */
