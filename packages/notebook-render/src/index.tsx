@@ -7,6 +7,14 @@ import {
   ImmutableNotebook
 } from "@nteract/commutable";
 import {
+  DisplayData,
+  ExecuteResult,
+  KernelOutputError,
+  Media,
+  Output,
+  StreamText
+} from "@nteract/outputs";
+import {
   Cell,
   Cells,
   Input,
@@ -15,6 +23,7 @@ import {
   Source,
   themes
 } from "@nteract/presentational-components";
+import { OutputType } from "@nteract/records";
 import * as React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import ReactMarkdown from "react-markdown";
@@ -143,13 +152,36 @@ export default class NotebookRender extends React.PureComponent<Props, State> {
                         cell!.getIn(["metadata", "outputExpanded"]) || true
                       }
                     >
-                      <Display
-                        outputs={(cell as ImmutableCodeCell)
-                          .get("outputs")
-                          .toJS()}
-                        transforms={this.props.transforms as Transforms}
-                        displayOrder={this.props.displayOrder}
-                      />
+                      {cell!
+                        .get("outputs")
+                        .toJS()
+                        .map((output: OutputType, index: number) => (
+                          <Output output={output} key={index}>
+                            <DisplayData>
+                              <Media.HTML />
+                              <Media.Image />
+                              <Media.Json />
+                              <Media.JavaScript />
+                              <Media.LaTeX />
+                              <Media.Markdown />
+                              <Media.Plain />
+                              <Media.SVG />
+                            </DisplayData>
+
+                            <ExecuteResult>
+                              <Media.HTML />
+                              <Media.Image />
+                              <Media.Json />
+                              <Media.JavaScript />
+                              <Media.LaTeX />
+                              <Media.Markdown />
+                              <Media.Plain />
+                              <Media.SVG />
+                            </ExecuteResult>
+                            <KernelOutputError />
+                            <StreamText />
+                          </Output>
+                        ))}
                     </Outputs>
                   </Cell>
                 );

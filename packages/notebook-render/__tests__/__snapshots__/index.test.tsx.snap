@@ -74,53 +74,118 @@ print('hey')
         expanded={true}
         hidden={false}
       >
-        <Display
-          displayOrder={
-            Array [
-              "application/vdom.v1+json",
-              "application/json",
-              "application/javascript",
-              "text/html",
-              "text/markdown",
-              "text/latex",
-              "image/svg+xml",
-              "image/gif",
-              "image/png",
-              "image/jpeg",
-              "text/plain",
-            ]
-          }
-          expanded={false}
-          isHidden={false}
-          models={Immutable.Map {}}
-          outputs={
-            Array [
-              Object {
-                "data": Object {
-                  "text/plain": "<IPython.core.display.HTML object>",
-                },
-                "metadata": Object {},
-                "output_type": "display_data",
-              },
-            ]
-          }
-          theme="light"
-          transforms={
+        <Output
+          key="0"
+          output={
             Object {
-              "application/javascript": [Function],
-              "application/json": [Function],
-              "application/vdom.v1+json": [Function],
-              "image/gif": [Function],
-              "image/jpeg": [Function],
-              "image/png": [Function],
-              "image/svg+xml": [Function],
-              "text/html": [Function],
-              "text/latex": [Function],
-              "text/markdown": [Function],
-              "text/plain": [Function],
+              "data": Object {
+                "text/plain": "<IPython.core.display.HTML object>",
+              },
+              "metadata": Object {},
+              "output_type": "display_data",
             }
           }
-        />
+        >
+          <Component
+            data={Object {}}
+            metadata={Object {}}
+            output_type="display_data"
+          >
+            <HTML
+              data=""
+              mediaType="text/html"
+            />
+            <Image
+              data=""
+              mediaType="image/jpeg"
+            />
+            <Json
+              data={null}
+              mediaType="application/json"
+              metadata={
+                Object {
+                  "expanded": true,
+                }
+              }
+              theme="light"
+            />
+            <JavaScript
+              data=""
+              mediaType="application/javascript"
+            />
+            <LaTeX
+              data=""
+              mediaType="text/latex"
+            />
+            <Markdown
+              data=""
+              mediaType="text/markdown"
+            />
+            <Plaintext
+              data=""
+              mediaType="text/plain"
+            />
+            <SVG
+              data=""
+              mediaType="image/svg+xml"
+            />
+          </Component>
+          <Component
+            data={Object {}}
+            metadata={Object {}}
+            output_type="execute_result"
+          >
+            <HTML
+              data=""
+              mediaType="text/html"
+            />
+            <Image
+              data=""
+              mediaType="image/jpeg"
+            />
+            <Json
+              data={null}
+              mediaType="application/json"
+              metadata={
+                Object {
+                  "expanded": true,
+                }
+              }
+              theme="light"
+            />
+            <JavaScript
+              data=""
+              mediaType="application/javascript"
+            />
+            <LaTeX
+              data=""
+              mediaType="text/latex"
+            />
+            <Markdown
+              data=""
+              mediaType="text/markdown"
+            />
+            <Plaintext
+              data=""
+              mediaType="text/plain"
+            />
+            <SVG
+              data=""
+              mediaType="image/svg+xml"
+            />
+          </Component>
+          <KernelOutputError
+            ename=""
+            evalue=""
+            output_type="error"
+            traceback={Array []}
+          />
+          <Component
+            name="stdout"
+            output_type="stream"
+            text=""
+          />
+        </Output>
       </Outputs>
     </Cell>
   </Cells>
@@ -202,53 +267,118 @@ print('hey')
         expanded={true}
         hidden={false}
       >
-        <Display
-          displayOrder={
-            Array [
-              "application/vdom.v1+json",
-              "application/json",
-              "application/javascript",
-              "text/html",
-              "text/markdown",
-              "text/latex",
-              "image/svg+xml",
-              "image/gif",
-              "image/png",
-              "image/jpeg",
-              "text/plain",
-            ]
-          }
-          expanded={false}
-          isHidden={false}
-          models={Immutable.Map {}}
-          outputs={
-            Array [
-              Object {
-                "data": Object {
-                  "text/plain": "<IPython.core.display.HTML object>",
-                },
-                "metadata": Object {},
-                "output_type": "display_data",
-              },
-            ]
-          }
-          theme="light"
-          transforms={
+        <Output
+          key="0"
+          output={
             Object {
-              "application/javascript": [Function],
-              "application/json": [Function],
-              "application/vdom.v1+json": [Function],
-              "image/gif": [Function],
-              "image/jpeg": [Function],
-              "image/png": [Function],
-              "image/svg+xml": [Function],
-              "text/html": [Function],
-              "text/latex": [Function],
-              "text/markdown": [Function],
-              "text/plain": [Function],
+              "data": Object {
+                "text/plain": "<IPython.core.display.HTML object>",
+              },
+              "metadata": Object {},
+              "output_type": "display_data",
             }
           }
-        />
+        >
+          <Component
+            data={Object {}}
+            metadata={Object {}}
+            output_type="display_data"
+          >
+            <HTML
+              data=""
+              mediaType="text/html"
+            />
+            <Image
+              data=""
+              mediaType="image/jpeg"
+            />
+            <Json
+              data={null}
+              mediaType="application/json"
+              metadata={
+                Object {
+                  "expanded": true,
+                }
+              }
+              theme="light"
+            />
+            <JavaScript
+              data=""
+              mediaType="application/javascript"
+            />
+            <LaTeX
+              data=""
+              mediaType="text/latex"
+            />
+            <Markdown
+              data=""
+              mediaType="text/markdown"
+            />
+            <Plaintext
+              data=""
+              mediaType="text/plain"
+            />
+            <SVG
+              data=""
+              mediaType="image/svg+xml"
+            />
+          </Component>
+          <Component
+            data={Object {}}
+            metadata={Object {}}
+            output_type="execute_result"
+          >
+            <HTML
+              data=""
+              mediaType="text/html"
+            />
+            <Image
+              data=""
+              mediaType="image/jpeg"
+            />
+            <Json
+              data={null}
+              mediaType="application/json"
+              metadata={
+                Object {
+                  "expanded": true,
+                }
+              }
+              theme="light"
+            />
+            <JavaScript
+              data=""
+              mediaType="application/javascript"
+            />
+            <LaTeX
+              data=""
+              mediaType="text/latex"
+            />
+            <Markdown
+              data=""
+              mediaType="text/markdown"
+            />
+            <Plaintext
+              data=""
+              mediaType="text/plain"
+            />
+            <SVG
+              data=""
+              mediaType="image/svg+xml"
+            />
+          </Component>
+          <KernelOutputError
+            ename=""
+            evalue=""
+            output_type="error"
+            traceback={Array []}
+          />
+          <Component
+            name="stdout"
+            output_type="stream"
+            text=""
+          />
+        </Output>
       </Outputs>
     </Cell>
   </Cells>

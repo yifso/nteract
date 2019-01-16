@@ -7,6 +7,14 @@ import {
 import Markdown from "@nteract/markdown";
 import * as MathJax from "@nteract/mathjax";
 import {
+  DisplayData,
+  ExecuteResult,
+  KernelOutputError,
+  Media,
+  Output,
+  StreamText
+} from "@nteract/outputs";
+import {
   Cell,
   Cells,
   Input,
@@ -15,6 +23,8 @@ import {
   Source,
   themes
 } from "@nteract/presentational-components";
+import { OutputType } from "@nteract/records";
+
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
@@ -146,11 +156,33 @@ export class NotebookPreview extends React.PureComponent<Props, State> {
                           true
                         )}
                       >
-                        <Display
-                          outputs={cell.get("outputs").toJS()}
-                          transforms={this.props.transforms}
-                          displayOrder={this.props.displayOrder}
-                        />
+                        {cell.get("outputs").toJS().map((output: OutputType, index: number) => (
+                <Output output={output} key={index}>
+                <DisplayData>
+                  <Media.HTML />
+                  <Media.Image/>
+                    <Media.Json />
+                          <Media.JavaScript />
+                          <Media.LaTeX/>
+                          <Media.Markdown/>
+                          <Media.Plain/>
+                          <Media.SVG/>
+                  </DisplayData>
+                
+                  <ExecuteResult>
+                  <Media.HTML />
+                  <Media.Image/>
+                    <Media.Json />
+                          <Media.JavaScript />
+                          <Media.LaTeX/>
+                          <Media.Markdown/>
+                          <Media.Plain/>
+                          <Media.SVG/>
+                    </ExecuteResult>
+                  <KernelOutputError />
+                  <StreamText />
+                </Output>
+              ))}
                       </Outputs>
                     </Cell>
                   );
