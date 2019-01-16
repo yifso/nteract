@@ -1,4 +1,7 @@
 import * as React from "react";
+import styled from "styled-components";
+
+import outputStyle from "../outputStyle";
 
 interface Props {
   /**
@@ -25,6 +28,10 @@ export function createFragment(html: string): Node {
   const fragment = range.createContextualFragment(html);
   return fragment;
 }
+
+const StyledDiv = styled.div`
+  ${outputStyle}
+`;
 
 export class HTML extends React.PureComponent<Props> {
   el?: HTMLElement | null;
@@ -59,7 +66,7 @@ export class HTML extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div
+      <StyledDiv
         dangerouslySetInnerHTML={{ __html: this.props.data }}
         ref={el => {
           this.el = el;

@@ -240,6 +240,24 @@ export function publishGist(payload: {
   };
 }
 
+export function removeTransform(
+  payload: actionTypes.RemoveTransform["payload"]
+): actionTypes.RemoveTransform {
+  return {
+    type: actionTypes.REMOVE_TRANSFORM,
+    payload
+  };
+}
+
+export function addTransform(
+  payload: actionTypes.AddTransform["payload"]
+): actionTypes.AddTransform {
+  return {
+    type: actionTypes.ADD_TRANSFORM,
+    payload
+  };
+}
+
 export function coreError(payload: Error): actionTypes.CoreError {
   return {
     type: "CORE/ERROR",

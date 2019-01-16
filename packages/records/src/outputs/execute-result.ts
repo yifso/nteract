@@ -22,41 +22,41 @@ export const EXECUTE_RESULT: ExecuteResultType = "execute_result";
 
 // In-memory version
 export interface ExecuteResultOutput {
-  outputType: ExecuteResultType,
-  executionCount: ExecutionCount,
-  data: common.MimeBundle,
-  metadata: {}
+  output_type: ExecuteResultType;
+  execution_count: ExecutionCount;
+  data: common.MimeBundle;
+  metadata: {};
 }
 
 // On disk
 export interface NbformatExecuteResult {
-  output_type: ExecuteResultType,
-  execution_count: ExecutionCount,
-  data: common.OnDiskMimebundle,
-  metadata: {}
+  output_type: ExecuteResultType;
+  execution_count: ExecutionCount;
+  data: common.OnDiskMimebundle;
+  metadata: {};
 }
 
 export interface ExecuteResultMessage {
   header: {
-    msg_type: ExecuteResultType
-  },
+    msg_type: ExecuteResultType;
+  };
   content: {
-    execution_count: number,
-    data: common.MimeBundle,
-    metadata: {}
-  }
+    execution_count: number;
+    data: common.MimeBundle;
+    metadata: {};
+  };
 }
 
 export function executeResult(
   executeResultOutput?: Readonly<{
-    executionCount?: ExecutionCount,
-    data?: common.MimeBundle,
-    metadata?: {}
+    execution_count?: ExecutionCount;
+    data?: common.MimeBundle;
+    metadata?: {};
   }>
 ): ExecuteResultOutput {
   const defaultExecuteResult = {
-    outputType: EXECUTE_RESULT,
-    executionCount: undefined,
+    output_type: EXECUTE_RESULT,
+    execution_count: undefined,
     data: {},
     metadata: {}
   };
@@ -71,7 +71,7 @@ executeResult.fromNbformat = function fromNbformat(
   s: NbformatExecuteResult
 ): ExecuteResultOutput {
   return executeResult({
-    executionCount: s.execution_count,
+    execution_count: s.execution_count,
     data: common.createImmutableMimeBundle(s.data),
     metadata: s.metadata
   });
@@ -81,7 +81,7 @@ executeResult.fromJupyterMessage = function fromJupyterMessage(
   msg: ExecuteResultMessage
 ): ExecuteResultOutput {
   return executeResult({
-    executionCount: msg.content.execution_count,
+    execution_count: msg.content.execution_count,
     data: msg.content.data,
     metadata: msg.content.metadata
   });

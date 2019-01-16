@@ -9,10 +9,10 @@ interface Metadata {
 }
 
 interface Props {
-  data: GeoJsonObject;
-  metadata: Metadata;
+  data?: GeoJsonObject;
+  metadata?: Metadata;
   mediaType: "application/geo+json";
-  theme: string;
+  theme?: string;
 }
 
 type TileTheme = "dark" | "light";

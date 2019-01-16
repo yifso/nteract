@@ -15,7 +15,7 @@ export const StreamText = (props: Props) => {
 };
 
 StreamText.defaultProps = {
-  outputType: "stream",
+  output_type: "stream",
   text: "",
   name: "stdout"
 };

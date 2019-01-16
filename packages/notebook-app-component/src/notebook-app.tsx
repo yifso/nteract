@@ -6,7 +6,13 @@ import {
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
-import { Output, RichestMime } from "@nteract/display-area";
+import {
+  KernelOutputError,
+  Media,
+  Output,
+  RichMedia,
+  StreamText
+} from "@nteract/outputs";
 import {
   Cell as PlainCell,
   Input,
@@ -16,10 +22,6 @@ import {
   Source,
   themes as rawThemeVars
 } from "@nteract/presentational-components";
-import {
-  displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms
-} from "@nteract/transforms";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -36,6 +38,7 @@ import { HijackScroll } from "./hijack-scroll";
 import MarkdownPreviewer from "./markdown-preview";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
+import TransformMedia from "./transform-media";
 
 import styled, { createGlobalStyle } from "styled-components";
 
@@ -92,8 +95,6 @@ interface AnyCellProps {
   sourceHidden: boolean;
   outputHidden: boolean;
   outputExpanded: boolean;
-  displayOrder: string[];
-  transforms: typeof defaultTransforms;
   models: Immutable.Map<string, any>;
   codeMirrorMode: string | Immutable.Map<string, any>;
   selectCell: () => void;
@@ -251,15 +252,16 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             </Input>
             <Pagers>
               {this.props.pager.map((pager, key) => (
-                <RichestMime
-                  metadata={expanded}
-                  className="pager"
-                  displayOrder={this.props.displayOrder}
-                  transforms={this.props.transforms}
-                  bundle={pager}
-                  theme={this.props.theme}
-                  key={key}
-                />
+                <RichMedia data={pager.data} metadata={pager.metadata}>
+                  <Media.Json />
+                  <Media.JavaScript />
+                  <Media.HTML />
+                  <Media.Markdown />
+                  <Media.LaTeX />
+                  <Media.SVG />
+                  <Media.Image />
+                  <Media.Plain />
+                </RichMedia>
               ))}
             </Pagers>
             <Outputs
@@ -267,18 +269,24 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               expanded={this.props.outputExpanded}
             >
               {this.props.outputs.map((output, index) => (
-                <Output
-                  key={index}
-                  output={output}
-                  displayOrder={this.props.displayOrder}
-                  transforms={this.props.transforms}
-                  theme={this.props.theme}
-                  models={this.props.models}
-                  channels={this.props.channels}
-                  onMetadataChange={this.props.updateOutputMetadata}
-                  index={index}
-                  metadata={metadata}
-                />
+                <Output output={output} key={index}>
+                  <TransformMedia
+                    output_type={"display_data"}
+                    output={output}
+                    id={id}
+                    contentRef={contentRef}
+                    index={index}
+                  />
+                  <TransformMedia
+                    output_type={"execute_result"}
+                    output={output}
+                    id={id}
+                    contentRef={contentRef}
+                    index={index}
+                  />
+                  <KernelOutputError />
+                  <StreamText />
+                </Output>
               ))}
             </Outputs>
           </React.Fragment>
@@ -358,9 +366,7 @@ export const ConnectedCell = connect(
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
 interface PureNotebookProps {
-  displayOrder?: string[];
   cellOrder?: Immutable.List<any>;
-  transforms?: object;
   theme?: string;
   codeMirrorMode?: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -368,9 +374,7 @@ interface PureNotebookProps {
 }
 
 interface NotebookStateProps {
-  displayOrder: string[];
   cellOrder: Immutable.List<any>;
-  transforms: object;
   theme: string;
   codeMirrorMode: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
@@ -430,10 +434,8 @@ const mapStateToProps = (
       cellOrder: Immutable.List(),
       codeMirrorMode: Immutable.Map({ name: "text/plain" }),
       contentRef,
-      displayOrder: ownProps.displayOrder || defaultDisplayOrder,
       kernelRef: null,
-      theme: selectors.userTheme(state),
-      transforms: ownProps.transforms || defaultTransforms
+      theme: selectors.userTheme(state)
     };
   }
 
@@ -465,10 +467,8 @@ const mapStateToProps = (
     cellOrder: selectors.notebook.cellOrder(model),
     codeMirrorMode,
     contentRef,
-    displayOrder: ownProps.displayOrder || defaultDisplayOrder,
     kernelRef,
-    theme: selectors.userTheme(state),
-    transforms: ownProps.transforms || defaultTransforms
+    theme: selectors.userTheme(state)
   };
 };
 
@@ -507,9 +507,7 @@ const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
 // tslint:disable max-classes-per-file
 export class NotebookApp extends React.PureComponent<NotebookProps> {
   static defaultProps = {
-    displayOrder: defaultTransforms,
-    theme: "light",
-    transforms: defaultDisplayOrder
+    theme: "light"
   };
 
   constructor(props: NotebookProps) {
@@ -570,8 +568,6 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     return (
       <ConnectedCell
         id={id}
-        transforms={this.props.transforms}
-        displayOrder={this.props.displayOrder}
         codeMirrorMode={this.props.codeMirrorMode}
         contentRef={contentRef}
       />
@@ -606,7 +602,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
         <Cells>
           <CellCreator
             id={this.props.cellOrder.get(0)}
-            above
+            above={true}
             contentRef={this.props.contentRef}
           />
           {this.props.cellOrder.map(this.createCellElement)}

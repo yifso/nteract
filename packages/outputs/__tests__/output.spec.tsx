@@ -11,7 +11,7 @@ import {
 
 describe("Output", () => {
   it("handles stream data", () => {
-    const output = { outputType: "stream", name: "stdout", text: "hey" };
+    const output = { output_type: "stream", name: "stdout", text: "hey" };
 
     const component = shallow(
       <Output output={output}>
@@ -24,7 +24,7 @@ describe("Output", () => {
 
   it("handles errors/tracebacks", () => {
     const output = {
-      outputType: "error",
+      output_type: "error",
       traceback: ["Yikes, Will is in the upsidedown again!"],
       ename: "NameError",
       evalue: "Yikes!"
@@ -39,7 +39,7 @@ describe("Output", () => {
     expect(component.find("KernelOutputError")).not.toBeNull();
 
     const outputNoTraceback = {
-      outputType: "error",
+      output_type: "error",
       ename: "NameError",
       evalue: "Yikes!"
     };
@@ -53,7 +53,7 @@ describe("Output", () => {
   });
   it("handles display_data messages", () => {
     const output = {
-      outputType: "display_data",
+      output_type: "display_data",
       data: { "text/plain": "Cheese is the best food." }
     };
 
@@ -74,7 +74,7 @@ describe("Output", () => {
   });
   it("handles an execute result message", () => {
     const output = {
-      outputType: "pyout",
+      output_type: "execute_result",
       data: {
         "text/plain": "42 is the answer to life, the universe, and everything."
       }

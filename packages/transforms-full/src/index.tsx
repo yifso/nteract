@@ -17,7 +17,7 @@ import {
   standardTransforms
 } from "@nteract/transforms";
 
-const additionalTransforms = [
+export const additionalTransforms = [
   WidgetDisplay,
   DataResourceTransform,
   ModelDebug,

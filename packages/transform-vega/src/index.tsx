@@ -73,7 +73,7 @@ function embed(
   }
 }
 
-export class VegaEmbed extends React.Component<EmbedProps> {
+export class VegaEmbed extends React.Component<Partial<EmbedProps>> {
   el?: HTMLElement | null;
 
   static defaultProps = {
@@ -83,7 +83,13 @@ export class VegaEmbed extends React.Component<EmbedProps> {
   };
 
   componentDidMount(): void {
-    if (this.el) {
+    if (
+      this.el &&
+      this.props.data &&
+      this.props.embedMode &&
+      this.props.version &&
+      this.props.renderedCallback
+    ) {
       embed(
         this.el,
         this.props.data,
@@ -99,7 +105,13 @@ export class VegaEmbed extends React.Component<EmbedProps> {
   }
 
   componentDidUpdate(): void {
-    if (this.el) {
+    if (
+      this.el &&
+      this.props.data &&
+      this.props.embedMode &&
+      this.props.version &&
+      this.props.renderedCallback
+    ) {
       embed(
         this.el,
         this.props.data,
@@ -132,7 +144,9 @@ interface Props<MediaType> {
   mediaType: MediaType;
 }
 
-export function VegaLite1(props: Props<"application/vnd.vegalite.v1+json">) {
+export function VegaLite1(
+  props: Partial<Props<"application/vnd.vegalite.v1+json">>
+) {
   return <VegaEmbed data={props.data} embedMode="vega-lite" version="vega2" />;
 }
 VegaLite1.MIMETYPE = MIMETYPE_VEGALITE1;
@@ -140,7 +154,7 @@ VegaLite1.defaultProps = {
   mediaType: MIMETYPE_VEGA2
 };
 
-export function Vega2(props: Props<"application/vnd.vega.v2+json">) {
+export function Vega2(props: Partial<Props<"application/vnd.vega.v2+json">>) {
   return <VegaEmbed data={props.data} embedMode="vega" version="vega2" />;
 }
 Vega2.MIMETYPE = MIMETYPE_VEGA2;
@@ -151,7 +165,9 @@ Vega2.defaultProps = {
 // For backwards compatibility
 export { VegaLite1 as VegaLite, Vega2 as Vega };
 
-export function VegaLite2(props: Props<"application/vnd.vegalite.v2+json">) {
+export function VegaLite2(
+  props: Partial<Props<"application/vnd.vegalite.v2+json">>
+) {
   return <VegaEmbed data={props.data} embedMode="vega-lite" version="vega3" />;
 }
 VegaLite2.MIMETYPE = MIMETYPE_VEGALITE2;
@@ -159,7 +175,7 @@ VegaLite2.defaultProps = {
   mediaType: MIMETYPE_VEGALITE2
 };
 
-export function Vega3(props: Props<"application/vnd.vega.v3+json">) {
+export function Vega3(props: Partial<Props<"application/vnd.vega.v3+json">>) {
   return <VegaEmbed data={props.data} embedMode="vega" version="vega3" />;
 }
 Vega3.MIMETYPE = MIMETYPE_VEGA3;

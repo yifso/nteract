@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface Props {
   data: string;
   mediaType: "image/png" | "image/jpeg" | "image/gif";
-  metadata: any;
+  metadata: { height?: number; width?: number };
 }
 
 const ImageStyle = styled.img`
@@ -12,7 +12,7 @@ const ImageStyle = styled.img`
   max-width: 100%;
 `;
 
-export function Image(props: Props) {
+export function Image(props: Partial<Props>) {
   let size = {};
 
   if (props.metadata) {

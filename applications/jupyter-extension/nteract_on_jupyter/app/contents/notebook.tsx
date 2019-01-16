@@ -1,84 +1,27 @@
-import { ContentRef } from "@nteract/core";
-import {
-  displayOrder as defaultDisplayOrder,
-  transforms as defaultTransforms
-} from "@nteract/transforms";
 import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
-const displayOrder = [
-  "application/vnd.jupyter.widget-view+json",
-  "application/vnd.vega.v3+json",
-  "application/vnd.vega.v2+json",
-  "application/vnd.vegalite.v2+json",
-  "application/vnd.vegalite.v1+json",
-  "application/geo+json",
-  "application/vnd.plotly.v1+json",
-  "text/vnd.plotly.v1+html",
-  "application/x-nteract-model-debug+json",
-  "application/vnd.dataresource+json",
-  "application/vdom.v1+json",
-  "application/json",
-  "application/javascript",
-  "text/html",
-  "text/markdown",
-  "text/latex",
-  "image/svg+xml",
-  "image/gif",
-  "image/png",
-  "image/jpeg",
-  "text/plain"
-];
-
-const NullTransform = () => null;
-// As the transforms are loaded, these get overridden with the better variants
-const transforms = {
-  ...defaultTransforms,
-  "application/vnd.jupyter.widget-view+json": NullTransform,
-  "application/vnd.vega.v3+json": NullTransform,
-  "application/vnd.vega.v2+json": NullTransform,
-  "application/vnd.vegalite.v2+json": NullTransform,
-  "application/vnd.vegalite.v1+json": NullTransform,
-  "application/geo+json": NullTransform,
-  "application/vnd.plotly.v1+json": NullTransform,
-  "text/vnd.plotly.v1+html": NullTransform,
-  "application/x-nteract-model-debug+json": NullTransform,
-  "application/vnd.dataresource+json": NullTransform
-};
+import { actions, ContentRef } from "@nteract/core";
 
 // Show nothing while loading the notebook app
 const NotebookPlaceholder = (props: any) => null;
 
 interface State {
-  transforms: typeof defaultTransforms;
-  displayOrder: typeof defaultDisplayOrder;
-  App: React.ComponentType<Props>;
+  App: React.ComponentType<{ contentRef: ContentRef }>;
 }
 
 interface Props {
   contentRef: ContentRef;
-  transforms?: typeof defaultTransforms;
-  displayOrder?: typeof defaultDisplayOrder;
+  addTransform(component: any): void;
 }
 
-export default class Notebook extends React.PureComponent<
-  { contentRef: ContentRef },
-  State
-> {
+class Notebook extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      App: NotebookPlaceholder,
-      displayOrder,
-      transforms
+      App: NotebookPlaceholder
     };
-  }
-
-  registerTransform(transform: { MIMETYPE: string }) {
-    this.setState(prevState => {
-      return {
-        transforms: { ...prevState.transforms, [transform.MIMETYPE]: transform }
-      };
-    });
   }
 
   loadApp() {
@@ -92,40 +35,33 @@ export default class Notebook extends React.PureComponent<
   loadTransforms() {
     import(/* webpackChunkName: "plotly" */ "@nteract/transform-plotly").then(
       module => {
-        this.registerTransform(module.default);
-        this.registerTransform(module.PlotlyNullTransform);
+        this.props.addTransform(module.default);
+        this.props.addTransform(module.PlotlyNullTransform);
       }
     );
 
     import(/* webpackChunkName: "tabular-dataresource" */ "@nteract/transform-dataresource").then(
       module => {
-        this.registerTransform(module.default);
+        this.props.addTransform(module.default);
       }
     );
 
     import(/* webpackChunkName: "jupyter-widgets" */ "@nteract/jupyter-widgets").then(
       module => {
-        this.registerTransform(module.WidgetDisplay);
+        this.props.addTransform(module.WidgetDisplay);
       }
     );
 
     import("@nteract/transform-model-debug").then(module => {
-      this.registerTransform(module.default);
+      this.props.addTransform(module.default);
     });
 
     import(/* webpackChunkName: "vega-transform" */ "@nteract/transform-vega").then(
       module => {
-        this.setState(prevState => {
-          return {
-            transforms: {
-              ...prevState.transforms,
-              [module.VegaLite1.MIMETYPE]: module.VegaLite1,
-              [module.VegaLite2.MIMETYPE]: module.VegaLite2,
-              [module.Vega2.MIMETYPE]: module.Vega2,
-              [module.Vega3.MIMETYPE]: module.Vega3
-            }
-          };
-        });
+        this.props.addTransform(module.VegaLite1);
+        this.props.addTransform(module.VegaLite2);
+        this.props.addTransform(module.Vega2);
+        this.props.addTransform(module.Vega3);
       }
     );
 
@@ -141,12 +77,34 @@ export default class Notebook extends React.PureComponent<
   render() {
     const App = this.state.App;
 
-    return (
-      <App
-        contentRef={this.props.contentRef}
-        displayOrder={this.state.displayOrder}
-        transforms={this.state.transforms}
-      />
-    );
+    return <App contentRef={this.props.contentRef} />;
   }
 }
+
+interface InitialProps {
+  contentRef: ContentRef;
+}
+
+const makeMapDispatchToProps = (
+  initialDispatch: Dispatch,
+  initialProps: InitialProps
+) => {
+  const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+      addTransform: (transform: React.ComponentType & { MIMETYPE: string }) => {
+        return dispatch(
+          actions.addTransform({
+            mediaType: transform.MIMETYPE,
+            component: transform
+          })
+        );
+      }
+    };
+  };
+  return mapDispatchToProps;
+};
+
+export default connect(
+  null,
+  makeMapDispatchToProps
+)(Notebook);

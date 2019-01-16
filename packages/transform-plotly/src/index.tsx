@@ -40,7 +40,7 @@ PlotlyNullTransform.defaultProps = {
   mediaType: NULL_MIMETYPE
 };
 
-export class PlotlyTransform extends React.Component<Props> {
+export class PlotlyTransform extends React.Component<Partial<Props>> {
   plotDiv?: PlotlyHTMLElement | null;
   Plotly!: { newPlot: Function; redraw: Function };
 

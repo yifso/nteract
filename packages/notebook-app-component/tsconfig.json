@@ -9,7 +9,6 @@
     { "path": "../actions" },
     { "path": "../commutable" },
     { "path": "../core" },
-    { "path": "../display-area" },
     { "path": "../dropdown-menu" },
     { "path": "../editor" },
     { "path": "../markdown" },
@@ -17,6 +16,7 @@
     { "path": "../presentational-components" },
     { "path": "../selectors" },
     { "path": "../transforms" },
-    { "path": "../types" }
+    { "path": "../types" },
+    { "path": "../outputs" }
   ]
 }

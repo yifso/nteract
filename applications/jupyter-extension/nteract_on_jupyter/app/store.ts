@@ -4,13 +4,7 @@ import {
   middlewares as coreMiddlewares,
   reducers
 } from "@nteract/core";
-import {
-  Action,
-  applyMiddleware,
-  combineReducers,
-  compose,
-  createStore
-} from "redux";
+import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { combineEpics, createEpicMiddleware, Epic } from "redux-observable";
 
 const composeEnhancers =

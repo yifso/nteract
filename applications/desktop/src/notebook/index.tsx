@@ -20,18 +20,18 @@ import {
   makeEntitiesRecord,
   makeLocalHostRecord,
   makeNotebookContentRecord,
-  makeStateRecord
+  makeStateRecord,
+  makeTransformsRecord
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
-import { displayOrder, transforms } from "@nteract/transforms-full";
+import { Media } from "@nteract/outputs";
+import { additionalTransforms, transforms } from "@nteract/transforms-full";
 import * as Immutable from "immutable";
 
-import { Store } from "redux";
-import { Actions } from "./actions";
 import { initGlobalHandlers } from "./global-events";
 import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
-import { DesktopNotebookAppState, makeDesktopNotebookRecord } from "./state";
+import { makeDesktopNotebookRecord } from "./state";
 import configureStore, { DesktopStore } from "./store";
 
 import { createGlobalStyle } from "styled-components";
@@ -59,6 +59,62 @@ const store = configureStore({
     entities: makeEntitiesRecord({
       contents: makeContentsRecord({
         byRef: initialRefs
+      }),
+      transforms: makeTransformsRecord({
+        displayOrder: Immutable.List([
+          "application/vnd.jupyter.widget-view+json",
+          "application/vnd.vega.v3+json",
+          "application/vnd.vega.v2+json",
+          "application/vnd.vegalite.v2+json",
+          "application/vnd.vegalite.v1+json",
+          "application/geo+json",
+          "application/vnd.plotly.v1+json",
+          "text/vnd.plotly.v1+html",
+          "application/x-nteract-model-debug+json",
+          "application/vnd.dataresource+json",
+          "application/vdom.v1+json",
+          "application/json",
+          "application/javascript",
+          "text/html",
+          "text/markdown",
+          "text/latex",
+          "image/svg+xml",
+          "image/gif",
+          "image/png",
+          "image/jpeg",
+          "text/plain"
+        ]),
+        byId: Immutable.Map({
+          "text/vnd.plotly.v1+html": transforms["text/vnd.plotly.v1+html"],
+          "application/vnd.plotly.v1+json":
+            transforms["application/vnd.plotly.v1+json"],
+          "application/geo+json": transforms["application/geo+json"],
+          "application/x-nteract-model-debug+json":
+            transforms["application/x-nteract-model-debug+json"],
+          "application/vnd.dataresource+json":
+            transforms["application/vnd.dataresource+json"],
+          "application/vnd.jupyter.widget-view+json":
+            transforms["application/vnd.jupyter.widget-view+json"],
+          "application/vnd.vegalite.v1+json":
+            transforms["application/vnd.vegalite.v1+json"],
+          "application/vnd.vegalite.v2+json":
+            transforms["application/vnd.vegalite.v2+json"],
+          "application/vnd.vega.v2+json":
+            transforms["application/vnd.vega.v2+json"],
+          "application/vnd.vega.v3+json":
+            transforms["application/vnd.vega.v3+json"],
+          "application/vdom.v1+json": transforms["application/vdom.v1+json"],
+          "application/json": Media.Json,
+          "application/javascript": Media.JavaScript,
+          "text/html": Media.HTML,
+          "text/markdown": Media.Markdown,
+          "text/latex": Media.LaTeX,
+          "image/svg": Media.SVG,
+          "image/gif": Media.Image,
+          "image/png": Media.Image,
+          "image/jpeg": Media.Image,
+          "text/plain": Media.Plain
+        })
       })
     })
   }),
@@ -122,8 +178,6 @@ export default class App extends React.PureComponent {
           <NotebookApp
             // The desktop app always keeps the same contentRef in a browser window
             contentRef={contentRef}
-            transforms={transforms}
-            displayOrder={displayOrder}
           />
         </MathJax.Provider>
 

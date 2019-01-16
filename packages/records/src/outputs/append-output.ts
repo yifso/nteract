@@ -20,9 +20,9 @@ mutate.appendOutput = function appendOutput(
   const last = outputs[outputs.length - 1];
 
   if (
-    output.outputType !== "stream" ||
+    output.output_type !== "stream" ||
     !last ||
-    (outputs.length > 0 && last["outputType"] !== "stream")
+    (outputs.length > 0 && last["output_type"] !== "stream")
   ) {
     // If it's not a stream type, we just fold in the output
     outputs.push(output);
@@ -35,11 +35,11 @@ mutate.appendOutput = function appendOutput(
     last &&
     outputs.length > 0 &&
     typeof streamOutput.name !== "undefined" &&
-    last.outputType === "stream"
+    last.output_type === "stream"
   ) {
     if (last.name === streamOutput.name) {
       const outputsLength = outputs.length - 1;
-      if (outputs[outputsLength].outputType === "stream") {
+      if (outputs[outputsLength].output_type === "stream") {
         const lastStreamOutput = outputs[outputsLength] as StreamOutput;
         Object.assign(outputs[outputsLength], {
           text: appendText(lastStreamOutput.text, streamOutput.text)
@@ -50,11 +50,11 @@ mutate.appendOutput = function appendOutput(
     const nextToLast = outputs[outputs.length - 2];
     if (
       nextToLast &&
-      nextToLast.outputType === "stream" &&
+      nextToLast.output_type === "stream" &&
       nextToLast["name"] === streamOutput.name
     ) {
       const outputsLength = outputs.length - 2;
-      if (outputs[outputsLength].outputType === "stream") {
+      if (outputs[outputsLength].output_type === "stream") {
         const nextToLastStreamOutput = outputs[outputsLength] as StreamOutput;
         Object.assign(outputs[outputsLength], {
           text: appendText(nextToLastStreamOutput.text, streamOutput.text)

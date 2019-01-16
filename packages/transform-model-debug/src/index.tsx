@@ -9,7 +9,7 @@ interface Props {
 
 const mediaType = "application/x-nteract-model-debug+json";
 
-class ModelDebug extends React.Component<Props> {
+class ModelDebug extends React.Component<Partial<Props>> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -25,7 +25,7 @@ class ModelDebug extends React.Component<Props> {
     // TODO: Provide model IDs on transient field
     // For now, if modelID is not provided (or model does not exist),
     // show all the models
-    const model = models.modelID || models;
+    const model = models ? models.modelID || models : null;
     return (
       <React.Fragment>
         <h1>{JSON.stringify(data, null, 2)}</h1>

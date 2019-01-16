@@ -90,6 +90,15 @@ export const content = (
   { contentRef }: { contentRef: ContentRef }
 ) => contentByRef(state).get(contentRef);
 
+export const transformsById = (state: AppState) =>
+  state.core.entities.transforms.byId;
+
+export const displayOrder = (state: AppState) =>
+  state.core.entities.transforms.displayOrder;
+
+export const transform = (state: AppState, { id }: { id: string }) =>
+  transformsById(state).get(id);
+
 /**
  * Returns the model within the ContenteRecrd specified by contentRef.
  * For example, if the ContentRecord is a reference to a notebook object,

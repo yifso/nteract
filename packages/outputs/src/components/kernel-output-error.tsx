@@ -15,14 +15,14 @@ interface Props {
    * The output type passed to the Output component. This should be `error`
    * if you would like to render a KernelOutputError component.
    */
-  outputType: string;
+  output_type: "error";
   /**
    * The tracebook of the exception. This value is returned by the kernel.
    */
   traceback: string[];
 }
 
-const PlainKernelOutputError = (props: Props) => {
+const PlainKernelOutputError = (props: Partial<Props>) => {
   const { ename, evalue, traceback } = props;
 
   const joinedTraceback = Array.isArray(traceback)
@@ -42,17 +42,15 @@ const PlainKernelOutputError = (props: Props) => {
   return <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>;
 };
 
-PlainKernelOutputError.defaultProps = {
+export const KernelOutputError = styled(PlainKernelOutputError)`
+  white-space: pre-wrap;
+`;
+
+KernelOutputError.defaultProps = {
+  output_type: "error",
   ename: "",
   evalue: "",
-  outputType: "error",
   traceback: []
 };
-
-export const KernelOutputError = styled(PlainKernelOutputError)`
-  & code {
-    white-space: pre-wrap;
-  }
-`;
 
 KernelOutputError.displayName = "KernelOutputError";
