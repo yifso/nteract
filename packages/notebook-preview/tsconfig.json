@@ -7,7 +7,6 @@
   "include": ["src"],
   "references": [
     { "path": "../commutable" },
-    { "path": "../display-area" },
     { "path": "../markdown" },
     { "path": "../mathjax" },
     { "path": "../presentational-components" },

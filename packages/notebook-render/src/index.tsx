@@ -6,7 +6,6 @@ import {
   ImmutableCodeCell,
   ImmutableNotebook
 } from "@nteract/commutable";
-import { Display } from "@nteract/display-area";
 import {
   Cell,
   Cells,
@@ -16,11 +15,6 @@ import {
   Source,
   themes
 } from "@nteract/presentational-components";
-import {
-  displayOrder as defaultDisplayOrder,
-  Transforms,
-  transforms as defaultTransforms
-} from "@nteract/transforms";
 import * as React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import ReactMarkdown from "react-markdown";
@@ -71,8 +65,6 @@ const Themes = {
 
 export default class NotebookRender extends React.PureComponent<Props, State> {
   static defaultProps = {
-    displayOrder: defaultDisplayOrder,
-    transforms: defaultTransforms,
     notebook: appendCellToNotebook(
       emptyNotebook,
       createCodeCell().set("source", "# where's the content?")

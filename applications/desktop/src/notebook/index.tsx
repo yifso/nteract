@@ -1,5 +1,14 @@
 import * as MathJax from "@nteract/mathjax";
 import { GlobalCSSVariables } from "@nteract/presentational-components";
+
+import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import DataResourceTransform from "@nteract/transform-dataresource";
+import GeoJSONTransform from "@nteract/transform-geojson";
+import ModelDebug from "@nteract/transform-model-debug";
+import PlotlyTransform from "@nteract/transform-plotly";
+import VDOMDisplay from "@nteract/transform-vdom";
+import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
+
 import { ipcRenderer as ipc, remote } from "electron";
 import { mathJaxPath } from "mathjax-electron";
 import * as React from "react";
@@ -25,7 +34,7 @@ import {
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
-import { additionalTransforms, transforms } from "@nteract/transforms-full";
+
 import * as Immutable from "immutable";
 
 import { initGlobalHandlers } from "./global-events";
@@ -85,25 +94,17 @@ const store = configureStore({
           "text/plain"
         ]),
         byId: Immutable.Map({
-          "text/vnd.plotly.v1+html": transforms["text/vnd.plotly.v1+html"],
-          "application/vnd.plotly.v1+json":
-            transforms["application/vnd.plotly.v1+json"],
-          "application/geo+json": transforms["application/geo+json"],
-          "application/x-nteract-model-debug+json":
-            transforms["application/x-nteract-model-debug+json"],
-          "application/vnd.dataresource+json":
-            transforms["application/vnd.dataresource+json"],
-          "application/vnd.jupyter.widget-view+json":
-            transforms["application/vnd.jupyter.widget-view+json"],
-          "application/vnd.vegalite.v1+json":
-            transforms["application/vnd.vegalite.v1+json"],
-          "application/vnd.vegalite.v2+json":
-            transforms["application/vnd.vegalite.v2+json"],
-          "application/vnd.vega.v2+json":
-            transforms["application/vnd.vega.v2+json"],
-          "application/vnd.vega.v3+json":
-            transforms["application/vnd.vega.v3+json"],
-          "application/vdom.v1+json": transforms["application/vdom.v1+json"],
+          "text/vnd.plotly.v1+html": PlotlyTransform,
+          "application/vnd.plotly.v1+json": PlotlyTransform,
+          "application/geo+json": GeoJSONTransform,
+          "application/x-nteract-model-debug+json": ModelDebug,
+          "application/vnd.dataresource+json": DataResourceTransform,
+          "application/vnd.jupyter.widget-view+json": WidgetDisplay,
+          "application/vnd.vegalite.v1+json": VegaLite1,
+          "application/vnd.vegalite.v2+json": VegaLite2,
+          "application/vnd.vega.v2+json": Vega2,
+          "application/vnd.vega.v3+json": Vega3,
+          "application/vdom.v1+json": VDOMDispaly,
           "application/json": Media.Json,
           "application/javascript": Media.JavaScript,
           "text/html": Media.HTML,

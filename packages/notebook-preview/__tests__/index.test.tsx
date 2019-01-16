@@ -1,4 +1,3 @@
-import { displayOrder, transforms } from "@nteract/transforms";
 import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import React from "react";
@@ -19,9 +18,7 @@ describe("Notebook", () => {
       <NotebookPreview
         notebook={fixtureCommutable}
         theme="light"
-        tip
-        displayOrder={displayOrder}
-        transforms={transforms}
+        tip={true}
       />
     );
     expect(toJson(component)).toMatchSnapshot();
@@ -32,9 +29,7 @@ describe("Notebook", () => {
       <NotebookPreview
         notebook={fixtureJSON}
         theme="light"
-        tip
-        displayOrder={displayOrder}
-        transforms={transforms}
+        tip={true}
       />
     );
     expect(toJson(component)).toMatchSnapshot();

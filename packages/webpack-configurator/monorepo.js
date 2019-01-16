@@ -34,11 +34,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/display-area",
-      version: "5.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/dropdown-menu",
       version: "0.5.7",
       private: false
@@ -191,16 +186,6 @@ module.exports = {
     {
       name: "@nteract/transform-vega",
       version: "4.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "@nteract/transforms-full",
-      version: "7.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "@nteract/transforms",
-      version: "5.0.0-alpha.0",
       private: false
     },
     {

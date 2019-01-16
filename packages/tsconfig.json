@@ -7,7 +7,6 @@
     { "path": "connected-components" },
     { "path": "core" },
     { "path": "directory-listing" },
-    { "path": "display-area" },
     { "path": "dropdown-menu" },
     { "path": "editor" },
     { "path": "enchannel-zmq-backend" },

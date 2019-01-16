@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { RichestMime } from "@nteract/display-area";
+import { RichMedia } from "@nteract/outputs";
 import CodeMirror from "codemirror";
 import { debounce } from "lodash";
 import * as React from "react";
@@ -390,7 +390,7 @@ class CodeMirrorEditor extends React.PureComponent<
         const expanded = { expanded: true };
         const tipElement = ReactDOM.createPortal(
           <Tip className="CodeMirror-hint">
-            <RichestMime bundle={bundle} metadata={expanded} />
+            <RichMedia data={bundle} metadata={{ expanded }} />
             <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
           </Tip>,
           node

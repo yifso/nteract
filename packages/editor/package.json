@@ -17,7 +17,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@nteract/display-area": "^5.0.4-alpha.0",
     "@nteract/messaging": "^5.0.4-alpha.0",
     "codemirror": "5.42.2",
     "lodash": "^4.17.4",

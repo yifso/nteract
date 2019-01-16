@@ -1,4 +1,3 @@
-import { displayOrder, transforms } from "@nteract/transforms";
 import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import React from "react";
@@ -17,26 +16,14 @@ jest.mock("uuid/v4", () => {
 describe("Test NotebokRender snapshots", () => {
   it("accepts an Immutable.List of cells", () => {
     const component = shallow(
-      <NotebookRender
-        notebook={fixtureCommutable}
-        theme="light"
-        tip
-        displayOrder={displayOrder}
-        transforms={transforms}
-      />
+      <NotebookRender notebook={fixtureCommutable} theme="light" tip={true} />
     );
     expect(toJson(component)).toMatchSnapshot();
   });
 
   it("accepts an Object of cells", () => {
     const component = shallow(
-      <NotebookRender
-        notebook={fixtureJSON}
-        theme="light"
-        tip
-        displayOrder={displayOrder}
-        transforms={transforms}
-      />
+      <NotebookRender notebook={fixtureJSON} theme="light" tip={true} />
     );
     expect(toJson(component)).toMatchSnapshot();
   });
@@ -45,13 +32,7 @@ describe("Test NotebokRender snapshots", () => {
 describe("Render server-side with renderToStaticMarkup", () => {
   it("html fragment shouldn't be empty", () => {
     const component = shallow(
-      <NotebookRender
-        notebook={fixtureJSON}
-        theme="light"
-        tip
-        displayOrder={displayOrder}
-        transforms={transforms}
-      />
+      <NotebookRender notebook={fixtureJSON} theme="light" tip={true} />
     );
     const html = ReactDOMServer.renderToStaticMarkup(component);
 

@@ -4,7 +4,6 @@ import {
   emptyNotebook,
   fromJS
 } from "@nteract/commutable";
-import { Display } from "@nteract/display-area";
 import Markdown from "@nteract/markdown";
 import * as MathJax from "@nteract/mathjax";
 import {
@@ -16,20 +15,13 @@ import {
   Source,
   themes
 } from "@nteract/presentational-components";
-import {
-  displayOrder as defaultDisplayOrder,
-  Transforms,
-  transforms as defaultTransforms
-} from "@nteract/transforms";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
 import { PapermillView } from "./papermill";
 
 interface Props {
-  displayOrder: string[];
   notebook: any;
-  transforms: Transforms;
   theme: "light" | "dark";
 }
 
@@ -67,8 +59,6 @@ const Themes = {
 
 export class NotebookPreview extends React.PureComponent<Props, State> {
   static defaultProps = {
-    displayOrder: defaultDisplayOrder,
-    transforms: defaultTransforms,
     notebook: appendCellToNotebook(
       emptyNotebook,
       createCodeCell().set("source", "# where's the content?")
