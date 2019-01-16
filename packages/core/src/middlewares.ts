@@ -17,7 +17,7 @@ interface ErrorAction {
 export const errorMiddleware = (store: any, console = global.console) => (
   next: any
 ) => (action: ErrorAction) => {
-  if (!(action.type.includes("ERROR") || (action as ErrorAction).error)) {
+  if (!(action.type.includes("ERROR") || action.error)) {
     return next(action);
   }
   console.error(action);
@@ -40,7 +40,7 @@ export const errorMiddleware = (store: any, console = global.console) => (
   const notificationSystem = selectors.notificationSystem(state);
   if (notificationSystem) {
     notificationSystem.addNotification({
-      title: (action as ErrorAction).type,
+      title: action.type,
       message: errorText,
       dismissible: true,
       position: "tr",

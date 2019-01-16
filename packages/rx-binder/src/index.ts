@@ -51,7 +51,7 @@ type IEventSourceConstructor = new (url: string) => IEventSource;
 const defaultEventSource: IEventSourceConstructor =
   typeof window !== "undefined" &&
   "EventSource" in (window as any) &&
-  (window as any)["EventSource"];
+  (window as any).EventSource;
 
 /**
  * Returns an observable stream for mybinder.org or any related

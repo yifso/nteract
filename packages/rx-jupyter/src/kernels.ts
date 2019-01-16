@@ -169,7 +169,7 @@ export const connect = (
             throw e;
           } else {
             // We'll retry at this point
-            console.log(`attempting to retry kernel connection after error`, e);
+            console.log("attempting to retry kernel connection after error", e);
           }
         }),
         delay(1000)

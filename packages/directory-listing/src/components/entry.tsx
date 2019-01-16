@@ -60,7 +60,7 @@ export class Entry extends React.PureComponent<EntryProps> {
               className:
                 typeof childElement.props.className === "string" &&
                 childElement.props.className !== ""
-                  ? childElement.props.className + " directory-entry-field"
+                  ? `${childElement.props.className} directory-entry-field`
                   : "directory-entry-field"
             });
           } else {

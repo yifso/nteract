@@ -5,13 +5,15 @@ interface Props {
   mediaType: "image/svg+xml";
 }
 
-export class SVG extends React.PureComponent<Props> {
-  el?: HTMLElement | null;
+export default class SVGDisplay extends React.PureComponent<Props> {
+  static MIMETYPE = "image/svg+xml";
 
   static defaultProps = {
     data: "",
     mediaType: "image/svg+xml"
   };
+
+  el?: HTMLElement | null;
 
   componentDidMount(): void {
     if (this.el) {
@@ -20,7 +22,9 @@ export class SVG extends React.PureComponent<Props> {
   }
 
   componentDidUpdate(): void {
-    if (!this.el) return;
+    if (!this.el) {
+      return;
+    }
     // clear out all DOM element children
     while (this.el.firstChild) {
       this.el.removeChild(this.el.firstChild);
