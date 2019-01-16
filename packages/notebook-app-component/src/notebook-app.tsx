@@ -7,11 +7,10 @@ import {
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
-  DisplayData,
-  ExecuteResult,
   KernelOutputError,
   Media,
   Output,
+  RichMedia,
   StreamText
 } from "@nteract/outputs";
 import {
@@ -253,7 +252,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
             </Input>
             <Pagers>
               {this.props.pager.map((pager, key) => (
-                <DisplayData data={pager.data} metadata={pager.metadata}>
+                <RichMedia data={pager.data} metadata={pager.metadata}>
                   <Media.Json />
                   <Media.JavaScript />
                   <Media.HTML />
@@ -262,7 +261,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                   <Media.SVG />
                   <Media.Image />
                   <Media.Plain />
-                </DisplayData>
+                </RichMedia>
               ))}
             </Pagers>
             <Outputs

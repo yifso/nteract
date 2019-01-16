@@ -240,20 +240,18 @@ export function publishGist(payload: {
   };
 }
 
-export function removeTransform(payload: {
-  mediaType: string;
-  component: any;
-}): actionTypes.RemoveTransform {
+export function removeTransform(
+  payload: actionTypes.RemoveTransform["payload"]
+): actionTypes.RemoveTransform {
   return {
     type: actionTypes.REMOVE_TRANSFORM,
     payload
   };
 }
 
-export function addTransform(payload: {
-  mediaType: string;
-  component: any;
-}): actionTypes.AddTransform {
+export function addTransform(
+  payload: actionTypes.AddTransform["payload"]
+): actionTypes.AddTransform {
   return {
     type: actionTypes.ADD_TRANSFORM,
     payload
