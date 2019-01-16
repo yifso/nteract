@@ -7,7 +7,6 @@
   "references": [
     { "path": "../../packages/core" },
     { "path": "../../packages/types" },
-    { "path": "../../packages/transforms-full" },
     { "path": "../../packages/notebook-app-component" },
     { "path": "../../packages/presentational-components" },
     { "path": "../../packages/fs-observable" }

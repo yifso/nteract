@@ -42,8 +42,6 @@
     { "path": "transform-plotly" },
     { "path": "transform-vdom" },
     { "path": "transform-vega" },
-    { "path": "transforms" },
-    { "path": "transforms-full" },
     { "path": "types" }
   ]
 }
