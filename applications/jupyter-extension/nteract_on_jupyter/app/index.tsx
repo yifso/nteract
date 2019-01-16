@@ -90,6 +90,7 @@ function main(rootEl: Element, dataEl: Node | null) {
 
   const hostRef = createHostRef();
   const contentRef = createContentRef();
+  const NullTransform = () => null;
 
   const initialState: AppState = {
     app: makeAppRecord({
@@ -119,28 +120,51 @@ function main(rootEl: Element, dataEl: Node | null) {
         }),
         transforms: makeTransformsRecord({
           handlers: Immutable.List([
-            PlotlyTransform,
-            GeoJSONTransform,
-            ModelDebug,
-            DataResourceTransform,
-            VegaLite1,
-            VegaLite2,
-            Vega2,
-            Vega3,
-            VDOMDisplay,
-            WidgetDisplay
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform,
+            NullTransform
+          ]),
+          displayOrder: Immutable.List([
+            "application/vnd.jupyter.widget-view+json",
+            "application/vnd.vega.v3+json",
+            "application/vnd.vega.v2+json",
+            "application/vnd.vegalite.v2+json",
+            "application/vnd.vegalite.v1+json",
+            "application/geo+json",
+            "application/vnd.plotly.v1+json",
+            "text/vnd.plotly.v1+html",
+            "application/x-nteract-model-debug+json",
+            "application/vnd.dataresource+json",
+            "application/vdom.v1+json",
+            "application/json",
+            "application/javascript",
+            "text/html",
+            "text/markdown",
+            "text/latex",
+            "image/svg+xml",
+            "image/gif",
+            "image/png",
+            "image/jpeg",
+            "text/plain"
           ]),
           byId: Immutable.Map({
-            [PlotlyTransform.MIMETYPE]: PlotlyTransform,
-            [GeoJSONTransform.MIMETYPE]: GeoJSONTransform,
-            [ModelDebug.MIMETYPE]: ModelDebug,
-            [DataResourceTransform.MIMETYPE]: DataResourceTransform,
-            [VegaLite1.MIMETYPE]: VegaLite1,
-            [VegaLite2.MIMETYPE]: VegaLite2,
-            [Vega2.MIMETYPE]: Vega2,
-            [Vega3.MIMETYPE]: Vega3,
-            [VDOMDisplay.MIMETYPE]: VDOMDisplay,
-            [WidgetDisplay.MIMETYPE]: WidgetDisplay
+            [PlotlyTransform.MIMETYPE]: NullTransform,
+            [GeoJSONTransform.MIMETYPE]: NullTransform,
+            [ModelDebug.MIMETYPE]: NullTransform,
+            [DataResourceTransform.MIMETYPE]: NullTransform,
+            [VegaLite1.MIMETYPE]: NullTransform,
+            [VegaLite2.MIMETYPE]: NullTransform,
+            [Vega2.MIMETYPE]: NullTransform,
+            [Vega3.MIMETYPE]: NullTransform,
+            [VDOMDisplay.MIMETYPE]: NullTransform,
+            [WidgetDisplay.MIMETYPE]: NullTransform
           })
         })
       })

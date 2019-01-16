@@ -4,72 +4,24 @@ import {
   transforms as defaultTransforms
 } from "@nteract/transforms";
 import * as React from "react";
-
-const displayOrder = [
-  "application/vnd.jupyter.widget-view+json",
-  "application/vnd.vega.v3+json",
-  "application/vnd.vega.v2+json",
-  "application/vnd.vegalite.v2+json",
-  "application/vnd.vegalite.v1+json",
-  "application/geo+json",
-  "application/vnd.plotly.v1+json",
-  "text/vnd.plotly.v1+html",
-  "application/x-nteract-model-debug+json",
-  "application/vnd.dataresource+json",
-  "application/vdom.v1+json",
-  "application/json",
-  "application/javascript",
-  "text/html",
-  "text/markdown",
-  "text/latex",
-  "image/svg+xml",
-  "image/gif",
-  "image/png",
-  "image/jpeg",
-  "text/plain"
-];
-
-const NullTransform = () => null;
-// As the transforms are loaded, these get overridden with the better variants
-const transforms = {
-  ...defaultTransforms,
-  "application/vnd.jupyter.widget-view+json": NullTransform,
-  "application/vnd.vega.v3+json": NullTransform,
-  "application/vnd.vega.v2+json": NullTransform,
-  "application/vnd.vegalite.v2+json": NullTransform,
-  "application/vnd.vegalite.v1+json": NullTransform,
-  "application/geo+json": NullTransform,
-  "application/vnd.plotly.v1+json": NullTransform,
-  "text/vnd.plotly.v1+html": NullTransform,
-  "application/x-nteract-model-debug+json": NullTransform,
-  "application/vnd.dataresource+json": NullTransform
-};
+import { connect } from "react-redux";
 
 // Show nothing while loading the notebook app
 const NotebookPlaceholder = (props: any) => null;
 
 interface State {
-  transforms: typeof defaultTransforms;
-  displayOrder: typeof defaultDisplayOrder;
   App: React.ComponentType<Props>;
 }
 
 interface Props {
   contentRef: ContentRef;
-  transforms?: typeof defaultTransforms;
-  displayOrder?: typeof defaultDisplayOrder;
 }
 
-export default class Notebook extends React.PureComponent<
-  { contentRef: ContentRef },
-  State
-> {
+class Notebook extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      App: NotebookPlaceholder,
-      displayOrder,
-      transforms
+      App: NotebookPlaceholder
     };
   }
 
@@ -141,12 +93,6 @@ export default class Notebook extends React.PureComponent<
   render() {
     const App = this.state.App;
 
-    return (
-      <App
-        contentRef={this.props.contentRef}
-        displayOrder={this.state.displayOrder}
-        transforms={this.state.transforms}
-      />
-    );
+    return <App contentRef={this.props.contentRef} />;
   }
 }
