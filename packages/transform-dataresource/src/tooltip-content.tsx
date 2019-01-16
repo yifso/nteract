@@ -45,7 +45,14 @@ const beforeContent = (props: Props) => {
   `;
 };
 
-const TooltipContent = styled.div`
+const TooltipContent = styled.div.attrs((props: Props) => ({
+  style: {
+    transform: translate(
+      props.x < 100 ? "0px" : "calc(-50% + 7px)",
+      props.y < 100 ? "10px" : "calc(-100% - 10px)"
+    )
+  }
+}))`
   color: black;
   padding: 10px;
   z-index: 999999;
@@ -55,11 +62,7 @@ const TooltipContent = styled.div`
   border-radius: 5px;
   position: relative;
 
-  transform: translate(
-      ${(props: Props) => (props.x < 100 ? "0px" : "calc(-50% + 7px)")},
-      ${(props: Props) => (props.y < 100 ? "10px" : "calc(-100% - 10px)")}
-    )
-    & p {
+  & p {
     font-size: 14px;
   }
 
