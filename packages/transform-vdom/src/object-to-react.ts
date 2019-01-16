@@ -44,6 +44,8 @@ export interface EventHandlers {
   [key: string]: string;
 }
 
+export type EventPayload = SerializedEvent<any> & { handler_id: string };
+
 export interface VDOMEl {
   tagName: string; // Could be an enum honestly
   children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
@@ -63,7 +65,7 @@ export interface VDOMEl {
  */
 export function objectToReactElement(
   obj: VDOMEl,
-  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
+  onVDOMEvent: (event: EventPayload) => void
 ): React.ReactElement<any> {
   // Pack args for React.createElement
   let args: any = [];
@@ -105,10 +107,10 @@ export function objectToReactElement(
   // with a body of serialized event and vdom on kernel will handle the event.
   if (obj.eventHandlers) {
     for (const eventType in obj.eventHandlers) {
-      const targetName = obj.eventHandlers[eventType];
+      const handlerId = obj.eventHandlers[eventType];
       obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
         const serializedEvent = serializeEvent(event);
-        onVDOMEvent(targetName, serializedEvent);
+        onVDOMEvent({ ...serializedEvent, handler_id: handlerId });
       };
     }
   }
@@ -125,10 +127,9 @@ export function objectToReactElement(
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(
-        children as VDOMEl[],
-        onVDOMEvent
-      ) as any);
+      args = args.concat(
+        arrayToReactChildren(children as VDOMEl[], onVDOMEvent) as any
+      );
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {
@@ -151,7 +152,7 @@ export function objectToReactElement(
  */
 function arrayToReactChildren(
   arr: VDOMEl[],
-  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
+  onVDOMEvent: (event: EventPayload) => void
 ): React.ReactNodeArray {
   const result: React.ReactNodeArray = [];
 
