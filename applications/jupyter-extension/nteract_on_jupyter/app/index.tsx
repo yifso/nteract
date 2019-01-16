@@ -15,17 +15,8 @@ import {
   makeTransformsRecord
 } from "@nteract/core";
 import { AppState } from "@nteract/core";
+import { Media } from "@nteract/outputs";
 import { ContentRecord, HostRecord } from "@nteract/types";
-
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
-import DataResourceTransform from "@nteract/transform-dataresource";
-import GeoJSONTransform from "@nteract/transform-geojson";
-import ModelDebug from "@nteract/transform-model-debug";
-import PlotlyTransform, {
-  PlotlyNullTransform
-} from "@nteract/transform-plotly";
-import VDOMDisplay from "@nteract/transform-vdom";
-import { Vega2, Vega3, VegaLite1, VegaLite2 } from "@nteract/transform-vega";
 
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -119,6 +110,16 @@ function main(rootEl: Element, dataEl: Node | null) {
           )
         }),
         transforms: makeTransformsRecord({
+          handlers: Immutable.List([
+            Media.HTML,
+            Media.Image,
+            Media.JavaScript,
+            Media.Json,
+            Media.LaTeX,
+            Media.Markdown,
+            Media.Plain,
+            Media.SVG
+          ]),
           displayOrder: Immutable.List([
             "application/vnd.jupyter.widget-view+json",
             "application/vnd.vega.v3+json",
@@ -143,16 +144,27 @@ function main(rootEl: Element, dataEl: Node | null) {
             "text/plain"
           ]),
           byId: Immutable.Map({
-            [PlotlyTransform.MIMETYPE]: NullTransform,
-            [GeoJSONTransform.MIMETYPE]: NullTransform,
-            [ModelDebug.MIMETYPE]: NullTransform,
-            [DataResourceTransform.MIMETYPE]: NullTransform,
-            [VegaLite1.MIMETYPE]: NullTransform,
-            [VegaLite2.MIMETYPE]: NullTransform,
-            [Vega2.MIMETYPE]: NullTransform,
-            [Vega3.MIMETYPE]: NullTransform,
-            [VDOMDisplay.MIMETYPE]: NullTransform,
-            [WidgetDisplay.MIMETYPE]: NullTransform
+            "text/vnd.plotly.v1+html": NullTransform,
+            "application/vnd.plotly.v1+json": NullTransform,
+            "application/geo+json": NullTransform,
+            "application/x-nteract-model-debug+json": NullTransform,
+            "application/vnd.dataresource+json": NullTransform,
+            "application/vnd.jupyter.widget-view+json": NullTransform,
+            "application/vnd.vegalite.v1+json": NullTransform,
+            "application/vnd.vegalite.v2+json": NullTransform,
+            "application/vnd.vega.v2+json": NullTransform,
+            "application/vnd.vega.v3+json": NullTransform,
+            "application/vdom.v1+json": NullTransform,
+            "application/json": Media.Json,
+            "application/javascript": Media.JavaScript,
+            "text/html": Media.HTML,
+            "text/markdown": Media.Markdown,
+            "text/latex": Media.LaTeX,
+            "image/svg": Media.SVG,
+            "image/gif": Media.Image,
+            "image/png": Media.Image,
+            "image/jpeg": Media.Image,
+            "text/plain": Media.Plain
           })
         })
       })

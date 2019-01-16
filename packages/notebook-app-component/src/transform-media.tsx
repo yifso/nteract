@@ -21,16 +21,17 @@ interface Props extends OwnProps {
     updateOutputMetadata: (metadata: JSONObject) => void;
   };
   Media: React.ComponentType<any>;
+  mediaType?: string;
 }
 
 class PureTransformMedia extends React.Component<Props> {
   render() {
-    const { Media, mediaActions } = this.props;
+    const { Media, mediaActions, mediaType } = this.props;
     return (
       <Media
         {...mediaActions}
-        data={this.props.output.get("data")}
-        metadata={this.props.output.get("metadata")}
+        data={this.props.output.get("data").get(mediaType)}
+        metadata={this.props.output.get("metadata").get(mediaType)}
       />
     );
   }
