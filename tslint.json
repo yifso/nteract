@@ -29,7 +29,9 @@
     },
     "no-sparse-arrays": true,
     "no-switch-case-fall-through": true,
-    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-callback-wrapper": {
+      "severity": "warn"
+    },
     "no-unnecessary-type-assertion": true,
     "object-literal-sort-keys": {
       "options": "match-declaration-order",
