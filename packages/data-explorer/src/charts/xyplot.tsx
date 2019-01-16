@@ -153,7 +153,7 @@ export const semioticScatterplot = (
     );
   };
 
-  let sizeScale: Function = () => 5; // eslint-disable-line no-unused-vars
+  let sizeScale: () => number = () => 5;
   const colorHash: { [index: string]: string } = { Other: "grey" };
   const additionalSettings: { afterElements?: JSX.Element } = {};
 

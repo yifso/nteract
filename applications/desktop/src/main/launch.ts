@@ -4,7 +4,7 @@ import * as path from "path";
 
 import { loadFullMenu } from "./menu";
 
-let launchIpynb: Function;
+let launchIpynb: (path: string) => void;
 
 export function getPath(url: string) {
   const nUrl = url.substring(url.indexOf("static"));

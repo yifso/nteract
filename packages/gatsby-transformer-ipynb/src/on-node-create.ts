@@ -30,8 +30,8 @@ module.exports = async function onCreateNode(
     node: Node;
     loadNodeContent: (node: Node) => string;
     boundActionCreators: {
-      createNode: Function;
-      createParentChildLink: Function;
+      createNode: () => void;
+      createParentChildLink: () => void;
     };
   },
   pluginOptions: object // eslint-disable-line no-unused-vars

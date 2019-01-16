@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 interface Props {
   colors: string[];
-  updateColor: Function;
+  updateColor: (colors: string[]) => void;
 }
 
 interface State {

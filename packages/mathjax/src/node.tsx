@@ -11,7 +11,7 @@ import Provider from "./provider";
 interface Props {
   inline: boolean;
   children: string;
-  onRender?: Function;
+  onRender?: () => void;
 }
 
 class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
