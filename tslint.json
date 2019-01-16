@@ -33,6 +33,9 @@
       "severity": "warn"
     },
     "no-unnecessary-type-assertion": true,
+    "no-var-requires": {
+      "severity": "warn"
+    },
     "object-literal-sort-keys": {
       "options": "match-declaration-order",
       "severity": "warn"
