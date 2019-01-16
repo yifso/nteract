@@ -2,7 +2,9 @@ import * as actions from "@nteract/actions";
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import { dirname } from "path";
 import * as React from "react";
+import Hotkeys from "react-hot-keys";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import urljoin from "url-join";
 
 import { ConnectedDirectory } from "./directory";
@@ -20,13 +22,57 @@ interface IContentsProps {
   loading: boolean;
   mimetype?: string | null;
   saving: boolean;
+  save: (payload: actions.Save["payload"]) => void;
 }
 
 interface IContentsState {
   isDialogOpen: boolean;
 }
 
+interface IHotkeysKeyDownHandle {
+  key: string;
+  method: () => void;
+  mods: number[];
+  scope: string;
+  shortcut: string;
+}
+
 class Contents extends React.PureComponent<IContentsProps, IContentsState> {
+  // Keybinding combinations
+  hotkeys: string = `
+    ctrl+space,
+    ctrl+.,
+    ctrl+o,
+    ctrl+s,
+    ctrl+shift+s,
+    ctrl+shift+z,
+    ctrl+z,
+    ctrl+shift+c,
+    ctrl+shift+x,
+    ctrl+shift+d,
+    ctrl+shift+v,
+    ctrl+shift+y,
+    ctrl+shift+m,
+    shift+enter,
+    ctrl+enter,
+    ctrl+shift+a,
+    ctrl+shift+b
+  `;
+
+  // Maps action types to actions
+  hotkeysMap = new Map([
+    ["ctrl+s", this.props.save] // Save
+  ]);
+
+  // Captures all keydown events on the App
+  onKeyDown = (
+    keyName: string,
+    e: KeyboardEvent,
+    handle: IHotkeysKeyDownHandle
+  ): void => {
+    this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
+  };
+
   render() {
     const {
       appBase,
@@ -45,16 +91,18 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
       case "dummy":
         return (
           <React.Fragment>
-            <FileHeader
-              appBase={appBase}
-              baseDir={baseDir}
-              contentRef={contentRef}
-              displayName={displayName}
-              error={error}
-              loading={loading}
-              saving={saving}
-            />
-            <File contentRef={contentRef} appBase={appBase} />
+            <Hotkeys keyName={this.hotkeys} onKeyDown={this.onKeyDown}>
+              <FileHeader
+                appBase={appBase}
+                baseDir={baseDir}
+                contentRef={contentRef}
+                displayName={displayName}
+                error={error}
+                loading={loading}
+                saving={saving}
+              />
+              <File contentRef={contentRef} appBase={appBase} />
+            </Hotkeys>
           </React.Fragment>
         );
       case "directory":
@@ -100,18 +148,25 @@ const makeMapStateToProps = (
 
     return {
       appBase,
-      contentRef,
       baseDir: dirname(content.filepath),
+      contentRef,
       contentType: content.type,
       displayName: content.filepath.split("/").pop() || "",
-      lastSavedStatement: "recently",
-      mimetype: content.mimetype,
       error: content.error,
+      lastSavedStatement: "recently",
       loading: content.loading,
+      mimetype: content.mimetype,
       saving: content.saving
     };
   };
   return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps)(Contents);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  save: (payload: actions.Save["payload"]) => dispatch(actions.save(payload))
+});
+
+export default connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(Contents);
