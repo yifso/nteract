@@ -383,7 +383,7 @@ describe("dispatchInterruptKernel", () => {
     const store = {
       dispatch: jest.fn(),
       getState: () => ({
-        app: Immutable.Map(notificationSystem),
+        app: Immutable.Map({ notificationSystem }),
         core: {
           entities: {
             contents: {
