@@ -22,7 +22,9 @@ export type ImmutableMimeBundle = ImmutableMap<string, any>;
 //   "text/plain": "Hey"
 // }
 //
-export interface MimeBundle { [key: string]: string | string[] | undefined }
+export interface MimeBundle {
+  [key: string]: string | string[] | undefined;
+}
 
 /**
  * Map over all the mimetypes, turning them into our in-memory format.
@@ -46,12 +48,13 @@ export interface MimeBundle { [key: string]: string | string[] | undefined }
  * @param previous
  * @param key
  */
-export const cleanMimeAtKey = (
+export function cleanMimeAtKey(
   mimeBundle: MimeBundle,
   previous: ImmutableMimeBundle,
   key: string
-): ImmutableMimeBundle =>
-  previous.set(key, cleanMimeData(key, mimeBundle[key]));
+): ImmutableMimeBundle {
+  return previous.set(key, cleanMimeData(key, mimeBundle[key]));
+}
 
 /**
  * Cleans mimedata, primarily converts an array of strings into a single string
@@ -62,10 +65,10 @@ export const cleanMimeAtKey = (
  *
  * @returns The cleaned mime data.
  */
-export const cleanMimeData = (
+export function cleanMimeData(
   key: string,
   data: string | string[] | undefined
-) => {
+) {
   // See https://github.com/jupyter/nbformat/blob/62d6eb8803616d198eaa2024604d1fe923f2a7b3/nbformat/v4/nbformat.v4.schema.json#L368
   if (isJSONKey(key)) {
     // Data stays as is for JSON types
@@ -79,18 +82,20 @@ export const cleanMimeData = (
   throw new TypeError(
     `Data for ${key} is expected to be a string or an Array of strings`
   );
-};
+}
 
-export const createImmutableMimeBundle = (
+export function createImmutableMimeBundle(
   mimeBundle: MimeBundle
-): ImmutableMimeBundle =>
-  Object.keys(mimeBundle).reduce(
+): ImmutableMimeBundle {
+  return Object.keys(mimeBundle).reduce(
     cleanMimeAtKey.bind(null, mimeBundle),
     ImmutableMap()
   );
+}
 
-export const demultiline = (s: string | string[]): string =>
-  Array.isArray(s) ? s.join("") : s;
+export function demultiline(s: string | string[]): string {
+  return Array.isArray(s) ? s.join("") : s;
+}
 
 /**
  * Split string into a list of strings delimited by newlines
@@ -99,11 +104,15 @@ export const demultiline = (s: string | string[]): string =>
  *
  * @returns An array of strings.
  */
-export const remultiline = (s: string | string[]): string[] =>
-  Array.isArray(s) ? s : s.split(/(.+?(?:\r\n|\n))/g).filter(x => x !== "");
+export function remultiline(s: string | string[]): string[] {
+  return Array.isArray(s)
+    ? s
+    : s.split(/(.+?(?:\r\n|\n))/g).filter(x => x !== "");
+}
 
-export const isJSONKey = (key: string) =>
-  /^application\/(.*\+)?json$/.test(key);
+export function isJSONKey(key: string) {
+  return /^application\/(.*\+)?json$/.test(key);
+}
 
 /** ExecuteResult Record Boilerplate */
 interface ExecuteResultParams {
@@ -182,7 +191,7 @@ export type ImmutableOutput =
 
 //////// OUTPUTS /////
 
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                             Output Types
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -222,7 +231,7 @@ export type Output = ExecuteResult | DisplayData | StreamOutput | ErrorOutput;
  *
  * @returns ImmutableOutput An immutable representation of the same output.
  */
-export const createImmutableOutput = (output: Output): ImmutableOutput => {
+export function createImmutableOutput(output: Output): ImmutableOutput {
   switch (output.output_type) {
     case "execute_result":
       return makeExecuteResult({
@@ -252,4 +261,4 @@ export const createImmutableOutput = (output: Output): ImmutableOutput => {
     default:
       throw new TypeError(`Output type ${output.output_type} not recognized`);
   }
-};
+}

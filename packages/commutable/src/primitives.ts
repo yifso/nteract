@@ -15,7 +15,9 @@ export interface JSONObject {
 export interface JSONArray extends Array<JSONType> {}
 
 export type CellId = string;
-export const createCellId = (): CellId => uuid();
+export function createCellId(): CellId {
+  return uuid();
+}
 
 // On disk multi-line strings are used to accomodate line-by-line diffs in tools
 // like git and GitHub. They get converted to strings for the in-memory format.

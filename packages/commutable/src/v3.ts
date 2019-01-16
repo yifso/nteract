@@ -7,11 +7,12 @@ import {
   Map as ImmutableMap
 } from "immutable";
 
-import { JSONObject, MultiLineString } from "./primitives";
+import { CellId, JSONObject, MultiLineString } from "./primitives";
 
 import { makeNotebookRecord } from "./notebook";
 
 import {
+  ImmutableCell,
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableRawCell,
@@ -90,23 +91,24 @@ export interface Worksheet {
   metadata: object;
 }
 
-export interface Notebook {
+export interface NotebookV3 {
   worksheets: Worksheet[];
   metadata: object;
   nbformat: 3;
   nbformat_minor: number;
 }
 
-const createImmutableMarkdownCell = (
+function createImmutableMarkdownCell(
   cell: MarkdownCell
-): ImmutableMarkdownCell =>
-  makeMarkdownCell({
+): ImmutableMarkdownCell {
+  return makeMarkdownCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
   });
+}
 
-const createImmutableMimeBundle = (output: MimeOutput): ImmutableMimeBundle => {
+function createImmutableMimeBundle(output: MimeOutput): ImmutableMimeBundle {
   const mimeBundle: { [key: string]: MultiLineString | undefined } = {};
   for (const key of Object.keys(output)) {
     // v3 had non-media types for rich media
@@ -119,9 +121,9 @@ const createImmutableMimeBundle = (output: MimeOutput): ImmutableMimeBundle => {
     cleanMimeAtKey.bind(null, mimeBundle),
     ImmutableMap()
   );
-};
+}
 
-const createImmutableOutput = (output: Output): ImmutableOutput => {
+function createImmutableOutput(output: Output): ImmutableOutput {
   switch (output.output_type) {
     case "pyout":
       return makeExecuteResult({
@@ -152,27 +154,29 @@ const createImmutableOutput = (output: Output): ImmutableOutput => {
     default:
       throw new TypeError(`Output type ${output.output_type} not recognized`);
   }
-};
+}
 
-const createImmutableCodeCell = (cell: CodeCell): ImmutableCodeCell =>
-  makeCodeCell({
+function createImmutableCodeCell(cell: CodeCell): ImmutableCodeCell {
+  return makeCodeCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.input),
     outputs: ImmutableList(cell.outputs.map(createImmutableOutput)),
     execution_count: cell.prompt_number,
     metadata: immutableFromJS(cell.metadata)
   });
+}
 
-const createImmutableRawCell = (cell: RawCell): ImmutableRawCell =>
-  makeRawCell({
+function createImmutableRawCell(cell: RawCell): ImmutableRawCell {
+  return makeRawCell({
     cell_type: cell.cell_type,
     source: demultiline(cell.source),
     metadata: immutableFromJS(cell.metadata)
   });
+}
 
-const createImmutableHeadingCell = (cell: HeadingCell): ImmutableMarkdownCell =>
+function createImmutableHeadingCell(cell: HeadingCell): ImmutableMarkdownCell {
   // v3 heading cells are just markdown cells in v4+
-  makeMarkdownCell({
+  return makeMarkdownCell({
     cell_type: "markdown",
     source: Array.isArray(cell.source)
       ? demultiline(
@@ -186,8 +190,9 @@ const createImmutableHeadingCell = (cell: HeadingCell): ImmutableMarkdownCell =>
       : cell.source,
     metadata: immutableFromJS(cell.metadata)
   });
+}
 
-const createImmutableCell = (cell: Cell) => {
+function createImmutableCell(cell: Cell) {
   switch (cell.cell_type) {
     case "markdown":
       return createImmutableMarkdownCell(cell);
@@ -200,19 +205,20 @@ const createImmutableCell = (cell: Cell) => {
     default:
       throw new TypeError(`Cell type ${(cell as any).cell_type} unknown`);
   }
-};
+}
 
-export const fromJS = (notebook: Notebook) => {
-  if (notebook.nbformat !== 3 || notebook.nbformat_minor < 0) {
+export function fromJS(notebook: NotebookV3) {
+  if (!isNotebookV3(notebook)) {
+    notebook = notebook as any;
     throw new TypeError(
       `Notebook is not a valid v3 notebook. v3 notebooks must be of form 3.x
       It lists nbformat v${notebook.nbformat}.${notebook.nbformat_minor}`
     );
   }
 
-  const starterCellStructure = {
-    cellOrder: ImmutableList().asMutable(),
-    cellMap: ImmutableMap().asMutable()
+  const starterCellStructure: CellStructure = {
+    cellOrder: ImmutableList<CellId>().asMutable(),
+    cellMap: ImmutableMap<CellId, ImmutableCell>().asMutable()
   };
 
   const cellStructure = ([] as CellStructure[]).concat.apply(
@@ -220,7 +226,7 @@ export const fromJS = (notebook: Notebook) => {
     notebook.worksheets.map(worksheet =>
       worksheet.cells.reduce(
         (cellStruct, cell) => appendCell(cellStruct, createImmutableCell(cell)),
-        starterCellStructure as CellStructure
+        starterCellStructure
       )
     )
   )[0];
@@ -232,4 +238,13 @@ export const fromJS = (notebook: Notebook) => {
     nbformat: 4,
     metadata: immutableFromJS(notebook.metadata)
   });
-};
+}
+
+export function isNotebookV3(value: any): value is NotebookV3 {
+  return (
+    value &&
+    typeof value === "object" &&
+    value.nbformat === 3 &&
+    value.nbformat_minor >= 0
+  );
+}
