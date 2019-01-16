@@ -20,7 +20,7 @@ interface Props extends OwnProps {
   mediaActions: {
     updateOutputMetadata: (metadata: JSONObject) => void;
   };
-  Media: React.ComponentType;
+  Media: React.ComponentType<any>;
 }
 
 class PureTransformMedia extends React.Component<Props> {
@@ -42,7 +42,7 @@ const richestMediaType = (
   handlers: any
 ) => {
   const outputData = output.get("data");
-  const validMediaTypes = Immutable.List(
+  const validMediaTypes = Immutable.List<string>(
     outputData.keys((mediaType: string) => {
       if (handlers[mediaType] && order.includes(mediaType)) {
         return mediaType;
@@ -63,10 +63,17 @@ const makeMapStateToProps = (
     const handlers = selectors.transformsById(state);
     const order = selectors.displayOrder(state);
     const mediaType = richestMediaType(output, order, handlers);
-    const Media = selectors.transform(state, { id: mediaType });
+    if (mediaType) {
+      const Media = selectors.transform(state, { id: mediaType });
+      return {
+        Media,
+        mediaType,
+        output
+      };
+    }
     return {
-      Media,
       mediaType,
+      Media: () => null,
       output
     };
   };
