@@ -83,7 +83,7 @@ export const semioticHierarchicalChart = (
   } = options;
   const { metric1 } = chart;
 
-  //a sunburst is just a radial partition
+  // a sunburst is just a radial partition
   const hierarchyType =
     baseHierarchyType === "sunburst" ? "partition" : baseHierarchyType;
 

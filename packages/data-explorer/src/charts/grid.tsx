@@ -182,7 +182,7 @@ class DataResourceTransformGrid extends React.Component<Props, State> {
               filterMethod[field.type](filters[field.name])(filter, row);
             }
           },
-          //If we don't have a filter defined for this field type, pass an empty div
+          // If we don't have a filter defined for this field type, pass an empty div
           Filter: columnFilters[field.type](
             filters,
             field.name,
