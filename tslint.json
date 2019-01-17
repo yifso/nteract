@@ -10,6 +10,11 @@
   ],
   "rules": {
     "interface-name": false,
+    "jsdoc-format": {
+      "options": true,
+      "severity": "warn"
+    },
+    "jsx-boolean-value": [true, "never"],
     "max-classes-per-file": false,
     "max-line-length": {
       "options": {
