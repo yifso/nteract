@@ -55,6 +55,6 @@ export class Output extends React.PureComponent<Props> {
     }
 
     // Render the output component that handles this output type
-    return React.cloneElement(chosenOne, this.props.output as any);
+    return React.cloneElement(chosenOne, { output: this.props.output });
   }
 }
