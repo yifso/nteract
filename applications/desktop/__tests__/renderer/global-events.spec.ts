@@ -57,7 +57,7 @@ describe("onBeforeUnloadOrReload", () => {
 
     store.dispatch = action => {
       expect(action).toEqual(
-        actions.closeNotebook({ contentRef: contentRef, reloading: false })
+        actions.closeNotebook({ contentRef, reloading: false })
       );
       done();
     };

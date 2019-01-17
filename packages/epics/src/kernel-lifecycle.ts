@@ -293,7 +293,7 @@ export const restartKernelEpic = (
         catchError(error => {
           return of(
             actions.restartKernelFailed({
-              error: error,
+              error,
               kernelRef: newKernelRef,
               contentRef: initiatingContentRef
             })

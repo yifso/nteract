@@ -408,7 +408,7 @@ export const killKernelEpic = (
             // Indicate overall success (channels cleaned up)
             of(
               actions.killKernelSuccessful({
-                kernelRef: kernelRef
+                kernelRef
               })
             ),
             // Inform about the state

@@ -29,7 +29,7 @@ describe("setKernelSpecs", () => {
     expect(actions.setKernelSpecs(kernelSpecs)).toEqual({
       type: "SET_KERNELSPECS",
       payload: {
-        kernelSpecs: kernelSpecs
+        kernelSpecs
       }
     });
   });

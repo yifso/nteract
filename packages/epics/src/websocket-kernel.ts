@@ -75,7 +75,7 @@ export const launchWebSocketKernelEpic = (
           const kernel: RemoteKernelProps = Object.assign({}, session.kernel, {
             type: "websocket",
             info: null,
-            sessionId: sessionId,
+            sessionId,
             cwd,
             channels: kernels.connect(
               serverConfig,

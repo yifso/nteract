@@ -110,7 +110,7 @@ function createHeader<MT extends MessageType>(
     msg_id: uuid(),
     date: new Date().toISOString(),
     version: "5.2",
-    msg_type: msg_type,
+    msg_type,
 
     // These fields get overriden by enchannel implementations, we supply them
     // as a fallback here

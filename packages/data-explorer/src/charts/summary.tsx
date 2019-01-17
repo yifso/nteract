@@ -56,7 +56,7 @@ export const semioticSummaryChart = (
     summaryType: { type: summaryType, bins: 16, amplitude: 20 },
     type: summaryType === "violin" && "swarm",
     projection: "horizontal",
-    data: data,
+    data,
     oAccessor,
     rAccessor,
     summaryStyle: (summaryDatapoint: Dx.Datapoint) => ({

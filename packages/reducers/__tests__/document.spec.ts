@@ -441,7 +441,7 @@ describe("clearOutputs", () => {
     const notebook = appendCellToNotebook(emptyNotebook, emptyMarkdownCell);
 
     const originalState = makeDocumentRecord({
-      notebook: notebook,
+      notebook,
       filename: "test.ipynb"
     });
 

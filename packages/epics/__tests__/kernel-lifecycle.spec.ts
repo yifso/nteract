@@ -216,12 +216,12 @@ describe("restartKernelEpic", () => {
         a: actionsModule.restartKernel({
           outputHandling: "None",
           kernelRef: "oldKernelRef",
-          contentRef: contentRef
+          contentRef
         }),
         b: actionsModule.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
-          contentRef: contentRef,
+          contentRef,
           selectNextKernel: true
         })
       };
@@ -236,11 +236,11 @@ describe("restartKernelEpic", () => {
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,
-          contentRef: contentRef
+          contentRef
         }),
         e: actionsModule.restartKernelSuccessful({
           kernelRef: newKernelRef,
-          contentRef: contentRef
+          contentRef
         })
       };
 

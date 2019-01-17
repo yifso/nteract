@@ -97,7 +97,7 @@ export function dispatchRestartKernel(
 
   store.dispatch(
     actions.restartKernel({
-      outputHandling: outputHandling,
+      outputHandling,
       kernelRef,
       contentRef: ownProps.contentRef
     })

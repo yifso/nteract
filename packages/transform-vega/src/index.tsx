@@ -65,7 +65,7 @@ function embed(
     }
 
     vegaEmbed3(el, spec, {
-      mode: mode,
+      mode,
       actions: false
     })
       .then(result => cb(null, result))

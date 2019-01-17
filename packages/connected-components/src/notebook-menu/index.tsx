@@ -308,7 +308,7 @@ class PureNotebookMenu extends React.Component<Props, State> {
       mode: "horizontal",
       onClick: this.handleClick,
       onOpenChange: this.handleOpenChange,
-      defaultOpenKeys: defaultOpenKeys,
+      defaultOpenKeys,
       selectable: false
     };
     if (!persistAfterClick) {
