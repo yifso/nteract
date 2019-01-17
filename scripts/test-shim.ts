@@ -1,18 +1,18 @@
+/* tslint:disable:no-empty no-console only-arrow-functions */
+
 /**
  * Mocks the window object
  *
  * Jest doesn't have direct access to the window object like the browser does.
- * Mocking the window object allows Jest tests to interact with the window
- * object.
+ * We mock / fake implement properties on the window object because JSDOM either
+ * does not support them or has only a partial implementation.
  */
 
 // For some reason, this property does not get set above.
 global.Image = global.window.Image;
 
-// tslint:disable-next-line:no-empty
 global.Range = function Range() {};
 
-// tslint:disable-next-line:only-arrow-functions
 global.Blob = function(content, options) {
   return { content, options };
 };
@@ -26,7 +26,6 @@ const createContextualFragment = html => {
 Range.prototype.createContextualFragment = html =>
   createContextualFragment(html);
 
-// tslint:disable-next-line:no-empty
 global.window.focus = () => {};
 
 // HACK: Polyfill that allows codemirror to render in a JSDOM env.
@@ -45,12 +44,8 @@ global.window.document.createRange = function createRange() {
 document.querySelector = () => document.createElement("div");
 
 process.on("unhandledRejection", (error, promise) => {
-  // tslint:disable-next-line:no-console
   console.error("Unhandled promise rejection somewhere in tests");
-  // tslint:disable-next-line:no-console
   console.error(error);
-  // tslint:disable-next-line:no-console
   console.error(error.stack);
-  // tslint:disable-next-line:no-console
   promise.catch(err => console.error("promise rejected", err));
 });
