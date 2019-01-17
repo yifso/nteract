@@ -21,7 +21,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 export interface PureToolbarProps {
   type: "markdown" | "code" | "raw";
@@ -86,10 +86,14 @@ export const CellToolbar = styled.div`
   }
 `;
 
-export const CellToolbarMask = styled.div`
+export const CellToolbarMask = styled.div.attrs(
+  (props: { sourceHidden?: boolean }) => ({
+    style: {
+      display: props.sourceHidden ? "block" : "none"
+    }
+  })
+)`
   z-index: 9999;
-  display: ${(props: { sourceHidden?: boolean }) =>
-    props.sourceHidden ? "block" : "none"};
   position: absolute;
   top: 0px;
   right: 0px;
@@ -99,7 +103,7 @@ export const CellToolbarMask = styled.div`
               mouse to the toolbar without causing the cell to go out of focus and thus
               hide the toolbar before they get there. */
   padding: 0px 0px 0px 50px;
-`;
+` as StyledComponent<"div", any, { sourceHidden?: boolean }, never>;
 
 export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   static defaultProps: Partial<PureToolbarProps> = {

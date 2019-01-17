@@ -9,17 +9,16 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
       forwardedComponent={
         Object {
           "$$typeof": Symbol(react.forward_ref),
-          "attrs": Array [],
+          "attrs": Array [
+            [Function],
+          ],
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "bfbVaH",
+            "lastClassName": "jozPvG",
             "rules": Array [
               "
   z-index: 9999;
-  display: ",
-              [Function],
-              ";
   position: absolute;
   top: 0px;
   right: 0px;
@@ -45,7 +44,12 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX bfbVaH"
+        className="sc-ifAKCX jozPvG"
+        style={
+          Object {
+            "display": "none",
+          }
+        }
       >
         <styled.div>
           <StyledComponent
@@ -348,17 +352,16 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
       forwardedComponent={
         Object {
           "$$typeof": Symbol(react.forward_ref),
-          "attrs": Array [],
+          "attrs": Array [
+            [Function],
+          ],
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "bfbVaH",
+            "lastClassName": "jozPvG",
             "rules": Array [
               "
   z-index: 9999;
-  display: ",
-              [Function],
-              ";
   position: absolute;
   top: 0px;
   right: 0px;
@@ -384,7 +387,12 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX bfbVaH"
+        className="sc-ifAKCX jozPvG"
+        style={
+          Object {
+            "display": "none",
+          }
+        }
       >
         <styled.div>
           <StyledComponent
