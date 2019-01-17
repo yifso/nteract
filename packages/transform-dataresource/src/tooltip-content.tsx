@@ -47,10 +47,10 @@ const beforeContent = (props: Props) => {
 
 const TooltipContent = styled.div.attrs((props: Props) => ({
   style: {
-    transform: translate(
-      props.x < 100 ? "0px" : "calc(-50% + 7px)",
-      props.y < 100 ? "10px" : "calc(-100% - 10px)"
-    )
+    transform: `translate(
+      ${props.x < 100 ? "0px" : "calc(-50% + 7px)"},
+      ${props.y < 100 ? "10px" : "calc(-100% - 10px)"}
+    )`
   }
 }))`
   color: black;
