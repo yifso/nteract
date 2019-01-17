@@ -29,6 +29,7 @@
     "@nteract/monaco-editor": "^2.0.4-alpha.0",
     "@nteract/notebook-app-component": "^4.0.4-alpha.0",
     "@nteract/octicons": "^1.0.4-alpha.0",
+    "@nteract/outputs": "^1.0.4-alpha.0",
     "@nteract/presentational-components": "^2.0.4-alpha.0",
     "@nteract/transform-dataresource": "^5.0.4-alpha.0",
     "@nteract/transform-geojson": "^4.0.4-alpha.0",
