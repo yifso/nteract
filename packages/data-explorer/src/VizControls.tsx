@@ -116,7 +116,7 @@ const filterItem = (query: string, item: MenuItemType) => {
 };
 
 const getIcon = (title: string) => {
-  if (title === "X" || title === "Y" || title === "Size" || title == "Color") {
+  if (title === "X" || title === "Y" || title === "Size" || title === "Color") {
     return iconHash[title];
   } else {
     console.warn("Icon title not supported");
@@ -241,7 +241,7 @@ interface VizControlParams {
   chart: ChartOptions;
   metrics: Array<{ name: string }>;
   dimensions: Array<{ name: string }>;
-  updateChart: () => void;
+  updateChart: (options: { chart: ChartOptions }) => void;
   selectedDimensions: string[];
   selectedMetrics: string[];
   hierarchyType: string;

@@ -106,7 +106,7 @@ const byRef = (
           );
 
           const items = Immutable.List<ContentRef>(dummyRecords.keys());
-          const sorted = items.sort((aRef, bRef) => {
+          const sorted: Immutable.List<string> = items.sort((aRef, bRef) => {
             const a:
               | Immutable.RecordOf<DummyContentRecordProps>
               | undefined = dummyRecords.get(aRef) as Immutable.RecordOf<
@@ -122,7 +122,7 @@ const byRef = (
               return a.filepath.localeCompare(b.filepath);
             }
             return a.assumedType.localeCompare(b.assumedType);
-          }) as Immutable.List<string>;
+          });
 
           return (
             state

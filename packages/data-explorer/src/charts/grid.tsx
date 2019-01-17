@@ -93,7 +93,7 @@ const filterNumbers = (mode = "=") => (
   row: RowObject
 ) => {
   if (mode === "=") {
-    return row[filter.id] == filter.value;
+    return row[filter.id] === filter.value;
   } else if (mode === "<") {
     return row[filter.id] < filter.value;
   } else if (mode === ">") {
