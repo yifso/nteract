@@ -399,8 +399,10 @@ class CodeMirrorEditor extends React.PureComponent<
         const expanded = { expanded: true };
         const tipElement = ReactDOM.createPortal(
           <Tip className="CodeMirror-hint">
-            <RichestMime bundle={bundle} metadata={expanded} />
-            <TipButton onClick={this.deleteTip}>{"\u2715"}</TipButton>
+            <RichMedia data={bundle} metadata={{ expanded }}>
+              <Media.Plain />
+            </RichMedia>
+            <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
           </Tip>,
           node
         );
