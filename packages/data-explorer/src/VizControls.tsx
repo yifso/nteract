@@ -9,7 +9,7 @@ import { ChartOptionTypes, controlHelpText } from "./docs/chart-docs";
 import styled, { css } from "styled-components";
 import * as Dx from "./types";
 
-const NoResultsItem = <MenuItem disabled={true} text="No results." />;
+const NoResultsItem = <MenuItem disabled text="No results." />;
 
 const arrowHeadMarker = (
   <marker
@@ -286,7 +286,7 @@ export default ({
     if (Object.keys(controlHelpText).find(mOrD => mOrD === metricOrDim)) {
       const mOrD = metricOrDim as ChartOptionTypes;
       const views =
-        controlHelpText[mOrD] != null ? controlHelpText[mOrD] : null;
+        controlHelpText[mOrD] !== undefined ? controlHelpText[mOrD] : null;
       if (views == null) {
         return "";
       }

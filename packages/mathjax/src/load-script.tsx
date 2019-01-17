@@ -28,7 +28,7 @@ export function load(src: string, opts?: Options | Callback, cb?: Callback) {
   }
 
   opts = opts || defaultOptions;
-  cb = cb || function() {};
+  cb = cb || (() => {});
 
   script.type = opts.type || "text/javascript";
   script.charset = opts.charset || "utf8";

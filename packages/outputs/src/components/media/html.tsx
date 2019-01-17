@@ -34,12 +34,12 @@ const StyledDiv = styled.div`
 `;
 
 export class HTML extends React.PureComponent<Props> {
-  el?: HTMLElement | null;
-
   static defaultProps = {
     data: "",
     mediaType: "text/html"
   };
+
+  el?: HTMLElement | null;
 
   componentDidMount(): void {
     // clear out all DOM element children

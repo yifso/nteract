@@ -56,7 +56,7 @@ describe("readdirObservable", () => {
       expect.any(Function)
     );
   });
-  it("handles errors listing directories, passes it back directly", async function(done) {
+  it("handles errors listing directories, passes it back directly", async done => {
     expect.assertions(2);
     fs.readdir.mockImplementation((path, callback) => {
       callback(new Error("you can't look there"));

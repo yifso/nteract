@@ -35,12 +35,12 @@ export function runCodeHere(el: HTMLElement | null, code: string): any {
 }
 
 export class JavaScript extends React.PureComponent<Props> {
-  el!: HTMLElement | null;
-
   static defaultProps = {
     data: "",
     mediaType: "application/javascript"
   };
+
+  el!: HTMLElement | null;
 
   componentDidMount(): void {
     runCodeHere(this.el, this.props.data);

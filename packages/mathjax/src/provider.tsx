@@ -60,7 +60,7 @@ export default class Provider extends React.Component<Props, State> {
   componentDidMount() {
     const src = this.props.src;
 
-    if (src == null) {
+    if (src === undefined) {
       return this.onLoad();
     }
     if (typeof MathJax === "undefined" || !MathJax || !MathJax.Hub) {

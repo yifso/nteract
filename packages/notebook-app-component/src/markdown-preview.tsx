@@ -36,8 +36,6 @@ const noop = () => {};
 //       within the code base (or leave it alone, which is totally cool too). :)
 
 export default class MarkdownCell extends React.Component<Props, State> {
-  rendered!: HTMLDivElement | null;
-
   static defaultProps = {
     cellFocused: false,
     editorFocused: false,
@@ -47,6 +45,8 @@ export default class MarkdownCell extends React.Component<Props, State> {
     unfocusEditor: noop,
     source: ""
   };
+
+  rendered!: HTMLDivElement | null;
 
   constructor(props: Props) {
     super(props);
