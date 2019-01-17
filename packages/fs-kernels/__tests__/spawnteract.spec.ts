@@ -41,7 +41,7 @@ describe("launch", () => {
   it("cleans up connection files", done => {
     const { connectionFile } = spawnResult;
     setTimeout(() => {
-      expect(fs.existsSync(connectionFile)).toBeFalsy;
+      expect(fs.existsSync(connectionFile)).toBeFalsy();
       done();
     }, 100);
   });

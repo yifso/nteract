@@ -63,16 +63,16 @@ function createConnectionInfo(
   ports: number[]
 ): { version: number } & JupyterConnectionInfo {
   return {
-    version: 5,
-    key: uuid.v4(),
-    signature_scheme: "hmac-sha256",
-    transport: "tcp",
-    ip: "127.0.0.1",
-    hb_port: ports[0],
     control_port: ports[1],
+    hb_port: ports[0],
+    iopub_port: ports[4],
+    ip: "127.0.0.1",
+    key: uuid.v4(),
     shell_port: ports[2],
+    signature_scheme: "hmac-sha256",
     stdin_port: ports[3],
-    iopub_port: ports[4]
+    transport: "tcp",
+    version: 5,
   };
 }
 
@@ -104,7 +104,9 @@ function writeConnectionFile(portFinderOptions?: {
         // kernel file.
         const runtimeDir = await jp.runtimeDir();
         mkdirp(runtimeDir, error => {
-          if (error) reject(error);
+          if (error) {
+            reject(error);
+          }
         });
 
         // Write the kernel connection file.
@@ -180,33 +182,33 @@ async function launchSpecFromConnectionInfo(
   );
 
   const defaultSpawnOptions = {
+    cleanupConnectionFile: true,
     stdio: "ignore",
-    cleanupConnectionFile: true
   };
   const env = Object.assign({}, process.env, kernelSpec.env);
   const fullSpawnOptions = Object.assign(
     {},
     defaultSpawnOptions,
     // TODO: see if this interferes with what execa assigns to the env option
-    { env: env },
+    { env },
     spawnOptions
   );
 
   const runningKernel = execa(argv[0], argv.slice(1), fullSpawnOptions);
 
   if (fullSpawnOptions.cleanupConnectionFile !== false) {
-    runningKernel.on("exit", (_code, _signal) => cleanup(connectionFile));
-    runningKernel.on("error", _error => cleanup(connectionFile));
+    runningKernel.on("exit", (code, signal) => cleanup(connectionFile));
+    runningKernel.on("error", error => cleanup(connectionFile));
   }
 
   const channels = await createMainChannel(config);
 
   return {
-    spawn: runningKernel,
-    connectionFile,
+    channels,
     config,
+    connectionFile,
     kernelSpec,
-    channels
+    spawn: runningKernel,
   };
 }
 
