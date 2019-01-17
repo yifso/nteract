@@ -7,7 +7,7 @@ describe("unlinkObservable", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("errors on unlink issue", async function(done) {
+  it("errors on unlink issue", async done => {
     expect.assertions(3);
     // File exists so we try to unlink it
     fs.existsSync.mockImplementation(() => true);
@@ -42,7 +42,7 @@ describe("readdirObservable", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("lists a directory with ✨  Observables ✨", async function() {
+  it("lists a directory with ✨  Observables ✨", async () => {
     expect.assertions(2);
     fs.readdir.mockImplementation((path, callback) => {
       callback(null, ["fantastic.ipynb", "README.md"]);

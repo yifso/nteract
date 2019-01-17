@@ -281,7 +281,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
               ? 0.1
               : 1
           })}
-          responsiveWidth={true}
+          responsiveWidth
           margin={{ top: 20, left: 20, right: 20, bottom: 100 }}
           oPadding={40}
           pixelColumnWidth={80}
@@ -319,8 +319,8 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
               </TooltipContent>
             );
           }}
-          canvasPieces={true}
-          canvasConnectors={true}
+          canvasPieces
+          canvasConnectors
           oLabel={(columnLabel: string) => (
             <g>
               <text transform="rotate(45)">{columnLabel}</text>

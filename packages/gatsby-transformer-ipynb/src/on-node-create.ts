@@ -21,8 +21,8 @@ export interface Node {
   };
 }
 
-module.exports = async function onCreateNode(
-  {
+module.exports = async (
+  /*onCreateNode*/ {
     node,
     loadNodeContent,
     boundActionCreators
@@ -37,7 +37,7 @@ module.exports = async function onCreateNode(
     };
   },
   _pluginOptions: object
-) {
+) => {
   const { createNode, createParentChildLink } = boundActionCreators;
 
   // Filter out non-ipynb content by file extension and checkpoint notebooks

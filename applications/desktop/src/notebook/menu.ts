@@ -195,7 +195,7 @@ export function dispatchNewKernel(
   const state = store.getState();
   const filepath = selectors.filepath(state, ownProps);
   const cwd =
-    filepath != null
+    filepath !== null
       ? path.dirname(path.resolve(filepath))
       : cwdKernelFallback();
 
@@ -627,7 +627,7 @@ export function exportPDF(
 
       const notificationSystem = state.app.get("notificationSystem");
 
-      fs.writeFile(pdfPath, data, error_fs => {
+      fs.writeFile(pdfPath, data, _error_fs => {
         notificationSystem.addNotification({
           title: "PDF exported",
           message: `Notebook ${basepath} has been exported as a pdf.`,
@@ -636,7 +636,7 @@ export function exportPDF(
           level: "success",
           action: {
             label: "Open PDF",
-            callback: function openPDF() {
+            callback() {
               shell.openItem(pdfPath);
             }
           }
@@ -668,7 +668,7 @@ export function storeToPDF(
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
   const notificationSystem = state.app.get("notificationSystem");
-  if (notebookName == null) {
+  if (notebookName === null) {
     notificationSystem.addNotification({
       title: "File has not been saved!",
       message: `Click the button below to save the notebook so that it can be
@@ -678,7 +678,7 @@ export function storeToPDF(
       level: "warning",
       action: {
         label: "Save As",
-        callback: function cb() {
+        callback() {
           triggerSaveAsPDF(ownProps, store);
         }
       }
@@ -691,7 +691,7 @@ export function storeToPDF(
 }
 
 export function dispatchLoadConfig(
-  ownProps: { contentRef: ContentRef },
+  _ownProps: { contentRef: ContentRef },
   store: DesktopStore
 ) {
   store.dispatch(actions.loadConfig());

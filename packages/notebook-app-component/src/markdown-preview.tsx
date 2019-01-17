@@ -24,7 +24,7 @@ interface State {
   view: boolean;
 }
 
-const noop = function() {};
+const noop = () => {};
 
 // TODO: Consider whether this component is really something like two components:
 //

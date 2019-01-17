@@ -39,7 +39,7 @@ const NumberFilter = (props: NumberFilterProps) => {
   const lockButton = (
     <Tooltip content={`Switch to ${switchMode(mode)}`}>
       <Button
-        minimal={true}
+        minimal
         onClick={() => {
           updateFunction({ [filterName]: switchMode(mode) });
         }}
@@ -52,7 +52,7 @@ const NumberFilter = (props: NumberFilterProps) => {
   return (
     <InputGroup
       //      allowNumericCharactersOnly={true}
-      large={true}
+      large
       placeholder="number"
       rightElement={lockButton}
       small={false}
@@ -66,7 +66,7 @@ const NumberFilter = (props: NumberFilterProps) => {
 
 const stringFilter = () => ({ onChange }: { onChange: OnChangeProps }) => (
   <InputGroup
-    large={true}
+    large
     placeholder="string"
     type={"text"}
     onChange={(event: React.FormEvent<HTMLInputElement>) => {

@@ -69,7 +69,7 @@ export class TextFile extends React.PureComponent<
         <Editor
           theme={this.props.theme === "dark" ? "vs-dark" : "vs"}
           mode={this.props.mimetype}
-          editorFocused={true}
+          editorFocused
           value={this.props.text}
           onChange={this.handleChange.bind(this)}
         />

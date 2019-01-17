@@ -67,7 +67,8 @@ export function setTitleFromAttributes(attributes: Attributes) {
     win.setTitle(title);
   } catch (e) {
     /* istanbul ignore next */
-    (function log1277() {
+    // log1277
+    (() => {
       console.error(
         "Unable to set the filename, see https://github.com/nteract/nteract/issues/1277"
       );

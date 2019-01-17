@@ -42,7 +42,7 @@ describe("MakeMessageSubject", () => {
   });
 
   it("communicates closure", async () => {
-    const completionPromise = new Promise<Boolean>(resolve => {
+    const completionPromise = new Promise<boolean>(resolve => {
       messageSubject2.subscribe({ complete: () => resolve(true) });
     });
     messageSubject1.complete();

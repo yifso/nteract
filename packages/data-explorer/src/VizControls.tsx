@@ -443,7 +443,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {availableLineTypes.map(lineTypeOption => (
                 <Button
                   key={lineTypeOption.type}
@@ -466,7 +466,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {availableAreaTypes.map(areaTypeOption => {
                 const areaTypeOptionType = areaTypeOption.type;
                 if (
@@ -513,7 +513,7 @@ export default ({
             <div>
               <Code>Categories</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {dimensions.map(dim => (
                 <Button
                   key={`dimensions-select-${dim.name}`}
@@ -537,7 +537,7 @@ export default ({
             <div>
               <Code>Metrics</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {metrics.map(metric => (
                 <Button
                   key={`metrics-select-${metric.name}`}

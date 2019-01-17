@@ -206,11 +206,11 @@ describe("createMainChannelFromSockets", () => {
   test("propagates header information through", async done => {
     // Mock a jmp socket
     class HokeySocket extends EventEmitter {
+      send = jest.fn();
       constructor() {
         super();
         this.send = jest.fn();
       }
-      send = jest.fn();
     }
 
     const shellSocket = new HokeySocket();

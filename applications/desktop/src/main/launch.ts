@@ -47,7 +47,7 @@ export function launch(filename?: string) {
   win.webContents.on("did-finish-load", () => {
     const menu = loadFullMenu();
     Menu.setApplicationMenu(menu);
-    if (filename != null) {
+    if (filename !== undefined) {
       win.webContents.send("main:load", filename);
     }
     win.webContents.send("main:load-config");

@@ -34,7 +34,8 @@ export const extractNewKernel = (
   // NOTE: There's some incongruence between desktop and web app here, regarding path vs. filename
   //       Instead, this function is slightly repeated between here and @nteract/core
   const cwd =
-    (filepath != null && path.dirname(path.resolve(filepath))) || process.cwd();
+    (filepath !== null && path.dirname(path.resolve(filepath))) ||
+    process.cwd();
   const kernelSpecName =
     notebook.getIn(["metadata", "kernelspec", "name"]) ||
     notebook.getIn(["metadata", "language_info", "name"]) ||

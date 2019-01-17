@@ -26,7 +26,7 @@ function publishGist(
   id: string | null
 ) {
   const url =
-    id != null
+    id !== null
       ? `https://api.github.com/gists/${id}`
       : "https://api.github.com/gists";
 
@@ -34,7 +34,7 @@ function publishGist(
     url,
     responseType: "json",
     // This allows for us to provide a serverside XMLHttpRequest
-    createXHR: function() {
+    createXHR() {
       return new XMLHttpRequest();
     },
     headers: {
@@ -42,7 +42,7 @@ function publishGist(
       // We can only update authenticated gists so we _must_ send the token
       Authorization: `token ${token}`
     },
-    method: id != null ? "PATCH" : "POST",
+    method: id !== null ? "PATCH" : "POST",
     body: model
   };
 
@@ -149,7 +149,7 @@ export const publishEpic = (
             level: "success",
             action: {
               label: "Open Gist",
-              callback: function openGist() {
+              callback() {
                 shell.openExternal(`https://nbviewer.jupyter.org/${id}`);
               }
             }

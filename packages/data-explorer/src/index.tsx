@@ -347,7 +347,7 @@ class DataResourceTransform extends React.Component<Partial<Props>, State> {
 
     const display: React.ReactNode = (
       <SemioticWrapper>
-        <Frame responsiveWidth={true} size={[500, 300]} {...frameSettings} />
+        <Frame responsiveWidth size={[500, 300]} {...frameSettings} />
         <VizControls
           {...{
             data: stateData,
@@ -374,7 +374,7 @@ class DataResourceTransform extends React.Component<Partial<Props>, State> {
 
     // If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
 
-    onMetadataChange &&
+    if (onMetadataChange) {
       onMetadataChange({
         ...this.props.metadata,
         dx: {
@@ -391,6 +391,7 @@ class DataResourceTransform extends React.Component<Partial<Props>, State> {
           chart
         }
       });
+    }
 
     this.setState(
       (prevState): any => {

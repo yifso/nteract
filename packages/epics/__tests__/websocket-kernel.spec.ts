@@ -86,7 +86,7 @@ describe("launchWebSocketKernelEpic", () => {
 });
 
 describe("interruptKernelEpic", () => {
-  test("", async function() {
+  test("", async () => {
     const state$ = new StateObservable(new Subject<stateModule.AppState>(), {
       core: stateModule.makeStateRecord({
         kernelRef: "fake",
