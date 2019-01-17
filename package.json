@@ -71,6 +71,9 @@
   },
   "comment:jest": [
     "The types in our tests don't match up right yet, so we have",
+    {
+      "isolatedModules": true
+    },
     "set in our ts-jest config. Once the test issues are fixed, we can remove",
     "this setting. Until then, if you want to check types to see how close we",
     "are, delete the line with `isolateModules: true` in the `ts-jest` config"
@@ -79,8 +82,8 @@
     "preset": "ts-jest",
     "globals": {
       "ts-jest": {
-        "diagnostics": false,
-        "tsConfig": "tsconfig.base.json"
+        "tsConfig": "tsconfig.base.json",
+        "isolatedModules": true
       }
     },
     "reporters": [
