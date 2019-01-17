@@ -6,7 +6,7 @@ import fs from "fs";
 import { homedir } from "os";
 import path from "path";
 
-let sysPrefixGuess: string | null | undefined = undefined;
+let sysPrefixGuess: string | null | undefined;
 
 interface JupyterPaths {
   config: string[];
@@ -19,13 +19,13 @@ function home(subDir?: string) {
   return subDir ? path.join(baseDir, subDir) : baseDir;
 }
 
-function pushIfExists(paths: string[], path: string) {
-  if (fs.existsSync(path)) paths.push(path);
+function pushIfExists(paths: string[], pathToPush: string) {
+  if (fs.existsSync(pathToPush)) { paths.push(pathToPush); }
 }
 
 function accessCheck(d: fs.PathLike) {
   // check if a directory exists and is listable (X_OK)
-  if (!fs.existsSync(d)) return false;
+  if (!fs.existsSync(d)) { return false; }
   try {
     fs.accessSync(d, fs.constants.X_OK);
   } catch (e) {
@@ -40,7 +40,9 @@ function guessSysPrefix() {
   // based on shutil.which from Python 3.5
 
   // only run once:
-  if (sysPrefixGuess !== undefined) return sysPrefixGuess;
+  if (sysPrefixGuess !== undefined) {
+    return sysPrefixGuess;
+  }
 
   const PATH = (process.env.PATH || "").split(path.delimiter);
   if (PATH.length === 0) {
@@ -91,7 +93,6 @@ function askJupyter() {
     askJupyterPromise = new Promise((resolve, reject) => {
       exec("python3 -m jupyter --paths --json", (err, stdout) => {
         if (err) {
-          console.warn("Failed to ask Jupyter about its paths: " + err);
           reject(err);
         } else {
           resolve(JSON.parse(stdout.toString().trim()));
@@ -126,8 +127,8 @@ async function configDirs(opts?: {
 }): Promise<string[]> {
   if (opts && opts.askJupyter) {
     try {
-      const paths = await askJupyter();
-      return paths.config.filter(fs.existsSync);
+      const configPaths = await askJupyter();
+      return configPaths.config.filter(fs.existsSync);
     } catch {
       return configDirs();
     }
@@ -209,8 +210,8 @@ async function dataDirs(opts?: {
 }): Promise<string[]> {
   if (opts && opts.askJupyter) {
     try {
-      const paths = await askJupyter();
-      return paths.data.filter(fs.existsSync);
+      const dataPaths = await askJupyter();
+      return dataPaths.data.filter(fs.existsSync);
     } catch (error) {
       return dataDirs();
     }

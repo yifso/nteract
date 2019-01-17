@@ -49,8 +49,8 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
     const readFile = promisify(fs.readFile);
     return readFile(path.join(kernelInfo.resourceDir, "kernel.json")).then(
       (data: string | Buffer) => ({
-        name: kernelInfo.name,
         files: files.map(x => path.join(kernelInfo.resourceDir, x)),
+        name: kernelInfo.name,
         resources_dir: kernelInfo.resourceDir, // eslint-disable-line camelcase
         spec:
           data instanceof Buffer
