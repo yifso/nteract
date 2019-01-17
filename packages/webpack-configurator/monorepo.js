@@ -104,11 +104,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/notebook-preview",
-      version: "11.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/notebook-render",
       version: "5.0.0-alpha.0",
       private: false

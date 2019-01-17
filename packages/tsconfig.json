@@ -25,7 +25,6 @@
     { "path": "messaging" },
     { "path": "monaco-editor" },
     { "path": "notebook-app-component" },
-    { "path": "notebook-preview" },
     { "path": "notebook-render" },
     { "path": "octicons" },
     { "path": "outputs" },

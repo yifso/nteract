@@ -28,7 +28,6 @@
     "@nteract/logos": "^0.1.9-alpha.0",
     "@nteract/monaco-editor": "^2.0.4-alpha.0",
     "@nteract/notebook-app-component": "^4.0.4-alpha.0",
-    "@nteract/notebook-preview": "^11.0.4-alpha.0",
     "@nteract/octicons": "^1.0.4-alpha.0",
     "@nteract/presentational-components": "^2.0.4-alpha.0",
     "@nteract/transform-dataresource": "^5.0.4-alpha.0",
