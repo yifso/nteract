@@ -38,31 +38,18 @@ interface IHotkeysKeyDownHandle {
 }
 
 class Contents extends React.PureComponent<IContentsProps, IContentsState> {
-  // Keybinding combinations
-  hotkeys: string = `
-    ctrl+space,
-    ctrl+.,
-    ctrl+o,
-    ctrl+s,
-    ctrl+shift+s,
-    ctrl+shift+z,
-    ctrl+z,
-    ctrl+shift+c,
-    ctrl+shift+x,
-    ctrl+shift+d,
-    ctrl+shift+v,
-    ctrl+shift+y,
-    ctrl+shift+m,
-    shift+enter,
-    ctrl+enter,
-    ctrl+shift+a,
-    ctrl+shift+b
-  `;
-
   // Maps action types to actions
   hotkeysMap = new Map([
     ["ctrl+s", this.props.save] // Save
   ]);
+
+  getHotkeys = (map: Map<string, any>) => {
+    let hotkeys = "";
+    map.forEach((value, key) => {
+      hotkeys = hotkeys.concat(`${key},`);
+    });
+    return hotkeys;
+  };
 
   // Captures all keydown events on the App
   onKeyDown = (
@@ -87,13 +74,16 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
       saving
     } = this.props;
 
+    // Keybinding combinations
+    const hotkeys: string = this.getHotkeys(this.hotkeysMap);
+
     switch (contentType) {
       case "notebook":
       case "file":
       case "dummy":
         return (
           <React.Fragment>
-            <Hotkeys keyName={this.hotkeys} onKeyDown={this.onKeyDown}>
+            <Hotkeys keyName={hotkeys} onKeyDown={this.onKeyDown}>
               <FileHeader
                 appBase={appBase}
                 baseDir={baseDir}
