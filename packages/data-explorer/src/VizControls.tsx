@@ -201,7 +201,10 @@ const metricDimSelector = (
   );
 };
 
-const availableLineTypes = [
+const availableLineTypes: Array<{
+  type: Dx.LineType;
+  label: string;
+}> = [
   {
     type: "line",
     label: "Line Chart"
@@ -237,30 +240,24 @@ const availableAreaTypes = [
 
 type ChartOptions = { [key in ChartOptionTypes]: string };
 interface VizControlParams {
-  view: string;
-  chart: ChartOptions;
-  metrics: Array<{ name: string }>;
-  dimensions: Array<{ name: string }>;
-  updateChart: (
-    options: Partial<{
-      chart: ChartOptions;
-      networkType: string;
-      hierarchyType: string;
-      summaryType: string;
-    }>
-  ) => void;
+  view: Dx.View;
+  chart: Dx.Chart;
+  metrics: Dx.Field[];
+  dimensions: Dx.Dimension[];
+  // TODO: leave "options: any" for now and improve typedef later
+  updateChart: (options: any) => void;
   selectedDimensions: string[];
   selectedMetrics: string[];
-  hierarchyType: string;
-  summaryType: string;
+  hierarchyType: Dx.HierarchyType;
+  summaryType: Dx.SummaryType;
   networkType: string;
-  setLineType: (lineType: string) => void;
+  setLineType: (lineType: Dx.LineType) => void;
   updateMetrics: (name: string) => void;
   updateDimensions: (name: string) => void;
-  lineType: string;
-  areaType: string;
+  lineType: Dx.LineType;
+  areaType: Dx.AreaType;
   setAreaType: (label: Dx.AreaType) => void;
-  data: object[];
+  data: Dx.Datapoint[];
 }
 export default ({
   view,
