@@ -794,15 +794,54 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@nteract/display-area@^5.0.4-alpha.0":
+  version "5.0.4-alpha.0"
+  resolved "https://registry.yarnpkg.com/@nteract/display-area/-/display-area-5.0.4-alpha.0.tgz#98a839f98a3b3325cca630226ab61754f6c8edd1"
+  integrity sha512-14iQDcVDF3Tr5H7D85F0T054vdtzBql+zEEtAEzEUInrMBJfAEMzyLbzZMg8ztotMqcrnK+rDlgWtxFlj6d2vw==
+  dependencies:
+    "@nteract/transforms" "^5.0.4-alpha.0"
+    ansi-to-react "^4.0.4-alpha.0"
+    immutable "^4.0.0-rc.12"
+
 "@nteract/examples@3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.1.1.tgz#da23cc6d2532936fef853f4e29f2318e8e023f7e"
   integrity sha512-ks50jIeKIoZ0+XX3C8TsF4vfOnlw++PgFkLNOK15a3EKJQBKM8/MOQY2Hndyz2ptZAIDKyU+YBYQFNnMXvmi/w==
 
+"@nteract/notebook-render@^5.0.4-alpha.0":
+  version "5.0.4-alpha.0"
+  resolved "https://registry.yarnpkg.com/@nteract/notebook-render/-/notebook-render-5.0.4-alpha.0.tgz#04ec72792bb7010cc52bd3836a0898ce4aeffa1b"
+  integrity sha512-O+81Q4JdzGCn2+ZCaPCaLUcyZc8ARXZc0Wodmp6IApBCmfgjDTg8+vjyybZHugjsCyPSx0a4hInBNhaLTAiBIg==
+  dependencies:
+    "@nteract/commutable" "^6.0.4-alpha.0"
+    "@nteract/display-area" "^5.0.4-alpha.0"
+    "@nteract/presentational-components" "^2.0.4-alpha.0"
+    "@nteract/transforms" "^5.0.4-alpha.0"
+    katex "^0.10.0-alpha"
+    react-katex "^2.0.2"
+    react-markdown "^4.0.0"
+    rehype-katex "^1.1.1"
+    rehype-stringify "^5.0.0"
+    remark "^9.0.0"
+    remark-math "^1.0.4"
+    remark-rehype "^4.0.0"
+
 "@nteract/plotly@^1.0.0":
   version "1.43.0"
   resolved "https://registry.yarnpkg.com/@nteract/plotly/-/plotly-1.43.0.tgz#2eee56d92fb7c18532b9a73b07d1d3a4d8405d50"
   integrity sha512-tHEchbtlorWfknpnBinz/+Sd0o/dMS7bB9k2xlwe18XNaks8qinteweOKHIXsisLnf6cN3mywFy92saWCHZX8w==
+
+"@nteract/transforms@^5.0.4-alpha.0":
+  version "5.0.4-alpha.0"
+  resolved "https://registry.yarnpkg.com/@nteract/transforms/-/transforms-5.0.4-alpha.0.tgz#fcdfb75c171d12a6451574621a8c33da406d06b5"
+  integrity sha512-Ir7qATL1X11/fe+VEU5v9khGqgo6Vukpt7p21fshy01SbzfcEjL7vdfj3SoMn3dqW3VMevHm2AqBh7rr6so/iA==
+  dependencies:
+    "@nteract/markdown" "^3.0.5-alpha.0"
+    "@nteract/mathjax" "^3.0.5-alpha.0"
+    "@nteract/transform-vdom" "^3.0.4-alpha.0"
+    ansi-to-react "^4.0.4-alpha.0"
+    react-json-tree "^0.11.0"
+    styled-components "^4.1.3"
 
 "@nteract/vega-embed-v2@^1.1.0":
   version "1.1.0"
@@ -1085,10 +1124,10 @@
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
   integrity sha512-pGF/zvYOACZ/gLGWdQH8zSwteQS1epp68yRcVLJMgUck/MjEn/FBYmPub9pXT8C1e4a8YZfHo1CKyV8q1vKUnQ==
 
-"@types/jest@^23.3.11":
-  version "23.3.11"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.11.tgz#d3a936ae753d9e484965f5cbd19027c2b8af2551"
-  integrity sha512-eroF85PoG87XjCwzxey7yBsQNkIY/TV5myKKSG/022A0FW25afdu/uub6JDMS5eT68zBBt82S+w/MFOTjeLM3Q==
+"@types/jest@^23.3.12":
+  version "23.3.12"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.12.tgz#7e0ced251fa94c3bc2d1023d4b84b2992fa06376"
+  integrity sha512-/kQvbVzdEpOq4tEWT79yAHSM4nH4xMlhJv2GrLVQt4Qmo8yYsPdioBM1QpN/2GX1wkfMnyXvdoftvLUr0LBj7Q==
 
 "@types/js-cookie@^2.2.0":
   version "2.2.0"
@@ -13307,10 +13346,10 @@ tslint-react@^3.6.0:
   dependencies:
     tsutils "^2.13.1"
 
-tslint@^5.12.0:
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.12.0.tgz#47f2dba291ed3d580752d109866fb640768fca36"
-  integrity sha512-CKEcH1MHUBhoV43SA/Jmy1l24HJJgI0eyLbBNSRyFlsQvb9v6Zdq+Nz2vEOH00nC5SUx4SneJ59PZUS/ARcokQ==
+tslint@^5.12.1:
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.12.1.tgz#8cec9d454cf8a1de9b0a26d7bdbad6de362e52c1"
+  integrity sha512-sfodBHOucFg6egff8d1BvuofoOQ/nOeYNfbp7LDlKBcLNrL3lmS5zoiDGyOMdT7YsEXAwWpTdAHwOGOc8eRZAw==
   dependencies:
     babel-code-frame "^6.22.0"
     builtin-modules "^1.1.1"
