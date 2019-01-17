@@ -32,6 +32,11 @@ export type ImmutableJSONType =
 export type ImmutableJSONMap = Immutable.Map<string, any>;
 export type ImmutableJSONList = Immutable.List<any>;
 
+/**
+ * Media Bundles as they exist on disk from the notebook format
+ * See https://nbformat.readthedocs.io/en/latest/format_description.html#display-data for docs
+ * and https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json for the schema
+ */
 export interface OnDiskMediaBundle {
   "text/plain"?: MultiLineString;
   "text/html"?: MultiLineString;
