@@ -7,9 +7,16 @@
   "references": [
     { "path": "../../packages/core" },
     { "path": "../../packages/types" },
-    { "path": "../../packages/transforms-full" },
     { "path": "../../packages/notebook-app-component" },
     { "path": "../../packages/presentational-components" },
-    { "path": "../../packages/fs-observable" }
+    { "path": "../../packages/fs-observable" },
+    { "path": "../../packages/jupyter-widgets" },
+    { "path": "../../packages/transform-dataresource" },
+    { "path": "../../packages/transform-geojson" },
+    { "path": "../../packages/transform-model-debug" },
+    { "path": "../../packages/transform-plotly" },
+    { "path": "../../packages/transform-vdom" },
+    { "path": "../../packages/transform-vega" },
+    { "path": "../../packages/outputs" }
   ]
 }

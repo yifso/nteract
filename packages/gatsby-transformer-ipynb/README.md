@@ -27,7 +27,7 @@ including:
 - `html`: html string created using the react component `NotebookRender` from [`@nteract/notebook-render`](https://github.com/nteract/nteract/tree/master/packages/notebook-render).
 - `metadata`: jupyter notebooks can embed metadata to indicate authors, titles...
 - `json`: the json notebook code converted into a javascript object with `JSON.parse`.
-- `internal.content`: contains the raw notebook code, it can be used to feed the react component `NotebookPreview` from [`@nteract/notebook-preview`](https://github.com/nteract/nteract/tree/master/packages/notebook-preview).
+- `internal.content`: contains the raw notebook code, it can be used to feed the the React component provided in [`@nteract/presentational-components`](https://github.com/nteract/nteract/tree/master/packages/presentational-components).
 
 ## How to query
 
