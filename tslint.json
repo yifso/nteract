@@ -24,6 +24,7 @@
       "severity": "warn"
     },
     "member-access": false,
+    "no-bitwise": false,
     "no-console": false,
     "no-constant-condition": true,
     "no-debugger": true,
