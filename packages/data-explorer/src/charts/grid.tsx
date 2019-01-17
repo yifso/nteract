@@ -132,7 +132,7 @@ interface RowObject {
 }
 
 interface State {
-  filters: { [key: string]: () => void };
+  filters: { [key: string]: Function };
   showFilters: boolean;
 }
 
