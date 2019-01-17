@@ -71,9 +71,6 @@
   },
   "comment:jest": [
     "The types in our tests don't match up right yet, so we have",
-    {
-      "isolatedModules": true
-    },
     "set in our ts-jest config. Once the test issues are fixed, we can remove",
     "this setting. Until then, if you want to check types to see how close we",
     "are, delete the line with `isolateModules: true` in the `ts-jest` config"
@@ -82,8 +79,8 @@
     "preset": "ts-jest",
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.base.json",
-        "isolatedModules": "true"
+        "diagnostics": false,
+        "tsConfig": "tsconfig.base.json"
       }
     },
     "reporters": [
@@ -222,7 +219,7 @@
     "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.2",
     "ts-node": "^7.0.1",
-    "tslint": "^5.12.0",
+    "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
     "tslint-react-a11y": "^1.0.0",
@@ -230,7 +227,7 @@
     "typedoc": "^0.14.0",
     "typedoc-plugin-external-module-name": "^2.0.0",
     "typescript": "^3.2.2",
-    "typescript-tslint-plugin":"^0.2.1",
+    "typescript-tslint-plugin": "^0.2.1",
     "unified": "^7.0.0",
     "unist-builder": "^1.0.2",
     "webfontloader": "^1.6.28",
@@ -257,5 +254,6 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "dependencies": {}
 }
