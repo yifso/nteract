@@ -28,7 +28,6 @@
     { "path": "octicons" },
     { "path": "outputs" },
     { "path": "presentational-components" },
-    { "path": "records" },
     { "path": "reducers" },
     { "path": "rx-binder" },
     { "path": "rx-jupyter" },

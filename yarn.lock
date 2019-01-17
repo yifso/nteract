@@ -794,6 +794,14 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@nteract/commutable@^1.0.4-alpha.0":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@nteract/commutable/-/commutable-1.1.4.tgz#ee659469594b57d060cf5b9d43278832a5213aec"
+  integrity sha1-7mWUaVlLV9Bgz1udQyeIMqUhOuw=
+  dependencies:
+    immutable "^3.8.1"
+    uuid "^3.0.1"
+
 "@nteract/display-area@^5.0.4-alpha.0":
   version "5.0.4-alpha.0"
   resolved "https://registry.yarnpkg.com/@nteract/display-area/-/display-area-5.0.4-alpha.0.tgz#98a839f98a3b3325cca630226ab61754f6c8edd1"
@@ -6629,10 +6637,10 @@ immer@1.7.2:
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.2.tgz#a51e9723c50b27e132f6566facbec1c85fc69547"
   integrity sha512-4Urocwu9+XLDJw4Tc6ZCg7APVjjLInCFvO4TwGsAYV5zT6YYSor14dsZR0+0tHlDIN92cFUOq+i7fC00G5vTxA==
 
-immer@^1.5.0:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-1.9.3.tgz#e88f8cbea730d2cde0f5e7e763000a8608bccdae"
-  integrity sha512-bUyz3fOHGn82V7h4oVgJGmFglZt53JWwSyVNAT4sO0d7IovHLwLuHbh14uYKY0tewFoDcEdiQW7HuL0NsRVziw==
+immutable@^3.8.1:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
+  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
 
 immutable@^4.0.0-rc.1, immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"

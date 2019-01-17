@@ -119,11 +119,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/records",
-      version: "1.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "rx-binder",
       version: "3.0.0-alpha.0",
       private: false
