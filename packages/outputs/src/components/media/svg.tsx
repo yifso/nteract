@@ -5,9 +5,7 @@ interface Props {
   mediaType: "image/svg+xml";
 }
 
-export default class SVGDisplay extends React.PureComponent<Props> {
-  static MIMETYPE = "image/svg+xml";
-
+export class SVG extends React.PureComponent<Props> {
   static defaultProps = {
     data: "",
     mediaType: "image/svg+xml"
