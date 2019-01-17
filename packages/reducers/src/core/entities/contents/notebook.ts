@@ -57,10 +57,15 @@ export function reduceOutputs(
   if (output.output_type !== "stream" || last.output_type !== "stream") {
     // If the last output type or the incoming output type isn't a stream
     // we just add it to the outputs
+    // This is kind of like a "break" between streams if we get error, display_data, execute_result, etc.
     return outputs.push(createImmutableOutput(output));
   }
 
   const streamOutput = output;
+
+  if (typeof streamOutput.name === "undefined") {
+    return outputs.push(createImmutableOutput(streamOutput));
+  }
 
   function appendText(text: string): string {
     if (typeof streamOutput.text === "string") {
@@ -69,28 +74,22 @@ export function reduceOutputs(
     return text;
   }
 
-  if (
-    last &&
-    outputs.size > 0 &&
-    typeof streamOutput.name !== "undefined" &&
-    last.output_type === "stream"
-  ) {
-    // Invariant: size > 0, outputs.last() exists
-    if (last.name === streamOutput.name) {
-      return outputs.updateIn([outputs.size - 1, "text"], appendText);
-    }
-
-    const nextToLast = outputs.butLast().last(null);
-
-    if (
-      nextToLast &&
-      nextToLast.output_type === "stream" &&
-      nextToLast.name === streamOutput.name
-    ) {
-      return outputs.updateIn([outputs.size - 2, "text"], appendText);
-    }
+  // Invariant: size > 0, outputs.last() exists
+  if (last.name === streamOutput.name) {
+    return outputs.updateIn([outputs.size - 1, "text"], appendText);
   }
 
+  // Check if there's a separate stream to merge with
+  const nextToLast = outputs.butLast().last(null);
+
+  if (
+    nextToLast &&
+    nextToLast.output_type === "stream" &&
+    nextToLast.name === streamOutput.name
+  ) {
+    return outputs.updateIn([outputs.size - 2, "text"], appendText);
+  }
+  // If nothing else matched, just append it
   return outputs.push(createImmutableOutput(streamOutput));
 }
 

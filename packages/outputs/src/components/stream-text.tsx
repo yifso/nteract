@@ -6,6 +6,7 @@ type Props = StreamOutputParams;
 
 export const StreamText = (props: Props) => {
   const { text, name } = props;
+  debugger;
 
   return (
     <Ansi linkify={false} className={`"nteract-display-area-${name}`}>

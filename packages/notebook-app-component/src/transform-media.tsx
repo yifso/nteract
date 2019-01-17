@@ -47,13 +47,16 @@ const PureTransformMedia = (props: Props) => {
 const richestMediaType = (
   output: ImmutableExecuteResult | ImmutableDisplayData,
   order: Immutable.List<string>,
-  handlers: { [k: string]: any }
+  handlers: { [k: string]: any } | Immutable.Map<string, any>
 ) => {
   const outputData = output.data;
 
   // Find the first mediaType that we both support with handlers and is in the output data
   const mediaType = order.find(key => {
-    return outputData.hasOwnProperty(key) && handlers.hasOwnProperty(key);
+    return (
+      outputData.hasOwnProperty(key) &&
+      (handlers.hasOwnProperty(key) || handlers.get(key, false))
+    );
   });
 
   return mediaType;
@@ -64,6 +67,7 @@ const makeMapStateToProps = (
   initialProps: OwnProps
 ) => {
   const { output } = initialProps;
+
   const mapStateToProps = (state: AppState) => {
     const handlers = selectors.transformsById(state);
     const order = selectors.displayOrder(state);
