@@ -1,3 +1,5 @@
+// Due to the on-disk format needing to be written out in an explicit order, we disable ordering for this file
+// tslint:disable:object-literal-sort-keys
 /**
  * @module commutable
  */
@@ -24,10 +26,15 @@ import {
 import { ImmutableNotebook, makeNotebookRecord } from "./notebook";
 
 import {
+  createFrozenMediaBundle,
+  demultiline,
+  remultiline,
   CellId,
   ExecutionCount,
   JSONObject,
-  MultiLineString
+  MultiLineString,
+  OnDiskMediaBundle,
+  createOnDiskMediaBundle
 } from "./primitives";
 
 import {
@@ -40,16 +47,7 @@ import {
   makeRawCell
 } from "./cells";
 
-import {
-  createImmutableOutput,
-  demultiline,
-  ImmutableMimeBundle,
-  ImmutableOutput,
-  isJSONKey,
-  MimeBundle,
-  Output,
-  remultiline
-} from "./outputs";
+import { createImmutableOutput, ImmutableOutput, Output } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";
 
@@ -191,44 +189,19 @@ function metadataToJS(immMetadata: ImmutableMap<string, any>) {
   return immMetadata.toJS() as JSONObject;
 }
 
-function mimeBundleToJS(immMimeBundle: ImmutableMimeBundle): MimeBundle {
-  const bundle = immMimeBundle.toObject();
-
-  Object.keys(bundle).map(key => {
-    if (isJSONKey(key)) {
-      if (ImmutableMap.isMap(bundle[key])) {
-        bundle[key] = bundle[key].toJS();
-      }
-      return bundle;
-    }
-
-    const data = bundle[key];
-
-    if (typeof data === "string" || Array.isArray(data)) {
-      bundle[key] = remultiline(data);
-      return bundle;
-    }
-    throw new TypeError(
-      `Data for ${key} is expected to be a string or an Array of strings`
-    );
-  });
-
-  return bundle;
-}
-
 function outputToJS(output: ImmutableOutput): Output {
   switch (output.output_type) {
     case "execute_result":
       return {
         output_type: output.output_type,
         execution_count: output.execution_count,
-        data: mimeBundleToJS(output.data),
+        data: createOnDiskMediaBundle(output.data),
         metadata: output.metadata.toJS()
       };
     case "display_data":
       return {
         output_type: output.output_type,
-        data: mimeBundleToJS(output.data),
+        data: createOnDiskMediaBundle(output.data),
         metadata: output.metadata.toJS()
       };
     case "stream":

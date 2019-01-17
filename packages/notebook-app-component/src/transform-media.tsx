@@ -3,9 +3,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { JSONObject } from "@nteract/commutable";
+import {
+  ImmutableDisplayData,
+  ImmutableExecuteResult,
+  ImmutableOutput,
+  JSONObject
+} from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
-import { ImmutableOutput } from "@nteract/records";
 import { AppState, ContentRef } from "@nteract/types";
 
 interface OwnProps {
@@ -38,11 +42,12 @@ class PureTransformMedia extends React.Component<Props> {
 }
 
 const richestMediaType = (
-  output: ImmutableOutput,
+  output: ImmutableExecuteResult | ImmutableDisplayData,
   order: Immutable.List<string>,
   handlers: any
 ) => {
-  const outputData = output.get("data");
+  const outputData = output.data;
+
   const validMediaTypes = Immutable.List<string>(
     outputData.keys((mediaType: string) => {
       if (handlers[mediaType] && order.includes(mediaType)) {

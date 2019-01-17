@@ -7,7 +7,14 @@ import {
   Map as ImmutableMap
 } from "immutable";
 
-import { CellId, JSONObject, MultiLineString } from "./primitives";
+import {
+  CellId,
+  JSONObject,
+  MultiLineString,
+  createFrozenMediaBundle,
+  demultiline,
+  MediaBundle
+} from "./primitives";
 
 import { makeNotebookRecord } from "./notebook";
 
@@ -22,10 +29,7 @@ import {
 } from "./cells";
 
 import {
-  cleanMimeAtKey,
-  demultiline,
   ErrorOutput,
-  ImmutableMimeBundle,
   ImmutableOutput,
   makeDisplayData,
   makeErrorOutput,
@@ -108,7 +112,10 @@ function createImmutableMarkdownCell(
   });
 }
 
-function createImmutableMimeBundle(output: MimeOutput): ImmutableMimeBundle {
+/**
+ * Handle the old v3 version of the media
+ */
+function createImmutableMimeBundle(output: MimeOutput): Readonly<MediaBundle> {
   const mimeBundle: { [key: string]: MultiLineString | undefined } = {};
   for (const key of Object.keys(output)) {
     // v3 had non-media types for rich media
@@ -117,10 +124,7 @@ function createImmutableMimeBundle(output: MimeOutput): ImmutableMimeBundle {
         output[key as keyof MimePayload];
     }
   }
-  return Object.keys(mimeBundle).reduce(
-    cleanMimeAtKey.bind(null, mimeBundle),
-    ImmutableMap()
-  );
+  return createFrozenMediaBundle(mimeBundle);
 }
 
 function createImmutableOutput(output: Output): ImmutableOutput {
