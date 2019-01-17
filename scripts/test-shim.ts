@@ -1,3 +1,13 @@
+/* tslint:disable:no-empty no-console only-arrow-functions */
+
+/**
+ * Mocks the window object
+ *
+ * Jest doesn't have direct access to the window object like the browser does.
+ * We mock / fake implement properties on the window object because JSDOM either
+ * does not support them or has only a partial implementation.
+ */
+
 // For some reason, this property does not get set above.
 global.Image = global.window.Image;
 
@@ -23,6 +33,7 @@ global.window.document.createRange = function createRange() {
   return {
     setEnd: () => {},
     setStart: () => {},
+    // tslint:disable-next-line:object-literal-sort-keys
     getBoundingClientRect: () => ({ right: 0 }),
     getClientRects: () => [],
     createContextualFragment
