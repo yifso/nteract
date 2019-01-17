@@ -58,7 +58,7 @@ class LastSaved extends React.PureComponent<LastSavedProps> {
   }
 
   render() {
-    if (this.props.date == null) {
+    if (this.props.date === null) {
       return null;
     }
 

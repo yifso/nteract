@@ -109,7 +109,7 @@ export const publishEpic = (
       if (gistId) {
         notificationSystem.addNotification({
           title: "Updating Gist...",
-          message: `💖📓💖`,
+          message: "💖📓💖",
           dismissible: true,
           position: "tr",
           level: "success"
@@ -117,7 +117,7 @@ export const publishEpic = (
       } else {
         notificationSystem.addNotification({
           title: "Publishing a New Gist...",
-          message: `✨📓✨`,
+          message: "✨📓✨",
           dismissible: true,
           position: "tr",
           level: "success"
@@ -143,7 +143,7 @@ export const publishEpic = (
           //       instead of hidden side effects
           notificationSystem.addNotification({
             title: "Gist uploaded",
-            message: `📓 📢`,
+            message: "📓 📢",
             dismissible: true,
             position: "tr",
             level: "success",
@@ -189,7 +189,8 @@ export const publishEpic = (
           ) {
             notificationSystem.addNotification({
               title: "Bad GitHub Token",
-              message: `The gist API reports that the token doesn't have gist scopes 🤷‍♀️`,
+              message:
+                "The gist API reports that the token doesn't have gist scopes 🤷‍♀️",
               dismissible: true,
               position: "tr",
               level: "error"
@@ -207,7 +208,7 @@ export const publishEpic = (
             // Likely a GitHub API error
             notificationSystem.addNotification({
               title: "Gist publishing failed",
-              message: `😩 GitHub API not feelin' good today`,
+              message: "😩 GitHub API not feelin' good today",
               dismissible: true,
               position: "tr",
               level: "error"

@@ -26,7 +26,7 @@ describe("unlinkObservable", () => {
     expect(fs.unlink).toBeCalled();
     done();
   });
-  it("completes and calls fs.existsSync, fs.unlink", async function() {
+  it("completes and calls fs.existsSync, fs.unlink", async () => {
     expect.assertions(2);
     fs.existsSync.mockImplementation(() => true);
     fs.unlink.mockImplementation((path, callback) => callback());

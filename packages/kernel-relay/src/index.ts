@@ -105,7 +105,7 @@ const resolvers = {
       });
     },
     messages: () => {
-      return ([] as Array<JupyterMessage>)
+      return ([] as JupyterMessage[])
         .concat(...Object.values(messages))
         .map(message => ({ id: message.header.msg_id, payload: message }));
     },

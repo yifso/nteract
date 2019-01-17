@@ -8,7 +8,7 @@ const C_DOLLAR = "$";
 const MIN_FENCE_COUNT = 2;
 const CODE_INDENT_COUNT = 4;
 
-export function blockPlugin(this: any, _opts: object) {
+export default function blockPlugin(this: any, _opts: object) {
   function blockTokenizer(eat: any, value: string, silent: boolean) {
     const length = value.length + 1;
     let index = 0;
@@ -214,10 +214,8 @@ export function blockPlugin(this: any, _opts: object) {
   // Stringify for math block
   if (Compiler != null) {
     const visitors = Compiler.prototype.visitors;
-    visitors.math = function(node: any) {
-      return "$$\n" + node.value + "\n$$";
+    visitors.math = (node: any) => {
+      return `$$\n${node.value}\n$$`;
     };
   }
 }
-
-export default blockPlugin;

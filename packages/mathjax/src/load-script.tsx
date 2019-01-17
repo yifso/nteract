@@ -40,7 +40,7 @@ export function load(src: string, opts?: Options | Callback, cb?: Callback) {
   }
 
   if (opts.text) {
-    script.text = "" + opts.text;
+    script.text = `${opts.text}`;
   }
 
   const onend = "onload" in script ? stdOnEnd : ieOnEnd;
@@ -61,7 +61,9 @@ function setAttributes(
   attrs: { [key: string]: any }
 ) {
   for (const attr in attrs) {
-    script.setAttribute(attr, attrs[attr]);
+    if (attrs.hasOwnProperty(attr)) {
+      script.setAttribute(attr, attrs[attr]);
+    }
   }
 }
 
@@ -74,13 +76,13 @@ function stdOnEnd(script: any, cb: Callback) {
     // this.onload = null here is necessary
     // because even IE9 works not like others
     this.onerror = this.onload = null;
-    cb(script, new Error("Failed to load " + this.src));
+    cb(script, new Error(`Failed to load ${this.src}`));
   };
 }
 
 function ieOnEnd(script: any, cb: Callback) {
   script.onreadystatechange = function() {
-    if (this.readyState != "complete" && this.readyState != "loaded") {
+    if (this.readyState !== "complete" && this.readyState !== "loaded") {
       return;
     }
     this.onreadystatechange = null;

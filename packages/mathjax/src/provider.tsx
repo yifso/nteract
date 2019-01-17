@@ -9,13 +9,13 @@ declare var MathJax: MathJaxObject | undefined;
 interface Props {
   src?: string;
   children: React.ReactNode;
-  didFinishTypeset?(): void;
-  onLoad?(): void;
   input: "ascii" | "tex";
   delay: number;
   options: object;
   loading: React.ReactNode;
   noGate: boolean;
+  didFinishTypeset?(): void;
+  onLoad?(): void;
   onError(err: Error): void;
 }
 
@@ -24,7 +24,7 @@ type State = MathJaxContextValue;
 /**
  * MathJax Provider
  */
-class Provider extends React.Component<Props, State> {
+export default class Provider extends React.Component<Props, State> {
   static defaultProps = {
     src:
       "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML",
@@ -40,6 +40,13 @@ class Provider extends React.Component<Props, State> {
     }
   };
 
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (state.input !== props.input) {
+      return { ...state, input: props.input };
+    }
+    return null;
+  }
+
   constructor(props: Props) {
     super(props);
 
@@ -48,13 +55,6 @@ class Provider extends React.Component<Props, State> {
       input: this.props.input,
       hasProviderAbove: true
     };
-  }
-
-  static getDerivedStateFromProps(props: Props, state: State) {
-    if (state.input !== props.input) {
-      return { ...state, input: props.input };
-    }
-    return null;
   }
 
   componentDidMount() {
@@ -122,5 +122,3 @@ class Provider extends React.Component<Props, State> {
     );
   }
 }
-
-export default Provider;

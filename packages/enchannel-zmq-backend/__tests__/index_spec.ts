@@ -26,7 +26,7 @@ interface Sockets {
 }
 
 describe("createSocket", () => {
-  test("creates a JMP socket on the channel with identity", async function(done) {
+  test("creates a JMP socket on the channel with identity", async done => {
     const config = {
       signature_scheme: "hmac-sha256",
       key: "5ca1ab1e-c0da-aced-cafe-c0ffeefacade",
@@ -47,7 +47,7 @@ describe("createSocket", () => {
 });
 
 describe("verifiedConnect", () => {
-  test("verifiedConnect monitors the socket", async function(done) {
+  test("verifiedConnect monitors the socket", async done => {
     const emitter = new EventEmitter();
 
     const socket = ({
@@ -74,7 +74,7 @@ describe("verifiedConnect", () => {
     done();
   });
 
-  test("verifiedConnect monitors the socket properly even on fast connect", async function(done) {
+  test("verifiedConnect monitors the socket properly even on fast connect", async done => {
     const emitter = new EventEmitter();
 
     const socket = ({

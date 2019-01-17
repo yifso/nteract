@@ -1,1 +1,1 @@
-exports.onCreateNode = require(`./on-node-create`);
+exports.onCreateNode = require("./on-node-create");

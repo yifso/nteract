@@ -22,7 +22,7 @@ export function cwdKernelFallback() {
 export function dispatchSaveAs(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  evt: Event,
+  _evt: Event,
   filepath: string
 ) {
   store.dispatch(actions.saveAs({ filepath, contentRef: ownProps.contentRef }));
@@ -37,7 +37,7 @@ interface SaveDialogOptions {
 }
 
 export function showSaveAsDialog(): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     const options: SaveDialogOptions = {
       title: "Save Notebook",
       filters: [{ name: "Notebooks", extensions: ["ipynb"] }]
@@ -179,7 +179,7 @@ export function dispatchSave(
 
   const filepath = selectors.filepath(state, ownProps);
 
-  if (filepath == null || filepath == "") {
+  if (filepath === null || filepath === "") {
     triggerSaveAs(ownProps, store);
   } else {
     store.dispatch(actions.save(ownProps));
@@ -189,7 +189,7 @@ export function dispatchSave(
 export function dispatchNewKernel(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  evt: Event,
+  _evt: Event,
   kernelSpec: KernelSpec
 ) {
   const state = store.getState();
@@ -216,7 +216,7 @@ export function dispatchNewKernel(
 export function dispatchPublishGist(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  event: Event
+  _event: Event
 ) {
   const state = store.getState();
   const githubToken = state.app.get("githubToken");
@@ -245,9 +245,9 @@ export function dispatchPublishGist(
     if (win.webContents.getURL().indexOf("callback?code=") !== -1) {
       // Extract the text content
       win.webContents.executeJavaScript(
-        `require('electron').ipcRenderer.send('auth', document.body.textContent);`
+        "require('electron').ipcRenderer.send('auth', document.body.textContent);"
       );
-      remote.ipcMain.on("auth", (event: Event, auth: string) => {
+      remote.ipcMain.on("auth", (_event: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
@@ -256,7 +256,7 @@ export function dispatchPublishGist(
 
           notificationSystem.addNotification({
             title: "Authenticated",
-            message: `🔒`,
+            message: "🔒",
             level: "info"
           });
 

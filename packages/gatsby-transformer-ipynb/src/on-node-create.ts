@@ -30,8 +30,10 @@ module.exports = async function onCreateNode(
     node: Node;
     loadNodeContent: (node: Node) => string;
     boundActionCreators: {
-      createNode: () => void;
-      createParentChildLink: () => void;
+      createNode: (node: Partial<Node>) => void;
+      createParentChildLink: (
+        link: { parent: Node; child: Partial<Node> }
+      ) => void;
     };
   },
   _pluginOptions: object
@@ -40,8 +42,8 @@ module.exports = async function onCreateNode(
 
   // Filter out non-ipynb content by file extension and checkpoint notebooks
   if (
-    node.extension !== `ipynb` ||
-    String(node.absolutePath).includes(`.ipynb_checkpoints`)
+    node.extension !== "ipynb" ||
+    String(node.absolutePath).includes(".ipynb_checkpoints")
   ) {
     return;
   }
@@ -58,7 +60,7 @@ module.exports = async function onCreateNode(
     parent: node.id,
     internal: {
       content,
-      type: `JupyterNotebook`
+      type: "JupyterNotebook"
     }
   };
 
@@ -77,14 +79,14 @@ module.exports = async function onCreateNode(
   jupyterNode.html = ReactDOMServer.renderToStaticMarkup(reactComponent);
 
   // Add path to the file path
-  if (node.internal.type === `File`) {
+  if (node.internal.type === "File") {
     jupyterNode.fileAbsolutePath = node.absolutePath;
   }
 
   jupyterNode.internal!.contentDigest = crypto
-    .createHash(`md5`)
+    .createHash("md5")
     .update(JSON.stringify(jupyterNode))
-    .digest(`hex`);
+    .digest("hex");
   createNode(jupyterNode);
   createParentChildLink({
     parent: node,

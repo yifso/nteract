@@ -192,7 +192,7 @@ describe("executeCellEpic", () => {
       err => done.fail(err)
     );
   });
-  test("Informs about disconnected kernels, allows reconnection", async function() {
+  test("Informs about disconnected kernels, allows reconnection", async () => {
     const state$ = {
       value: {
         core: stateModule.makeStateRecord({

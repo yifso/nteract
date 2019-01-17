@@ -132,7 +132,7 @@ class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
   }
 }
 
-class MathJaxNode extends React.PureComponent<Props> {
+export default class MathJaxNode extends React.PureComponent<Props> {
   static defaultProps = {
     inline: false,
     onRender: null
@@ -171,5 +171,3 @@ class MathJaxNode extends React.PureComponent<Props> {
     );
   }
 }
-
-export default MathJaxNode;

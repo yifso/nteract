@@ -108,7 +108,7 @@ interface KernelProps {
   cwd: string;
 }
 
-class Kernel extends React.Component<KernelProps> {
+export default class Kernel extends React.Component<KernelProps> {
   static Consumer = Consumer;
 
   static defaultProps = {
@@ -149,5 +149,3 @@ class Kernel extends React.Component<KernelProps> {
     );
   }
 }
-
-export default Kernel;

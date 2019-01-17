@@ -46,7 +46,7 @@ describe("setTitleFromAttributes", () => {
 });
 
 describe("createTitleFeed", () => {
-  test("creates an observable that updates title attributes for modified notebook", async function() {
+  test("creates an observable that updates title attributes for modified notebook", async () => {
     const kernelRef = stateModule.createKernelRef();
     const contentRef = stateModule.createContentRef();
 
