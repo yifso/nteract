@@ -1,4 +1,4 @@
-import { scaleLinear, scaleThreshold } from "d3-scale";
+import { scaleLinear, ScaleLinear, scaleThreshold } from "d3-scale";
 import * as React from "react";
 import { heatmapping, hexbinning } from "semiotic";
 
@@ -155,7 +155,7 @@ export const semioticScatterplot = (
     );
   };
 
-  let sizeScale: () => number = () => 5;
+  let sizeScale: (() => number) | ScaleLinear<number, number> = () => 5;
   const colorHash: { [index: string]: string } = { Other: "grey" };
   const additionalSettings: { afterElements?: JSX.Element } = {};
 

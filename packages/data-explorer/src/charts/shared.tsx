@@ -16,8 +16,8 @@ interface SubsortObject {
 }
 
 export const sortByOrdinalRange = (
-  oAccessor: () => void | string,
-  rAccessor: () => void | string,
+  oAccessor: string | ((datapoint: Dx.Datapoint) => string),
+  rAccessor: string | (() => void),
   secondarySort: string,
   data: Dx.DataProps["data"]
 ): any[] => {

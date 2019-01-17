@@ -7,7 +7,7 @@ interface HTMLLegendProps {
   colorHash: { [index: string]: string };
   valueHash: { [index: string]: number };
   colors?: string[];
-  setColor?: (colors: string[]) => void;
+  setColor?: (...colors: string[]) => void;
 }
 
 const HTMLLegend = ({
