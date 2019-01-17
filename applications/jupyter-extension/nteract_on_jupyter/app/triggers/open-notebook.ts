@@ -92,8 +92,7 @@ export function openNotebook(
         );
       }),
       first(),
-      // eslint-disable-next-line no-unused-vars
-      map(([session, content]) => {
+      map(([_session, content]) => {
         const { response } = content;
 
         if (content.status > 299 || typeof response === "string") {

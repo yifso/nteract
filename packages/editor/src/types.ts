@@ -1,23 +1,21 @@
 // Declare CMI as the CodeMirror instance, even if we don't have it fully typed yet
 export type CMI = any;
 
-// eslint-disable-next-line no-unused-vars
 declare class TextMarker {
   changed(): void;
   clear(): void;
-  find(): { from: Position, to: Position };
+  find(): { from: Position; to: Position };
 }
 
 export interface TextMarkerOptions {
-  atomic?: boolean,
-  className?: string,
-  css?: string,
-  readOnly?: boolean
+  atomic?: boolean;
+  className?: string;
+  css?: string;
+  readOnly?: boolean;
 }
 
 export type LineHandle = any;
 
-// eslint-disable-next-line no-unused-vars
 export declare class CMDoc {
   size: number; // undocumented (number of lines)
   clearHistory(): void;
@@ -32,38 +30,38 @@ export declare class CMDoc {
     to: Position,
     options?: TextMarkerOptions
   ): TextMarker;
-};
+}
 
 export interface EditorChange {
   /** Position (in the pre-change coordinate system) where the change started. */
-  from: Position,
+  from: Position;
   /** Position (in the pre-change coordinate system) where the change ended. */
-  to: Position,
+  to: Position;
   /** Array of strings representing the text that replaced the changed range (split by line). */
-  text: string[],
+  text: string[];
   /**  Text that used to be between from and to, which is overwritten by this change. */
-  removed: string[],
+  removed: string[];
   /**  String representing the origin of the change event and wether it can be merged with history */
-  origin: string
+  origin: string;
 }
 
 export interface ScrollInfo {
-  top: number,
-  left: number,
-  width: number,
-  height: number,
-  clientWidth: number,
-  clientHeight: number
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  clientWidth: number;
+  clientHeight: number;
 }
 
 export interface Position {
-  ch: number,
-  line: number
+  ch: number;
+  line: number;
 }
 
 export interface Options {
-  cursorBlinkRate?: number,
-  mode?: string,
-  preserveScrollPosition?: boolean,
-  [key: string]: any,
+  cursorBlinkRate?: number;
+  mode?: string;
+  preserveScrollPosition?: boolean;
+  [key: string]: any;
 }

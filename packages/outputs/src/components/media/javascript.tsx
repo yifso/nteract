@@ -19,7 +19,8 @@ export function runCodeHere(el: HTMLElement | null, code: string): any {
   // the user has a handle on the context of the current output.
   const element = el;
   try {
-    return eval(code); // eslint-disable-line no-eval
+    // tslint:disable-next-line:no-eval
+    return eval(code);
   } catch (err) {
     const pre = document.createElement("pre");
     pre.style.whiteSpace = "pre-wrap";

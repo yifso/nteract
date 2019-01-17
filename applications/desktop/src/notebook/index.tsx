@@ -172,7 +172,6 @@ export default class App extends React.PureComponent {
   }
 
   render() {
-    // eslint-disable-line class-methods-use-this
     return (
       <Provider store={store}>
         <MathJax.Provider src={mathJaxPath} input="tex">

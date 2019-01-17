@@ -25,7 +25,9 @@ interface KernelResource {
   spec: KernelSpec;
 }
 
-export interface KernelResourceByName { [name: string]: KernelResource }
+export interface KernelResourceByName {
+  [name: string]: KernelResource;
+}
 
 function flatten(array: any[]) {
   return [].concat(...array);
@@ -51,7 +53,7 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
       (data: string | Buffer) => ({
         files: files.map(x => path.join(kernelInfo.resourceDir, x)),
         name: kernelInfo.name,
-        resources_dir: kernelInfo.resourceDir, // eslint-disable-line camelcase
+        resources_dir: kernelInfo.resourceDir,
         spec:
           data instanceof Buffer
             ? JSON.parse(data.toString())
@@ -67,7 +69,10 @@ function getKernelResources(kernelInfo: KernelInfo): Promise<KernelResource> {
  * @param  {boolean}  [mustExist=false] does the directory have to exist?
  * @return {Promise<Object[]>}          Promise for an array of kernelInfo objects
  */
-function getKernelInfos(directory: string, mustExist: boolean = false): Promise<KernelInfo[]> {
+function getKernelInfos(
+  directory: string,
+  mustExist: boolean = false
+): Promise<KernelInfo[]> {
   const readdir = promisify(fs.readdir);
   return readdir(directory)
     .then((files: string[]) => {
@@ -76,8 +81,8 @@ function getKernelInfos(directory: string, mustExist: boolean = false): Promise<
         resourceDir: path.join(directory, fileName)
       }));
     })
-    .catch((error) => {
-      if (!mustExist && error.code === 'ENOENT') {
+    .catch(error => {
+      if (!mustExist && error.code === "ENOENT") {
         return [];
       }
       throw error;

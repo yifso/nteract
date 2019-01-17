@@ -34,7 +34,7 @@ module.exports = async function onCreateNode(
       createParentChildLink: () => void;
     };
   },
-  pluginOptions: object // eslint-disable-line no-unused-vars
+  _pluginOptions: object
 ) {
   const { createNode, createParentChildLink } = boundActionCreators;
 

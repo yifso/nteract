@@ -1,9 +1,6 @@
 import * as React from "react";
 
-import MathJaxContext, {
-  MathJaxContextValue, // eslint-disable-line no-unused-vars
-  MathJaxObject
-} from "./context";
+import MathJaxContext, { MathJaxContextValue, MathJaxObject } from "./context";
 import loadScript from "./load-script";
 
 // MathJax expected to be a global and may be undefined
