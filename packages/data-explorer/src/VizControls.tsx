@@ -241,15 +241,22 @@ interface VizControlParams {
   chart: ChartOptions;
   metrics: Array<{ name: string }>;
   dimensions: Array<{ name: string }>;
-  updateChart: (options: { chart: ChartOptions }) => void;
+  updateChart: (
+    options: Partial<{
+      chart: ChartOptions;
+      networkType: string;
+      hierarchyType: string;
+      summaryType: string;
+    }>
+  ) => void;
   selectedDimensions: string[];
   selectedMetrics: string[];
   hierarchyType: string;
   summaryType: string;
   networkType: string;
-  setLineType: () => void;
-  updateMetrics: () => void;
-  updateDimensions: () => void;
+  setLineType: (lineType: string) => void;
+  updateMetrics: (name: string) => void;
+  updateDimensions: (name: string) => void;
   lineType: string;
   areaType: string;
   setAreaType: (label: Dx.AreaType) => void;
