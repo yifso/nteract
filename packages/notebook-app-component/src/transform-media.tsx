@@ -6,7 +6,6 @@ import { Dispatch } from "redux";
 import {
   ImmutableDisplayData,
   ImmutableExecuteResult,
-  ImmutableOutput,
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
@@ -16,7 +15,7 @@ interface OwnProps {
   output_type: string;
   id: string;
   contentRef: ContentRef;
-  output: ImmutableOutput;
+  output: ImmutableDisplayData | ImmutableExecuteResult;
   index: number;
 }
 
@@ -28,36 +27,36 @@ interface Props extends OwnProps {
   mediaType?: string;
 }
 
-class PureTransformMedia extends React.Component<Props> {
-  render() {
-    const { Media, mediaActions, mediaType } = this.props;
-    return (
-      <Media
-        {...mediaActions}
-        data={this.props.output.get("data").get(mediaType)}
-        metadata={this.props.output.get("metadata").get(mediaType)}
-      />
-    );
+const PureTransformMedia = (props: Props) => {
+  const { Media, mediaActions, mediaType, output } = props;
+
+  // If we had no valid result, return an empty output
+  if (!mediaType) {
+    return null;
   }
-}
+
+  return (
+    <Media
+      {...mediaActions}
+      data={output.data[mediaType]}
+      metadata={output.metadata.get(mediaType)}
+    />
+  );
+};
 
 const richestMediaType = (
   output: ImmutableExecuteResult | ImmutableDisplayData,
   order: Immutable.List<string>,
-  handlers: any
+  handlers: { [k: string]: any }
 ) => {
   const outputData = output.data;
 
-  const validMediaTypes = Immutable.List<string>(
-    outputData.keys((mediaType: string) => {
-      if (handlers[mediaType] && order.includes(mediaType)) {
-        return mediaType;
-      }
-    })
-  );
-  return validMediaTypes
-    .sort((a: string, b: string) => order.indexOf(a) - order.indexOf(b))
-    .get(0);
+  // Find the first mediaType that we both support with handlers and is in the output data
+  const mediaType = order.find(key => {
+    return outputData.hasOwnProperty(key) && handlers.hasOwnProperty(key);
+  });
+
+  return mediaType;
 };
 
 const makeMapStateToProps = (
@@ -78,8 +77,8 @@ const makeMapStateToProps = (
       };
     }
     return {
-      mediaType,
       Media: () => null,
+      mediaType,
       output
     };
   };
