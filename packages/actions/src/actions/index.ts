@@ -1,7 +1,12 @@
 /**
  * @module actions
  */
-import { CellId, JSONObject, MediaBundle, Output } from "@nteract/commutable";
+import {
+  CellId,
+  JSONObject,
+  MediaBundle,
+  OnDiskOutput
+} from "@nteract/commutable";
 
 import * as actionTypes from "../actionTypes";
 
@@ -173,7 +178,7 @@ export function commMessageAction(message: any) {
 
 export function appendOutput(payload: {
   id: CellId;
-  output: Output;
+  output: OnDiskOutput;
   contentRef: ContentRef;
 }): actionTypes.AppendOutput {
   return {

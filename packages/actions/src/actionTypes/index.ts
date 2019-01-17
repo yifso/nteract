@@ -6,7 +6,7 @@ import {
   ImmutableJSONType,
   JSONObject,
   MediaBundle,
-  Output
+  OnDiskOutput
 } from "@nteract/commutable";
 
 import { ContentRef, HostRef, KernelRef, PayloadMessage } from "@nteract/types";
@@ -59,7 +59,7 @@ export interface AppendOutput {
   type: "APPEND_OUTPUT";
   payload: {
     id: CellId;
-    output: Output;
+    output: OnDiskOutput;
     contentRef: ContentRef;
   };
 }
