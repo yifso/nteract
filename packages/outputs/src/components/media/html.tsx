@@ -47,7 +47,9 @@ export class HTML extends React.PureComponent<Props> {
     // version + the fragment version right after each other
     // In the desktop app (and successive loads with tools like commuter) this
     // will be a no-op
-    if (!this.el) return;
+    if (!this.el) {
+      return;
+    }
     while (this.el.firstChild) {
       this.el.removeChild(this.el.firstChild);
     }
@@ -56,7 +58,9 @@ export class HTML extends React.PureComponent<Props> {
   }
 
   componentDidUpdate(): void {
-    if (!this.el) return;
+    if (!this.el) {
+      return;
+    }
     // clear out all DOM element children
     while (this.el.firstChild) {
       this.el.removeChild(this.el.firstChild);

@@ -92,7 +92,9 @@ class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
       this.setScriptText(text);
     }
 
-    if (!this.script) return;
+    if (!this.script) {
+      return;
+    }
 
     const reprocess = ["Reprocess", MathJax.Hub, this.script];
 

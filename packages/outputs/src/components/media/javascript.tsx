@@ -12,7 +12,9 @@ interface Props {
 }
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {
-  if (!el) return;
+  if (!el) {
+    return;
+  }
   // Compatibility with Jupyter/notebook JS evaluation.  Set element so
   // the user has a handle on the context of the current output.
   const element = el;

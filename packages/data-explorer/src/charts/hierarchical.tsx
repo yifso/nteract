@@ -58,8 +58,12 @@ const hierarchicalColor = (
   colorHash: { [index: string]: string },
   datapoint: Dx.Datapoint
 ) => {
-  if (datapoint.depth === 0) return "white";
-  if (datapoint.depth === 1) return colorHash[datapoint.key];
+  if (datapoint.depth === 0) {
+    return "white";
+  }
+  if (datapoint.depth === 1) {
+    return colorHash[datapoint.key];
+  }
   let colorNode = datapoint;
   for (let x = datapoint.depth; x > 1; x--) {
     colorNode = colorNode.parent;
@@ -101,9 +105,10 @@ export const semioticHierarchicalChart = (
   const sanitizedData: Array<{}> = [];
 
   data.forEach((datapoint: Dx.Datapoint) => {
-    if (!colorHash[datapoint[selectedDimensions[0]]])
+    if (!colorHash[datapoint[selectedDimensions[0]]]) {
       colorHash[datapoint[selectedDimensions[0]]] =
         colors[Object.keys(colorHash).length];
+    }
 
     sanitizedData.push({
       ...datapoint,

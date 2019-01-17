@@ -112,7 +112,9 @@ export const semioticScatterplot = (
   };
 
   const areaTooltip = (hoveredDatapoint: Dx.Datapoint) => {
-    if (hoveredDatapoint.binItems.length === 0) return null;
+    if (hoveredDatapoint.binItems.length === 0) {
+      return null;
+    }
     return (
       <TooltipContent x={hoveredDatapoint.x} y={hoveredDatapoint.y}>
         <h3

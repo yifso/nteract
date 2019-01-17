@@ -33,7 +33,9 @@ export class WidgetDisplay extends React.Component<Partial<Props>> {
 
   /** @override */
   componentDidMount() {
-    if (!this.container.current) return;
+    if (!this.container.current) {
+      return;
+    }
 
     // When the component has mounted, inject the widget iframe.
     // const view = this.shim.getView();

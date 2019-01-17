@@ -20,12 +20,16 @@ function home(subDir?: string) {
 }
 
 function pushIfExists(paths: string[], pathToPush: string) {
-  if (fs.existsSync(pathToPush)) { paths.push(pathToPush); }
+  if (fs.existsSync(pathToPush)) {
+    paths.push(pathToPush);
+  }
 }
 
 function accessCheck(d: fs.PathLike) {
   // check if a directory exists and is listable (X_OK)
-  if (!fs.existsSync(d)) { return false; }
+  if (!fs.existsSync(d)) {
+    return false;
+  }
   try {
     fs.accessSync(d, fs.constants.X_OK);
   } catch (e) {

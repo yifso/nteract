@@ -133,7 +133,9 @@ describe("initGlobalHandlers", () => {
     const store = createStore(contentRef);
 
     ipc.on = event => {
-      if (event == "reload") done();
+      if (event == "reload") {
+        done();
+      }
     };
 
     globalEvents.initGlobalHandlers(contentRef, store);

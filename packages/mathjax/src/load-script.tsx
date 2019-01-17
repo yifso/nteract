@@ -80,7 +80,9 @@ function stdOnEnd(script: any, cb: Callback) {
 
 function ieOnEnd(script: any, cb: Callback) {
   script.onreadystatechange = function() {
-    if (this.readyState != "complete" && this.readyState != "loaded") return;
+    if (this.readyState != "complete" && this.readyState != "loaded") {
+      return;
+    }
     this.onreadystatechange = null;
     cb(script); // there is no way to catch loading errors in IE8
   };

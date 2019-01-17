@@ -611,7 +611,9 @@ export function exportPDF(
       printBackground: true
     },
     (error, data) => {
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       // Restore the modified cells to their unexpanded state.
       unexpandedCells.map((cellId: string) =>
