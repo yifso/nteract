@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { MediaBundle } from "@nteract/records";
+
+import { MediaBundle } from "@nteract/commutable";
 
 /** Error handling types */
 interface ReactErrorInfo {
@@ -28,13 +29,13 @@ interface RichMediaProps {
    * for more detail.
    *
    */
-  data: MediaBundle;
+  data: Readonly<MediaBundle>;
   /**
    * custom settings, typically keyed by media type
    */
-  metadata: { [mediaType: string]: object };
+  metadata: Readonly<{ [mediaType: string]: object }>;
   /**
-   * React elements that accept mimebundle data, will get passed data[mimetype]
+   * React elements that accept media bundle data, will get passed data[mimetype]
    */
   children: React.ReactNode;
 
@@ -71,7 +72,7 @@ const ErrorFallback = (caught: Caught) => (
   </ErrorFallbackDiv>
 );
 
-export class RichMedia extends React.Component<RichMediaProps, State> {
+export class RichMedia extends React.PureComponent<RichMediaProps, State> {
   static defaultProps: Partial<RichMediaProps> = {
     data: {},
     metadata: {},

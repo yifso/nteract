@@ -1,8 +1,8 @@
-import { StreamOutput } from "@nteract/records";
+import { StreamOutputParams } from "@nteract/commutable";
 import Ansi from "ansi-to-react";
 import * as React from "react";
 
-type Props = StreamOutput;
+type Props = StreamOutputParams;
 
 export const StreamText = (props: Props) => {
   const { text, name } = props;

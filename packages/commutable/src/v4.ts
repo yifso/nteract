@@ -47,7 +47,11 @@ import {
   makeRawCell
 } from "./cells";
 
-import { createImmutableOutput, ImmutableOutput, Output } from "./outputs";
+import {
+  createImmutableOutput,
+  ImmutableOutput,
+  OnDiskOutput
+} from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";
 
@@ -60,7 +64,7 @@ export interface CodeCell {
   metadata: JSONObject;
   execution_count: ExecutionCount;
   source: MultiLineString;
-  outputs: Output[];
+  outputs: OnDiskOutput[];
 }
 
 export interface MarkdownCell {
@@ -189,7 +193,7 @@ function metadataToJS(immMetadata: ImmutableMap<string, any>) {
   return immMetadata.toJS() as JSONObject;
 }
 
-function outputToJS(output: ImmutableOutput): Output {
+function outputToJS(output: ImmutableOutput): OnDiskOutput {
   switch (output.output_type) {
     case "execute_result":
       return {

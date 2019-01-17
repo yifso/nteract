@@ -3,7 +3,7 @@
  */
 import * as Immutable from "immutable";
 
-import { MimeBundle } from "@nteract/commutable/src";
+import { MediaBundle } from "@nteract/commutable";
 import { Notification } from "react-notification-system";
 import {
   EntitiesRecordProps,
@@ -65,7 +65,7 @@ export interface NotebookMetadata {
 
 interface PagePayloadMessage {
   source: "page";
-  data: MimeBundle;
+  data: MediaBundle;
   start: number;
 }
 

@@ -1,7 +1,7 @@
 /**
  * @module actions
  */
-import { CellId, JSONObject, MimeBundle, Output } from "@nteract/commutable";
+import { CellId, JSONObject, MediaBundle, Output } from "@nteract/commutable";
 
 import * as actionTypes from "../actionTypes";
 
@@ -197,7 +197,7 @@ export function acceptPayloadMessage(payload: {
 
 export function updateDisplay(payload: {
   content: {
-    data: MimeBundle;
+    data: MediaBundle;
     metadata: JSONObject;
     transient: { display_id: string };
   };

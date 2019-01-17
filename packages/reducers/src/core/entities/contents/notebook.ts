@@ -8,7 +8,7 @@ import {
   StreamOutput
 } from "@nteract/commutable";
 import {
-  createImmutableMimeBundle,
+  createFrozenMediaBundle,
   createImmutableOutput,
   deleteCell,
   emptyCodeCell,
@@ -271,7 +271,7 @@ function updateDisplay(
   ]);
 
   const updatedContent = {
-    data: createImmutableMimeBundle(content.data),
+    data: createFrozenMediaBundle(content.data),
     metadata: Immutable.fromJS(content.metadata || {})
   };
 

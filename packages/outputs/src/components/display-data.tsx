@@ -1,5 +1,6 @@
-import { MediaBundle } from "@nteract/records";
 import * as React from "react";
+
+import { MediaBundle } from "@nteract/commutable";
 
 import { RichMedia } from "./rich-media";
 
@@ -29,7 +30,7 @@ interface Props {
    */
   metadata: {};
   /**
-   * React elements that accept mimebundle data, will get passed data[mimetype]
+   * React elements that accept media bundle data, will get passed data[mimetype]
    */
   children: React.ReactNode;
 }

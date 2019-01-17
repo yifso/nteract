@@ -49,7 +49,7 @@ export interface OnDiskMediaBundle {
   "image/svg+xml"?: MultiLineString;
 
   // The JSON mimetype has some corner cases because of the protocol / format assuming the values
-  // in a mimebundle are either:
+  // in a media bundle are either:
   //
   //   * A string; which would be deserialized
   //   * An array; which would have to be assumed to be a multiline string

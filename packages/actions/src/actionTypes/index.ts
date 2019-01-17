@@ -5,7 +5,7 @@ import {
   CellId,
   ImmutableJSONType,
   JSONObject,
-  MimeBundle,
+  MediaBundle,
   Output
 } from "@nteract/commutable";
 
@@ -69,7 +69,7 @@ export interface UpdateDisplay {
   type: "UPDATE_DISPLAY";
   payload: {
     content: {
-      data: MimeBundle;
+      data: MediaBundle;
       metadata: JSONObject;
       transient: { display_id: string };
     };

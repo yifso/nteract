@@ -29,7 +29,7 @@ import {
 } from "./cells";
 
 import {
-  ErrorOutput,
+  OnDiskErrorOutput,
   ImmutableOutput,
   makeDisplayData,
   makeErrorOutput,
@@ -62,6 +62,12 @@ interface MimeOutput<T extends string = string> extends MimePayload {
 
 export interface ExecuteResult extends MimeOutput<"pyout"> {}
 export interface DisplayData extends MimeOutput<"display_data"> {}
+export interface ErrorOutput {
+  output_type: "error" | "pyerr";
+  ename: string;
+  evalue: string;
+  traceback: string[];
+}
 
 export interface StreamOutput {
   output_type: "stream";
@@ -115,16 +121,16 @@ function createImmutableMarkdownCell(
 /**
  * Handle the old v3 version of the media
  */
-function createImmutableMimeBundle(output: MimeOutput): Readonly<MediaBundle> {
-  const mimeBundle: { [key: string]: MultiLineString | undefined } = {};
+function createImmutableMediaBundle(output: MimeOutput): Readonly<MediaBundle> {
+  const mediaBundle: { [key: string]: MultiLineString | undefined } = {};
   for (const key of Object.keys(output)) {
     // v3 had non-media types for rich media
     if (key in VALID_MIMETYPES) {
-      mimeBundle[VALID_MIMETYPES[key as MimeTypeKey]] =
+      mediaBundle[VALID_MIMETYPES[key as MimeTypeKey]] =
         output[key as keyof MimePayload];
     }
   }
-  return createFrozenMediaBundle(mimeBundle);
+  return createFrozenMediaBundle(mediaBundle);
 }
 
 function createImmutableOutput(output: Output): ImmutableOutput {
@@ -133,12 +139,12 @@ function createImmutableOutput(output: Output): ImmutableOutput {
       return makeExecuteResult({
         execution_count: output.prompt_number,
         // Note strangeness with v4 API
-        data: createImmutableMimeBundle(output),
+        data: createImmutableMediaBundle(output),
         metadata: immutableFromJS(output.metadata)
       });
     case "display_data":
       return makeDisplayData({
-        data: createImmutableMimeBundle(output),
+        data: createImmutableMediaBundle(output),
         metadata: immutableFromJS(output.metadata)
       });
     case "stream":

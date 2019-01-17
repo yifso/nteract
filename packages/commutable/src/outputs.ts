@@ -21,7 +21,7 @@ import {
 } from "./primitives";
 
 /** ExecuteResult Record Boilerplate */
-interface ExecuteResultParams {
+export interface ExecuteResultParams {
   output_type: "execute_result";
   execution_count: ExecutionCount;
   data: Readonly<MediaBundle>;
@@ -42,7 +42,7 @@ export type ImmutableExecuteResult = RecordOf<ExecuteResultParams>;
 
 /** DisplayData Record Boilerplate */
 
-interface DisplayDataParams {
+export interface DisplayDataParams {
   data: Readonly<MediaBundle>;
   output_type: "display_data";
   metadata?: any;
@@ -58,7 +58,7 @@ export type ImmutableDisplayData = RecordOf<DisplayDataParams>;
 
 /** StreamOutput Record Boilerplate */
 
-interface StreamOutputParams {
+export interface StreamOutputParams {
   output_type: "stream";
   name: "stdout" | "stderr";
   text: string;
@@ -70,11 +70,11 @@ export const makeStreamOutput = Record<StreamOutputParams>({
   text: ""
 });
 
-type ImmutableStreamOutput = RecordOf<StreamOutputParams>;
+export type ImmutableStreamOutput = RecordOf<StreamOutputParams>;
 
 /** ErrorOutput Record Boilerplate */
 
-interface ErrorOutputParams {
+export interface ErrorOutputParams {
   output_type: "error";
   ename: string;
   evalue: string;
@@ -88,7 +88,7 @@ export const makeErrorOutput = Record<ErrorOutputParams>({
   traceback: ImmutableList()
 });
 
-type ImmutableErrorOutput = RecordOf<ErrorOutputParams>;
+export type ImmutableErrorOutput = RecordOf<ErrorOutputParams>;
 
 //////////////
 
@@ -104,34 +104,38 @@ export type ImmutableOutput =
  *                             Output Types
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-export interface ExecuteResult {
+export interface OnDiskExecuteResult {
   output_type: "execute_result";
   execution_count: ExecutionCount;
   data: OnDiskMediaBundle;
   metadata: JSONObject;
 }
 
-export interface DisplayData {
+export interface OnDiskDisplayData {
   output_type: "display_data";
   data: OnDiskMediaBundle;
   metadata: JSONObject;
   transient?: JSONObject;
 }
 
-export interface StreamOutput {
+export interface OnDiskStreamOutput {
   output_type: "stream";
   name: "stdout" | "stderr";
   text: MultiLineString;
 }
 
-export interface ErrorOutput {
-  output_type: "error" | "pyerr";
+export interface OnDiskErrorOutput {
+  output_type: "error";
   ename: string;
   evalue: string;
   traceback: string[];
 }
 
-export type Output = ExecuteResult | DisplayData | StreamOutput | ErrorOutput;
+export type OnDiskOutput =
+  | OnDiskExecuteResult
+  | OnDiskDisplayData
+  | OnDiskStreamOutput
+  | OnDiskErrorOutput;
 
 /**
  * Converts a mutable representation of an output to an immutable representation.
@@ -140,7 +144,7 @@ export type Output = ExecuteResult | DisplayData | StreamOutput | ErrorOutput;
  *
  * @returns ImmutableOutput An immutable representation of the same output.
  */
-export function createImmutableOutput(output: Output): ImmutableOutput {
+export function createImmutableOutput(output: OnDiskOutput): ImmutableOutput {
   switch (output.output_type) {
     case "execute_result":
       return makeExecuteResult({
@@ -168,6 +172,16 @@ export function createImmutableOutput(output: Output): ImmutableOutput {
         traceback: ImmutableList(output.traceback)
       });
     default:
-      throw new TypeError(`Output type ${output.output_type} not recognized`);
+      // Since we're well typed, output is never. However we can still get new output types we don't handle
+      // and need to fail hard instead of making indeterminate behavior
+      const unknownOutput = output as any;
+      if (unknownOutput.output_type) {
+        throw new TypeError(
+          `Output type ${(output as any).output_type} not recognized`
+        );
+      }
+      throw new TypeError(
+        `Output structure not known: ${JSON.stringify(output)}`
+      );
   }
 }
