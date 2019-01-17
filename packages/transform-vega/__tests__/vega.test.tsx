@@ -20,7 +20,7 @@ const spec = {
 };
 
 describe("Vega2", () => {
-  it("renders VegaEmbed with embedMode vega", () => {
+  it.skip("renders VegaEmbed with embedMode vega", () => {
     const wrapper = shallow(<Vega2 data={spec} />);
 
     expect(wrapper.name()).toEqual("VegaEmbed");
@@ -30,7 +30,7 @@ describe("Vega2", () => {
 });
 
 describe("Vega3", () => {
-  it("renders VegaEmbed with embedMode vega", () => {
+  it.skip("renders VegaEmbed with embedMode vega", () => {
     const wrapper = shallow(<Vega3 data={spec} />);
 
     expect(wrapper.name()).toEqual("VegaEmbed");
@@ -40,7 +40,7 @@ describe("Vega3", () => {
 });
 
 describe("VegaLite1", () => {
-  it("renders VegaEmbed with embedMode vega-lite", () => {
+  it.skip("renders VegaEmbed with embedMode vega-lite", () => {
     const wrapper = shallow(<VegaLite1 data={spec} />);
 
     expect(wrapper.name()).toEqual("VegaEmbed");
@@ -50,7 +50,7 @@ describe("VegaLite1", () => {
 });
 
 describe("VegaLite2", () => {
-  it("renders VegaEmbed with embedMode vega-lite", () => {
+  it.skip("renders VegaEmbed with embedMode vega-lite", () => {
     const wrapper = shallow(<VegaLite2 data={spec} />);
 
     expect(wrapper.name()).toEqual("VegaEmbed");
@@ -60,7 +60,7 @@ describe("VegaLite2", () => {
 });
 
 describe("VegaEmbed", () => {
-  it("embeds vega", () => {
+  it.skip("embeds vega", () => {
     const spy = jest.fn();
     const wrapper = mount(
       <VegaEmbed data={spec} embedMode="vega-lite" renderedCallback={spy} />
@@ -71,7 +71,7 @@ describe("VegaEmbed", () => {
     expect(element.shouldComponentUpdate({ data: "324" })).toEqual(true);
   });
 
-  it("embeds vega and handles updates", () => {
+  it.skip("embeds vega and handles updates", () => {
     const spy = jest.fn();
     const wrapper = mount(
       <VegaEmbed data={spec} embedMode="vega-lite" renderedCallback={spy} />
