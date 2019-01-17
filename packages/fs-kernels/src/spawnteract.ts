@@ -22,6 +22,8 @@
 
 /* eslint camelcase: 0 */
 // ^--- #justjupyterthings
+// tslint:disable:object-literal-sort-keys
+// ^--- let keys for ports be in port id order
 /**
  *
  */
@@ -63,16 +65,16 @@ function createConnectionInfo(
   ports: number[]
 ): { version: number } & JupyterConnectionInfo {
   return {
-    control_port: ports[1],
-    hb_port: ports[0],
-    iopub_port: ports[4],
-    ip: "127.0.0.1",
-    key: uuid.v4(),
-    shell_port: ports[2],
-    signature_scheme: "hmac-sha256",
-    stdin_port: ports[3],
-    transport: "tcp",
     version: 5,
+    key: uuid.v4(),
+    signature_scheme: "hmac-sha256",
+    transport: "tcp",
+    ip: "127.0.0.1",
+    hb_port: ports[0],
+    control_port: ports[1],
+    shell_port: ports[2],
+    stdin_port: ports[3],
+    iopub_port: ports[4]
   };
 }
 
