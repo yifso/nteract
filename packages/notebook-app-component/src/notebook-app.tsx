@@ -95,7 +95,6 @@ interface AnyCellProps {
   outputHidden: boolean;
   outputExpanded: boolean;
   models: Immutable.Map<string, any>;
-  codeMirrorMode: string | Immutable.Map<string, any>;
   selectCell: () => void;
   focusEditor: () => void;
   unfocusEditor: () => void;
@@ -115,6 +114,8 @@ const mapStateToCellProps = (
       "Cell components should not be used with non-notebook models"
     );
   }
+
+  const kernelRef = model.kernelRef;
 
   const cell = selectors.notebook.cellById(model, { id });
   if (!cell) {
@@ -143,7 +144,6 @@ const mapStateToCellProps = (
 
   const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
 
-  const kernelRef = selectors.currentKernelRef(state);
   let channels: Subject<any> | undefined;
   if (kernelRef) {
     const kernel = selectors.kernel(state, { kernelRef });
@@ -365,7 +365,6 @@ type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 interface PureNotebookProps {
   cellOrder?: Immutable.List<any>;
   theme?: string;
-  codeMirrorMode?: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
   kernelRef?: KernelRef;
 }
@@ -373,7 +372,6 @@ interface PureNotebookProps {
 interface NotebookStateProps {
   cellOrder: Immutable.List<any>;
   theme: string;
-  codeMirrorMode: string | Immutable.Map<string, any>;
   contentRef: ContentRef;
   kernelRef?: KernelRef | null;
 }
@@ -409,64 +407,60 @@ interface NotebookDispatchProps {
   ) => void;
 }
 
-const mapStateToProps = (
-  state: AppState,
-  ownProps: PureNotebookProps
-): NotebookStateProps => {
-  const contentRef = ownProps.contentRef;
-
+const makeMapStateToProps = (
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
+) => {
+  const { contentRef } = initialProps;
   if (!contentRef) {
     throw new Error("<Notebook /> has to have a contentRef");
   }
-  const content = selectors.content(state, { contentRef });
-  const model = selectors.model(state, { contentRef });
 
-  if (!model || !content) {
-    throw new Error(
-      "<Notebook /> has to have content & model that are notebook types"
-    );
-  }
-  if ((model as any).type === "dummy" || model.type === "unknown") {
-    return {
-      cellOrder: Immutable.List(),
-      codeMirrorMode: Immutable.Map({ name: "text/plain" }),
-      contentRef,
-      kernelRef: null,
-      theme: selectors.userTheme(state)
-    };
-  }
+  const mapStateToProps = (state: AppState): NotebookStateProps => {
+    const content = selectors.content(state, { contentRef });
+    const model = selectors.model(state, { contentRef });
 
-  if (model.type !== "notebook") {
-    throw new Error(
-      "<Notebook /> has to have content & model that are notebook types"
-    );
-  }
-
-  // TODO: Determine and fix things so we have one reliable place for the kernelRef
-  const kernelRef =
-    selectors.currentKernelRef(state) || ownProps.kernelRef || model.kernelRef;
-
-  let kernelInfo = null;
-
-  if (kernelRef) {
-    const kernel = selectors.kernel(state, { kernelRef });
-    if (kernel) {
-      kernelInfo = kernel.info;
+    if (!model || !content) {
+      throw new Error(
+        "<Notebook /> has to have content & model that are notebook types"
+      );
     }
-  }
+    const theme = selectors.userTheme(state);
 
-  // TODO: Rely on the kernel's codeMirror version first and foremost, then fallback on notebook
-  const codeMirrorMode = kernelInfo
-    ? kernelInfo.codemirrorMode
-    : selectors.notebook.codeMirrorMode(model);
+    if ((model as any).type === "dummy" || model.type === "unknown") {
+      return {
+        cellOrder: Immutable.List(),
+        contentRef,
+        kernelRef: null,
+        theme
+      };
+    }
 
-  return {
-    cellOrder: selectors.notebook.cellOrder(model),
-    codeMirrorMode,
-    contentRef,
-    kernelRef,
-    theme: selectors.userTheme(state)
+    if (model.type !== "notebook") {
+      throw new Error(
+        "<Notebook /> has to have content & model that are notebook types"
+      );
+    }
+
+    const kernelRef = model.kernelRef;
+
+    let kernelInfo = null;
+
+    if (kernelRef) {
+      const kernel = selectors.kernel(state, { kernelRef });
+      if (kernel) {
+        kernelInfo = kernel.info;
+      }
+    }
+
+    return {
+      cellOrder: selectors.notebook.cellOrder(model),
+      contentRef,
+      kernelRef,
+      theme
+    };
   };
+  return mapStateToProps;
 };
 
 const Cells = styled.div`
@@ -562,13 +556,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
 
   renderCell(id: string) {
     const { contentRef } = this.props;
-    return (
-      <ConnectedCell
-        id={id}
-        codeMirrorMode={this.props.codeMirrorMode}
-        contentRef={contentRef}
-      />
-    );
+    return <ConnectedCell id={id} contentRef={contentRef} />;
   }
 
   createCellElement(id: string) {
@@ -616,6 +604,6 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
 
 export const ConnectedNotebook = dragDropContext(HTML5Backend)(NotebookApp);
 export default connect(
-  mapStateToProps,
+  makeMapStateToProps,
   mapDispatchToProps
 )(ConnectedNotebook);
