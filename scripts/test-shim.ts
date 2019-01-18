@@ -49,3 +49,6 @@ process.on("unhandledRejection", (error, promise) => {
   console.error(error.stack);
   promise.catch(err => console.error("promise rejected", err));
 });
+
+// HACK: To avoid error of NotImplemented in vega tests
+HTMLCanvasElement.prototype.getContext = jest.fn();
