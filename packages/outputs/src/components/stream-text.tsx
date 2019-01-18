@@ -1,21 +1,29 @@
-import { StreamOutput } from "@nteract/records";
+import { ImmutableStreamOutput } from "@nteract/commutable";
 import Ansi from "ansi-to-react";
 import * as React from "react";
 
-type Props = StreamOutput;
+interface Props {
+  output_type: "stream";
+  output: ImmutableStreamOutput;
+}
 
-export const StreamText = (props: Props) => {
-  const { text, name } = props;
+export class StreamText extends React.PureComponent<Props> {
+  static defaultProps = {
+    output: null,
+    output_type: "stream"
+  };
 
-  return (
-    <Ansi linkify={false} className={`"nteract-display-area-${name}`}>
-      {text}
-    </Ansi>
-  );
-};
+  render() {
+    const { output } = this.props;
+    if (!output) {
+      return null;
+    }
+    const { text, name } = output;
 
-StreamText.defaultProps = {
-  output_type: "stream",
-  text: "",
-  name: "stdout"
-};
+    return (
+      <Ansi linkify={false} className={`"nteract-display-area-${name}`}>
+        {text}
+      </Ansi>
+    );
+  }
+}

@@ -1,5 +1,5 @@
 // We might only need this as a devDependency as it is only here for flow
-import { OutputType } from "@nteract/records";
+import { ImmutableOutput } from "@nteract/commutable";
 import * as React from "react";
 
 interface Props {
@@ -8,14 +8,12 @@ interface Props {
    */
   children: React.ReactNode;
   /**
-   * The raw output, as expected from @nteract/records
+   * The raw output
    */
-  output: OutputType;
+  output: ImmutableOutput;
 }
 
-interface State {}
-
-export class Output extends React.Component<Props, State> {
+export class Output extends React.PureComponent<Props> {
   static defaultProps = {
     output: null
   };
@@ -57,6 +55,6 @@ export class Output extends React.Component<Props, State> {
     }
 
     // Render the output component that handles this output type
-    return React.cloneElement(chosenOne, this.props.output as any);
+    return React.cloneElement(chosenOne, { output: this.props.output });
   }
 }

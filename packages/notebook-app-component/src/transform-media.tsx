@@ -3,66 +3,100 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { JSONObject } from "@nteract/commutable";
+import {
+  ImmutableDisplayData,
+  ImmutableExecuteResult,
+  ImmutableOutput,
+  JSONObject
+} from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
-import { ImmutableOutput } from "@nteract/records";
 import { AppState, ContentRef } from "@nteract/types";
 
 interface OwnProps {
   output_type: string;
-  id: string;
+  cellId: string;
   contentRef: ContentRef;
-  output: ImmutableOutput;
   index: number;
 }
 
-interface Props extends OwnProps {
+interface MappedProps {
+  Media: React.ComponentType<any>;
+  mediaType?: string;
+  output?: ImmutableDisplayData | ImmutableExecuteResult;
+}
+
+interface DispatchProps {
   mediaActions: {
     onMetadataChange: (metadata: JSONObject) => void;
   };
-  Media: React.ComponentType<any>;
-  mediaType?: string;
 }
 
-class PureTransformMedia extends React.Component<Props> {
-  render() {
-    const { Media, mediaActions, mediaType } = this.props;
-    return (
-      <Media
-        {...mediaActions}
-        data={this.props.output.get("data").get(mediaType)}
-        metadata={this.props.output.get("metadata").get(mediaType)}
-      />
-    );
+const PureTransformMedia = (props: MappedProps & DispatchProps) => {
+  const { Media, mediaActions, mediaType, output } = props;
+
+  // If we had no valid result, return an empty output
+  if (!mediaType || !output) {
+    return null;
   }
-}
+
+  return (
+    <Media
+      {...mediaActions}
+      data={output.data[mediaType]}
+      metadata={output.metadata.get(mediaType)}
+    />
+  );
+};
 
 const richestMediaType = (
-  output: ImmutableOutput,
+  output: ImmutableExecuteResult | ImmutableDisplayData,
   order: Immutable.List<string>,
-  handlers: any
+  handlers: { [k: string]: any } | Immutable.Map<string, any>
 ) => {
-  const outputData = output.get("data");
-  const validMediaTypes = Immutable.List<string>(
-    outputData.keys((mediaType: string) => {
-      if (handlers[mediaType] && order.includes(mediaType)) {
-        return mediaType;
-      }
-    })
-  );
-  return validMediaTypes
-    .sort((a: string, b: string) => order.indexOf(a) - order.indexOf(b))
-    .get(0);
+  const outputData = output.data;
+
+  // Find the first mediaType in the output data that we support with a handler
+  const mediaType = order.find(key => {
+    return (
+      outputData.hasOwnProperty(key) &&
+      (handlers.hasOwnProperty(key) || handlers.get(key, false))
+    );
+  });
+
+  return mediaType;
 };
 
 const makeMapStateToProps = (
   initialState: AppState,
   initialProps: OwnProps
 ) => {
-  const { output } = initialProps;
-  const mapStateToProps = (state: AppState) => {
+  const { contentRef, index, cellId } = initialProps;
+
+  const mapStateToProps = (state: AppState): MappedProps => {
+    const output: ImmutableOutput = state.core.entities.contents.byRef.getIn(
+      [contentRef, "model", "notebook", "cellMap", cellId, "outputs", index],
+      null
+    );
+
+    // This component should only be used with display data and execute result
+    if (
+      !output ||
+      !(
+        output.output_type === "display_data" ||
+        output.output_type === "execute_result"
+      )
+    ) {
+      console.warn(
+        "connected transform media managed to get a non media bundle output"
+      );
+      return {
+        Media: () => null
+      };
+    }
+
     const handlers = selectors.transformsById(state);
     const order = selectors.displayOrder(state);
+
     const mediaType = richestMediaType(output, order, handlers);
     if (mediaType) {
       const Media = selectors.transform(state, { id: mediaType });
@@ -73,8 +107,8 @@ const makeMapStateToProps = (
       };
     }
     return {
-      mediaType,
       Media: () => null,
+      mediaType,
       output
     };
   };
@@ -85,13 +119,18 @@ const makeMapDispatchToProps = (
   initialDispath: Dispatch,
   initialProps: OwnProps
 ) => {
-  const { id, contentRef, index } = initialProps;
+  const { cellId, contentRef, index } = initialProps;
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       mediaActions: {
         onMetadataChange: (metadata: JSONObject) => {
           dispatch(
-            actions.updateOutputMetadata({ id, contentRef, metadata, index })
+            actions.updateOutputMetadata({
+              id: cellId,
+              contentRef,
+              metadata,
+              index
+            })
           );
         }
       }

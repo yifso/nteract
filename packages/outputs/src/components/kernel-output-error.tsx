@@ -2,32 +2,24 @@ import Ansi from "ansi-to-react";
 import * as React from "react";
 import styled from "styled-components";
 
+import { ImmutableErrorOutput } from "@nteract/commutable";
+
 interface Props {
-  /**
-   *  The name of the exception. This value is returned by the kernel.
-   */
-  ename: string;
-  /**
-   * The value of the exception. This value is returned by the kernel.
-   */
-  evalue: string;
-  /**
-   * The output type passed to the Output component. This should be `error`
-   * if you would like to render a KernelOutputError component.
-   */
+  output: ImmutableErrorOutput;
   output_type: "error";
-  /**
-   * The tracebook of the exception. This value is returned by the kernel.
-   */
-  traceback: string[];
 }
 
 const PlainKernelOutputError = (props: Partial<Props>) => {
-  const { ename, evalue, traceback } = props;
+  const { output } = props;
+  if (!output) {
+    return null;
+  }
 
-  const joinedTraceback = Array.isArray(traceback)
-    ? traceback.join("\n")
-    : traceback;
+  const { ename, evalue, traceback } = output;
+
+  // Allow traceback to be Immutable.List or Array
+  const joinedTraceback =
+    typeof traceback.join === "function" ? traceback.join("\n") : traceback;
 
   const kernelOutputError = [];
 
@@ -47,10 +39,7 @@ export const KernelOutputError = styled(PlainKernelOutputError)`
 `;
 
 KernelOutputError.defaultProps = {
-  output_type: "error",
-  ename: "",
-  evalue: "",
-  traceback: []
+  output_type: "error"
 };
 
 KernelOutputError.displayName = "KernelOutputError";

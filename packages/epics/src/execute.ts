@@ -32,7 +32,7 @@ import {
 } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
-import { CellId, Output } from "@nteract/commutable";
+import { CellId, OnDiskOutput } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, PayloadMessage } from "@nteract/types";
 
@@ -95,7 +95,9 @@ export function executeCellStream(
     // All actions for new outputs
     cellMessages.pipe(
       outputs() as any,
-      map((output: Output) => actions.appendOutput({ id, output, contentRef }))
+      map((output: OnDiskOutput) =>
+        actions.appendOutput({ id, output, contentRef })
+      )
     ),
 
     // clear_output display message

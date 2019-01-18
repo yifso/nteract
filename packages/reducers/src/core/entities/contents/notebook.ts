@@ -4,11 +4,12 @@ import {
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableNotebook,
-  Output,
-  StreamOutput
+  OnDiskOutput,
+  ImmutableOutput,
+  OnDiskStreamOutput
 } from "@nteract/commutable";
 import {
-  createImmutableMimeBundle,
+  createFrozenMediaBundle,
   createImmutableOutput,
   deleteCell,
   emptyCodeCell,
@@ -42,21 +43,29 @@ type KeyPaths = Immutable.List<KeyPath>;
  * @return {Immutable.List<Object>} updated-outputs - Outputs + Output
  */
 export function reduceOutputs(
-  outputs: Immutable.List<any> = Immutable.List(),
-  output: Output
+  outputs: Immutable.List<ImmutableOutput> = Immutable.List(),
+  output: OnDiskOutput
 ) {
-  const last = outputs.last();
+  // Find the last output to see if it's a stream type
+  // If we don't find one, default to null
+  const last = outputs.last(null);
 
-  if (
-    output.output_type !== "stream" ||
-    !last ||
-    (outputs.size > 0 && last.get("output_type") !== "stream")
-  ) {
-    // If it's not a stream type, we just fold in the output
+  if (!last || !last.output_type) {
     return outputs.push(createImmutableOutput(output));
   }
 
-  const streamOutput: StreamOutput = output;
+  if (output.output_type !== "stream" || last.output_type !== "stream") {
+    // If the last output type or the incoming output type isn't a stream
+    // we just add it to the outputs
+    // This is kind of like a "break" between streams if we get error, display_data, execute_result, etc.
+    return outputs.push(createImmutableOutput(output));
+  }
+
+  const streamOutput = output;
+
+  if (typeof streamOutput.name === "undefined") {
+    return outputs.push(createImmutableOutput(streamOutput));
+  }
 
   function appendText(text: string): string {
     if (typeof streamOutput.text === "string") {
@@ -65,28 +74,22 @@ export function reduceOutputs(
     return text;
   }
 
-  if (
-    last &&
-    outputs.size > 0 &&
-    typeof streamOutput.name !== "undefined" &&
-    last.get("output_type") === "stream"
-  ) {
-    // Invariant: size > 0, outputs.last() exists
-    if (last.get("name") === streamOutput.name) {
-      return outputs.updateIn([outputs.size - 1, "text"], appendText);
-    }
-    const nextToLast:
-      | Immutable.Map<string, any>
-      | undefined = outputs.butLast().last();
-    if (
-      nextToLast &&
-      nextToLast.get("output_type") === "stream" &&
-      nextToLast.get("name") === streamOutput.name
-    ) {
-      return outputs.updateIn([outputs.size - 2, "text"], appendText);
-    }
+  // Invariant: size > 0, outputs.last() exists
+  if (last.name === streamOutput.name) {
+    return outputs.updateIn([outputs.size - 1, "text"], appendText);
   }
 
+  // Check if there's a separate stream to merge with
+  const nextToLast = outputs.butLast().last(null);
+
+  if (
+    nextToLast &&
+    nextToLast.output_type === "stream" &&
+    nextToLast.name === streamOutput.name
+  ) {
+    return outputs.updateIn([outputs.size - 2, "text"], appendText);
+  }
+  // If nothing else matched, just append it
   return outputs.push(createImmutableOutput(streamOutput));
 }
 
@@ -200,9 +203,8 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
     return state.updateIn(
       ["notebook", "cellMap", cellId, "outputs"],
       (
-        outputs: Immutable.List<Immutable.Map<string, any>>
-      ): Immutable.List<Immutable.Map<string, any>> =>
-        reduceOutputs(outputs, output)
+        outputs: Immutable.List<ImmutableOutput>
+      ): Immutable.List<ImmutableOutput> => reduceOutputs(outputs, output)
     );
   }
 
@@ -271,7 +273,7 @@ function updateDisplay(
   ]);
 
   const updatedContent = {
-    data: createImmutableMimeBundle(content.data),
+    data: createFrozenMediaBundle(content.data),
     metadata: Immutable.fromJS(content.metadata || {})
   };
 

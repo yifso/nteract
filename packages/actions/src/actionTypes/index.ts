@@ -5,8 +5,8 @@ import {
   CellId,
   ImmutableJSONType,
   JSONObject,
-  MimeBundle,
-  Output
+  MediaBundle,
+  OnDiskOutput
 } from "@nteract/commutable";
 
 import { ContentRef, HostRef, KernelRef, PayloadMessage } from "@nteract/types";
@@ -59,7 +59,7 @@ export interface AppendOutput {
   type: "APPEND_OUTPUT";
   payload: {
     id: CellId;
-    output: Output;
+    output: OnDiskOutput;
     contentRef: ContentRef;
   };
 }
@@ -69,7 +69,7 @@ export interface UpdateDisplay {
   type: "UPDATE_DISPLAY";
   payload: {
     content: {
-      data: MimeBundle;
+      data: MediaBundle;
       metadata: JSONObject;
       transient: { display_id: string };
     };

@@ -1,7 +1,12 @@
 /**
  * @module actions
  */
-import { CellId, JSONObject, MimeBundle, Output } from "@nteract/commutable";
+import {
+  CellId,
+  JSONObject,
+  MediaBundle,
+  OnDiskOutput
+} from "@nteract/commutable";
 
 import * as actionTypes from "../actionTypes";
 
@@ -173,7 +178,7 @@ export function commMessageAction(message: any) {
 
 export function appendOutput(payload: {
   id: CellId;
-  output: Output;
+  output: OnDiskOutput;
   contentRef: ContentRef;
 }): actionTypes.AppendOutput {
   return {
@@ -197,7 +202,7 @@ export function acceptPayloadMessage(payload: {
 
 export function updateDisplay(payload: {
   content: {
-    data: MimeBundle;
+    data: MediaBundle;
     metadata: JSONObject;
     transient: { display_id: string };
   };

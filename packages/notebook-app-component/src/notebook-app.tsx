@@ -271,15 +271,13 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                 <Output output={output} key={index}>
                   <TransformMedia
                     output_type={"display_data"}
-                    output={output}
-                    id={id}
+                    cellId={id}
                     contentRef={contentRef}
                     index={index}
                   />
                   <TransformMedia
                     output_type={"execute_result"}
-                    output={output}
-                    id={id}
+                    cellId={id}
                     contentRef={contentRef}
                     index={index}
                   />
