@@ -71,17 +71,26 @@ export class StatusBar extends React.Component<Props> {
 
 interface InitialProps {
   contentRef: ContentRef;
-  kernelRef?: KernelRef | null;
 }
 
 const makeMapStateToProps = (
   initialState: AppState,
   initialProps: InitialProps
 ): ((state: AppState) => Props) => {
-  const { contentRef, kernelRef } = initialProps;
+  const { contentRef } = initialProps;
 
   const mapStateToProps = (state: AppState) => {
     const content = selectors.content(state, { contentRef });
+
+    if (!content || content.type !== "notebook") {
+      return {
+        kernelStatus: NOT_CONNECTED,
+        kernelSpecDisplayName: "no kernel",
+        lastSaved: null
+      };
+    }
+
+    const kernelRef = content.model.kernelRef;
     let kernel = null;
     if (kernelRef) {
       kernel = selectors.kernel(state, { kernelRef });
