@@ -14,18 +14,18 @@ interface JupyterPaths {
   data: string[];
 }
 
-function home(subDir?: string) {
-  const baseDir = homedir();
+function home(subDir?: string): string {
+  const baseDir: string = homedir();
   return subDir ? path.join(baseDir, subDir) : baseDir;
 }
 
-function pushIfExists(paths: string[], pathToPush: string) {
+function pushIfExists(paths: string[], pathToPush: string): void {
   if (fs.existsSync(pathToPush)) {
     paths.push(pathToPush);
   }
 }
 
-function accessCheck(d: fs.PathLike) {
+function accessCheck(d: fs.PathLike): boolean {
   // check if a directory exists and is listable (X_OK)
   if (!fs.existsSync(d)) {
     return false;
@@ -39,7 +39,7 @@ function accessCheck(d: fs.PathLike) {
   return true;
 }
 
-function guessSysPrefix() {
+function guessSysPrefix(): string | null | undefined {
   // inexpensive guess for sysPrefix based on location of `which python`
   // based on shutil.which from Python 3.5
 
@@ -48,24 +48,24 @@ function guessSysPrefix() {
     return sysPrefixGuess;
   }
 
-  const PATH = (process.env.PATH || "").split(path.delimiter);
+  const PATH: string[] = (process.env.PATH || "").split(path.delimiter);
   if (PATH.length === 0) {
     sysPrefixGuess = null;
     return;
   }
 
-  let pathext = [""];
+  let pathext: string[] = [""];
   if (process.platform === "win32") {
     pathext = (process.env.PATHEXT || "").split(path.delimiter);
   }
 
   PATH.some(bin => {
     bin = path.resolve(bin);
-    const python = path.join(bin, "python");
+    const python: string = path.join(bin, "python");
 
     return pathext.some(
       (ext: string): boolean => {
-        const exe = python + ext;
+        const exe: string = python + ext;
         if (accessCheck(exe)) {
           // PREFIX/bin/python exists, return PREFIX
           // following symlinks
@@ -91,7 +91,7 @@ function guessSysPrefix() {
 
 let askJupyterPromise: Promise<JupyterPaths> | null = null;
 
-function askJupyter() {
+function askJupyter(): Promise<JupyterPaths> {
   // ask Jupyter where the paths are
   if (!askJupyterPromise) {
     askJupyterPromise = new Promise((resolve, reject) => {
@@ -107,11 +107,11 @@ function askJupyter() {
   return askJupyterPromise;
 }
 
-function systemConfigDirs() {
+function systemConfigDirs(): string[] {
   const paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
-    const defaultProgramDataPath = "C:\\ProgramData";
+    const defaultProgramDataPath: string = "C:\\ProgramData";
     pushIfExists(
       paths,
       path.resolve(
@@ -131,7 +131,7 @@ async function configDirs(opts?: {
 }): Promise<string[]> {
   if (opts && opts.askJupyter) {
     try {
-      const configPaths = await askJupyter();
+      const configPaths: JupyterPaths = await askJupyter();
       return configPaths.config.filter(fs.existsSync);
     } catch {
       return configDirs();
@@ -144,7 +144,7 @@ async function configDirs(opts?: {
   }
 
   pushIfExists(paths, home(".jupyter"));
-  const systemDirs = systemConfigDirs();
+  const systemDirs: string[] = systemConfigDirs();
 
   if (opts && opts.withSysPrefix) {
     return new Promise<string[]>((resolve, reject) => {
@@ -154,19 +154,19 @@ async function configDirs(opts?: {
     });
   }
   // inexpensive guess, based on location of `python` executable
-  const sysPrefix = guessSysPrefix() || "/usr/local/";
-  const sysPathed = path.join(sysPrefix, "etc", "jupyter");
+  const sysPrefix: string = guessSysPrefix() || "/usr/local/";
+  const sysPathed: string = path.join(sysPrefix, "etc", "jupyter");
   if (systemDirs.indexOf(sysPathed) === -1) {
     pushIfExists(paths, sysPathed);
   }
   return paths.concat(systemDirs);
 }
 
-function systemDataDirs() {
+function systemDataDirs(): string[] {
   const paths: string[] = [];
   // System wide for Windows and Unix
   if (process.platform === "win32") {
-    const defaultProgramDataPath = "C:\\ProgramData";
+    const defaultProgramDataPath: string = "C:\\ProgramData";
     pushIfExists(
       paths,
       path.resolve(
@@ -183,14 +183,14 @@ function systemDataDirs() {
 /**
  * where the userland data directory resides
  * includes things like the runtime files
- * @return {string} directory for data
+ * @return directory for data
  */
-function userDataDir() {
+function userDataDir(): string {
   // Userland specific
   if (process.platform === "darwin") {
     return home("Library/Jupyter");
   } else if (process.platform === "win32") {
-    const defaultAppDataPath = home("AppData");
+    const defaultAppDataPath: string = home("AppData");
     return path.resolve(
       path.join(process.env.APPDATA || defaultAppDataPath, "jupyter")
     );
@@ -205,8 +205,8 @@ function userDataDir() {
  *
  * When withSysPrefix is set, this returns a promise of directories
  *
- * @param  {bool} withSysPrefix include the sys.prefix paths
- * @return {Array} All the Jupyter Data Dirs
+ * @param withSysPrefix include the sys.prefix paths
+ * @return All the Jupyter Data Dirs
  */
 async function dataDirs(opts?: {
   askJupyter?: () => Promise<JupyterPaths>;
@@ -214,7 +214,7 @@ async function dataDirs(opts?: {
 }): Promise<string[]> {
   if (opts && opts.askJupyter) {
     try {
-      const dataPaths = await askJupyter();
+      const dataPaths: JupyterPaths = await askJupyter();
       return dataPaths.data.filter(fs.existsSync);
     } catch (error) {
       return dataDirs();
@@ -228,7 +228,7 @@ async function dataDirs(opts?: {
 
   pushIfExists(paths, userDataDir());
 
-  const systemDirs = systemDataDirs();
+  const systemDirs: string[] = systemDataDirs();
 
   if (opts && opts.withSysPrefix) {
     return new Promise<string[]>((resolve, reject) => {
@@ -238,9 +238,9 @@ async function dataDirs(opts?: {
     });
   }
   // inexpensive guess, based on location of `python` executable
-  const sysPrefix = guessSysPrefix();
+  const sysPrefix: string | null | undefined = guessSysPrefix();
   if (sysPrefix) {
-    const sysPathed = path.join(sysPrefix, "share", "jupyter");
+    const sysPathed: string = path.join(sysPrefix, "share", "jupyter");
     if (systemDirs.indexOf(sysPathed) === -1) {
       pushIfExists(paths, sysPathed);
     }
@@ -253,7 +253,7 @@ async function runtimeDir(opts?: {
 }): Promise<string> {
   if (opts && opts.askJupyter) {
     try {
-      const paths = await askJupyter();
+      const paths: JupyterPaths = await askJupyter();
       return paths.runtime;
     } catch (error) {
       return runtimeDir();
