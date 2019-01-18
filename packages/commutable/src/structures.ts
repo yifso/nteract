@@ -119,8 +119,9 @@ export function insertCellAfter(
 }
 
 /**
- * Delete a cell with CellID at a given location. Note that this function
- * is deprecated in favor of `deleteCell`.
+ * Deprecated: Delete a cell with CellID at a given location.
+ *
+ * Note that this function is deprecated in favor of `deleteCell`.
  *
  * @param notebook The notebook containing the cell.
  * @param cellID The ID of the cell that will be deleted.
@@ -158,7 +159,7 @@ export function deleteCell(
 }
 
 /**
- * A new notebook with a single empty code cell. This function is useful
+ * A new 'monocell' notebook with a single empty code cell. This function is useful
  * if you are looking to initialize a fresh, new notebook.
  */
 export const monocellNotebook = appendCellToNotebook(
