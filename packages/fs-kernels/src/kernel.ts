@@ -11,6 +11,43 @@ import { JupyterConnectionInfo } from "enchannel-zmq-backend";
 import { KernelSpec } from "./kernelspecs";
 import { cleanup, launch, LaunchedKernel, launchSpec } from "./spawnteract";
 
+interface Usage {
+  /**
+   * percentage (from 0 to 100*vcore)
+   */
+  cpu: number;
+
+  /**
+   * bytes
+   */
+  memory: number;
+
+  /**
+   * PPID
+   */
+  ppid: number;
+
+  /**
+   * PID
+   */
+  pid: number;
+
+  /**
+   * ms user + system time
+   */
+  ctime: number;
+
+  /**
+   * ms since the start of the process
+   */
+  elapsed: number;
+
+  /**
+   * ms since epoch
+   */
+  timestamp: number;
+}
+
 export class Kernel {
   kernelSpec: KernelSpec;
   process: ExecaChildProcess;
@@ -34,7 +71,7 @@ export class Kernel {
     this.process.removeAllListeners();
   }
 
-  async getUsage() {
+  async getUsage(): Promise<Usage> {
     return await pidusage(this.process.pid);
   }
 }
