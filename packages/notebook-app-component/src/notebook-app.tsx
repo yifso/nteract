@@ -104,97 +104,105 @@ interface AnyCellProps {
   metadata: object;
 }
 
-const mapStateToCellProps = (
-  state: AppState,
+const makeMapStateToCellProps = (
+  initialState: AppState,
   { id, contentRef }: { id: string; contentRef: ContentRef }
 ) => {
-  const model = selectors.model(state, { contentRef });
-  if (!model || model.type !== "notebook") {
-    throw new Error(
-      "Cell components should not be used with non-notebook models"
-    );
-  }
-
-  const kernelRef = model.kernelRef;
-
-  const cell = selectors.notebook.cellById(model, { id });
-  if (!cell) {
-    throw new Error("cell not found inside cell map");
-  }
-
-  const cellType = (cell as any).get("cell_type");
-  const outputs = cell.get("outputs", Immutable.List());
-
-  const sourceHidden =
-    (cellType === "code" &&
-      (cell.getIn(["metadata", "inputHidden"]) ||
-        cell.getIn(["metadata", "hide_input"]))) ||
-    false;
-
-  const outputHidden =
-    cellType === "code" &&
-    (outputs.size === 0 || cell.getIn(["metadata", "outputHidden"]));
-
-  const outputExpanded =
-    cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);
-
-  const tags = cell.getIn(["metadata", "tags"]) || Immutable.Set();
-
-  const pager = model.getIn(["cellPagers", id]) || Immutable.List();
-
-  const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
-
-  let channels: Subject<any> | undefined;
-  if (kernelRef) {
-    const kernel = selectors.kernel(state, { kernelRef });
-    if (kernel) {
-      channels = kernel.channels;
+  const mapStateToCellProps = (state: AppState) => {
+    const model = selectors.model(state, { contentRef });
+    if (!model || model.type !== "notebook") {
+      throw new Error(
+        "Cell components should not be used with non-notebook models"
+      );
     }
-  }
 
-  return {
-    cellFocused: model.cellFocused === id,
-    cellStatus: model.transient.getIn(["cellMap", id, "status"]),
-    cellType,
-    channels,
-    contentRef,
-    editorFocused: model.editorFocused === id,
-    executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
-    metadata,
-    models: selectors.models(state),
-    outputExpanded,
-    outputHidden,
-    outputs,
-    pager,
-    source: cell.get("source", ""),
-    sourceHidden,
-    tags,
-    theme: selectors.userTheme(state)
+    const kernelRef = model.kernelRef;
+
+    const cell = selectors.notebook.cellById(model, { id });
+    if (!cell) {
+      throw new Error("cell not found inside cell map");
+    }
+
+    const cellType = (cell as any).get("cell_type");
+    const outputs = cell.get("outputs", Immutable.List());
+
+    const sourceHidden =
+      (cellType === "code" &&
+        (cell.getIn(["metadata", "inputHidden"]) ||
+          cell.getIn(["metadata", "hide_input"]))) ||
+      false;
+
+    const outputHidden =
+      cellType === "code" &&
+      (outputs.size === 0 || cell.getIn(["metadata", "outputHidden"]));
+
+    const outputExpanded =
+      cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);
+
+    const tags = cell.getIn(["metadata", "tags"]) || Immutable.Set();
+
+    const pager = model.getIn(["cellPagers", id]) || Immutable.List();
+
+    const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
+
+    let channels: Subject<any> | undefined;
+    if (kernelRef) {
+      const kernel = selectors.kernel(state, { kernelRef });
+      if (kernel) {
+        channels = kernel.channels;
+      }
+    }
+
+    return {
+      cellFocused: model.cellFocused === id,
+      cellStatus: model.transient.getIn(["cellMap", id, "status"]),
+      cellType,
+      channels,
+      contentRef,
+      editorFocused: model.editorFocused === id,
+      executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
+      metadata,
+      models: selectors.models(state),
+      outputExpanded,
+      outputHidden,
+      outputs,
+      pager,
+      source: cell.get("source", ""),
+      sourceHidden,
+      tags,
+      theme: selectors.userTheme(state)
+    };
   };
+  return mapStateToCellProps;
 };
 
-const mapDispatchToCellProps = (
-  dispatch: Dispatch,
+const makeMapDispatchToCellProps = (
+  initialDispatch: Dispatch,
   { id, contentRef }: { id: string; contentRef: ContentRef }
-) => ({
-  focusAboveCell: () => {
-    dispatch(actions.focusPreviousCell({ id, contentRef }));
-    dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
-  },
-  focusBelowCell: () => {
-    dispatch(
-      actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
-    );
-    dispatch(actions.focusNextCellEditor({ id, contentRef }));
-  },
-  focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
-  selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
-  unfocusEditor: () =>
-    dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
-  updateOutputMetadata: (index: number, metadata: JSONObject) => {
-    dispatch(actions.updateOutputMetadata({ id, contentRef, metadata, index }));
-  }
-});
+) => {
+  const mapDispatchToCellProps = (dispatch: Dispatch) => ({
+    focusAboveCell: () => {
+      dispatch(actions.focusPreviousCell({ id, contentRef }));
+      dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
+    },
+    focusBelowCell: () => {
+      dispatch(
+        actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
+      );
+      dispatch(actions.focusNextCellEditor({ id, contentRef }));
+    },
+    focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
+    selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
+    unfocusEditor: () =>
+      dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
+    updateOutputMetadata: (index: number, metadata: JSONObject) => {
+      dispatch(
+        actions.updateOutputMetadata({ id, contentRef, metadata, index })
+      );
+    }
+  });
+  return mapDispatchToCellProps;
+};
 
 const CellBanner = styled.div`
   background-color: darkblue;
@@ -356,8 +364,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
 }
 
 export const ConnectedCell = connect(
-  mapStateToCellProps,
-  mapDispatchToCellProps
+  makeMapStateToCellProps,
+  makeMapDispatchToCellProps
 )(AnyCell);
 
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
@@ -427,7 +435,7 @@ const makeMapStateToProps = (
     }
     const theme = selectors.userTheme(state);
 
-    if ((model as any).type === "dummy" || model.type === "unknown") {
+    if (model.type !== "notebook") {
       return {
         cellOrder: Immutable.List(),
         contentRef,
@@ -444,17 +452,8 @@ const makeMapStateToProps = (
 
     const kernelRef = model.kernelRef;
 
-    let kernelInfo = null;
-
-    if (kernelRef) {
-      const kernel = selectors.kernel(state, { kernelRef });
-      if (kernel) {
-        kernelInfo = kernel.info;
-      }
-    }
-
     return {
-      cellOrder: selectors.notebook.cellOrder(model),
+      cellOrder: model.notebook.cellOrder,
       contentRef,
       kernelRef,
       theme
