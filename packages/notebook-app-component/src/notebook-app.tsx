@@ -370,18 +370,10 @@ export const ConnectedCell = connect(
 
 type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 
-interface PureNotebookProps {
-  cellOrder?: Immutable.List<any>;
-  theme?: string;
-  contentRef: ContentRef;
-  kernelRef?: KernelRef;
-}
-
 interface NotebookStateProps {
   cellOrder: Immutable.List<any>;
   theme: string;
   contentRef: ContentRef;
-  kernelRef?: KernelRef | null;
 }
 
 interface NotebookDispatchProps {
@@ -439,7 +431,6 @@ const makeMapStateToProps = (
       return {
         cellOrder: Immutable.List(),
         contentRef,
-        kernelRef: null,
         theme
       };
     }
@@ -450,12 +441,9 @@ const makeMapStateToProps = (
       );
     }
 
-    const kernelRef = model.kernelRef;
-
     return {
       cellOrder: model.notebook.cellOrder,
       contentRef,
-      kernelRef,
       theme
     };
   };
@@ -591,10 +579,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
           />
           {this.props.cellOrder.map(this.createCellElement)}
         </Cells>
-        <StatusBar
-          contentRef={this.props.contentRef}
-          kernelRef={this.props.kernelRef}
-        />
+        <StatusBar contentRef={this.props.contentRef} />
         {getTheme(this.props.theme)}
       </React.Fragment>
     );
