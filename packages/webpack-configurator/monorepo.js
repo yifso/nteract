@@ -144,7 +144,7 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/transform-dataresource",
+      name: "@nteract/data-explorer",
       version: "5.0.0-alpha.0",
       private: false
     },

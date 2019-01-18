@@ -40,7 +40,7 @@ class Notebook extends React.PureComponent<Props, State> {
       }
     );
 
-    import(/* webpackChunkName: "tabular-dataresource" */ "@nteract/transform-dataresource").then(
+    import(/* webpackChunkName: "tabular-dataresource" */ "@nteract/data-explorer").then(
       module => {
         this.props.addTransform(module.default);
       }

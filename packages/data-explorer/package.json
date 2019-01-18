@@ -1,12 +1,12 @@
 {
-  "name": "@nteract/transform-dataresource",
+  "name": "@nteract/data-explorer",
   "version": "5.0.4-alpha.0",
   "description": "Transform for data resource JSON",
   "main": "lib/",
   "nteractDesktop": "src/index.js",
   "scripts": {},
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "repository": "https://github.com/nteract/nteract/tree/master/packages/transform-dataresource",
+  "repository": "https://github.com/nteract/nteract/tree/master/packages/data-explorer",
   "publishConfig": {
     "access": "public"
   },

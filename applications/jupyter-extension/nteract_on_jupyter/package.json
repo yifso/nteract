@@ -31,7 +31,7 @@
     "@nteract/octicons": "^1.0.4-alpha.0",
     "@nteract/outputs": "^1.0.4-alpha.0",
     "@nteract/presentational-components": "^2.0.4-alpha.0",
-    "@nteract/transform-dataresource": "^5.0.4-alpha.0",
+    "@nteract/data-explorer": "^5.0.4-alpha.0",
     "@nteract/transform-geojson": "^4.0.4-alpha.0",
     "@nteract/transform-model-debug": "^4.0.4-alpha.0",
     "@nteract/transform-plotly": "^4.0.4-alpha.0",

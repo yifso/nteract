@@ -2,7 +2,7 @@ import * as MathJax from "@nteract/mathjax";
 import { GlobalCSSVariables } from "@nteract/presentational-components";
 
 import { WidgetDisplay } from "@nteract/jupyter-widgets";
-import DataResourceTransform from "@nteract/transform-dataresource";
+import DataResourceTransform from "@nteract/data-explorer";
 import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform from "@nteract/transform-plotly";
