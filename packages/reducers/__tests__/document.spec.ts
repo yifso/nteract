@@ -6,8 +6,8 @@ import {
   emptyMarkdownCell,
   emptyNotebook,
   makeDisplayData,
-  makeStreamOutput,
-  makeErrorOutput
+  makeErrorOutput,
+  makeStreamOutput
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
 import uuid from "uuid/v4";
@@ -441,7 +441,7 @@ describe("clearOutputs", () => {
     const notebook = appendCellToNotebook(emptyNotebook, emptyMarkdownCell);
 
     const originalState = makeDocumentRecord({
-      notebook: notebook,
+      notebook,
       filename: "test.ipynb"
     });
 

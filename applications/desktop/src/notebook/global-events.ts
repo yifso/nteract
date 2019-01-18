@@ -30,8 +30,7 @@ export function onBeforeUnloadOrReload(
     // Dispatch asynchronously since returning ASAP is imperative for canceling close/unload.
     // See https://github.com/electron/electron/issues/12668
     setTimeout(
-      () =>
-        store.dispatch(closeNotebook({ contentRef: contentRef, reloading })),
+      () => store.dispatch(closeNotebook({ contentRef, reloading })),
       0
     );
   }

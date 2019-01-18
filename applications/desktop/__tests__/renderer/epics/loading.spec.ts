@@ -39,7 +39,7 @@ describe("loadingEpic", () => {
       }
     );
   });
-  test("errors when file cant be read", async function() {
+  test("errors when file cant be read", async () => {
     const action$ = ActionsObservable.of({
       type: "CORE/FETCH_CONTENT",
       payload: { filepath: "file" }
@@ -63,7 +63,7 @@ describe("loadingEpic", () => {
 });
 
 describe("newNotebookEpic", () => {
-  test("calls new Kernel after creating a new notebook", async function() {
+  test("calls new Kernel after creating a new notebook", async () => {
     const action$ = ActionsObservable.of({
       type: actions.NEW_NOTEBOOK,
       payload: {

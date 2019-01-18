@@ -191,7 +191,8 @@ class DraggableCellView extends React.Component<
     const img = new (window as any).Image();
 
     img.src = cellDragPreviewImage;
-    img.onload = function dragImageLoaded() {
+
+    img.onload = /*dragImageLoaded*/ () => {
       connectDragPreview(img);
     };
   }

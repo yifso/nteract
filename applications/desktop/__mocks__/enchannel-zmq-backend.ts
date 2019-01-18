@@ -12,7 +12,7 @@ class HokeySocket extends EventEmitter {
 }
 
 module.exports = {
-  createMainChannel: async function() {
+  async createMainChannel() {
     const shellSocket = new HokeySocket();
     const iopubSocket = new HokeySocket();
     const sockets = {

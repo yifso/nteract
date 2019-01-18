@@ -144,7 +144,7 @@ class CellCreator extends React.PureComponent<ConnectedProps> {
       contentRef
     } = this.props;
 
-    if (id == null || typeof id != "string") {
+    if (id === undefined || typeof id !== "string") {
       createCellAppend({ cellType: type, contentRef });
       return;
     }

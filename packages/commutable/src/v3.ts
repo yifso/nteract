@@ -9,11 +9,11 @@ import {
 
 import {
   CellId,
-  JSONObject,
-  MultiLineString,
   createFrozenMediaBundle,
   demultiline,
-  MediaBundle
+  JSONObject,
+  MediaBundle,
+  MultiLineString
 } from "./primitives";
 
 import { makeNotebookRecord } from "./notebook";
@@ -29,12 +29,12 @@ import {
 } from "./cells";
 
 import {
-  OnDiskErrorOutput,
   ImmutableOutput,
   makeDisplayData,
   makeErrorOutput,
   makeExecuteResult,
-  makeStreamOutput
+  makeStreamOutput,
+  OnDiskErrorOutput
 } from "./outputs";
 
 import { appendCell, CellStructure } from "./structures";

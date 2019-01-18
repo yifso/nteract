@@ -1,4 +1,4 @@
-import { scaleLinear, scaleThreshold } from "d3-scale";
+import { scaleLinear, ScaleLinear, scaleThreshold } from "d3-scale";
 import * as React from "react";
 import { heatmapping, hexbinning } from "semiotic";
 
@@ -112,7 +112,9 @@ export const semioticScatterplot = (
   };
 
   const areaTooltip = (hoveredDatapoint: Dx.Datapoint) => {
-    if (hoveredDatapoint.binItems.length === 0) return null;
+    if (hoveredDatapoint.binItems.length === 0) {
+      return null;
+    }
     return (
       <TooltipContent x={hoveredDatapoint.x} y={hoveredDatapoint.y}>
         <h3
@@ -153,7 +155,7 @@ export const semioticScatterplot = (
     );
   };
 
-  let sizeScale: Function = () => 5; // eslint-disable-line no-unused-vars
+  let sizeScale: (() => number) | ScaleLinear<number, number> = () => 5;
   const colorHash: { [index: string]: string } = { Other: "grey" };
   const additionalSettings: { afterElements?: JSX.Element } = {};
 

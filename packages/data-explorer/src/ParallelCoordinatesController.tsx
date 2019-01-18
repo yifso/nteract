@@ -1,4 +1,4 @@
-import { scaleLinear } from "d3-scale";
+import { scaleLinear, ScaleLinear } from "d3-scale";
 import * as React from "react";
 import { Axis, ResponsiveOrdinalFrame } from "semiotic";
 
@@ -12,8 +12,8 @@ import * as Dx from "./types";
 
 interface State {
   filterMode: boolean;
-  data: Object[];
-  dataScales: { [index: string]: Function };
+  data: object[];
+  dataScales: { [index: string]: ScaleLinear<number, number> };
   columnExtent: { [index: string]: number[] };
 }
 
@@ -31,8 +31,8 @@ function parallelizeData(
   schemaFields: Array<{ name: string; type: string }>,
   primaryKey: string[]
 ) {
-  const minmax: { [index: string]: Function } = {};
-  const screenScales: { [index: string]: Function } = {};
+  const minmax: { [index: string]: ScaleLinear<number, number> } = {};
+  const screenScales: { [index: string]: ScaleLinear<number, number> } = {};
 
   metrics.forEach(metric => {
     const dataExtent = [
@@ -61,8 +61,9 @@ function parallelizeData(
         pctvalue: minmax[metric.name](datapoint[metric.name])
       };
       schemaFields.forEach((field: { type: string; name: string }) => {
-        if (field.type === "string")
+        if (field.type === "string") {
           dataPiece[field.name] = datapoint[field.name];
+        }
       });
       primaryKey.forEach(key => {
         dataPiece[key] = datapoint[key];
@@ -206,7 +207,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
         );
     }
 
-    if (!filterMode)
+    if (!filterMode) {
       additionalSettings.annotations = metrics
         .map(metric => ({
           label: "",
@@ -224,6 +225,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
             annotation.coordinates[0].pctvalue !== 0 ||
             annotation.coordinates[1].pctvalue !== 1
         );
+    }
 
     return (
       <div>
@@ -279,7 +281,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
               ? 0.1
               : 1
           })}
-          responsiveWidth={true}
+          responsiveWidth
           margin={{ top: 20, left: 20, right: 20, bottom: 100 }}
           oPadding={40}
           pixelColumnWidth={80}
@@ -317,8 +319,8 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
               </TooltipContent>
             );
           }}
-          canvasPieces={true}
-          canvasConnectors={true}
+          canvasPieces
+          canvasConnectors
           oLabel={(columnLabel: string) => (
             <g>
               <text transform="rotate(45)">{columnLabel}</text>

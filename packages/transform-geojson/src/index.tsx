@@ -16,7 +16,10 @@ interface Props {
 }
 
 type TileTheme = "dark" | "light";
-interface TileLayer { urlTemplate: string; layerOptions: object }
+interface TileLayer {
+  urlTemplate: string;
+  layerOptions: object;
+}
 
 const MIMETYPE = "application/geo+json";
 
@@ -50,17 +53,17 @@ export function getTheme(theme: string = "light", el: HTMLElement): TileTheme {
 }
 
 export class GeoJSONTransform extends React.Component<Props> {
-  MIMETYPE!: string;
-  map!: L.Map;
-  el!: HTMLDivElement | null;
-  geoJSONLayer!: L.GeoJSON;
-  tileLayer!: L.TileLayer;
-
   static defaultProps = {
     theme: "light",
     mediaType: MIMETYPE
   };
   static MIMETYPE = MIMETYPE;
+
+  MIMETYPE!: string;
+  map!: L.Map;
+  el!: HTMLDivElement | null;
+  geoJSONLayer!: L.GeoJSON;
+  tileLayer!: L.TileLayer;
 
   componentDidMount(): void {
     this.map = L.map(this.el!);
@@ -103,7 +106,9 @@ export class GeoJSONTransform extends React.Component<Props> {
   }
 
   getTileLayer = (): TileLayer | undefined => {
-    if (!this.el) return;
+    if (!this.el) {
+      return;
+    }
     const theme = getTheme(this.props.theme, this.el);
     // const urlTemplate = (this.props.metadata && this.props.metadata.url_template) ||
     //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

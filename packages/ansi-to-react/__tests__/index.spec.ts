@@ -27,7 +27,7 @@ describe("Ansi", () => {
 
   test("can have className", () => {
     const el = shallow(
-      React.createElement(Ansi, { className: "my-class" }, `hello world`)
+      React.createElement(Ansi, { className: "my-class" }, "hello world")
     );
     expect(el).not.toBeNull();
     expect(el.text()).toBe("hello world");

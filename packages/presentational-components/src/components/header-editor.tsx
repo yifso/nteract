@@ -165,8 +165,8 @@ export class HeaderEditor extends React.PureComponent<
             {headerData.authors.map(t => (
               <Tag
                 key={t.name}
-                large={true}
-                minimal={true}
+                large
+                minimal
                 style={authorStyle}
                 onRemove={onAuthorsRemove(t)}
               >
@@ -179,7 +179,7 @@ export class HeaderEditor extends React.PureComponent<
                   maxLength={40}
                   className="author-entry"
                   placeholder="Enter Author Name..."
-                  selectAllOnFocus={true}
+                  selectAllOnFocus
                   onConfirm={onAuthorsConfirm}
                   onCancel={onCancel}
                 />
@@ -195,7 +195,7 @@ export class HeaderEditor extends React.PureComponent<
                   icon="add"
                   className="author-button"
                   onClick={onClick}
-                  minimal={true}
+                  minimal
                   disabled={!editable}
                 />
               </Tooltip>
@@ -213,7 +213,7 @@ export class HeaderEditor extends React.PureComponent<
                 <EditableText
                   maxLength={20}
                   placeholder="Enter Tag Name..."
-                  selectAllOnFocus={true}
+                  selectAllOnFocus
                   onConfirm={onTagsConfirm}
                   onCancel={onCancel}
                 />
@@ -228,7 +228,7 @@ export class HeaderEditor extends React.PureComponent<
                 {
                   <Button
                     icon="add"
-                    minimal={true}
+                    minimal
                     onClick={onAdd}
                     disabled={!editable}
                   />
@@ -241,7 +241,7 @@ export class HeaderEditor extends React.PureComponent<
               maxLength={280}
               maxLines={12}
               minLines={3}
-              multiline={true}
+              multiline
               placeholder="Edit description..."
               selectAllOnFocus={false}
               value={headerData.description}

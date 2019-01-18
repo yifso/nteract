@@ -69,7 +69,7 @@ export class TextFile extends React.PureComponent<
         <Editor
           theme={this.props.theme === "dark" ? "vs-dark" : "vs"}
           mode={this.props.mimetype}
-          editorFocused={true}
+          editorFocused
           value={this.props.text}
           onChange={this.handleChange.bind(this)}
         />
@@ -97,7 +97,7 @@ function makeMapStateToTextFileProps(
     const text = content.model ? content.model.text : "";
 
     return {
-      contentRef: contentRef,
+      contentRef,
       mimetype: content.mimetype != null ? content.mimetype : "text/plain",
       text,
       theme: selectors.currentTheme(state)

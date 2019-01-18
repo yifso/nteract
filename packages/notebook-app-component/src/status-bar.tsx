@@ -99,7 +99,7 @@ const makeMapStateToProps = (
       kernelSpecDisplayName = "no kernel";
     } else if (kernel != null && kernel.kernelSpecName != null) {
       kernelSpecDisplayName = kernel.kernelSpecName;
-    } else if (content != null && content.type === "notebook") {
+    } else if (content !== undefined && content.type === "notebook") {
       kernelSpecDisplayName =
         selectors.notebook.displayName(content.model) || " ";
     }

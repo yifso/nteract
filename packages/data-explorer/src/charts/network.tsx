@@ -88,7 +88,9 @@ const hoverAnnotationSettings = {
   arc: nodeLinkHover
 };
 
-const nodeLabeling: { [index: string]: Function | boolean } = {
+const nodeLabeling: {
+  [index: string]: boolean | ((d: NodeObject) => JSX.Element | null);
+} = {
   none: false,
   static: true,
   scaled: (d: NodeObject) => {
@@ -150,12 +152,14 @@ export const semioticNetwork = (
 
   const colorHash: { [index: string]: string } = {};
   data.forEach(edge => {
-    if (!colorHash[edge[sourceDimension]])
+    if (!colorHash[edge[sourceDimension]]) {
       colorHash[edge[sourceDimension]] =
         colors[Object.keys(colorHash).length % colors.length];
-    if (!colorHash[edge[targetDimension]])
+    }
+    if (!colorHash[edge[targetDimension]]) {
       colorHash[edge[targetDimension]] =
         colors[Object.keys(colorHash).length % colors.length];
+    }
   });
 
   networkData.forEach(edge => {

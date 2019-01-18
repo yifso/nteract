@@ -26,7 +26,7 @@ function publishGist(
   id: string | null
 ) {
   const url =
-    id != null
+    id !== null
       ? `https://api.github.com/gists/${id}`
       : "https://api.github.com/gists";
 
@@ -34,7 +34,7 @@ function publishGist(
     url,
     responseType: "json",
     // This allows for us to provide a serverside XMLHttpRequest
-    createXHR: function() {
+    createXHR() {
       return new XMLHttpRequest();
     },
     headers: {
@@ -42,7 +42,7 @@ function publishGist(
       // We can only update authenticated gists so we _must_ send the token
       Authorization: `token ${token}`
     },
-    method: id != null ? "PATCH" : "POST",
+    method: id !== null ? "PATCH" : "POST",
     body: model
   };
 
@@ -109,7 +109,7 @@ export const publishEpic = (
       if (gistId) {
         notificationSystem.addNotification({
           title: "Updating Gist...",
-          message: `💖📓💖`,
+          message: "💖📓💖",
           dismissible: true,
           position: "tr",
           level: "success"
@@ -117,7 +117,7 @@ export const publishEpic = (
       } else {
         notificationSystem.addNotification({
           title: "Publishing a New Gist...",
-          message: `✨📓✨`,
+          message: "✨📓✨",
           dismissible: true,
           position: "tr",
           level: "success"
@@ -143,13 +143,13 @@ export const publishEpic = (
           //       instead of hidden side effects
           notificationSystem.addNotification({
             title: "Gist uploaded",
-            message: `📓 📢`,
+            message: "📓 📢",
             dismissible: true,
             position: "tr",
             level: "success",
             action: {
               label: "Open Gist",
-              callback: function openGist() {
+              callback() {
                 shell.openExternal(`https://nbviewer.jupyter.org/${id}`);
               }
             }
@@ -189,7 +189,8 @@ export const publishEpic = (
           ) {
             notificationSystem.addNotification({
               title: "Bad GitHub Token",
-              message: `The gist API reports that the token doesn't have gist scopes 🤷‍♀️`,
+              message:
+                "The gist API reports that the token doesn't have gist scopes 🤷‍♀️",
               dismissible: true,
               position: "tr",
               level: "error"
@@ -207,7 +208,7 @@ export const publishEpic = (
             // Likely a GitHub API error
             notificationSystem.addNotification({
               title: "Gist publishing failed",
-              message: `😩 GitHub API not feelin' good today`,
+              message: "😩 GitHub API not feelin' good today",
               dismissible: true,
               position: "tr",
               level: "error"

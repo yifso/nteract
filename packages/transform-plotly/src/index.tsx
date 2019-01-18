@@ -40,14 +40,21 @@ PlotlyNullTransform.defaultProps = {
   mediaType: NULL_MIMETYPE
 };
 
-export class PlotlyTransform extends React.Component<Partial<Props>> {
-  plotDiv?: PlotlyHTMLElement | null;
-  Plotly!: { newPlot: Function; redraw: Function };
-
+export class PlotlyTransform extends React.Component<Props> {
   static MIMETYPE = MIMETYPE;
 
   static defaultProps = {
     mediaType: MIMETYPE
+  };
+
+  plotDiv?: PlotlyHTMLElement | null;
+  Plotly!: {
+    newPlot: (
+      div: PlotlyHTMLElement | null | undefined,
+      data: object,
+      layout: FigureLayout
+    ) => void;
+    redraw: (div?: PlotlyHTMLElement) => void;
   };
 
   componentDidMount(): void {
@@ -63,7 +70,9 @@ export class PlotlyTransform extends React.Component<Partial<Props>> {
 
   componentDidUpdate() {
     const figure = this.getFigure();
-    if (!this.plotDiv) return;
+    if (!this.plotDiv) {
+      return;
+    }
     this.plotDiv.data = figure.data;
     this.plotDiv.layout = figure.layout;
     this.Plotly.redraw(this.plotDiv);

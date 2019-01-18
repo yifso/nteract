@@ -46,8 +46,8 @@ export class EditableTitleOverlay extends React.PureComponent<
   render() {
     return (
       <Overlay
-        canEscapeKeyClose={true}
-        canOutsideClickClose={true}
+        canEscapeKeyClose
+        canOutsideClickClose
         usePortal={false}
         isOpen={this.props.isOpen}
         onClose={this.handleClose}
@@ -66,8 +66,8 @@ export class EditableTitleOverlay extends React.PureComponent<
                 defaultValue={this.props.defaultValue}
                 minWidth={500}
                 intent={"none"}
-                selectAllOnFocus={true}
-                confirmOnEnterKey={true}
+                selectAllOnFocus
+                confirmOnEnterKey
                 onChange={this.handleChange}
                 onConfirm={this.handleSave}
               />

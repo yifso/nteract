@@ -52,7 +52,7 @@ export const formConnectionString = (
   channel: ChannelName
 ) => {
   const portDelimiter = config.transport === "tcp" ? ":" : "-";
-  const port = config[(channel + "_port") as keyof JupyterConnectionInfo];
+  const port = config[`${channel}_port` as keyof JupyterConnectionInfo];
   if (!port) {
     throw new Error(`Port not found for channel "${channel}"`);
   }

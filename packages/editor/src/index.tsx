@@ -274,7 +274,7 @@ class CodeMirrorEditor extends React.PureComponent<
           map(completionResult => () => ev.callback(completionResult)),
           takeUntil(this.completionSubject), // Complete immediately upon next event, even if it's a debounced one - https://blog.strongbrew.io/building-a-safe-autocomplete-operator-with-rxjs/
           catchError((error: Error) => {
-            console.log("Code completion error: " + error.message);
+            console.log(`Code completion error: ${error.message}`);
             return empty();
           })
         );
@@ -357,7 +357,9 @@ class CodeMirrorEditor extends React.PureComponent<
     this.setState({
       isFocused: focused
     });
-    this.props.onFocusChange && this.props.onFocusChange(focused);
+    if (this.props.onFocusChange) {
+      this.props.onFocusChange(focused);
+    }
   }
 
   hint(editor: CodeMirror.Editor, callback: () => {}): void {
@@ -400,7 +402,7 @@ class CodeMirrorEditor extends React.PureComponent<
             <RichMedia data={bundle} metadata={{ expanded }}>
               <Media.Plain />
             </RichMedia>
-            <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
+            <TipButton onClick={this.deleteTip}>{"\u2715"}</TipButton>
           </Tip>,
           node
         );
@@ -413,7 +415,7 @@ class CodeMirrorEditor extends React.PureComponent<
         if (node != null && body != null) {
           const pos = node.getBoundingClientRect();
           body.appendChild(node);
-          node.style.top = pos.top + "px";
+          node.style.top = `${pos.top}px`;
         }
       });
     }

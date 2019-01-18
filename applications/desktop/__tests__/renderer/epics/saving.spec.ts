@@ -7,7 +7,7 @@ import { toArray } from "rxjs/operators";
 import { saveAsEpic, saveEpic } from "../../../src/notebook/epics/saving";
 
 describe("saveEpic", () => {
-  test("saves the file using the notebook in the state tree", async function() {
+  test("saves the file using the notebook in the state tree", async () => {
     const contentRef = "123";
     const notificationSystem = { addNotification: jest.fn() };
 
@@ -52,7 +52,7 @@ describe("saveEpic", () => {
 });
 
 describe("saveAsEpic", () => {
-  test("works when passed actions of type SAVE_AS", async function() {
+  test("works when passed actions of type SAVE_AS", async () => {
     const contentRef = "123";
 
     const state = {

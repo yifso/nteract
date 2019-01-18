@@ -77,22 +77,20 @@ export function launchKernelObservable(
         ]);
 
         const logStd = (text: string) => {
-          // tslint:disable-next-line no-console
           console.log(
             `%c${text}`,
             `color: ${logColor}; font-family: Source Code Pro, courier;`
           );
         };
 
-        // tslint:disable-next-line no-console
         console.log(
           `\n>>>> %cLogging kernel ${
             kernelSpec.name
           } (ref ${kernelRef}) stdout and stderr to javascript console in %cthis color %c  %c <<<<\n`,
-          `font-weight: bold;`,
+          "font-weight: bold;",
           `color: ${logColor}; font-weight: bold;`,
           `background-color: ${logColor}; padding: 2px;`,
-          `color: black`
+          "color: black"
         );
 
         spawn.stdout.on("data", data => {
@@ -408,7 +406,7 @@ export const killKernelEpic = (
             // Indicate overall success (channels cleaned up)
             of(
               actions.killKernelSuccessful({
-                kernelRef: kernelRef
+                kernelRef
               })
             ),
             // Inform about the state

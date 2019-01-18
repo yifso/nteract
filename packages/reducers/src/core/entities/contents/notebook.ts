@@ -4,8 +4,8 @@ import {
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableNotebook,
-  OnDiskOutput,
   ImmutableOutput,
+  OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
 import {
@@ -539,7 +539,7 @@ function acceptPayloadMessage(
   action: actionTypes.AcceptPayloadMessage
 ): NotebookModel {
   const id: string = action.payload.id;
-  const payload = action.payload.payload as PayloadMessage;
+  const payload: PayloadMessage = action.payload.payload;
 
   if (payload.source === "page") {
     // append pager

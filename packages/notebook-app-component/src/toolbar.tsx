@@ -222,7 +222,6 @@ export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 interface ConnectedProps {
   id: string;
   type: "markdown" | "code" | "raw";

@@ -189,7 +189,9 @@ app.on("before-quit", e => {
   // This is broken on Windows due to a bug in Electron; see #3549.
   // For most Windows workflows the user will be closing individual notebook windows directly,
   // so we just avoid this code path for now.
-  if (process.platform === "win32") return;
+  if (process.platform === "win32") {
+    return;
+  }
 
   const windows = BrowserWindow.getAllWindows();
   if (

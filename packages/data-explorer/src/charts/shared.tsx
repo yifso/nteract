@@ -9,11 +9,15 @@ function stringOrFnAccessor(
     : datapoint[accessor];
 }
 
-interface SubsortObject { array: Dx.Datapoint[]; value: number; label: string }
+interface SubsortObject {
+  array: Dx.Datapoint[];
+  value: number;
+  label: string;
+}
 
 export const sortByOrdinalRange = (
-  oAccessor: Function | string,
-  rAccessor: Function | string,
+  oAccessor: string | ((datapoint: Dx.Datapoint) => string),
+  rAccessor: string | (() => void),
   secondarySort: string,
   data: Dx.DataProps["data"]
 ): any[] => {
@@ -31,8 +35,12 @@ export const sortByOrdinalRange = (
 
   subsortArrays = subsortArrays.sort((ordinalAData, ordinalBData) => {
     if (ordinalBData.value === ordinalAData.value) {
-      if (ordinalAData.label < ordinalBData.label) return -1;
-      if (ordinalAData.label > ordinalBData.label) return 1;
+      if (ordinalAData.label < ordinalBData.label) {
+        return -1;
+      }
+      if (ordinalAData.label > ordinalBData.label) {
+        return 1;
+      }
       return 1;
     }
 

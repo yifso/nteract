@@ -9,6 +9,7 @@ import {
   executionCounts,
   JupyterMessage,
   kernelStatuses,
+  MessageType,
   ofMessageType,
   outputs,
   payloads
@@ -61,10 +62,12 @@ export function executeCellStream(
   const executeRequest = message;
 
   // All the streams intended for all frontends
-  const cellMessages = channels.pipe(
+  const cellMessages: Observable<
+    JupyterMessage<MessageType, any>
+  > = channels.pipe(
     childOf(executeRequest),
     share()
-  ) as Observable<JupyterMessage>;
+  );
 
   // All the payload streams, intended for one user
   const payloadStream = cellMessages.pipe(payloads());

@@ -22,7 +22,7 @@ export function cwdKernelFallback() {
 export function dispatchSaveAs(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  evt: Event,
+  _evt: Event,
   filepath: string
 ) {
   store.dispatch(actions.saveAs({ filepath, contentRef: ownProps.contentRef }));
@@ -37,7 +37,7 @@ interface SaveDialogOptions {
 }
 
 export function showSaveAsDialog(): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     const options: SaveDialogOptions = {
       title: "Save Notebook",
       filters: [{ name: "Notebooks", extensions: ["ipynb"] }]
@@ -97,7 +97,7 @@ export function dispatchRestartKernel(
 
   store.dispatch(
     actions.restartKernel({
-      outputHandling: outputHandling,
+      outputHandling,
       kernelRef,
       contentRef: ownProps.contentRef
     })
@@ -179,7 +179,7 @@ export function dispatchSave(
 
   const filepath = selectors.filepath(state, ownProps);
 
-  if (filepath == null || filepath == "") {
+  if (filepath === null || filepath === "") {
     triggerSaveAs(ownProps, store);
   } else {
     store.dispatch(actions.save(ownProps));
@@ -189,13 +189,13 @@ export function dispatchSave(
 export function dispatchNewKernel(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  evt: Event,
+  _evt: Event,
   kernelSpec: KernelSpec
 ) {
   const state = store.getState();
   const filepath = selectors.filepath(state, ownProps);
   const cwd =
-    filepath != null
+    filepath !== null
       ? path.dirname(path.resolve(filepath))
       : cwdKernelFallback();
 
@@ -216,7 +216,7 @@ export function dispatchNewKernel(
 export function dispatchPublishGist(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  event: Event
+  _event: Event
 ) {
   const state = store.getState();
   const githubToken = state.app.get("githubToken");
@@ -245,9 +245,9 @@ export function dispatchPublishGist(
     if (win.webContents.getURL().indexOf("callback?code=") !== -1) {
       // Extract the text content
       win.webContents.executeJavaScript(
-        `require('electron').ipcRenderer.send('auth', document.body.textContent);`
+        "require('electron').ipcRenderer.send('auth', document.body.textContent);"
       );
-      remote.ipcMain.on("auth", (event: Event, auth: string) => {
+      remote.ipcMain.on("auth", (_event: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
@@ -256,7 +256,7 @@ export function dispatchPublishGist(
 
           notificationSystem.addNotification({
             title: "Authenticated",
-            message: `🔒`,
+            message: "🔒",
             level: "info"
           });
 
@@ -611,7 +611,9 @@ export function exportPDF(
       printBackground: true
     },
     (error, data) => {
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       // Restore the modified cells to their unexpanded state.
       unexpandedCells.map((cellId: string) =>
@@ -625,7 +627,7 @@ export function exportPDF(
 
       const notificationSystem = state.app.get("notificationSystem");
 
-      fs.writeFile(pdfPath, data, error_fs => {
+      fs.writeFile(pdfPath, data, _error_fs => {
         notificationSystem.addNotification({
           title: "PDF exported",
           message: `Notebook ${basepath} has been exported as a pdf.`,
@@ -634,7 +636,7 @@ export function exportPDF(
           level: "success",
           action: {
             label: "Open PDF",
-            callback: function openPDF() {
+            callback() {
               shell.openItem(pdfPath);
             }
           }
@@ -666,7 +668,7 @@ export function storeToPDF(
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
   const notificationSystem = state.app.get("notificationSystem");
-  if (notebookName == null) {
+  if (notebookName === null) {
     notificationSystem.addNotification({
       title: "File has not been saved!",
       message: `Click the button below to save the notebook so that it can be
@@ -676,7 +678,7 @@ export function storeToPDF(
       level: "warning",
       action: {
         label: "Save As",
-        callback: function cb() {
+        callback() {
           triggerSaveAsPDF(ownProps, store);
         }
       }
@@ -689,7 +691,7 @@ export function storeToPDF(
 }
 
 export function dispatchLoadConfig(
-  ownProps: { contentRef: ContentRef },
+  _ownProps: { contentRef: ContentRef },
   store: DesktopStore
 ) {
   store.dispatch(actions.loadConfig());

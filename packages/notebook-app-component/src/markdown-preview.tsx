@@ -24,7 +24,7 @@ interface State {
   view: boolean;
 }
 
-const noop = function() {};
+const noop = () => {};
 
 // TODO: Consider whether this component is really something like two components:
 //
@@ -36,8 +36,6 @@ const noop = function() {};
 //       within the code base (or leave it alone, which is totally cool too). :)
 
 export default class MarkdownCell extends React.Component<Props, State> {
-  rendered!: HTMLDivElement | null;
-
   static defaultProps = {
     cellFocused: false,
     editorFocused: false,
@@ -47,6 +45,8 @@ export default class MarkdownCell extends React.Component<Props, State> {
     unfocusEditor: noop,
     source: ""
   };
+
+  rendered!: HTMLDivElement | null;
 
   constructor(props: Props) {
     super(props);

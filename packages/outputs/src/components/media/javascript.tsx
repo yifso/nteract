@@ -12,12 +12,15 @@ interface Props {
 }
 
 export function runCodeHere(el: HTMLElement | null, code: string): any {
-  if (!el) return;
+  if (!el) {
+    return;
+  }
   // Compatibility with Jupyter/notebook JS evaluation.  Set element so
   // the user has a handle on the context of the current output.
   const element = el;
   try {
-    return eval(code); // eslint-disable-line no-eval
+    // tslint:disable-next-line:no-eval
+    return eval(code);
   } catch (err) {
     const pre = document.createElement("pre");
     pre.style.whiteSpace = "pre-wrap";
@@ -32,12 +35,12 @@ export function runCodeHere(el: HTMLElement | null, code: string): any {
 }
 
 export class JavaScript extends React.PureComponent<Props> {
-  el!: HTMLElement | null;
-
   static defaultProps = {
     data: "",
     mediaType: "application/javascript"
   };
+
+  el!: HTMLElement | null;
 
   componentDidMount(): void {
     runCodeHere(this.el, this.props.data);

@@ -16,7 +16,7 @@ describe("launchKernelObservable", () => {
 });
 
 describe("launchKernelEpic", () => {
-  test("throws an error if given a bad action", async function() {
+  test("throws an error if given a bad action", async () => {
     const action$ = ActionsObservable.of(
       {
         type: actionsModule.LAUNCH_KERNEL,
@@ -53,7 +53,7 @@ describe("launchKernelEpic", () => {
     ]);
   });
 
-  test("calls launchKernelObservable if given the correct action", async function() {
+  test("calls launchKernelObservable if given the correct action", async () => {
     const action$ = ActionsObservable.of(
       actionsModule.launchKernel({
         kernelSpec: { spec: "hokey", name: "woohoo" },

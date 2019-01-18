@@ -38,10 +38,7 @@ let char_idx_to_js_idx = (char_idx: number, text: string): number => {
 if ("𝐚".length === 1) {
   // If javascript fixes string indices of non-BMP characters,
   // don't keep shifting offsets to compensate for surrogate pairs
-  char_idx_to_js_idx = js_idx_to_char_idx = function(
-    idx: number,
-    text: string // eslint-disable-line no-unused-vars
-  ) {
+  char_idx_to_js_idx = js_idx_to_char_idx = (idx: number, _text: string) => {
     return idx;
   };
 }

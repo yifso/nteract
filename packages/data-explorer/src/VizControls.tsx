@@ -9,7 +9,7 @@ import { ChartOptionTypes, controlHelpText } from "./docs/chart-docs";
 import styled, { css } from "styled-components";
 import * as Dx from "./types";
 
-const NoResultsItem = <MenuItem disabled={true} text="No results." />;
+const NoResultsItem = <MenuItem disabled text="No results." />;
 
 const arrowHeadMarker = (
   <marker
@@ -116,7 +116,7 @@ const filterItem = (query: string, item: MenuItemType) => {
 };
 
 const getIcon = (title: string) => {
-  if (title === "X" || title === "Y" || title === "Size" || title == "Color") {
+  if (title === "X" || title === "Y" || title === "Size" || title === "Color") {
     return iconHash[title];
   } else {
     console.warn("Icon title not supported");
@@ -162,7 +162,7 @@ const metricDimSelector = (
   const metricsList = required ? values : ["none", ...values];
   let displayMetrics;
 
-  if (metricsList.length > 1)
+  if (metricsList.length > 1) {
     displayMetrics = (
       <Select
         items={metricsList.map((metricName: string) => ({
@@ -187,7 +187,9 @@ const metricDimSelector = (
         />
       </Select>
     );
-  else displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
+  } else {
+    displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
+  }
 
   return (
     <ControlWrapper title={contextTooltip}>
@@ -199,7 +201,10 @@ const metricDimSelector = (
   );
 };
 
-const availableLineTypes = [
+const availableLineTypes: Array<{
+  type: Dx.LineType;
+  label: string;
+}> = [
   {
     type: "line",
     label: "Line Chart"
@@ -235,23 +240,24 @@ const availableAreaTypes = [
 
 type ChartOptions = { [key in ChartOptionTypes]: string };
 interface VizControlParams {
-  view: string;
-  chart: ChartOptions;
-  metrics: Array<{ name: string }>;
-  dimensions: Array<{ name: string }>;
-  updateChart: Function;
+  view: Dx.View;
+  chart: Dx.Chart;
+  metrics: Dx.Field[];
+  dimensions: Dx.Dimension[];
+  // TODO: leave "options: any" for now and improve typedef later
+  updateChart: (options: any) => void;
   selectedDimensions: string[];
   selectedMetrics: string[];
-  hierarchyType: string;
-  summaryType: string;
+  hierarchyType: Dx.HierarchyType;
+  summaryType: Dx.SummaryType;
   networkType: string;
-  setLineType: Function;
-  updateMetrics: Function;
-  updateDimensions: Function;
-  lineType: string;
-  areaType: string;
+  setLineType: (lineType: Dx.LineType) => void;
+  updateMetrics: (name: string) => void;
+  updateDimensions: (name: string) => void;
+  lineType: Dx.LineType;
+  areaType: Dx.AreaType;
   setAreaType: (label: Dx.AreaType) => void;
-  data: Object[];
+  data: Dx.Datapoint[];
 }
 export default ({
   view,
@@ -284,7 +290,7 @@ export default ({
     if (Object.keys(controlHelpText).find(mOrD => mOrD === metricOrDim)) {
       const mOrD = metricOrDim as ChartOptionTypes;
       const views =
-        controlHelpText[mOrD] != null ? controlHelpText[mOrD] : null;
+        controlHelpText[mOrD] !== undefined ? controlHelpText[mOrD] : null;
       if (views == null) {
         return "";
       }
@@ -441,7 +447,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {availableLineTypes.map(lineTypeOption => (
                 <Button
                   key={lineTypeOption.type}
@@ -464,7 +470,7 @@ export default ({
             <div>
               <Code>Chart Type</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {availableAreaTypes.map(areaTypeOption => {
                 const areaTypeOptionType = areaTypeOption.type;
                 if (
@@ -511,7 +517,7 @@ export default ({
             <div>
               <Code>Categories</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {dimensions.map(dim => (
                 <Button
                   key={`dimensions-select-${dim.name}`}
@@ -535,7 +541,7 @@ export default ({
             <div>
               <Code>Metrics</Code>
             </div>
-            <StyledButtonGroup vertical={true}>
+            <StyledButtonGroup vertical>
               {metrics.map(metric => (
                 <Button
                   key={`metrics-select-${metric.name}`}

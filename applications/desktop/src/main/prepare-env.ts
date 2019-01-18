@@ -14,7 +14,7 @@ const env$ = from(shellEnv()).pipe(
     // no need to change the env if started from the terminal on Mac
     if (
       process.platform !== "darwin" ||
-      (process.env != null && process.env.TERM == null)
+      (process.env != null && process.env.TERM === undefined)
     ) {
       Object.assign(process.env, env);
     }

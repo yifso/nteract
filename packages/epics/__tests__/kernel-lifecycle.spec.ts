@@ -16,7 +16,7 @@ const buildScheduler = () =>
   new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 
 describe("acquireKernelInfo", () => {
-  test("sends a kernel_info_request and processes kernel_info_reply", async function(done) {
+  test("sends a kernel_info_request and processes kernel_info_reply", async done => {
     const sent = new Subject();
     const received = new Subject();
 
@@ -216,12 +216,12 @@ describe("restartKernelEpic", () => {
         a: actionsModule.restartKernel({
           outputHandling: "None",
           kernelRef: "oldKernelRef",
-          contentRef: contentRef
+          contentRef
         }),
         b: actionsModule.launchKernelSuccessful({
           kernel: "",
           kernelRef: newKernelRef,
-          contentRef: contentRef,
+          contentRef,
           selectNextKernel: true
         })
       };
@@ -236,11 +236,11 @@ describe("restartKernelEpic", () => {
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,
-          contentRef: contentRef
+          contentRef
         }),
         e: actionsModule.restartKernelSuccessful({
           kernelRef: newKernelRef,
-          contentRef: contentRef
+          contentRef
         })
       };
 

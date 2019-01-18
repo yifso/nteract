@@ -66,7 +66,7 @@ export const semioticBarChart = (
 
   if (dim1 && dim1 !== "none") {
     uniqueValues.forEach((value: string, index: number) => {
-      //Color the first 18 values after that everything gets grey because more than 18 colors is unreadable no matter what you want
+      // Color the first 18 values after that everything gets grey because more than 18 colors is unreadable no matter what you want
       colorHash[value] = index > 18 ? "grey" : colors[index % colors.length];
     });
 
@@ -108,7 +108,7 @@ export const semioticBarChart = (
     }
   }
 
-  //replace with incoming cardinality when df.describe metadata is implemented
+  // replace with incoming cardinality when df.describe metadata is implemented
   const cardinality =
     (selectedDimensions.length > 0 &&
       !(selectedDimensions.length === 1 && dim1 === selectedDimensions[0]) &&
@@ -136,7 +136,7 @@ export const semioticBarChart = (
     oLabel:
       uniqueValues.length > 30
         ? false
-        : (columnLabel: Object) => {
+        : (columnLabel: object) => {
             return <text transform="rotate(90)">{columnLabel}</text>;
           },
     hoverAnnotation: true,

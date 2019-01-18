@@ -23,7 +23,7 @@ const defaultTheme = {
 const darkTheme = Object.assign({}, defaultTheme, { base0B: "#EDF3F7" });
 
 interface Props {
-  data: Object;
+  data: object;
   mediaType: "application/json";
   theme: string;
   metadata: { expanded: boolean };

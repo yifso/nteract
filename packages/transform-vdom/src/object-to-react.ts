@@ -79,7 +79,7 @@ export function objectToReactElement(
     Array.isArray(obj.attributes) ||
     typeof obj.attributes !== "object"
   ) {
-    throw new Error(`Attributes must exist on a VDOM Object as an object`);
+    throw new Error("Attributes must exist on a VDOM Object as an object");
   }
 
   // style must be an object (non-array)
@@ -91,7 +91,7 @@ export function objectToReactElement(
     typeof obj.attributes.style !== "object"
   ) {
     throw new Error(
-      `Style attribute must be an object like { 'backgroundColor': 'DeepPink' }`
+      "Style attribute must be an object like { 'backgroundColor': 'DeepPink' }"
     );
   }
 
@@ -107,11 +107,13 @@ export function objectToReactElement(
   // with a body of serialized event and vdom on kernel will handle the event.
   if (obj.eventHandlers) {
     for (const eventType in obj.eventHandlers) {
-      const handlerId = obj.eventHandlers[eventType];
-      obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
-        const serializedEvent = serializeEvent(event);
-        onVDOMEvent({ ...serializedEvent, handler_id: handlerId });
-      };
+      if (obj.eventHandlers.hasOwnProperty(eventType)) {
+        const handlerId = obj.eventHandlers[eventType];
+        obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
+          const serializedEvent = serializeEvent(event);
+          onVDOMEvent({ ...serializedEvent, handler_id: handlerId });
+        };
+      }
     }
   }
 
@@ -127,9 +129,10 @@ export function objectToReactElement(
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(
-        arrayToReactChildren(children as VDOMEl[], onVDOMEvent) as any
-      );
+      args = args.concat(arrayToReactChildren(
+        children as VDOMEl[],
+        onVDOMEvent
+      ) as any);
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {

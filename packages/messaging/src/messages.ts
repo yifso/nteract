@@ -110,7 +110,7 @@ function createHeader<MT extends MessageType>(
     msg_id: uuid(),
     date: new Date().toISOString(),
     version: "5.2",
-    msg_type: msg_type,
+    msg_type,
 
     // These fields get overriden by enchannel implementations, we supply them
     // as a fallback here
@@ -198,9 +198,9 @@ export function executeRequest(
  */
 export function displayData(
   content: {
-    data?: Object;
-    metadata?: Object;
-    transient?: Object;
+    data?: object;
+    metadata?: object;
+    transient?: object;
   },
   msg_type: MessageType = "display_data"
 ) {
@@ -223,9 +223,9 @@ export function displayData(
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#update-display-data
  */
 export function updateDisplayData(content: {
-  data?: Object;
-  metadata?: Object;
-  transient?: Object;
+  data?: object;
+  metadata?: object;
+  transient?: object;
 }) {
   // TODO: Enforce the transient display_id here?
   const m = displayData(content, "update_display_data");
@@ -239,9 +239,9 @@ export function updateDisplayData(content: {
  */
 export function executeResult(content: {
   execution_count: number;
-  data?: Object;
-  metadata?: Object;
-  transient?: Object;
+  data?: object;
+  metadata?: object;
+  transient?: object;
 }) {
   // TODO: Enforce the transient display_id here?
   const m = displayData(content, "execute_result");

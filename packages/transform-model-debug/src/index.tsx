@@ -3,7 +3,7 @@ import * as React from "react";
 interface Props {
   data: string;
   mediaType: "application/x-nteract-model-debug+json";
-  models: { [modelID: string]: Object };
+  models: { [modelID: string]: object };
   modelID: string;
 }
 
@@ -21,7 +21,7 @@ class ModelDebug extends React.Component<Partial<Props>> {
   }
 
   render() {
-    const { models, data, modelID } = this.props; // eslint-disable-line no-unused-vars
+    const { models, data /*, modelID*/ } = this.props;
     // TODO: Provide model IDs on transient field
     // For now, if modelID is not provided (or model does not exist),
     // show all the models

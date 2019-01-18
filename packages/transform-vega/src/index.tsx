@@ -31,7 +31,7 @@ function embed(
   version: string,
   cb: (err?: any, result?: any) => any
 ) {
-  if (version == "vega2") {
+  if (version === "vega2") {
     const embedSpec = {
       mode,
       spec: Object.assign({}, spec)
@@ -65,7 +65,7 @@ function embed(
     }
 
     vegaEmbed3(el, spec, {
-      mode: mode,
+      mode,
       actions: false
     })
       .then(result => cb(null, result))
@@ -74,13 +74,13 @@ function embed(
 }
 
 export class VegaEmbed extends React.Component<Partial<EmbedProps>> {
-  el?: HTMLElement | null;
-
   static defaultProps = {
     renderedCallback: defaultCallback,
     embedMode: "vega-lite",
     version: "vega2"
   };
+
+  el?: HTMLElement | null;
 
   componentDidMount(): void {
     if (

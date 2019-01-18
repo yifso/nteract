@@ -599,7 +599,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
         <Cells>
           <CellCreator
             id={this.props.cellOrder.get(0)}
-            above={true}
+            above
             contentRef={this.props.contentRef}
           />
           {this.props.cellOrder.map(this.createCellElement)}
