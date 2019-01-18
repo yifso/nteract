@@ -55,7 +55,7 @@ const richestMediaType = (
 ) => {
   const outputData = output.data;
 
-  // Find the first mediaType that we both support with handlers and is in the output data
+  // Find the first mediaType in the output data that we support with a handler
   const mediaType = order.find(key => {
     return (
       outputData.hasOwnProperty(key) &&

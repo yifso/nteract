@@ -11,7 +11,7 @@ interface Props {
   output?: ImmutableExecuteResult;
 
   /**
-   * React elements that accept media bundle data, will get passed data[mimetype]
+   * React elements that accept media bundle data, will get passed `data[mediaType]`
    */
   children: React.ReactNode;
 }
