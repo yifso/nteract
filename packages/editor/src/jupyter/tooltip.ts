@@ -1,4 +1,10 @@
-import { Channels, childOf, createMessage, JupyterMessage, ofMessageType } from "@nteract/messaging";
+import {
+  Channels,
+  childOf,
+  createMessage,
+  JupyterMessage,
+  ofMessageType
+} from "@nteract/messaging";
 import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
 

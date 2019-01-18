@@ -20,5 +20,5 @@ export {
   Source,
   Cell,
   Cells,
-  HeaderEditor,
+  HeaderEditor
 };

@@ -40,7 +40,9 @@ export interface Dimension extends Field {
   type: "string" | "boolean" | "datetime";
 }
 
-export interface Datapoint { [fieldName: string]: any }
+export interface Datapoint {
+  [fieldName: string]: any;
+}
 
 export interface LineCoordinate {
   value: number;
