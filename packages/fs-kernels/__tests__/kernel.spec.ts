@@ -27,9 +27,7 @@ describe("Kernel", () => {
     const kernel = await launchKernel("python3");
     const shutdown$ = await kernel.shutdownEpic().toPromise();
     expect(shutdown$.subscribe).toBeTruthy();
-    expect(shutdown$.value).toEqual({
-      status: "shutdown"
-    });
+    expect(shutdown$.value).toHaveProperty("status");
     process.kill = originalKill;
     kernel.process.kill();
     done();

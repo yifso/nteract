@@ -132,6 +132,7 @@ export class Kernel {
     // On subscription, send the message
     return Observable.create((observer: Observer<any>) => {
       const subscription = shutDownHandling.subscribe(observer);
+      this.channels.next(request);
       return subscription;
     });
   }
