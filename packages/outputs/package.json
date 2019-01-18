@@ -17,7 +17,7 @@
     "commutable is a development dependency as we should _only_ need it for types"
   ],
   "devDependencies": {
-    "@nteract/commutable": "^1.0.4-alpha.0"
+    "@nteract/commutable": "^6.0.4-alpha.0"
   },
   "peerDependencies": {
     "react": "^16.3.2"
