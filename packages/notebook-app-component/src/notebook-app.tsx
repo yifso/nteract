@@ -490,9 +490,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
 
   constructor(props: NotebookProps) {
     super(props);
-    this.createCellElement = this.createCellElement.bind(this);
     this.keyDown = this.keyDown.bind(this);
-    this.renderCell = this.renderCell.bind(this);
   }
 
   componentDidMount(): void {
@@ -541,33 +539,6 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     }
   }
 
-  renderCell(id: string) {
-    const { contentRef } = this.props;
-    return <ConnectedCell id={id} contentRef={contentRef} />;
-  }
-
-  createCellElement(id: string) {
-    const { moveCell, focusCell, contentRef } = this.props;
-    return (
-      <div className="cell-container" key={`cell-container-${id}`}>
-        <DraggableCell
-          moveCell={moveCell}
-          id={id}
-          focusCell={focusCell}
-          contentRef={contentRef}
-        >
-          {this.renderCell(id)}
-        </DraggableCell>
-        <CellCreator
-          key={`creator-${id}`}
-          id={id}
-          above={false}
-          contentRef={contentRef}
-        />
-      </div>
-    );
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -577,7 +548,24 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
             above
             contentRef={this.props.contentRef}
           />
-          {this.props.cellOrder.map(this.createCellElement)}
+          {this.props.cellOrder.map(cellID => (
+            <div className="cell-container" key={`cell-container-${cellID}`}>
+              <DraggableCell
+                moveCell={this.props.moveCell}
+                id={cellID}
+                focusCell={this.props.focusCell}
+                contentRef={this.props.contentRef}
+              >
+                <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
+              </DraggableCell>
+              <CellCreator
+                key={`creator-${cellID}`}
+                id={cellID}
+                above={false}
+                contentRef={this.props.contentRef}
+              />
+            </div>
+          ))}
         </Cells>
         <StatusBar contentRef={this.props.contentRef} />
         {getTheme(this.props.theme)}
