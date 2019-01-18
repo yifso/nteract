@@ -1,1 +1,1 @@
-declare module 'react-table-hoc-fixed-columns';
+declare module "react-table-hoc-fixed-columns";

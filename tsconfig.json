@@ -3,6 +3,6 @@
   "references": [
     { "path": "packages" },
     { "path": "applications/desktop" },
-    { "path": "applications/jupyter-extension"}
+    { "path": "applications/jupyter-extension" }
   ]
 }

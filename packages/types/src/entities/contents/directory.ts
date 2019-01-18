@@ -30,7 +30,7 @@ export interface DirectoryContentRecordProps {
   saving: boolean;
   loading: boolean;
   error?: object | null;
-};
+}
 export const makeDirectoryContentRecord = Immutable.Record<
   DirectoryContentRecordProps
 >({

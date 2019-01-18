@@ -3,7 +3,9 @@
  */
 import * as Immutable from "immutable";
 
-export interface ModalsRecordProps { modalType: string }
+export interface ModalsRecordProps {
+  modalType: string;
+}
 
 export type ModalsRecord = Immutable.RecordOf<ModalsRecordProps>;
 
