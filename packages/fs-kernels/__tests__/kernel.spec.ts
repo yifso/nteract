@@ -3,13 +3,13 @@ import { launchKernel } from "../src/kernel";
 jest.unmock("process");
 
 describe("Kernel", () => {
-  it.skip("can launch a kernel given a name", async done => {
+  it("can launch a kernel given a name", async done => {
     const kernel = await launchKernel("python3");
     expect(kernel.process).toBeDefined();
     await kernel.shutdown();
     done();
   });
-  it.skip("can shutdown a kernel", async done => {
+  it("can shutdown a kernel", async done => {
     const kernel = await launchKernel("python3");
     const originalKill = process.kill;
     process.kill = jest.fn();
@@ -21,7 +21,18 @@ describe("Kernel", () => {
     await kernel.shutdown();
     done();
   });
-  it.skip("can get usage metrics on a kernel", async done => {
+  it("creates a valid shutdown epic", async done => {
+    const originalKill = process.kill;
+    process.kill = jest.fn(pid => {});
+    const kernel = await launchKernel("python3");
+    const shutdown$ = await kernel.shutdownEpic().toPromise();
+    expect(shutdown$.subscribe).toBeTruthy();
+    expect(shutdown$.value).toHaveProperty("status");
+    process.kill = originalKill;
+    kernel.process.kill();
+    done();
+  });
+  it("can get usage metrics on a kernel", async done => {
     const kernel = await launchKernel("python3");
     const stats = await kernel.getUsage();
     expect(stats.memory).toBeDefined();
