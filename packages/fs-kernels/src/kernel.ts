@@ -13,7 +13,7 @@ import { cleanup, launch, LaunchedKernel, launchSpec } from "./spawnteract";
 
 interface Usage {
   /**
-   * percentage (from 0 to 100*vcore)
+   * percentage (from 0 to 100*number of cores)
    */
   cpu: number;
 
@@ -23,27 +23,27 @@ interface Usage {
   memory: number;
 
   /**
-   * PPID
+   * PPID - Parent PID
    */
   ppid: number;
 
   /**
-   * PID
+   * PID - Process ID
    */
   pid: number;
 
   /**
-   * ms user + system time
+   * ms user + system time (in local time)
    */
   ctime: number;
 
   /**
-   * ms since the start of the process
+   * ms since the start of the process (local time)
    */
   elapsed: number;
 
   /**
-   * ms since epoch
+   * ms since epoch (local time)
    */
   timestamp: number;
 }
