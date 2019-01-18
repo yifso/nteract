@@ -31,6 +31,19 @@ tutorial. This allows you to work without React while learning concepts,
 leading to implementing a light version of [ick](https://github.com/nteract/ick),
 an interactive console.
 
+## What NodeJS version do I need?
+
+It's best to use the latest LTS version of [NodeJS](https://nodejs.org) (currently: ![unknown to this
+user agent. Please check the NodeJS website linked previously](https://img.shields.io/npm/v/node/lts.svg?label=)).
+Some dependencies can break when using newer releases.
+
+To manage multiple versions of NodeJS, take a look at the [n Package](https://www.npmjs.com/package/n). You 
+can switch to the latest LTS version using:
+
+```
+$ n lts
+```
+
 ## How do I make a contribution?
 
 Never made an open source contribution before? Wondering how contributions work
@@ -74,6 +87,7 @@ $ git push origin branch-name-here
 14. Wait for the pull request to be reviewed by a maintainer.
 15. Make changes to the pull request if the reviewing maintainer recommends them.
 16. Celebrate your success after your pull request is merged! :tada:
+
 
 ## How should I write my commit messages and PR titles?
 
