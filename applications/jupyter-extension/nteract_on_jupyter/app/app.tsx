@@ -1,5 +1,5 @@
 import { ContentRef } from "@nteract/core";
-import { GlobalCSSVariables, themes } from "@nteract/presentational-components";
+import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 import * as React from "react";
 import NotificationSystem, {
@@ -10,10 +10,6 @@ import { createGlobalStyle } from "styled-components";
 import { default as Contents } from "./contents";
 
 const GlobalAppStyle = createGlobalStyle`
-  :root {
-    ${themes.light};
-  }
-
   html {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -64,15 +60,16 @@ class App extends React.Component<{ contentRef: ContentRef }> {
   render() {
     return (
       <React.Fragment>
+        <BlueprintCSS />
         <GlobalCSSVariables />
+        <GlobalAppStyle />
+
         <Contents contentRef={this.props.contentRef} />
         <NotificationSystem
           ref={(notificationSystem: ReactNotificationSystem) => {
             this.notificationSystem = notificationSystem;
           }}
         />
-        <GlobalAppStyle />
-        <BlueprintCSS />
       </React.Fragment>
     );
   }

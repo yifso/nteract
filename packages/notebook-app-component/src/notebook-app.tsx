@@ -15,12 +15,13 @@ import {
 } from "@nteract/outputs";
 import {
   Cell as PlainCell,
+  DarkTheme,
   Input,
+  LightTheme,
   Outputs,
   Pagers,
   Prompt,
-  Source,
-  themes as rawThemeVars
+  Source
 } from "@nteract/presentational-components";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 import * as Immutable from "immutable";
@@ -40,26 +41,15 @@ import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
 
-import styled, { createGlobalStyle } from "styled-components";
-
-const Themes = {
-  dark: createGlobalStyle`
-    :root {
-      ${rawThemeVars.dark}
-    }`,
-  light: createGlobalStyle`
-    :root {
-      ${rawThemeVars.light}
-    }`
-};
+import styled, { createGlobalStyle, StyledComponent } from "styled-components";
 
 function getTheme(theme: string) {
   switch (theme) {
     case "dark":
-      return <Themes.dark />;
+      return <DarkTheme />;
     case "light":
     default:
-      return <Themes.light />;
+      return <LightTheme />;
   }
 }
 
