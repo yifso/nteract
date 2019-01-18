@@ -173,7 +173,6 @@
     "@types/styled-components": "^4.1.4",
     "@types/styled-jsx": "^2.2.7",
     "@types/webfontloader": "^1.6.29",
-    "canvas-prebuilt": "^2.0.0-alpha.14",
     "concurrently": "^4.0.0",
     "cpy-cli": "^2.0.0",
     "cross-env": "^5.2.0",
