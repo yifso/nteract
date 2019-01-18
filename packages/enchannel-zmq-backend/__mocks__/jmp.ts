@@ -4,11 +4,11 @@
 import { EventEmitter } from "events";
 
 class Socket extends EventEmitter {
+  throttle = false;
+
   constructor(public type: any, public scheme: any, public key: any) {
     super();
   }
-
-  throttle = false;
 
   monitor() {}
   unmonitor() {}

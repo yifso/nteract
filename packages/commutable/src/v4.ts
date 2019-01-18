@@ -26,15 +26,15 @@ import {
 import { ImmutableNotebook, makeNotebookRecord } from "./notebook";
 
 import {
-  createFrozenMediaBundle,
-  demultiline,
-  remultiline,
   CellId,
+  createFrozenMediaBundle,
+  createOnDiskMediaBundle,
+  demultiline,
   ExecutionCount,
   JSONObject,
   MultiLineString,
   OnDiskMediaBundle,
-  createOnDiskMediaBundle
+  remultiline
 } from "./primitives";
 
 import {

@@ -4,8 +4,8 @@ import {
   ImmutableCodeCell,
   ImmutableMarkdownCell,
   ImmutableNotebook,
-  OnDiskOutput,
   ImmutableOutput,
+  OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
 import {

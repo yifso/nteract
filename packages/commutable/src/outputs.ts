@@ -12,12 +12,12 @@ import {
 import {
   createFrozenMediaBundle,
   demultiline,
-  remultiline,
   ExecutionCount,
   JSONObject,
   MediaBundle,
   MultiLineString,
-  OnDiskMediaBundle
+  OnDiskMediaBundle,
+  remultiline
 } from "./primitives";
 
 /** ExecuteResult Record Boilerplate */

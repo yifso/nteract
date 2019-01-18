@@ -212,7 +212,7 @@ export const restartKernelEpic = (
       if (!oldKernelRef) {
         notificationSystem.addNotification({
           title: "Failure to Restart",
-          message: `Unable to restart kernel, please select a new kernel.`,
+          message: "Unable to restart kernel, please select a new kernel.",
           dismissible: true,
           position: "tr",
           level: "error"

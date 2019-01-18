@@ -402,7 +402,7 @@ class CodeMirrorEditor extends React.PureComponent<
             <RichMedia data={bundle} metadata={{ expanded }}>
               <Media.Plain />
             </RichMedia>
-            <TipButton onClick={this.deleteTip}>{`\u2715`}</TipButton>
+            <TipButton onClick={this.deleteTip}>{"\u2715"}</TipButton>
           </Tip>,
           node
         );
