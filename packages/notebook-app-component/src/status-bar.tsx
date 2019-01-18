@@ -82,9 +82,10 @@ const makeMapStateToProps = (
 
   const mapStateToProps = (state: AppState) => {
     const content = selectors.content(state, { contentRef });
-    const kernel =
-      // check for undefined or null kernelRef (using double equal)
-      kernelRef == null ? selectors.kernel(state, { kernelRef }) : null;
+    let kernel = null;
+    if (kernelRef) {
+      kernel = selectors.kernel(state, { kernelRef });
+    }
 
     const lastSaved = content && content.lastSaved ? content.lastSaved : null;
 
@@ -104,9 +105,9 @@ const makeMapStateToProps = (
     }
 
     return {
-      lastSaved,
+      kernelSpecDisplayName,
       kernelStatus,
-      kernelSpecDisplayName
+      lastSaved
     };
   };
 

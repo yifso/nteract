@@ -358,12 +358,12 @@ export const killKernelEpic = (
     ofType(actions.KILL_KERNEL),
     concatMap((action: actions.KillKernelAction) => {
       const kernelRef = action.payload.kernelRef;
-      const kernel = selectors.kernel(state$.value, { kernelRef });
-
       if (!kernelRef) {
         console.warn("tried to kill a kernel without a kernelRef");
         return empty();
       }
+
+      const kernel = selectors.kernel(state$.value, { kernelRef });
 
       if (!kernel) {
         // tslint:disable-next-line:no-console
