@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { shallow, render } from "enzyme";
 import * as React from "react";
 
 import Ansi from "../src/index";
@@ -102,5 +102,67 @@ describe("Ansi", () => {
     expect(el.text()).toBe(
       "<module 'something' from '/usr/local/lib/python2.7/dist-packages/something/__init__.pyc'>"
     );
+  });
+
+  describe("use classes", () => {
+    test("color only background", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${GREEN_FG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-green\">world</span></code>"
+      );
+    });
+
+    test("useClasses option", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${YELLOW_BG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-yellow\">world</span></code>"
+      );
+    });
+
+    test("color text and background", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${GREEN_FG}${YELLOW_BG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-yellow ansi-green\">world</span></code>"
+      );
+    });
+
+    test("useClasses with linkify", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { linkify: true, useClasses: true },
+          `${GREEN_FG}this is a link: https://nteract.io/`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("this is a link: https://nteract.io/");
+      expect(el.html()).toBe(
+        "<code><span class=\"ansi-green\">this is a link: <a href=\"https://nteract.io/\" target=\"_blank\">https://nteract.io/</a></span></code>"
+      );
+    });
   });
 });
