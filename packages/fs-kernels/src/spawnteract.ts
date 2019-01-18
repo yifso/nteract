@@ -254,9 +254,8 @@ export async function launch(
 ): Promise<LaunchedKernel> {
   // Let them pass in a cached specs file
   if (!specs) {
-    return findAll().then((sp: KernelResourceByName) =>
-      launch(kernelName, spawnOptions, sp)
-    );
+    const sp: KernelResourceByName = await findAll();
+    return launch(kernelName, spawnOptions, sp);
   }
   if (!specs[kernelName]) {
     return Promise.reject(new Error(`No spec available for ${kernelName}`));
