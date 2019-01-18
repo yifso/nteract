@@ -203,7 +203,7 @@ export const kernel = (
   state: AppState,
   { kernelRef }: { kernelRef?: KernelRef }
 ) => {
-  return kernelRef ? kernelsByRef(state).get(kernelRef) : null;
+  return kernelRef ? kernelsByRef(state).get(kernelRef, null) : null;
 };
 
 /**

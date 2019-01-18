@@ -206,11 +206,22 @@ export const restartKernelEpic = (
     ofType(actions.RESTART_KERNEL),
     concatMap((action: actions.RestartKernel | actions.NewKernelAction) => {
       const state = state$.value;
-
       const oldKernelRef = action.payload.kernelRef;
+      const notificationSystem = selectors.notificationSystem(state);
+
+      if (!oldKernelRef) {
+        notificationSystem.addNotification({
+          title: "Failure to Restart",
+          message: `Unable to restart kernel, please select a new kernel.`,
+          dismissible: true,
+          position: "tr",
+          level: "error"
+        });
+        return empty();
+      }
+
       const oldKernel = selectors.kernel(state, { kernelRef: oldKernelRef });
 
-      const notificationSystem = selectors.notificationSystem(state);
       if (!oldKernelRef || !oldKernel) {
         notificationSystem.addNotification({
           title: "Failure to Restart",

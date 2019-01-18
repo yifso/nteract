@@ -82,7 +82,10 @@ const makeMapStateToProps = (
 
   const mapStateToProps = (state: AppState) => {
     const content = selectors.content(state, { contentRef });
-    const kernel = selectors.kernel(state, { kernelRef });
+    let kernel = null;
+    if (kernelRef) {
+      kernel = selectors.kernel(state, { kernelRef });
+    }
 
     const lastSaved = content && content.lastSaved ? content.lastSaved : null;
 
