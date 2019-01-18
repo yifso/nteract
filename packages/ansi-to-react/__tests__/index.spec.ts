@@ -104,8 +104,8 @@ describe("Ansi", () => {
     );
   });
 
-  describe("use classes", () => {
-    test("color only background", () => {
+  describe("useClasses options", () => {
+    test("can add the font color class", () => {
       const el = shallow(
         React.createElement(
           Ansi,
@@ -120,7 +120,7 @@ describe("Ansi", () => {
       );
     });
 
-    test("useClasses option", () => {
+    test("can add the background color class", () => {
       const el = shallow(
         React.createElement(
           Ansi,
@@ -135,7 +135,7 @@ describe("Ansi", () => {
       );
     });
 
-    test("color text and background", () => {
+    test("can add font and background color classes", () => {
       const el = shallow(
         React.createElement(
           Ansi,
@@ -150,7 +150,7 @@ describe("Ansi", () => {
       );
     });
 
-    test("useClasses with linkify", () => {
+    test("can use useClasses with linkify", () => {
       const el = shallow(
         React.createElement(
           Ansi,
