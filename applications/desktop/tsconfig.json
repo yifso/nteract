@@ -11,7 +11,7 @@
     { "path": "../../packages/presentational-components" },
     { "path": "../../packages/fs-observable" },
     { "path": "../../packages/jupyter-widgets" },
-    { "path": "../../packages/transform-dataresource" },
+    { "path": "../../packages/data-explorer" },
     { "path": "../../packages/transform-geojson" },
     { "path": "../../packages/transform-model-debug" },
     { "path": "../../packages/transform-plotly" },

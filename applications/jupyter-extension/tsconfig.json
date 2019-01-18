@@ -22,7 +22,7 @@
     { "path": "../../packages/notebook-app-component" },
     { "path": "../../packages/octicons" },
     { "path": "../../packages/presentational-components" },
-    { "path": "../../packages/transform-dataresource" },
+    { "path": "../../packages/data-explorer" },
     { "path": "../../packages/transform-geojson" },
     { "path": "../../packages/transform-model-debug" },
     { "path": "../../packages/transform-plotly" },
