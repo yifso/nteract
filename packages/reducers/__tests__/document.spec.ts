@@ -147,7 +147,6 @@ describe("reduceOutputs", () => {
         })
       ])
     );
-    const x = 2;
 
     const evenNewerOutputs = reduceOutputs(newOutputs, {
       name: "stderr",

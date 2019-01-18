@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
-import { MediaBundle } from "@nteract/commutable";
+import { JSONObject, MediaBundle } from "@nteract/commutable";
 
 /** Error handling types */
 interface ReactErrorInfo {
@@ -33,7 +33,7 @@ interface RichMediaProps {
   /**
    * custom settings, typically keyed by media type
    */
-  metadata: Readonly<{ [mediaType: string]: object }>;
+  metadata: Readonly<JSONObject>;
   /**
    * React elements that accept media bundle data, will get passed data[mimetype]
    */

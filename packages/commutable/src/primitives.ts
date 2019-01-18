@@ -66,7 +66,7 @@ export interface OnDiskMediaBundle {
   "application/vnd.vegalite.v1+json"?: {};
   "application/vnd.vegalite.v2+json"?: {};
 
-  [key: string]: string | string[] | {} | undefined | undefined;
+  [key: string]: string | string[] | {} | undefined;
 }
 
 // Enumerating over all the media types we currently accept
@@ -123,23 +123,24 @@ function isJSONKey(key: string) {
   return /^application\/(.*\+)json$/.test(key);
 }
 
-export function deepFreeze(object: string | { [key: string]: any }) {
-  if (typeof object === "string") {
-    return Object.freeze(object);
-  }
+// A type with all ownPropertyNames also readonly; works for all JSON types
+type DeepReadonly<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 
+// Taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+export function deepFreeze<T>(object: T): DeepReadonly<T> {
   // Retrieve the property names defined on object
   const propNames = Object.getOwnPropertyNames(object);
 
   // Freeze properties before freezing self
   for (const name of propNames) {
-    const value = object[name];
+    // getOwnPropertyNames assures us we can index on name
+    const value = (object as any)[name];
 
-    object[name] =
+    (object as any)[name] =
       value && typeof value === "object" ? deepFreeze(value) : value;
   }
 
-  return Object.freeze(object);
+  return (Object.freeze(object) as unknown) as DeepReadonly<T>;
 }
 
 export function createFrozenMediaBundle(
