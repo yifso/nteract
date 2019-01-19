@@ -231,11 +231,9 @@ async function dataDirs(opts?: {
   const systemDirs: string[] = systemDataDirs();
 
   if (opts && opts.withSysPrefix) {
-    return new Promise<string[]>((resolve, reject) => {
-      // deprecated: withSysPrefix expects a Promise
-      // but no change in content
-      resolve(dataDirs());
-    });
+    // deprecated: withSysPrefix expects a Promise
+    // but no change in content
+    return await (async () => dataDirs())();
   }
   // inexpensive guess, based on location of `python` executable
   const sysPrefix: string | null | undefined = guessSysPrefix();

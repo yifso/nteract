@@ -29,7 +29,7 @@ export interface KernelResourceByName {
   [name: string]: KernelResource;
 }
 
-function flatten<T>(array: T[]): T[] {
+function flatten<T>(array: Array<T | ConcatArray<T>>): T[] {
   return ([] as T[]).concat(...array);
 }
 
@@ -72,7 +72,9 @@ async function getKernelInfos(
   directory: string,
   mustExist: boolean = false
 ): Promise<KernelInfo[]> {
-  const readdir = promisify(fs.readdir);
+  const readdir: (directory: string) => Promise<string[]> = promisify(
+    fs.readdir
+  );
   try {
     const files: string[] = await readdir(directory);
     return files.map(fileName => ({
@@ -105,11 +107,12 @@ export async function find(kernelName: string): Promise<KernelResource> {
 }
 
 async function extractKernelResources(
-  kernelInfos: KernelInfo[]
+  kernelInfos: KernelInfo[] | KernelInfo[][]
 ): Promise<KernelResourceByName> {
   try {
     const kernelResources: KernelResource[] = await Promise.all(
-      kernelInfos
+      ([] as KernelInfo[])
+        .concat(...kernelInfos)
         .filter(Boolean) // remove null/undefined kernelInfo
         .reduce<KernelInfo[]>((a, b) => a.concat(b), []) // flatten the results into one array
         .map(getKernelResources)
