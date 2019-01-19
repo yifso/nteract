@@ -22,7 +22,7 @@
   "scripts": {
     "app:desktop": "lerna run dev --stream --scope nteract",
     "app:jupyter-extension": "lerna run dev --stream --scope nteract-on-jupyter",
-    "app:commuter": "echo \"\n[ Commuter app was refactored and is now commutable package. ]\n\"",
+    "app:commuter": "echo \"\n[ Commuter app moved out of monorepo. See nteract/commuter repo. ]\n\"",
     "start": "npm run app:desktop",
     "spawn": "lerna run spawn --scope nteract",
     "spawn:debug": "lerna run spawn:debug --scope nteract",
