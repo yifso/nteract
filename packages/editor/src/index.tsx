@@ -5,6 +5,7 @@ import CodeMirror, {
   Editor,
   EditorChangeLinkedList,
   EditorConfiguration,
+  EditorFromTextArea,
   Position,
   Token
 } from "codemirror";
@@ -66,12 +67,17 @@ function normalizeLineEndings(str: string): string {
   return str.replace(/\r\n|\r/g, "\n");
 }
 
+export interface EditorKeyEvent {
+  editor: Editor;
+  ev: KeyboardEvent;
+}
+
 export interface CodeMirrorEditorProps {
   editorFocused: boolean;
   completion: boolean;
   tip?: boolean;
-  focusAbove?: (instance: CodeMirror.Editor) => void;
-  focusBelow?: (instance: CodeMirror.Editor) => void;
+  focusAbove?: (instance: Editor) => void;
+  focusBelow?: (instance: Editor) => void;
   theme: string;
   channels?: Channels | null;
   // TODO: We only check if this is idle, so the completion provider should only
@@ -111,7 +117,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
   };
 
   textarea?: HTMLTextAreaElement | null;
-  cm!: CodeMirror.EditorFromTextArea;
+  cm!: EditorFromTextArea;
   defaultOptions: EditorConfiguration;
   keyupEventsSubscriber!: Subscription;
   completionSubject!: Subject<CodeCompletionEvent>;
@@ -140,13 +146,12 @@ export default class CodeMirrorEditor extends React.PureComponent<
           "Cmd-/": "toggleComment",
           "Ctrl-.": this.tips,
           "Ctrl-/": "toggleComment",
-          "Ctrl-Space": (editor: CodeMirror.Editor) => {
+          "Ctrl-Space": (editor: Editor) => {
             this.debounceNextCompletionRequest = false;
             return editor.execCommand("autocomplete");
           },
           Down: this.goLineDownOrEmit,
-          "Shift-Tab": (editor: CodeMirror.Editor) =>
-            editor.execCommand("indentLess"),
+          "Shift-Tab": (editor: Editor) => editor.execCommand("indentLess"),
           Tab: this.executeTab,
           Up: this.goLineUpOrEmit
         },
@@ -219,39 +224,35 @@ export default class CodeMirrorEditor extends React.PureComponent<
     this.cm.on("blur", this.focusChanged.bind(this, false));
     this.cm.on("change", this.codemirrorValueChanged.bind(this));
 
-    const keyupEvents = fromEvent(
+    const keyupEvents: Observable<EditorKeyEvent> = fromEvent<EditorKeyEvent>(
       this.cm as any,
       "keyup",
-      (editor: CodeMirror.Editor, ev: KeyboardEvent) => ({ editor, ev })
+      (editor, ev) => ({ editor, ev })
     );
 
     // Initiate code completion in response to some keystrokes *other than* "Ctrl-Space" (which is bound in extraKeys, above)
     this.keyupEventsSubscriber = keyupEvents
-      .pipe(switchMap(i => of(i)))
-      .subscribe(
-        ({ editor, ev }: { editor: CodeMirror.Editor; ev: KeyboardEvent }) => {
+      .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(of))
+      .subscribe(({ editor, ev }) => {
+        if (
+          completion &&
+          !editor.state.completionActive &&
+          !excludedIntelliSenseTriggerKeys[(ev.keyCode || ev.which).toString()]
+        ) {
+          const cursor: Position = editor.getDoc().getCursor();
+          const token: Token = editor.getTokenAt(cursor);
           if (
-            completion &&
-            !editor.state.completionActive &&
-            !excludedIntelliSenseTriggerKeys[
-              (ev.keyCode || ev.which).toString()
-            ]
+            token.type === "tag" ||
+            token.type === "variable" ||
+            token.string === " " ||
+            token.string === "<" ||
+            token.string === "/" ||
+            token.string === "."
           ) {
-            const cursor: Position = editor.getDoc().getCursor();
-            const token: Token = editor.getTokenAt(cursor);
-            if (
-              token.type === "tag" ||
-              token.type === "variable" ||
-              token.string === " " ||
-              token.string === "<" ||
-              token.string === "/" ||
-              token.string === "."
-            ) {
-              editor.execCommand("autocomplete");
-            }
+            editor.execCommand("autocomplete");
           }
         }
-      );
+      });
 
     this.completionSubject = new Subject<CodeCompletionEvent>();
 
@@ -393,7 +394,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
   }
 
   // TODO: Rely on ReactDOM.createPortal, create a space for tooltips to go
-  tips(editor: CodeMirror.Editor & CodeMirror.Doc): void {
+  tips(editor: Editor & Doc): void {
     const { tip, channels } = this.props;
 
     if (tip) {
@@ -433,8 +434,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  goLineDownOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
-    const cursor: CodeMirror.Position = editor.getCursor();
+  goLineDownOrEmit(editor: Editor & Doc): void {
+    const cursor: Position = editor.getCursor();
     const lastLineNumber: number = editor.lastLine();
     const lastLine: string = editor.getLine(lastLineNumber);
     if (
@@ -448,8 +449,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  goLineUpOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
-    const cursor: CodeMirror.Position = editor.getCursor();
+  goLineUpOrEmit(editor: Editor & Doc): void {
+    const cursor: Position = editor.getCursor();
     if (cursor.line === 0 && cursor.ch === 0 && !editor.somethingSelected()) {
       CodeMirror.signal(editor, "topBoundary");
     } else {
@@ -457,7 +458,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  executeTab(editor: CodeMirror.Doc & CodeMirror.Editor): void {
+  executeTab(editor: Editor & Doc): void {
     editor.somethingSelected()
       ? editor.execCommand("indentMore")
       : editor.execCommand("insertSoftTab");
