@@ -1,8 +1,12 @@
+import { Channels } from "@nteract/messaging";
 import { Media, RichMedia } from "@nteract/outputs";
 import CodeMirror, {
+  Doc,
   Editor,
   EditorChangeLinkedList,
-  EditorConfiguration
+  EditorConfiguration,
+  Position,
+  Token
 } from "codemirror";
 import { debounce } from "lodash";
 import * as React from "react";
@@ -26,11 +30,11 @@ import {
   takeUntil
 } from "rxjs/operators";
 
-import excludedIntelliSenseTriggerKeys from "./excludedIntelliSenseKeys";
+import { excludedIntelliSenseTriggerKeys } from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
 import { tool } from "./jupyter/tooltip";
 
-import InitialTextArea from "./components/initial-text-area";
+import { InitialTextArea } from "./components/initial-text-area";
 
 import styled, { StyledComponent } from "styled-components";
 
@@ -69,7 +73,7 @@ export interface CodeMirrorEditorProps {
   focusAbove?: (instance: CodeMirror.Editor) => void;
   focusBelow?: (instance: CodeMirror.Editor) => void;
   theme: string;
-  channels?: any;
+  channels?: Channels | null;
   // TODO: We only check if this is idle, so the completion provider should only
   //       care about this when kernelStatus === idle _and_ we're the active cell
   //       could instead call it `canTriggerCompletion` and reduce our current re-renders
@@ -87,8 +91,8 @@ interface CodeMirrorEditorState {
 }
 
 interface CodeCompletionEvent {
-  editor: CodeMirror.Editor;
-  callback: () => {};
+  editor: Editor & Doc;
+  callback: (completionResult: any) => {};
   debounce: boolean;
 }
 
@@ -233,8 +237,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
               (ev.keyCode || ev.which).toString()
             ]
           ) {
-            const cursor = editor.getDoc().getCursor();
-            const token = editor.getTokenAt(cursor);
+            const cursor: Position = editor.getDoc().getCursor();
+            const token: Token = editor.getTokenAt(cursor);
             if (
               token.type === "tag" ||
               token.type === "variable" ||
@@ -249,11 +253,11 @@ export default class CodeMirrorEditor extends React.PureComponent<
         }
       );
 
-    this.completionSubject = new Subject();
+    this.completionSubject = new Subject<CodeCompletionEvent>();
 
     // tslint:disable no-shadowed-variable
-    const [debounce, immediate] = partition(
-      (ev: CodeCompletionEvent) => ev.debounce === true
+    const [debounce, immediate] = partition<CodeCompletionEvent>(
+      ev => ev.debounce === true
     )(this.completionSubject);
 
     const mergedCompletionEvents: Observable<CodeCompletionEvent> = merge(
@@ -270,7 +274,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
     const completionResults: Observable<
       () => void
     > = mergedCompletionEvents.pipe(
-      switchMap((ev: any) => {
+      switchMap(ev => {
         const { channels } = this.props;
         if (!channels) {
           throw new Error(
@@ -288,8 +292,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
       })
     );
 
-    this.completionEventsSubscriber = completionResults.subscribe(
-      (callback: () => void) => callback()
+    this.completionEventsSubscriber = completionResults.subscribe(callback =>
+      callback()
     );
   }
 
@@ -369,7 +373,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  hint(editor: CodeMirror.Editor, callback: () => {}): void {
+  hint(editor: Editor & Doc, callback: () => {}): void {
     const { completion, channels } = this.props;
     const debounceThisCompletionRequest: boolean = this
       .debounceNextCompletionRequest;
@@ -393,7 +397,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
     const { tip, channels } = this.props;
 
     if (tip) {
-      tool(channels, editor).subscribe((resp: { [dict: string]: any }) => {
+      tool(channels!, editor).subscribe((resp: { [dict: string]: any }) => {
         const bundle = resp.dict;
 
         if (Object.keys(bundle).length === 0) {
@@ -404,8 +408,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
           "tip-holder"
         )[0] as HTMLElement;
 
-        const expanded = { expanded: true };
-        const tipElement = ReactDOM.createPortal(
+        const expanded: { expanded: boolean } = { expanded: true };
+        const tipElement: React.ReactPortal = ReactDOM.createPortal(
           <Tip className="CodeMirror-hint">
             <RichMedia data={bundle} metadata={{ expanded }}>
               <Media.Plain />

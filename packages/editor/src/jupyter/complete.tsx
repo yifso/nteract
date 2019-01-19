@@ -13,13 +13,14 @@ import { Observable, Observer } from "rxjs";
 import { first, map, timeout } from "rxjs/operators";
 
 import { Hint } from "../components/hint";
-import { CMI, EditorChange } from "../types";
 import { char_idx_to_js_idx, js_idx_to_char_idx } from "./surrogate";
 
 // Hint picker
-export const pick = (cm: any, handle: { pick: () => void }) => handle.pick();
+export function pick(_cm: any, handle: { pick: () => void }): void {
+  handle.pick();
+}
 
-export function formChangeObject(cm: CMI, change: EditorChange) {
+export function formChangeObject<T, U>(cm: T, change: U) {
   return {
     cm,
     change
@@ -51,8 +52,8 @@ interface CompletionResults {
 export const expand_completions = (editor: Doc) => (
   results: CompletionResults
 ) => {
-  let start = results.cursor_start;
-  let end = results.cursor_end;
+  let start: number = results.cursor_start;
+  let end: number = results.cursor_end;
 
   if (end === null) {
     // adapted message spec replies don't have cursor position info,
@@ -69,20 +70,20 @@ export const expand_completions = (editor: Doc) => (
     // HACK: This seems susceptible to timing issues, we could verify changes in
     //       what's in the editor, as we'll be able to correlate across events
     //       Suggestions and background in https://github.com/nteract/nteract/pull/1840#discussion_r133380430
-    const text = editor.getValue();
+    const text: string = editor.getValue();
     end = char_idx_to_js_idx(end, text);
     start = char_idx_to_js_idx(start, text);
   }
 
-  const from = editor.posFromIndex(start);
-  const to = editor.posFromIndex(end);
+  const from: Position = editor.posFromIndex(start);
+  const to: Position = editor.posFromIndex(end);
 
   let matches: CompletionMatch[] = results.matches;
 
   // ipykernel may return experimental completion in the metadata field,
-  // experiment with these. We use codemirror ability to take a rendering function
-  // on a per completion basis (we can't give a global one :-( to render not only
-  // the text, but the type as well.
+  // experiment with these. We use codemirror ability to take a rendering
+  // function on a per completion basis (we can't give a global one :-( to
+  // render not only the text, but the type as well.
   // as this is not documented in CM the DOM structure of the completer will be
   //
   // <ul class="CodeMirror-hints" >
@@ -96,15 +97,16 @@ export const expand_completions = (editor: Doc) => (
     matches = results.metadata._jupyter_types_experimental;
   }
 
-  const render = (
+  function render(
     elt: HTMLElement,
     data: any, // Not used, it's the overall list of results
-    // The "completion" result here is literally whatever object we return as elements to
-    // the list return below, as CodeMirror uses this render callback later
+    // The "completion" result here is literally whatever object we return as
+    // elements to the list return below, as CodeMirror uses this render
+    // callback later
     completion: { text: string; type?: string }
-  ) => {
+  ): void {
     ReactDOM.render(<Hint {...completion} />, elt);
-  };
+  }
 
   return {
     list: matches.map((match: CompletionMatch) => {
@@ -126,7 +128,7 @@ export const expand_completions = (editor: Doc) => (
 
 export function codeCompleteObservable(
   channels: Channels,
-  editor: CMI,
+  editor: Doc,
   message: JupyterMessage
 ) {
   const completion$ = channels.pipe(
@@ -154,7 +156,7 @@ export const completionRequest = (code: string, cursorPos: number) =>
     }
   });
 
-export function codeComplete(channels: Channels, editor: any) {
+export function codeComplete(channels: Channels, editor: Doc) {
   const cursor = editor.getCursor();
   let cursorPos = editor.indexFromPos(cursor);
   const code = editor.getValue();

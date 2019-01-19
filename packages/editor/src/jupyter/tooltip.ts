@@ -8,13 +8,11 @@ import {
 import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
 
-import { CMI } from "../types";
-
 import { js_idx_to_char_idx } from "./surrogate";
 
 export function tooltipObservable(
   channels: Channels,
-  editor: CMI,
+  _editor: CodeMirror.Editor & CodeMirror.Doc,
   message: JupyterMessage
 ) {
   const tip$ = channels.pipe(
@@ -34,24 +32,34 @@ export function tooltipObservable(
   });
 }
 
-export const tooltipRequest = (code: string, cursorPos: number) =>
-  createMessage("inspect_request", {
+export function tooltipRequest(
+  code: string,
+  cursorPos: number
+): JupyterMessage<"inspect_request", any> {
+  return createMessage("inspect_request", {
     content: {
       code,
       cursor_pos: cursorPos,
       detail_level: 0
     }
   });
+}
 
-export function tool(channels: Channels, editor: CMI) {
-  const cursor = editor.getCursor();
+export function tool(
+  channels: Channels,
+  editor: CodeMirror.Editor & CodeMirror.Doc
+) {
+  const cursor: CodeMirror.Position = editor.getCursor();
   // Get position while handling surrogate pairs
-  const cursorPos = js_idx_to_char_idx(
+  const cursorPos: number = js_idx_to_char_idx(
     editor.indexFromPos(cursor),
     editor.getValue()
   );
-  const code = editor.getValue();
+  const code: string = editor.getValue();
 
-  const message = tooltipRequest(code, cursorPos);
+  const message: JupyterMessage<"inspect_request", any> = tooltipRequest(
+    code,
+    cursorPos
+  );
   return tooltipObservable(channels, editor, message);
 }
