@@ -215,34 +215,39 @@ export default class CodeMirrorEditor extends React.PureComponent<
     this.cm.on("blur", this.focusChanged.bind(this, false));
     this.cm.on("change", this.codemirrorValueChanged.bind(this));
 
-    const keyupEvents = fromEvent(this.cm, "keyup", (editor: any, ev: any) => ({
-      editor,
-      ev
-    }));
+    const keyupEvents = fromEvent(
+      this.cm as any,
+      "keyup",
+      (editor: CodeMirror.Editor, ev: KeyboardEvent) => ({ editor, ev })
+    );
 
     // Initiate code completion in response to some keystrokes *other than* "Ctrl-Space" (which is bound in extraKeys, above)
     this.keyupEventsSubscriber = keyupEvents
       .pipe(switchMap(i => of(i)))
-      .subscribe(({ editor, ev }) => {
-        if (
-          completion &&
-          !editor.state.completionActive &&
-          !excludedIntelliSenseTriggerKeys[(ev.keyCode || ev.which).toString()]
-        ) {
-          const cursor = editor.getDoc().getCursor();
-          const token = editor.getTokenAt(cursor);
+      .subscribe(
+        ({ editor, ev }: { editor: CodeMirror.Editor; ev: KeyboardEvent }) => {
           if (
-            token.type === "tag" ||
-            token.type === "variable" ||
-            token.string === " " ||
-            token.string === "<" ||
-            token.string === "/" ||
-            token.string === "."
+            completion &&
+            !editor.state.completionActive &&
+            !excludedIntelliSenseTriggerKeys[
+              (ev.keyCode || ev.which).toString()
+            ]
           ) {
-            editor.execCommand("autocomplete");
+            const cursor = editor.getDoc().getCursor();
+            const token = editor.getTokenAt(cursor);
+            if (
+              token.type === "tag" ||
+              token.type === "variable" ||
+              token.string === " " ||
+              token.string === "<" ||
+              token.string === "/" ||
+              token.string === "."
+            ) {
+              editor.execCommand("autocomplete");
+            }
           }
         }
-      });
+      );
 
     this.completionSubject = new Subject();
 
