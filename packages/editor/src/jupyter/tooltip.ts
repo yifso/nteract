@@ -5,6 +5,7 @@ import {
   JupyterMessage,
   ofMessageType
 } from "@nteract/messaging";
+import { Doc, Editor, Position } from "codemirror";
 import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
 
@@ -12,7 +13,7 @@ import { js_idx_to_char_idx } from "./surrogate";
 
 export function tooltipObservable(
   channels: Channels,
-  _editor: CodeMirror.Editor & CodeMirror.Doc,
+  _editor: Editor & Doc,
   message: JupyterMessage
 ) {
   const tip$ = channels.pipe(
@@ -45,11 +46,8 @@ export function tooltipRequest(
   });
 }
 
-export function tool(
-  channels: Channels,
-  editor: CodeMirror.Editor & CodeMirror.Doc
-) {
-  const cursor: CodeMirror.Position = editor.getCursor();
+export function tool(channels: Channels, editor: Editor & Doc) {
+  const cursor: Position = editor.getCursor();
   // Get position while handling surrogate pairs
   const cursorPos: number = js_idx_to_char_idx(
     editor.indexFromPos(cursor),
