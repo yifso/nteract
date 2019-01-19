@@ -17,19 +17,26 @@ interface State {
   columnExtent: { [index: string]: number[] };
 }
 
+interface ParallelCoordinateOptions {
+  primaryKey: Dx.Schema["primaryKey"];
+  metrics: Dx.Metric[];
+  chart: Dx.Chart;
+  colors: Dx.ChartOptions["colors"];
+}
+
 interface Props {
   data: Dx.DataProps["data"];
   schema: Dx.DataProps["schema"];
-  options: Dx.DataProps["options"];
+  options: ParallelCoordinateOptions;
 }
 
 const axisSize = [40, 380];
 
 function parallelizeData(
   data: Dx.Datapoint[],
-  metrics: Array<{ name: string }>,
-  schemaFields: Array<{ name: string; type: string }>,
-  primaryKey: string[]
+  metrics: Dx.Metric[],
+  schemaFields: Dx.Field[],
+  primaryKey: Dx.Schema["primaryKey"]
 ) {
   const minmax: { [index: string]: ScaleLinear<number, number> } = {};
   const screenScales: { [index: string]: ScaleLinear<number, number> } = {};

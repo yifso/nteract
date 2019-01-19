@@ -10,6 +10,16 @@ import { JSONObject } from "@nteract/commutable";
 import * as Dx from "../types";
 import { sortByOrdinalRange } from "./shared";
 
+interface XYPlotOptions {
+  areaType: Dx.AreaType;
+  chart: Dx.ChartOptions["chart"];
+  colors: Dx.ChartOptions["colors"];
+  dimensions: Dx.ChartOptions["dimensions"];
+  height: Dx.ChartOptions["height"];
+  primaryKey: Dx.ChartOptions["primaryKey"];
+  setColor: Dx.ChartOptions["setColor"];
+}
+
 const binHash = {
   heatmap: heatmapping,
   hexbin: hexbinning
@@ -61,7 +71,7 @@ function combineTopAnnotations(
 export const semioticHexbin = (
   data: Dx.DataProps["data"],
   schema: Dx.DataProps["schema"],
-  options: Dx.DataProps["options"]
+  options: XYPlotOptions
 ) => {
   return semioticScatterplot(data, schema, options, options.areaType);
 };
@@ -69,7 +79,7 @@ export const semioticHexbin = (
 export const semioticScatterplot = (
   data: Dx.DataProps["data"],
   schema: Dx.DataProps["schema"],
-  options: Dx.DataProps["options"],
+  options: XYPlotOptions,
   type: string = "scatterplot"
 ) => {
   const height = options.height - 150 || 500;

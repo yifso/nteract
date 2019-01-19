@@ -4,7 +4,16 @@ import * as React from "react";
 
 import TooltipContent from "../tooltip-content";
 
+import { chartHelpText } from "../docs/chart-docs";
 import * as Dx from "../types";
+
+interface HierarchicalOptions {
+  hierarchyType: Dx.HierarchyType;
+  chart: Dx.Chart;
+  selectedDimensions: Dx.ChartOptions["selectedDimensions"];
+  primaryKey: Dx.ChartOptions["primaryKey"];
+  colors: Dx.ChartOptions["colors"];
+}
 
 const parentPath = (datapoint: Dx.Datapoint, pathArray: string[]) => {
   if (datapoint.parent) {
@@ -76,7 +85,7 @@ const hierarchicalColor = (
 export const semioticHierarchicalChart = (
   data: Dx.DataProps["data"],
   schema: Dx.DataProps["schema"],
-  options: Dx.DataProps["options"]
+  options: HierarchicalOptions
 ) => {
   const {
     hierarchyType: baseHierarchyType = "dendrogram",

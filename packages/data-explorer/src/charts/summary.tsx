@@ -6,6 +6,14 @@ import TooltipContent from "../tooltip-content";
 import * as Dx from "../types";
 import { numeralFormatting } from "../utilities";
 
+interface SummaryOptions {
+  chart: Dx.Chart;
+  colors: Dx.ChartOptions["colors"];
+  primaryKey: Dx.Schema["primaryKey"];
+  setColor: Dx.ChartOptions["setColor"];
+  summaryType: Dx.SummaryType;
+}
+
 const fontScale = scaleLinear()
   .domain([8, 25])
   .range([14, 8])
@@ -14,7 +22,7 @@ const fontScale = scaleLinear()
 export const semioticSummaryChart = (
   data: Dx.DataProps["data"],
   schema: Dx.DataProps["schema"],
-  options: Dx.DataProps["options"]
+  options: SummaryOptions
 ) => {
   const additionalSettings: { afterElements?: JSX.Element } = {};
   const colorHash: { [index: string]: string } = {};
