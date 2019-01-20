@@ -19,7 +19,6 @@ export interface ChartOptions {
 export interface DataProps {
   schema: Schema;
   data: Datapoint[];
-  options: ChartOptions;
 }
 
 export interface Schema {

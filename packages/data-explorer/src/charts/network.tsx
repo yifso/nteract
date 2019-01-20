@@ -21,6 +21,12 @@ interface EdgeObject {
   value: number;
 }
 
+interface NetworkOptions {
+  chart: Dx.Chart;
+  colors: Dx.ChartOptions["colors"];
+  networkType: Dx.NetworkType;
+}
+
 const fontScale = scaleLinear()
   .domain([5, 30])
   .range([8, 16])
@@ -112,7 +118,7 @@ const nodeLabeling: {
 export const semioticNetwork = (
   data: Dx.DataProps["data"],
   schema: Dx.DataProps["schema"],
-  options: Dx.DataProps["options"]
+  options: NetworkOptions
 ) => {
   const { networkType = "force", chart, colors } = options;
   const {
