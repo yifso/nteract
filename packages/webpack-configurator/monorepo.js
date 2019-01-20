@@ -54,11 +54,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/gatsby-transformer-ipynb",
-      version: "3.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@mybinder/host-cache",
       version: "1.0.0-alpha.0",
       private: false
