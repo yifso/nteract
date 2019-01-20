@@ -12,7 +12,10 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "noImplicitAny": true,
-    "plugins": [{ "name": "typescript-tslint-plugin" }],
+    "plugins": [
+      { "name": "typescript-styled-plugin" },
+      { "name": "typescript-tslint-plugin" }
+    ],
     "resolveJsonModule": true,
     "preserveWatchOutput": true,
     "jsx": "react",
