@@ -1,7 +1,7 @@
 import * as MathJax from "@nteract/mathjax";
 import { GlobalCSSVariables } from "@nteract/presentational-components";
 
-import DataResourceTransform from "@nteract/data-explorer";
+import DataExplorer from "@nteract/data-explorer";
 import { WidgetDisplay } from "@nteract/jupyter-widgets";
 import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
@@ -98,7 +98,7 @@ const store = configureStore({
           "application/vnd.plotly.v1+json": PlotlyTransform,
           "application/geo+json": GeoJSONTransform,
           "application/x-nteract-model-debug+json": ModelDebug,
-          "application/vnd.dataresource+json": DataResourceTransform,
+          "application/vnd.dataresource+json": DataExplorer,
           "application/vnd.jupyter.widget-view+json": WidgetDisplay,
           "application/vnd.vegalite.v1+json": VegaLite1,
           "application/vnd.vegalite.v2+json": VegaLite2,
