@@ -7,28 +7,29 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import { BlueprintCSS } from "@nteract/styled-blueprintjsx";
 import * as React from "react";
+import { connect } from "react-redux";
 
 // https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
 
-const tagStyle = {
+const tagStyle: object = {
   background: "#f1f8ff",
   color: "#0366d6",
   marginRight: "5px"
 };
 
-const authorStyle = {
+const authorStyle: object = {
   background: "#E5E5E5",
   fontStyle: "italic",
   marginRight: "5px"
 };
 
-const authorStyleBlack = { ...authorStyle, color: "black" };
+const authorStyleBlack: object = { ...authorStyle, color: "black" };
 
 export interface AuthorObject {
   name: string;
 }
+
 export interface HeaderDataProps {
   authors: AuthorObject[];
   title: string;
@@ -50,6 +51,10 @@ export interface HeaderEditorProps {
    */
   onChange: (props?: HeaderDataProps) => void;
   /**
+   *
+   */
+  onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
+  /**
    * The theme of the header.
    */
   theme: "light" | "dark";
@@ -59,14 +64,14 @@ export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
 }
 
-const addTagMessage = <span>Add a tag</span>;
-const addAuthorMessage = <span>Add an author</span>;
+const addTagMessage: JSX.Element = <span>Add a tag</span>;
+const addAuthorMessage: JSX.Element = <span>Add an author</span>;
 
-export class HeaderEditor extends React.PureComponent<
+class HeaderEditor extends React.PureComponent<
   HeaderEditorProps,
   HeaderEditorState
 > {
-  static defaultProps = {
+  static defaultProps: HeaderEditorProps = {
     editable: true,
     headerData: {
       authors: [],
@@ -88,11 +93,11 @@ export class HeaderEditor extends React.PureComponent<
     };
   }
 
-  render() {
+  render(): JSX.Element {
     // Otherwise assume they have their own editor component
     const { editable, headerData, onChange } = this.props;
-    const marginStyles = { marginTop: "10px" };
-    const styles = { background: "#EEE", padding: "10px" };
+    const marginStyles: object = { marginTop: "10px" };
+    const styles: object = { background: "#EEE", padding: "10px" };
     const onTextChange = (newText: string): void => {
       this.props.onChange({
         ...headerData,
@@ -250,8 +255,14 @@ export class HeaderEditor extends React.PureComponent<
             />
           </div>
         </div>
-        <BlueprintCSS />
       </header>
     );
   }
 }
+
+const ConnectedHeaderEditor = connect()(HeaderEditor);
+
+// We export this for testing purposes.
+export { ConnectedHeaderEditor as HeaderEditor };
+
+export default ConnectedHeaderEditor;
