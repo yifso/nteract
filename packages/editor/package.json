@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@nteract/messaging": "^5.0.4-alpha.0",
-    "codemirror": "5.42.2",
+    "codemirror": "5.43.0",
     "lodash": "^4.17.4",
     "rxjs": "^6.3.3",
     "styled-components": "^4.1.3"
