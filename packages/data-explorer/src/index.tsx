@@ -193,7 +193,7 @@ const SemioticWrapper = styled.div`
   }
 `;
 
-class DataResourceTransform extends React.Component<Partial<Props>, State> {
+class DataExplorer extends React.Component<Partial<Props>, State> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -518,4 +518,4 @@ class DataResourceTransform extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default DataResourceTransform;
+export default DataExplorer;
