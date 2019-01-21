@@ -130,7 +130,7 @@ export default function Ansi(props: Props) {
   return React.createElement(
     "code",
     { className },
-    ansiToJSON(children, useClasses).map(
+    ansiToJSON(children, !!useClasses).map(
       convertBundleIntoReact.bind(null, linkify, useClasses)
     )
   );
