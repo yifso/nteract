@@ -1,5 +1,14 @@
+/**
+ * Main entry point for the desktop notebook UI
+ */
+
 import * as MathJax from "@nteract/mathjax";
+
 import { GlobalCSSVariables } from "@nteract/presentational-components";
+import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import { createGlobalStyle } from "styled-components";
+
+import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 
 import DataExplorer from "@nteract/data-explorer";
 import { WidgetDisplay } from "@nteract/jupyter-widgets";
@@ -42,8 +51,6 @@ import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
 import { makeDesktopNotebookRecord } from "./state";
 import configureStore, { DesktopStore } from "./store";
-
-import { createGlobalStyle } from "styled-components";
 
 // Load the nteract fonts
 require("./fonts");
@@ -173,23 +180,30 @@ export default class App extends React.PureComponent {
 
   render() {
     return (
-      <Provider store={store}>
-        <MathJax.Provider src={mathJaxPath} input="tex">
-          <NotebookApp
-            // The desktop app always keeps the same contentRef in a browser window
-            contentRef={contentRef}
-          />
-        </MathJax.Provider>
+      <React.Fragment>
+        <AppStyle />
+        <GlobalCSSVariables />
 
+        <BlueprintCSS />
+        <BlueprintSelectCSS />
+
+        <CodeMirrorCSS />
+        <ShowHintCSS />
+
+        <Provider store={store}>
+          <MathJax.Provider src={mathJaxPath} input="tex">
+            <NotebookApp
+              // The desktop app always keeps the same contentRef in a browser window
+              contentRef={contentRef}
+            />
+          </MathJax.Provider>
+        </Provider>
         <NotificationSystem
           ref={(notificationSystem: ReactNotificationSystem) => {
             this.notificationSystem = notificationSystem;
           }}
         />
-
-        <GlobalCSSVariables />
-        <AppStyle />
-      </Provider>
+      </React.Fragment>
     );
   }
 }
