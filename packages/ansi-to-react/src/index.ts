@@ -28,7 +28,7 @@ function ansiToJSON(input: string, use_classes = false) {
  * @return {String} class name(s)
  */
 function createClass(bundle: AnserJsonEntry) {
-  let classNames: String = "";
+  let classNames: string = "";
 
   if (!bundle.bg && !bundle.fg) {
     return null;
