@@ -1,4 +1,5 @@
-import { launchKernel } from "../src/kernel";
+import { Status } from "pidusage";
+import { Kernel, launchKernel } from "../src/kernel";
 
 jest.unmock("process");
 
@@ -33,8 +34,8 @@ describe("Kernel", () => {
     done();
   });
   it("can get usage metrics on a kernel", async done => {
-    const kernel = await launchKernel("python3");
-    const stats = await kernel.getUsage();
+    const kernel: Kernel = await launchKernel("python3");
+    const stats: Status = await kernel.getUsage();
     expect(stats.memory).toBeDefined();
     expect(stats.pid).toEqual(kernel.process.pid);
     await kernel.shutdown();

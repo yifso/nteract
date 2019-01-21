@@ -38,16 +38,18 @@ import uuid from "uuid";
 import execa, { Options } from "execa";
 import mkdirp from "mkdirp";
 
+import { Subject } from "rxjs";
+
 import jp from "./jupyter-paths";
 import { findAll, KernelResourceByName, KernelSpec } from "./kernelspecs";
 
-import { Channels } from "@nteract/messaging";
+import { Channels, JupyterMessage, MessageType } from "@nteract/messaging";
 import {
   createMainChannel,
   JupyterConnectionInfo
 } from "enchannel-zmq-backend";
 
-export function cleanup(connectionFile: fs.PathLike) {
+export function cleanup(connectionFile: fs.PathLike): void {
   try {
     fs.unlinkSync(connectionFile);
   } catch (e) {
@@ -56,15 +58,15 @@ export function cleanup(connectionFile: fs.PathLike) {
 }
 
 /**
- * Creates a JupyterConnectionInfo object for a kernel given an array of comm channel ports
+ * Creates a JupyterConnectionInfo object for a kernel given an array of comm
+ * channel ports
+ *
  * @private
- * @param  {number[]} ports array of comm channel ports to use for the connection,
- *                          [hb_port, control_port, shell_port, stdin_port, iopub_port]
- * @return {object}         JupyterConnectionInfo object
+ * @param  ports array of comm channel ports to use for the connection,
+ *               [hb_port, control_port, shell_port, stdin_port, iopub_port]
+ * @return JupyterConnectionInfo object
  */
-function createConnectionInfo(
-  ports: number[]
-): { version: number } & JupyterConnectionInfo {
+function createConnectionInfo(ports: number[]): JupyterConnectionInfo {
   return {
     version: 5,
     key: uuid.v4(),
@@ -79,31 +81,37 @@ function createConnectionInfo(
   };
 }
 
+export interface PortFinderOptions {
+  host: string;
+  port: number;
+}
+
 /**
  * Write a connection file
  * @public
- * @param  {object} [portFinderOptions]           connection options
- *                                                see {@link https://github.com/indexzero/node-portfinder/blob/master/lib/portfinder.js }
- * @param  {number} [portFinderOptions.port]
- * @param  {string} [portFinderOptions.host]
- * @return {object} configResults
- * @return {object} configResults.config          connection info
- * @return {string} configResults.connectionFile  path to the connection file
+ * @param [portFinderOptions] connection options
+ *                            see {@link https://github.com/indexzero/node-portfinder/blob/master/lib/portfinder.js }
+ * @param [portFinderOptions.port]
+ * @param [portFinderOptions.host]
+ * @return configResults
+ * @return configResults.config          connection info
+ * @return configResults.connectionFile  path to the connection file
  */
-async function writeConnectionFile(portFinderOptions?: {
-  port: number;
-  host: string;
-}): Promise<{ config: JupyterConnectionInfo; connectionFile: string }> {
-  const options = Object.assign({}, portFinderOptions);
-  options.port = options.port || 9000;
-  options.host = options.host || "127.0.0.1";
-
+async function writeConnectionFile(
+  portFinderOptions: PortFinderOptions = {
+    host: "127.0.0.1",
+    port: 9000
+  }
+): Promise<{
+  config: JupyterConnectionInfo;
+  connectionFile: string;
+}> {
   const writeFile = util.promisify(fs.writeFile);
   const getPorts = util.promisify(_getPorts);
 
   try {
-    const ports = await getPorts(5, options);
-    const runtimeDir = await jp.runtimeDir();
+    const ports: number[] = await getPorts(5, portFinderOptions);
+    const runtimeDir: string = await jp.runtimeDir();
     mkdirp(runtimeDir, error => {
       if (error) {
         throw error;
@@ -111,8 +119,8 @@ async function writeConnectionFile(portFinderOptions?: {
     });
 
     // Write the kernel connection file.
-    const config = createConnectionInfo(ports);
-    const connectionFile = path.join(
+    const config: JupyterConnectionInfo = createConnectionInfo(ports);
+    const connectionFile: string = path.join(
       await jp.runtimeDir(),
       `kernel-${uuid.v4()}.json`
     );
@@ -134,8 +142,14 @@ async function writeConnectionFile(portFinderOptions?: {
  * @param  [spawnOptions] `child_process`-like {@link https://github.com/sindresorhus/execa#options options for execa}
  *                         use `{ cleanupConnectionFile: false }` to disable automatic connection file cleanup
  */
-async function launchSpec(kernelSpec: KernelSpec, spawnOptions?: Options) {
-  const info = await writeConnectionFile();
+export async function launchSpec(
+  kernelSpec: KernelSpec,
+  spawnOptions?: Options
+): Promise<LaunchedKernel> {
+  const info: {
+    config: JupyterConnectionInfo;
+    connectionFile: string;
+  } = await writeConnectionFile();
   return launchSpecFromConnectionInfo(
     kernelSpec,
     info.config,
@@ -155,34 +169,41 @@ export interface LaunchedKernel {
 /**
  * Launch a kernel for a given kernelSpec and connection info
  * @public
- * @param  {object}       kernelSpec      describes a specific
- *                                        kernel, see the npm
- *                                        package `kernelspecs`
- * @param  {object}       config          connection config
- * @param  {string}       connectionFile  path to the config file
- * @param  {object}       [spawnOptions]  `child_process`-like options for [execa]{@link https://github.com/sindresorhus/execa#options}
- *                                         use `{ cleanupConnectionFile: false }` to disable automatic connection file cleanup
- * @return {object}       spawnResults
- * @return {ChildProcess} spawnResults.spawn           spawned process
- * @return {string}       spawnResults.connectionFile  connection file path
- * @return {object}       spawnResults.config          connection info
+ * @param kernelSpec describes a specific kernel, see the npm package
+ *                   `kernelspecs`
+ * @param config connection config
+ * @param connectionFile path to the config file
+ * @param [spawnOptions] `child_process`-like options for
+ *                  [execa]{@link https://github.com/sindresorhus/execa#options}
+ *                       use `{ cleanupConnectionFile: false }` to disable
+ *                       automatic connection file cleanup
+ *
+ * @return spawnResults
+ * @return spawnResults.spawn           spawned process
+ * @return spawnResults.connectionFile  connection file path
+ * @return spawnResults.config          connection info
  *
  */
-async function launchSpecFromConnectionInfo(
+export async function launchSpecFromConnectionInfo(
   kernelSpec: KernelSpec,
   config: JupyterConnectionInfo,
   connectionFile: string,
   spawnOptions?: Options
 ): Promise<LaunchedKernel> {
-  const argv = kernelSpec.argv.map((x: string) =>
+  const argv: string[] = kernelSpec.argv.map((x: string) =>
     x === "{connection_file}" ? connectionFile : x
   );
 
-  const defaultSpawnOptions = {
+  const defaultSpawnOptions: {
+    cleanupConnectionFile: boolean;
+    stdio: string;
+  } = {
     cleanupConnectionFile: true,
     stdio: "ignore"
   };
-  const env = Object.assign({}, process.env, kernelSpec.env);
+  const env: NodeJS.ProcessEnv & {
+    [varialbe: string]: string;
+  } = Object.assign({}, process.env, kernelSpec.env);
   const fullSpawnOptions = Object.assign(
     {},
     defaultSpawnOptions,
@@ -191,14 +212,20 @@ async function launchSpecFromConnectionInfo(
     spawnOptions
   );
 
-  const runningKernel = execa(argv[0], argv.slice(1), fullSpawnOptions);
+  const runningKernel: execa.ExecaChildProcess = execa(
+    argv[0],
+    argv.slice(1),
+    fullSpawnOptions
+  );
 
   if (fullSpawnOptions.cleanupConnectionFile !== false) {
     runningKernel.on("exit", (code, signal) => cleanup(connectionFile));
     runningKernel.on("error", error => cleanup(connectionFile));
   }
 
-  const channels = await createMainChannel(config);
+  const channels: Subject<
+    JupyterMessage<MessageType, any>
+  > = await createMainChannel(config);
 
   return {
     channels,
@@ -212,30 +239,27 @@ async function launchSpecFromConnectionInfo(
 /**
  * Launch a kernel by name
  * @public
- * @param  kernelName
- * @param  [specs]                      array of kernelSpec
- *                                                     objects to look through.
- *                                                     See the npm package
- *                                                     `kernelspecs`
- * @param  [spawnOptions]  `child_process`-like options for [execa]{@link https://github.com/sindresorhus/execa#options}
- *                                        use `{ cleanupConnectionFile: false }` to disable automatic connection file cleanup
+ * @param kernelName
+ * @param [specs]        array of kernelSpec objects to look through.
+ *                       See the npm package `kernelspecs`
+ * @param [spawnOptions] `child_process`-like options for
+ *                  [execa]{@link https://github.com/sindresorhus/execa#options}
+ *                       use `{ cleanupConnectionFile: false }` to disable
+ *                       automatic connection file cleanup
  */
-async function launch(
+export async function launch(
   kernelName: string,
   spawnOptions?: Options,
   specs?: KernelResourceByName
 ): Promise<LaunchedKernel> {
   // Let them pass in a cached specs file
   if (!specs) {
-    return findAll().then((sp: KernelResourceByName) =>
-      launch(kernelName, spawnOptions, sp)
-    );
+    const sp: KernelResourceByName = await findAll();
+    return launch(kernelName, spawnOptions, sp);
   }
   if (!specs[kernelName]) {
     return Promise.reject(new Error(`No spec available for ${kernelName}`));
   }
-  const spec = specs[kernelName].spec;
+  const spec: KernelSpec = specs[kernelName].spec;
   return launchSpec(spec, spawnOptions);
 }
-
-export { launch, launchSpec, launchSpecFromConnectionInfo };

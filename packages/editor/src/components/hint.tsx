@@ -2,8 +2,7 @@ import * as React from "react";
 import styled, { StyledComponent } from "styled-components";
 
 interface TypeIconProps {
-  type:
-    | undefined
+  type?:
     | "module"
     | "keyword"
     | "statement"
@@ -22,17 +21,24 @@ interface HintProps {
 }
 
 // Completion to us, "hint" to codemirror
-export const Hint = (props: HintProps) => (
-  <React.Fragment>
-    {props.type ? <TypeIcon type={props.type} /> : null}
-    {props.displayText || props.text}
-  </React.Fragment>
-);
+export function Hint(props: HintProps): JSX.Element {
+  return (
+    <React.Fragment>
+      {props.type ? <TypeIcon type={props.type} /> : null}
+      {props.displayText || props.text}
+    </React.Fragment>
+  );
+}
 
 /**
- * An Icon to show before a code hint to show the type (e.g. Module, Keyword, etc.)
+ * An Icon to show before a code hint to show the type
+ * (e.g. Module, Keyword, etc.)
  */
-export const TypeIcon = styled.span.attrs<TypeIconProps>(props => ({
+export const TypeIcon: StyledComponent<
+  "span",
+  any,
+  TypeIconProps
+> = styled.span.attrs<TypeIconProps>(props => ({
   className: `completion-type-${props.type}`,
   title: props.type
 }))`
@@ -99,4 +105,4 @@ export const TypeIcon = styled.span.attrs<TypeIconProps>(props => ({
   &.completion-type-null {
     background-color: black;
   }
-` as StyledComponent<"span", any, TypeIconProps, never>; // Somehow setting the type on `attrs` isn't propagating properly
+`; // Somehow setting the type on `attrs` isn't propagating properly

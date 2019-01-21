@@ -1,6 +1,14 @@
-/* eslint-disable class-methods-use-this */
+import { Channels } from "@nteract/messaging";
 import { Media, RichMedia } from "@nteract/outputs";
-import CodeMirror from "codemirror";
+import CodeMirror, {
+  Doc,
+  Editor,
+  EditorChangeLinkedList,
+  EditorConfiguration,
+  EditorFromTextArea,
+  Position,
+  Token
+} from "codemirror";
 import { debounce } from "lodash";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -23,21 +31,18 @@ import {
   takeUntil
 } from "rxjs/operators";
 
-import excludedIntelliSenseTriggerKeys from "./excludedIntelliSenseKeys";
+import { excludedIntelliSenseTriggerKeys } from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
 import { tool } from "./jupyter/tooltip";
-import { CMDoc, CMI, EditorChange, Options } from "./types";
 
-export { EditorChange, Options };
+import { InitialTextArea } from "./components/initial-text-area";
 
-import InitialTextArea from "./components/initial-text-area";
-
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 import CodeMirrorCSS from "./vendored/codemirror";
 import ShowHintCSS from "./vendored/show-hint";
 
-const TipButton = styled.button`
+const TipButton: StyledComponent<"button", never> = styled.button`
   float: right;
   display: inline-block;
   position: absolute;
@@ -46,7 +51,7 @@ const TipButton = styled.button`
   font-size: 11.5px;
 `;
 
-const Tip = styled.div`
+const Tip: StyledComponent<"div", never> = styled.div`
   padding: 20px 20px 50px 20px;
   margin: 30px 20px 50px 20px;
   box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
@@ -55,30 +60,35 @@ const Tip = styled.div`
   z-index: 9999999;
 `;
 
-function normalizeLineEndings(str: string) {
+function normalizeLineEndings(str: string): string {
   if (!str) {
     return str;
   }
   return str.replace(/\r\n|\r/g, "\n");
 }
 
+export interface EditorKeyEvent {
+  editor: Editor;
+  ev: KeyboardEvent;
+}
+
 export interface CodeMirrorEditorProps {
   editorFocused: boolean;
   completion: boolean;
   tip?: boolean;
-  focusAbove?: () => void;
-  focusBelow?: () => void;
+  focusAbove?: (instance: Editor) => void;
+  focusBelow?: (instance: Editor) => void;
   theme: string;
-  channels?: any;
+  channels?: Channels | null;
   // TODO: We only check if this is idle, so the completion provider should only
   //       care about this when kernelStatus === idle _and_ we're the active cell
   //       could instead call it `canTriggerCompletion` and reduce our current re-renders
   kernelStatus: string;
-  onChange?: (value: string, change: EditorChange) => void;
+  onChange?: (value: string, change: EditorChangeLinkedList) => void;
   onFocusChange?: (focused: boolean) => void;
   value: string;
   defaultValue?: string;
-  options: Options;
+  options: EditorConfiguration & { [optionName: string]: any };
 }
 
 interface CodeMirrorEditorState {
@@ -87,12 +97,12 @@ interface CodeMirrorEditorState {
 }
 
 interface CodeCompletionEvent {
-  editor: CodeMirror.Editor;
-  callback: () => {};
+  editor: Editor & Doc;
+  callback: (completionResult: any) => {};
   debounce: boolean;
 }
 
-class CodeMirrorEditor extends React.PureComponent<
+export default class CodeMirrorEditor extends React.PureComponent<
   CodeMirrorEditorProps,
   CodeMirrorEditorState
 > {
@@ -107,14 +117,16 @@ class CodeMirrorEditor extends React.PureComponent<
   };
 
   textarea?: HTMLTextAreaElement | null;
-  cm: CMI;
-  defaultOptions: object;
+  cm!: EditorFromTextArea;
+  defaultOptions: EditorConfiguration;
   keyupEventsSubscriber!: Subscription;
   completionSubject!: Subject<CodeCompletionEvent>;
   completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
 
-  textareaRef = React.createRef<HTMLTextAreaElement>();
+  textareaRef: React.RefObject<HTMLTextAreaElement> = React.createRef<
+    HTMLTextAreaElement
+  >();
 
   constructor(props: CodeMirrorEditorProps) {
     super(props);
@@ -134,13 +146,12 @@ class CodeMirrorEditor extends React.PureComponent<
           "Cmd-/": "toggleComment",
           "Ctrl-.": this.tips,
           "Ctrl-/": "toggleComment",
-          "Ctrl-Space": (editor: CodeMirror.Editor) => {
+          "Ctrl-Space": (editor: Editor) => {
             this.debounceNextCompletionRequest = false;
             return editor.execCommand("autocomplete");
           },
           Down: this.goLineDownOrEmit,
-          "Shift-Tab": (editor: CodeMirror.Editor) =>
-            editor.execCommand("indentLess"),
+          "Shift-Tab": (editor: Editor) => editor.execCommand("indentLess"),
           Tab: this.executeTab,
           Up: this.goLineUpOrEmit
         },
@@ -162,7 +173,7 @@ class CodeMirrorEditor extends React.PureComponent<
     );
   }
 
-  componentWillMount() {
+  componentWillMount(): void {
     this.componentWillReceiveProps = debounce(
       this.componentWillReceiveProps,
       0
@@ -194,8 +205,8 @@ class CodeMirrorEditor extends React.PureComponent<
 
     require("./mode/ipython");
 
-    this.cm = require("codemirror").fromTextArea(
-      this.textareaRef.current,
+    this.cm = CodeMirror.fromTextArea(
+      this.textareaRef.current!,
       this.defaultOptions
     );
 
@@ -206,29 +217,30 @@ class CodeMirrorEditor extends React.PureComponent<
       this.cm.focus();
     }
 
-    this.cm.on("topBoundary", focusAbove);
-    this.cm.on("bottomBoundary", focusBelow);
+    this.cm.on("topBoundary", focusAbove!);
+    this.cm.on("bottomBoundary", focusBelow!);
 
     this.cm.on("focus", this.focusChanged.bind(this, true));
     this.cm.on("blur", this.focusChanged.bind(this, false));
     this.cm.on("change", this.codemirrorValueChanged.bind(this));
 
-    const keyupEvents = fromEvent(this.cm, "keyup", (editor, ev) => ({
-      editor,
-      ev
-    }));
+    const keyupEvents: Observable<EditorKeyEvent> = fromEvent<EditorKeyEvent>(
+      this.cm as any,
+      "keyup",
+      (editor, ev) => ({ editor, ev })
+    );
 
     // Initiate code completion in response to some keystrokes *other than* "Ctrl-Space" (which is bound in extraKeys, above)
     this.keyupEventsSubscriber = keyupEvents
-      .pipe(switchMap(i => of(i)))
+      .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(of))
       .subscribe(({ editor, ev }) => {
         if (
           completion &&
           !editor.state.completionActive &&
           !excludedIntelliSenseTriggerKeys[(ev.keyCode || ev.which).toString()]
         ) {
-          const cursor = editor.getDoc().getCursor();
-          const token = editor.getTokenAt(cursor);
+          const cursor: Position = editor.getDoc().getCursor();
+          const token: Token = editor.getTokenAt(cursor);
           if (
             token.type === "tag" ||
             token.type === "variable" ||
@@ -242,14 +254,14 @@ class CodeMirrorEditor extends React.PureComponent<
         }
       });
 
-    this.completionSubject = new Subject();
+    this.completionSubject = new Subject<CodeCompletionEvent>();
 
     // tslint:disable no-shadowed-variable
-    const [debounce, immediate] = partition(
-      (ev: CodeCompletionEvent) => ev.debounce === true
+    const [debounce, immediate] = partition<CodeCompletionEvent>(
+      ev => ev.debounce === true
     )(this.completionSubject);
 
-    const mergedCompletionEvents = merge(
+    const mergedCompletionEvents: Observable<CodeCompletionEvent> = merge(
       immediate,
       debounce.pipe(
         debounceTime(150),
@@ -263,7 +275,7 @@ class CodeMirrorEditor extends React.PureComponent<
     const completionResults: Observable<
       () => void
     > = mergedCompletionEvents.pipe(
-      switchMap((ev: any) => {
+      switchMap(ev => {
         const { channels } = this.props;
         if (!channels) {
           throw new Error(
@@ -281,8 +293,8 @@ class CodeMirrorEditor extends React.PureComponent<
       })
     );
 
-    this.completionEventsSubscriber = completionResults.subscribe(
-      (callback: () => void) => callback()
+    this.completionEventsSubscriber = completionResults.subscribe(callback =>
+      callback()
     );
   }
 
@@ -317,7 +329,7 @@ class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  componentWillReceiveProps(nextProps: CodeMirrorEditorProps) {
+  componentWillReceiveProps(nextProps: CodeMirrorEditorProps): void {
     if (
       this.cm &&
       nextProps.value !== undefined &&
@@ -344,7 +356,7 @@ class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     // TODO: is there a lighter weight way to remove the codemirror instance?
     if (this.cm) {
       this.cm.toTextArea();
@@ -353,7 +365,7 @@ class CodeMirrorEditor extends React.PureComponent<
     this.completionEventsSubscriber.unsubscribe();
   }
 
-  focusChanged(focused: boolean) {
+  focusChanged(focused: boolean): void {
     this.setState({
       isFocused: focused
     });
@@ -362,42 +374,43 @@ class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  hint(editor: CodeMirror.Editor, callback: () => {}): void {
+  hint(editor: Editor & Doc, callback: () => {}): void {
     const { completion, channels } = this.props;
-    const debounceThisCompletionRequest = this.debounceNextCompletionRequest;
+    const debounceThisCompletionRequest: boolean = this
+      .debounceNextCompletionRequest;
     this.debounceNextCompletionRequest = true;
     if (completion && channels) {
-      const el = {
+      const el: CodeCompletionEvent = {
+        editor,
         callback,
-        debounce: debounceThisCompletionRequest,
-        editor
+        debounce: debounceThisCompletionRequest
       };
       this.completionSubject.next(el);
     }
   }
 
-  deleteTip() {
+  deleteTip(): void {
     this.setState({ tipElement: null });
   }
 
   // TODO: Rely on ReactDOM.createPortal, create a space for tooltips to go
-  tips(editor: CodeMirror.Editor & CodeMirror.Doc): void {
+  tips(editor: Editor & Doc): void {
     const { tip, channels } = this.props;
 
     if (tip) {
-      tool(channels, editor).subscribe((resp: { [dict: string]: any }) => {
+      tool(channels!, editor).subscribe((resp: { [dict: string]: any }) => {
         const bundle = resp.dict;
 
         if (Object.keys(bundle).length === 0) {
           return;
         }
 
-        const node = document.getElementsByClassName(
+        const node: HTMLElement = document.getElementsByClassName(
           "tip-holder"
         )[0] as HTMLElement;
 
-        const expanded = { expanded: true };
-        const tipElement = ReactDOM.createPortal(
+        const expanded: { expanded: boolean } = { expanded: true };
+        const tipElement: React.ReactPortal = ReactDOM.createPortal(
           <Tip className="CodeMirror-hint">
             <RichMedia data={bundle} metadata={{ expanded }}>
               <Media.Plain />
@@ -411,9 +424,9 @@ class CodeMirrorEditor extends React.PureComponent<
 
         editor.addWidget({ line: editor.getCursor().line, ch: 0 }, node, true);
 
-        const body = document.body;
+        const body: HTMLElement = document.body;
         if (node != null && body != null) {
-          const pos = node.getBoundingClientRect();
+          const pos: ClientRect | DOMRect = node.getBoundingClientRect();
           body.appendChild(node);
           node.style.top = `${pos.top}px`;
         }
@@ -421,39 +434,37 @@ class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  goLineDownOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
-    const cursor = editor.getCursor();
-    const lastLineNumber = editor.lastLine();
-    const lastLine = editor.getLine(lastLineNumber);
+  goLineDownOrEmit(editor: Editor & Doc): void {
+    const cursor: Position = editor.getCursor();
+    const lastLineNumber: number = editor.lastLine();
+    const lastLine: string = editor.getLine(lastLineNumber);
     if (
       cursor.line === lastLineNumber &&
       cursor.ch === lastLine.length &&
       !editor.somethingSelected()
     ) {
-      const CM = require("codemirror");
-      CM.signal(editor, "bottomBoundary");
+      CodeMirror.signal(editor, "bottomBoundary");
     } else {
       editor.execCommand("goLineDown");
     }
   }
 
-  goLineUpOrEmit(editor: CodeMirror.Doc & CodeMirror.Editor): void {
-    const cursor = editor.getCursor();
+  goLineUpOrEmit(editor: Editor & Doc): void {
+    const cursor: Position = editor.getCursor();
     if (cursor.line === 0 && cursor.ch === 0 && !editor.somethingSelected()) {
-      const CM = require("codemirror");
-      CM.signal(editor, "topBoundary");
+      CodeMirror.signal(editor, "topBoundary");
     } else {
       editor.execCommand("goLineUp");
     }
   }
 
-  executeTab(editor: CodeMirror.Doc & CodeMirror.Editor): void {
+  executeTab(editor: Editor & Doc): void {
     editor.somethingSelected()
       ? editor.execCommand("indentMore")
       : editor.execCommand("insertSoftTab");
   }
 
-  codemirrorValueChanged(doc: CMDoc, change: EditorChange) {
+  codemirrorValueChanged(doc: Editor, change: EditorChangeLinkedList): void {
     if (
       this.props.onChange &&
       // When the change came from us setting the value, don't trigger another change
@@ -463,7 +474,7 @@ class CodeMirrorEditor extends React.PureComponent<
     }
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <React.Fragment>
         {/* Global CodeMirror CSS packaged up by styled-components */}
@@ -481,5 +492,3 @@ class CodeMirrorEditor extends React.PureComponent<
     );
   }
 }
-
-export default CodeMirrorEditor;

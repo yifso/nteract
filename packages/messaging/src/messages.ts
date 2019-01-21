@@ -9,6 +9,8 @@ import {
   MessageType
 } from "./types";
 
+export type Channel = "shell" | "iopub" | "stdin";
+
 /**
  * Returns which channel, iopub or stdin or shell, to send a kernel message
  * through.
@@ -17,7 +19,7 @@ import {
  *
  * @returns The channel to send a kernel message through
  */
-function whichChannel(messageType?: MessageType): string {
+function whichChannel(messageType?: MessageType): Channel {
   switch (messageType) {
     case "execute_request":
     case "inspect_request":
@@ -75,7 +77,7 @@ export function message<MT extends MessageType>(
   header: { msg_type: MT; username?: string; session?: string },
   content: object = {}
 ): JupyterMessage<MT> {
-  const channel = whichChannel(header.msg_type);
+  const channel: Channel = whichChannel(header.msg_type);
   return {
     header: {
       msg_id: uuid(),
@@ -155,7 +157,7 @@ export function executeRequest(
     stop_on_error?: boolean;
   } = {}
 ): ExecuteRequest {
-  const channel = whichChannel("execute_request");
+  const channel: Channel = whichChannel("execute_request");
 
   return {
     header: createHeader("execute_request"),
@@ -203,7 +205,7 @@ export function displayData(
     transient?: object;
   },
   msg_type: MessageType = "display_data"
-) {
+): JupyterMessage<MessageType, any> {
   return message(
     {
       msg_type
@@ -226,9 +228,12 @@ export function updateDisplayData(content: {
   data?: object;
   metadata?: object;
   transient?: object;
-}) {
+}): JupyterMessage<MessageType, any> {
   // TODO: Enforce the transient display_id here?
-  const m = displayData(content, "update_display_data");
+  const m: JupyterMessage<MessageType, any> = displayData(
+    content,
+    "update_display_data"
+  );
   return m;
 }
 
@@ -376,6 +381,6 @@ export function kernelInfoRequest() {
  */
 export function shutdownRequest(
   content: { restart?: boolean } = { restart: false }
-) {
+): JupyterMessage<"shutdown_request", { restart?: boolean }> {
   return message({ msg_type: "shutdown_request" }, content);
 }

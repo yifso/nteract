@@ -1,14 +1,17 @@
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 /**
  * This is the <textarea /> we let CodeMirror hijack.
  *
- * This also provides a decent server-side renderable <textarea /> that matches the
- * style of our CodeMirror editor.
+ * This also provides a decent server-side renderable <textarea /> that matches
+ * the style of our CodeMirror editor.
  */
-const TextArea = styled.textarea.attrs({
-  autoComplete: "off"
-})`
+export const TextArea: StyledComponent<
+  "textarea",
+  any,
+  { autoComplete: "off" },
+  "autoComplete"
+> = styled.textarea.attrs({ autoComplete: "off" })`
   font-family: "Dank Mono", dm, "Source Code Pro", "Monaco", monospace;
   font-size: 14px;
   line-height: 20px;
@@ -36,4 +39,4 @@ const TextArea = styled.textarea.attrs({
   }
 `;
 
-export default TextArea;
+export { TextArea as InitialTextArea };

@@ -5,56 +5,20 @@ import { ExecaChildProcess } from "execa";
 import pidusage from "pidusage";
 
 import { Observable, Observer, of } from "rxjs";
-import { map, mergeMap, catchError, timeout, first } from "rxjs/operators";
+import { catchError, first, map, mergeMap, timeout } from "rxjs/operators";
 
 import {
   Channels,
-  shutdownRequest,
   childOf,
-  ofMessageType
+  JupyterMessage,
+  ofMessageType,
+  shutdownRequest
 } from "@nteract/messaging";
 
 import { JupyterConnectionInfo } from "enchannel-zmq-backend";
 
 import { KernelSpec } from "./kernelspecs";
 import { cleanup, launch, LaunchedKernel, launchSpec } from "./spawnteract";
-
-interface Usage {
-  /**
-   * percentage (from 0 to 100*number of cores)
-   */
-  cpu: number;
-
-  /**
-   * bytes
-   */
-  memory: number;
-
-  /**
-   * PPID - Parent PID
-   */
-  ppid: number;
-
-  /**
-   * PID - Process ID
-   */
-  pid: number;
-
-  /**
-   * ms user + system time (in local time)
-   */
-  ctime: number;
-
-  /**
-   * ms since the start of the process (local time)
-   */
-  elapsed: number;
-
-  /**
-   * ms since epoch (local time)
-   */
-  timestamp: number;
-}
 
 export class Kernel {
   kernelSpec: KernelSpec;
@@ -72,7 +36,9 @@ export class Kernel {
   }
 
   shutdownEpic(timeoutMs: number = 2000) {
-    const request = shutdownRequest({ restart: false });
+    const request: JupyterMessage<"shutdown_request", any> = shutdownRequest({
+      restart: false
+    });
 
     // Try to make a shutdown request
     // If we don't get a response within X time, force a shutdown
@@ -102,8 +68,11 @@ export class Kernel {
       mergeMap(
         async (
           event:
-            | { error: Error; status: string }
-            | { status: string; content: { restart: boolean } }
+            | { status: string; error: Error }
+            | {
+                status: string;
+                content: { restart: boolean };
+              }
         ) => {
           // End all communication on the channels
           this.channels.complete();
@@ -137,7 +106,7 @@ export class Kernel {
     });
   }
 
-  async shutdownProcess() {
+  async shutdownProcess(): Promise<void> {
     cleanup(this.connectionFile);
     if (!this.process.killed && this.process.pid) {
       process.kill(this.process.pid);
@@ -150,13 +119,15 @@ export class Kernel {
     return observable.toPromise();
   }
 
-  async getUsage(): Promise<Usage> {
+  async getUsage(): Promise<pidusage.Status> {
     return await pidusage(this.process.pid);
   }
 }
 
-export async function launchKernel(input: string | KernelSpec) {
-  let launchedKernel;
+export async function launchKernel(
+  input: string | KernelSpec
+): Promise<Kernel> {
+  let launchedKernel: LaunchedKernel;
   if (typeof input === "string") {
     launchedKernel = await launch(input);
   } else {
