@@ -149,9 +149,12 @@ export function initNativeHandlers(
   contentRef: ContentRef,
   store: Store<AppState, Actions>
 ) {
-  const state$ = from((store as unknown) as ObservableInput<AppState>).pipe(
-    share()
-  );
+  const state$ = new Observable<AppState>(observer => {
+    const unsubscribe = store.subscribe(() => {
+      observer.next(store.getState());
+    });
+    return unsubscribe;
+  });
 
   return createTitleFeed(contentRef, state$).subscribe(
     setTitleFromAttributes,

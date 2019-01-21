@@ -197,13 +197,12 @@ export default class App extends React.PureComponent {
               contentRef={contentRef}
             />
           </MathJax.Provider>
-
-          <NotificationSystem
-            ref={(notificationSystem: ReactNotificationSystem) => {
-              this.notificationSystem = notificationSystem;
-            }}
-          />
         </Provider>
+        <NotificationSystem
+          ref={(notificationSystem: ReactNotificationSystem) => {
+            this.notificationSystem = notificationSystem;
+          }}
+        />
       </React.Fragment>
     );
   }
