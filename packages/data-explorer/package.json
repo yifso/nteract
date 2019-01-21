@@ -23,7 +23,6 @@
     "@blueprintjs/core": "^3.7.0",
     "@blueprintjs/select": "^3.2.0",
     "@nteract/octicons": "^1.0.4-alpha.0",
-    "@nteract/styled-blueprintjsx": "^1.1.5-alpha.0",
     "d3-collection": "^1.0.7",
     "d3-scale": "^2.1.2",
     "d3-shape": "^1.2.2",

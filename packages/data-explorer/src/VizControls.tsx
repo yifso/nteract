@@ -1,6 +1,5 @@
 import { Button, Code, IconName, MenuItem } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
-import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 import * as React from "react";
 
 import { StyledButtonGroup } from "./components/button-group";
@@ -558,8 +557,6 @@ export default ({
           </div>
         )}
       </Wrapper>
-      <BlueprintCSS />
-      <BlueprintSelectCSS />
     </React.Fragment>
   );
 };
