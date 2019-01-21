@@ -37,10 +37,12 @@ import { tool } from "./jupyter/tooltip";
 
 import { InitialTextArea } from "./components/initial-text-area";
 
-import styled, { StyledComponent } from "styled-components";
-
 import CodeMirrorCSS from "./vendored/codemirror";
 import ShowHintCSS from "./vendored/show-hint";
+
+export { CodeMirrorCSS, ShowHintCSS };
+
+import styled, { StyledComponent } from "styled-components";
 
 const TipButton: StyledComponent<"button", never> = styled.button`
   float: right;
@@ -478,8 +480,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
     return (
       <React.Fragment>
         {/* Global CodeMirror CSS packaged up by styled-components */}
-        <CodeMirrorCSS />
-        <ShowHintCSS />
 
         <div className="tip-holder" />
         <InitialTextArea

@@ -8,6 +8,8 @@ import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 import { createGlobalStyle } from "styled-components";
 
+import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
+
 import DataExplorer from "@nteract/data-explorer";
 import { WidgetDisplay } from "@nteract/jupyter-widgets";
 import GeoJSONTransform from "@nteract/transform-geojson";
@@ -179,10 +181,14 @@ export default class App extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
+        <AppStyle />
         <GlobalCSSVariables />
+
         <BlueprintCSS />
         <BlueprintSelectCSS />
-        <AppStyle />
+
+        <CodeMirrorCSS />
+        <ShowHintCSS />
 
         <Provider store={store}>
           <MathJax.Provider src={mathJaxPath} input="tex">

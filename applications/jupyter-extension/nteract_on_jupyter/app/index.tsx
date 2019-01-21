@@ -23,6 +23,7 @@ import { ContentRecord, HostRecord } from "@nteract/types";
 
 import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 import { createGlobalStyle } from "styled-components";
 
 import * as Immutable from "immutable";
@@ -229,8 +230,13 @@ function main(rootEl: Element, dataEl: Node | null) {
     <React.Fragment>
       <GlobalAppStyle />
       <GlobalCSSVariables />
+
       <BlueprintCSS />
       <BlueprintSelectCSS />
+
+      <CodeMirrorCSS />
+      <ShowHintCSS />
+
       <Provider store={store}>
         <App contentRef={contentRef} />
       </Provider>
