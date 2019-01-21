@@ -1,3 +1,6 @@
+/**
+ * Main entry point for the web notebook UI
+ */
 import {
   actions,
   createContentRef,
@@ -18,6 +21,10 @@ import { AppState } from "@nteract/core";
 import { Media } from "@nteract/outputs";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
+import { GlobalCSSVariables } from "@nteract/presentational-components";
+import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
+import { createGlobalStyle } from "styled-components";
+
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -29,6 +36,47 @@ import configureStore from "./store";
 const urljoin = require("url-join");
 
 require("./fonts");
+
+const GlobalAppStyle = createGlobalStyle`
+  html {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  *,
+  *::before,
+  *::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+  }
+
+  body {
+    font-family: "Source Sans Pro";
+    font-size: 16px;
+    background-color: var(--theme-app-bg);
+    color: var(--theme-app-fg);
+    margin: 0;
+  }
+
+  #app {
+    padding-top: 20px;
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  div#loading {
+    animation-name: fadeOut;
+    animation-duration: 0.25s;
+    animation-fill-mode: forwards;
+  }
+`;
 
 export interface JupyterConfigData {
   token: string;
@@ -178,9 +226,15 @@ function main(rootEl: Element, dataEl: Node | null) {
   store.dispatch(actions.fetchKernelspecs({ hostRef, kernelspecsRef }));
 
   ReactDOM.render(
-    <Provider store={store}>
-      <App contentRef={contentRef} />
-    </Provider>,
+    <React.Fragment>
+      <GlobalAppStyle />
+      <GlobalCSSVariables />
+      <BlueprintCSS />
+      <BlueprintSelectCSS />
+      <Provider store={store}>
+        <App contentRef={contentRef} />
+      </Provider>
+    </React.Fragment>,
     rootEl
   );
 }

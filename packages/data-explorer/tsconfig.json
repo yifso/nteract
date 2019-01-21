@@ -8,7 +8,6 @@
   "references": [
     { "path": "../commutable" },
     { "path": "../types" },
-    { "path": "../octicons" },
-    { "path": "../styled-blueprintjsx" }
+    { "path": "../octicons" }
   ]
 }
