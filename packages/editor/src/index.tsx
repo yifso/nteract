@@ -234,7 +234,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
 
     // Initiate code completion in response to some keystrokes *other than* "Ctrl-Space" (which is bound in extraKeys, above)
     this.keyupEventsSubscriber = keyupEvents
-      .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(of))
+      .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(i => of(i)))
       .subscribe(({ editor, ev }) => {
         if (
           completion &&
