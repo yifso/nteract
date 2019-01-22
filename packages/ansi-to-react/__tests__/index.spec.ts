@@ -103,4 +103,66 @@ describe("Ansi", () => {
       "<module 'something' from '/usr/local/lib/python2.7/dist-packages/something/__init__.pyc'>"
     );
   });
+
+  describe("useClasses options", () => {
+    test("can add the font color class", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${GREEN_FG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-green\">world</span></code>"
+      );
+    });
+
+    test("can add the background color class", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${YELLOW_BG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-yellow\">world</span></code>"
+      );
+    });
+
+    test("can add font and background color classes", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { useClasses: true },
+          `hello ${GREEN_FG}${YELLOW_BG}world`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("hello world");
+      expect(el.html()).toBe(
+        "<code><span>hello </span><span class=\"ansi-yellow ansi-green\">world</span></code>"
+      );
+    });
+
+    test("can use useClasses with linkify", () => {
+      const el = shallow(
+        React.createElement(
+          Ansi,
+          { linkify: true, useClasses: true },
+          `${GREEN_FG}this is a link: https://nteract.io/`
+        )
+      );
+      expect(el).not.toBeNull();
+      expect(el.text()).toBe("this is a link: https://nteract.io/");
+      expect(el.html()).toBe(
+        "<code><span class=\"ansi-green\">this is a link: <a href=\"https://nteract.io/\" target=\"_blank\">https://nteract.io/</a></span></code>"
+      );
+    });
+  });
 });
