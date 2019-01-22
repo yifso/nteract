@@ -2,11 +2,11 @@ import * as actions from "@nteract/actions";
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import { dirname } from "path";
 import * as React from "react";
-import Hotkeys from "react-hot-keys";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import urljoin from "url-join";
 
+import { HotKeys, IHotKeysHandle } from "../components/hot-keys";
 import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
@@ -29,22 +29,14 @@ interface IContentsState {
   isDialogOpen: boolean;
 }
 
-interface IHotkeysKeyDownHandle {
-  key: string;
-  method: () => void;
-  mods: number[];
-  scope: string;
-  shortcut: string;
-}
-
 class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   // Maps action types to actions
-  hotkeysMap = new Map([
+  hotkeysMap: Map<string, any> = new Map([
     ["ctrl+s", this.props.save] // Save
   ]);
 
   getHotkeys = (map: Map<string, any>) => {
-    let hotkeys = "";
+    let hotkeys: string = "";
     map.forEach((value, key) => {
       hotkeys = hotkeys.concat(`${key},`);
     });
@@ -55,14 +47,14 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   onKeyDown = (
     keyName: string,
     e: KeyboardEvent,
-    handle: IHotkeysKeyDownHandle
+    handle: IHotKeysHandle
   ): void => {
     if (this.hotkeysMap.get(keyName)) {
       this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
     }
   };
 
-  render() {
+  render(): JSX.Element {
     const {
       appBase,
       baseDir,
@@ -83,7 +75,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
       case "dummy":
         return (
           <React.Fragment>
-            <Hotkeys keyName={hotkeys} onKeyDown={this.onKeyDown}>
+            <HotKeys keyName={hotkeys} onKeyDown={this.onKeyDown}>
               <FileHeader
                 appBase={appBase}
                 baseDir={baseDir}
@@ -94,7 +86,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
                 saving={saving}
               />
               <File contentRef={contentRef} appBase={appBase} />
-            </Hotkeys>
+            </HotKeys>
           </React.Fragment>
         );
       case "directory":
