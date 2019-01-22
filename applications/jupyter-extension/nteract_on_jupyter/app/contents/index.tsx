@@ -1,5 +1,5 @@
 import * as actions from "@nteract/actions";
-import { AppState, ContentRef, selectors } from "@nteract/core";
+import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import { dirname } from "path";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -36,11 +36,9 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   ]);
 
   getHotkeys = (map: Map<string, any>) => {
-    let hotkeys: string = "";
-    map.forEach((value, key) => {
-      hotkeys = hotkeys.concat(`${key},`);
-    });
-    return hotkeys;
+    return Array.from(map)
+      .map((key, value) => value)
+      .join(",");
   };
 
   // Captures all keydown events on the App
@@ -111,20 +109,22 @@ const makeMapStateToProps = (
   initialState: AppState,
   initialProps: { contentRef: ContentRef }
 ) => {
-  const host = initialState.app.host;
+  const host: HostRecord = initialState.app.host;
+
   if (host.type !== "jupyter") {
     throw new Error("this component only works with jupyter apps");
   }
-  const appBase = urljoin(host.basePath, "/nteract/edit");
+
+  const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
   const mapStateToProps = (state: AppState) => {
-    const contentRef = initialProps.contentRef;
+    const contentRef: ContentRef = initialProps.contentRef;
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
     }
 
-    const content = selectors.content(state, { contentRef });
+    const content: any = selectors.content(state, { contentRef });
 
     if (!content) {
       throw new Error("need content to view content, check your contentRefs");
