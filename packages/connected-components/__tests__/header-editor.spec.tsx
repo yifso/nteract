@@ -55,7 +55,6 @@ describe("Header Editor", () => {
       <HeaderEditor headerData={headerData} onChange={onChange} editable />
     );
 
-    debugger;
     // Click to add an author
     wrapper.find(".author-button").simulate("click");
 
