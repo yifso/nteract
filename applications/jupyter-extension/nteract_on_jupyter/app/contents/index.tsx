@@ -31,26 +31,9 @@ interface IContentsState {
 
 class Contents extends React.PureComponent<IContentsProps, IContentsState> {
   // Maps action types to actions
-  hotkeysMap: Map<string, any> = new Map([
+  private hotkeysMap: Map<string, any> = new Map([
     ["ctrl+s", this.props.save] // Save
   ]);
-
-  getHotkeys = (map: Map<string, any>) => {
-    return Array.from(map)
-      .map((key, value) => value)
-      .join(",");
-  };
-
-  // Captures all keydown events on the App
-  onKeyDown = (
-    keyName: string,
-    e: KeyboardEvent,
-    handle: IHotKeysHandle
-  ): void => {
-    if (this.hotkeysMap.get(keyName)) {
-      this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
-    }
-  };
 
   render(): JSX.Element {
     const {
@@ -103,9 +86,26 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
         );
     }
   }
+
+  // Captures all keydown events on the App
+  private onKeyDown = (
+    keyName: string,
+    e: KeyboardEvent,
+    handle: IHotKeysHandle
+  ): void => {
+    if (this.hotkeysMap.get(keyName)) {
+      this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
+    }
+  };
+
+  private getHotkeys = (map: Map<string, any>) => {
+    return Array.from(map)
+      .map((key, value) => value)
+      .join(",");
+  };
 }
 
-const makeMapStateToProps = (
+const makeMapStateToProps: any = (
   initialState: AppState,
   initialProps: { contentRef: ContentRef }
 ) => {
@@ -117,7 +117,7 @@ const makeMapStateToProps = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps: any = (state: AppState) => {
     const contentRef: ContentRef = initialProps.contentRef;
 
     if (!contentRef) {
@@ -146,7 +146,7 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps: any = (dispatch: Dispatch) => ({
   save: (payload: actions.Save["payload"]) => dispatch(actions.save(payload))
 });
 
