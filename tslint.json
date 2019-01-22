@@ -35,9 +35,7 @@
     },
     "no-sparse-arrays": true,
     "no-switch-case-fall-through": true,
-    "no-unnecessary-callback-wrapper": {
-      "severity": "warn"
-    },
+    "no-unnecessary-callback-wrapper": false,
     "no-unnecessary-type-assertion": true,
     "no-var-requires": {
       "severity": "warn"
