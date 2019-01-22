@@ -13357,10 +13357,10 @@ typescript-template-language-service-decorator@^2.0.0:
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
   integrity sha512-xiolqt1i7e22rpqMaprPgSFVgU64u3b9n6EJlAaUYE61jumipKAdI1+O5khPlWslpTUj80YzjUKjJ2jxT0D74w==
 
-typescript-tslint-plugin@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/typescript-tslint-plugin/-/typescript-tslint-plugin-0.2.1.tgz#6a0361cd311bdc9dcec2e70c8a54cab16829e47f"
-  integrity sha512-j0Tn/2GlAwnaklSNMOZRNpv96j6IWkQF6RuTJ5WowfNlgdYqnJpSaVFwT22INwJiPDDGKNe/aATT0qkU0pWM4w==
+typescript-tslint-plugin@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/typescript-tslint-plugin/-/typescript-tslint-plugin-0.3.0.tgz#b58ab0227d12b576371742bc75604b8a7a2784ae"
+  integrity sha512-QlfcS5YebM55cUISn3mgal+ePtsRmyh1RJ0DqHPrF7+NEDO8P+ucDsD1GlLyYaIJQvVAbkekUmczsjzQk5eoKA==
   dependencies:
     minimatch "^3.0.4"
     mock-require "^3.0.2"
