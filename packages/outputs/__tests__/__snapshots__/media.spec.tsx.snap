@@ -1497,6 +1497,7 @@ exports[`Plain Should render markdown 1`] = `
     >
       <code>
         <span
+          className={null}
           key="0"
           style={Object {}}
         >
