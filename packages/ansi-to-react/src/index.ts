@@ -131,7 +131,7 @@ export default function Ansi(props: Props) {
     "code",
     { className },
     ansiToJSON(children, !!useClasses).map(
-      convertBundleIntoReact.bind(null, linkify, useClasses)
+      convertBundleIntoReact.bind(null, linkify, !!useClasses)
     )
   );
 }
