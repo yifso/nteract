@@ -156,7 +156,7 @@ const mapDispatchToProps: any = (dispatch: Dispatch) => ({
   save: (payload: actions.Save["payload"]) => dispatch(actions.save(payload))
 });
 
-export default connect<IContentsProps, IDispatchFromProps, void>(
+export default connect<IContentsProps, IDispatchFromProps, any>(
   makeMapStateToProps,
   mapDispatchToProps
 )(Contents);
