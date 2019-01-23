@@ -100,7 +100,7 @@ class Contents extends React.PureComponent<IContentsProps, IContentsState> {
 
   private getHotkeys = (map: Map<string, any>) => {
     return Array.from(map)
-      .map((key, value) => value)
+      .map(arr => arr[0])
       .join(",");
   };
 }
