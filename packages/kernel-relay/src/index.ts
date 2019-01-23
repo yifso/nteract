@@ -39,11 +39,16 @@ const Query = gql`
 const Mutation = gql`
   type Mutation {
     startKernel(name: String): KernelSession!
+    shutdownKernel(id: ID): KernelSession!
   }
 `;
 
 interface StartKernel {
   name: string;
+}
+
+interface ShutdownKernel {
+  id: string;
 }
 
 const kernels: { [id: string]: Kernel } = {};
@@ -90,6 +95,19 @@ const resolvers = {
       return {
         id,
         status: "launched"
+      };
+    },
+    shutdownKernel: async (parentValue: any, args: ShutdownKernel) => {
+      const { id } = args;
+      const kernel = kernels[id];
+
+      await kernel.shutdown();
+      kernel.channels.unsubscribe();
+      kernel.channels.complete();
+
+      return {
+        id,
+        status: "shutdown"
       };
     }
   },
