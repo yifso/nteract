@@ -11,6 +11,16 @@ import { forkJoin } from "rxjs";
 import { first, map, mergeMap } from "rxjs/operators";
 import urljoin from "url-join";
 
+interface SessionPayload {
+  kernel: {
+    id: string | null;
+    name: string | null;
+  };
+  name: string;
+  path: string;
+  type: string;
+}
+
 export function openNotebook(
   host: JupyterHostRecord,
   ks: KernelspecRecord | KernelspecProps,
@@ -19,8 +29,8 @@ export function openNotebook(
     baseDir: string;
     appBase: string;
   }
-) {
-  const serverConfig = selectors.serverConfig(host);
+): void {
+  const serverConfig: any = selectors.serverConfig(host);
 
   // The notebook they get to start with
   const notebook: Notebook = {
@@ -68,9 +78,9 @@ export function openNotebook(
       // to finish so we don't have to unsubscribe
       first(),
       mergeMap(({ response }) => {
-        const filepath = response.path;
+        const filepath: string = response.path;
 
-        const sessionPayload = {
+        const sessionPayload: SessionPayload = {
           kernel: {
             id: null,
             name: ks.name
@@ -95,9 +105,10 @@ export function openNotebook(
         const { response } = content;
 
         if (content.status > 299 || typeof response === "string") {
-          // hack around this old hack around for creating a notebook from the directory
-          // ideally this would be in a proper epic instead of leaky async code here
-          const message = ["Failed to create notebook due to: "];
+          // hack around this old hack around for creating a notebook
+          // from the directory ideally this would be in a proper epic
+          // instead of leaky async code here
+          const message: string[] = ["Failed to create notebook due to: "];
 
           if (typeof response === "string") {
             message.push(response);
@@ -110,7 +121,7 @@ export function openNotebook(
           return;
         }
 
-        const url = urljoin(
+        const url: string = urljoin(
           props.appBase,
           // Actual file
           response.path
@@ -121,8 +132,9 @@ export function openNotebook(
 
         // If they block pop-ups, then we weren't allowed to open the window
         if (win === null) {
-          // TODO: Show a link at the top to let the user open the notebook directly
-          window.location = url;
+          // TODO: Show a link at the top to let the user open the
+          // notebook directly
+          window.location.href = url;
         }
       })
     )

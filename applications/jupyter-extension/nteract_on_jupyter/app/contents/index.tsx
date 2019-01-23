@@ -14,22 +14,27 @@ import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
 interface IContentsProps {
   appBase: string;
   baseDir: string;
-  contentType?: "dummy" | "notebook" | "directory" | "file";
+  contentType: "dummy" | "notebook" | "directory" | "file";
   contentRef: ContentRef;
   displayName: string;
   error?: object | null;
-  lastSavedStatement?: string;
+  lastSavedStatement: string;
   loading: boolean;
   mimetype?: string | null;
   saving: boolean;
-  save: (payload: actions.Save["payload"]) => void;
 }
 
 interface IContentsState {
   isDialogOpen: boolean;
 }
+interface IDispatchFromProps {
+  save: (payload: actions.Save["payload"]) => void;
+}
 
-class Contents extends React.PureComponent<IContentsProps, IContentsState> {
+class Contents extends React.PureComponent<
+  IContentsProps & IDispatchFromProps,
+  IContentsState
+> {
   // Maps action types to actions
   private hotkeysMap: Map<string, any> = new Map([
     ["ctrl+s", this.props.save] // Save
@@ -143,6 +148,7 @@ const makeMapStateToProps: any = (
       saving: content.saving
     };
   };
+
   return mapStateToProps;
 };
 
@@ -150,7 +156,7 @@ const mapDispatchToProps: any = (dispatch: Dispatch) => ({
   save: (payload: actions.Save["payload"]) => dispatch(actions.save(payload))
 });
 
-export default connect(
+export default connect<IContentsProps, IDispatchFromProps, void>(
   makeMapStateToProps,
   mapDispatchToProps
 )(Contents);
