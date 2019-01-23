@@ -14,11 +14,11 @@ import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
 interface IContentsProps {
   appBase: string;
   baseDir: string;
-  contentType: "dummy" | "notebook" | "directory" | "file";
+  contentType?: "dummy" | "notebook" | "directory" | "file";
   contentRef: ContentRef;
   displayName: string;
   error?: object | null;
-  lastSavedStatement: string;
+  lastSavedStatement?: string;
   loading: boolean;
   mimetype?: string | null;
   saving: boolean;
