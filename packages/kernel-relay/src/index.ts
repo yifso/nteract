@@ -133,26 +133,27 @@ const resolvers = {
   }
 };
 
+export const server = new ApolloServer({
+  introspection: true,
+  // Since we're playing around, enable features for introspection and playing on our current deployment
+  // If this gets used in a "real" production capacity, introspection and playground should be disabled
+  // based on NODE_ENV === "production"
+  playground: {
+    /*tabs: [
+      {
+        endpoint: "",
+        query: ``
+      }
+    ]*/
+  },
+  resolvers: resolvers as any,
+  typeDefs
+});
+
 async function main() {
   // In the most basic sense, the ApolloServer can be started
   // by passing type definitions (typeDefs) and the resolvers
   // responsible for fetching the data for those types.
-  const server = new ApolloServer({
-    introspection: true,
-    // Since we're playing around, enable features for introspection and playing on our current deployment
-    // If this gets used in a "real" production capacity, introspection and playground should be disabled
-    // based on NODE_ENV === "production"
-    playground: {
-      /*tabs: [
-        {
-          endpoint: "",
-          query: ``
-        }
-      ]*/
-    },
-    resolvers: resolvers as any,
-    typeDefs
-  });
 
   // This `listen` method launches a web-server.  Existing apps
   // can utilize middleware options, which we'll discuss later.
