@@ -4,7 +4,7 @@ exports[`Mutations launches a kernel 1`] = `
 Object {
   "data": Object {
     "startKernel": Object {
-      "id": "23431ca1-1185-42f2-9ffc-33fd1cb01db2",
+      "id": "kernel1",
       "status": "launched",
     },
   },
@@ -22,7 +22,7 @@ exports[`Mutations shuts down a kernel 1`] = `
 Object {
   "data": Object {
     "shutdownKernel": Object {
-      "id": "23431ca1-1185-42f2-9ffc-33fd1cb01db2",
+      "id": "kernel1",
       "status": "shutdown",
     },
   },

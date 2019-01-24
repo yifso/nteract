@@ -2,12 +2,10 @@
  * @module kernel-relay
  */
 import { ApolloServer, Config, gql } from "apollo-server";
+import GraphQLJSON from "graphql-type-json";
 
 import { findAll, Kernel, launchKernel } from "@nteract/fs-kernels";
-
 import { JupyterMessage, kernelInfoRequest } from "@nteract/messaging";
-
-import GraphQLJSON from "graphql-type-json";
 
 const Types = gql`
   scalar JSON
