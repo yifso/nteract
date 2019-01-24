@@ -1,4 +1,4 @@
-import * as Immutable from "immutable";
+import { List, Map } from "immutable";
 import { Action } from "redux";
 import { combineReducers } from "redux-immutable";
 
@@ -19,7 +19,7 @@ import {
 // TODO: we need to clean up references to old kernels at some point. Listening
 // for KILL_KERNEL_SUCCESSFUL seems like a good candidate, but I think you can
 // also end up with a dead kernel if that fails and you hit KILL_KERNEL_FAILED.
-const byRef = (state = Immutable.Map(), action: Action) => {
+const byRef = (state = Map(), action: Action) => {
   let typedAction;
   switch (action.type) {
     case actionTypes.SET_LANGUAGE_INFO:
@@ -76,7 +76,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
           // already set as we want it
           break;
         case "object":
-          codemirrorMode = Immutable.Map(codemirrorMode as JSONObject);
+          codemirrorMode = Map(codemirrorMode as JSONObject);
           break;
         default:
           // any other case results in falling back to language name
@@ -84,12 +84,12 @@ const byRef = (state = Immutable.Map(), action: Action) => {
       }
 
       const helpLinks = typedAction.payload.info.helpLinks
-        ? Immutable.List(
+        ? List(
             (typedAction.payload.info.helpLinks as HelpLink[]).map(
               makeHelpLinkRecord
             )
           )
-        : Immutable.List();
+        : List();
 
       return state.setIn(
         [typedAction.payload.kernelRef, "info"],

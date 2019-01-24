@@ -1,4 +1,4 @@
-import * as Immutable from "immutable";
+import { fromJS } from "immutable";
 
 import {
   CommMessageAction,
@@ -26,8 +26,8 @@ function processCommOpen(
   };
 
   return state
-    .setIn(["info", comm_id], Immutable.fromJS(commInfo))
-    .setIn(["models", comm_id], Immutable.fromJS(data));
+    .setIn(["info", comm_id], fromJS(commInfo))
+    .setIn(["models", comm_id], fromJS(data));
 }
 
 function processCommMessage(
@@ -43,7 +43,7 @@ function processCommMessage(
     commInfo.get("target_name") === "setIn"
   ) {
     const path: Array<string | number> = data.path;
-    const value = Immutable.fromJS(data.value);
+    const value = fromJS(data.value);
 
     // set `value` into `path` of the model data
     return state.updateIn(["models", comm_id], model =>
@@ -52,7 +52,7 @@ function processCommMessage(
   }
 
   // Default to overwrite / replace for now
-  return state.setIn(["models", comm_id], Immutable.fromJS(data));
+  return state.setIn(["models", comm_id], fromJS(data));
 }
 
 type CommAction = RegisterCommTargetAction | CommMessageAction | CommOpenAction;

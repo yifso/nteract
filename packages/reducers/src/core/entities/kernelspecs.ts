@@ -1,4 +1,4 @@
-import * as Immutable from "immutable";
+import { List, Map } from "immutable";
 import { Action } from "redux";
 import { combineReducers } from "redux-immutable";
 
@@ -10,7 +10,7 @@ import {
   makeKernelspecsRecord
 } from "@nteract/types";
 
-const byRef = (state = Immutable.Map(), action: Action) => {
+const byRef = (state = Map(), action: Action) => {
   const typedAction = action as actionTypes.FetchKernelspecsFulfilled;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:
@@ -19,7 +19,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
         makeKernelspecsByRefRecord({
           hostRef: typedAction.payload.hostRef,
           defaultKernelName: typedAction.payload.defaultKernelName,
-          byName: Immutable.Map(
+          byName: Map(
             Object.keys(typedAction.payload.kernelspecs).reduce((r: any, k) => {
               r[k] = makeKernelspec(typedAction.payload.kernelspecs[k]);
               return r;
@@ -32,7 +32,7 @@ const byRef = (state = Immutable.Map(), action: Action) => {
   }
 };
 
-const refs = (state = Immutable.List(), action: Action) => {
+const refs = (state = List(), action: Action) => {
   let typedAction;
   switch (action.type) {
     case actionTypes.FETCH_KERNELSPECS_FULFILLED:

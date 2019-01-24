@@ -22,7 +22,7 @@ import {
   makeRawCell
 } from "@nteract/commutable";
 import { escapeCarriageReturnSafe } from "escape-carriage";
-import * as Immutable from "immutable";
+import { fromJS, List, Map, Set } from "immutable";
 import { has } from "lodash";
 import uuid from "uuid/v4";
 
@@ -30,8 +30,8 @@ import * as actionTypes from "@nteract/actions";
 import { makeDocumentRecord, PayloadMessage } from "@nteract/types";
 import { NotebookModel } from "@nteract/types";
 
-type KeyPath = Immutable.List<string | number>;
-type KeyPaths = Immutable.List<KeyPath>;
+type KeyPath = List<string | number>;
+type KeyPaths = List<KeyPath>;
 
 /**
  * An output can be a stream of data that does not arrive at a single time. This
@@ -40,10 +40,10 @@ type KeyPaths = Immutable.List<KeyPath>;
  *
  * @param {Object} outputs - Kernel output messages
  * @param {Object} output - Outputted to be reduced into list of outputs
- * @return {Immutable.List<Object>} updated-outputs - Outputs + Output
+ * @return {List<Object>} updated-outputs - Outputs + Output
  */
 export function reduceOutputs(
-  outputs: Immutable.List<ImmutableOutput> = Immutable.List(),
+  outputs: List<ImmutableOutput> = List(),
   output: OnDiskOutput
 ) {
   // Find the last output to see if it's a stream type
@@ -96,15 +96,15 @@ export function reduceOutputs(
 export function cleanCellTransient(state: NotebookModel, id: string) {
   // Clear out key paths that should no longer be referenced
   return state
-    .setIn(["cellPagers", id], Immutable.List())
+    .setIn(["cellPagers", id], List())
     .updateIn(
       ["transient", "keyPathsForDisplays"],
-      (kpfd: Immutable.Map<string, KeyPaths>) =>
-        (kpfd || Immutable.Map()).map((keyPaths: KeyPaths) =>
+      (kpfd: Map<string, KeyPaths>) =>
+        (kpfd || Map()).map((keyPaths: KeyPaths) =>
           keyPaths.filter((keyPath: KeyPath) => keyPath.get(2) !== id)
         )
     )
-    .setIn(["transient", "cellMap", id], Immutable.Map());
+    .setIn(["transient", "cellMap", id], Map());
 }
 
 function setNotebookCheckpoint(state: NotebookModel) {
@@ -128,7 +128,7 @@ function clearOutputs(state: NotebookModel, action: actionTypes.ClearOutputs) {
 
   if (type === "code") {
     return cleanedState
-      .setIn(["notebook", "cellMap", id, "outputs"], Immutable.List())
+      .setIn(["notebook", "cellMap", id, "outputs"], List())
       .setIn(["notebook", "cellMap", id, "execution_count"], null);
   }
   return cleanedState;
@@ -146,7 +146,7 @@ function toggleTagInCell(
       if (tags) {
         return tags.has(tag) ? tags.remove(tag) : tags.add(tag);
       } else {
-        return Immutable.Set([tag]);
+        return Set([tag]);
       }
     }
   );
@@ -172,7 +172,7 @@ function clearAllOutputs(
     .map((cell: ImmutableCell) => {
       if ((cell as any).get("cell_type") === "code") {
         return (cell as ImmutableCodeCell).merge({
-          outputs: Immutable.List(),
+          outputs: List(),
           execution_count: null
         });
       }
@@ -180,9 +180,9 @@ function clearAllOutputs(
     });
 
   // Clear all the transient data too
-  const transient = Immutable.Map({
-    keyPathsForDisplays: Immutable.Map(),
-    cellMap: cellMap.map(() => Immutable.Map())
+  const transient = Map({
+    keyPathsForDisplays: Map(),
+    cellMap: cellMap.map(() => Map())
   });
 
   return state
@@ -202,9 +202,8 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   ) {
     return state.updateIn(
       ["notebook", "cellMap", cellId, "outputs"],
-      (
-        outputs: Immutable.List<ImmutableOutput>
-      ): Immutable.List<ImmutableOutput> => reduceOutputs(outputs, output)
+      (outputs: List<ImmutableOutput>): List<ImmutableOutput> =>
+        reduceOutputs(outputs, output)
     );
   }
 
@@ -227,7 +226,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
     .count();
 
   // Construct the path to the output for updating later
-  const keyPath: KeyPath = Immutable.List([
+  const keyPath: KeyPath = List([
     "notebook",
     "cellMap",
     cellId,
@@ -238,8 +237,7 @@ function appendOutput(state: NotebookModel, action: actionTypes.AppendOutput) {
   const keyPaths: KeyPaths = (
     state
       // Extract the current list of keypaths for this displayID
-      .getIn(["transient", "keyPathsForDisplays", displayID]) ||
-    Immutable.List()
+      .getIn(["transient", "keyPathsForDisplays", displayID]) || List()
   )
     // Append our current output's keyPath
     .push(keyPath);
@@ -274,7 +272,7 @@ function updateDisplay(
 
   const updatedContent = {
     data: createFrozenMediaBundle(content.data),
-    metadata: Immutable.fromJS(content.metadata || {})
+    metadata: fromJS(content.metadata || {})
   };
 
   return keyPaths.reduce(
@@ -348,10 +346,7 @@ function focusNextCellEditor(
   state: NotebookModel,
   action: actionTypes.FocusNextCellEditor
 ) {
-  const cellOrder: Immutable.List<CellId> = state.getIn([
-    "notebook",
-    "cellOrder"
-  ]);
+  const cellOrder: List<CellId> = state.getIn(["notebook", "cellOrder"]);
 
   const id = action.payload.id ? action.payload.id : state.get("editorFocused");
 
@@ -371,10 +366,7 @@ function focusPreviousCellEditor(
   state: NotebookModel,
   action: actionTypes.FocusPreviousCellEditor
 ) {
-  const cellOrder: Immutable.List<CellId> = state.getIn([
-    "notebook",
-    "cellOrder"
-  ]);
+  const cellOrder: List<CellId> = state.getIn(["notebook", "cellOrder"]);
   const curIndex = cellOrder.findIndex(
     (id: CellId) => id === action.payload.id
   );
@@ -386,7 +378,7 @@ function focusPreviousCellEditor(
 function moveCell(state: NotebookModel, action: actionTypes.MoveCell) {
   return state.updateIn(
     ["notebook", "cellOrder"],
-    (cellOrder: Immutable.List<CellId>) => {
+    (cellOrder: List<CellId>) => {
       const oldIndex = cellOrder.findIndex(
         (id: string) => id === action.payload.id
       );
@@ -434,7 +426,7 @@ function createCellBelow(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
+    const index = notebook.get("cellOrder", List()).indexOf(id) + 1;
     return insertCellAt(
       notebook,
       (cell as ImmutableMarkdownCell).set("source", source),
@@ -457,10 +449,7 @@ function createCellAbove(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const cellOrder: Immutable.List<CellId> = notebook.get(
-      "cellOrder",
-      Immutable.List()
-    );
+    const cellOrder: List<CellId> = notebook.get("cellOrder", List());
     const index = cellOrder.indexOf(id);
     return insertCellAt(notebook, cell, cellId, index);
   });
@@ -482,7 +471,7 @@ function createCellAfter(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const index = notebook.get("cellOrder", Immutable.List()).indexOf(id) + 1;
+    const index = notebook.get("cellOrder", List()).indexOf(id) + 1;
     return insertCellAt(
       notebook,
       (cell as ImmutableMarkdownCell).set("source", source),
@@ -508,10 +497,7 @@ function createCellBefore(
   const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
-    const cellOrder: Immutable.List<CellId> = notebook.get(
-      "cellOrder",
-      Immutable.List()
-    );
+    const cellOrder: List<CellId> = notebook.get("cellOrder", List());
     const index = cellOrder.indexOf(id);
     return insertCellAt(notebook, cell, cellId, index);
   });
@@ -523,10 +509,7 @@ function createCellAppend(
 ) {
   const { cellType } = action.payload;
   const notebook: ImmutableNotebook = state.get("notebook");
-  const cellOrder: Immutable.List<CellId> = notebook.get(
-    "cellOrder",
-    Immutable.List()
-  );
+  const cellOrder: List<CellId> = notebook.get("cellOrder", List());
   const cell: ImmutableCell =
     cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
   const index = cellOrder.count();
@@ -544,7 +527,7 @@ function acceptPayloadMessage(
   if (payload.source === "page") {
     // append pager
     return state.updateIn(["cellPagers", id], l =>
-      (l || Immutable.List()).push(payload.data)
+      (l || List()).push(payload.data)
     );
   } else if (payload.source === "set_next_input") {
     if (payload.replace) {
@@ -669,7 +652,7 @@ function updateOutputMetadata(
   const currentOutputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
 
   const updatedOutputs = currentOutputs.update(index, (item: any) =>
-    item.set("metadata", Immutable.fromJS(metadata))
+    item.set("metadata", fromJS(metadata))
   );
 
   return state.setIn(["notebook", "cellMap", id, "outputs"], updatedOutputs);
@@ -679,7 +662,7 @@ function setLanguageInfo(
   state: NotebookModel,
   action: actionTypes.SetLanguageInfo
 ) {
-  const langInfo = Immutable.fromJS(action.payload.langInfo);
+  const langInfo = fromJS(action.payload.langInfo);
   return state.setIn(["notebook", "metadata", "language_info"], langInfo);
 }
 
@@ -691,7 +674,7 @@ function setKernelspecInfo(
   return state
     .setIn(
       ["notebook", "metadata", "kernelspec"],
-      Immutable.fromJS({
+      fromJS({
         name: kernelInfo.name,
         language: kernelInfo.spec.language,
         display_name: kernelInfo.spec.display_name
@@ -705,7 +688,7 @@ function overwriteMetadataField(
   action: actionTypes.OverwriteMetadataField
 ) {
   const { field, value } = action.payload;
-  return state.setIn(["notebook", "metadata", field], Immutable.fromJS(value));
+  return state.setIn(["notebook", "metadata", field], fromJS(value));
 }
 function deleteMetadataField(
   state: NotebookModel,
@@ -835,7 +818,7 @@ function toggleOutputExpansion(
 
   return state.updateIn(
     ["notebook", "cellMap"],
-    (cells: Immutable.Map<CellId, ImmutableCell>) =>
+    (cells: Map<CellId, ImmutableCell>) =>
       cells.setIn(
         [id, "metadata", "outputExpanded"],
         !cells.getIn([id, "metadata", "outputExpanded"])

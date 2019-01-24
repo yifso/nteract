@@ -1,5 +1,5 @@
 import { fromJS } from "@nteract/commutable";
-import * as Immutable from "immutable";
+import { List, Map, RecordOf } from "immutable";
 import { Action } from "redux";
 
 import * as actionTypes from "@nteract/actions";
@@ -24,9 +24,9 @@ import { file } from "./file";
 import { notebook } from "./notebook";
 
 const byRef = (
-  state: Immutable.Map<ContentRef, ContentRecord>,
+  state: Map<ContentRef, ContentRecord>,
   action: Action
-): Immutable.Map<ContentRef, ContentRecord> => {
+): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
@@ -86,7 +86,7 @@ const byRef = (
 
           // Create a map of <ContentRef, ContentRecord> that we merge into the
           // content refs state
-          const dummyRecords = Immutable.Map<ContentRef, ContentRecord>(
+          const dummyRecords = Map<ContentRef, ContentRecord>(
             fetchContentFulfilledAction.payload.model.content.map(
               (entry: any) => {
                 return [
@@ -105,16 +105,16 @@ const byRef = (
             )
           );
 
-          const items = Immutable.List<ContentRef>(dummyRecords.keys());
-          const sorted: Immutable.List<string> = items.sort((aRef, bRef) => {
+          const items = List<ContentRef>(dummyRecords.keys());
+          const sorted: List<string> = items.sort((aRef, bRef) => {
             const a:
-              | Immutable.RecordOf<DummyContentRecordProps>
-              | undefined = dummyRecords.get(aRef) as Immutable.RecordOf<
+              | RecordOf<DummyContentRecordProps>
+              | undefined = dummyRecords.get(aRef) as RecordOf<
               DummyContentRecordProps
             >;
             const b:
-              | Immutable.RecordOf<DummyContentRecordProps>
-              | undefined = dummyRecords.get(bRef) as Immutable.RecordOf<
+              | RecordOf<DummyContentRecordProps>
+              | undefined = dummyRecords.get(bRef) as RecordOf<
               DummyContentRecordProps
             >;
 
@@ -162,9 +162,9 @@ const byRef = (
               model: makeDocumentRecord({
                 notebook: immutableNotebook,
                 savedNotebook: immutableNotebook,
-                transient: Immutable.Map({
-                  keyPathsForDisplays: Immutable.Map(),
-                  cellMap: Immutable.Map()
+                transient: Map({
+                  keyPathsForDisplays: Map(),
+                  cellMap: Map()
                 }),
                 cellFocused: immutableNotebook.getIn(["cellOrder", 0])
               }),
