@@ -32,20 +32,20 @@ export interface AuthorObject {
 
 export interface HeaderDataProps {
   authors: AuthorObject[];
-  title: string;
   description: string;
   tags: string[];
+  title: string;
 }
 
 export interface HeaderEditorProps {
   /**
-   * The data that the header should be populated with.
-   */
-  headerData: HeaderDataProps;
-  /**
    * Whether or not the fields of the header can be edited.
    */
   editable: boolean;
+  /**
+   * The data that the header should be populated with.
+   */
+  headerData: HeaderDataProps;
   /**
    * An event handler to run whenever header fields are modified.
    */
