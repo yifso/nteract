@@ -1,11 +1,11 @@
-import Immutable from "immutable";
+import { List, Map } from "immutable";
 import { Action } from "redux";
 import { combineReducers } from "redux-immutable";
 
 import * as actions from "@nteract/actions";
 import { makeTransformsRecord } from "@nteract/types";
 
-const byId = (state = Immutable.Map(), action: Action) => {
+const byId = (state = Map(), action: Action) => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
@@ -22,7 +22,7 @@ const byId = (state = Immutable.Map(), action: Action) => {
   }
 };
 
-const displayOrder = (state = Immutable.List(), action: Action) => {
+const displayOrder = (state = List(), action: Action) => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:

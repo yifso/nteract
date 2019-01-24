@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from "immutable";
+import { Map } from "immutable";
 
 import { MergeConfigAction, SetConfigAction } from "@nteract/actions";
 import { ConfigState } from "@nteract/types";
@@ -19,7 +19,7 @@ export function mergeConfig(state: ConfigState, action: MergeConfigAction) {
 }
 
 export default function handleConfig(
-  state: ConfigState = ImmutableMap(),
+  state: ConfigState = Map(),
   action: ConfigAction
 ) {
   switch (action.type) {
