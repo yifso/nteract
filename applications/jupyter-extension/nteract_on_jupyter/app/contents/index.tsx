@@ -2,11 +2,11 @@ import * as actions from "@nteract/actions";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import { dirname } from "path";
 import * as React from "react";
+import { HotKeys } from "react-hotkeys";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import urljoin from "url-join";
 
-import { HotKeys, IHotKeysHandle } from "../components/hot-keys";
 import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
@@ -28,17 +28,16 @@ interface IContentsState {
   isDialogOpen: boolean;
 }
 interface IDispatchFromProps {
-  save: (payload: actions.Save["payload"]) => void;
+  handlers: any;
 }
 
 class Contents extends React.PureComponent<
   IContentsProps & IDispatchFromProps,
   IContentsState
 > {
-  // Maps action types to actions
-  private hotkeysMap: Map<string, any> = new Map([
-    ["ctrl+s", this.props.save] // Save
-  ]);
+  private keyMap: object = {
+    SAVE: "ctrl+s"
+  };
 
   render(): JSX.Element {
     const {
@@ -48,12 +47,10 @@ class Contents extends React.PureComponent<
       contentType,
       displayName,
       error,
+      handlers,
       loading,
       saving
     } = this.props;
-
-    // Keybinding combinations
-    const hotkeys: string = this.getHotkeys(this.hotkeysMap);
 
     switch (contentType) {
       case "notebook":
@@ -61,7 +58,7 @@ class Contents extends React.PureComponent<
       case "dummy":
         return (
           <React.Fragment>
-            <HotKeys keyName={hotkeys} onKeyDown={this.onKeyDown}>
+            <HotKeys keyMap={this.keyMap} handlers={handlers}>
               <FileHeader
                 appBase={appBase}
                 baseDir={baseDir}
@@ -91,23 +88,6 @@ class Contents extends React.PureComponent<
         );
     }
   }
-
-  // Captures all keydown events on the App
-  private onKeyDown = (
-    keyName: string,
-    e: KeyboardEvent,
-    handle: IHotKeysHandle
-  ): void => {
-    if (this.hotkeysMap.get(keyName)) {
-      this.hotkeysMap.get(keyName)({ contentRef: this.props.contentRef });
-    }
-  };
-
-  private getHotkeys = (map: Map<string, any>) => {
-    return Array.from(map)
-      .map(arr => arr[0])
-      .join(",");
-  };
 }
 
 const makeMapStateToProps: any = (
@@ -152,8 +132,15 @@ const makeMapStateToProps: any = (
   return mapStateToProps;
 };
 
-const mapDispatchToProps: any = (dispatch: Dispatch) => ({
-  save: (payload: actions.Save["payload"]) => dispatch(actions.save(payload))
+const mapDispatchToProps: any = (
+  dispatch: Dispatch,
+  initialProps: { contentRef: ContentRef }
+) => ({
+  // `HotKeys` handlers object
+  // see: https://github.com/greena13/react-hotkeys#defining-handlers
+  handlers: {
+    SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
+  }
 });
 
 export default connect<IContentsProps, IDispatchFromProps, any>(
