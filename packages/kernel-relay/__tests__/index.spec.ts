@@ -1,10 +1,10 @@
 import { gql } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
-import { server } from "../src";
+import { createServer } from "../src/server";
 
 describe("Queries", () => {
   it("returns a list of kernelspecs", async () => {
-    const { query } = createTestClient(server);
+    const { query } = createTestClient(createServer());
     const LIST_KERNELSPECS = gql`
       query GetKernels {
         listKernelSpecs {
@@ -20,7 +20,7 @@ describe("Queries", () => {
 describe("Mutations", () => {
   let kernelId;
   it("launches a kernel", async () => {
-    const { mutate } = createTestClient(server);
+    const { mutate } = createTestClient(createServer());
     const START_KERNEL = gql`
       mutation StartJupyterKernel {
         startKernel(name: "python3") {
@@ -35,7 +35,7 @@ describe("Mutations", () => {
     expect(response).toMatchSnapshot();
   });
   it("shuts down a kernel", async () => {
-    const { mutate } = createTestClient(server);
+    const { mutate } = createTestClient(createServer());
     const SHUTDOWN_KERNEL = gql`
       mutation KillJupyterKernel($id: ID) {
         shutdownKernel(id: $id) {
