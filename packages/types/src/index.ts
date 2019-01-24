@@ -17,7 +17,7 @@ export * from "./entities";
 export * from "./ids";
 export * from "./refs";
 
-interface KernelspecMetadata {
+export interface KernelspecMetadata {
   display_name: string;
   language: string;
   argv: string[];
@@ -63,25 +63,25 @@ export interface NotebookMetadata {
   // orig_nbformat?: number,
 }
 
-interface PagePayloadMessage {
+export interface PagePayloadMessage {
   source: "page";
   data: MediaBundle;
   start: number;
 }
 
-interface SetNextInputPayloadMessage {
+export interface SetNextInputPayloadMessage {
   source: "set_next_input";
   text: string;
   replace: boolean;
 }
 
-interface EditPayloadMessage {
+export interface EditPayloadMessage {
   source: "edit";
   filename: string;
   line_number: number;
 }
 
-interface AskExitPayloadMessage {
+export interface AskExitPayloadMessage {
   source: "ask_exit";
   keepkernel: boolean;
 }
