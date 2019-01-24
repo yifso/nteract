@@ -12,7 +12,7 @@ export const makeEmptyModel = Immutable.Record<EmptyModelRecordProps>({
 });
 export type EmptyModelRecord = Immutable.RecordOf<EmptyModelRecordProps>;
 
-type NotebookTypes = "unknown" | "directory" | "notebook" | "file";
+export type NotebookTypes = "unknown" | "directory" | "notebook" | "file";
 
 export interface DummyContentRecordProps {
   type: "dummy";
