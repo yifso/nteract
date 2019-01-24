@@ -4,11 +4,14 @@ import { Axis, ResponsiveOrdinalFrame } from "semiotic";
 
 import { StyledButtonGroup } from "./components/button-group";
 import HTMLLegend from "./HTMLLegend";
+
 import TooltipContent from "./tooltip-content";
 import { numeralFormatting } from "./utilities";
 
 import { JSONObject } from "@nteract/commutable/src";
 import * as Dx from "./types";
+
+import styled from "styled-components";
 
 interface State {
   filterMode: boolean;
@@ -29,6 +32,23 @@ interface Props {
   schema: Dx.DataProps["schema"];
   options: ParallelCoordinateOptions;
 }
+
+const NumberOfItemsP = styled.p`
+  margin: 20px 0 5px;
+`;
+
+const ParCoordsAxisTickG = styled.g`
+  & text {
+    text-anchor: end;
+  }
+
+  & :first-child {
+    fill: white;
+    stroke: white;
+    opacity: 0.75;
+    stroke-width: 2;
+  }
+`;
 
 const axisSize = [40, 380];
 
@@ -210,7 +230,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
             valueHash={valueHash}
           />
         ) : (
-          <p style={{ margin: "20px 0 5px" }}>{filteredData.length} items</p>
+          <NumberOfItemsP>{filteredData.length} items</NumberOfItemsP>
         );
     }
 
@@ -338,20 +358,10 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
                   orient="left"
                   ticks={5}
                   tickFormat={(tickValue: number) => (
-                    <g>
-                      <text
-                        fill="white"
-                        stroke="white"
-                        opacity={0.75}
-                        strokeWidth={2}
-                        textAnchor="end"
-                      >
-                        {numeralFormatting(tickValue)}
-                      </text>
-                      <text textAnchor="end">
-                        {numeralFormatting(tickValue)}
-                      </text>
-                    </g>
+                    <ParCoordsAxisTickG>
+                      <text>{numeralFormatting(tickValue)}</text>
+                      <text>{numeralFormatting(tickValue)}</text>
+                    </ParCoordsAxisTickG>
                   )}
                 />
               </g>

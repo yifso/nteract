@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 
 interface IconButtonProps {
   message: string;
@@ -7,31 +8,35 @@ interface IconButtonProps {
   title: string;
   selected: boolean;
 }
+const baseButtonStyle = `
+width: 32px;
+height: 32px;
+cursor: pointer;
+color: var(--theme-app-fg);
+`;
+const BaseButton = styled.button`
+  ${baseButtonStyle}
+  border: 1px solid var(--theme-app-fg);
+  background-color: var(--theme-app-bg);
+`;
+const SelectedButton = styled.button`
+  ${baseButtonStyle}
 
-export class IconButton extends React.Component<IconButtonProps> {
+  border: 1px outset #666;
+  background-color: #aaa;
+`;
+
+export class IconButton extends React.PureComponent<IconButtonProps> {
   render() {
     const { message, onClick, children, selected } = this.props;
 
     const { title = message } = this.props;
-
-    const style = {
-      width: "32px",
-      height: "32px",
-      cursor: "pointer",
-      color: "var(--theme-app-fg)",
-      border: "1px solid var(--theme-app-fg)",
-      backgroundColor: "var(--theme-app-bg)"
-    };
-
-    if (selected) {
-      style.border = "1px outset #666";
-      style.backgroundColor = "#aaa";
-    }
+    const WhichButton = selected ? SelectedButton : BaseButton;
 
     return (
-      <button onClick={onClick} key={message} title={title} style={style}>
+      <WhichButton onClick={onClick} key={message} title={title}>
         {children}
-      </button>
+      </WhichButton>
     );
   }
 }

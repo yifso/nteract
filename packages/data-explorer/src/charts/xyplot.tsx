@@ -10,6 +10,21 @@ import { JSONObject } from "@nteract/commutable";
 import * as Dx from "../types";
 import { sortByOrdinalRange } from "./shared";
 
+import styled from "styled-components";
+
+const TooltipHeader = styled.div`
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 5px;
+  font-weight: 900;
+`;
+
+const TooltipP = styled.div`
+  fontsize: 12px;
+  texttransform: uppercase;
+  margin: 5px;
+`;
+
 interface XYPlotOptions {
   areaType: Dx.AreaType;
   chart: Dx.ChartOptions["chart"];
@@ -127,16 +142,9 @@ export const semioticScatterplot = (
     }
     return (
       <TooltipContent x={hoveredDatapoint.x} y={hoveredDatapoint.y}>
-        <h3
-          style={{
-            fontSize: "14px",
-            textTransform: "uppercase",
-            margin: "5px",
-            fontWeight: 900
-          }}
-        >
+        <TooltipHeader>
           ID, {metric1}, {metric2}
-        </h3>
+        </TooltipHeader>
         {hoveredDatapoint.binItems.map(
           (binnedDatapoint: { [index: string]: any }, index: number) => {
             const id = dimensions
@@ -148,16 +156,9 @@ export const semioticScatterplot = (
               )
               .join(",");
             return (
-              <p
-                key={id + index}
-                style={{
-                  fontSize: "12px",
-                  textTransform: "uppercase",
-                  margin: "5px"
-                }}
-              >
+              <TooltipP key={id + index}>
                 {id}, {binnedDatapoint[metric1]}, {binnedDatapoint[metric2]}
-              </p>
+              </TooltipP>
             );
           }
         )}
@@ -186,6 +187,9 @@ export const semioticScatterplot = (
 
     annotations = combineTopAnnotations(topQ, topSecondQ, dim2);
   }
+
+  // disabling annotations for now
+  annotations = undefined;
 
   if (metric3 && metric3 !== "none") {
     const dataMin = Math.min(

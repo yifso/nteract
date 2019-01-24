@@ -17,12 +17,21 @@ import { View } from "../types";
 
 import { IconButton } from "./IconButton";
 
+import styled from "styled-components";
+
 interface Props {
   setGrid: () => void;
   dimensions: object[];
   setView: (view: View) => void;
   currentView: string;
 }
+
+const ToolbarWrapper = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  z-index: 1;
+  padding: 5px;
+`;
 
 export const Toolbar = ({
   dimensions,
@@ -31,15 +40,7 @@ export const Toolbar = ({
   currentView
 }: Props) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexFlow: "column nowrap",
-        zIndex: 1,
-        padding: "5px"
-      }}
-      className="dx-button-bar"
-    >
+    <ToolbarWrapper className="dx-button-bar">
       <IconButton
         title={chartHelpText.grid}
         onClick={setGrid}
@@ -120,6 +121,6 @@ export const Toolbar = ({
       >
         <LineChartIcon />
       </IconButton>
-    </div>
+    </ToolbarWrapper>
   );
 };

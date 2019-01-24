@@ -65,6 +65,18 @@ const Wrapper = styled.div`
   }
 `;
 
+const ColorPickerWrapper = styled.div`
+   {
+    width: 225px;
+  }
+`;
+
+const PalettePickerWrapper = styled.div`
+   {
+    margin-top: 30px;
+  }
+`;
+
 const PaletteButton = styled.button`
   & {
     margin: 0 20px 10px 0;
@@ -84,7 +96,7 @@ const PaletteButton = styled.button`
   }
 `;
 
-class PalettePicker extends React.Component<Props, State> {
+class PalettePicker extends React.PureComponent<Props, State> {
   static defaultProps = {
     metadata: {},
     height: 500
@@ -181,12 +193,12 @@ class PalettePicker extends React.Component<Props, State> {
           </div>
           <div>
             <h3>Adjust Color</h3>
-            <div style={{ width: "225px" }}>
+            <ColorPickerWrapper>
               <ChromePicker
                 color={this.state.selectedColor}
                 onChangeComplete={this.pickerChange}
               />
-            </div>
+            </ColorPickerWrapper>
           </div>
           <div>
             <h3>Paste New Colors</h3>
@@ -199,7 +211,7 @@ class PalettePicker extends React.Component<Props, State> {
             </PaletteButton>
           </div>
         </div>
-        <div style={{ marginTop: "30px" }}>
+        <PalettePickerWrapper>
           <a
             href={`http://projects.susielu.com/viz-palette?colors=[${colors
               .map(d => `"${d}"`)
@@ -207,7 +219,7 @@ class PalettePicker extends React.Component<Props, State> {
           >
             Evaluate This Palette with VIZ PALETTE
           </a>
-        </div>
+        </PalettePickerWrapper>
       </Wrapper>
     );
   }

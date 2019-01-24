@@ -109,6 +109,22 @@ interface DisplayChart {
   pie is a transform on bar
 */
 
+const defaultResponsiveSize = [500, 300];
+
+const MetadataWarningWrapper = styled.div`
+  & {
+    font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+`;
+
+const MetadataWarningContent = styled.div`
+  & {
+    backgroundcolor: #cce;
+    padding: 10px;
+    paddingleft: 20px;
+  }
+`;
+
 const MetadataWarning = ({ metadata }: { metadata: Metadata }) => {
   const warning =
     metadata && metadata.sampled ? (
@@ -118,26 +134,23 @@ const MetadataWarning = ({ metadata }: { metadata: Metadata }) => {
     ) : null;
 
   return (
-    <div
-      style={{
-        fontFamily:
-          "Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif"
-      }}
-    >
+    <MetadataWarningWrapper>
       {warning ? (
-        <div
-          style={{
-            backgroundColor: "#cce",
-            padding: "10px",
-            paddingLeft: "20px"
-          }}
-        >
-          {warning}
-        </div>
+        <MetadataWarningContent>{warning}</MetadataWarningContent>
       ) : null}
-    </div>
+    </MetadataWarningWrapper>
   );
 };
+
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+`;
+
+const FlexItem = styled.div`
+  flex: 1;
+`;
 
 const SemioticWrapper = styled.div`
   width: "calc(100vw - 200px)";
@@ -193,7 +206,7 @@ const SemioticWrapper = styled.div`
   }
 `;
 
-class DataExplorer extends React.Component<Partial<Props>, State> {
+class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -347,7 +360,11 @@ class DataExplorer extends React.Component<Partial<Props>, State> {
 
     const display: React.ReactNode = (
       <SemioticWrapper>
-        <Frame responsiveWidth size={[500, 300]} {...frameSettings} />
+        <Frame
+          responsiveWidth
+          size={defaultResponsiveSize}
+          {...frameSettings}
+        />
         <VizControls
           {...{
             data: stateData,
@@ -492,27 +509,15 @@ class DataExplorer extends React.Component<Partial<Props>, State> {
     return (
       <div>
         <MetadataWarning metadata={this.props.metadata!} />
-        <div
-          style={{
-            display: "flex",
-            flexFlow: "row nowrap",
-            width: "100%"
-          }}
-        >
-          <div
-            style={{
-              flex: "1"
-            }}
-          >
-            {display}
-          </div>
+        <FlexWrapper>
+          <FlexItem>{display}</FlexItem>
           <Toolbar
             dimensions={dimensions}
             setGrid={this.setGrid}
             setView={this.setView}
             currentView={view}
           />
-        </div>
+        </FlexWrapper>
       </div>
     );
   }

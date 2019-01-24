@@ -178,6 +178,7 @@ const metricDimSelector = (
         }}
         itemRenderer={renderMenuItem}
         itemPredicate={filterItem}
+        resetOnClose
       >
         <Button
           icon={getIcon(title)}
