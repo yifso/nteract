@@ -261,6 +261,6 @@ class HeaderEditor extends React.PureComponent<
 }
 
 // We export this for testing purposes.
-export { HeaderEditor };
+// export { HeaderEditor };
 
 export default HeaderEditor;
