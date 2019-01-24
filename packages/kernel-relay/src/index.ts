@@ -169,4 +169,6 @@ process.on("exit", () => {
   });
 });
 
-main();
+if (require.main === module) {
+  main();
+}
