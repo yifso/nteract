@@ -4,11 +4,17 @@ import CodeMirror, {
   Doc,
   Editor,
   EditorChangeLinkedList,
-  EditorConfiguration,
   EditorFromTextArea,
   Position,
   Token
 } from "codemirror";
+
+import {
+  configurableCodeMirrorOptions,
+  FullEditorConfiguration,
+  isConfigurable
+} from "./configurable";
+
 import { debounce } from "lodash";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -74,12 +80,14 @@ export interface EditorKeyEvent {
   ev: KeyboardEvent;
 }
 
-export interface CodeMirrorEditorProps {
+export type CodeMirrorEditorProps = {
+  preserveScrollPosition: boolean;
   editorFocused: boolean;
   completion: boolean;
   tip?: boolean;
   focusAbove?: (instance: Editor) => void;
   focusBelow?: (instance: Editor) => void;
+  // _Our_ theme, not the codemirror one we use
   theme: string;
   channels?: Channels | null;
   // TODO: We only check if this is idle, so the completion provider should only
@@ -89,9 +97,7 @@ export interface CodeMirrorEditorProps {
   onChange?: (value: string, change: EditorChangeLinkedList) => void;
   onFocusChange?: (focused: boolean) => void;
   value: string;
-  defaultValue?: string;
-  options: EditorConfiguration & { [optionName: string]: any };
-}
+} & Partial<FullEditorConfiguration>;
 
 interface CodeMirrorEditorState {
   isFocused: boolean;
@@ -109,18 +115,25 @@ export default class CodeMirrorEditor extends React.PureComponent<
   CodeMirrorEditorState
 > {
   static defaultProps: Partial<CodeMirrorEditorProps> = {
+    value: "",
     channels: null,
     completion: false,
     editorFocused: false,
     kernelStatus: "not connected",
-    options: {},
     theme: "light",
-    tip: false
+    tip: false,
+    autofocus: false,
+
+    // CodeMirror specific options for defaults
+    matchBrackets: true,
+    indentUnit: 4,
+    lineNumbers: false,
+    cursorBlinkRate: 530
   };
 
   textarea?: HTMLTextAreaElement | null;
   cm!: EditorFromTextArea;
-  defaultOptions: EditorConfiguration;
+  defaultOptions: FullEditorConfiguration;
   keyupEventsSubscriber!: Subscription;
   completionSubject!: Subject<CodeCompletionEvent>;
   completionEventsSubscriber!: Subscription;
@@ -139,40 +152,65 @@ export default class CodeMirrorEditor extends React.PureComponent<
     this.debounceNextCompletionRequest = true;
     this.state = { isFocused: true, tipElement: null };
 
-    this.defaultOptions = Object.assign(
-      {
-        autoCloseBrackets: true,
-        autofocus: false,
-        extraKeys: {
-          "Cmd-.": this.tips,
-          "Cmd-/": "toggleComment",
-          "Ctrl-.": this.tips,
-          "Ctrl-/": "toggleComment",
-          "Ctrl-Space": (editor: Editor) => {
-            this.debounceNextCompletionRequest = false;
-            return editor.execCommand("autocomplete");
-          },
-          Down: this.goLineDownOrEmit,
-          "Shift-Tab": (editor: Editor) => editor.execCommand("indentLess"),
-          Tab: this.executeTab,
-          Up: this.goLineUpOrEmit
-        },
-        hintOptions: {
-          completeSingle: false, // In automatic autocomplete mode we don't want override
-          extraKeys: {
-            Right: pick
-          },
-          hint: this.hint
-        },
-        indentUnit: 4,
-        lineNumbers: false,
-        matchBrackets: true,
-        preserveScrollPosition: false,
-        // This sets the class on the codemirror <div> that gets created to cm-s-composition
-        theme: "composition"
+    this.fullOptions = this.fullOptions.bind(this);
+    this.cleanMode = this.cleanMode.bind(this);
+
+    // Bind our events to codemirror
+    const extraKeys = {
+      "Cmd-.": this.tips,
+      "Cmd-/": "toggleComment",
+      "Ctrl-.": this.tips,
+      "Ctrl-/": "toggleComment",
+      "Ctrl-Space": (editor: Editor) => {
+        this.debounceNextCompletionRequest = false;
+        return editor.execCommand("autocomplete");
       },
-      props.options
-    );
+      Down: this.goLineDownOrEmit,
+      "Shift-Tab": (editor: Editor) => editor.execCommand("indentLess"),
+      Tab: this.executeTab,
+      Up: this.goLineUpOrEmit
+    };
+
+    const hintOptions = {
+      // In automatic autocomplete mode we don't want override
+      completeSingle: false,
+      extraKeys: {
+        Right: pick
+      },
+      hint: this.hint
+    };
+
+    this.defaultOptions = Object.assign({
+      extraKeys,
+      hintOptions,
+      // This sets the class on the codemirror <div> that gets created to
+      // cm-s-composition
+      theme: "composition"
+    });
+  }
+
+  fullOptions(defaults: FullEditorConfiguration = {}) {
+    // Only pass to codemirror the options we support
+    return Object.keys(this.props)
+      .filter(isConfigurable)
+      .reduce((obj, key) => {
+        obj[key] = this.props[key];
+        return obj;
+      }, defaults);
+  }
+
+  cleanMode(): string | object {
+    if (!this.props.mode) {
+      return "text/plain";
+    }
+    if (typeof this.props.mode === "string") {
+      return this.props.mode;
+    }
+    // If the mode comes in as an immutable map, convert it first
+    if (typeof this.props.mode === "object" && "toJS" in this.props.mode) {
+      return this.props.mode.toJS();
+    }
+    return this.props.mode;
   }
 
   componentWillMount(): void {
@@ -183,15 +221,13 @@ export default class CodeMirrorEditor extends React.PureComponent<
   }
 
   componentDidMount(): void {
-    const { completion, editorFocused, focusAbove, focusBelow } = this.props;
-
     require("codemirror/addon/hint/show-hint");
     require("codemirror/addon/hint/anyword-hint");
 
     require("codemirror/addon/edit/matchbrackets");
     require("codemirror/addon/edit/closebrackets");
 
-    require("codemirror/addon/comment/comment.js");
+    require("codemirror/addon/comment/comment");
 
     require("codemirror/mode/python/python");
     require("codemirror/mode/ruby/ruby");
@@ -207,12 +243,19 @@ export default class CodeMirrorEditor extends React.PureComponent<
 
     require("./mode/ipython");
 
-    this.cm = CodeMirror.fromTextArea(
-      this.textareaRef.current!,
-      this.defaultOptions
-    );
+    const { completion, editorFocused, focusAbove, focusBelow } = this.props;
 
-    this.cm.setValue(this.props.defaultValue || this.props.value || "");
+    // Set up the initial options with both our defaults and all the ones we
+    // allow to be passed in
+    const options: FullEditorConfiguration = {
+      ...this.fullOptions,
+      ...this.defaultOptions,
+      mode: this.cleanMode()
+    };
+
+    this.cm = CodeMirror.fromTextArea(this.textareaRef.current!, options);
+
+    this.cm.setValue(this.props.value || "");
 
     // On first load, if focused, set codemirror to focus
     if (editorFocused) {
@@ -232,7 +275,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
       (editor, ev) => ({ editor, ev })
     );
 
-    // Initiate code completion in response to some keystrokes *other than* "Ctrl-Space" (which is bound in extraKeys, above)
+    // Initiate code completion in response to some keystrokes *other than*
+    //  "Ctrl-Space" (which is bound in extraKeys, above)
     this.keyupEventsSubscriber = keyupEvents
       .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(i => of(i)))
       .subscribe(({ editor, ev }) => {
@@ -267,9 +311,11 @@ export default class CodeMirrorEditor extends React.PureComponent<
       immediate,
       debounce.pipe(
         debounceTime(150),
-        takeUntil(immediate), // Upon receipt of an immediate event, cancel anything queued up from debounce.
-        // This handles "type chars quickly, then quickly hit Ctrl+Space", ensuring that it
-        // generates just one event rather than two.
+        // Upon receipt of an immediate event, cancel anything queued up from
+        // debounce. This handles "type chars quickly, then quickly hit
+        // Ctrl+Space", ensuring that it generates just one event rather than
+        // two.
+        takeUntil(immediate),
         repeat() // Resubscribe to wait for next debounced event.
       )
     );
@@ -286,7 +332,9 @@ export default class CodeMirrorEditor extends React.PureComponent<
         }
         return codeComplete(channels, ev.editor).pipe(
           map(completionResult => () => ev.callback(completionResult)),
-          takeUntil(this.completionSubject), // Complete immediately upon next event, even if it's a debounced one - https://blog.strongbrew.io/building-a-safe-autocomplete-operator-with-rxjs/
+          // Complete immediately upon next event, even if it's a debounced one
+          // https://blog.strongbrew.io/building-a-safe-autocomplete-operator-with-rxjs/
+          takeUntil(this.completionSubject),
           catchError((error: Error) => {
             console.log(`Code completion error: ${error.message}`);
             return empty();
@@ -304,8 +352,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
     if (!this.cm) {
       return;
     }
+
     const { editorFocused, theme } = this.props;
-    const { cursorBlinkRate } = this.props.options;
 
     if (prevProps.theme !== theme) {
       this.cm.refresh();
@@ -315,8 +363,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
       editorFocused ? this.cm.focus() : this.cm.getInputField().blur();
     }
 
-    if (prevProps.options.cursorBlinkRate !== cursorBlinkRate) {
-      this.cm.setOption("cursorBlinkRate", cursorBlinkRate);
+    if (prevProps.cursorBlinkRate !== this.props.cursorBlinkRate) {
+      this.cm.setOption("cursorBlinkRate", this.props.cursorBlinkRate);
       if (editorFocused) {
         // code mirror doesn't change the blink rate immediately, we have to
         // move the cursor, or unfocus and refocus the editor to get the blink
@@ -326,8 +374,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
       }
     }
 
-    if (prevProps.options.mode !== this.props.options.mode) {
-      this.cm.setOption("mode", this.props.options.mode);
+    if (prevProps.mode !== this.props.mode) {
+      this.cm.setOption("mode", this.cleanMode());
     }
   }
 
@@ -338,7 +386,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
       normalizeLineEndings(this.cm.getValue()) !==
         normalizeLineEndings(nextProps.value)
     ) {
-      if (this.props.options.preserveScrollPosition) {
+      if (this.props.preserveScrollPosition) {
         const prevScrollPosition = this.cm.getScrollInfo();
         this.cm.setValue(nextProps.value);
         this.cm.scrollTo(prevScrollPosition.left, prevScrollPosition.top);
@@ -346,20 +394,18 @@ export default class CodeMirrorEditor extends React.PureComponent<
         this.cm.setValue(nextProps.value);
       }
     }
-    if (typeof nextProps.options === "object") {
-      for (const optionName in nextProps.options) {
-        if (
-          nextProps.options.hasOwnProperty(optionName) &&
-          this.props.options[optionName] === nextProps.options[optionName]
-        ) {
-          this.cm.setOption(optionName, nextProps.options[optionName]);
-        }
+
+    for (const optionName in nextProps) {
+      if (!isConfigurable(optionName)) {
+        continue;
+      }
+      if (nextProps[optionName] !== this.props[optionName]) {
+        this.cm.setOption(optionName, nextProps[optionName]);
       }
     }
   }
 
   componentWillUnmount(): void {
-    // TODO: is there a lighter weight way to remove the codemirror instance?
     if (this.cm) {
       this.cm.toTextArea();
     }
@@ -395,7 +441,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
     this.setState({ tipElement: null });
   }
 
-  // TODO: Rely on ReactDOM.createPortal, create a space for tooltips to go
   tips(editor: Editor & Doc): void {
     const { tip, channels } = this.props;
 

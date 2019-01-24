@@ -1,5 +1,5 @@
 import * as actions from "@nteract/actions";
-import EditorView from "@nteract/editor";
+import EditorView, { CodeMirrorEditorProps } from "@nteract/editor";
 import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef } from "@nteract/types";
 import { connect } from "react-redux";
@@ -12,27 +12,17 @@ interface InitialProps {
   focusBelow: () => void;
 }
 
-const markdownEditorOptions = {
-  // Markdown should always be line wrapped
-  lineWrapping: true,
-  // Rely _directly_ on the codemirror mode
-  mode: {
-    name: "gfm",
-    tokenTypeOverrides: {
-      emoji: "emoji"
-    }
+const markdownMode = {
+  name: "gfm",
+  tokenTypeOverrides: {
+    emoji: "emoji"
   }
 };
 
-const rawEditorOptions = {
-  // Markdown should always be line wrapped
-  lineWrapping: true,
-  // Rely _directly_ on the codemirror mode
-  mode: {
-    name: "text/plain",
-    tokenTypeOverrides: {
-      emoji: "emoji"
-    }
+const rawMode = {
+  name: "text/plain",
+  tokenTypeOverrides: {
+    emoji: "emoji"
   }
 };
 
@@ -64,13 +54,18 @@ const makeMapStateToProps = (
     let kernelStatus = "not connected";
 
     // Bring all changes to the options based on cell type
-    let cellBasedEditorOptions = {};
+    let codeMirrorMode = rawMode;
+
+    let lineWrapping = false;
+
     switch (cell.cell_type) {
       case "markdown":
-        cellBasedEditorOptions = markdownEditorOptions;
+        lineWrapping = true;
+        codeMirrorMode = markdownMode;
         break;
       case "raw":
-        cellBasedEditorOptions = rawEditorOptions;
+        lineWrapping = true;
+        codeMirrorMode = rawMode;
         break;
       case "code": {
         const kernelRef = model.kernelRef;
@@ -84,40 +79,27 @@ const makeMapStateToProps = (
           kernelStatus = kernel.status || "not connected";
         }
 
-        const codeMirrorMode =
+        // otherwise assume we can use what's in the document
+        codeMirrorMode =
           kernel && kernel.info
-            ? kernel.info
+            ? kernel.info.codemirrorMode
             : selectors.notebook.codeMirrorMode(model);
-        cellBasedEditorOptions = {
-          mode: codeMirrorMode
-        };
       }
     }
-
-    // Build options according to cell in use.
-    const options = {
-      // Handle the legacy config option
-      cursorBlinkRate: state.config.get("cursorBlinkRate", 530),
-      // Bring in user configuration, if we had it
-      // IDEA:
-      // ...state.config.editorOptions
-      // Set the properties that apply to this cell
-      ...cellBasedEditorOptions
-    };
 
     return {
       tip: true,
       completion: true,
       editorFocused,
-      id,
-      contentRef,
       focusAbove,
       focusBelow,
       theme,
       value: cell.source,
-      options,
       channels,
-      kernelStatus
+      kernelStatus,
+      cursorBlinkRate: state.config.get("cursorBlinkRate", 530),
+      mode: codeMirrorMode,
+      lineWrapping
     };
   }
   return mapStateToProps;
