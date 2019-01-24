@@ -13,8 +13,7 @@ describe("Queries", () => {
       }
     `;
     const response = await query({ query: LIST_KERNELSPECS });
-    expect(response).not.toBeNull();
-    expect(response.data.listKernelSpecs.length).toBeGreaterThan(0);
+    expect(response).toMatchSnapshot();
   });
 });
 
@@ -33,8 +32,7 @@ describe("Mutations", () => {
     const response = await mutate({ mutation: START_KERNEL });
     kernelId = response.data.startKernel.id;
 
-    expect(response).not.toBeNull();
-    expect(response.data.startKernel.status).toBe("launched");
+    expect(response).toMatchSnapshot();
   });
   it("shuts down a kernel", async () => {
     const { mutate } = createTestClient(server);
@@ -50,7 +48,7 @@ describe("Mutations", () => {
       mutation: SHUTDOWN_KERNEL,
       variables: { id: kernelId }
     });
-    expect(response).not.toBeNull();
-    expect(response.data.shutdownKernel.status).toBe("shutdown");
+
+    expect(response).toMatchSnapshot();
   });
 });
