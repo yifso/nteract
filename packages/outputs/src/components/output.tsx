@@ -2,6 +2,7 @@
 import { ImmutableOutput } from "@nteract/commutable";
 import * as React from "react";
 
+import styled from "styled-components";
 interface Props {
   /**
    * React elements that accept Output
@@ -11,14 +12,74 @@ interface Props {
    * The raw output
    */
   output: ImmutableOutput;
+
+  renderError(param: {
+    error: Error | null;
+    info: ReactErrorInfo;
+    output: ImmutableOutput;
+    children: React.ReactNode;
+  }): React.ReactElement<any>;
 }
 
-export class Output extends React.PureComponent<Props> {
+interface Caught {
+  error: Error | null;
+  info: ReactErrorInfo;
+}
+
+interface State {
+  caughtError: Caught | null;
+}
+
+interface ReactErrorInfo {
+  componentStack: string;
+}
+
+const ErrorFallbackDiv = styled.div`
+  backgroundcolor: ghostwhite;
+  color: black;
+  font-weight: 600;
+  display: block;
+  padding: 10px;
+  margin-bottom: 20px;
+`;
+
+const ErrorFallback = (caught: Caught) => (
+  <ErrorFallbackDiv>
+    {caught.error ? <h3>{caught.error.toString()}</h3> : null}
+    <details>
+      <summary>stack trace</summary>
+      <pre>{caught.info.componentStack}</pre>
+    </details>
+  </ErrorFallbackDiv>
+);
+
+export class Output extends React.PureComponent<Props, State> {
   static defaultProps = {
-    output: null
+    output: null,
+    renderError: ErrorFallback
   };
 
+  readonly state: State = { caughtError: null };
+
+  componentDidCatch(error: Error | null, info: ReactErrorInfo) {
+    const caughtError: Caught = {
+      error,
+      info
+    };
+    this.setState({
+      caughtError
+    });
+  }
+
   render() {
+    if (this.state.caughtError) {
+      return this.props.renderError({
+        ...this.state.caughtError,
+        output: this.props.output,
+        children: this.props.children
+      });
+    }
+
     // We must pick only one child to render
     let chosenOne: React.ReactChild | null = null;
 
