@@ -11,7 +11,7 @@ interface BarOptions {
   selectedDimensions: string[];
   chart: Dx.Chart;
   colors: string[];
-  setColor: (color: string) => void;
+  setColor: (color: string[]) => void;
 }
 
 export const semioticBarChart = (
@@ -35,9 +35,11 @@ export const semioticBarChart = (
   const additionalSettings: {
     afterElements?: JSX.Element;
     dynamicColumnWidth?: string;
-    tooltipContent?: (
-      hoveredDataPoint: { x: number; y: number; [key: string]: any }
-    ) => JSX.Element;
+    tooltipContent?: (hoveredDataPoint: {
+      x: number;
+      y: number;
+      [key: string]: any;
+    }) => JSX.Element;
     pieceHoverAnnotation?: boolean;
   } = {};
 

@@ -25,6 +25,7 @@ interface ParallelCoordinateOptions {
   metrics: Dx.Metric[];
   chart: Dx.Chart;
   colors: Dx.ChartOptions["colors"];
+  setColor: Dx.ChartOptions["setColor"];
 }
 
 interface Props {
@@ -151,7 +152,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
   render() {
     const { options, data } = this.props;
 
-    const { primaryKey, metrics, chart, colors } = options;
+    const { primaryKey, metrics, chart, colors, setColor } = options;
     const { dim1 } = chart;
 
     const { columnExtent, filterMode } = this.state;
@@ -228,6 +229,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
             values={uniqueValues}
             colorHash={colorHash}
             valueHash={valueHash}
+            setColor={setColor}
           />
         ) : (
           <NumberOfItemsP>{filteredData.length} items</NumberOfItemsP>

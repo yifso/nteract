@@ -13,7 +13,7 @@ export interface ChartOptions {
   networkType: NetworkType;
   hierarchyType: HierarchyType;
   primaryKey: string[];
-  setColor: (color: string) => void;
+  setColor: (color: string[]) => void;
 }
 
 export interface DataProps {

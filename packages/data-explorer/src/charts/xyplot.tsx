@@ -311,6 +311,7 @@ export const semioticScatterplot = (
           values={hexValues}
           colorHash={hexHash}
           colors={colors}
+          setColor={setColor}
         />
       );
     }
