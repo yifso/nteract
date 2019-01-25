@@ -2,7 +2,7 @@ import * as actions from "@nteract/actions";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import { dirname } from "path";
 import * as React from "react";
-import { HotKeys } from "react-hotkeys";
+import { HotKeys, KeyMap } from "react-hotkeys";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import urljoin from "url-join";
@@ -35,7 +35,7 @@ class Contents extends React.PureComponent<
   IContentsProps & IDispatchFromProps,
   IContentsState
 > {
-  private keyMap: object = {
+  private keyMap: KeyMap = {
     SAVE: "ctrl+s"
   };
 
