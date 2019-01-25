@@ -1,5 +1,12 @@
 import * as actions from "@nteract/actions";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
+import {
+  DirectoryContentRecordProps,
+  DummyContentRecordProps,
+  FileContentRecordProps,
+  NotebookContentRecordProps
+} from "@nteract/types";
+import { RecordOf } from "immutable";
 import { dirname } from "path";
 import * as React from "react";
 import { HotKeys, KeyMap } from "react-hotkeys";
@@ -102,14 +109,19 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  const mapStateToProps: any = (state: AppState) => {
+  const mapStateToProps = (state: AppState) => {
     const contentRef: ContentRef = initialProps.contentRef;
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
     }
 
-    const content: any = selectors.content(state, { contentRef });
+    const content:
+      | RecordOf<NotebookContentRecordProps>
+      | RecordOf<DummyContentRecordProps>
+      | RecordOf<FileContentRecordProps>
+      | RecordOf<DirectoryContentRecordProps>
+      | undefined = selectors.content(state, { contentRef });
 
     if (!content) {
       throw new Error("need content to view content, check your contentRefs");
@@ -132,7 +144,7 @@ const makeMapStateToProps: any = (
   return mapStateToProps;
 };
 
-const mapDispatchToProps: any = (
+const mapDispatchToProps = (
   dispatch: Dispatch,
   initialProps: { contentRef: ContentRef }
 ) => ({
