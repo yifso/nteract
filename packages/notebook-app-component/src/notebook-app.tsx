@@ -53,6 +53,9 @@ function getTheme(theme: string) {
   }
 }
 
+const emptyList = Immutable.List();
+const emptySet = Immutable.Set();
+
 const Cell = styled(PlainCell).attrs((props: { isSelected: boolean }) => ({
   className: props.isSelected ? "selected" : ""
 }))`
@@ -84,14 +87,12 @@ interface AnyCellProps {
   sourceHidden: boolean;
   outputHidden: boolean;
   outputExpanded: boolean;
-  models: Immutable.Map<string, any>;
   selectCell: () => void;
   focusEditor: () => void;
   unfocusEditor: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
   updateOutputMetadata: (index: number, metadata: JSONObject) => void;
-  metadata: object;
 }
 
 const makeMapStateToCellProps = (
@@ -113,8 +114,8 @@ const makeMapStateToCellProps = (
       throw new Error("cell not found inside cell map");
     }
 
-    const cellType = (cell as any).get("cell_type");
-    const outputs = cell.get("outputs", Immutable.List());
+    const cellType = cell.cell_type;
+    const outputs = cell.get("outputs", emptyList);
 
     const sourceHidden =
       (cellType === "code" &&
@@ -129,11 +130,9 @@ const makeMapStateToCellProps = (
     const outputExpanded =
       cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);
 
-    const tags = cell.getIn(["metadata", "tags"]) || Immutable.Set();
+    const tags = cell.getIn(["metadata", "tags"]) || emptySet;
 
-    const pager = model.getIn(["cellPagers", id]) || Immutable.List();
-
-    const metadata = (cell.getIn(["metadata"]) || Immutable.Map()).toJS();
+    const pager = model.getIn(["cellPagers", id]) || emptyList;
 
     let channels: Subject<any> | undefined;
     if (kernelRef) {
@@ -151,8 +150,6 @@ const makeMapStateToCellProps = (
       contentRef,
       editorFocused: model.editorFocused === id,
       executionCount: (cell as ImmutableCodeCell).get("execution_count", null),
-      metadata,
-      models: selectors.models(state),
       outputExpanded,
       outputHidden,
       outputs,
@@ -220,10 +217,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       selectCell,
       unfocusEditor,
       contentRef,
-      sourceHidden,
-      metadata
+      sourceHidden
     } = this.props;
-    const expanded = { expanded: true };
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
     let element = null;
@@ -367,34 +362,29 @@ interface NotebookStateProps {
 }
 
 interface NotebookDispatchProps {
-  moveCell: (
-    payload: {
-      id: CellId;
-      destinationId: CellId;
-      above: boolean;
-      contentRef: ContentRef;
-    }
-  ) => void;
+  moveCell: (payload: {
+    id: CellId;
+    destinationId: CellId;
+    above: boolean;
+    contentRef: ContentRef;
+  }) => void;
   focusCell: (payload: { id: CellId; contentRef: ContentRef }) => void;
   executeFocusedCell: (payload: { contentRef: ContentRef }) => void;
-  focusNextCell: (
-    payload: {
-      id?: CellId;
-      createCellIfUndefined: boolean;
-      contentRef: ContentRef;
-    }
-  ) => void;
-  focusNextCellEditor: (
-    payload: { id?: CellId; contentRef: ContentRef }
-  ) => void;
-  updateOutputMetadata: (
-    payload: {
-      id: CellId;
-      metadata: JSONObject;
-      contentRef: ContentRef;
-      index: number;
-    }
-  ) => void;
+  focusNextCell: (payload: {
+    id?: CellId;
+    createCellIfUndefined: boolean;
+    contentRef: ContentRef;
+  }) => void;
+  focusNextCellEditor: (payload: {
+    id?: CellId;
+    contentRef: ContentRef;
+  }) => void;
+  updateOutputMetadata: (payload: {
+    id: CellId;
+    metadata: JSONObject;
+    contentRef: ContentRef;
+    index: number;
+  }) => void;
 }
 
 const makeMapStateToProps = (
