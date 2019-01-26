@@ -4,11 +4,14 @@ import { Axis, ResponsiveOrdinalFrame } from "semiotic";
 
 import { StyledButtonGroup } from "./components/button-group";
 import HTMLLegend from "./HTMLLegend";
+
 import TooltipContent from "./tooltip-content";
 import { numeralFormatting } from "./utilities";
 
 import { JSONObject } from "@nteract/commutable/src";
 import * as Dx from "./types";
+
+import styled from "styled-components";
 
 interface State {
   filterMode: boolean;
@@ -22,6 +25,7 @@ interface ParallelCoordinateOptions {
   metrics: Dx.Metric[];
   chart: Dx.Chart;
   colors: Dx.ChartOptions["colors"];
+  setColor: Dx.ChartOptions["setColor"];
 }
 
 interface Props {
@@ -29,6 +33,23 @@ interface Props {
   schema: Dx.DataProps["schema"];
   options: ParallelCoordinateOptions;
 }
+
+const NumberOfItemsP = styled.p`
+  margin: 20px 0 5px;
+`;
+
+const ParCoordsAxisTickG = styled.g`
+  & text {
+    text-anchor: end;
+  }
+
+  & :first-child {
+    fill: white;
+    stroke: white;
+    opacity: 0.75;
+    stroke-width: 2;
+  }
+`;
 
 const axisSize = [40, 380];
 
@@ -131,7 +152,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
   render() {
     const { options, data } = this.props;
 
-    const { primaryKey, metrics, chart, colors } = options;
+    const { primaryKey, metrics, chart, colors, setColor } = options;
     const { dim1 } = chart;
 
     const { columnExtent, filterMode } = this.state;
@@ -208,9 +229,10 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
             values={uniqueValues}
             colorHash={colorHash}
             valueHash={valueHash}
+            setColor={setColor}
           />
         ) : (
-          <p style={{ margin: "20px 0 5px" }}>{filteredData.length} items</p>
+          <NumberOfItemsP>{filteredData.length} items</NumberOfItemsP>
         );
     }
 
@@ -338,20 +360,10 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
                   orient="left"
                   ticks={5}
                   tickFormat={(tickValue: number) => (
-                    <g>
-                      <text
-                        fill="white"
-                        stroke="white"
-                        opacity={0.75}
-                        strokeWidth={2}
-                        textAnchor="end"
-                      >
-                        {numeralFormatting(tickValue)}
-                      </text>
-                      <text textAnchor="end">
-                        {numeralFormatting(tickValue)}
-                      </text>
-                    </g>
+                    <ParCoordsAxisTickG>
+                      <text>{numeralFormatting(tickValue)}</text>
+                      <text>{numeralFormatting(tickValue)}</text>
+                    </ParCoordsAxisTickG>
                   )}
                 />
               </g>

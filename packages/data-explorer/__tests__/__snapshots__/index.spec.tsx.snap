@@ -5,22 +5,8 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
   <MetadataWarning
     metadata={Object {}}
   />
-  <div
-    style={
-      Object {
-        "display": "flex",
-        "flexFlow": "row nowrap",
-        "width": "100%",
-      }
-    }
-  >
-    <div
-      style={
-        Object {
-          "flex": "1",
-        }
-      }
-    >
+  <styled.div>
+    <styled.div>
       <DataResourceTransformGrid
         data={
           Object {
@@ -230,7 +216,7 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
         models={Object {}}
         theme="light"
       />
-    </div>
+    </styled.div>
     <Component
       currentView="grid"
       dimensions={
@@ -248,7 +234,7 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
       setGrid={[Function]}
       setView={[Function]}
     />
-  </div>
+  </styled.div>
 </div>
 `;
 
@@ -301,22 +287,8 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
       }
     }
   />
-  <div
-    style={
-      Object {
-        "display": "flex",
-        "flexFlow": "row nowrap",
-        "width": "100%",
-      }
-    }
-  >
-    <div
-      style={
-        Object {
-          "flex": "1",
-        }
-      }
-    >
+  <styled.div>
+    <styled.div>
       <styled.div>
         <ResponsiveXYFrame
           afterElements={
@@ -371,124 +343,6 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
                 "type": "marginalia",
               },
             }
-          }
-          annotations={
-            Array [
-              Object {
-                "Country": "New Zealand",
-                "Dystopia Residual": 2.26425,
-                "Economy (GDP per Capita)": 1.25018,
-                "Family": 1.31967,
-                "Freedom": 0.63938,
-                "Generosity": 0.47501,
-                "Happiness Rank": 9,
-                "Happiness Score": 7.286,
-                "Health (Life Expectancy)": 0.90837,
-                "Region": "Australia and New Zealand",
-                "Standard Error": 0.03371,
-                "Trust (Government Corruption)": 0.42922,
-                "coordinates": Array [],
-                "id": "New Zealand",
-                "index": 8,
-                "label": "New Zealand",
-                "type": "react-annotation",
-              },
-              Object {
-                "Country": "Sweden",
-                "Dystopia Residual": 2.37119,
-                "Economy (GDP per Capita)": 1.33171,
-                "Family": 1.28907,
-                "Freedom": 0.6598,
-                "Generosity": 0.36262,
-                "Happiness Rank": 8,
-                "Happiness Score": 7.364,
-                "Health (Life Expectancy)": 0.91087,
-                "Region": "Western Europe",
-                "Standard Error": 0.03157,
-                "Trust (Government Corruption)": 0.43844,
-                "coordinates": Array [],
-                "id": "Sweden",
-                "index": 7,
-                "label": "Sweden",
-                "type": "react-annotation",
-              },
-              Object {
-                "Country": "Netherlands",
-                "Dystopia Residual": 2.4657,
-                "Economy (GDP per Capita)": 1.32944,
-                "Family": 1.28017,
-                "Freedom": 0.61576,
-                "Generosity": 0.4761,
-                "Happiness Rank": 7,
-                "Happiness Score": 7.378,
-                "Health (Life Expectancy)": 0.89284,
-                "Region": "Western Europe",
-                "Standard Error": 0.02799,
-                "Trust (Government Corruption)": 0.31814,
-                "coordinates": Array [],
-                "id": "Netherlands",
-                "index": 6,
-                "label": "Netherlands",
-                "type": "react-annotation",
-              },
-              Object {
-                "Country": "Iceland",
-                "Dystopia Residual": 2.70201,
-                "Economy (GDP per Capita)": 1.30232,
-                "Family": 1.40223,
-                "Freedom": 0.62877,
-                "Generosity": 0.4363,
-                "Happiness Rank": 2,
-                "Happiness Score": 7.561,
-                "Health (Life Expectancy)": 0.94784,
-                "Region": "Western Europe",
-                "Standard Error": 0.04884,
-                "Trust (Government Corruption)": 0.14145,
-                "coordinates": Array [],
-                "id": "Iceland",
-                "index": 1,
-                "label": "Iceland",
-                "type": "react-annotation",
-              },
-              Object {
-                "Country": "Norway",
-                "Dystopia Residual": 2.46531,
-                "Economy (GDP per Capita)": 1.459,
-                "Family": 1.33095,
-                "Freedom": 0.66973,
-                "Generosity": 0.34699,
-                "Happiness Rank": 4,
-                "Happiness Score": 7.522,
-                "Health (Life Expectancy)": 0.88521,
-                "Region": "Western Europe",
-                "Standard Error": 0.0388,
-                "Trust (Government Corruption)": 0.36503,
-                "coordinates": Array [],
-                "id": "Norway",
-                "index": 3,
-                "label": "Norway",
-                "type": "react-annotation",
-              },
-              Object {
-                "Country": "Canada",
-                "Dystopia Residual": 2.45176,
-                "Economy (GDP per Capita)": 1.32629,
-                "Family": 1.32261,
-                "Freedom": 0.63297,
-                "Generosity": 0.45811,
-                "Happiness Rank": 5,
-                "Happiness Score": 7.427,
-                "Health (Life Expectancy)": 0.90563,
-                "Region": "North America",
-                "Standard Error": 0.03553,
-                "Trust (Government Corruption)": 0.32957,
-                "coordinates": Array [],
-                "id": "Canada",
-                "index": 4,
-                "label": "Canada",
-                "type": "react-annotation",
-              },
-            ]
           }
           areaStyle={[Function]}
           areaType={
@@ -904,7 +758,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
           view="scatter"
         />
       </styled.div>
-    </div>
+    </styled.div>
     <Component
       currentView="scatter"
       dimensions={
@@ -922,6 +776,6 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
       setGrid={[Function]}
       setView={[Function]}
     />
-  </div>
+  </styled.div>
 </div>
 `;

@@ -9,6 +9,8 @@ import { JSONObject } from "@nteract/commutable";
 
 import * as Dx from "../types";
 
+import styled from "styled-components";
+
 const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
 const switchMode = (currentMode: string) => {
@@ -30,6 +32,10 @@ interface NumberFilterProps {
   filterName: string;
   updateFunction: (input: JSONObject) => void;
 }
+
+const GridWrapper = styled.div`
+  width: calc(100vw - 150px);
+`;
 
 const NumberFilter = (props: NumberFilterProps) => {
   const { filterState, filterName, updateFunction, onChange } = props;
@@ -140,7 +146,7 @@ interface Props {
   height: number;
 }
 
-class DataResourceTransformGrid extends React.Component<Props, State> {
+class DataResourceTransformGrid extends React.PureComponent<Props, State> {
   static defaultProps = {
     metadata: {},
     height: 500
@@ -200,7 +206,7 @@ class DataResourceTransformGrid extends React.Component<Props, State> {
     });
 
     return (
-      <div style={{ width: "calc(100vw - 150px)" }}>
+      <GridWrapper>
         <Button
           icon="filter"
           onClick={() => this.setState({ showFilters: !showFilters })}
@@ -217,7 +223,7 @@ class DataResourceTransformGrid extends React.Component<Props, State> {
           filterable={showFilters}
         />
         <ReactTableStyles />
-      </div>
+      </GridWrapper>
     );
   }
 }
