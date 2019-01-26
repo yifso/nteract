@@ -9,11 +9,11 @@ import { default as Contents } from "./contents";
 class App extends React.Component<{ contentRef: ContentRef }> {
   notificationSystem!: ReactNotificationSystem;
 
-  shouldComponentUpdate(nextProps: { contentRef: ContentRef }) {
+  shouldComponentUpdate(nextProps: { contentRef: ContentRef }): boolean {
     return nextProps.contentRef !== this.props.contentRef;
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <React.Fragment>
         <Contents contentRef={this.props.contentRef} />

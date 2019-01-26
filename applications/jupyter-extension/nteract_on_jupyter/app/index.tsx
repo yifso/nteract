@@ -3,6 +3,7 @@
  */
 import {
   actions,
+  AppState,
   createContentRef,
   createHostRef,
   createKernelRef,
@@ -17,24 +18,22 @@ import {
   makeStateRecord,
   makeTransformsRecord
 } from "@nteract/core";
-import { AppState } from "@nteract/core";
+import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 import { Media } from "@nteract/outputs";
-import { ContentRecord, HostRecord } from "@nteract/types";
-
 import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
-import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
-import { createGlobalStyle } from "styled-components";
+import { ContentRecord, HostRecord } from "@nteract/types";
 
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { createGlobalStyle } from "styled-components";
+import urljoin from "url-join";
 
 import App from "./app";
+import "./fonts";
 import configureStore from "./store";
-
-const urljoin = require("url-join");
 
 require("./fonts");
 
