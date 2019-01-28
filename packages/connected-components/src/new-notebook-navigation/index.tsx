@@ -185,38 +185,47 @@ export const PureNewNotebookNavigation = (props: {
   </Banner>
 );
 
-const mapStateToProps = (state: AppState) => {
-  const availableKernels = state.core.entities.kernelspecs.byRef
-    .flatMap(kss => {
-      return kss.byName.map(ks => {
-        return { kernelspec: ks };
-      });
-    })
-    .sort((a, b) => {
-      const langCompare = a.kernelspec.language.localeCompare(
-        b.kernelspec.language
-      );
-      const displayCompare = a.kernelspec.displayName.localeCompare(
-        b.kernelspec.displayName
-      );
+const makeMapStateToProps = (initialState: AppState) => {
+  let cachedAvailableKernels = Immutable.List();
 
-      // Effectively, group by language then sort by display name within
-      const comparison = langCompare > 0 ? displayCompare : langCompare;
+  // To know whether we need to cache a new value
+  let previousKernelspecs = initialState.core.entities.kernelspecs;
 
-      return comparison;
-    })
-    .toList();
+  const mapStateToProps = (state: AppState) => {
+    if (previousKernelspecs !== state.core.entities.kernelspecs) {
+      const availableKernels = state.core.entities.kernelspecs.byRef
+        .flatMap(kss => {
+          return kss.byName.map(ks => {
+            return { kernelspec: ks };
+          });
+        })
+        .sort((a, b) => {
+          const langCompare = a.kernelspec.language.localeCompare(
+            b.kernelspec.language
+          );
+          const displayCompare = a.kernelspec.displayName.localeCompare(
+            b.kernelspec.displayName
+          );
 
-  return {
-    availableNotebooks: availableKernels
+          // Effectively, group by language then sort by display name within
+          const comparison = langCompare > 0 ? displayCompare : langCompare;
+
+          return comparison;
+        })
+        .toList();
+
+      cachedAvailableKernels = availableKernels;
+    }
+
+    return {
+      availableNotebooks: cachedAvailableKernels
+    };
   };
+  return mapStateToProps;
 };
 
-const mapDispatchToProps = () => ({});
-
-export const NewNotebookNavigation = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PureNewNotebookNavigation);
+export const NewNotebookNavigation = connect(makeMapStateToProps)(
+  PureNewNotebookNavigation
+);
 
 export default NewNotebookNavigation;

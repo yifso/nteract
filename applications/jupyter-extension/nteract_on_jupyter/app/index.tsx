@@ -132,6 +132,7 @@ function main(rootEl: Element, dataEl: Node | null) {
   const hostRef = createHostRef();
   const contentRef = createContentRef();
   const NullTransform = () => null;
+  const kernelspecsRef = createKernelspecsRef();
 
   const initialState: AppState = {
     app: makeAppRecord({
@@ -143,6 +144,7 @@ function main(rootEl: Element, dataEl: Node | null) {
       theme: "light"
     }),
     core: makeStateRecord({
+      currentKernelspecsRef: kernelspecsRef,
       entities: makeEntitiesRecord({
         hosts: makeHostsRecord({
           byRef: Immutable.Map<string, HostRecord>().set(
@@ -211,7 +213,6 @@ function main(rootEl: Element, dataEl: Node | null) {
   };
 
   const kernelRef = createKernelRef();
-  const kernelspecsRef = createKernelspecsRef();
 
   const store = configureStore(initialState);
   (window as any).store = store;
