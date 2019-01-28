@@ -46,8 +46,12 @@ class Contents extends React.PureComponent<
   private keyMap: KeyMap = {
     CHANGE_CELL_TYPE: ["ctrl+shift+y", "ctrl+shift+m"],
     COPY_CELL: "ctrl+shift+c",
+    CREATE_CELL_ABOVE: "ctrl+shift+a",
+    CREATE_CELL_BELOW: "ctrl+shift+b",
     CUT_CELL: "ctrl+shift+x",
     DELETE_CELL: "ctrl+shift+d",
+    EXECUTE_ALL_CELLS: "alt+r a",
+    EXECUTE_CELL: "ctrl+enter",
     PASTE_CELL: "ctrl+shift+v",
     SAVE: "ctrl+s"
   };
@@ -169,10 +173,24 @@ const mapDispatchToProps = (
     },
     COPY_CELL: () =>
       dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
+    CREATE_CELL_ABOVE: () =>
+      dispatch(
+        actions.createCellAbove({ contentRef: initialProps.contentRef })
+      ),
+    CREATE_CELL_BELOW: () =>
+      dispatch(
+        actions.createCellBelow({ contentRef: initialProps.contentRef })
+      ),
     CUT_CELL: () =>
       dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
     DELETE_CELL: () =>
       dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
+    EXECUTE_ALL_CELLS: dispatch(
+      actions.executeAllCells({ contentRef: initialProps.contentRef })
+    ),
+    EXECUTE_CELL: dispatch(
+      actions.executeCell({ contentRef: initialProps.contentRef })
+    ),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
