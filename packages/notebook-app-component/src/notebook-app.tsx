@@ -41,7 +41,7 @@ import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
 
-import styled, { createGlobalStyle, StyledComponent } from "styled-components";
+import styled from "styled-components";
 
 function getTheme(theme: string) {
   switch (theme) {
