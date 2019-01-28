@@ -7,7 +7,6 @@ import {
   KernelspecsByRefRecord,
   KernelspecsRef
 } from "@nteract/types";
-import * as Immutable from "immutable";
 import Menu, { Divider, MenuItem, SubMenu } from "rc-menu";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -16,7 +15,6 @@ import styled from "styled-components";
 import { MODAL_TYPES } from "../modal-controller";
 
 import { MENU_ITEM_ACTIONS, MENUS } from "./constants";
-import { GlobalMenuStyle } from "./styles";
 
 // To allow actions that can take dynamic arguments (like selecting a kernel
 // based on the host's kernelspecs), we have some simple utility functions to
@@ -42,62 +40,49 @@ interface Props {
   executeAllCells?: (payload: { contentRef: string }) => void;
   executeAllCellsBelow?: (payload: { contentRef: string }) => void;
   clearAllOutputs?: (payload: { contentRef: string }) => void;
-  unhideAll?: (
-    payload: {
-      outputHidden: boolean;
-      inputHidden: boolean;
-      contentRef: string;
-    }
-  ) => void;
+  unhideAll?: (payload: {
+    outputHidden: boolean;
+    inputHidden: boolean;
+    contentRef: string;
+  }) => void;
   cutCell?: (payload: { id?: string; contentRef: string }) => void;
   copyCell?: (payload: { id?: string; contentRef: string }) => void;
   pasteCell?: (payload: { contentRef: string }) => void;
-  createCellBelow?: (
-    payload: {
-      id?: string | undefined;
-      cellType: CellType;
-      source: string;
-      contentRef: string;
-    }
-  ) => void;
-  changeCellType?: (
-    payload: {
-      id?: string | undefined;
-      to: CellType;
-      contentRef: string;
-    }
-  ) => void;
+  createCellBelow?: (payload: {
+    id?: string | undefined;
+    cellType: CellType;
+    source: string;
+    contentRef: string;
+  }) => void;
+  changeCellType?: (payload: {
+    id?: string | undefined;
+    to: CellType;
+    contentRef: string;
+  }) => void;
   setTheme?: (theme: string) => void;
   openAboutModal?: () => void;
-  changeKernelByName?: (
-    payload: {
-      kernelSpecName: string;
-      oldKernelRef?: KernelRef | null;
-      contentRef: ContentRef;
-    }
-  ) => void;
-  restartKernel?: (
-    payload: {
-      outputHandling: actions.RestartKernelOutputHandling;
-      kernelRef?: string | null;
-      contentRef: string;
-    }
-  ) => void;
-  restartKernelAndClearOutputs?: (
-    payload: {
-      kernelRef?: string | null;
-      contentRef: string;
-    }
-  ) => void;
-  restartKernelAndRunAllOutputs?: (
-    payload: {
-      kernelRef?: string | null;
-      contentRef: string;
-    }
-  ) => void;
-  killKernel?: (
-    payload: { restarting: boolean; kernelRef?: string | null }
-  ) => void;
+  changeKernelByName?: (payload: {
+    kernelSpecName: string;
+    oldKernelRef?: KernelRef | null;
+    contentRef: ContentRef;
+  }) => void;
+  restartKernel?: (payload: {
+    outputHandling: actions.RestartKernelOutputHandling;
+    kernelRef?: string | null;
+    contentRef: string;
+  }) => void;
+  restartKernelAndClearOutputs?: (payload: {
+    kernelRef?: string | null;
+    contentRef: string;
+  }) => void;
+  restartKernelAndRunAllOutputs?: (payload: {
+    kernelRef?: string | null;
+    contentRef: string;
+  }) => void;
+  killKernel?: (payload: {
+    restarting: boolean;
+    kernelRef?: string | null;
+  }) => void;
   interruptKernel?: (payload: { kernelRef?: string | null }) => void;
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
@@ -471,7 +456,6 @@ class PureNotebookMenu extends React.Component<Props, State> {
             </MenuItem>
           </SubMenu>
         </StickyMenu>
-        <GlobalMenuStyle />
       </React.Fragment>
     );
   }

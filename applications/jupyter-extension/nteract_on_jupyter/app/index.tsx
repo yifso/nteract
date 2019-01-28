@@ -24,6 +24,8 @@ import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
+import { GlobalMenuStyle } from "@nteract/connected-components";
+
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
@@ -134,7 +136,6 @@ function main(rootEl: Element, dataEl: Node | null) {
   const initialState: AppState = {
     app: makeAppRecord({
       version: `nteract-on-jupyter@${config.appVersion}`,
-      // TODO: Move into core as a "current" host
       host: jupyterHostRecord
     }),
     comms: makeCommsRecord(),
@@ -227,6 +228,7 @@ function main(rootEl: Element, dataEl: Node | null) {
 
   ReactDOM.render(
     <React.Fragment>
+      {/* Keep global styles out of the provider backed render cycle */}
       <GlobalAppStyle />
       <GlobalCSSVariables />
 
@@ -235,6 +237,8 @@ function main(rootEl: Element, dataEl: Node | null) {
 
       <CodeMirrorCSS />
       <ShowHintCSS />
+
+      <GlobalMenuStyle />
 
       <Provider store={store}>
         <App contentRef={contentRef} />
