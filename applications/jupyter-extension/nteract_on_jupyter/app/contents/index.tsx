@@ -45,6 +45,7 @@ class Contents extends React.PureComponent<
   private keyMap: KeyMap = {
     COPY_CELL: "ctrl+shift+c",
     CUT_CELL: "ctrl+shift+x",
+    DELETE_CELL: "ctrl+shift+d",
     PASTE_CELL: "ctrl+shift+v",
     SAVE: "ctrl+s"
   };
@@ -158,6 +159,8 @@ const mapDispatchToProps = (
       dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
     CUT_CELL: () =>
       dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
+    DELETE_CELL: () =>
+      dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
