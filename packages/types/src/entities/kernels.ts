@@ -11,8 +11,6 @@ import { HostRef, KernelRef } from "../refs";
 
 import { KernelInfo } from "./kernel-info";
 
-export { KernelInfo };
-
 // See #3427. This represents the kernel early in the launch process.
 // With a bit more work we could probably drop this and just use either
 // Local or RemoteKernelProps as our initial representation of the kernel,
