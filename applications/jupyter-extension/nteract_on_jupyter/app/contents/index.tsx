@@ -1,4 +1,5 @@
 import * as actions from "@nteract/actions";
+import { CellType } from "@nteract/commutable";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import {
   DirectoryContentRecordProps,
@@ -43,6 +44,7 @@ class Contents extends React.PureComponent<
   IContentsState
 > {
   private keyMap: KeyMap = {
+    CHANGE_CELL_TYPE: ["ctrl+shift+y", "ctrl+shift+m"],
     COPY_CELL: "ctrl+shift+c",
     CUT_CELL: "ctrl+shift+x",
     DELETE_CELL: "ctrl+shift+d",
@@ -155,6 +157,16 @@ const mapDispatchToProps = (
   // `HotKeys` handlers object
   // see: https://github.com/greena13/react-hotkeys#defining-handlers
   handlers: {
+    CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
+      const type: CellType = event.key === "Y" ? "code" : "markdown";
+
+      return dispatch(
+        actions.changeCellType({
+          to: type,
+          contentRef: initialProps.contentRef
+        })
+      );
+    },
     COPY_CELL: () =>
       dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
     CUT_CELL: () =>
