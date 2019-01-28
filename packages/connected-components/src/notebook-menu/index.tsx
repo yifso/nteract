@@ -5,7 +5,8 @@ import {
   ContentRef,
   KernelRef,
   KernelspecsByRefRecord,
-  KernelspecsRef
+  KernelspecsRef,
+  KernelspecsByRefRecordProps
 } from "@nteract/types";
 import Menu, { Divider, MenuItem, SubMenu } from "rc-menu";
 import * as React from "react";
@@ -15,6 +16,7 @@ import styled from "styled-components";
 import { MODAL_TYPES } from "../modal-controller";
 
 import { MENU_ITEM_ACTIONS, MENUS } from "./constants";
+import { RecordOf } from "immutable";
 
 // To allow actions that can take dynamic arguments (like selecting a kernel
 // based on the host's kernelspecs), we have some simple utility functions to
@@ -461,87 +463,128 @@ class PureNotebookMenu extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (
-  state: AppState,
-  { contentRef }: { contentRef: ContentRef }
-) => {
-  return {
-    currentKernelRef: selectors.currentKernelRef(state),
-    currentContentRef: contentRef,
-    currentKernelspecsRef: selectors.currentKernelspecsRef(state),
-    currentKernelspecs: selectors.currentKernelspecs(state)
-  };
-};
+function makeMapStateToProps(
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
+) {
+  const { contentRef } = initialProps;
 
-const mapDispatchToProps = (dispatch: any) => ({
-  saveNotebook: (payload: { contentRef: string }) =>
-    dispatch(actions.save(payload)),
-  downloadNotebook: (payload: { contentRef: string }) =>
-    dispatch(actions.downloadContent(payload)),
-  executeCell: (payload: { id: string; contentRef: string }) =>
-    dispatch(actions.executeCell(payload)),
-  executeAllCells: (payload: { contentRef: string }) =>
-    dispatch(actions.executeAllCells(payload)),
-  executeAllCellsBelow: (payload: { contentRef: string }) =>
-    dispatch(actions.executeAllCellsBelow(payload)),
-  clearAllOutputs: (payload: { contentRef: string }) =>
-    dispatch(actions.clearAllOutputs(payload)),
-  unhideAll: (payload: {
-    outputHidden: boolean;
-    inputHidden: boolean;
-    contentRef: string;
-  }) => dispatch(actions.unhideAll(payload)),
-  cutCell: (payload: { id?: string; contentRef: string }) =>
-    dispatch(actions.cutCell(payload)),
-  copyCell: (payload: { id?: string; contentRef: string }) =>
-    dispatch(actions.copyCell(payload)),
-  pasteCell: (payload: { contentRef: string }) =>
-    dispatch(actions.pasteCell(payload)),
-  createCellBelow: (payload: {
-    id?: string | undefined;
-    cellType: CellType;
-    source: string;
-    contentRef: string;
-  }) => dispatch(actions.createCellBelow(payload)),
-  changeCellType: (payload: {
-    id?: string | undefined;
-    to: CellType;
-    contentRef: string;
-  }) => dispatch(actions.changeCellType(payload)),
-  setTheme: (theme: string) => dispatch(actions.setTheme(theme)),
-  openAboutModal: () =>
-    dispatch(actions.openModal({ modalType: MODAL_TYPES.ABOUT })),
-  changeKernelByName: (payload: {
-    kernelSpecName: any;
-    oldKernelRef?: string | null;
-    contentRef: string;
-  }) => dispatch(actions.changeKernelByName(payload)),
-  restartKernel: (payload: {
-    outputHandling: actions.RestartKernelOutputHandling;
-    kernelRef?: string | null;
-    contentRef: string;
-  }) => dispatch(actions.restartKernel(payload)),
-  restartKernelAndClearOutputs: (payload: {
-    kernelRef?: string | null;
-    contentRef: string;
-  }) =>
-    dispatch(
-      actions.restartKernel({ ...payload, outputHandling: "Clear All" })
-    ),
-  restartKernelAndRunAllOutputs: (payload: {
-    kernelRef?: string | null;
-    contentRef: string;
-  }) =>
-    dispatch(actions.restartKernel({ ...payload, outputHandling: "Run All" })),
-  killKernel: (payload: { restarting: boolean; kernelRef?: string | null }) =>
-    dispatch(actions.killKernel(payload)),
-  interruptKernel: (payload: { kernelRef?: string | null }) =>
-    dispatch(actions.interruptKernel(payload))
-});
+  const currentContentRef = contentRef;
+
+  const mapStateToProps = (state: AppState) => {
+    const content = state.core.entities.contents.byRef.get(contentRef);
+
+    // The current kernelspecs setup is _overkill_ as we're only ever going to
+    // have one collection of kernelspecs
+
+    const currentKernelspecsRef: KernelspecsRef | null =
+      state.core.currentKernelspecsRef || null;
+    const currentKernelspecs: RecordOf<
+      KernelspecsByRefRecordProps
+    > | null = currentKernelspecsRef
+      ? state.core.entities.kernelspecs.byRef.get(currentKernelspecsRef, null)
+      : null;
+
+    // This menu should only work for notebooks
+    if (!content || content.type !== "notebook") {
+      return {
+        currentContentRef,
+        currentKernelRef: null,
+        currentKernelspecs,
+        currentKernelspecsRef
+      };
+    }
+
+    const currentKernelRef = content.model.kernelRef;
+
+    return {
+      currentContentRef,
+      currentKernelRef,
+      currentKernelspecs,
+      currentKernelspecsRef
+    };
+  };
+
+  return mapStateToProps;
+}
+
+function makeMapDispatchToProps(
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
+) {
+  const mapDispatchToProps = (dispatch: any) => ({
+    saveNotebook: (payload: { contentRef: string }) =>
+      dispatch(actions.save(payload)),
+    downloadNotebook: (payload: { contentRef: string }) =>
+      dispatch(actions.downloadContent(payload)),
+    executeCell: (payload: { id: string; contentRef: string }) =>
+      dispatch(actions.executeCell(payload)),
+    executeAllCells: (payload: { contentRef: string }) =>
+      dispatch(actions.executeAllCells(payload)),
+    executeAllCellsBelow: (payload: { contentRef: string }) =>
+      dispatch(actions.executeAllCellsBelow(payload)),
+    clearAllOutputs: (payload: { contentRef: string }) =>
+      dispatch(actions.clearAllOutputs(payload)),
+    unhideAll: (payload: {
+      outputHidden: boolean;
+      inputHidden: boolean;
+      contentRef: string;
+    }) => dispatch(actions.unhideAll(payload)),
+    cutCell: (payload: { id?: string; contentRef: string }) =>
+      dispatch(actions.cutCell(payload)),
+    copyCell: (payload: { id?: string; contentRef: string }) =>
+      dispatch(actions.copyCell(payload)),
+    pasteCell: (payload: { contentRef: string }) =>
+      dispatch(actions.pasteCell(payload)),
+    createCellBelow: (payload: {
+      id?: string | undefined;
+      cellType: CellType;
+      source: string;
+      contentRef: string;
+    }) => dispatch(actions.createCellBelow(payload)),
+    changeCellType: (payload: {
+      id?: string | undefined;
+      to: CellType;
+      contentRef: string;
+    }) => dispatch(actions.changeCellType(payload)),
+    setTheme: (theme: string) => dispatch(actions.setTheme(theme)),
+    openAboutModal: () =>
+      dispatch(actions.openModal({ modalType: MODAL_TYPES.ABOUT })),
+    changeKernelByName: (payload: {
+      kernelSpecName: any;
+      oldKernelRef?: string | null;
+      contentRef: string;
+    }) => dispatch(actions.changeKernelByName(payload)),
+    restartKernel: (payload: {
+      outputHandling: actions.RestartKernelOutputHandling;
+      kernelRef?: string | null;
+      contentRef: string;
+    }) => dispatch(actions.restartKernel(payload)),
+    restartKernelAndClearOutputs: (payload: {
+      kernelRef?: string | null;
+      contentRef: string;
+    }) =>
+      dispatch(
+        actions.restartKernel({ ...payload, outputHandling: "Clear All" })
+      ),
+    restartKernelAndRunAllOutputs: (payload: {
+      kernelRef?: string | null;
+      contentRef: string;
+    }) =>
+      dispatch(
+        actions.restartKernel({ ...payload, outputHandling: "Run All" })
+      ),
+    killKernel: (payload: { restarting: boolean; kernelRef?: string | null }) =>
+      dispatch(actions.killKernel(payload)),
+    interruptKernel: (payload: { kernelRef?: string | null }) =>
+      dispatch(actions.interruptKernel(payload))
+  });
+  return mapDispatchToProps;
+}
 
 export const NotebookMenu = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  makeMapStateToProps,
+  makeMapDispatchToProps
 )(PureNotebookMenu);
 
 // We export this for testing purposes.
