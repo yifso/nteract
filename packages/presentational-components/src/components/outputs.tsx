@@ -3,6 +3,7 @@ import * as React from "react";
 import styled, { StyledComponent } from "styled-components";
 
 interface OutputsProps {
+  className?: string;
   children?: React.ReactNode;
   /**
    * Whether or not to collapse the children of the component.
@@ -172,7 +173,10 @@ export class Outputs extends React.PureComponent<OutputsProps> {
 
     if (this.props.children) {
       return (
-        <OutputWrapper expanded={this.props.expanded}>
+        <OutputWrapper
+          expanded={this.props.expanded}
+          className={this.props.className}
+        >
           {this.props.children}
         </OutputWrapper>
       );
