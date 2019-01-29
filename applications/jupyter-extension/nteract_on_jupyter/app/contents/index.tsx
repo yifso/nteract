@@ -174,11 +174,18 @@ const mapDispatchToProps = (
       dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
     CREATE_CELL_ABOVE: () =>
       dispatch(
-        actions.createCellAbove({ contentRef: initialProps.contentRef })
+        actions.createCellAbove({
+          cellType: "code",
+          contentRef: initialProps.contentRef
+        })
       ),
     CREATE_CELL_BELOW: () =>
       dispatch(
-        actions.createCellBelow({ contentRef: initialProps.contentRef })
+        actions.createCellBelow({
+          cellType: "code",
+          source: "",
+          contentRef: initialProps.contentRef
+        })
       ),
     CUT_CELL: () =>
       dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
