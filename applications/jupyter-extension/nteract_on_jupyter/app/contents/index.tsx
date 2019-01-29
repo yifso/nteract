@@ -26,6 +26,7 @@ interface IContentsProps {
   contentRef: ContentRef;
   displayName: string;
   error?: object | null;
+  filepath: string | undefined;
   lastSavedStatement: string;
   loading: boolean;
   mimetype?: string | null;
@@ -55,7 +56,7 @@ class Contents extends React.PureComponent<
     KILL_KERNEL: "alt+r k",
     PASTE_CELL: "ctrl+shift+v",
     RESTART_KERNEL: ["alt+r r", "alt+r c", "alt+r a"],
-    SAVE: "ctrl+s"
+    SAVE: ["ctrl+s", "ctrl+shift+s"]
   };
 
   render(): JSX.Element {
@@ -146,6 +147,7 @@ const makeMapStateToProps: any = (
       contentType: content.type,
       displayName: content.filepath.split("/").pop() || "",
       error: content.error,
+      filepath: content.filepath,
       lastSavedStatement: "recently",
       loading: content.loading,
       mimetype: content.mimetype,
@@ -158,7 +160,9 @@ const makeMapStateToProps: any = (
 
 const mapDispatchToProps = (
   dispatch: Dispatch,
-  initialProps: { contentRef: ContentRef }
+  initialProps: {
+    contentRef: ContentRef;
+  }
 ) => ({
   // `HotKeys` handlers object
   // see: https://github.com/greena13/react-hotkeys#defining-handlers
