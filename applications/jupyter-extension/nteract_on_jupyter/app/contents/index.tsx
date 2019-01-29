@@ -51,7 +51,6 @@ class Contents extends React.PureComponent<
     CUT_CELL: "ctrl+shift+x",
     DELETE_CELL: "ctrl+shift+d",
     EXECUTE_ALL_CELLS: "alt+r a",
-    EXECUTE_CELL: "ctrl+enter",
     PASTE_CELL: "ctrl+shift+v",
     SAVE: "ctrl+s"
   };
@@ -185,12 +184,10 @@ const mapDispatchToProps = (
       dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
     DELETE_CELL: () =>
       dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
-    EXECUTE_ALL_CELLS: dispatch(
-      actions.executeAllCells({ contentRef: initialProps.contentRef })
-    ),
-    EXECUTE_CELL: dispatch(
-      actions.executeCell({ contentRef: initialProps.contentRef })
-    ),
+    EXECUTE_ALL_CELLS: () =>
+      dispatch(
+        actions.executeAllCells({ contentRef: initialProps.contentRef })
+      ),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
