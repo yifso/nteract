@@ -170,6 +170,7 @@ const makeMapStateToProps: any = (
   return mapStateToProps;
 };
 
+// tslint:disable-next-line typedef
 const makeMapDispatchToProps = (
   initialState: AppState,
   initialProps: { contentRef: ContentRef }
