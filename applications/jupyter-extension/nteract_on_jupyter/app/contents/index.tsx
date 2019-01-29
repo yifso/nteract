@@ -51,7 +51,10 @@ class Contents extends React.PureComponent<
     CUT_CELL: "ctrl+shift+x",
     DELETE_CELL: "ctrl+shift+d",
     EXECUTE_ALL_CELLS: "alt+r a",
+    INTERRUPT_KERNEL: "alt+r i",
+    KILL_KERNEL: "alt+r k",
     PASTE_CELL: "ctrl+shift+v",
+    RESTART_KERNEL: ["alt+r r", "alt+r c", "alt+r a"],
     SAVE: "ctrl+s"
   };
 
@@ -195,8 +198,30 @@ const mapDispatchToProps = (
       dispatch(
         actions.executeAllCells({ contentRef: initialProps.contentRef })
       ),
+    INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
+    KILL_KERNEL: () =>
+      dispatch(
+        actions.killKernel({
+          restarting: false
+        })
+      ),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
+    RESTART_KERNEL: (event: KeyboardEvent) => {
+      const outputHandling: "None" | "Clear All" | "Run All" =
+        event.key === "r"
+          ? "None"
+          : event.key === "a"
+          ? "Run All"
+          : "Clear All";
+
+      return dispatch(
+        actions.restartKernel({
+          outputHandling,
+          contentRef: initialProps.contentRef
+        })
+      );
+    },
     SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
   }
 });
