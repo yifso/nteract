@@ -1,15 +1,15 @@
-# @nteract/ansi-to-react
+# ansi-to-react
 
 This package convert ANSI escape codes to formatted text output for React.
 
 ## Installation
 
 ```
-$ yarn add @nteract/ansi-to-react
+$ yarn add ansi-to-react
 ```
 
 ```
-$ npm install --save @nteract/ansi-to-react
+$ npm install --save ansi-to-react
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ $ npm install --save @nteract/ansi-to-react
 The example below shows how we can use this package to render a string with ANSI escape codes.
 
 ```javascript
-import Ansi from "@nteract/ansi-to-react";
+import Ansi from "ansi-to-react";
 
 export function () => {
   return <Ansi>
