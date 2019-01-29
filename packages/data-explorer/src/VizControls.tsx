@@ -118,7 +118,8 @@ const getIcon = (title: string) => {
   if (title === "X" || title === "Y" || title === "Size" || title === "Color") {
     return iconHash[title];
   } else {
-    console.warn("Icon title not supported");
+    // TODO: Verify if we are handling icon title properly
+    // console.warn("Icon title not supported");
     return title as IconName;
   }
 };
