@@ -133,6 +133,7 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
+  // tslint:disable-next-line typedef
   const mapStateToProps = (state: AppState) => {
     const contentRef: ContentRef = initialProps.contentRef;
 
@@ -169,12 +170,10 @@ const makeMapStateToProps: any = (
   return mapStateToProps;
 };
 
-const mapDispatchToProps = (
-  dispatch: Dispatch,
-  initialProps: {
-    contentRef: ContentRef;
-  }
-) => ({
+const makeMapDispatchToProps = (
+  initialState: AppState,
+  initialProps: { contentRef: ContentRef }
+) => (dispatch: Dispatch) => ({
   // `HotKeys` handlers object
   // see: https://github.com/greena13/react-hotkeys#defining-handlers
   handlers: {
@@ -241,7 +240,7 @@ const mapDispatchToProps = (
   }
 });
 
-export default connect<IContentsProps, IDispatchFromProps, any>(
+export default connect(
   makeMapStateToProps,
-  mapDispatchToProps
+  makeMapDispatchToProps
 )(Contents);
