@@ -1,4 +1,5 @@
 import * as actions from "@nteract/actions";
+import { CellType } from "@nteract/commutable";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import {
   DirectoryContentRecordProps,
@@ -43,6 +44,14 @@ class Contents extends React.PureComponent<
   IContentsState
 > {
   private keyMap: KeyMap = {
+    CHANGE_CELL_TYPE: ["ctrl+shift+y", "ctrl+shift+m"],
+    COPY_CELL: "ctrl+shift+c",
+    CREATE_CELL_ABOVE: "ctrl+shift+a",
+    CREATE_CELL_BELOW: "ctrl+shift+b",
+    CUT_CELL: "ctrl+shift+x",
+    DELETE_CELL: "ctrl+shift+d",
+    EXECUTE_ALL_CELLS: "alt+r a",
+    PASTE_CELL: "ctrl+shift+v",
     SAVE: "ctrl+s"
   };
 
@@ -151,6 +160,43 @@ const mapDispatchToProps = (
   // `HotKeys` handlers object
   // see: https://github.com/greena13/react-hotkeys#defining-handlers
   handlers: {
+    CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
+      const type: CellType = event.key === "Y" ? "code" : "markdown";
+
+      return dispatch(
+        actions.changeCellType({
+          to: type,
+          contentRef: initialProps.contentRef
+        })
+      );
+    },
+    COPY_CELL: () =>
+      dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
+    CREATE_CELL_ABOVE: () =>
+      dispatch(
+        actions.createCellAbove({
+          cellType: "code",
+          contentRef: initialProps.contentRef
+        })
+      ),
+    CREATE_CELL_BELOW: () =>
+      dispatch(
+        actions.createCellBelow({
+          cellType: "code",
+          source: "",
+          contentRef: initialProps.contentRef
+        })
+      ),
+    CUT_CELL: () =>
+      dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
+    DELETE_CELL: () =>
+      dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
+    EXECUTE_ALL_CELLS: () =>
+      dispatch(
+        actions.executeAllCells({ contentRef: initialProps.contentRef })
+      ),
+    PASTE_CELL: () =>
+      dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
   }
 });
