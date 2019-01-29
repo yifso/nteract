@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ImmutableErrorOutput } from "@nteract/commutable";
 
 interface Props {
+  className?: string;
   output: ImmutableErrorOutput;
   output_type: "error";
 }
@@ -31,7 +32,11 @@ const PlainKernelOutputError = (props: Partial<Props>) => {
     }
   }
 
-  return <Ansi linkify={false}>{kernelOutputError.join("\n")}</Ansi>;
+  return (
+    <Ansi className={props.className} linkify={false}>
+      {kernelOutputError.join("\n")}
+    </Ansi>
+  );
 };
 
 export const KernelOutputError = styled(PlainKernelOutputError)`

@@ -2,7 +2,10 @@
  * @module rx-jupyter
  */
 import { ajax, AjaxResponse } from "rxjs/ajax";
-import { createAJAXSettings, ServerConfig } from "./base";
+import { createAJAXSettings, ServerConfig as _ServerConfig } from "./base";
+
+// Workaround an issue with re-exporting an interface by type aliasing it
+export type ServerConfig = _ServerConfig;
 
 import { Observable } from "rxjs";
 import * as contents from "./contents";
@@ -34,4 +37,4 @@ export const shutdown = (
 ): Observable<AjaxResponse> =>
   ajax(createAJAXSettings(serverConfig, "/api/shutdown", { method: "POST" }));
 
-export { kernels, kernelspecs, sessions, contents, terminals, ServerConfig };
+export { kernels, kernelspecs, sessions, contents, terminals };

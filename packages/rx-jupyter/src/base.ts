@@ -7,7 +7,7 @@ import { AjaxRequest, AjaxResponse } from "rxjs/ajax";
 
 export const normalizeBaseURL = (url = "") => url.replace(/\/+$/, "");
 
-export interface ServerConfig extends Partial<AjaxRequest> {
+export interface ServerConfig {
   endpoint?: string;
   url?: string;
   token?: string;
