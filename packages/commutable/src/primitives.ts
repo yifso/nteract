@@ -116,7 +116,7 @@ export function remultiline(s: string | string[]): string[] {
     return s;
   }
   // Use positive lookahead regex to split on newline and retain newline char
-  return s.split(/(.+(:\r\n|\n))/g).filter(x => x !== "");
+  return s.split(/(.+?(?:\r\n|\n))/g).filter(x => x !== "");
 }
 
 function isJSONKey(key: string) {
