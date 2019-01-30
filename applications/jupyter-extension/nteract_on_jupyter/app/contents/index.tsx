@@ -61,7 +61,8 @@ class Contents extends React.PureComponent<
     EXECUTE_ALL_CELLS: "alt+r a",
     INTERRUPT_KERNEL: "alt+r i",
     KILL_KERNEL: "alt+r k",
-    PASTE_CELL: ["ctrl+shift+v", "meta+shift+v"],
+    OPEN: "ctrl+o",
+    PASTE_CELL: "ctrl+shift+v",
     RESTART_KERNEL: ["alt+r r", "alt+r c", "alt+r a"],
     SAVE: ["ctrl+s", "ctrl+shift+s", "meta+s", "meta+shift+s"]
   };
@@ -220,6 +221,7 @@ const makeMapDispatchToProps = (
           restarting: false
         })
       ),
+    OPEN: () => dispatch(actions.open("/nteract/edit")),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     RESTART_KERNEL: (event: KeyboardEvent) => {
