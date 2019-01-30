@@ -92,7 +92,7 @@ export interface DownloadContentFulfilled {
   payload: { contentRef: ContentRef };
 }
 
-export const OPEN: string = "OPEN";
+export const OPEN = "OPEN";
 export interface Open {
   type: "OPEN";
 }

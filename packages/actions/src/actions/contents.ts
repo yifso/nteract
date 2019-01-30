@@ -103,7 +103,7 @@ export function downloadContentFulfilled(payload: {
 
 export function open(url: string): actionTypes.Open {
   // Redirect to directory view in new tab
-  window.open("nteract/edit", "_blank");
+  window.open(url, "_blank");
   return {
     type: actionTypes.OPEN
   };
