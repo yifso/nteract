@@ -112,7 +112,7 @@ export function demultiline(s: string | string[]): string {
  */
 export function remultiline(s: string | string[]): string[] {
   if (Array.isArray(s)) {
-    // Assume
+    // Assume already multiline string
     return s;
   }
   // Use positive lookahead regex to split on newline and retain newline char
