@@ -19,6 +19,8 @@ import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
 
+import { NotebookMenu } from "@nteract/connected-components";
+
 interface IContentsProps {
   appBase: string;
   baseDir: string;
@@ -87,7 +89,11 @@ class Contents extends React.PureComponent<
                 error={error}
                 loading={loading}
                 saving={saving}
-              />
+              >
+                {contentType === "notebook" ? (
+                  <NotebookMenu contentRef={this.props.contentRef} />
+                ) : null}
+              </FileHeader>
               <File contentRef={contentRef} appBase={appBase} />
             </HotKeys>
           </React.Fragment>
