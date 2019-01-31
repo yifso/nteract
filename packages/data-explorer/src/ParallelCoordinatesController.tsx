@@ -8,7 +8,6 @@ import HTMLLegend from "./HTMLLegend";
 import TooltipContent from "./tooltip-content";
 import { numeralFormatting } from "./utilities";
 
-import { JSONObject } from "@nteract/commutable/src";
 import * as Dx from "./types";
 
 import styled from "styled-components";
@@ -177,7 +176,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
 
     const additionalSettings: {
       afterElements?: JSX.Element;
-      annotations?: JSONObject[];
+      annotations?: Dx.JSONObject[];
     } = {};
 
     const shownData = data.filter(

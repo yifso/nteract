@@ -91,3 +91,10 @@ export type View =
   | "hexbin"
   | "parallel"
   | "hierarchy";
+
+export type PrimitiveImmutable = string | number | boolean | null;
+export type JSONType = PrimitiveImmutable | JSONObject | JSONArray;
+export interface JSONObject {
+  [key: string]: JSONType;
+}
+export interface JSONArray extends Array<JSONType> {}

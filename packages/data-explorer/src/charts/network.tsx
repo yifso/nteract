@@ -1,7 +1,6 @@
 import { scaleLinear } from "d3-scale";
 import * as React from "react";
 
-import { JSONObject } from "@nteract/commutable";
 import TooltipContent from "../tooltip-content";
 import * as Dx from "../types";
 
@@ -33,21 +32,21 @@ const fontScale = scaleLinear()
   .clamp(true);
 
 const edgeStyles = {
-  force: (colorHash: JSONObject) => (edge: EdgeObject) => ({
+  force: (colorHash: Dx.JSONObject) => (edge: EdgeObject) => ({
     fill: colorHash[edge.source.id],
     stroke: colorHash[edge.source.id],
     strokeOpacity: 0.25
   }),
-  sankey: (colorHash: JSONObject) => (edge: EdgeObject) => ({
+  sankey: (colorHash: Dx.JSONObject) => (edge: EdgeObject) => ({
     fill: colorHash[edge.source.id],
     stroke: colorHash[edge.source.id],
     strokeOpacity: 0.25
   }),
-  matrix: (colorHash: JSONObject) => (edge: EdgeObject) => ({
+  matrix: (colorHash: Dx.JSONObject) => (edge: EdgeObject) => ({
     fill: colorHash[edge.source.id],
     stroke: "none"
   }),
-  arc: (colorHash: JSONObject) => (edge: EdgeObject) => ({
+  arc: (colorHash: Dx.JSONObject) => (edge: EdgeObject) => ({
     fill: "none",
     stroke: colorHash[edge.source.id],
     strokeWidth: edge.weight || 1,
@@ -56,22 +55,22 @@ const edgeStyles = {
 };
 
 const nodeStyles = {
-  force: (colorHash: JSONObject) => (node: NodeObject) => ({
+  force: (colorHash: Dx.JSONObject) => (node: NodeObject) => ({
     fill: colorHash[node.id],
     stroke: colorHash[node.id],
     strokeOpacity: 0.5
   }),
-  sankey: (colorHash: JSONObject) => (node: NodeObject) => ({
+  sankey: (colorHash: Dx.JSONObject) => (node: NodeObject) => ({
     fill: colorHash[node.id],
     stroke: colorHash[node.id],
     strokeOpacity: 0.5
   }),
-  matrix: (colorHash: JSONObject) => (node: NodeObject) => ({
+  matrix: (colorHash: Dx.JSONObject) => (node: NodeObject) => ({
     fill: "none",
     stroke: "#666",
     strokeOpacity: 1
   }),
-  arc: (colorHash: JSONObject) => (node: NodeObject) => ({
+  arc: (colorHash: Dx.JSONObject) => (node: NodeObject) => ({
     fill: colorHash[node.id],
     stroke: colorHash[node.id],
     strokeOpacity: 0.5

@@ -5,8 +5,6 @@ import withFixedColumns from "react-table-hoc-fixed-columns";
 
 import ReactTableStyles from "../css/react-table";
 
-import { JSONObject } from "@nteract/commutable";
-
 import * as Dx from "../types";
 
 import styled from "styled-components";
@@ -14,7 +12,7 @@ import styled from "styled-components";
 const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
 const switchMode = (currentMode: string) => {
-  const nextMode: JSONObject = {
+  const nextMode: Dx.JSONObject = {
     "=": ">",
     ">": "<",
     "<": "="
@@ -30,7 +28,7 @@ interface NumberFilterProps {
   onChange: OnChangeProps;
   filterState: { [key: string]: string };
   filterName: string;
-  updateFunction: (input: JSONObject) => void;
+  updateFunction: (input: Dx.JSONObject) => void;
 }
 
 const GridWrapper = styled.div`
@@ -178,7 +176,7 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
           Header: field.name,
           accessor: field.name,
           fixed: schema.primaryKey.indexOf(field.name) !== -1 && "left",
-          filterMethod: (filter: JSONObject, row: JSONObject) => {
+          filterMethod: (filter: Dx.JSONObject, row: Dx.JSONObject) => {
             if (
               field.type === "string" ||
               field.type === "number" ||

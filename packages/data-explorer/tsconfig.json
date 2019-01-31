@@ -5,9 +5,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [
-    { "path": "../commutable" },
-    { "path": "../types" },
-    { "path": "../octicons" }
-  ]
+  "references": [{ "path": "../octicons" }]
 }
