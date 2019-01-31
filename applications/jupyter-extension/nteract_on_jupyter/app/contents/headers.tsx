@@ -1,6 +1,6 @@
 import { H4 } from "@blueprintjs/core";
 import * as actions from "@nteract/actions";
-import { NotebookMenu } from "@nteract/connected-components";
+
 import { ContentRef } from "@nteract/core";
 import { ErrorIcon, LoadingIcon, SavingIcon } from "@nteract/iron-icons";
 import * as React from "react";
@@ -43,6 +43,7 @@ export interface FileHeaderProps {
   error?: object | null;
   loading: boolean;
   saving: boolean;
+  children?: React.ReactNode;
 }
 
 export interface State {
@@ -50,6 +51,9 @@ export interface State {
 }
 
 class FileHeader extends React.PureComponent<FileHeaderProps, State> {
+  static defaultProps = {
+    children: null
+  };
   constructor(props: FileHeaderProps) {
     super(props);
 
@@ -136,7 +140,7 @@ class FileHeader extends React.PureComponent<FileHeaderProps, State> {
             <LastSaved contentRef={this.props.contentRef} />
           </NavSection>
         </Nav>
-        <NotebookMenu contentRef={this.props.contentRef} />
+        {this.props.children}
       </React.Fragment>
     );
   }
