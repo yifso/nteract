@@ -34,7 +34,9 @@ import { createGlobalStyle } from "styled-components";
 import urljoin from "url-join";
 
 import App from "./app";
-import "./fonts";
+
+import("./fonts");
+
 import configureStore from "./store";
 
 require("./fonts");
