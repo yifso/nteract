@@ -55,16 +55,12 @@
       "severity": "warn"
     },
     "strict-type-predicates": true,
-    "typedef": {
-      "options": [
-        "call-signature",
-        "member-variable-declaration",
-        "parameter",
-        "property-declaration",
-        "variable-declaration"
-      ],
-      "severity": "warn"
-    },
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "member-variable-declaration"
+    ],
     "variable-name": [true, "ban-keywords"]
   }
 }
