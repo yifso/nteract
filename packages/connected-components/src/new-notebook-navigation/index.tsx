@@ -16,7 +16,7 @@ import { AppState, KernelspecProps, KernelspecRecord } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 import { default as Logo } from "./logos";
 
@@ -78,7 +78,7 @@ const LogoBox = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 30px;
-  background-color: var(--theme-app-bg);
+  background-color: var(--theme-app-bg, white);
   flex: 1;
 
   .logo {
@@ -93,7 +93,7 @@ const TextBox = styled.div`
   font-size: 0.8em;
   width: 100px;
   box-sizing: border-box;
-  background-color: var(--theme-primary-bg);
+  background-color: var(--theme-primary-bg, hsl(0, 0%, 98%));
   border-top: 1px solid var(--theme-app-border);
 `;
 
