@@ -6,7 +6,6 @@ import HTMLLegend from "../HTMLLegend";
 import TooltipContent from "../tooltip-content";
 import { numeralFormatting } from "../utilities";
 
-import { JSONObject } from "@nteract/commutable";
 import * as Dx from "../types";
 import { sortByOrdinalRange } from "./shared";
 
@@ -50,7 +49,7 @@ function combineTopAnnotations(
   topSecondQ: Dx.Datapoint[],
   dim2: string
 ): any[] {
-  const combinedAnnotations: JSONObject[] = [];
+  const combinedAnnotations: Dx.JSONObject[] = [];
   const combinedHash: {
     [index: string]: { [index: string]: any; coordinates: Dx.Datapoint[] };
   } = {};

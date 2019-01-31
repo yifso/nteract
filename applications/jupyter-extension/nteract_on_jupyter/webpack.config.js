@@ -36,7 +36,17 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: [configurator.tsLoaderConfig]
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              compilerOptions: {
+                noEmit: false
+              }
+            }
+          }
+        ]
       }
     ]
   },

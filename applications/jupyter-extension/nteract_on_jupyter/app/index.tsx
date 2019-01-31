@@ -34,10 +34,10 @@ import { createGlobalStyle } from "styled-components";
 import urljoin from "url-join";
 
 import App from "./app";
-import "./fonts";
-import configureStore from "./store";
 
-require("./fonts");
+import("./fonts");
+
+import configureStore from "./store";
 
 const GlobalAppStyle = createGlobalStyle`
   html {
@@ -89,7 +89,7 @@ export interface JupyterConfigData {
   assetUrl: string;
 }
 
-function main(rootEl: Element, dataEl: Node | null) {
+async function main(rootEl: Element, dataEl: Node | null) {
   // When the data element isn't there, provide an error message
   // Primarily for development usage
   const ErrorPage = (props: { error?: Error }) => (
@@ -118,7 +118,10 @@ function main(rootEl: Element, dataEl: Node | null) {
   }
 
   // Allow chunks from webpack to load from their built location
-  __webpack_public_path__ = urljoin(config.assetUrl, "nteract/static/dist/");
+  ((window as unknown) as any).__webpack_public_path__ = urljoin(
+    config.assetUrl,
+    "nteract/static/dist/"
+  );
 
   const jupyterHostRecord = makeJupyterHostRecord({
     id: null,
