@@ -38,7 +38,6 @@ const GridWrapper = styled.div`
 const NumberFilter = (props: NumberFilterProps) => {
   const { filterState, filterName, updateFunction, onChange } = props;
   const mode = filterState[filterName] || "=";
-
   const lockButton = (
     <Tooltip content={`Switch to ${switchMode(mode)}`}>
       <Button
@@ -93,19 +92,20 @@ const numberFilterWrapper = (
 
 const filterNumbers = (mode = "=") => (
   filter: FilterObject,
-  row: RowObject
+  row: NumberRowObject
 ) => {
+  const filterValue = Number(filter.value);
   if (mode === "=") {
-    return row[filter.id] === filter.value;
+    return row[filter.id] === filterValue;
   } else if (mode === "<") {
-    return row[filter.id] < filter.value;
+    return row[filter.id] < filterValue;
   } else if (mode === ">") {
-    return row[filter.id] > filter.value;
+    return row[filter.id] > filterValue;
   }
   return row[filter.id];
 };
 
-const filterStrings = () => (filter: FilterObject, row: RowObject) => {
+const filterStrings = () => (filter: FilterObject, row: StringRowObject) => {
   return (
     row[filter.id].toLowerCase().indexOf(filter.value.toLowerCase()) !== -1
   );
@@ -130,8 +130,12 @@ interface FilterObject {
   value: string;
 }
 
-interface RowObject {
+interface StringRowObject {
   [key: string]: string;
+}
+
+interface NumberRowObject {
+  [key: string]: number;
 }
 
 interface State {
@@ -182,7 +186,7 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
               field.type === "number" ||
               field.type === "integer"
             ) {
-              filterMethod[field.type](filters[field.name])(filter, row);
+              return filterMethod[field.type](filters[field.name])(filter, row);
             }
           },
           // If we don't have a filter defined for this field type, pass an empty div
