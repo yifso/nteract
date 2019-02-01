@@ -36,7 +36,7 @@ module.exports = {
       },
   target: "web",
   output: {
-    chunkFilename: "[name]-[chunkhash].bundle.js"
+    chunkFilename: isProd ? "[name]-[chunkhash].bundle.js" : "[name].bundle.js"
   },
   module: {
     rules: [
