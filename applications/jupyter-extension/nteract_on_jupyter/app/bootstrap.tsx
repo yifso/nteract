@@ -18,7 +18,6 @@ import {
 import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 import { Media } from "@nteract/outputs";
 import { GlobalCSSVariables } from "@nteract/presentational-components";
-import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
 import { GlobalMenuStyle } from "@nteract/connected-components";
@@ -194,9 +193,6 @@ export async function main(config: JupyterConfigData, rootEl): Promise<void> {
       {/* Keep global styles out of the provider backed render cycle */}
       <GlobalAppStyle />
       <GlobalCSSVariables />
-
-      <BlueprintCSS />
-      <BlueprintSelectCSS />
 
       <CodeMirrorCSS />
       <ShowHintCSS />
