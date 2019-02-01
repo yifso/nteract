@@ -51,6 +51,6 @@ jobs:
       - run:
           name: Lint Jupyter Extension
           command: |
-            pip install --user black
             export PATH='/home/circleci/.local/bin':$PATH
+            pip install --user black
             yarn run lint:jupyterExtension
