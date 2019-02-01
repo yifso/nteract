@@ -26,6 +26,7 @@ export const RightStatus = styled.div`
 `;
 
 export const Bar = styled.div`
+  padding-top: 8px;
   position: fixed;
   bottom: 0;
   left: 0;
