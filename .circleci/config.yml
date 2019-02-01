@@ -47,3 +47,10 @@ jobs:
           name: Build Jupyter Extension
           command: npx lerna run build:asap --scope nteract-on-jupyter
           no_output_timeout: 30m
+
+      - run:
+          name: Lint Jupyter Extension
+          command: |
+            export PATH='/home/circleci/.local/bin':$PATH
+            pip install --user black
+            cd ./applications/jupyter-extension && black --config ./pyproject.toml .
