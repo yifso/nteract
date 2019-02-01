@@ -14,13 +14,12 @@ if (!rootEl || !dataEl) {
 } else {
   const config: JupyterConfigData = readConfig(rootEl, dataEl);
 
+  const webpackPublicPath = urljoin(config.assetUrl, "nteract/static/dist/");
   // Allow chunks from webpack to load from their built location
   // NOTE: This _must_ run synchronously before webpack tries to load other
-  // chunks
-  ((window as unknown) as any).__webpack_public_path__ = urljoin(
-    config.assetUrl,
-    "nteract/static/dist/"
-  );
+  // chunks, and must be a free variable
+  // @ts-ignore
+  __webpack_public_path__ = webpackPublicPath;
 
   import("./bootstrap").then(module => {
     module.main(config, rootEl);
