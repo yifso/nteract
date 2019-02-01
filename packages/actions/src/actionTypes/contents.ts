@@ -95,6 +95,7 @@ export interface DownloadContentFulfilled {
 export const OPEN = "OPEN";
 export interface Open {
   type: "OPEN";
+  url: string;
 }
 
 export const SAVE = "SAVE";
