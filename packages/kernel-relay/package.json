@@ -1,6 +1,6 @@
 {
   "name": "@nteract/kernel-relay",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This package provides a GraphQL API for managing communication between a Jupyter kernel and clients. The package allows users to launch kernels, subscribe to the status of a kernel, send Jupyter messages from a client to a kernel, and more.",
   "bin": {
     "kernel-relay": "lib/index.js"
@@ -35,14 +35,14 @@
     "zeromq": "^5.1.0"
   },
   "devDependencies": {
+    "@nteract/fs-kernels": "^2.0.1",
+    "@nteract/messaging": "^6.0.1",
     "@zeit/ncc": "^0.13.0",
-    "@nteract/fs-kernels": "^2.0.0",
-    "@nteract/messaging": "^6.0.0",
     "apollo-server": "^2.3.1",
-    "enchannel-zmq-backend": "^9.0.0",
+    "apollo-server-testing": "^2.3.1",
+    "enchannel-zmq-backend": "^9.0.1",
     "graphql": "^14.0.2",
     "graphql-type-json": "^0.2.1",
-    "apollo-server-testing": "^2.3.1",
     "nodemon": "^1.18.9"
   }
 }
