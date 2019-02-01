@@ -47,3 +47,9 @@ jobs:
           name: Build Jupyter Extension
           command: npx lerna run build:asap --scope nteract-on-jupyter
           no_output_timeout: 30m
+
+      - run:
+          name: Lint Jupyter Extension
+          command: |
+            pip install --user black
+            yarn run lint:jupyterExtension
