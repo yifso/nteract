@@ -80,6 +80,9 @@ const GlobalAppStyle = createGlobalStyle`
   }
 `;
 
+const rootEl = document.querySelector("#root");
+const dataEl = document.querySelector("#jupyter-config-data");
+
 export interface JupyterConfigData {
   token: string;
   page: "tree" | "view" | "edit";
@@ -89,20 +92,18 @@ export interface JupyterConfigData {
   assetUrl: string;
 }
 
-async function main(rootEl: Element, dataEl: Node | null) {
-  // When the data element isn't there, provide an error message
-  // Primarily for development usage
-  const ErrorPage = (props: { error?: Error }) => (
-    <React.Fragment>
-      <h1>ERROR</h1>
-      <pre>Unable to parse / process the jupyter config data.</pre>
-      {props.error ? props.error.message : null}
-    </React.Fragment>
-  );
+const ErrorPage = (props: { error?: Error }) => (
+  <React.Fragment>
+    <h1>ERROR</h1>
+    <pre>Unable to parse / process the jupyter config data.</pre>
+    {props.error ? props.error.message : null}
+  </React.Fragment>
+);
 
+function readConfig(): JupyterConfigData {
   if (!dataEl) {
     ReactDOM.render(<ErrorPage />, rootEl);
-    return;
+    throw new Error("No jupyter config data element");
   }
 
   let config: JupyterConfigData;
@@ -114,14 +115,16 @@ async function main(rootEl: Element, dataEl: Node | null) {
     config = JSON.parse(dataEl.textContent);
   } catch (err) {
     ReactDOM.render(<ErrorPage error={err} />, rootEl);
-    return;
+    // Re-throw error
+    throw err;
   }
 
-  // Allow chunks from webpack to load from their built location
-  ((window as unknown) as any).__webpack_public_path__ = urljoin(
-    config.assetUrl,
-    "nteract/static/dist/"
-  );
+  return config;
+}
+
+async function main(config: JupyterConfigData): Promise<void> {
+  // When the data element isn't there, provide an error message
+  // Primarily for development usage
 
   const jupyterHostRecord = makeJupyterHostRecord({
     id: null,
@@ -252,11 +255,16 @@ async function main(rootEl: Element, dataEl: Node | null) {
   );
 }
 
-const rootEl = document.querySelector("#root");
-const dataEl = document.querySelector("#jupyter-config-data");
-
 if (!rootEl || !dataEl) {
   alert("Something drastic happened, and we don't have config data");
 } else {
-  main(rootEl, dataEl);
+  const config = readConfig();
+
+  // Allow chunks from webpack to load from their built location
+  // NOTE: This _must_ run synchronously before webpack tries to load other chunks
+  ((window as unknown) as any).__webpack_public_path__ = urljoin(
+    config.assetUrl
+  );
+
+  main(config);
 }
