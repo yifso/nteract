@@ -6,7 +6,19 @@ const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const nodeEnv = process.env.NODE_ENV || "development";
 const isProd = nodeEnv === "production";
 
-const ASSET_PATH = process.env.ASSET_PATH || "/nteract/static/dist/";
+const plugins = [
+  new MonacoWebpackPlugin(),
+  new webpack.IgnorePlugin(
+    /^((fs)|(path)|(os)|(crypto)|(source-map-support))$/,
+    /vs\/language\/typescript\/lib/
+  )
+];
+
+if (isProd) {
+  plugins.push(new LodashModuleReplacementPlugin());
+} else {
+  plugins.push(new webpack.HotModuleReplacementPlugin());
+}
 
 module.exports = {
   externals: ["canvas"],
@@ -18,15 +30,13 @@ module.exports = {
   devServer: isProd
     ? {}
     : {
+        publicPath: "/nteract/static/dist/",
         hot: true,
         headers: { "Access-Control-Allow-Origin": "*" }
       },
   target: "web",
   output: {
-    // Note: this gets overriden by our use of __webpack_public_path__ later
-    // to allow serving the notebook at e.g. /user/c/nteract/edit
-    publicPath: ASSET_PATH,
-    chunkFilename: "[name]-[chunkhash].bundle.js"
+    chunkFilename: isProd ? "[name]-[chunkhash].bundle.js" : "[name].bundle.js"
   },
   module: {
     rules: [
@@ -55,17 +65,5 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
     alias: configurator.mergeDefaultAliases()
   },
-  plugins: [
-    new LodashModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH)
-    }),
-    //new webpack.IgnorePlugin(/\.(css|less)$/),
-    new MonacoWebpackPlugin(),
-
-    new webpack.IgnorePlugin(
-      /^((fs)|(path)|(os)|(crypto)|(source-map-support))$/,
-      /vs\/language\/typescript\/lib/
-    )
-  ]
+  plugins
 };
