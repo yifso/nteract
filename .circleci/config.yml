@@ -53,4 +53,4 @@ jobs:
           command: |
             export PATH='/home/circleci/.local/bin':$PATH
             pip install --user black
-            yarn run lint:jupyterExtension
+            cd ./applications/jupyter-extension && black --config ./pyproject.toml .
