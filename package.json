@@ -69,7 +69,8 @@
     "report:all": "npm run report:jext && npm run report:desktop",
     "report:jext": "tsc -b applications/jupyter-extension",
     "report:desktop": "tsc -b applications/desktop",
-    "clean": "lerna clean --yes && npm run build:clean && rimraf node_modules"
+    "clean": "lerna clean --yes && npm run build:clean && rimraf node_modules",
+    "lint:jupyterExtension": "cd ./applications/jupyter-extension && black --check ."
   },
   "comment:jest": [
     "The types in our tests don't match up right yet, so we have",
