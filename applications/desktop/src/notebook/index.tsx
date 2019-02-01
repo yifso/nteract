@@ -5,8 +5,10 @@
 import * as MathJax from "@nteract/mathjax";
 
 import { GlobalCSSVariables } from "@nteract/presentational-components";
-import { BlueprintCSS, BlueprintSelectCSS } from "@nteract/styled-blueprintjsx";
 import { createGlobalStyle } from "styled-components";
+
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
 
 import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 
@@ -183,9 +185,6 @@ export default class App extends React.PureComponent {
       <React.Fragment>
         <AppStyle />
         <GlobalCSSVariables />
-
-        <BlueprintCSS />
-        <BlueprintSelectCSS />
 
         <CodeMirrorCSS />
         <ShowHintCSS />

@@ -57,6 +57,10 @@ const rendererConfig = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      },
+      {
         test: /\.tsx?$/,
         use: [configurator.tsLoaderConfig]
       }
@@ -67,11 +71,7 @@ const rendererConfig = {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: configurator.mergeDefaultAliases()
   },
-  plugins: [
-    // No external CSS should get side-loaded by js
-    // I'm looking at you vega-tooltip
-    new webpack.IgnorePlugin(/\.(css|less)$/)
-  ]
+  plugins: []
 };
 
 module.exports = {
