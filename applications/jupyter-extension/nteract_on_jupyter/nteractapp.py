@@ -1,11 +1,8 @@
-
 from subprocess import Popen
+import time
 
 from notebook.notebookapp import NotebookApp, flags
 from traitlets import Unicode, Bool
-
-import time
-
 
 from . import EXT_NAME, PACKAGE_DIR
 from .config import NteractConfig
@@ -43,9 +40,7 @@ nteract_flags['dev'] = (
 
 
 class NteractApp(NotebookApp):
-    """Application for runing nteract on a jupyter notebook server.
-
-    """
+    """Application for runing nteract on a jupyter notebook server."""
 
     default_url = Unicode('/nteract/edit', help="nteract's default starting location")
 
