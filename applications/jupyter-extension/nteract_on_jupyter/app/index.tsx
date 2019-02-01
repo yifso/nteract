@@ -4,6 +4,9 @@
 
 import { JupyterConfigData, readConfig } from "./config";
 
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
+
 import urljoin from "url-join";
 
 const rootEl = document.querySelector("#root");
