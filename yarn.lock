@@ -12426,14 +12426,14 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-shell-env@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/shell-env/-/shell-env-2.1.0.tgz#11c472dd59c9ebe3fdeca115bd98ce0c9cbbcc7d"
-  integrity sha512-kvyoX4KGSIXrPmwwAWgty+TaZo79khWSQlezawt3aIz2lz/bDImLogfxIQvXqdEAUg+oLHFjAd68VSaPgYFVBg==
+shell-env@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/shell-env/-/shell-env-2.2.0.tgz#4725c730c63eae3132e67ffcb60a279c23717033"
+  integrity sha512-C66xSe0P7PexRwbXHqwqf31o6JgMzk4S1Mc5yPULpSK3cUn1WoWrGM1OV0qUA1ec3QZvSqTaQgOqsONCB9F/3w==
   dependencies:
     default-shell "^1.0.1"
     execa "^1.0.0"
-    strip-ansi "^4.0.0"
+    strip-ansi "^5.0.0"
 
 shell-quote@1.6.1:
   version "1.6.1"
