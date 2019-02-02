@@ -92,11 +92,6 @@ export interface DownloadContentFulfilled {
   payload: { contentRef: ContentRef };
 }
 
-export const OPEN = "OPEN";
-export interface Open {
-  type: "OPEN";
-}
-
 export const SAVE = "SAVE";
 export interface Save {
   type: "SAVE";

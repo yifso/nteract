@@ -101,14 +101,6 @@ export function downloadContentFulfilled(payload: {
   };
 }
 
-export function open(url: string): actionTypes.Open {
-  // Redirect to directory view in new tab
-  window.open(url, "_blank");
-  return {
-    type: actionTypes.OPEN
-  };
-}
-
 export function save(payload: { contentRef: ContentRef }): actionTypes.Save {
   return {
     type: actionTypes.SAVE,

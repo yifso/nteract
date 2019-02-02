@@ -222,7 +222,7 @@ const makeMapDispatchToProps = (
           restarting: false
         })
       ),
-    OPEN: () => dispatch(actions.open("/nteract/edit")),
+    OPEN: () => window.open("/nteract/edit", "_blank"),
     PASTE_CELL: () =>
       dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
     RESTART_KERNEL: (event: KeyboardEvent) => {
