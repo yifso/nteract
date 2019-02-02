@@ -43,7 +43,7 @@ const PureTransformMedia = (props: MappedProps & DispatchProps) => {
     <Media
       {...mediaActions}
       data={output.data[mediaType]}
-      metadata={output.metadata.get(mediaType)}
+      metadata={output.metadata.get(mediaType) || output.metadata.toJS()}
     />
   );
 };
