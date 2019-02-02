@@ -6,6 +6,18 @@ import { JupyterConfigData, readConfig } from "./config";
 
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
+import "codemirror/lib/codemirror.css";
+
+import "codemirror/addon/hint/show-hint.css";
+
+// Until we're switched to blueprint for the menu, we have our own custom css
+// for the rc-menu style menu
+import "./notebook-menu.css";
+
+import "@nteract/styles/app.css";
+import "@nteract/styles/global-variables.css";
+
+import "@nteract/styles/editor-overrides.css";
 
 import urljoin from "url-join";
 

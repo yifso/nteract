@@ -32,6 +32,7 @@
     "@nteract/octicons": "^2.0.0",
     "@nteract/outputs": "^2.0.1",
     "@nteract/presentational-components": "^3.0.0",
+    "@nteract/styles": "^2.0.0",
     "@nteract/transform-geojson": "^5.0.0",
     "@nteract/transform-model-debug": "^5.0.0",
     "@nteract/transform-plotly": "^5.0.0",

@@ -1,0 +1,19 @@
+{
+  "name": "@nteract/styles",
+  "version": "2.0.0",
+  "description": "css for use in nteract apps",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "nteractDesktop": "index.js",
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "nteract",
+    "styles",
+    "✨"
+  ],
+  "author": "Kyle Kelley <rgbkrk@gmail.com>",
+  "license": "BSD-3-Clause"
+}

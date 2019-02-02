@@ -15,18 +15,13 @@ import {
   makeStateRecord,
   makeTransformsRecord
 } from "@nteract/core";
-import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 import { Media } from "@nteract/outputs";
-import { GlobalCSSVariables } from "@nteract/presentational-components";
 import { ContentRecord, HostRecord } from "@nteract/types";
-
-import { GlobalMenuStyle } from "@nteract/connected-components";
 
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createGlobalStyle } from "styled-components";
 
 import { JupyterConfigData } from "./config";
 
@@ -35,47 +30,6 @@ import App from "./app";
 import("./fonts");
 
 import configureStore from "./store";
-
-const GlobalAppStyle = createGlobalStyle`
-    html {
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-  
-    *,
-    *::before,
-    *::after {
-      -webkit-box-sizing: inherit;
-      box-sizing: inherit;
-    }
-  
-    body {
-      font-family: "Source Sans Pro";
-      font-size: 16px;
-      background-color: var(--theme-app-bg);
-      color: var(--theme-app-fg);
-      margin: 0;
-    }
-  
-    #app {
-      padding-top: 20px;
-    }
-  
-    @keyframes fadeOut {
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
-    }
-  
-    div#loading {
-      animation-name: fadeOut;
-      animation-duration: 0.25s;
-      animation-fill-mode: forwards;
-    }
-  `;
 
 export async function main(config: JupyterConfigData, rootEl): Promise<void> {
   // When the data element isn't there, provide an error message
@@ -190,15 +144,6 @@ export async function main(config: JupyterConfigData, rootEl): Promise<void> {
 
   ReactDOM.render(
     <React.Fragment>
-      {/* Keep global styles out of the provider backed render cycle */}
-      <GlobalAppStyle />
-      <GlobalCSSVariables />
-
-      <CodeMirrorCSS />
-      <ShowHintCSS />
-
-      <GlobalMenuStyle />
-
       <Provider store={store}>
         <App contentRef={contentRef} />
       </Provider>
