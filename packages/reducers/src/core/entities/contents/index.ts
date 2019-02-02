@@ -190,8 +190,7 @@ const byRef = (
       );
     }
     case actionTypes.OPEN: {
-      console.log("new file opened...");
-      break;
+      return state;
     }
     case actionTypes.SAVE_FULFILLED: {
       const saveFulfilledAction = action as actionTypes.SaveFulfilled;
