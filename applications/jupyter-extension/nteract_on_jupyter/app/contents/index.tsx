@@ -134,8 +134,7 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  // tslint:disable-next-line typedef
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: AppState): IContentsProps => {
     const contentRef: ContentRef = initialProps.contentRef;
 
     if (!contentRef) {
@@ -171,80 +170,79 @@ const makeMapStateToProps: any = (
   return mapStateToProps;
 };
 
-// tslint:disable-next-line typedef
 const makeMapDispatchToProps = (
   initialState: AppState,
   initialProps: { appBase: string; contentRef: ContentRef }
-) => (dispatch: Dispatch, ownProps: any) => {
-  return {
-    // `HotKeys` handlers object
-    // see: https://github.com/greena13/react-hotkeys#defining-handlers
-    handlers: {
-      CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
-        const type: CellType = event.key === "Y" ? "code" : "markdown";
+) => (
+  dispatch: Dispatch,
+  ownProps: { appBase: string; contentRef: ContentRef }
+): object => ({
+  // `HotKeys` handlers object
+  // see: https://github.com/greena13/react-hotkeys#defining-handlers
+  handlers: {
+    CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
+      const type: CellType = event.key === "Y" ? "code" : "markdown";
 
-        return dispatch(
-          actions.changeCellType({
-            to: type,
-            contentRef: initialProps.contentRef
-          })
-        );
-      },
-      COPY_CELL: () =>
-        dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
-      CREATE_CELL_ABOVE: () =>
-        dispatch(
-          actions.createCellAbove({
-            cellType: "code",
-            contentRef: initialProps.contentRef
-          })
-        ),
-      CREATE_CELL_BELOW: () =>
-        dispatch(
-          actions.createCellBelow({
-            cellType: "code",
-            source: "",
-            contentRef: initialProps.contentRef
-          })
-        ),
-      CUT_CELL: () =>
-        dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
-      DELETE_CELL: () =>
-        dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
-      EXECUTE_ALL_CELLS: () =>
-        dispatch(
-          actions.executeAllCells({ contentRef: initialProps.contentRef })
-        ),
-      INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
-      KILL_KERNEL: () =>
-        dispatch(
-          actions.killKernel({
-            restarting: false
-          })
-        ),
-      OPEN: () => dispatch(actions.open("/nteract/edit")),
-      PASTE_CELL: () =>
-        dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
-      RESTART_KERNEL: (event: KeyboardEvent) => {
-        const outputHandling: "None" | "Clear All" | "Run All" =
-          event.key === "r"
-            ? "None"
-            : event.key === "a"
-            ? "Run All"
-            : "Clear All";
+      return dispatch(
+        actions.changeCellType({
+          to: type,
+          contentRef: initialProps.contentRef
+        })
+      );
+    },
+    COPY_CELL: () =>
+      dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
+    CREATE_CELL_ABOVE: () =>
+      dispatch(
+        actions.createCellAbove({
+          cellType: "code",
+          contentRef: initialProps.contentRef
+        })
+      ),
+    CREATE_CELL_BELOW: () =>
+      dispatch(
+        actions.createCellBelow({
+          cellType: "code",
+          source: "",
+          contentRef: initialProps.contentRef
+        })
+      ),
+    CUT_CELL: () =>
+      dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
+    DELETE_CELL: () =>
+      dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
+    EXECUTE_ALL_CELLS: () =>
+      dispatch(
+        actions.executeAllCells({ contentRef: initialProps.contentRef })
+      ),
+    INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
+    KILL_KERNEL: () =>
+      dispatch(
+        actions.killKernel({
+          restarting: false
+        })
+      ),
+    OPEN: () => dispatch(actions.open("/nteract/edit")),
+    PASTE_CELL: () =>
+      dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
+    RESTART_KERNEL: (event: KeyboardEvent) => {
+      const outputHandling: "None" | "Clear All" | "Run All" =
+        event.key === "r"
+          ? "None"
+          : event.key === "a"
+          ? "Run All"
+          : "Clear All";
 
-        return dispatch(
-          actions.restartKernel({
-            outputHandling,
-            contentRef: initialProps.contentRef
-          })
-        );
-      },
-      SAVE: () =>
-        dispatch(actions.save({ contentRef: initialProps.contentRef }))
-    }
-  };
-};
+      return dispatch(
+        actions.restartKernel({
+          outputHandling,
+          contentRef: initialProps.contentRef
+        })
+      );
+    },
+    SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
+  }
+});
 
 export default connect(
   makeMapStateToProps,
