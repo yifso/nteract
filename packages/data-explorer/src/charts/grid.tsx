@@ -3,8 +3,6 @@ import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 
-import ReactTableStyles from "../css/react-table";
-
 import * as Dx from "../types";
 
 import styled from "styled-components";
@@ -224,7 +222,6 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
           className="-striped -highlight"
           filterable={showFilters}
         />
-        <ReactTableStyles />
       </GridWrapper>
     );
   }
