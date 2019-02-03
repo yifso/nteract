@@ -4,11 +4,18 @@
 
 import * as MathJax from "@nteract/mathjax";
 
-import { GlobalCSSVariables } from "@nteract/presentational-components";
-import { createGlobalStyle } from "styled-components";
-
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
+
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/hint/show-hint.css";
+
+import "react-table/react-table.css";
+
+import "@nteract/styles/app.css";
+import "@nteract/styles/global-variables.css";
+
+import "@nteract/styles/editor-overrides.css";
 
 import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 
@@ -55,7 +62,7 @@ import { makeDesktopNotebookRecord } from "./state";
 import configureStore, { DesktopStore } from "./store";
 
 // Load the nteract fonts
-require("./fonts");
+import("./fonts");
 
 const contentRef = createContentRef();
 
@@ -143,35 +150,6 @@ initNativeHandlers(contentRef, store);
 initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
-const AppStyle = createGlobalStyle`
-  body {
-    font-family: "Source Sans Pro";
-    font-size: 16px;
-    background-color: var(--theme-app-bg);
-    color: var(--theme-app-fg);
-  }
-
-  #app {
-    padding-top: 20px;
-  }
-
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  div#loading {
-    animation-name: fadeOut;
-    animation-duration: 0.25s;
-    animation-fill-mode: forwards;
-  }
-
-`;
-
 export default class App extends React.PureComponent {
   notificationSystem!: ReactNotificationSystem;
 
@@ -183,20 +161,15 @@ export default class App extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-        <AppStyle />
-        <GlobalCSSVariables />
-
-        <CodeMirrorCSS />
-        <ShowHintCSS />
-
-        <Provider store={store}>
-          <MathJax.Provider src={mathJaxPath} input="tex">
+        <MathJax.Provider src={mathJaxPath} input="tex">
+          <Provider store={store}>
             <NotebookApp
-              // The desktop app always keeps the same contentRef in a browser window
+              // The desktop app always keeps the same contentRef in a
+              // browser window
               contentRef={contentRef}
             />
-          </MathJax.Provider>
-        </Provider>
+          </Provider>
+        </MathJax.Provider>
         <NotificationSystem
           ref={(notificationSystem: ReactNotificationSystem) => {
             this.notificationSystem = notificationSystem;
