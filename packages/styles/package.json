@@ -5,6 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "nteractDesktop": "index.js",
+  "files": ["app.css", "editor-overrides.css", "global-variables.css"],
   "scripts": {},
   "publishConfig": {
     "access": "public"
