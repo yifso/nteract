@@ -1,11 +1,15 @@
 {
   "name": "@nteract/styles",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "css for use in nteract apps",
   "main": "index.js",
   "types": "index.d.ts",
   "nteractDesktop": "index.js",
-  "files": ["app.css", "editor-overrides.css", "global-variables.css"],
+  "files": [
+    "app.css",
+    "editor-overrides.css",
+    "global-variables.css"
+  ],
   "scripts": {},
   "publishConfig": {
     "access": "public"
