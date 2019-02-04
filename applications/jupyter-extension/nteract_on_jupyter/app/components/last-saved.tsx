@@ -11,74 +11,13 @@
  *
  */
 
-import { AppState, ContentRef, selectors } from "@nteract/core";
-import moment from "moment";
+import { AppState, selectors } from "@nteract/core";
+import { LastSaved } from "@nteract/directory-listing";
 import * as React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 
 interface LastSavedProps {
-  date: string | number | Date | null;
-}
-
-const Span = styled.span`
-  margin: 0 auto;
-  font-size: 15px;
-  color: var(--nt-nav-dark);
-`;
-
-const Pretext = styled(Span)`
-  font-weight: var(--nt-font-weight-bolder);
-  padding-right: 10px;
-`;
-
-class LastSaved extends React.PureComponent<LastSavedProps> {
-  intervalId!: number;
-  isStillMounted: boolean;
-
-  constructor(props: LastSavedProps) {
-    super(props);
-    this.isStillMounted = false;
-  }
-
-  componentDidMount() {
-    this.isStillMounted = true;
-    this.intervalId = window.setInterval(() => {
-      if (this.isStillMounted && this.props.date !== null) {
-        // React Component method. Forces component to update.
-        // See https://reactjs.org/docs/react-component.html#forceupdate
-        this.forceUpdate();
-      }
-    }, 30 * 1000);
-  }
-
-  componentWillUnmount() {
-    this.isStillMounted = false;
-    clearInterval(this.intervalId);
-  }
-
-  render() {
-    if (this.props.date === null) {
-      return null;
-    }
-
-    const precious = moment(this.props.date);
-
-    let text = "just now";
-
-    if (moment().diff(precious) > 25000) {
-      text = precious.fromNow();
-    }
-
-    const title = precious.format("MMMM Do YYYY, h:mm:ss a");
-
-    return (
-      <React.Fragment>
-        <Pretext title={title}>Last Saved: </Pretext>
-        <Span title={title}>{text}</Span>
-      </React.Fragment>
-    );
-  }
+  lastModified?: Date | null;
 }
 
 interface OwnProps {
@@ -95,12 +34,12 @@ const makeMapStateToProps = (
 ) => {
   const { contentRef } = initialProps;
 
-  const mapStateToProps = (state: AppState): LastSavedProps => {
+  const mapStateToProps = (state: AppState) => {
     const content = selectors.contentByRef(state).get(contentRef);
     if (!content || !content.lastSaved) {
-      return { date: null };
+      return { lastModified: null };
     }
-    return { date: content.lastSaved };
+    return { lastModified: content.lastSaved };
   };
 
   return mapStateToProps;
