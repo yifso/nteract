@@ -173,75 +173,81 @@ const makeMapStateToProps: any = (
 const makeMapDispatchToProps = (
   initialState: AppState,
   initialProps: { appBase: string; contentRef: ContentRef }
-) => (
-  dispatch: Dispatch,
-  ownProps: { appBase: string; contentRef: ContentRef }
-): object => ({
-  // `HotKeys` handlers object
-  // see: https://github.com/greena13/react-hotkeys#defining-handlers
-  handlers: {
-    CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
-      const type: CellType = event.key === "Y" ? "code" : "markdown";
+) => (dispatch: Dispatch, ownProps: { contentRef: ContentRef }): object => {
+  const host: HostRecord = initialState.app.host;
 
-      return dispatch(
-        actions.changeCellType({
-          to: type,
-          contentRef: ownProps.contentRef
-        })
-      );
-    },
-    COPY_CELL: () =>
-      dispatch(actions.copyCell({ contentRef: ownProps.contentRef })),
-    CREATE_CELL_ABOVE: () =>
-      dispatch(
-        actions.createCellAbove({
-          cellType: "code",
-          contentRef: ownProps.contentRef
-        })
-      ),
-    CREATE_CELL_BELOW: () =>
-      dispatch(
-        actions.createCellBelow({
-          cellType: "code",
-          source: "",
-          contentRef: ownProps.contentRef
-        })
-      ),
-    CUT_CELL: () =>
-      dispatch(actions.cutCell({ contentRef: ownProps.contentRef })),
-    DELETE_CELL: () =>
-      dispatch(actions.deleteCell({ contentRef: ownProps.contentRef })),
-    EXECUTE_ALL_CELLS: () =>
-      dispatch(actions.executeAllCells({ contentRef: ownProps.contentRef })),
-    INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
-    KILL_KERNEL: () =>
-      dispatch(
-        actions.killKernel({
-          restarting: false
-        })
-      ),
-    OPEN: () =>
-      window.open(urljoin(ownProps.appBase, "/nteract/edit"), "_blank"),
-    PASTE_CELL: () =>
-      dispatch(actions.pasteCell({ contentRef: ownProps.contentRef })),
-    RESTART_KERNEL: (event: KeyboardEvent) => {
-      const outputHandling: "None" | "Clear All" | "Run All" =
-        event.key === "r"
-          ? "None"
-          : event.key === "a"
-          ? "Run All"
-          : "Clear All";
-
-      return dispatch(
-        actions.restartKernel({
-          outputHandling,
-          contentRef: ownProps.contentRef
-        })
-      );
-    },
-    SAVE: () => dispatch(actions.save({ contentRef: ownProps.contentRef }))
+  if (host.type !== "jupyter") {
+    throw new Error("this component only works with jupyter apps");
   }
-});
+
+  const appBase: string = urljoin(host.basePath, "/nteract/edit");
+
+  return {
+    // `HotKeys` handlers object
+    // see: https://github.com/greena13/react-hotkeys#defining-handlers
+    handlers: {
+      CHANGE_CELL_TYPE: (event: KeyboardEvent) => {
+        const type: CellType = event.key === "Y" ? "code" : "markdown";
+
+        return dispatch(
+          actions.changeCellType({
+            to: type,
+            contentRef: ownProps.contentRef
+          })
+        );
+      },
+      COPY_CELL: () =>
+        dispatch(actions.copyCell({ contentRef: ownProps.contentRef })),
+      CREATE_CELL_ABOVE: () =>
+        dispatch(
+          actions.createCellAbove({
+            cellType: "code",
+            contentRef: ownProps.contentRef
+          })
+        ),
+      CREATE_CELL_BELOW: () =>
+        dispatch(
+          actions.createCellBelow({
+            cellType: "code",
+            source: "",
+            contentRef: ownProps.contentRef
+          })
+        ),
+      CUT_CELL: () =>
+        dispatch(actions.cutCell({ contentRef: ownProps.contentRef })),
+      DELETE_CELL: () =>
+        dispatch(actions.deleteCell({ contentRef: ownProps.contentRef })),
+      EXECUTE_ALL_CELLS: () =>
+        dispatch(actions.executeAllCells({ contentRef: ownProps.contentRef })),
+      INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
+      KILL_KERNEL: () =>
+        dispatch(
+          actions.killKernel({
+            restarting: false
+          })
+        ),
+      OPEN: () => window.open(urljoin(appBase, "/nteract/edit"), "_blank"),
+      PASTE_CELL: () =>
+        dispatch(actions.pasteCell({ contentRef: ownProps.contentRef })),
+      RESTART_KERNEL: (event: KeyboardEvent) => {
+        const outputHandling: "None" | "Clear All" | "Run All" =
+          event.key === "r"
+            ? "None"
+            : event.key === "a"
+            ? "Run All"
+            : "Clear All";
+
+        return dispatch(
+          actions.restartKernel({
+            outputHandling,
+            contentRef: ownProps.contentRef
+          })
+        );
+      },
+      SAVE: () => dispatch(actions.save({ contentRef: ownProps.contentRef }))
+    }
+  };
+};
 
 export default connect(
   makeMapStateToProps,
