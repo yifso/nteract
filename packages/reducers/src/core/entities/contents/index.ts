@@ -189,9 +189,6 @@ const byRef = (
           })
       );
     }
-    case actionTypes.OPEN: {
-      return state;
-    }
     case actionTypes.SAVE_FULFILLED: {
       const saveFulfilledAction = action as actionTypes.SaveFulfilled;
       return state

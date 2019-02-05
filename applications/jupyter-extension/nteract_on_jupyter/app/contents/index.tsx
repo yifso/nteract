@@ -186,17 +186,17 @@ const makeMapDispatchToProps = (
       return dispatch(
         actions.changeCellType({
           to: type,
-          contentRef: initialProps.contentRef
+          contentRef: ownProps.contentRef
         })
       );
     },
     COPY_CELL: () =>
-      dispatch(actions.copyCell({ contentRef: initialProps.contentRef })),
+      dispatch(actions.copyCell({ contentRef: ownProps.contentRef })),
     CREATE_CELL_ABOVE: () =>
       dispatch(
         actions.createCellAbove({
           cellType: "code",
-          contentRef: initialProps.contentRef
+          contentRef: ownProps.contentRef
         })
       ),
     CREATE_CELL_BELOW: () =>
@@ -204,17 +204,15 @@ const makeMapDispatchToProps = (
         actions.createCellBelow({
           cellType: "code",
           source: "",
-          contentRef: initialProps.contentRef
+          contentRef: ownProps.contentRef
         })
       ),
     CUT_CELL: () =>
-      dispatch(actions.cutCell({ contentRef: initialProps.contentRef })),
+      dispatch(actions.cutCell({ contentRef: ownProps.contentRef })),
     DELETE_CELL: () =>
-      dispatch(actions.deleteCell({ contentRef: initialProps.contentRef })),
+      dispatch(actions.deleteCell({ contentRef: ownProps.contentRef })),
     EXECUTE_ALL_CELLS: () =>
-      dispatch(
-        actions.executeAllCells({ contentRef: initialProps.contentRef })
-      ),
+      dispatch(actions.executeAllCells({ contentRef: ownProps.contentRef })),
     INTERRUPT_KERNEL: () => dispatch(actions.interruptKernel({})),
     KILL_KERNEL: () =>
       dispatch(
@@ -222,9 +220,10 @@ const makeMapDispatchToProps = (
           restarting: false
         })
       ),
-    OPEN: () => window.open("/nteract/edit", "_blank"),
+    OPEN: () =>
+      window.open(urljoin(ownProps.appBase, "/nteract/edit"), "_blank"),
     PASTE_CELL: () =>
-      dispatch(actions.pasteCell({ contentRef: initialProps.contentRef })),
+      dispatch(actions.pasteCell({ contentRef: ownProps.contentRef })),
     RESTART_KERNEL: (event: KeyboardEvent) => {
       const outputHandling: "None" | "Clear All" | "Run All" =
         event.key === "r"
@@ -236,11 +235,11 @@ const makeMapDispatchToProps = (
       return dispatch(
         actions.restartKernel({
           outputHandling,
-          contentRef: initialProps.contentRef
+          contentRef: ownProps.contentRef
         })
       );
     },
-    SAVE: () => dispatch(actions.save({ contentRef: initialProps.contentRef }))
+    SAVE: () => dispatch(actions.save({ contentRef: ownProps.contentRef }))
   }
 });
 
