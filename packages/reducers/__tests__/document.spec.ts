@@ -1031,13 +1031,14 @@ describe("updateOutputMetadata", () => {
       actions.updateOutputMetadata({
         id,
         metadata: newOutputMetadata,
-        index: 0
+        index: 0,
+        mediaType: "test/mediatype"
       })
     );
     expect(state.getIn(["notebook", "cellMap", id, "outputs", 0])).toEqual(
       Immutable.Map({
         empty: "output",
-        metadata: newOutputMetadata
+        metadata: Immutable.Map({ "test/mediatype": newOutputMetadata })
       })
     );
   });
