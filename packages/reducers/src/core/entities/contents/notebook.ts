@@ -648,11 +648,16 @@ function updateOutputMetadata(
   state: NotebookModel,
   action: actionTypes.UpdateOutputMetadata
 ) {
-  const { id, metadata, index } = action.payload;
+  const { id, metadata, index, mediaType } = action.payload;
   const currentOutputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
 
   const updatedOutputs = currentOutputs.update(index, (item: any) =>
-    item.set("metadata", fromJS(metadata))
+    item.set(
+      "metadata",
+      fromJS({
+        [mediaType]: metadata
+      })
+    )
   );
 
   return state.setIn(["notebook", "cellMap", id, "outputs"], updatedOutputs);

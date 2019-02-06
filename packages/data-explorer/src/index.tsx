@@ -48,7 +48,7 @@ interface Props {
   height?: number;
   mediaType: "application/vnd.dataresource+json";
   initialView: View;
-  onMetadataChange?: ({ dx }: { dx: dxMetaProps }) => void;
+  onMetadataChange?: ({ dx }: { dx: dxMetaProps }, mediaType: string) => void;
 }
 
 interface State {
@@ -392,22 +392,25 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     // If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
 
     if (onMetadataChange) {
-      onMetadataChange({
-        ...this.props.metadata,
-        dx: {
-          view,
-          lineType,
-          areaType,
-          selectedDimensions,
-          selectedMetrics,
-          pieceType,
-          summaryType,
-          networkType,
-          hierarchyType,
-          colors,
-          chart
-        }
-      });
+      onMetadataChange(
+        {
+          ...this.props.metadata,
+          dx: {
+            view,
+            lineType,
+            areaType,
+            selectedDimensions,
+            selectedMetrics,
+            pieceType,
+            summaryType,
+            networkType,
+            hierarchyType,
+            colors,
+            chart
+          }
+        },
+        mediaType
+      );
     }
 
     this.setState(
