@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {
   Attributes,
-  EventPayload,
+  SerializedEvent,
   objectToReactElement,
   VDOMEl
 } from "./object-to-react";
@@ -11,11 +11,11 @@ import {
 interface Props {
   mediaType: "application/vdom.v1+json";
   data: VDOMEl;
-  onVDOMEvent: (event: EventPayload) => void;
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void;
 }
 
 // Provide object-to-react as an available helper on the library
-export { objectToReactElement, VDOMEl, Attributes, EventPayload };
+export { objectToReactElement, VDOMEl, Attributes, SerializedEvent };
 
 const mediaType = "application/vdom.v1+json";
 
