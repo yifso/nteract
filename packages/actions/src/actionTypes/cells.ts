@@ -254,5 +254,6 @@ export interface UpdateOutputMetadata {
     contentRef: ContentRef;
     metadata: JSONObject;
     index: number;
+    mediaType: string;
   };
 }
