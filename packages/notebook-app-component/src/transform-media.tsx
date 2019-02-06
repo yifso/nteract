@@ -26,6 +26,8 @@ interface MappedProps {
   Media: React.ComponentType<any>;
   mediaType?: string;
   output?: ImmutableDisplayData | ImmutableExecuteResult;
+  data?: any;
+  metadata?: Immutable.Map<string, any>;
 }
 
 interface DispatchProps {
@@ -100,10 +102,9 @@ const makeMapStateToProps = (
 
     const mediaType = richestMediaType(output, order, handlers);
 
-    const metadata = memoizedMetadata(output.metadata.get(mediaType));
-    const data = output.data[mediaType];
-
     if (mediaType) {
+      const metadata = memoizedMetadata(output.metadata.get(mediaType));
+      const data = output.data[mediaType];
       const Media = selectors.transform(state, { id: mediaType });
       return {
         Media,

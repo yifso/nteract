@@ -29,6 +29,7 @@
     "@nteract/transform-vdom": "^4.0.0",
     "@nteract/transform-vega": "^5.0.0",
     "@nteract/types": "^4.0.1",
+    "@types/memoize-one": "^4.1.0",
     "date-fns": "^1.29.0",
     "react-dnd": "^7.0.0",
     "react-dnd-html5-backend": "^7.0.0",
