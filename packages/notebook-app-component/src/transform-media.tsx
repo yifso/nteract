@@ -12,6 +12,9 @@ import {
 import { actions, selectors } from "@nteract/core";
 import { AppState, ContentRef } from "@nteract/types";
 
+import memoizeOne from "memoize-one";
+import { get } from "https";
+
 interface OwnProps {
   output_type: string;
   cellId: string;
@@ -23,29 +26,25 @@ interface MappedProps {
   Media: React.ComponentType<any>;
   mediaType?: string;
   output?: ImmutableDisplayData | ImmutableExecuteResult;
+  data?: any;
+  metadata?: Immutable.Map<string, any>;
 }
 
 interface DispatchProps {
   mediaActions: {
-    onMetadataChange: (metadata: JSONObject) => void;
+    onMetadataChange: (metadata: JSONObject, mediaType: string) => void;
   };
 }
 
 const PureTransformMedia = (props: MappedProps & DispatchProps) => {
-  const { Media, mediaActions, mediaType, output } = props;
+  const { Media, mediaActions, mediaType, data, metadata } = props;
 
   // If we had no valid result, return an empty output
-  if (!mediaType || !output) {
+  if (!mediaType || !data) {
     return null;
   }
 
-  return (
-    <Media
-      {...mediaActions}
-      data={output.data[mediaType]}
-      metadata={output.metadata.get(mediaType) || output.metadata.toJS()}
-    />
-  );
+  return <Media {...mediaActions} data={data} metadata={metadata} />;
 };
 
 const richestMediaType = (
@@ -71,6 +70,10 @@ const makeMapStateToProps = (
   initialProps: OwnProps
 ) => {
   const { contentRef, index, cellId } = initialProps;
+
+  const memoizedMetadata = memoizeOne(immutableMetadata =>
+    immutableMetadata ? immutableMetadata.toJS() : {}
+  );
 
   const mapStateToProps = (state: AppState): MappedProps => {
     const output: ImmutableOutput = state.core.entities.contents.byRef.getIn(
@@ -98,12 +101,16 @@ const makeMapStateToProps = (
     const order = selectors.displayOrder(state);
 
     const mediaType = richestMediaType(output, order, handlers);
+
     if (mediaType) {
+      const metadata = memoizedMetadata(output.metadata.get(mediaType));
+      const data = output.data[mediaType];
       const Media = selectors.transform(state, { id: mediaType });
       return {
         Media,
         mediaType,
-        output
+        data,
+        metadata
       };
     }
     return {
@@ -123,13 +130,14 @@ const makeMapDispatchToProps = (
   const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
       mediaActions: {
-        onMetadataChange: (metadata: JSONObject) => {
+        onMetadataChange: (metadata: JSONObject, mediaType: string) => {
           dispatch(
             actions.updateOutputMetadata({
               id: cellId,
               contentRef,
               metadata,
-              index
+              index,
+              mediaType
             })
           );
         }

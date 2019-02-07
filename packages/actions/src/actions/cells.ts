@@ -349,6 +349,7 @@ export function updateOutputMetadata(payload: {
   metadata: JSONObject;
   contentRef: ContentRef;
   index: number;
+  mediaType: string;
 }): actionTypes.UpdateOutputMetadata {
   return {
     type: actionTypes.UPDATE_OUTPUT_METADATA,
