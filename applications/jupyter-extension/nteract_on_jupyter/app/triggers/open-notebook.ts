@@ -132,8 +132,6 @@ export function openNotebook(
 
         // If they block pop-ups, then we weren't allowed to open the window
         if (win === null) {
-          // TODO: Show a link at the top to let the user open the
-          // notebook directly
           window.location.href = url;
         }
       })
