@@ -44,8 +44,6 @@ export interface EventHandlers {
   [key: string]: string;
 }
 
-export type EventPayload = SerializedEvent<any> & { handler_id: string };
-
 export interface VDOMEl {
   tagName: string; // Could be an enum honestly
   children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
@@ -65,7 +63,7 @@ export interface VDOMEl {
  */
 export function objectToReactElement(
   obj: VDOMEl,
-  onVDOMEvent: (event: EventPayload) => void
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactElement<any> {
   // Pack args for React.createElement
   let args: any = [];
@@ -108,10 +106,10 @@ export function objectToReactElement(
   if (obj.eventHandlers) {
     for (const eventType in obj.eventHandlers) {
       if (obj.eventHandlers.hasOwnProperty(eventType)) {
-        const handlerId = obj.eventHandlers[eventType];
+        const targetName = obj.eventHandlers[eventType];
         obj.attributes[eventType] = (event: React.SyntheticEvent<any>) => {
           const serializedEvent = serializeEvent(event);
-          onVDOMEvent({ ...serializedEvent, handler_id: handlerId });
+          onVDOMEvent(targetName, serializedEvent);
         };
       }
     }
@@ -155,7 +153,7 @@ export function objectToReactElement(
  */
 function arrayToReactChildren(
   arr: VDOMEl[],
-  onVDOMEvent: (event: EventPayload) => void
+  onVDOMEvent: (targetName: string, event: SerializedEvent<any>) => void
 ): React.ReactNodeArray {
   const result: React.ReactNodeArray = [];
 
