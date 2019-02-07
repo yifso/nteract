@@ -260,9 +260,6 @@ class HeaderEditor extends React.PureComponent<
   }
 }
 
-// TODO: Add mapStateToProps and/or mapDispatchToProps
-// const ConnectedHeaderEditor = connect()(HeaderEditor);
-
 // We export this for testing purposes.
 export { HeaderEditor };
 
