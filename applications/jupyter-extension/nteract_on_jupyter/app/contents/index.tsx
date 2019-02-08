@@ -47,18 +47,23 @@ class Contents extends React.PureComponent<
   IContentsState
 > {
   private keyMap: KeyMap = {
-    CHANGE_CELL_TYPE: ["meta+shift+y", "meta+shift+m"],
-    COPY_CELL: "meta+shift+c",
-    CREATE_CELL_ABOVE: "meta+shift+a",
-    CREATE_CELL_BELOW: "meta+shift+b",
-    CUT_CELL: "meta+shift+x",
-    DELETE_CELL: "meta+shift+d",
+    CHANGE_CELL_TYPE: [
+      "ctrl+shift+y",
+      "ctrl+shift+m",
+      "meta+shift+y",
+      "meta+shift+m"
+    ],
+    COPY_CELL: ["ctrl+shift+c", "meta+shift+c"],
+    CREATE_CELL_ABOVE: ["ctrl+shift+a", "meta+shift+a"],
+    CREATE_CELL_BELOW: ["ctrl+shift+b", "meta+shift+b"],
+    CUT_CELL: ["ctrl+shift+x", "meta+shift+x"],
+    DELETE_CELL: ["ctrl+shift+d", "meta+shift+d"],
     EXECUTE_ALL_CELLS: "alt+r a",
     INTERRUPT_KERNEL: "alt+r i",
     KILL_KERNEL: "alt+r k",
-    PASTE_CELL: "meta+shift+v",
+    PASTE_CELL: ["ctrl+shift+v", "meta+shift+v"],
     RESTART_KERNEL: ["alt+r r", "alt+r c", "alt+r a"],
-    SAVE: ["meta+s", "meta+shift+s"]
+    SAVE: ["ctrl+s", "ctrl+shift+s", "meta+s", "meta+shift+s"]
   };
 
   render(): JSX.Element {
