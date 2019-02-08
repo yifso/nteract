@@ -3,7 +3,8 @@ import {
   CellId,
   ExecutionCount,
   ImmutableCodeCell,
-  JSONObject
+  JSONObject,
+  CellType
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
@@ -85,6 +86,14 @@ interface AnyCellProps {
   cellFocused: boolean; // not the ID of which is focused
   editorFocused: boolean;
   sourceHidden: boolean;
+  executeCell: () => void;
+  deleteCell: () => void;
+  clearOutputs: () => void;
+  toggleParameterCell: () => void;
+  toggleCellInputVisibility: () => void;
+  toggleCellOutputVisibility: () => void;
+  toggleOutputExpansion: () => void;
+  changeCellType: (to: CellType) => void;
   outputHidden: boolean;
   outputExpanded: boolean;
   selectCell: () => void;
@@ -186,6 +195,27 @@ const makeMapDispatchToCellProps = (
     selectCell: () => dispatch(actions.focusCell({ id, contentRef })),
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
+
+    changeCellType: (to: CellType) =>
+      dispatch(
+        actions.changeCellType({
+          contentRef,
+          id,
+          to
+        })
+      ),
+    clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
+    deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
+    executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
+    toggleCellInputVisibility: () =>
+      dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
+    toggleCellOutputVisibility: () =>
+      dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
+    toggleOutputExpansion: () =>
+      dispatch(actions.toggleOutputExpansion({ id, contentRef })),
+    toggleParameterCell: () =>
+      dispatch(actions.toggleParameterCell({ id, contentRef })),
+
     updateOutputMetadata: (
       index: number,
       metadata: JSONObject,
@@ -217,8 +247,22 @@ const CellBanner = styled.div`
 CellBanner.displayName = "CellBanner";
 
 class AnyCell extends React.PureComponent<AnyCellProps> {
+  toggleCellType = () => {
+    this.props.changeCellType(
+      this.props.cellType === "markdown" ? "code" : "markdown"
+    );
+  };
+
   render() {
     const {
+      executeCell,
+      deleteCell,
+      clearOutputs,
+      toggleParameterCell,
+      toggleCellInputVisibility,
+      toggleCellOutputVisibility,
+      toggleOutputExpansion,
+      changeCellType,
       cellFocused,
       cellStatus,
       cellType,
@@ -351,9 +395,16 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
           ) : null}
           <Toolbar
             type={cellType}
+            cellFocused={cellFocused}
+            executeCell={executeCell}
+            deleteCell={deleteCell}
+            clearOutputs={clearOutputs}
+            toggleParameterCell={toggleParameterCell}
+            toggleCellInputVisibility={toggleCellInputVisibility}
+            toggleCellOutputVisibility={toggleCellOutputVisibility}
+            toggleOutputExpansion={toggleOutputExpansion}
+            changeCellType={this.toggleCellType}
             sourceHidden={sourceHidden}
-            id={id}
-            contentRef={contentRef}
           />
           {element}
         </Cell>
