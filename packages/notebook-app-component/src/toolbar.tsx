@@ -5,7 +5,6 @@
 // TODO: Fix up a11y eslint here
 // TODO: All the `<li>` below that have role button should just be `<button>` with proper styling
 
-import * as actions from "@nteract/actions";
 import {
   DropdownContent,
   DropdownMenu,
@@ -18,23 +17,23 @@ import {
 } from "@nteract/octicons";
 import { ContentRef } from "@nteract/types";
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 import styled, { StyledComponent } from "styled-components";
 
+import { CellType } from "@nteract/commutable";
+
 export interface PureToolbarProps {
-  type: "markdown" | "code" | "raw";
-  executeCell?: () => void;
-  deleteCell?: () => void;
-  clearOutputs?: () => void;
-  toggleParameterCell?: () => void;
-  toggleCellInputVisibility?: () => void;
-  toggleCellOutputVisibility?: () => void;
-  toggleOutputExpansion?: () => void;
-  changeCellType?: () => void;
+  type: CellType;
+  executeCell: () => void;
+  deleteCell: () => void;
+  clearOutputs: () => void;
+  toggleParameterCell: () => void;
+  toggleCellInputVisibility: () => void;
+  toggleCellOutputVisibility: () => void;
+  toggleOutputExpansion: () => void;
+  changeCellType: () => void;
+  cellFocused: boolean;
   sourceHidden: boolean;
-  contentRef: ContentRef;
 }
 
 export const CellToolbar = styled.div`
@@ -86,10 +85,19 @@ export const CellToolbar = styled.div`
   }
 `;
 
-export const CellToolbarMask = styled.div.attrs(
-  (props: { sourceHidden?: boolean }) => ({
+interface CellToolbarMaskProps {
+  sourceHidden: boolean;
+  cellFocused: boolean;
+}
+
+export const CellToolbarMask = styled.div.attrs<CellToolbarMaskProps>(
+  props => ({
     style: {
-      display: props.sourceHidden ? "block" : "none"
+      display: props.cellFocused
+        ? "block"
+        : props.sourceHidden
+        ? "block"
+        : "none"
     }
   })
 )`
@@ -103,7 +111,7 @@ export const CellToolbarMask = styled.div.attrs(
               mouse to the toolbar without causing the cell to go out of focus and thus
               hide the toolbar before they get there. */
   padding: 0px 0px 0px 50px;
-` as StyledComponent<"div", any, { sourceHidden?: boolean }, never>;
+` as StyledComponent<"div", any, CellToolbarMaskProps, never>;
 
 export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   static defaultProps: Partial<PureToolbarProps> = {
@@ -111,12 +119,15 @@ export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   };
 
   render() {
-    const { type, executeCell, deleteCell, sourceHidden } = this.props;
+    const { executeCell, deleteCell, sourceHidden } = this.props;
 
     return (
-      <CellToolbarMask sourceHidden={sourceHidden}>
+      <CellToolbarMask
+        sourceHidden={sourceHidden}
+        cellFocused={this.props.cellFocused}
+      >
         <CellToolbar>
-          {type !== "markdown" && (
+          {this.props.type !== "markdown" && (
             <button
               onClick={executeCell}
               title="execute cell"
@@ -135,7 +146,7 @@ export class PureToolbar extends React.PureComponent<PureToolbarProps> {
                 </span>
               </button>
             </DropdownTrigger>
-            {type === "code" ? (
+            {this.props.type === "code" ? (
               <DropdownContent>
                 <li
                   onClick={this.props.clearOutputs}
@@ -222,58 +233,4 @@ export class PureToolbar extends React.PureComponent<PureToolbarProps> {
   }
 }
 
-interface ConnectedProps {
-  id: string;
-  type: "markdown" | "code" | "raw";
-  executeCell: () => void;
-  deleteCell: () => void;
-  clearOutputs: () => void;
-  toggleCellOutputVisibility: () => void;
-  toggleCellInputVisibility: () => void;
-  changeCellType: () => void;
-  toggleOutputExpansion: () => void;
-}
-
-interface InitialProps {
-  id: string;
-  type: "markdown" | "code" | "raw";
-  contentRef: ContentRef;
-}
-
-const makeMapDispatchToProps = (
-  initialDispatch: Dispatch,
-  initialProps: InitialProps
-) => {
-  const { contentRef, id, type } = initialProps;
-  const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-      changeCellType: () =>
-        dispatch(
-          actions.changeCellType({
-            contentRef,
-            id,
-            to: type === "markdown" ? "code" : "markdown"
-          })
-        ),
-      clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
-      deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
-      executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
-      toggleCellInputVisibility: () =>
-        dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
-      toggleCellOutputVisibility: () =>
-        dispatch(actions.toggleCellOutputVisibility({ id, contentRef })),
-      toggleOutputExpansion: () =>
-        dispatch(actions.toggleOutputExpansion({ id, contentRef })),
-      toggleParameterCell: () =>
-        dispatch(actions.toggleParameterCell({ id, contentRef }))
-    };
-  };
-  return mapDispatchToProps;
-};
-
-// TODO: This toolbar could easily make use of ownProps (contentRef, cellId)
-//       and pluck exactly the state it wants
-export default connect(
-  null,
-  makeMapDispatchToProps
-)(PureToolbar);
+export default PureToolbar;
