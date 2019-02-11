@@ -10961,10 +10961,10 @@ react-syntax-highlighter@^9.0.0:
     prismjs "^1.8.4"
     refractor "^2.4.1"
 
-react-table-hoc-fixed-columns@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/react-table-hoc-fixed-columns/-/react-table-hoc-fixed-columns-1.0.5.tgz#f86ab6edba3f6539b353ea30a94318d7349a9561"
-  integrity sha512-ZHxiGF7m+VDAH0f73leJLpq2Grajg+lckXkcXTbFki8gD8uFXCqQ4wALarDB9ydJxiEb9O96tG7xi9uQ/nTLQQ==
+react-table-hoc-fixed-columns@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-table-hoc-fixed-columns/-/react-table-hoc-fixed-columns-1.0.6.tgz#6d30434c078e9b79be35d9401ac18830f6713a76"
+  integrity sha512-vj+aiZa8tOLn3UM9f3I321BLPZKAS0K3ohPh5Kxc7Nl5QOFr125WdsJxXLqQHDwNI8KVEr0AVnk+91aEqcd9xQ==
   dependencies:
     classnames "^2.2.6"
     emotion "^9.2.3"
