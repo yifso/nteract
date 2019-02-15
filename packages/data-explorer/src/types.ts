@@ -98,3 +98,61 @@ export interface JSONObject {
   [key: string]: JSONType;
 }
 export interface JSONArray extends Array<JSONType> {}
+
+export interface DxMetaProps {
+  /**
+   *
+   */
+  view?: View;
+  /**
+   *
+   */
+  lineType?: LineType;
+  /**
+   *
+   */
+  areaType?: AreaType;
+  /**
+   *
+   */
+  selectedDimensions?: string[];
+  /**
+   *
+   */
+  selectedMetrics?: string[];
+  /**
+   *
+   */
+  pieceType?: PieceType;
+  /**
+   *
+   */
+  summaryType?: SummaryType;
+  /**
+   *
+   */
+  networkType?: NetworkType;
+  /**
+   *
+   */
+  hierarchyType?: HierarchyType;
+  /**
+   *
+   */
+  colors?: string[];
+  /**
+   *
+   */
+  chart?: Chart;
+}
+
+export interface Metadata {
+  /**
+   *
+   */
+  dx: DxMetaProps;
+  /**
+   *
+   */
+  sampled?: boolean;
+}

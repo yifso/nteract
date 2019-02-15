@@ -1,106 +1,85 @@
+// Vendor modules
 import * as React from "react";
 
+// Local modules
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
 import { Toolbar } from "./components/Toolbar";
 import { colors } from "./settings";
+import { FlexItem, FlexWrapper, SemioticWrapper } from "./styled";
+import * as Dx from "./types";
+import { generateChartKey } from "./utilities";
 import VizControls from "./VizControls";
 
+// DataExplorer mediaType for nteract
 const mediaType = "application/vnd.dataresource+json";
 
-import styled from "styled-components";
-import * as Dx from "./types";
-import {
-  AreaType,
-  Chart,
-  HierarchyType,
-  LineType,
-  NetworkType,
-  PieceType,
-  SummaryType,
-  View
-} from "./types";
-
-interface dxMetaProps {
-  view?: View;
-  lineType?: LineType;
-  areaType?: AreaType;
-  selectedDimensions?: string[];
-  selectedMetrics?: string[];
-  pieceType?: PieceType;
-  summaryType?: SummaryType;
-  networkType?: NetworkType;
-  hierarchyType?: HierarchyType;
-  colors?: string[];
-  chart?: Chart;
-}
-
-interface Metadata {
-  dx: dxMetaProps;
-  sampled?: boolean;
-}
-
-export interface Props {
+interface Props {
+  /**
+   * A data object
+   * e.g.
+   * ```typescript
+   * {
+   *  shema: {},
+   *  data: []
+   * }
+   * ```
+   */
   data: Dx.DataProps;
-  metadata: Metadata;
+  /**
+   * An object that represents the current state of the Data Explorer.
+   * e.g.
+   * ```typescript
+   * ```
+   */
+  metadata: Dx.Metadata;
+  /**
+   *
+   */
   theme?: string;
+  /**
+   *
+   */
   expanded?: boolean;
+  /**
+   *
+   */
   height?: number;
-  models?: {};
+  /**
+   *
+   */
   mediaType: "application/vnd.dataresource+json";
-  initialView: View;
-  onMetadataChange?: ({ dx }: { dx: dxMetaProps }, mediaType: string) => void;
+  /**
+   *
+   */
+  initialView: Dx.View;
+  /**
+   *
+   */
+  onMetadataChange?: (
+    { dx }: { dx: Dx.DxMetaProps },
+    mediaType: string
+  ) => void;
 }
 
 interface State {
-  view: View;
+  view: Dx.View;
   colors: string[];
   metrics: Dx.Field[];
   dimensions: Dx.Dimension[];
   selectedMetrics: string[];
   selectedDimensions: string[];
-  networkType: NetworkType;
-  hierarchyType: HierarchyType;
-  pieceType: PieceType;
-  summaryType: SummaryType;
-  lineType: LineType;
-  areaType: AreaType;
-  chart: Chart;
+  networkType: Dx.NetworkType;
+  hierarchyType: Dx.HierarchyType;
+  pieceType: Dx.PieceType;
+  summaryType: Dx.SummaryType;
+  lineType: Dx.LineType;
+  areaType: Dx.AreaType;
+  chart: Dx.Chart;
   displayChart: DisplayChart;
   primaryKey: string[];
   data: Dx.Datapoint[];
 }
-
-const generateChartKey = ({
-  view,
-  lineType,
-  areaType,
-  selectedDimensions,
-  selectedMetrics,
-  pieceType,
-  summaryType,
-  networkType,
-  hierarchyType,
-  chart
-}: {
-  view: View;
-  lineType: LineType;
-  areaType: AreaType;
-  selectedDimensions: string[];
-  selectedMetrics: string[];
-  pieceType: PieceType;
-  summaryType: SummaryType;
-  networkType: NetworkType;
-  hierarchyType: HierarchyType;
-  chart: Chart;
-}) =>
-  `${view}-${lineType}-${areaType}-${selectedDimensions.join(
-    ","
-  )}-${selectedMetrics.join(
-    ","
-  )}-${pieceType}-${summaryType}-${networkType}-${hierarchyType}-${JSON.stringify(
-    chart
-  )}`;
 
 interface DisplayChart {
   [chartKey: string]: React.ReactNode;
@@ -112,106 +91,10 @@ interface DisplayChart {
 
 const defaultResponsiveSize = [500, 300];
 
-const MetadataWarningWrapper = styled.div`
-  & {
-    font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif;
-  }
-`;
-
-const MetadataWarningContent = styled.div`
-  & {
-    backgroundcolor: #cce;
-    padding: 10px;
-    paddingleft: 20px;
-  }
-`;
-
-const MetadataWarning = ({ metadata }: { metadata: Metadata }) => {
-  const warning =
-    metadata && metadata.sampled ? (
-      <span>
-        <b>NOTE:</b> This data is sampled
-      </span>
-    ) : null;
-
-  return (
-    <MetadataWarningWrapper>
-      {warning ? (
-        <MetadataWarningContent>{warning}</MetadataWarningContent>
-      ) : null}
-    </MetadataWarningWrapper>
-  );
-};
-
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100%;
-`;
-
-const FlexItem = styled.div`
-  flex: 1;
-  min-width: 0;
-`;
-
-const SemioticWrapper = styled.div`
-  width: 100%;
-  .html-legend-item {
-    color: var(--theme-app-fg);
-  }
-
-  .tick > path {
-    stroke: lightgray;
-  }
-
-  .axis-labels,
-  .ordinal-labels {
-    fill: var(--theme-app-fg);
-    font-size: 14px;
-  }
-
-  path.connector,
-  path.connector-end {
-    stroke: var(--theme-app-fg);
-  }
-
-  path.connector-end {
-    fill: var(--theme-app-fg);
-  }
-
-  text.annotation-note-label,
-  text.legend-title,
-  .legend-item text {
-    fill: var(--theme-app-fg);
-    stroke: none;
-  }
-
-  .xyframe-area > path {
-    stroke: var(--theme-app-fg);
-  }
-
-  .axis-baseline {
-    stroke-opacity: 0.25;
-    stroke: var(--theme-app-fg);
-  }
-  circle.frame-hover {
-    fill: none;
-    stroke: gray;
-  }
-  .rect {
-    stroke: green;
-    stroke-width: 5px;
-    stroke-opacity: 0.5;
-  }
-  rect.selection {
-    opacity: 0.5;
-  }
-`;
-
 class DataExplorer extends React.PureComponent<Partial<Props>, State> {
-  static MIMETYPE = mediaType;
+  static MIMETYPE: string = mediaType;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     metadata: {
       dx: {}
     },
@@ -238,7 +121,8 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         field.type === "datetime"
     ) as Dx.Dimension[];
 
-    // Should datetime data types be transformed into js dates before getting to this resource?
+    // Should datetime data types be transformed into js dates before
+    // getting to this resource?
     const data = props.data.data.map(datapoint => {
       const mappedDatapoint: Dx.Datapoint = {
         ...datapoint
@@ -295,8 +179,10 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     };
   }
 
-  componentDidMount() {
-    // This is necessary to render any charts based on passed metadata because the grid doesn't result from the updateChart function but any other view does
+  componentDidMount(): void {
+    // This is necessary to render any charts based on passed metadata
+    // because the grid doesn't result from the updateChart function
+    // but any other view does
     if (this.state.view !== "grid") {
       this.updateChart(this.state);
     }
@@ -391,8 +277,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       </SemioticWrapper>
     );
 
-    // If you pass an onMetadataChange function, then fire it and pass the updated dx settings so someone upstream can update the metadata or otherwise use it
-
+    // If you pass an onMetadataChange function, then fire it and
+    // pass the updated dx settings so someone upstream can update
+    // the metadata or otherwise use it
     if (onMetadataChange) {
       onMetadataChange(
         {
@@ -427,25 +314,19 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       }
     );
   };
-  setView = (view: View) => {
-    this.updateChart({ view });
-  };
 
-  setGrid = () => {
-    this.setState({ view: "grid" });
-  };
+  setView = (view: Dx.View) => this.updateChart({ view });
 
-  setColor = (newColorArray: string[]) => {
+  setGrid = () => this.setState({ view: "grid" });
+
+  setColor = (newColorArray: string[]) =>
     this.updateChart({ colors: newColorArray });
-  };
 
-  setLineType = (selectedLineType: LineType) => {
+  setLineType = (selectedLineType: Dx.LineType) =>
     this.updateChart({ lineType: selectedLineType });
-  };
 
-  setAreaType = (selectedAreaType: AreaType) => {
+  setAreaType = (selectedAreaType: Dx.AreaType) =>
     this.updateChart({ areaType: selectedAreaType });
-  };
 
   updateDimensions = (selectedDimension: string) => {
     const oldDims = this.state.selectedDimensions;
@@ -455,6 +336,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         : oldDims.filter(dimension => dimension !== selectedDimension);
     this.updateChart({ selectedDimensions: newDimensions });
   };
+
   updateMetrics = (selectedMetric: string) => {
     const oldMetrics = this.state.selectedMetrics;
     const newMetrics =
@@ -464,7 +346,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     this.updateChart({ selectedMetrics: newMetrics });
   };
 
-  render() {
+  render(): JSX.Element {
     const {
       view,
       dimensions,
