@@ -4,6 +4,7 @@ import * as React from "react";
 // Local modules
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
+import { MetadataWarning } from "./components/MetadataWarning";
 import { Toolbar } from "./components/Toolbar";
 import { colors } from "./settings";
 import { FlexItem, FlexWrapper, SemioticWrapper } from "./styled";
@@ -16,7 +17,7 @@ const mediaType = "application/vnd.dataresource+json";
 
 interface Props {
   /**
-   * A data object
+   * A pandas data object
    * e.g.
    * ```typescript
    * {

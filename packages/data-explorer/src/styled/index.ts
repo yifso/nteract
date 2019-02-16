@@ -1,6 +1,9 @@
 /**
- * Styled Components
+ * Collection of Styled Components for the `DataExplorer`.
+ * For more info, see: https://www.styled-components.com/docs.
  */
+
+// Vendor modules
 import styled from "styled-components";
 
 export const MetadataWarningWrapper = styled.div`

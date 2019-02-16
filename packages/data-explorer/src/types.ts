@@ -26,6 +26,7 @@ export interface Schema {
   pandas_version: string;
   primaryKey: string[];
 }
+
 export interface Field {
   name: string;
   type: string;
@@ -68,7 +69,9 @@ export interface Chart {
   networkLabel: string;
   timeseriesSort: string;
 }
+
 export type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
+
 export type AreaType = "hexbin" | "heatmap" | "contour";
 
 export type SummaryType =
@@ -77,10 +80,13 @@ export type SummaryType =
   | "histogram"
   | "heatmap"
   | "boxplot";
+
 export type PieceType = "bar" | "point" | "swarm" | "clusterbar";
+
 export type HierarchyType = "dendrogram" | "treemap" | "partition" | "sunburst";
 
 export type NetworkType = "force" | "sankey" | "arc" | "matrix";
+
 export type View =
   | "line"
   | "bar"
@@ -93,66 +99,30 @@ export type View =
   | "hierarchy";
 
 export type PrimitiveImmutable = string | number | boolean | null;
+
 export type JSONType = PrimitiveImmutable | JSONObject | JSONArray;
+
 export interface JSONObject {
   [key: string]: JSONType;
 }
+
 export interface JSONArray extends Array<JSONType> {}
 
 export interface DxMetaProps {
-  /**
-   *
-   */
   view?: View;
-  /**
-   *
-   */
   lineType?: LineType;
-  /**
-   *
-   */
   areaType?: AreaType;
-  /**
-   *
-   */
   selectedDimensions?: string[];
-  /**
-   *
-   */
   selectedMetrics?: string[];
-  /**
-   *
-   */
   pieceType?: PieceType;
-  /**
-   *
-   */
   summaryType?: SummaryType;
-  /**
-   *
-   */
   networkType?: NetworkType;
-  /**
-   *
-   */
   hierarchyType?: HierarchyType;
-  /**
-   *
-   */
   colors?: string[];
-  /**
-   *
-   */
   chart?: Chart;
 }
 
 export interface Metadata {
-  /**
-   *
-   */
   dx: DxMetaProps;
-  /**
-   *
-   */
   sampled?: boolean;
 }

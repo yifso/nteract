@@ -4,6 +4,7 @@ import numeral from "numeral";
 // Local imports
 import * as Dx from "./types";
 
+// Exports
 export function numeralFormatting(tickValue: number): string {
   let format = "0.[00]a";
   if (tickValue === 0) {
