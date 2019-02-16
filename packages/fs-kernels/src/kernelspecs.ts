@@ -6,9 +6,13 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 
-interface KernelInfo {
-  name: string;
-  resourceDir: string;
+const readdir = promisify(fs.readdir);
+
+interface ParsedKernelSpecs {
+  [name: string]: {
+    resource_dir: string,
+    spec: KernelSpec
+  };
 }
 
 export interface KernelSpec {
@@ -29,15 +33,23 @@ export interface KernelResourceByName {
   [name: string]: KernelResource;
 }
 
-function augmentKernelResources(resources: KernelResourceByName): void {
-  Object.keys(resources).forEach(async name => {
-    const resource = resources[name];
-    resource.name = name;
-    const readdir = promisify(fs.readdir);
-    const files = await readdir(resource.resource_dir);
-    resource.files = files
-      .map(file => path.join(resource.resource_dir, file));
-  });
+async function mapToKernelResources(
+  kernelSpecs: ParsedKernelSpecs
+): Promise<KernelResourceByName> {
+  const resources: KernelResourceByName = {};
+
+  for (const name of Object.keys(kernelSpecs)) {
+    const kernelSpec = kernelSpecs[name];
+    const files = await readdir(kernelSpec.resource_dir);
+    resources[name] = {
+      name,
+      files: files.map(file => path.join(kernelSpec.resource_dir, file)),
+      resource_dir: kernelSpec.resource_dir,
+      spec: kernelSpec.spec
+    }
+  }
+
+  return resources;
 }
 
 /**
@@ -56,12 +68,12 @@ export async function find(kernelName: string): Promise<KernelResource> {
  */
 export async function findAll(): Promise<KernelResourceByName> {
   return new Promise((resolve, reject) => {
-    exec("python3 -m jupyter kernelspec list --json", (err, stdout) => {
+    exec("python3 -m jupyter kernelspec list --json", async (err, stdout) => {
       if (err) {
         reject(err);
       } else {
-        const resources: KernelResourceByName = JSON.parse(stdout).kernelspecs;
-        augmentKernelResources(resources);
+        const kernelSpecs: ParsedKernelSpecs = JSON.parse(stdout).kernelspecs;
+        const resources = await mapToKernelResources(kernelSpecs);
         resolve(resources);
       }
     });
