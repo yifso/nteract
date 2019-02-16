@@ -12,8 +12,10 @@ import * as Dx from "./types";
 import { generateChartKey } from "./utilities";
 import VizControls from "./VizControls";
 
-// DataExplorer mediaType for nteract
+// Constants
 const mediaType = "application/vnd.dataresource+json";
+const defaultResponsiveSize = [500, 300];
+const defaultHeight = 500;
 
 interface Props {
   /**
@@ -77,20 +79,10 @@ interface State {
   lineType: Dx.LineType;
   areaType: Dx.AreaType;
   chart: Dx.Chart;
-  displayChart: DisplayChart;
+  displayChart: Dx.DisplayChart;
   primaryKey: string[];
   data: Dx.Datapoint[];
 }
-
-interface DisplayChart {
-  [chartKey: string]: React.ReactNode;
-}
-/*
-  contour is an option for scatterplot
-  pie is a transform on bar
-*/
-
-const defaultResponsiveSize = [500, 300];
 
 class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   static MIMETYPE: string = mediaType;
@@ -99,7 +91,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     metadata: {
       dx: {}
     },
-    height: 500,
+    height: defaultHeight,
     mediaType,
     initialView: "grid"
   };
@@ -147,7 +139,8 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         field => !primaryKey.find(pkey => pkey === field.name)
       ) as Dx.Metric[];
 
-    const displayChart: DisplayChart = {};
+    const displayChart: Dx.DisplayChart = {};
+
     this.state = {
       view: initialView,
       lineType: "line",
@@ -161,7 +154,6 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       dimensions,
       metrics,
       colors,
-      // ui: {},
       chart: {
         metric1: (metrics[0] && metrics[0].name) || "none",
         metric2: (metrics[1] && metrics[1].name) || "none",

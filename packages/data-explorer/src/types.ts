@@ -126,3 +126,7 @@ export interface Metadata {
   dx: DxMetaProps;
   sampled?: boolean;
 }
+
+export interface DisplayChart {
+  [chartKey: string]: React.ReactNode;
+}
