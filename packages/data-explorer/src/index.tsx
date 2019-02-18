@@ -40,12 +40,13 @@ interface Metadata {
   sampled?: boolean;
 }
 
-interface Props {
+export interface Props {
   data: Dx.DataProps;
   metadata: Metadata;
   theme?: string;
   expanded?: boolean;
   height?: number;
+  models?: {};
   mediaType: "application/vnd.dataresource+json";
   initialView: View;
   onMetadataChange?: ({ dx }: { dx: dxMetaProps }, mediaType: string) => void;

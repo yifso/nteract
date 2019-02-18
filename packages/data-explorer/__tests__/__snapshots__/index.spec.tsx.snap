@@ -252,6 +252,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
             "metric1": "Happiness Rank",
             "metric2": "Standard Error",
             "metric3": "Happiness Score",
+            "networkLabel": "none",
             "timeseriesSort": "array-order",
           },
           "colors": Array [
@@ -546,6 +547,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
               "metric1": "Happiness Rank",
               "metric2": "Standard Error",
               "metric3": "Happiness Score",
+              "networkLabel": "none",
               "timeseriesSort": "array-order",
             }
           }
