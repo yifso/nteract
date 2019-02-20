@@ -1,3 +1,8 @@
+/**
+ * https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
+ */
+
+// Vendor imports
 import {
   Button,
   EditableText,
@@ -10,8 +15,7 @@ import {
 import * as React from "react";
 import { connect } from "react-redux";
 
-// https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
-
+// Styled Components
 const tagStyle: object = {
   background: "#f1f8ff",
   color: "#0366d6",
