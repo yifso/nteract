@@ -50,7 +50,7 @@ export interface HeaderEditorProps {
    * TODO: What description should go here? Is the name of the prop ok?
    * Publish Notebook to S3
    */
-  enablePublishing: boolean;
+  enablePublishing?: boolean;
   /**
    * The data that the header should be populated with.
    */
@@ -67,7 +67,7 @@ export interface HeaderEditorProps {
    * If `enablePublishing` is true, a link to an S3bucket is required
    * for publishing.
    */
-  S3bucket: string;
+  S3bucket?: string;
   /**
    * The theme of the header.
    */
@@ -87,6 +87,7 @@ class HeaderEditor extends React.PureComponent<
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
     editable: true,
+    enablePublishing: true,
     headerData: {
       authors: [],
       description: "",
@@ -112,66 +113,75 @@ class HeaderEditor extends React.PureComponent<
     // Publish to S3 bucket
   };
 
+  onTextChange = (newText: string): void => {
+    this.props.onChange({
+      ...this.props.headerData,
+      title: newText
+    });
+  };
+
+  onEditorChange = (newText: string) => {
+    this.props.onChange({
+      ...this.props.headerData,
+      description: newText
+    });
+  };
+
+  onAuthorsRemove = (t: any) => (
+    evt: React.MouseEvent<HTMLButtonElement>,
+    props: ITagProps
+  ) => {
+    if (this.props.editable === true) {
+      this.props.onChange({
+        ...this.props.headerData,
+        authors: this.props.headerData.authors.filter(p => p.name !== t.name)
+      });
+      return;
+    }
+    return;
+  };
+
+  onTagsRemove = (t: any) => (
+    e: React.MouseEvent<HTMLButtonElement>,
+    props: ITagProps
+  ) => {
+    if (this.props.editable) {
+      this.props.onChange({
+        ...this.props.headerData,
+        tags: this.props.headerData.tags.filter(p => p !== t)
+      });
+      return;
+    }
+    return;
+  };
+
+  onTagsConfirm = (e: any) => {
+    this.props.onChange({
+      ...this.props.headerData,
+      tags: [...this.props.headerData.tags, e]
+    });
+    this.setState({ editMode: "none" });
+  };
+
+  onAuthorsConfirm = (e: any) => {
+    this.props.onChange({
+      ...this.props.headerData,
+      authors: [...this.props.headerData.authors, { name: e }]
+    });
+    this.setState({ editMode: "none" });
+  };
+
+  onCancel = () => this.setState({ editMode: "none" });
+
+  onClick = () => this.setState({ editMode: "author" });
+
+  onAdd = () => this.setState({ editMode: "tag" });
+
   render(): JSX.Element {
     // Otherwise assume they have their own editor component
     const { editable, enablePublishing, headerData, onChange } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
-    const onTextChange = (newText: string): void => {
-      this.props.onChange({
-        ...headerData,
-        title: newText
-      });
-    };
-    const onEditorChange = (newText: string) => {
-      onChange({
-        ...headerData,
-        description: newText
-      });
-    };
-    const onAuthorsRemove = (t: any) => (
-      evt: React.MouseEvent<HTMLButtonElement>,
-      props: ITagProps
-    ) => {
-      if (editable === true) {
-        onChange({
-          ...headerData,
-          authors: headerData.authors.filter(p => p.name !== t.name)
-        });
-        return;
-      }
-      return;
-    };
-    const onTagsRemove = (t: any) => (
-      e: React.MouseEvent<HTMLButtonElement>,
-      props: ITagProps
-    ) => {
-      if (editable) {
-        onChange({
-          ...headerData,
-          tags: headerData.tags.filter(p => p !== t)
-        });
-        return;
-      }
-      return;
-    };
-    const onTagsConfirm = (e: any) => {
-      onChange({
-        ...headerData,
-        tags: [...headerData.tags, e]
-      });
-      this.setState({ editMode: "none" });
-    };
-    const onAuthorsConfirm = (e: any) => {
-      onChange({
-        ...headerData,
-        authors: [...headerData.authors, { name: e }]
-      });
-      this.setState({ editMode: "none" });
-    };
-    const onCancel = () => this.setState({ editMode: "none" });
-    const onClick = () => this.setState({ editMode: "author" });
-    const onAdd = () => this.setState({ editMode: "tag" });
 
     return (
       <header>
@@ -181,7 +191,7 @@ class HeaderEditor extends React.PureComponent<
               value={headerData.title}
               placeholder="Edit title..."
               disabled={!editable}
-              onChange={onTextChange}
+              onChange={this.onTextChange}
             />
           </H1>
           <div style={marginStyles}>
@@ -194,7 +204,7 @@ class HeaderEditor extends React.PureComponent<
               selectAllOnFocus={false}
               value={headerData.description}
               disabled={!editable}
-              onChange={onEditorChange}
+              onChange={this.onEditorChange}
             />
           </div>
           <div>
@@ -205,7 +215,7 @@ class HeaderEditor extends React.PureComponent<
                 large
                 minimal
                 style={authorStyle}
-                onRemove={onAuthorsRemove(t)}
+                onRemove={this.onAuthorsRemove(t)}
               >
                 {t.name}
               </Tag>
@@ -217,8 +227,8 @@ class HeaderEditor extends React.PureComponent<
                   className="author-entry"
                   placeholder="Enter Author Name..."
                   selectAllOnFocus
-                  onConfirm={onAuthorsConfirm}
-                  onCancel={onCancel}
+                  onConfirm={this.onAuthorsConfirm}
+                  onCancel={this.onCancel}
                 />
               </Tag>
             )) || (
@@ -231,7 +241,7 @@ class HeaderEditor extends React.PureComponent<
                 <Button
                   icon="add"
                   className="author-button"
-                  onClick={onClick}
+                  onClick={this.onPublish}
                   minimal
                   disabled={!editable}
                 />
@@ -241,7 +251,7 @@ class HeaderEditor extends React.PureComponent<
 
           <div>
             {headerData.tags.map(t => (
-              <Tag key={t} style={tagStyle} onRemove={onTagsRemove}>
+              <Tag key={t} style={tagStyle} onRemove={this.onTagsRemove}>
                 {t}
               </Tag>
             ))}
@@ -251,8 +261,8 @@ class HeaderEditor extends React.PureComponent<
                   maxLength={20}
                   placeholder="Enter Tag Name..."
                   selectAllOnFocus
-                  onConfirm={onTagsConfirm}
-                  onCancel={onCancel}
+                  onConfirm={this.onTagsConfirm}
+                  onCancel={this.onCancel}
                 />
               </Tag>
             )) || (
@@ -266,7 +276,7 @@ class HeaderEditor extends React.PureComponent<
                   <Button
                     icon="add"
                     minimal
-                    onClick={onAdd}
+                    onClick={this.onAdd}
                     disabled={!editable}
                   />
                 }
