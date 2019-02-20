@@ -64,6 +64,11 @@ export interface HeaderEditorProps {
    */
   onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
   /**
+   * If `enablePublishing` is true, a link to an S3bucket is required
+   * for publishing.
+   */
+  S3bucket: string;
+  /**
    * The theme of the header.
    */
   theme: "light" | "dark";
@@ -103,6 +108,7 @@ class HeaderEditor extends React.PureComponent<
   }
 
   onPublish = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const { S3bucket } = this.props;
     // Publish to S3 bucket
   };
 
