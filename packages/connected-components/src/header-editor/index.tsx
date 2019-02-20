@@ -110,7 +110,30 @@ class HeaderEditor extends React.PureComponent<
 
   onPublish = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { S3bucket } = this.props;
-    // Publish to S3 bucket
+    /**
+     * Publish to S3 bucket
+     * 1. Write an action for publishing to S3
+     * 2. Write an epic that takes a notebook and an S3 address
+     *    and publishes it to an S3 bucket
+     * 3. Write a reducer for publishing to S3
+     * 4. Create a confirmation for success or error handling for failure
+     *
+     * In this function, kick off the action that publishes to S3 and follows
+     * the process above.
+     *
+     * 1. In order to do this we'll need to mapStateToProps and
+     *    mapDispatchToProps. In mapStateToProps, we probably want to map the
+     *    S3bucket prop and enablePublishing prop.
+     * 2. In the epic, I need to get the current notebook from state and save
+     *    that to the appropriate S3 bucket.
+     * 3. The reducer is most likely a fall through since there really isn't
+     *    much to update.
+     * 4. To create a success or failure confirmation, I'll need to create
+     *    a snackbar that accepts messages and appears when the message cue
+     *    recieves a new message. Most likely this is another action created
+     *    from the epic that leads to a reducer that populates the state
+     *    with a message to the messages cue.
+     */
   };
 
   onTextChange = (newText: string): void => {
