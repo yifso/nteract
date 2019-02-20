@@ -1,5 +1,6 @@
 import * as actions from "@nteract/actions";
 import { CellType } from "@nteract/commutable";
+import { HeaderEditor } from "@nteract/connected-components";
 import { AppState, ContentRef, HostRecord, selectors } from "@nteract/core";
 import {
   DirectoryContentRecordProps,
@@ -97,7 +98,10 @@ class Contents extends React.PureComponent<
                 saving={saving}
               >
                 {contentType === "notebook" ? (
-                  <NotebookMenu contentRef={this.props.contentRef} />
+                  <React.Fragment>
+                    <NotebookMenu contentRef={this.props.contentRef} />
+                    <HeaderEditor />
+                  </React.Fragment>
                 ) : null}
               </FileHeader>
               <File contentRef={contentRef} appBase={appBase} />

@@ -47,6 +47,11 @@ export interface HeaderEditorProps {
    */
   editable: boolean;
   /**
+   * TODO: What description should go here? Is the name of the prop ok?
+   * Publish Notebook to S3
+   */
+  enablePublishing: boolean;
+  /**
    * The data that the header should be populated with.
    */
   headerData: HeaderDataProps;
@@ -75,7 +80,7 @@ class HeaderEditor extends React.PureComponent<
   HeaderEditorProps,
   HeaderEditorState
 > {
-  static defaultProps: HeaderEditorProps = {
+  static defaultProps: Partial<HeaderEditorProps> = {
     editable: true,
     headerData: {
       authors: [],
@@ -97,9 +102,13 @@ class HeaderEditor extends React.PureComponent<
     };
   }
 
+  onPublish = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    // Publish to S3 bucket
+  };
+
   render(): JSX.Element {
     // Otherwise assume they have their own editor component
-    const { editable, headerData, onChange } = this.props;
+    const { editable, enablePublishing, headerData, onChange } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
     const onTextChange = (newText: string): void => {
@@ -169,6 +178,19 @@ class HeaderEditor extends React.PureComponent<
               onChange={onTextChange}
             />
           </H1>
+          <div style={marginStyles}>
+            <EditableText
+              maxLength={280}
+              maxLines={12}
+              minLines={3}
+              multiline
+              placeholder="Edit description..."
+              selectAllOnFocus={false}
+              value={headerData.description}
+              disabled={!editable}
+              onChange={onEditorChange}
+            />
+          </div>
           <div>
             {headerData.authors.length <= 0 ? null : "By "}
             {headerData.authors.map(t => (
@@ -245,19 +267,9 @@ class HeaderEditor extends React.PureComponent<
               </Tooltip>
             )}
           </div>
-          <div style={marginStyles}>
-            <EditableText
-              maxLength={280}
-              maxLines={12}
-              minLines={3}
-              multiline
-              placeholder="Edit description..."
-              selectAllOnFocus={false}
-              value={headerData.description}
-              disabled={!editable}
-              onChange={onEditorChange}
-            />
-          </div>
+          {enablePublishing ? (
+            <Button type={"button"} text={"Publish"} onClick={this.onPublish} />
+          ) : null}
         </div>
       </header>
     );
