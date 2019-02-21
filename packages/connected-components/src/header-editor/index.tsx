@@ -133,6 +133,15 @@ class HeaderEditor extends React.PureComponent<
      *    recieves a new message. Most likely this is another action created
      *    from the epic that leads to a reducer that populates the state
      *    with a message to the messages cue.
+     *
+     * To complete this functionality, I'll need to change the CSS and layout of
+     * the header editor. I'll need to create an action and it payload type.
+     * I'll need to get the information for hooking this up to bookstore or
+     * publishing to S3. I will need to change the structure of
+     * the state object to take an S3Bucket address and whether publishing is
+     * enabled. Finally, I'll need to create a SnackBar component. Add messaging
+     * cues to the `AppState` and add logic somewhere regarding how, when, and
+     * where these messages are shown.
      */
   };
 
