@@ -3,6 +3,14 @@
  */
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
+export const PUBLISH_TO_BOOKSTORE = "CORE/PUBLISH_TO_BOOKSTORE";
+export interface PublishToBookstore {
+  type: "CORE/PUBLISH_TO_BOOKSTORE";
+  payload: {
+    contentRef: ContentRef;
+  };
+}
+
 export const CHANGE_CONTENT_NAME = "CORE/CHANGE_CONTENT_NAME";
 export interface ChangeContentName {
   type: "CORE/CHANGE_CONTENT_NAME";

@@ -7,6 +7,13 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
+export const publishToBookstore = (payload: {
+  contentRef: ContentRef;
+}): actionTypes.PublishToBookstore => ({
+  type: actionTypes.PUBLISH_TO_BOOKSTORE,
+  payload
+});
+
 export const changeContentName = (payload: {
   filepath: string;
   contentRef: ContentRef;
