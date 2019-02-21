@@ -50,7 +50,7 @@ export interface HeaderEditorProps {
    * TODO: What description should go here? Is the name of the prop ok?
    * Publish Notebook to S3
    */
-  enablePublishing?: boolean;
+  publishingEnabled?: boolean;
   /**
    * The data that the header should be populated with.
    */
@@ -63,11 +63,6 @@ export interface HeaderEditorProps {
    *
    */
   onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
-  /**
-   * If `enablePublishing` is true, a link to an S3bucket is required
-   * for publishing.
-   */
-  S3bucket?: string;
   /**
    * The theme of the header.
    */
@@ -87,7 +82,7 @@ class HeaderEditor extends React.PureComponent<
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
     editable: true,
-    enablePublishing: true,
+    publishingEnabled: false,
     headerData: {
       authors: [],
       description: "",
@@ -109,23 +104,22 @@ class HeaderEditor extends React.PureComponent<
   }
 
   onPublish = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const { S3bucket } = this.props;
     /**
      * Publish to S3 bucket
-     * 1. Write an action for publishing to S3
-     * 2. Write an epic that takes a notebook and an S3 address
-     *    and publishes it to an S3 bucket
-     * 3. Write a reducer for publishing to S3
+     * 1. Write an action for publishing to Bookstore
+     * 2. Write an epic that takes a notebook
+     *    and publishes it to an Bookstore
+     * 3. Write a reducer for publishing to Bookstore
      * 4. Create a confirmation for success or error handling for failure
      *
-     * In this function, kick off the action that publishes to S3 and follows
-     * the process above.
+     * In this function, kick off the action that publishes to Bookstore
+     * and follows the process above.
      *
      * 1. In order to do this we'll need to mapStateToProps and
      *    mapDispatchToProps. In mapStateToProps, we probably want to map the
-     *    S3bucket prop and enablePublishing prop.
+     *    enablePublishing prop.
      * 2. In the epic, I need to get the current notebook from state and save
-     *    that to the appropriate S3 bucket.
+     *    that to Bookstore.
      * 3. The reducer is most likely a fall through since there really isn't
      *    much to update.
      * 4. To create a success or failure confirmation, I'll need to create
@@ -135,11 +129,9 @@ class HeaderEditor extends React.PureComponent<
      *    with a message to the messages cue.
      *
      * To complete this functionality, I'll need to change the CSS and layout of
-     * the header editor. I'll need to create an action and it payload type.
-     * I'll need to get the information for hooking this up to bookstore or
-     * publishing to S3. I will need to change the structure of
-     * the state object to take an S3Bucket address and whether publishing is
-     * enabled. Finally, I'll need to create a SnackBar component. Add messaging
+     * the header editor. I'll need to create an action and its payload type.
+     * I'll need to get the information for hooking this up to bookstore.
+     * Finally, I'll need to create a SnackBar component. Add messaging
      * cues to the `AppState` and add logic somewhere regarding how, when, and
      * where these messages are shown.
      */
@@ -211,7 +203,7 @@ class HeaderEditor extends React.PureComponent<
 
   render(): JSX.Element {
     // Otherwise assume they have their own editor component
-    const { editable, enablePublishing, headerData, onChange } = this.props;
+    const { editable, publishingEnabled, headerData, onChange } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
 
@@ -315,7 +307,7 @@ class HeaderEditor extends React.PureComponent<
               </Tooltip>
             )}
           </div>
-          {enablePublishing ? (
+          {publishingEnabled ? (
             <Button type={"button"} text={"Publish"} onClick={this.onPublish} />
           ) : null}
         </div>
