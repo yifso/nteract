@@ -9,8 +9,26 @@ import { contents } from "rx-jupyter";
 
 export const publishToBookstore = (payload: {
   contentRef: ContentRef;
-}): actionTypes.PublishToBookstore => ({
-  type: actionTypes.PUBLISH_TO_BOOKSTORE,
+}): actionTypes.PublishToBookstore => {
+  console.log("sending first action to save to bookstore");
+  return {
+    type: actionTypes.PUBLISH_TO_BOOKSTORE,
+    payload
+  };
+};
+
+export const publishToBookstoreSucceeded = (payload: {
+  contentRef: ContentRef;
+}): actionTypes.PublishToBookstoreSucceeded => ({
+  type: actionTypes.PUBLISH_TO_BOOKSTORE_SUCCEEDED,
+  payload
+});
+
+export const publishToBookstoreFailed = (payload: {
+  contentRef: ContentRef;
+  error: Error;
+}): actionTypes.PublishToBookstoreFailed => ({
+  type: actionTypes.PUBLISH_TO_BOOKSTORE_FAILED,
   payload
 });
 

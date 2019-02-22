@@ -296,7 +296,7 @@ class HeaderEditor extends React.PureComponent<
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
   // Map bookstoreEnabled to props.
   // Get whether it's enabled from appState.
-  const isEnabled: boolean = false;
+  const isEnabled: boolean = true;
 
   return {
     ...ownProps,
@@ -312,8 +312,11 @@ const mapDispatchToProps = (
   // Pass action a contentRef so that in the epic, the notebook
   // can be gotten from the contentRef and passed to the Bookstore.
   return {
-    onPublish: () =>
-      dispatch(actions.publishToBookstore({ contentRef: ownProps.contentRef }))
+    onPublish: () => {
+      return dispatch(
+        actions.publishToBookstore({ contentRef: ownProps.contentRef })
+      );
+    }
   };
 };
 

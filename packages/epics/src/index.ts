@@ -5,6 +5,7 @@ import { commListenEpic } from "./comm";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
+  publishToBookstore,
   saveContentEpic,
   updateContentEpic
 } from "./contents";
@@ -47,7 +48,8 @@ const allEpics = [
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
-  autoSaveCurrentContentEpic
+  autoSaveCurrentContentEpic,
+  publishToBookstore
 ];
 
 export {
@@ -68,5 +70,6 @@ export {
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
-  autoSaveCurrentContentEpic
+  autoSaveCurrentContentEpic,
+  publishToBookstore
 };
