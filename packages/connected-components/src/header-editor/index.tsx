@@ -12,7 +12,7 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import actions from "@nteract/core";
+import { actions, AppState, ContentRef } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -51,7 +51,11 @@ export interface HeaderEditorProps {
   /**
    * Whether publishing to `Bookstore` is enabled.
    */
-  publishingEnabled?: boolean;
+  bookstoreEnabled?: boolean;
+  /**
+   * Notebook content reference.
+   */
+  contentRef: ContentRef;
   /**
    * The data that the header should be populated with.
    */
@@ -60,6 +64,11 @@ export interface HeaderEditorProps {
    * An event handler to run whenever header fields are modified.
    */
   onChange: (props?: HeaderDataProps) => void;
+  /**
+   * Mapped from State to Props
+   * An event handler to publish notebook content to BookStore.
+   */
+  onPublish: (e: React.MouseEvent<HTMLButtonElement>) => void;
   /**
    *
    */
@@ -83,7 +92,7 @@ class HeaderEditor extends React.PureComponent<
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
     editable: true,
-    publishingEnabled: false,
+    bookstoreEnabled: false,
     headerData: {
       authors: [],
       description: "",
@@ -103,7 +112,6 @@ class HeaderEditor extends React.PureComponent<
       editMode: "none"
     };
   }
-
 
   onTextChange = (newText: string): void => {
     this.props.onChange({
@@ -171,7 +179,7 @@ class HeaderEditor extends React.PureComponent<
 
   render(): JSX.Element {
     // Otherwise assume they have their own editor component
-    const { editable, publishingEnabled, headerData, onChange } = this.props;
+    const { editable, bookstoreEnabled, headerData } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
 
@@ -233,7 +241,7 @@ class HeaderEditor extends React.PureComponent<
                 <Button
                   icon="add"
                   className="author-button"
-                  onClick={this.onPublish}
+                  onClick={this.onClick}
                   minimal
                   disabled={!editable}
                 />
@@ -275,7 +283,7 @@ class HeaderEditor extends React.PureComponent<
               </Tooltip>
             )}
           </div>
-          {publishingEnabled ? (
+          {bookstoreEnabled ? (
             <Button type={"button"} text={"Publish"} onClick={this.onPublish} />
           ) : null}
         </div>
@@ -284,15 +292,34 @@ class HeaderEditor extends React.PureComponent<
   }
 }
 
-const mapStateToProps = ()
+const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
+  // Map bookstoreEnabled to props.
+  // Get whether it's enabled from appState.
+  const isEnabled: boolean = false;
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    onPublish: dispatch(actions.publishToBookstore({}))
+    ...ownProps,
+    bookstoreEnabled: isEnabled
+  };
+};
+
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: { contentRef: ContentRef }
+) => {
+  // Map publishToBookstore `action`(function) to props
+  // Pass action a contentRef so that in the epic, the notebook
+  // can be gotten from the contentRef and passed to the Bookstore.
+  return {
+    onPublish: () =>
+      dispatch(actions.publishToBookstore({ contentRef: ownProps.contentRef }))
   };
 };
 
 // We export this for testing purposes.
 // export { HeaderEditor };
 
-export default connect(null, mapDispatchToProps)(HeaderEditor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderEditor);
