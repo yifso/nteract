@@ -21,12 +21,14 @@ const DirectoryEntry = styled.tr`
     transition: background-color 0.1s ease-out;
   }
 
-  :first-child {
+  & td:first-child {
     border-top: none;
   }
 
-  :last-child {
+  & td:last-child {
     border-bottom: none;
+    text-align: right;
+    padding-right: 10px;
   }
 `;
 
@@ -40,7 +42,7 @@ export class Entry extends React.PureComponent<EntryProps> {
   render() {
     return (
       <DirectoryEntry>
-        {React.Children.map(this.props.children, child => {
+        {React.Children.map(this.props.children, (child, index: number) => {
           const childElement = child as React.ReactElement<any>;
           if (
             areComponentsEqual(
@@ -50,21 +52,11 @@ export class Entry extends React.PureComponent<EntryProps> {
             areComponentsEqual(
               childElement.type as React.ComponentType<any>,
               Name
-            ) ||
-            areComponentsEqual(
-              childElement.type as React.ComponentType<any>,
-              LastSaved
             )
           ) {
-            return React.cloneElement(childElement, {
-              className:
-                typeof childElement.props.className === "string" &&
-                childElement.props.className !== ""
-                  ? `${childElement.props.className} directory-entry-field`
-                  : "directory-entry-field"
-            });
+            return childElement;
           } else {
-            return <td className="directory-entry-field">{child}</td>;
+            return <td>{child}</td>;
           }
         })}
       </DirectoryEntry>
