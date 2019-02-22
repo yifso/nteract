@@ -15,7 +15,7 @@ describe("remultiline", () => {
 
   it("can handle repeated newlines", () => {
     expect(remultiline("test\n\n\nthis\n\nout").map(flagNewlines)).toEqual(
-      ["test\n", "\n\n", "this\n", "\nout"].map(flagNewlines)
+      ["test\n", "\n", "\n", "this\n", "\n", "out"].map(flagNewlines)
     );
 
     expect(
@@ -23,7 +23,7 @@ describe("remultiline", () => {
     ).toEqual(
       // This shows the super weird case with ours which is a bunch of
       // newlines before the last line...
-      ["test\n", "\n\n", "this\n", "\n", "out\n", "\n\n\n\n\nwhat"].map(
+      ["test\n", "\n", "\n", "this\n", "\n", "out\n", "\n", "\n", "\n", "\n", "\n", "what"].map(
         flagNewlines
       )
     );
