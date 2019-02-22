@@ -68,7 +68,7 @@ export interface HeaderEditorProps {
    * Mapped from State to Props
    * An event handler to publish notebook content to BookStore.
    */
-  onPublish: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
    *
    */
@@ -101,6 +101,7 @@ class HeaderEditor extends React.PureComponent<
     },
     // tslint:disable no-empty
     onChange: () => {},
+    onPublish: () => {},
     onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {},
     theme: "light"
   };
@@ -179,7 +180,7 @@ class HeaderEditor extends React.PureComponent<
 
   render(): JSX.Element {
     // Otherwise assume they have their own editor component
-    const { editable, bookstoreEnabled, headerData } = this.props;
+    const { editable, bookstoreEnabled, headerData, onPublish } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
 
@@ -284,7 +285,7 @@ class HeaderEditor extends React.PureComponent<
             )}
           </div>
           {bookstoreEnabled ? (
-            <Button type={"button"} text={"Publish"} onClick={this.onPublish} />
+            <Button type={"button"} text={"Publish"} onClick={onPublish} />
           ) : null}
         </div>
       </header>
