@@ -12,6 +12,7 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
+import actions from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -283,47 +284,15 @@ class HeaderEditor extends React.PureComponent<
   }
 }
 
+const mapStateToProps = ()
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    onPublish: dispatch(
-      (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    /**
-     * Publish to S3 bucket
-     * 1. Write an action for publishing to Bookstore
-     * 2. Write an epic that takes a notebook
-     *    and publishes it to an Bookstore
-     * 3. Write a reducer for publishing to Bookstore
-     * 4. Create a confirmation for success or error handling for failure
-     *
-     * In this function, kick off the action that publishes to Bookstore
-     * and follows the process above.
-     *
-     * 1. In order to do this we'll need to mapStateToProps and
-     *    mapDispatchToProps. In mapStateToProps, we probably want to map the
-     *    enablePublishing prop.
-     * 2. In the epic, I need to get the current notebook from state and save
-     *    that to Bookstore.
-     * 3. The reducer is most likely a fall through since there really isn't
-     *    much to update.
-     * 4. To create a success or failure confirmation, I'll need to create
-     *    a snackbar that accepts messages and appears when the message cue
-     *    recieves a new message. Most likely this is another action created
-     *    from the epic that leads to a reducer that populates the state
-     *    with a message to the messages cue.
-     *
-     * To complete this functionality, I'll need to change the CSS and layout of
-     * the header editor. I'll need to create an action and its payload type.
-     * I'll need to get the information for hooking this up to bookstore.
-     * Finally, I'll need to create a SnackBar component. Add messaging
-     * cues to the `AppState` and add logic somewhere regarding how, when, and
-     * where these messages are shown.
-     */
-  });
-
+    onPublish: dispatch(actions.publishToBookstore({}))
   };
 };
 
 // We export this for testing purposes.
 // export { HeaderEditor };
 
-export default HeaderEditor;
+export default connect(null, mapDispatchToProps)(HeaderEditor);

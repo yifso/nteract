@@ -29,6 +29,8 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.PUBLISH_TO_BOOKSTORE:
+      return state;
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
       const { contentRef, filepath } = changeContentNameAction.payload;
