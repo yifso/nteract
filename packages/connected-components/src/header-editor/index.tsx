@@ -49,6 +49,7 @@ export interface HeaderEditorProps {
    */
   editable: boolean;
   /**
+   * Mapped AppState to Props
    * Whether publishing to `Bookstore` is enabled.
    */
   bookstoreEnabled?: boolean;
@@ -65,7 +66,7 @@ export interface HeaderEditorProps {
    */
   onChange: (props?: HeaderDataProps) => void;
   /**
-   * Mapped from State to Props
+   * Mapped from AppState to Props
    * An event handler to publish notebook content to BookStore.
    */
   onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
@@ -308,9 +309,6 @@ const mapDispatchToProps = (
   dispatch: Dispatch,
   ownProps: { contentRef: ContentRef }
 ) => {
-  // Map publishToBookstore `action`(function) to props
-  // Pass action a contentRef so that in the epic, the notebook
-  // can be gotten from the contentRef and passed to the Bookstore.
   return {
     onPublish: () => {
       return dispatch(
