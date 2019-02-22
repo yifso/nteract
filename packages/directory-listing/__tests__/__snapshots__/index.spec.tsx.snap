@@ -2,16 +2,26 @@
 
 exports[`Entry accepts props and renders entries in directory 1`] = `
 <DirectoryEntry>
-  <Icon
-    color="#0366d6"
-    fileType="directory"
+  <td
     key=".0"
-  />
-  <Name
+    style={
+      Object {
+        "width": "25px",
+      }
+    }
+  >
+    <Icon
+      color="#0366d6"
+      fileType="directory"
+    />
+  </td>
+  <td
     key=".1"
   >
-    linky jr
-  </Name>
+    <Name>
+      linky jr
+    </Name>
+  </td>
   <td
     key=".2"
   >

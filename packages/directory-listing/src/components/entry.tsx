@@ -1,14 +1,9 @@
 import * as React from "react";
-// react-hot-loader uses proxies to the original elements so we need to use
-// their comparison function in case a consumer of these components is
-// using hot module reloading
-import { areComponentsEqual } from "react-hot-loader";
 import styled from "styled-components";
 
-import { Icon } from "./icon";
-import { LastSaved } from "./lastsaved";
-import { Name } from "./name";
+import { areComponentsEqual } from "react-hot-loader";
 
+import { Icon } from "./icon";
 interface EntryProps {
   children: React.ReactNode;
 }
@@ -16,17 +11,27 @@ interface EntryProps {
 const DirectoryEntry = styled.tr`
   border-top: 1px solid #eaecef;
 
-  :hover {
+  &:first-child {
+    border-top: none;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
     background-color: #f6f8fa;
     transition: background-color 0.1s ease-out;
   }
 
-  & td:first-child {
-    border-top: none;
+  & td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    vertical-align: middle;
+    width: auto;
+    padding-left: 8px;
   }
 
   & td:last-child {
-    border-bottom: none;
     text-align: right;
     padding-right: 10px;
   }
@@ -42,22 +47,12 @@ export class Entry extends React.PureComponent<EntryProps> {
   render() {
     return (
       <DirectoryEntry>
-        {React.Children.map(this.props.children, (child, index: number) => {
-          const childElement = child as React.ReactElement<any>;
-          if (
-            areComponentsEqual(
-              childElement.type as React.ComponentType<any>,
-              Icon
-            ) ||
-            areComponentsEqual(
-              childElement.type as React.ComponentType<any>,
-              Name
-            )
-          ) {
-            return childElement;
-          } else {
-            return <td>{child}</td>;
+        {/* Wrap each child in a `<td>` */}
+        {React.Children.map(this.props.children, child => {
+          if (child && areComponentsEqual((child as any).type, Icon)) {
+            return <td style={{ width: "25px" }}>{child}</td>;
           }
+          return <td>{child}</td>;
         })}
       </DirectoryEntry>
     );

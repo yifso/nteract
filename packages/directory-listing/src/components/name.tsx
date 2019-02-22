@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
-export const Name = styled.td`
+export const Name = styled.span`
   vertical-align: middle;
-  font-size: 0.9em;
-  padding: 8px;
 
   a {
     text-decoration: none;
