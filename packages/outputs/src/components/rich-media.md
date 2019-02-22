@@ -86,7 +86,7 @@ const Media = require('./media')
 
 <RichMedia data={{ "text/plain": "SparkContext ⚡️" }}>
   <Media.HTML />
-  <Plain />
+  <Media.Plain />
 </RichMedia>
 ```
 
@@ -95,14 +95,9 @@ The `<RichMedia />` component will pass the appropriate data from the media bund
 ```jsx
 const Media = require("./media");
 
-const Plain = props => <pre>{props.data}</pre>;
-Plain.defaultProps = {
-  mediaType: "text/plain"
-};
-
 <RichMedia data={{ "text/plain": "SparkContext ⚡️" }}>
   <Media.HTML />
-  <Plain />
+  <Media.Plain />
 </RichMedia>;
 ```
 
@@ -111,11 +106,6 @@ Whereas this output has a richer HTML output:
 ```jsx
 const Media = require("./media");
 
-const Plain = props => <pre>{props.data}</pre>;
-Plain.defaultProps = {
-  mediaType: "text/plain"
-};
-
 <RichMedia
   data={{
     "text/plain": "plain was richer",
@@ -123,7 +113,7 @@ Plain.defaultProps = {
   }}
 >
   <Media.HTML />
-  <Plain />
+  <Media.Plain />
 </RichMedia>;
 ```
 
@@ -180,11 +170,6 @@ Which means that you can customize outputs as props!
 ```jsx
 const Media = require("./media");
 
-const Plain = props => <pre>{props.data}</pre>;
-Plain.defaultProps = {
-  mediaType: "text/plain"
-};
-
 // Pretend this is the data explorer :)
 const FancyTable = props => (
   <table style={{ border: `2px solid ${props.color}` }}>
@@ -233,7 +218,7 @@ class Output extends React.Component {
         >
           <FancyTable color={this.state.color} />
           <Media.HTML />
-          <Plain />
+          <Media.Plain />
         </RichMedia>
       </div>
     );
