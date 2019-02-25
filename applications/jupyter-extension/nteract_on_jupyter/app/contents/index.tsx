@@ -100,7 +100,7 @@ class Contents extends React.PureComponent<
                 {contentType === "notebook" ? (
                   <React.Fragment>
                     <NotebookMenu contentRef={this.props.contentRef} />
-                    <HeaderEditor />
+                    <HeaderEditor editable />
                   </React.Fragment>
                 ) : null}
               </FileHeader>

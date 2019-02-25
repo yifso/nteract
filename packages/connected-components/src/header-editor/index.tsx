@@ -1,4 +1,11 @@
 /**
+ * @nteract HeaderEditor component. For demo and documentation, see:
+ * https://components.nteract.io/#headereditor.
+ *
+ * Note: The HeaderEditor is a @nteract connected component due to the
+ * fact that it contains a publish to `Bookstore` function that is active
+ * when `Bookstore` is enabled in the @nteract app.
+ *
  * https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
  */
 
@@ -32,6 +39,7 @@ const authorStyle: object = {
 
 const authorStyleBlack: object = { ...authorStyle, color: "black" };
 
+// Type Definitions
 export interface AuthorObject {
   name: string;
 }
@@ -84,6 +92,7 @@ export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
 }
 
+// Constants
 const addTagMessage: JSX.Element = <span>Add a tag</span>;
 const addAuthorMessage: JSX.Element = <span>Add an author</span>;
 
@@ -310,11 +319,8 @@ const mapDispatchToProps = (
   ownProps: { contentRef: ContentRef }
 ) => {
   return {
-    onPublish: () => {
-      return dispatch(
-        actions.publishToBookstore({ contentRef: ownProps.contentRef })
-      );
-    }
+    onPublish: () =>
+      dispatch(actions.publishToBookstore({ contentRef: ownProps.contentRef }))
   };
 };
 
