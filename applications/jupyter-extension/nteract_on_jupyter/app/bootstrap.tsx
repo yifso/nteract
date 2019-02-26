@@ -144,6 +144,16 @@ export async function main(config: JupyterConfigData, rootEl): Promise<void> {
   );
   store.dispatch(actions.fetchKernelspecs({ hostRef, kernelspecsRef }));
 
+  /**
+   * Check to see if Bookstore is installed and valid. This will need to be
+   * removed in the future. This is really a work around to the issue discussed
+   * here,
+   *
+   * In the future, the server should handle this. But for now, we will handle
+   * checking the bookstore validation here.
+   */
+  store.dispatch(actions.fetchBookstoreValidation());
+
   ReactDOM.render(
     <React.Fragment>
       <Provider store={store}>

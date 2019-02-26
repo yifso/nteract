@@ -32,6 +32,26 @@ export interface ErrorAction<T extends string> {
   error: true;
 }
 
+export const FETCH_BOOKSTORE_VALIDATION = "CORE/FETCH_BOOKSTORE_VALIDATION";
+export interface FetchBookstoreValidation {
+  type: "CORE/FETCH_BOOKSTORE_VALIDATION";
+}
+
+export const FETCH_BOOKSTORE_VALIDATION_SUCCESS =
+  "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
+export interface FetchBookstoreValidationSuccess {
+  type: "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
+}
+
+export const FETCH_BOOKSTORE_VALIDATION_FAILED =
+  "CORE/FETCH_BOOKSTORE_VALIDATION_FAILED";
+export interface FetchBookstoreValidationFailed {
+  type: "CORE/FETCH_BOOKSTORE_VALIDATION_FAILED";
+  payload: {
+    error: Error;
+  };
+}
+
 export const OPEN_MODAL = "CORE/OPEN_MODAL";
 export interface OpenModal {
   type: "CORE/OPEN_MODAL";

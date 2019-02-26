@@ -2,6 +2,7 @@
  * @module epics
  */
 import { commListenEpic } from "./comm";
+import { fetchBookstoreValidationEpic } from "./bookstore";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
@@ -49,7 +50,8 @@ const allEpics = [
   updateContentEpic,
   saveContentEpic,
   autoSaveCurrentContentEpic,
-  publishToBookstore
+  publishToBookstore,
+  fetchBookstoreValidationEpic
 ];
 
 export {
@@ -71,5 +73,6 @@ export {
   updateContentEpic,
   saveContentEpic,
   autoSaveCurrentContentEpic,
-  publishToBookstore
+  publishToBookstore,
+  fetchBookstoreValidationEpic
 };
