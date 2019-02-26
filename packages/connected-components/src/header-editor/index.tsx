@@ -304,8 +304,6 @@ class HeaderEditor extends React.PureComponent<
 }
 
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
-  // Map bookstoreEnabled to props.
-  // Get whether it's enabled from appState.
   const isBookstoreEnabled: boolean =
     (appState.core.bookstore && appState.core.bookstore.bookstore_valid) ||
     false;
