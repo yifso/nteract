@@ -40,11 +40,16 @@ const currentKernelspecsRef = (state = "", action: Action) => {
   }
 };
 
+const bookstore = (state = "", action: Action) => {
+  return state;
+};
+
 const core = combineReducers(
   {
     currentKernelspecsRef,
     entities,
-    kernelRef
+    kernelRef,
+    bookstore
   },
   makeStateRecord as any
 );
