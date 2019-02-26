@@ -68,7 +68,9 @@ class NAppHandler(IPythonHandler):
             public_url=url,
             contents_path=path,
             page=self.page,
+            bookstore_validation=json.dumps(self.settings.get('bookstore_validation', {}))
         )
+
         self.write(self.render_template('index.html', **config))
 
     def get_template(self, name):
