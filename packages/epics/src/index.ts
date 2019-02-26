@@ -1,8 +1,8 @@
 /**
  * @module epics
  */
-import { commListenEpic } from "./comm";
 import { fetchBookstoreValidationEpic } from "./bookstore";
+import { commListenEpic } from "./comm";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
