@@ -33,7 +33,10 @@ import("./fonts");
 
 import configureStore from "./store";
 
-export async function main(config: JupyterConfigData, rootEl): Promise<void> {
+export async function main(
+  config: JupyterConfigData,
+  rootEl: HTMLElement
+): Promise<void> {
   // When the data element isn't there, provide an error message
   // Primarily for development usage
 
