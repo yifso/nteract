@@ -1,3 +1,4 @@
+// Vendor modules
 import {
   actions,
   AppState,
@@ -16,26 +17,22 @@ import {
   makeTransformsRecord
 } from "@nteract/core";
 import { Media } from "@nteract/outputs";
-import { ContentRecord, HostRecord } from "@nteract/types";
-
 import TransformVDOM from "@nteract/transform-vdom";
-
+import { ContentRecord, HostRecord } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
-import { JupyterConfigData } from "./config";
-
+// Local modules
 import App from "./app";
-
+import { JupyterConfigData } from "./config";
 import("./fonts");
-
 import configureStore from "./store";
 
 export async function main(
   config: JupyterConfigData,
-  rootEl: HTMLElement
+  rootEl: Element
 ): Promise<void> {
   // When the data element isn't there, provide an error message
   // Primarily for development usage
@@ -46,7 +43,8 @@ export async function main(
     defaultKernelName: "python",
     token: config.token,
     origin: location.origin,
-    basePath: config.baseUrl
+    basePath: config.baseUrl,
+    bookstoreEnabled: false // config.bookstore.enabled
   });
 
   const hostRef = createHostRef();

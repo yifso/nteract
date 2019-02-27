@@ -3,7 +3,6 @@
  */
 import {
   CellId,
-  ImmutableJSONType,
   JSONObject,
   MediaBundle,
   OnDiskOutput
@@ -17,12 +16,13 @@ import {
   PayloadMessage
 } from "@nteract/types";
 import { HostRecord } from "@nteract/types";
-import { BookStore, LanguageInfoMetadata } from "@nteract/types";
+import { LanguageInfoMetadata } from "@nteract/types";
 
 import { System as NotificationSystem } from "react-notification-system";
 
 export * from "./cells";
 export * from "./contents";
+export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
 
@@ -30,29 +30,6 @@ export interface ErrorAction<T extends string> {
   type: T;
   payload: Error;
   error: true;
-}
-
-export const FETCH_BOOKSTORE_VALIDATION = "CORE/FETCH_BOOKSTORE_VALIDATION";
-export interface FetchBookstoreValidation {
-  type: "CORE/FETCH_BOOKSTORE_VALIDATION";
-}
-
-export const FETCH_BOOKSTORE_VALIDATION_SUCCESS =
-  "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
-export interface FetchBookstoreValidationSuccess {
-  type: "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
-  payload: {
-    bookstore: BookStore;
-  };
-}
-
-export const FETCH_BOOKSTORE_VALIDATION_FAILED =
-  "CORE/FETCH_BOOKSTORE_VALIDATION_FAILED";
-export interface FetchBookstoreValidationFailed {
-  type: "CORE/FETCH_BOOKSTORE_VALIDATION_FAILED";
-  payload: {
-    error: Error;
-  };
 }
 
 export const OPEN_MODAL = "CORE/OPEN_MODAL";

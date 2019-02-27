@@ -5,7 +5,6 @@ import { commListenEpic } from "./comm";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
-  publishToBookstore,
   saveContentEpic,
   updateContentEpic
 } from "./contents";
@@ -14,6 +13,7 @@ import {
   executeCellEpic,
   updateDisplayEpic
 } from "./execute";
+import { publishToBookstore } from "./hosts";
 import {
   acquireKernelInfoEpic,
   launchKernelWhenNotebookSetEpic,

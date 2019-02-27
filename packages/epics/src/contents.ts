@@ -9,7 +9,7 @@ import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents, ServerConfig } from "rx-jupyter";
-import { empty, from, interval, Observable, ObservableInput, of } from "rxjs";
+import { empty, from, interval, Observable, of } from "rxjs";
 import { catchError, map, mergeMap, switchMap, tap } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
@@ -18,59 +18,6 @@ import { AppState, ContentRef } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 import urljoin from "url-join";
-
-export function publishToBookstore(
-  action$: ActionsObservable<actions.PublishToBookstore>,
-  state$: StateObservable<AppState>
-) {
-  return action$.pipe(
-    ofType(actions.PUBLISH_TO_BOOKSTORE),
-    switchMap(action => {
-      if (!action.payload) {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: {
-            error: new Error("saving content to Bookstore needs a payload")
-          }
-        }) as any;
-      }
-
-      const bookstoreEndpoint: string = "api/bookstore/published";
-      const state: any = state$.value;
-      const host: any = selectors.currentHost(state);
-
-      // Dismiss any usage that isn't targeting a jupyter server
-      if (host.type !== "jupyter") {
-        return empty();
-      }
-
-      const content: any = selectors.contentByRef(state);
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
-
-      return contents.create(serverConfig, bookstoreEndpoint, content).pipe(
-        tap((xhr: AjaxResponse) => {
-          if (xhr.status !== 200) {
-            throw new Error(xhr.response);
-          }
-        }),
-        map(() => {
-          actions.publishToBookstoreSucceeded({
-            contentRef: action.payload.contentRef
-          });
-        }),
-        catchError((xhrError: any) =>
-          of(
-            actions.publishToBookstoreFailed({
-              error: xhrError,
-              contentRef: action.payload.contentRef
-            })
-          )
-        )
-      );
-    })
-  );
-}
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,

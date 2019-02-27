@@ -23,6 +23,7 @@ import { actions, AppState, ContentRef } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { app } from "../../../reducers/lib";
 
 // Styled Components
 const tagStyle: object = {
@@ -304,11 +305,10 @@ class HeaderEditor extends React.PureComponent<
 }
 
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
+  const host = appState.app.host;
+  console.log(host.toJS());
   const isBookstoreEnabled: boolean =
-    (appState.app.host &&
-      appState.app.host.bookstore &&
-      appState.app.host.bookstore.bookstore_valid) ||
-    false;
+    host && host.bookstoreEnabled ? host.bookstoreEnabled : false;
 
   return {
     ...ownProps,

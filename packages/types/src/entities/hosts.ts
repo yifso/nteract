@@ -7,6 +7,11 @@ import { AjaxRequest } from "rxjs/ajax";
 import { HostId } from "../ids";
 import { HostRef } from "../refs";
 
+export interface Bookstore {
+  version: string;
+  enabled: boolean;
+}
+
 export interface ServerConfig {
   endpoint: string;
   crossDomain: boolean | null | undefined;
@@ -15,21 +20,18 @@ export interface ServerConfig {
 
 export interface EmptyHost {
   type: "empty";
+  bookstoreEnabled: boolean;
 }
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
 export const makeEmptyHostRecord = Immutable.Record<EmptyHost>({
-  type: "empty"
+  type: "empty",
+  bookstoreEnabled: false
 });
 
 export interface BaseHostProps {
   id?: HostId | null;
   defaultKernelName: string;
-}
-
-export interface Bookstore {
-  bookstore_valid: boolean;
-  archive_valid: boolean;
-  publish_valid: boolean;
+  bookstoreEnabled?: boolean;
 }
 
 export type JupyterHostRecordProps = BaseHostProps & {
@@ -38,12 +40,8 @@ export type JupyterHostRecordProps = BaseHostProps & {
   origin: string;
   basePath: string;
   crossDomain?: boolean | null;
-<<<<<<< HEAD
   ajaxOptions?: Partial<AjaxRequest>;
   wsProtocol?: string | string[];
-=======
-  bookstore: Bookstore | null;
->>>>>>> removing actions and reducers for validating bookstore
 };
 
 export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
@@ -54,12 +52,9 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
   crossDomain: false,
-<<<<<<< HEAD
   ajaxOptions: undefined,
-  wsProtocol: undefined
-=======
-  bookstore: null
->>>>>>> removing actions and reducers for validating bookstore
+  wsProtocol: undefined,
+  bookstoreEnabled: false
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
@@ -71,7 +66,8 @@ export type LocalHostRecordProps = BaseHostProps & {
 export const makeLocalHostRecord = Immutable.Record<LocalHostRecordProps>({
   type: "local",
   id: null,
-  defaultKernelName: "python"
+  defaultKernelName: "python",
+  bookstoreEnabled: false
 });
 
 export type LocalHostRecord = Immutable.RecordOf<LocalHostRecordProps>;
