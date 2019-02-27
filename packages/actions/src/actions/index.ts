@@ -24,6 +24,32 @@ export * from "./contents";
 export * from "./kernels";
 export * from "./kernelspecs";
 
+export const publishToBookstore = (payload: {
+  contentRef: ContentRef;
+}): actionTypes.PublishToBookstore => {
+  // TODO: Remove console.log
+  console.log("sending first action to save to bookstore");
+  return {
+    type: actionTypes.PUBLISH_TO_BOOKSTORE,
+    payload
+  };
+};
+
+export const publishToBookstoreSucceeded = (payload: {
+  contentRef: ContentRef;
+}): actionTypes.PublishToBookstoreSucceeded => ({
+  type: actionTypes.PUBLISH_TO_BOOKSTORE_SUCCEEDED,
+  payload
+});
+
+export const publishToBookstoreFailed = (payload: {
+  contentRef: ContentRef;
+  error: Error;
+}): actionTypes.PublishToBookstoreFailed => ({
+  type: actionTypes.PUBLISH_TO_BOOKSTORE_FAILED,
+  payload
+});
+
 export const openModal = (payload: { modalType: string }) => ({
   type: actionTypes.OPEN_MODAL,
   payload
