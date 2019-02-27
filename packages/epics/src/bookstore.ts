@@ -28,16 +28,13 @@ export const fetchBookstoreValidationEpic = (
 
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      return contents.get(serverConfig, "api/bookstore/", {}).pipe(
+      return contents.get(serverConfig, "api/bookstore", {}).pipe(
         tap((xhr: AjaxResponse) => {
           if (xhr.status !== 200) {
             throw new Error(xhr.response);
           }
         }),
         map((xhr: AjaxResponse) => {
-          // Grab bookstore payload and send it with
-          // fetchBookstoreValidationSuccess.
-          // Reduce the state in the reducer
           actions.fetchBookstoreValidationSuccess({
             bookstore: xhr.response
           });
