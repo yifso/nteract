@@ -11,7 +11,6 @@ import {
 import * as actionTypes from "../actionTypes";
 
 import {
-  BookStore,
   ContentRef,
   HostId,
   HostRef,

@@ -36,7 +36,6 @@ export function publishToBookstore(
         }) as any;
       }
 
-      const { contentRef } = action.payload;
       const bookstoreEndpoint: string = "api/bookstore/published";
       const state: any = state$.value;
       const host: any = selectors.currentHost(state);
