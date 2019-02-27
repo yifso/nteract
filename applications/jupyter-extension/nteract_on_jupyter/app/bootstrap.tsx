@@ -151,8 +151,11 @@ export async function main(config: JupyterConfigData, rootEl): Promise<void> {
    *
    * In the future, the server should handle this. But for now, we will handle
    * checking the bookstore validation here.
+   *
+   * Possibly removing this after talking with Kyle Kelley about how this can be
+   * done on the server-side (python).
    */
-  store.dispatch(actions.fetchBookstoreValidation());
+  // store.dispatch(actions.fetchBookstoreValidation());
 
   ReactDOM.render(
     <React.Fragment>

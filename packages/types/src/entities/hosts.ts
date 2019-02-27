@@ -26,14 +26,24 @@ export interface BaseHostProps {
   defaultKernelName: string;
 }
 
+export interface Bookstore {
+  bookstore_valid: boolean;
+  archive_valid: boolean;
+  publish_valid: boolean;
+}
+
 export type JupyterHostRecordProps = BaseHostProps & {
   type: "jupyter";
   token?: string | null;
   origin: string;
   basePath: string;
   crossDomain?: boolean | null;
+<<<<<<< HEAD
   ajaxOptions?: Partial<AjaxRequest>;
   wsProtocol?: string | string[];
+=======
+  bookstore: Bookstore | null;
+>>>>>>> removing actions and reducers for validating bookstore
 };
 
 export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
@@ -44,8 +54,12 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
   crossDomain: false,
+<<<<<<< HEAD
   ajaxOptions: undefined,
   wsProtocol: undefined
+=======
+  bookstore: null
+>>>>>>> removing actions and reducers for validating bookstore
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;

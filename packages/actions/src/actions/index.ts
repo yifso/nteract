@@ -25,22 +25,6 @@ export * from "./contents";
 export * from "./kernels";
 export * from "./kernelspecs";
 
-export const fetchBookstoreValidation = () => ({
-  type: actionTypes.FETCH_BOOKSTORE_VALIDATION
-});
-
-export const fetchBookstoreValidationSuccess = (payload: {
-  bookstore: BookStore;
-}) => ({
-  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_SUCCESS,
-  payload
-});
-
-export const fetchBookstoreValidationFailed = (payload: { error: Error }) => ({
-  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_FAILED,
-  payload
-});
-
 export const openModal = (payload: { modalType: string }) => ({
   type: actionTypes.OPEN_MODAL,
   payload

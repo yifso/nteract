@@ -29,14 +29,6 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
-    // case actionTypes.FETCH_BOOKSTORE_VALIDATION:
-    //   return state;
-    // case actionTypes.FETCH_BOOKSTORE_VALIDATION_SUCCESS:
-    //   const bkAction = action as actionTypes.FetchBookstoreValidationSuccess;
-    //   return state.setIn(["core"], bkAction.payload.bookstore);
-    // // return state;
-    // case actionTypes.FETCH_BOOKSTORE_VALIDATION_FAILED:
-    //   return state;
     case actionTypes.PUBLISH_TO_BOOKSTORE:
       return state;
     case actionTypes.PUBLISH_TO_BOOKSTORE_SUCCEEDED:

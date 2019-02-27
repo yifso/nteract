@@ -111,24 +111,16 @@ const version: string = require("../package.json").version;
 
 export type ConfigState = Immutable.Map<string, any>;
 
-export interface BookStore {
-  bookstore_valid: boolean;
-  archive_valid: boolean;
-  publish_valid: boolean;
-}
-
 export interface StateRecordProps {
   kernelRef: KernelRef | null;
   currentKernelspecsRef?: KernelspecsRef | null;
   entities: Immutable.RecordOf<EntitiesRecordProps>;
-  bookstore?: BookStore | null;
 }
 
 export const makeStateRecord = Immutable.Record<StateRecordProps>({
   kernelRef: null,
   currentKernelspecsRef: null,
-  entities: makeEntitiesRecord(),
-  bookstore: null
+  entities: makeEntitiesRecord()
 });
 
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
