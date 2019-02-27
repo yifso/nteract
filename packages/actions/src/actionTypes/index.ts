@@ -17,7 +17,7 @@ import {
   PayloadMessage
 } from "@nteract/types";
 import { HostRecord } from "@nteract/types";
-import { LanguageInfoMetadata } from "@nteract/types";
+import { BookStore, LanguageInfoMetadata } from "@nteract/types";
 
 import { System as NotificationSystem } from "react-notification-system";
 
@@ -41,6 +41,9 @@ export const FETCH_BOOKSTORE_VALIDATION_SUCCESS =
   "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
 export interface FetchBookstoreValidationSuccess {
   type: "CORE/FETCH_BOOKSTORE_VALIDATION_SUCCESS";
+  payload: {
+    bookstore: BookStore;
+  };
 }
 
 export const FETCH_BOOKSTORE_VALIDATION_FAILED =
