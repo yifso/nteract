@@ -16,6 +16,12 @@ const byRef = (
 ): Map<string, HostRecord> => {
   let typedAction;
   switch (action.type) {
+    case actions.PUBLISH_TO_BOOKSTORE:
+      return state;
+    case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:
+      return state;
+    case actions.PUBLISH_TO_BOOKSTORE_FAILED:
+      return state;
     case actions.ADD_HOST:
       typedAction = action as actions.AddHost;
       switch (typedAction.payload.host.type) {
