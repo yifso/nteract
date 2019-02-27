@@ -22,7 +22,7 @@ Distributed under the terms of the Modified BSD License.
     "contentsPath": "{{ contents_path }}",
     "assetUrl": "{{ asset_url }}",
     "page": "{{ page }}",
-    "bookstoreValidation": {{ bookstore_validation | safe }}
+    "bookstore": {{ bookstore | tojson(indent=2) }}
   }</script>
 
   {% block favicon %}<link rel="shortcut icon" type="image/x-icon" href="{{ base_url }}static/base/images/favicon.ico">{% endblock %}
