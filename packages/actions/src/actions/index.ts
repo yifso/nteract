@@ -11,6 +11,7 @@ import {
 import * as actionTypes from "../actionTypes";
 
 import {
+  BookStore,
   ContentRef,
   HostId,
   HostRef,
@@ -28,12 +29,15 @@ export const fetchBookstoreValidation = () => ({
   type: actionTypes.FETCH_BOOKSTORE_VALIDATION
 });
 
-export const fetchBookstoreValidationSuccess = () => ({
-  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_SUCCESS
+export const fetchBookstoreValidationSuccess = (payload: {
+  bookstore: BookStore;
+}) => ({
+  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_SUCCESS,
+  payload
 });
 
 export const fetchBookstoreValidationFailed = (payload: { error: Error }) => ({
-  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_SUCCESS,
+  type: actionTypes.FETCH_BOOKSTORE_VALIDATION_FAILED,
   payload
 });
 
