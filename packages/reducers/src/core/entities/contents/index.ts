@@ -29,6 +29,24 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.UPDATE_TO_HEADER_EDITOR:
+      const headerEditorAction = action as actionTypes.UpdateToHeaderEditor;
+      const { authors, tags, title, description } = headerEditorAction.payload;
+      return state.updateIn(
+        [
+          headerEditorAction.payload.contentRef,
+          "model",
+          "notebook",
+          "metadata"
+        ],
+        null,
+        metadata =>
+          metadata
+            .set("authors", authors)
+            .set("description", description)
+            .set("tags", tags)
+            .set("title", title)
+      );
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
       const { contentRef, filepath } = changeContentNameAction.payload;

@@ -1,11 +1,25 @@
 /**
  * @module actions
  */
-import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
+import {
+  ContentRef,
+  HeaderDataProps,
+  KernelRef,
+  KernelspecInfo
+} from "@nteract/types";
 
 import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
+
+export const updateToHeaderEditor = (
+  payload: HeaderDataProps & {
+    contentRef: ContentRef;
+  }
+): actionTypes.UpdateToHeaderEditor => ({
+  type: actionTypes.UPDATE_TO_HEADER_EDITOR,
+  payload
+});
 
 export const changeContentName = (payload: {
   filepath: string;

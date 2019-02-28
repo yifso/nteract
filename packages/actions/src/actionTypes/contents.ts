@@ -1,7 +1,20 @@
 /**
  * @module actions
  */
-import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
+import {
+  ContentRef,
+  HeaderDataProps,
+  KernelRef,
+  KernelspecInfo
+} from "@nteract/types";
+
+export const UPDATE_TO_HEADER_EDITOR = "CORE/UPDATE_TO_HEADER_EDITOR";
+export interface UpdateToHeaderEditor {
+  type: "CORE/UPDATE_TO_HEADER_EDITOR";
+  payload: HeaderDataProps & {
+    contentRef: ContentRef;
+  };
+}
 
 export const CHANGE_CONTENT_NAME = "CORE/CHANGE_CONTENT_NAME";
 export interface ChangeContentName {
