@@ -1,3 +1,4 @@
+// Vendor modules
 import { CellType } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
 import {
@@ -5,18 +6,18 @@ import {
   ContentRef,
   KernelRef,
   KernelspecsByRefRecord,
-  KernelspecsRef,
-  KernelspecsByRefRecordProps
+  KernelspecsByRefRecordProps,
+  KernelspecsRef
 } from "@nteract/types";
+import { RecordOf } from "immutable";
 import Menu, { Divider, MenuItem, SubMenu } from "rc-menu";
 import * as React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+// Local modules
 import { MODAL_TYPES } from "../modal-controller";
-
 import { MENU_ITEM_ACTIONS, MENUS } from "./constants";
-import { RecordOf } from "immutable";
 
 // To allow actions that can take dynamic arguments (like selecting a kernel
 // based on the host's kernelspecs), we have some simple utility functions to
@@ -95,7 +96,7 @@ interface State {
   openKeys?: string[];
 }
 
-class PureNotebookMenu extends React.Component<Props, State> {
+class PureNotebookMenu extends React.PureComponent<Props, State> {
   state: State = {};
   handleClick = ({ key }: { key: string }) => {
     const {
@@ -279,12 +280,12 @@ class PureNotebookMenu extends React.Component<Props, State> {
       this.setState({ openKeys });
     }
   };
-  componentWillMount() {
+  componentWillMount(): void {
     // This ensures that we can still initially set defaultOpenKeys when
     // persistAfterClick is true.
     this.setState({ openKeys: this.props.defaultOpenKeys });
   }
-  render() {
+  render(): JSX.Element {
     const {
       currentKernelspecs,
       defaultOpenKeys,
@@ -351,6 +352,9 @@ class PureNotebookMenu extends React.Component<Props, State> {
             </SubMenu>
           </SubMenu>
           <SubMenu key={MENUS.VIEW} title="View">
+            <MenuItem key={createActionKey(MENUS.TOGGLE_EDITOR)}>
+              Toggle Editor
+            </MenuItem>
             <SubMenu key={MENUS.VIEW_THEMES} title="themes">
               <MenuItem
                 key={createActionKey(MENU_ITEM_ACTIONS.SET_THEME_LIGHT)}

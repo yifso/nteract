@@ -9,7 +9,7 @@ import {
   DirectoryContentRecordProps,
   DummyContentRecordProps,
   FileContentRecordProps,
-  NotebookContentRecordProps,
+  NotebookContentRecordProps
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { dirname } from "path";
@@ -32,7 +32,7 @@ interface IContentsProps {
   displayName: string;
   error?: object | null;
   filepath: string | undefined;
-  headerData?: HeaderDataProps;
+  headerData?: HeaderDataProps | null;
   lastSavedStatement: string;
   loading: boolean;
   mimetype?: string | null;
@@ -43,12 +43,16 @@ interface IContentsState {
   isDialogOpen: boolean;
 }
 
+interface IStateToProps {
+  onHeaderEditorChange: (props: HeaderDataProps) => void;
+}
+
 interface IDispatchFromProps {
   handlers: any;
 }
 
 class Contents extends React.PureComponent<
-  IContentsProps & IDispatchFromProps,
+  IContentsProps & IStateToProps & IDispatchFromProps,
   IContentsState
 > {
   private keyMap: KeyMap = {
@@ -84,6 +88,8 @@ class Contents extends React.PureComponent<
       loading,
       saving
     } = this.props;
+
+    console.log(this.props.headerData);
 
     switch (contentType) {
       case "notebook":
@@ -164,15 +170,6 @@ const makeMapStateToProps: any = (
       throw new Error("need content to view content, check your contentRefs");
     }
 
-    let headerData;
-
-    if (content instanceof RecordOf<NotebookContentRecordProps>) {
-      headerData =
-        content.model && content.model.notebook
-          ? content.model.notebook.metadata
-          : {};
-    }
-
     return {
       appBase,
       baseDir: dirname(content.filepath),
@@ -181,7 +178,6 @@ const makeMapStateToProps: any = (
       displayName: content.filepath.split("/").pop() || "",
       error: content.error,
       filepath: content.filepath,
-      headerData,
       lastSavedStatement: "recently",
       loading: content.loading,
       mimetype: content.mimetype,

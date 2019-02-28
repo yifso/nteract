@@ -8,6 +8,15 @@ import {
   KernelspecInfo
 } from "@nteract/types";
 
+export const TOGGLE_HEADER_EDITOR = "CORE/TOGGLE_HEADER_EDITOR";
+export interface ToggleHeaderEditor {
+  type: "CORE/TOGGLE_HEADER_EDITOR";
+  payload: {
+    contentRef: ContentRef;
+    showHeaderEditor: boolean;
+  };
+}
+
 export const UPDATE_TO_HEADER_EDITOR = "CORE/UPDATE_TO_HEADER_EDITOR";
 export interface UpdateToHeaderEditor {
   type: "CORE/UPDATE_TO_HEADER_EDITOR";

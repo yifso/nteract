@@ -23,7 +23,6 @@ import { actions, AppState, ContentRef } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { app } from "../../../reducers/lib";
 
 // Styled Components
 const tagStyle: object = {
@@ -67,6 +66,7 @@ export interface HeaderEditorProps {
    */
   contentRef: ContentRef;
   /**
+   * Mapped from AppState to Props
    * The data that the header should be populated with.
    */
   headerData: HeaderDataProps;
@@ -102,8 +102,8 @@ class HeaderEditor extends React.PureComponent<
   HeaderEditorState
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
-    editable: true,
     bookstoreEnabled: false,
+    editable: true,
     headerData: {
       authors: [],
       description: "",

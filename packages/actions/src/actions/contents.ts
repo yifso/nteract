@@ -12,6 +12,14 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
+export const toggleHeaderEditor = (payload: {
+  contentRef: ContentRef;
+  showHeaderEditor: boolean;
+}): actionTypes.ToggleHeaderEditor => ({
+  type: actionTypes.TOGGLE_HEADER_EDITOR,
+  payload
+});
+
 export const updateToHeaderEditor = (
   payload: HeaderDataProps & {
     contentRef: ContentRef;

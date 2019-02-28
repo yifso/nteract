@@ -37,6 +37,7 @@ export const MENUS = {
   CELL: "cell",
   CELL_CREATE_CELL: "cell-create-cell",
   VIEW: "view",
+  TOGGLE_EDITOR: "toggle-editor",
   VIEW_THEMES: "view-themes",
   RUNTIME: "runtime",
   RUNTIME_CHANGE_KERNEL: "runtime-change-kernel",

@@ -44,7 +44,8 @@ export async function main(
     token: config.token,
     origin: location.origin,
     basePath: config.baseUrl,
-    bookstoreEnabled: false // config.bookstore.enabled
+    bookstoreEnabled: false, // config.bookstore.enabled
+    showHeaderEditor: false
   });
 
   const hostRef = createHostRef();
