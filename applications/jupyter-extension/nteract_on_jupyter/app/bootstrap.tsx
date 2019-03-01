@@ -146,19 +146,6 @@ export async function main(
   );
   store.dispatch(actions.fetchKernelspecs({ hostRef, kernelspecsRef }));
 
-  /**
-   * Check to see if Bookstore is installed and valid. This will need to be
-   * removed in the future. This is really a work around to the issue discussed
-   * here,
-   *
-   * In the future, the server should handle this. But for now, we will handle
-   * checking the bookstore validation here.
-   *
-   * Possibly removing this after talking with Kyle Kelley about how this can be
-   * done on the server-side (python).
-   */
-  // store.dispatch(actions.fetchBookstoreValidation());
-
   ReactDOM.render(
     <React.Fragment>
       <Provider store={store}>

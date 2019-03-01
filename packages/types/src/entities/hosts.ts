@@ -20,18 +20,21 @@ export interface ServerConfig {
 
 export interface EmptyHost {
   type: "empty";
-  bookstoreEnabled: boolean;
+  bookstoreEnabled?: boolean;
+  showHeaderEditor?: boolean;
 }
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
 export const makeEmptyHostRecord = Immutable.Record<EmptyHost>({
   type: "empty",
-  bookstoreEnabled: false
+  bookstoreEnabled: false,
+  showHeaderEditor: false
 });
 
 export interface BaseHostProps {
   id?: HostId | null;
   defaultKernelName: string;
   bookstoreEnabled?: boolean;
+  showHeaderEditor?: boolean;
 }
 
 export type JupyterHostRecordProps = BaseHostProps & {
