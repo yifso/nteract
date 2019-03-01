@@ -29,17 +29,6 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
-    case actionTypes.TOGGLE_HEADER_EDITOR:
-      const toggleEditorAction = action as actionTypes.ToggleHeaderEditor;
-      return state.updateIn(
-        [
-          toggleEditorAction.payload.contentRef,
-          "model",
-          "notebook",
-          "metadata"
-        ],
-        metadata => metadata.set("showHeaderEditor", !metadata.showHeaderEditor)
-      );
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
       const { contentRef, filepath } = changeContentNameAction.payload;

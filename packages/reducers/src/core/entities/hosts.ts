@@ -16,6 +16,15 @@ const byRef = (
 ): Map<string, HostRecord> => {
   let typedAction;
   switch (action.type) {
+    case actions.TOGGLE_HEADER_EDITOR:
+      const toggleEditorAction = action as actions.ToggleHeaderEditor;
+      // Need to get the correct contentRef
+      console.log(state);
+      console.log(state.toJS());
+      return state.setIn(
+        [0],
+        !state.get(toggleEditorAction.payload.contentRef, "showHeaderEditor")
+      );
     case actions.PUBLISH_TO_BOOKSTORE:
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:

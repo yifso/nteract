@@ -93,6 +93,7 @@ class Contents extends React.PureComponent<
       case "notebook":
       case "file":
       case "dummy":
+        console.log(contentRef);
         return (
           <React.Fragment>
             <HotKeys keyMap={this.keyMap} handlers={handlers}>
@@ -107,12 +108,13 @@ class Contents extends React.PureComponent<
               >
                 {contentType === "notebook" ? (
                   <React.Fragment>
-                    <NotebookMenu contentRef={this.props.contentRef} />
+                    <NotebookMenu contentRef={contentRef} />
                     <HeaderEditor
                       editable
-                      contentRef={this.props.contentRef}
+                      contentRef={contentRef}
                       headerData={this.props.headerData}
                       onChange={this.props.onHeaderEditorChange}
+                      open
                     />
                   </React.Fragment>
                 ) : null}
@@ -194,9 +196,9 @@ const mapDispatchToProps = (
   const { appBase, contentRef } = ownProps;
 
   return {
-    onHeaderEditorChange: (props: HeaderDataProps) => {
-      return dispatch(actions.updateToHeaderEditor({ ...props, contentRef }));
-    },
+    // onHeaderEditorChange: (props: HeaderDataProps) => {
+    //   return dispatch(actions.overwriteMetadataField({ ...props, contentRef }));
+    // },
     // `HotKeys` handlers object
     // see: https://github.com/greena13/react-hotkeys#defining-handlers
     handlers: {

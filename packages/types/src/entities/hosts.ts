@@ -34,7 +34,7 @@ export interface BaseHostProps {
   id?: HostId | null;
   defaultKernelName: string;
   bookstoreEnabled?: boolean;
-  showHeaderEditor?: boolean;
+  showHeaderEditor?: false;
 }
 
 export type JupyterHostRecordProps = BaseHostProps & {
@@ -57,7 +57,8 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   crossDomain: false,
   ajaxOptions: undefined,
   wsProtocol: undefined,
-  bookstoreEnabled: false
+  bookstoreEnabled: false,
+  showHeaderEditor: false
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;

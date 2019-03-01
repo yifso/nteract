@@ -20,7 +20,6 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import { actions, AppState, ContentRef } from "@nteract/core";
-import { Content } from "leaflet";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -119,6 +118,7 @@ class HeaderEditor extends React.PureComponent<
     onChange: () => {},
     onPublish: () => {},
     onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {},
+    open: false,
     theme: "light"
   };
 
@@ -327,6 +327,7 @@ const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
 
   return {
     ...ownProps,
+    open: host.showHeaderEditor,
     bookstoreEnabled: isBookstoreEnabled
   };
 };
