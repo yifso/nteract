@@ -16,6 +16,21 @@ import DataExplorer from "@nteract/data-explorer";
 <DataExplorer />;
 ```
 
+## CSS
+
+Note: you also need to include the CSS for a few dependencies as well
+
+```
+
+// Toolbars and other UI elements
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
+
+// CSS for the grid view on the data explorer
+import "react-table/react-table.css";
+```
+
+
 ## Hacking on the nteract Data Explorer
 
 For expedited development, we recommend using the [Jupyter Extension](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension) to contribute.
