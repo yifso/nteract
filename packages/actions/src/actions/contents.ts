@@ -1,31 +1,17 @@
 /**
  * @module actions
  */
-import {
-  ContentRef,
-  HeaderDataProps,
-  KernelRef,
-  KernelspecInfo
-} from "@nteract/types";
-
-import * as actionTypes from "../actionTypes";
-
+// Vendor modules
+import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 import { contents } from "rx-jupyter";
+
+// Local modules
+import * as actionTypes from "../actionTypes";
 
 export const toggleHeaderEditor = (payload: {
   contentRef: ContentRef;
-  showHeaderEditor: boolean;
 }): actionTypes.ToggleHeaderEditor => ({
   type: actionTypes.TOGGLE_HEADER_EDITOR,
-  payload
-});
-
-export const updateToHeaderEditor = (
-  payload: HeaderDataProps & {
-    contentRef: ContentRef;
-  }
-): actionTypes.UpdateToHeaderEditor => ({
-  type: actionTypes.UPDATE_TO_HEADER_EDITOR,
   payload
 });
 

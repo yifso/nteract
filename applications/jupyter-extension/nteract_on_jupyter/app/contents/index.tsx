@@ -89,8 +89,6 @@ class Contents extends React.PureComponent<
       saving
     } = this.props;
 
-    console.log(this.props.headerData);
-
     switch (contentType) {
       case "notebook":
       case "file":
@@ -112,6 +110,7 @@ class Contents extends React.PureComponent<
                     <NotebookMenu contentRef={this.props.contentRef} />
                     <HeaderEditor
                       editable
+                      contentRef={this.props.contentRef}
                       headerData={this.props.headerData}
                       onChange={this.props.onHeaderEditorChange}
                     />

@@ -22,6 +22,7 @@ export const MENU_ITEM_ACTIONS = {
   PASTE_CELL: "paste-cell",
   SET_THEME_DARK: "set-theme-dark",
   SET_THEME_LIGHT: "set-theme-light",
+  TOGGLE_EDITOR: "toggle-editor",
   OPEN_ABOUT: "open-about",
   KILL_KERNEL: "kill-kernel",
   INTERRUPT_KERNEL: "interrupt-kernel"
@@ -37,7 +38,6 @@ export const MENUS = {
   CELL: "cell",
   CELL_CREATE_CELL: "cell-create-cell",
   VIEW: "view",
-  TOGGLE_EDITOR: "toggle-editor",
   VIEW_THEMES: "view-themes",
   RUNTIME: "runtime",
   RUNTIME_CHANGE_KERNEL: "runtime-change-kernel",

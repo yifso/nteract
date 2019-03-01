@@ -1,6 +1,6 @@
 // Vendor modules
 import { CellType } from "@nteract/commutable";
-import { actions, selectors } from "@nteract/core";
+import { actions } from "@nteract/core";
 import {
   AppState,
   ContentRef,
@@ -26,10 +26,16 @@ const createActionKey = (action: string, ...args: any[]) =>
   [action, ...args].join(":");
 const parseActionKey = (key: string) => key.split(":");
 
+// Styled Components
 const StickyMenu = styled(Menu)`
   position: sticky;
   top: 0;
   z-index: 10000;
+`;
+
+const Link = styled.a`
+  text-decoration: none;
+  color: currentColor;
 `;
 
 interface Props {
@@ -37,6 +43,7 @@ interface Props {
   defaultOpenKeys?: string[];
   openKeys?: string[];
   currentKernelRef?: KernelRef | null;
+  toggleNotebookHeaderEditor?: (payload: { contentRef: string }) => void;
   saveNotebook?: (payload: { contentRef: string }) => void;
   downloadNotebook?: (payload: { contentRef: string }) => void;
   executeCell?: (payload: { id: string; contentRef: string }) => void;
@@ -121,10 +128,16 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
       restartKernelAndRunAllOutputs,
       killKernel,
       interruptKernel,
-      currentContentRef
+      currentContentRef,
+      toggleNotebookHeaderEditor
     } = this.props;
     const [action, ...args] = parseActionKey(key);
     switch (action) {
+      case MENU_ITEM_ACTIONS.TOGGLE_EDITOR:
+        if (toggleNotebookHeaderEditor) {
+          toggleNotebookHeaderEditor({ contentRef: currentContentRef });
+        }
+        break;
       case MENU_ITEM_ACTIONS.SAVE_NOTEBOOK:
         if (saveNotebook) {
           saveNotebook({ contentRef: currentContentRef });
@@ -275,16 +288,19 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
       this.setState({ openKeys: [] });
     }
   };
+
   handleOpenChange = (openKeys: string[]) => {
     if (!this.props.persistAfterClick) {
       this.setState({ openKeys });
     }
   };
+
   componentWillMount(): void {
     // This ensures that we can still initially set defaultOpenKeys when
     // persistAfterClick is true.
     this.setState({ openKeys: this.props.defaultOpenKeys });
   }
+
   render(): JSX.Element {
     const {
       currentKernelspecs,
@@ -299,24 +315,19 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
       defaultOpenKeys,
       selectable: false
     };
+
     if (!persistAfterClick) {
       menuProps.openKeys = openKeys;
     }
+
     return (
       <React.Fragment>
         <StickyMenu {...menuProps}>
           <SubMenu key={MENUS.FILE} title="File">
             <MenuItem>
-              <a
-                href="/nteract/edit"
-                style={{
-                  textDecoration: "none",
-                  color: "currentColor"
-                }}
-                target="_blank"
-              >
+              <Link href="/nteract/edit" target="_blank">
                 Open...
-              </a>
+              </Link>
             </MenuItem>
             <MenuItem key={createActionKey(MENU_ITEM_ACTIONS.SAVE_NOTEBOOK)}>
               Save
@@ -352,8 +363,8 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
             </SubMenu>
           </SubMenu>
           <SubMenu key={MENUS.VIEW} title="View">
-            <MenuItem key={createActionKey(MENUS.TOGGLE_EDITOR)}>
-              Toggle Editor
+            <MenuItem key={createActionKey(MENU_ITEM_ACTIONS.TOGGLE_EDITOR)}>
+              Notebook Header
             </MenuItem>
             <SubMenu key={MENUS.VIEW_THEMES} title="themes">
               <MenuItem
@@ -517,6 +528,8 @@ function makeMapDispatchToProps(
   initialProps: { contentRef: ContentRef }
 ) {
   const mapDispatchToProps = (dispatch: any) => ({
+    toggleNotebookHeaderEditor: (payload: { contentRef: string }) =>
+      dispatch(actions.toggleHeaderEditor(payload)),
     saveNotebook: (payload: { contentRef: string }) =>
       dispatch(actions.save(payload)),
     downloadNotebook: (payload: { contentRef: string }) =>

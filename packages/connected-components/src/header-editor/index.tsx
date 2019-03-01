@@ -20,6 +20,7 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import { actions, AppState, ContentRef } from "@nteract/core";
+import { Content } from "leaflet";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -73,7 +74,7 @@ export interface HeaderEditorProps {
   /**
    * An event handler to run whenever header fields are modified.
    */
-  onChange: (props?: HeaderDataProps) => void;
+  onChange: (props?: HeaderDataProps & { contentRef: ContentRef }) => void;
   /**
    * Mapped from AppState to Props
    * An event handler to publish notebook content to BookStore.
@@ -83,6 +84,10 @@ export interface HeaderEditorProps {
    *
    */
   onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
+  /**
+   * Whether the Header Editor is open/visible.
+   */
+  open: boolean;
   /**
    * The theme of the header.
    */
@@ -128,6 +133,7 @@ class HeaderEditor extends React.PureComponent<
   onTextChange = (newText: string): void => {
     this.props.onChange({
       ...this.props.headerData,
+      contentRef: this.props.contentRef,
       title: newText
     });
   };
@@ -135,6 +141,7 @@ class HeaderEditor extends React.PureComponent<
   onEditorChange = (newText: string) => {
     this.props.onChange({
       ...this.props.headerData,
+      contentRef: this.props.contentRef,
       description: newText
     });
   };
@@ -146,6 +153,7 @@ class HeaderEditor extends React.PureComponent<
     if (this.props.editable === true) {
       this.props.onChange({
         ...this.props.headerData,
+        contentRef: this.props.contentRef,
         authors: this.props.headerData.authors.filter(p => p.name !== t.name)
       });
       return;
@@ -160,6 +168,7 @@ class HeaderEditor extends React.PureComponent<
     if (this.props.editable) {
       this.props.onChange({
         ...this.props.headerData,
+        contentRef: this.props.contentRef,
         tags: this.props.headerData.tags.filter(p => p !== t)
       });
       return;
@@ -170,6 +179,7 @@ class HeaderEditor extends React.PureComponent<
   onTagsConfirm = (e: any) => {
     this.props.onChange({
       ...this.props.headerData,
+      contentRef: this.props.contentRef,
       tags: [...this.props.headerData.tags, e]
     });
     this.setState({ editMode: "none" });
@@ -178,6 +188,7 @@ class HeaderEditor extends React.PureComponent<
   onAuthorsConfirm = (e: any) => {
     this.props.onChange({
       ...this.props.headerData,
+      contentRef: this.props.contentRef,
       authors: [...this.props.headerData.authors, { name: e }]
     });
     this.setState({ editMode: "none" });
@@ -189,13 +200,19 @@ class HeaderEditor extends React.PureComponent<
 
   onAdd = () => this.setState({ editMode: "tag" });
 
-  render(): JSX.Element {
+  render(): JSX.Element | null {
     // Otherwise assume they have their own editor component
-    const { editable, bookstoreEnabled, headerData, onPublish } = this.props;
+    const {
+      editable,
+      bookstoreEnabled,
+      headerData,
+      onPublish,
+      open
+    } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
 
-    return (
+    return open ? (
       <header>
         <div style={styles}>
           <H1>
@@ -300,7 +317,7 @@ class HeaderEditor extends React.PureComponent<
           ) : null}
         </div>
       </header>
-    );
+    ) : null;
   }
 }
 
