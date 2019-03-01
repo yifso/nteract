@@ -244,7 +244,7 @@
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.2.1",
-    "yargs": "^12.0.0"
+    "yargs": "^13.0.0"
   },
   "engines": {
     "node": ">=8.12.0"
