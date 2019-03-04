@@ -33,3 +33,5 @@ ExecuteResult.defaultProps = {
   output: null,
   output_type: "execute_result"
 };
+
+export default ExecuteResult;

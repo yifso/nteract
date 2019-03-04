@@ -33,3 +33,5 @@ DisplayData.defaultProps = {
   output_type: "display_data",
   output: null
 };
+
+export default DisplayData;
