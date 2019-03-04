@@ -19,7 +19,14 @@ const byRef = (
     case actions.TOGGLE_HEADER_EDITOR:
       const toggleHeaderEditorAction = action as actions.ToggleHeaderEditor;
       const { payload } = toggleHeaderEditorAction;
-      console.log("reducer... ", payload);
+      // The issue here is that the contentRef in the payload
+      // does not match the contentRef in the state, which seems to
+      // be the host object. Perhaps I'll need to move this to some other
+      // part of the reducer tree.
+      if (state) {
+        console.log(payload);
+        console.log(state.toJS());
+      }
       return state;
     case actions.PUBLISH_TO_BOOKSTORE:
       return state;
