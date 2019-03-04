@@ -93,7 +93,6 @@ class Contents extends React.PureComponent<
       case "notebook":
       case "file":
       case "dummy":
-        console.log(contentRef);
         return (
           <React.Fragment>
             <HotKeys keyMap={this.keyMap} handlers={handlers}>

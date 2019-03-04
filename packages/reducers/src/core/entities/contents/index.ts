@@ -29,6 +29,10 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.TOGGLE_HEADER_EDITOR:
+      const toggleHeaderEditorAction = action as actionTypes.ToggleHeaderEditor;
+      const { payload } = toggleHeaderEditorAction;
+      return state;
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
       const { contentRef, filepath } = changeContentNameAction.payload;
