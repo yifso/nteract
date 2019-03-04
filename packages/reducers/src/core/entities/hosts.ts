@@ -16,6 +16,11 @@ const byRef = (
 ): Map<string, HostRecord> => {
   let typedAction;
   switch (action.type) {
+    case actions.TOGGLE_HEADER_EDITOR:
+      const toggleHeaderEditorAction = action as actions.ToggleHeaderEditor;
+      const { payload } = toggleHeaderEditorAction;
+      console.log("reducer... ", payload);
+      return state;
     case actions.PUBLISH_TO_BOOKSTORE:
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:

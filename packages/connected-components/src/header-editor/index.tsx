@@ -57,16 +57,10 @@ export interface HeaderEditorProps {
    */
   editable: boolean;
   /**
-   * Mapped AppState to Props
-   * Whether publishing to `Bookstore` is enabled.
-   */
-  bookstoreEnabled?: boolean;
-  /**
    * Notebook content reference.
    */
   contentRef: ContentRef;
   /**
-   * Mapped from AppState to Props
    * The data that the header should be populated with.
    */
   headerData: HeaderDataProps;
@@ -75,22 +69,30 @@ export interface HeaderEditorProps {
    */
   onChange: (props?: HeaderDataProps & { contentRef: ContentRef }) => void;
   /**
+   *
+   */
+  onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
+  /**
+   * The theme of the header.
+   */
+  theme: "light" | "dark";
+}
+
+interface HeaderEditorMapStateToProps {
+  /**
+   * Mapped AppState to Props
+   * Whether publishing to `Bookstore` is enabled.
+   */
+  bookstoreEnabled?: boolean;
+  /**
    * Mapped from AppState to Props
    * An event handler to publish notebook content to BookStore.
    */
   onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
-   *
-   */
-  onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
-  /**
    * Whether the Header Editor is open/visible.
    */
-  open: boolean | undefined;
-  /**
-   * The theme of the header.
-   */
-  theme: "light" | "dark";
+  open?: boolean | undefined;
 }
 
 export interface HeaderEditorState {
@@ -102,7 +104,7 @@ const addTagMessage: JSX.Element = <span>Add a tag</span>;
 const addAuthorMessage: JSX.Element = <span>Add an author</span>;
 
 class HeaderEditor extends React.PureComponent<
-  HeaderEditorProps,
+  HeaderEditorProps & HeaderEditorMapStateToProps,
   HeaderEditorState
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
@@ -325,10 +327,11 @@ const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
   const host = appState.app.host;
   // default is false
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
+  const isHeaderEditorOpen: boolean = true; // host.showHeaderEditor || false;
 
   return {
     ...ownProps,
-    open: host.showHeaderEditor,
+    open: isHeaderEditorOpen,
     bookstoreEnabled: isBookstoreEnabled
   };
 };
