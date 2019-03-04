@@ -86,7 +86,7 @@ export interface HeaderEditorProps {
   /**
    * Whether the Header Editor is open/visible.
    */
-  open: boolean;
+  open: boolean | undefined;
   /**
    * The theme of the header.
    */
@@ -323,6 +323,7 @@ class HeaderEditor extends React.PureComponent<
 
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
   const host = appState.app.host;
+  // default is false
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
 
   return {

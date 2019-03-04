@@ -113,7 +113,6 @@ class Contents extends React.PureComponent<
                       contentRef={contentRef}
                       headerData={this.props.headerData}
                       onChange={this.props.onHeaderEditorChange}
-                      open
                     />
                   </React.Fragment>
                 ) : null}
