@@ -14,3 +14,5 @@ export const Name = styled.span`
 `;
 
 Name.displayName = "Name";
+
+export default Name;

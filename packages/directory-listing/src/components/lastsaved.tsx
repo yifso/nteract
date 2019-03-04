@@ -51,3 +51,5 @@ export class LastSaved extends React.PureComponent<LastSavedProps> {
     );
   }
 }
+
+export default LastSaved;
