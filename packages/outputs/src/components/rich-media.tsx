@@ -13,7 +13,7 @@ interface Caught {
   info: ReactErrorInfo;
 }
 
-interface RichMediaProps {
+export interface RichMediaProps {
   /**
    * Object of media type → data
    *
