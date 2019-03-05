@@ -49,3 +49,5 @@ export class Icon extends React.PureComponent<IconProps> {
     return <IconWrapper>{icon}</IconWrapper>;
   }
 }
+
+export default Icon;

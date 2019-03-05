@@ -132,18 +132,18 @@ Without any valid choices, it renders nothing!
 
 Since the children are React elements, we can pass custom props that will get rendered with the data:
 
-```
-const Special = props => props.big ? <h1>Big {props.data}</h1> : <p>Small {props.data}</p>
+```jsx
+const Special = props =>
+  props.big ? <h1>Big {props.data}</h1> : <p>Small {props.data}</p>;
 Special.defaultProps = {
   big: false,
   mediaType: "text/special"
-}
+};
 
 const Plain = props => <pre>{props.data}</pre>;
 Plain.defaultProps = {
   mediaType: "text/plain"
 };
-
 
 <div>
   <RichMedia
@@ -162,7 +162,7 @@ Plain.defaultProps = {
     <Special />
     <Plain />
   </RichMedia>
-</div>
+</div>;
 ```
 
 Which means that you can customize outputs as props!

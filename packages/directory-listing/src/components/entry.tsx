@@ -58,3 +58,5 @@ export class Entry extends React.PureComponent<EntryProps> {
     );
   }
 }
+
+export default Entry;

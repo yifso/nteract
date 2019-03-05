@@ -29,3 +29,5 @@ export class Listing extends React.PureComponent<ListingProps> {
     );
   }
 }
+
+export default Listing;

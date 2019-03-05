@@ -130,3 +130,5 @@ export class RichMedia extends React.PureComponent<RichMediaProps, State> {
     });
   }
 }
+
+export default RichMedia;
