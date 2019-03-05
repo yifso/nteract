@@ -36,7 +36,9 @@ export type ContentRecord =
   | NotebookContentRecord
   | DummyContentRecord
   | FileContentRecord
-  | DirectoryContentRecord;
+  | DirectoryContentRecord & {
+      showHeaderEditor: boolean;
+    };
 
 export interface ContentsRecordProps {
   byRef: Immutable.Map<ContentRef, ContentRecord>;

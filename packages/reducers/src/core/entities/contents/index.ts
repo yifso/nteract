@@ -35,9 +35,9 @@ const byRef = (
       const toggleHeaderAction = action as actionTypes.ToggleHeaderEditor;
       const ref = toggleHeaderAction.payload.contentRef;
       const content: any = state.get(ref);
-      // set the toggle editor value
       const prevValue = content.get("showHeaderEditor");
-      console.log(!prevValue);
+
+      // set the toggle header editor value
       return state.setIn([ref, "showHeaderEditor"], !prevValue);
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
