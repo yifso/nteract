@@ -8,6 +8,7 @@ import {
   ContentsRecord,
   createContentRef,
   DummyContentRecordProps,
+  JupyterHostRecord,
   makeContentsRecord,
   makeDirectoryContentRecord,
   makeDirectoryModel,
@@ -15,9 +16,10 @@ import {
   makeDummyContentRecord,
   makeFileContentRecord,
   makeFileModelRecord,
-  makeNotebookContentRecord
+  makeNotebookContentRecord,
+  NotebookContentRecordProps
 } from "@nteract/types";
-import { List, Map, RecordOf } from "immutable";
+import { List, Map, Record, RecordOf } from "immutable";
 import { Action } from "redux";
 
 // Local modules
@@ -29,6 +31,14 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.TOGGLE_HEADER_EDITOR:
+      const toggleHeaderAction = action as actionTypes.ToggleHeaderEditor;
+      const ref = toggleHeaderAction.payload.contentRef;
+      const content: any = state.get(ref);
+      // set the toggle editor value
+      const prevValue = content.get("showHeaderEditor");
+      console.log(!prevValue);
+      return state.setIn([ref, "showHeaderEditor"], !prevValue);
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
       const { contentRef, filepath } = changeContentNameAction.payload;

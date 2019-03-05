@@ -21,20 +21,17 @@ export interface ServerConfig {
 export interface EmptyHost {
   type: "empty";
   bookstoreEnabled?: boolean;
-  showHeaderEditor?: boolean;
 }
 export type EmptyHostRecord = Immutable.RecordOf<EmptyHost>;
 export const makeEmptyHostRecord = Immutable.Record<EmptyHost>({
   type: "empty",
-  bookstoreEnabled: false,
-  showHeaderEditor: false
+  bookstoreEnabled: false
 });
 
 export interface BaseHostProps {
   id?: HostId | null;
   defaultKernelName: string;
   bookstoreEnabled?: boolean;
-  showHeaderEditor?: false;
 }
 
 export type JupyterHostRecordProps = BaseHostProps & {
@@ -55,10 +52,14 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
   crossDomain: false,
+<<<<<<< HEAD
   ajaxOptions: undefined,
   wsProtocol: undefined,
   bookstoreEnabled: false,
   showHeaderEditor: false
+=======
+  bookstoreEnabled: false
+>>>>>>> getting toggling of header editor to work
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;

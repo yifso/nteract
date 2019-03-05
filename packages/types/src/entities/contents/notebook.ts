@@ -52,6 +52,7 @@ export interface NotebookContentRecordProps {
   saving: boolean;
   loading: boolean;
   error?: object | null;
+  showHeaderEditor?: boolean;
 }
 
 export const makeNotebookContentRecord = Immutable.Record<
@@ -67,7 +68,8 @@ export const makeNotebookContentRecord = Immutable.Record<
   writable: true,
   saving: false,
   loading: false,
-  error: null
+  error: null,
+  showHeaderEditor: false
 });
 
 export type NotebookContentRecord = Immutable.RecordOf<

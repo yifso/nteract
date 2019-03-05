@@ -19,7 +19,13 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import { actions, AppState, ContentRef } from "@nteract/core";
+import {
+  actions,
+  AppState,
+  ContentRef,
+  HostRecord,
+  NotebookContentRecordProps
+} from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -51,7 +57,7 @@ export interface HeaderDataProps {
   title: string;
 }
 
-export interface HeaderEditorProps {
+export interface HeaderEditorBaseProps {
   /**
    * Whether or not the fields of the header can be edited.
    */
@@ -95,6 +101,9 @@ interface HeaderEditorMapStateToProps {
   open?: boolean | undefined;
 }
 
+export type HeaderEditorProps = HeaderEditorBaseProps &
+  HeaderEditorMapStateToProps;
+
 export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
 }
@@ -104,12 +113,10 @@ const addTagMessage: JSX.Element = <span>Add a tag</span>;
 const addAuthorMessage: JSX.Element = <span>Add an author</span>;
 
 class HeaderEditor extends React.PureComponent<
-  HeaderEditorProps & HeaderEditorMapStateToProps,
+  HeaderEditorProps,
   HeaderEditorState
 > {
-  static defaultProps: Partial<
-    HeaderEditorProps & HeaderEditorMapStateToProps
-  > = {
+  static defaultProps: Partial<HeaderEditorProps> = {
     bookstoreEnabled: false,
     editable: true,
     headerData: {
@@ -126,7 +133,7 @@ class HeaderEditor extends React.PureComponent<
     theme: "light"
   };
 
-  constructor(props: HeaderEditorProps & HeaderEditorMapStateToProps) {
+  constructor(props: HeaderEditorProps) {
     super(props);
 
     this.state = {
@@ -326,10 +333,17 @@ class HeaderEditor extends React.PureComponent<
 }
 
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
-  const host = appState.app.host;
+  // Host is in two separate parts of the app.
+  // get prevValue from
+  const { core, app } = appState;
+  const record = core.entities.contents.byRef.get(ownProps.contentRef);
+  const host = app.host;
+
   // default is false
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
-  const isHeaderEditorOpen: boolean = true; // host.showHeaderEditor || false;
+  const isHeaderEditorOpen: boolean = record
+    ? record.get("showHeaderEditor")
+    : false;
 
   return {
     ...ownProps,
