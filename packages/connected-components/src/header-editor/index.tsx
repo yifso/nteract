@@ -107,7 +107,9 @@ class HeaderEditor extends React.PureComponent<
   HeaderEditorProps & HeaderEditorMapStateToProps,
   HeaderEditorState
 > {
-  static defaultProps: Partial<HeaderEditorProps> = {
+  static defaultProps: Partial<
+    HeaderEditorProps & HeaderEditorMapStateToProps
+  > = {
     bookstoreEnabled: false,
     editable: true,
     headerData: {
@@ -124,7 +126,7 @@ class HeaderEditor extends React.PureComponent<
     theme: "light"
   };
 
-  constructor(props: HeaderEditorProps) {
+  constructor(props: HeaderEditorProps & HeaderEditorMapStateToProps) {
     super(props);
 
     this.state = {
