@@ -9,7 +9,8 @@ import {
   DirectoryContentRecordProps,
   DummyContentRecordProps,
   FileContentRecordProps,
-  NotebookContentRecordProps
+  NotebookContentRecordProps,
+  NotebookMetadata
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { dirname } from "path";
@@ -32,7 +33,6 @@ interface IContentsProps {
   displayName: string;
   error?: object | null;
   filepath: string | undefined;
-  headerData?: HeaderDataProps | null;
   lastSavedStatement: string;
   loading: boolean;
   mimetype?: string | null;
@@ -44,11 +44,12 @@ interface IContentsState {
 }
 
 interface IStateToProps {
-  onHeaderEditorChange: (props: HeaderDataProps) => void;
+  headerData?: HeaderDataProps;
 }
 
 interface IDispatchFromProps {
   handlers: any;
+  onHeaderEditorChange: (props: HeaderDataProps) => void;
 }
 
 class Contents extends React.PureComponent<
@@ -111,7 +112,7 @@ class Contents extends React.PureComponent<
                     <HeaderEditor
                       editable
                       contentRef={contentRef}
-                      headerData={this.props.headerData}
+                      headerData={this.props.headerData.toJS()}
                       onChange={this.props.onHeaderEditorChange}
                     />
                   </React.Fragment>
@@ -151,8 +152,9 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  const mapStateToProps = (state: AppState): IContentsProps => {
+  const mapStateToProps = (state: AppState): IContentsProps & IStateToProps => {
     const contentRef: ContentRef = initialProps.contentRef;
+    let headerData: HeaderDataProps;
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
@@ -169,6 +171,30 @@ const makeMapStateToProps: any = (
       throw new Error("need content to view content, check your contentRefs");
     }
 
+    if (content.has("model")) {
+      const notebook = content.model.get("notebook");
+      if (
+        notebook &&
+        notebook.metadata &&
+        (notebook.metadata.get("authors") ||
+          notebook.metadata.get("description") ||
+          notebook.metadata.get("tags") ||
+          notebook.metadata.get("title"))
+      ) {
+        const authors = notebook.metadata.get("authors");
+        const description = notebook.metadata.get("description");
+        const tags = notebook.metadata.get("tags");
+        const title = notebook.metadata.get("title");
+
+        headerData = {
+          authors: authors ? Array.from(authors) : [],
+          description: description ? description : "",
+          tags: tags ? Array.from(tags) : [],
+          title: title ? title : ""
+        };
+      }
+    }
+
     return {
       appBase,
       baseDir: dirname(content.filepath),
@@ -177,6 +203,12 @@ const makeMapStateToProps: any = (
       displayName: content.filepath.split("/").pop() || "",
       error: content.error,
       filepath: content.filepath,
+      headerData: headerData || {
+        authors: [],
+        description: "",
+        tags: [],
+        title: ""
+      },
       lastSavedStatement: "recently",
       loading: content.loading,
       mimetype: content.mimetype,
@@ -194,9 +226,14 @@ const mapDispatchToProps = (
   const { appBase, contentRef } = ownProps;
 
   return {
-    // onHeaderEditorChange: (props: HeaderDataProps) => {
-    //   return dispatch(actions.overwriteMetadataField({ ...props, contentRef }));
-    // },
+    onHeaderEditorChange: (props: HeaderDataProps) => {
+      return dispatch(
+        actions.overwriteMetadataFields({
+          ...props,
+          contentRef: ownProps.contentRef
+        })
+      );
+    },
     // `HotKeys` handlers object
     // see: https://github.com/greena13/react-hotkeys#defining-handlers
     handlers: {

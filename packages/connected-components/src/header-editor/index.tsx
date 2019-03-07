@@ -29,6 +29,7 @@ import {
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { object } from "prop-types";
 
 // Styled Components
 const tagStyle: object = {
@@ -73,7 +74,7 @@ export interface HeaderEditorBaseProps {
   /**
    * An event handler to run whenever header fields are modified.
    */
-  onChange: (props?: HeaderDataProps & { contentRef: ContentRef }) => void;
+  onChange: (props?: Partial<HeaderDataProps>) => void;
   /**
    *
    */
@@ -144,7 +145,6 @@ class HeaderEditor extends React.PureComponent<
   onTextChange = (newText: string): void => {
     this.props.onChange({
       ...this.props.headerData,
-      contentRef: this.props.contentRef,
       title: newText
     });
   };
@@ -152,7 +152,6 @@ class HeaderEditor extends React.PureComponent<
   onEditorChange = (newText: string) => {
     this.props.onChange({
       ...this.props.headerData,
-      contentRef: this.props.contentRef,
       description: newText
     });
   };
@@ -164,8 +163,9 @@ class HeaderEditor extends React.PureComponent<
     if (this.props.editable === true) {
       this.props.onChange({
         ...this.props.headerData,
-        contentRef: this.props.contentRef,
-        authors: this.props.headerData.authors.filter(p => p.name !== t.name)
+        authors: Array.from(this.props.headerData.authors).filter(p => {
+          return p.name !== t.name;
+        })
       });
       return;
     }
@@ -176,10 +176,9 @@ class HeaderEditor extends React.PureComponent<
     e: React.MouseEvent<HTMLButtonElement>,
     props: ITagProps
   ) => {
-    if (this.props.editable) {
+    if (this.props.editable === true) {
       this.props.onChange({
         ...this.props.headerData,
-        contentRef: this.props.contentRef,
         tags: this.props.headerData.tags.filter(p => p !== t)
       });
       return;
@@ -190,7 +189,6 @@ class HeaderEditor extends React.PureComponent<
   onTagsConfirm = (e: any) => {
     this.props.onChange({
       ...this.props.headerData,
-      contentRef: this.props.contentRef,
       tags: [...this.props.headerData.tags, e]
     });
     this.setState({ editMode: "none" });
@@ -199,7 +197,6 @@ class HeaderEditor extends React.PureComponent<
   onAuthorsConfirm = (e: any) => {
     this.props.onChange({
       ...this.props.headerData,
-      contentRef: this.props.contentRef,
       authors: [...this.props.headerData.authors, { name: e }]
     });
     this.setState({ editMode: "none" });
@@ -222,6 +219,13 @@ class HeaderEditor extends React.PureComponent<
     } = this.props;
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
+
+    const authors = headerData.authors.reduce((authObj: AuthorObject) => {
+      if (authObj && authObj.name) {
+        return { name: authObj.get(name) };
+      }
+    }, []);
+    console.log(authors);
 
     return open ? (
       <header>
@@ -249,9 +253,9 @@ class HeaderEditor extends React.PureComponent<
           </div>
           <div>
             {headerData.authors.length <= 0 ? null : "By "}
-            {headerData.authors.map(t => (
+            {headerData.authors.map((t, i) => (
               <Tag
-                key={t.name}
+                key={i}
                 large
                 minimal
                 style={authorStyle}
@@ -290,8 +294,8 @@ class HeaderEditor extends React.PureComponent<
           </div>
 
           <div>
-            {headerData.tags.map(t => (
-              <Tag key={t} style={tagStyle} onRemove={this.onTagsRemove}>
+            {headerData.tags.map((t, i) => (
+              <Tag key={i} style={tagStyle} onRemove={this.onTagsRemove(t)}>
                 {t}
               </Tag>
             ))}
@@ -341,9 +345,8 @@ const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
 
   // default is false
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
-  const isHeaderEditorOpen: boolean = record
-    ? record.get("showHeaderEditor")
-    : false;
+  const isHeaderEditorOpen: boolean | undefined =
+    record !== undefined ? record.get("showHeaderEditor") : false;
 
   return {
     ...ownProps,

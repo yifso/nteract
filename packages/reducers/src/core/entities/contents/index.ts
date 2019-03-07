@@ -31,6 +31,62 @@ const byRef = (
   action: Action
 ): Map<ContentRef, ContentRecord> => {
   switch (action.type) {
+    case actionTypes.OVERWRITE_METADATA_FIELDS:
+      const overwriteMetadataFieldsAction = action as actionTypes.OverwriteMetadataFields;
+      const {
+        authors,
+        description,
+        tags,
+        title
+      } = overwriteMetadataFieldsAction.payload;
+      const headerData = {
+        authors,
+        description,
+        tags,
+        title
+      };
+
+      return state
+        .setIn(
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "authors"
+          ],
+          headerData.authors
+        )
+        .setIn(
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "description"
+          ],
+          headerData.description
+        )
+        .setIn(
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "tags"
+          ],
+          headerData.tags
+        )
+        .setIn(
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "title"
+          ],
+          headerData.title
+        );
     case actionTypes.TOGGLE_HEADER_EDITOR:
       const toggleHeaderAction = action as actionTypes.ToggleHeaderEditor;
       const ref = toggleHeaderAction.payload.contentRef;
@@ -204,9 +260,16 @@ const byRef = (
         .updateIn(
           [saveFulfilledAction.payload.contentRef, "model"],
           (model: ContentModel) => {
+<<<<<<< HEAD
             // Notebook ends up needing this because we store a last
             // saved version of the notebook Alternatively, we could
             // be storing a hash of the content to compare 🤔
+=======
+            // Notebook ends up needing this because we store
+            // a last saved version of the notebook
+            // Alternatively, we could be storing a hash of the
+            // content to compare 🤔
+>>>>>>> updating
             if (model && model.type === "notebook") {
               return notebook(model, saveFulfilledAction);
             }

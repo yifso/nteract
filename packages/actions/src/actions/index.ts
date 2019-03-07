@@ -16,7 +16,8 @@ import {
   HostRef,
   KernelRef,
   LanguageInfoMetadata,
-  PayloadMessage
+  PayloadMessage,
+  HeaderDataProps
 } from "@nteract/types";
 
 export * from "./cells";
@@ -61,6 +62,15 @@ export function overwriteMetadataField(payload: {
 }): actionTypes.OverwriteMetadataField {
   return {
     type: actionTypes.OVERWRITE_METADATA_FIELD,
+    payload
+  };
+}
+
+export function overwriteMetadataFields(
+  payload: Partial<HeaderDataProps> & { contentRef: ContentRef }
+): actionTypes.OverwriteMetadataFields {
+  return {
+    type: actionTypes.OVERWRITE_METADATA_FIELDS,
     payload
   };
 }

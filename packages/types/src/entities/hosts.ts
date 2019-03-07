@@ -52,14 +52,9 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
   crossDomain: false,
-<<<<<<< HEAD
   ajaxOptions: undefined,
   wsProtocol: undefined,
-  bookstoreEnabled: false,
-  showHeaderEditor: false
-=======
   bookstoreEnabled: false
->>>>>>> getting toggling of header editor to work
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;

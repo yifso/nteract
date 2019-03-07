@@ -10,7 +10,7 @@ import {
 
 import {
   ContentRef,
-  HostRecordProps,
+  HeaderDataProps,
   HostRef,
   KernelRef,
   PayloadMessage
@@ -25,6 +25,12 @@ export * from "./contents";
 export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
+
+export const OVERWRITE_METADATA_FIELDS = "CORE/OVERWRITE_METADATA_FIELDS";
+export interface OverwriteMetadataFields {
+  type: "CORE/OVERWRITE_METADATA_FIELDS";
+  payload: Partial<HeaderDataProps> & { contentRef: ContentRef };
+}
 
 export interface ErrorAction<T extends string> {
   type: T;
