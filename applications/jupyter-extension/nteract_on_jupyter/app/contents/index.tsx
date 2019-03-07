@@ -1,6 +1,10 @@
 // Vendor modules
 import * as actions from "@nteract/actions";
-import { CellType } from "@nteract/commutable";
+import {
+  CellType,
+  NotebookRecordParams,
+  ImmutableNotebook
+} from "@nteract/commutable";
 import { HeaderEditor } from "@nteract/connected-components";
 import { NotebookMenu } from "@nteract/connected-components";
 import { HeaderDataProps } from "@nteract/connected-components/lib/header-editor";
@@ -24,6 +28,7 @@ import urljoin from "url-join";
 import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
+import { string } from "prop-types";
 
 interface IContentsProps {
   appBase: string;
@@ -112,7 +117,7 @@ class Contents extends React.PureComponent<
                     <HeaderEditor
                       editable
                       contentRef={contentRef}
-                      headerData={this.props.headerData.toJS()}
+                      headerData={this.props.headerData}
                       onChange={this.props.onHeaderEditorChange}
                     />
                   </React.Fragment>
@@ -154,7 +159,13 @@ const makeMapStateToProps: any = (
 
   const mapStateToProps = (state: AppState): IContentsProps & IStateToProps => {
     const contentRef: ContentRef = initialProps.contentRef;
-    let headerData: HeaderDataProps;
+
+    let headerData: HeaderDataProps = {
+      authors: [],
+      description: "",
+      tags: [],
+      title: ""
+    };
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
@@ -171,28 +182,23 @@ const makeMapStateToProps: any = (
       throw new Error("need content to view content, check your contentRefs");
     }
 
-    if (content.has("model")) {
-      const notebook = content.model.get("notebook");
-      if (
-        notebook &&
-        notebook.metadata &&
-        (notebook.metadata.get("authors") ||
-          notebook.metadata.get("description") ||
-          notebook.metadata.get("tags") ||
-          notebook.metadata.get("title"))
-      ) {
-        const authors = notebook.metadata.get("authors");
-        const description = notebook.metadata.get("description");
-        const tags = notebook.metadata.get("tags");
-        const title = notebook.metadata.get("title");
+    // If a notebook, we need to read in the headerData if available
+    if (content.type === "notebook") {
+      const notebook: ImmutableNotebook = content.model.get("notebook");
+      const metadata: object = notebook.metadata.toJS();
+      const {
+        authors = [],
+        description = "",
+        tags = [],
+        title = ""
+      } = metadata;
 
-        headerData = {
-          authors: authors ? Array.from(authors) : [],
-          description: description ? description : "",
-          tags: tags ? Array.from(tags) : [],
-          title: title ? title : ""
-        };
-      }
+      headerData = Object.assign({}, headerData, {
+        authors,
+        description,
+        tags,
+        title
+      });
     }
 
     return {
@@ -203,12 +209,7 @@ const makeMapStateToProps: any = (
       displayName: content.filepath.split("/").pop() || "",
       error: content.error,
       filepath: content.filepath,
-      headerData: headerData || {
-        authors: [],
-        description: "",
-        tags: [],
-        title: ""
-      },
+      headerData,
       lastSavedStatement: "recently",
       loading: content.loading,
       mimetype: content.mimetype,

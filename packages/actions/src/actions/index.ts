@@ -67,7 +67,7 @@ export function overwriteMetadataField(payload: {
 }
 
 export function overwriteMetadataFields(
-  payload: Partial<HeaderDataProps> & { contentRef: ContentRef }
+  payload: Partial<HeaderDataProps> & Partial<{ contentRef: ContentRef }>
 ): actionTypes.OverwriteMetadataFields {
   return {
     type: actionTypes.OVERWRITE_METADATA_FIELDS,

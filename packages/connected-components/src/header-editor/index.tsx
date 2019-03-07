@@ -220,13 +220,6 @@ class HeaderEditor extends React.PureComponent<
     const marginStyles: object = { marginTop: "10px" };
     const styles: object = { background: "#EEE", padding: "10px" };
 
-    const authors = headerData.authors.reduce((authObj: AuthorObject) => {
-      if (authObj && authObj.name) {
-        return { name: authObj.get(name) };
-      }
-    }, []);
-    console.log(authors);
-
     return open ? (
       <header>
         <div style={styles}>
