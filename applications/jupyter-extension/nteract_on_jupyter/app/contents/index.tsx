@@ -1,10 +1,6 @@
 // Vendor modules
 import * as actions from "@nteract/actions";
-import {
-  CellType,
-  NotebookRecordParams,
-  ImmutableNotebook
-} from "@nteract/commutable";
+import { CellType, ImmutableNotebook } from "@nteract/commutable";
 import { HeaderEditor } from "@nteract/connected-components";
 import { NotebookMenu } from "@nteract/connected-components";
 import { HeaderDataProps } from "@nteract/connected-components/lib/header-editor";
@@ -13,8 +9,7 @@ import {
   DirectoryContentRecordProps,
   DummyContentRecordProps,
   FileContentRecordProps,
-  NotebookContentRecordProps,
-  NotebookMetadata
+  NotebookContentRecordProps
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { dirname } from "path";
@@ -28,9 +23,8 @@ import urljoin from "url-join";
 import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
-import { string } from "prop-types";
 
-interface IContentsProps {
+interface IContentsBaseProps {
   appBase: string;
   baseDir: string;
   contentType: "dummy" | "notebook" | "directory" | "file";
@@ -57,10 +51,9 @@ interface IDispatchFromProps {
   onHeaderEditorChange: (props: HeaderDataProps) => void;
 }
 
-class Contents extends React.PureComponent<
-  IContentsProps & IStateToProps & IDispatchFromProps,
-  IContentsState
-> {
+type ContentsProps = IContentsBaseProps & IStateToProps & IDispatchFromProps;
+
+class Contents extends React.PureComponent<ContentsProps, IContentsState> {
   private keyMap: KeyMap = {
     CHANGE_CELL_TYPE: [
       "ctrl+shift+y",
@@ -157,7 +150,7 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  const mapStateToProps = (state: AppState): IContentsProps & IStateToProps => {
+  const mapStateToProps = (state: AppState): Partial<ContentsProps> => {
     const contentRef: ContentRef = initialProps.contentRef;
 
     let headerData: HeaderDataProps = {
@@ -224,7 +217,7 @@ const makeMapStateToProps: any = (
 
 const mapDispatchToProps = (
   dispatch: Dispatch,
-  ownProps: IContentsProps
+  ownProps: ContentsProps
 ): object => {
   const { appBase, contentRef } = ownProps;
 
