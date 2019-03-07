@@ -151,10 +151,11 @@ const FlexWrapper = styled.div`
 
 const FlexItem = styled.div`
   flex: 1;
+  min-width: 0;
 `;
 
 const SemioticWrapper = styled.div`
-  width: "calc(100vw - 200px)";
+  width: "calc(100% - 200px)";
   .html-legend-item {
     color: var(--theme-app-fg);
   }
