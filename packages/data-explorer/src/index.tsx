@@ -155,7 +155,7 @@ const FlexItem = styled.div`
 `;
 
 const SemioticWrapper = styled.div`
-  width: "calc(100% - 200px)";
+  width: "100%";
   .html-legend-item {
     color: var(--theme-app-fg);
   }
