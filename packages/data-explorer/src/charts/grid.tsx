@@ -168,6 +168,8 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
 
     const { filters, showFilters } = this.state;
 
+    const { primaryKey = [] } = schema;
+
     const tableColumns = schema.fields.map((field: Dx.Field) => {
       if (
         field.type === "string" ||
@@ -177,7 +179,7 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
         return {
           Header: field.name,
           accessor: field.name,
-          fixed: schema.primaryKey.indexOf(field.name) !== -1 && "left",
+          fixed: primaryKey.indexOf(field.name) !== -1 && "left",
           filterMethod: (filter: Dx.JSONObject, row: Dx.JSONObject) => {
             if (
               field.type === "string" ||
@@ -200,7 +202,7 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
         return {
           Header: field.name,
           accessor: field.name,
-          fixed: schema.primaryKey.indexOf(field.name) !== -1 && "left"
+          fixed: primaryKey.indexOf(field.name) !== -1 && "left"
         };
       }
     });
