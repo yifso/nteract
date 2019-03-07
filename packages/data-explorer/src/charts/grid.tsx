@@ -30,7 +30,7 @@ interface NumberFilterProps {
 }
 
 const GridWrapper = styled.div`
-  width: calc(100vw - 150px);
+  width: 100%;
 `;
 
 const NumberFilter = (props: NumberFilterProps) => {
