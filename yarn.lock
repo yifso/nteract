@@ -13610,10 +13610,10 @@ vega-dataflow@^4.0.0, vega-dataflow@^4.0.4, vega-dataflow@^4.1.0:
     vega-loader "^3.1.0"
     vega-util "^1.7.0"
 
-vega-embed@3.29.0:
-  version "3.29.0"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.29.0.tgz#a3984ee40a212239d8762646e0ac8e040f3d5b30"
-  integrity sha512-EhSTcRD6yaimwkbQdOgYB+Zcc7OlJgqsKUD+hoyJf9xpKxQqk5OQsgfkE5aWeygy2DG8R3m5aoTVQxpYSeneGA==
+vega-embed@3.29.1:
+  version "3.29.1"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.29.1.tgz#7fd3c272edab188a3916103699ba6e82e85b9f30"
+  integrity sha512-uUaHrVBb5xh3zIEdNPecIrHRfKNXoW1M/Ur7aG0Y91XCeNvZmdYLe7wA9s1SNVrTzR+sxML05DscmUik5wFo4w==
   dependencies:
     d3-selection "^1.3.2"
     json-stringify-pretty-compact "^1.2.0"
