@@ -19,21 +19,11 @@ const defaultHeight = 500;
 
 interface Props {
   /**
-   * A pandas data object
-   * e.g.
-   * ```typescript
-   * {
-   *  shema: {},
-   *  data: []
-   * }
-   * ```
+   * A pandas data object.
    */
   data: Dx.DataProps;
   /**
    * An object that represents the current state of the Data Explorer.
-   * e.g.
-   * ```typescript
-   * ```
    */
   metadata: Dx.Metadata;
   /**
@@ -181,6 +171,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     }
   }
 
+  /**
+   *
+   */
   updateChart = (updatedState: Partial<State>) => {
     const {
       view,
@@ -308,19 +301,37 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     );
   };
 
+  /**
+   *
+   */
   setView = (view: Dx.View) => this.updateChart({ view });
 
+  /**
+   *
+   */
   setGrid = () => this.setState({ view: "grid" });
 
+  /**
+   *
+   */
   setColor = (newColorArray: string[]) =>
     this.updateChart({ colors: newColorArray });
 
+  /**
+   *
+   */
   setLineType = (selectedLineType: Dx.LineType) =>
     this.updateChart({ lineType: selectedLineType });
 
+  /**
+   *
+   */
   setAreaType = (selectedAreaType: Dx.AreaType) =>
     this.updateChart({ areaType: selectedAreaType });
 
+  /**
+   *
+   */
   updateDimensions = (selectedDimension: string) => {
     const oldDims = this.state.selectedDimensions;
     const newDimensions =
@@ -330,7 +341,10 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     this.updateChart({ selectedDimensions: newDimensions });
   };
 
-  updateMetrics = (selectedMetric: string) => {
+  /**
+   * Updates the selected metrics within the Data Explorer.
+   */
+  updateMetrics = (selectedMetric: string): void => {
     const oldMetrics = this.state.selectedMetrics;
     const newMetrics =
       oldMetrics.indexOf(selectedMetric) === -1
