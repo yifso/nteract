@@ -19,6 +19,10 @@ module.exports = {
       content: "doc/components.md"
     },
     {
+      name: "@nteract/data-explorer",
+      components: "packages/data-explorer/src/*.tsx"
+    },
+    {
       name: "@nteract/presentational-components",
       components: "packages/presentational-components/src/components/*.tsx"
     },
