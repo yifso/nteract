@@ -2,7 +2,7 @@ import { HTMLAttributes, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import renderer from "react-test-renderer";
 
-import HeaderEditor from "../src/header-editor";
+import { HeaderEditor } from "../src/header-editor";
 
 jest.mock("styled-components", () => {
   /* tslint:disable no-empty */

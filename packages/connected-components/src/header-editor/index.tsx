@@ -345,7 +345,7 @@ const mapDispatchToProps = (
 };
 
 // We export this for testing purposes.
-// export { HeaderEditor };
+export { HeaderEditor };
 
 export default connect(
   mapStateToProps,
