@@ -151,19 +151,6 @@ class HeaderEditor extends React.PureComponent<
               onChange={this.onTextChange}
             />
           </H1>
-          <MarginContainer>
-            <EditableText
-              maxLength={280}
-              maxLines={12}
-              minLines={3}
-              multiline
-              placeholder="Edit description..."
-              selectAllOnFocus={false}
-              value={headerData.description}
-              disabled={!editable}
-              onChange={this.onEditorChange}
-            />
-          </MarginContainer>
           <div>
             {headerData.authors.length <= 0 ? null : "By "}
             {headerData.authors.map((t, i) => (
@@ -238,6 +225,19 @@ class HeaderEditor extends React.PureComponent<
               </Tooltip>
             )}
           </div>
+          <MarginContainer>
+            <EditableText
+              maxLength={280}
+              maxLines={12}
+              minLines={3}
+              multiline
+              placeholder="Edit description..."
+              selectAllOnFocus={false}
+              value={headerData.description}
+              disabled={!editable}
+              onChange={this.onEditorChange}
+            />
+          </MarginContainer>
           {bookstoreEnabled ? (
             <Button type={"button"} text={"Publish"} onClick={onPublish} />
           ) : null}
