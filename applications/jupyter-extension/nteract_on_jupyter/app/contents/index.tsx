@@ -154,13 +154,6 @@ const makeMapStateToProps: any = (
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
 
-  let headerData: HeaderDataProps = {
-    authors: [],
-    description: "",
-    tags: [],
-    title: ""
-  };
-
   const mapStateToProps = (state: AppState): Partial<ContentsProps> => {
     const contentRef: ContentRef = initialProps.contentRef;
 
@@ -179,13 +172,22 @@ const makeMapStateToProps: any = (
       throw new Error("need content to view content, check your contentRefs");
     }
 
+    let showHeaderEditor: boolean = false;
+    let headerData: HeaderDataProps = {
+      authors: [],
+      description: "",
+      tags: [],
+      title: ""
+    };
+
     // If a notebook, we need to read in the headerData if available
     if (content.type === "notebook") {
       const notebook: ImmutableNotebook = content.model.get("notebook");
       const metadata: object = notebook.metadata.toJS();
       const { authors, description, tags, title } = metadata;
 
-      // Update headerData
+      // Updates
+      showHeaderEditor = content!.showHeaderEditor;
       headerData = Object.assign({}, headerData, {
         authors,
         description,
@@ -207,7 +209,7 @@ const makeMapStateToProps: any = (
       loading: content.loading,
       mimetype: content.mimetype,
       saving: content.saving,
-      showHeaderEditor: content!.showHeaderEditor
+      showHeaderEditor
     };
   };
 
