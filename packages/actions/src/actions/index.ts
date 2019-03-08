@@ -1,24 +1,26 @@
 /**
  * @module actions
  */
+
+// Vendor modules
 import {
   CellId,
   JSONObject,
   MediaBundle,
   OnDiskOutput
 } from "@nteract/commutable";
-
-import * as actionTypes from "../actionTypes";
-
 import {
   ContentRef,
+  HeaderDataProps,
   HostId,
   HostRef,
   KernelRef,
   LanguageInfoMetadata,
-  PayloadMessage,
-  HeaderDataProps
+  PayloadMessage
 } from "@nteract/types";
+
+// Local modules
+import * as actionTypes from "../actionTypes";
 
 export * from "./cells";
 export * from "./contents";
@@ -141,7 +143,9 @@ export function toggleOutputExpansion(payload: {
 }
 
 export const loadConfig = () => ({ type: actionTypes.LOAD_CONFIG });
+
 export const saveConfig = () => ({ type: actionTypes.SAVE_CONFIG });
+
 export const doneSavingConfig = () => ({
   type: actionTypes.DONE_SAVING_CONFIG
 });

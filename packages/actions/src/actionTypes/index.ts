@@ -1,13 +1,14 @@
 /**
  * @module actions
  */
+
+// Vendor modules
 import {
   CellId,
   JSONObject,
   MediaBundle,
   OnDiskOutput
 } from "@nteract/commutable";
-
 import {
   ContentRef,
   HeaderDataProps,
@@ -17,7 +18,6 @@ import {
 } from "@nteract/types";
 import { HostRecord } from "@nteract/types";
 import { LanguageInfoMetadata } from "@nteract/types";
-
 import { System as NotificationSystem } from "react-notification-system";
 
 export * from "./cells";

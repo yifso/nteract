@@ -44,7 +44,7 @@ interface IContentsState {
 
 interface IStateToProps {
   headerData?: HeaderDataProps;
-  showHeaderEditor?: boolean;
+  showHeaderEditor: boolean;
 }
 
 interface IDispatchFromProps {
@@ -206,7 +206,8 @@ const makeMapStateToProps: any = (
       lastSavedStatement: "recently",
       loading: content.loading,
       mimetype: content.mimetype,
-      saving: content.saving
+      saving: content.saving,
+      showHeaderEditor: content!.showHeaderEditor
     };
   };
 
