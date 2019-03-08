@@ -153,6 +153,7 @@ const makeMapStateToProps: any = (
   }
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
+
   let headerData: HeaderDataProps = {
     authors: [],
     description: "",
@@ -184,6 +185,7 @@ const makeMapStateToProps: any = (
       const metadata: object = notebook.metadata.toJS();
       const { authors, description, tags, title } = metadata;
 
+      // Update headerData
       headerData = Object.assign({}, headerData, {
         authors,
         description,
