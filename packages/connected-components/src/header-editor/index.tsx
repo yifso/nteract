@@ -9,43 +9,53 @@
  * https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
  */
 
-// Vendor imports
+// Vendor modules
 import {
   Button,
   EditableText,
   H1,
   ITagProps,
   Position,
-  Tag,
   Tooltip
 } from "@blueprintjs/core";
-import { actions, AppState, ContentRef } from "@nteract/core";
+import { actions, AppState, ContentRef, HostRecord } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-// Styled Components
-const tagStyle: object = {
-  background: "#f1f8ff",
-  color: "#0366d6",
-  marginRight: "5px"
-};
-const authorStyle: object = {
-  background: "#E5E5E5",
-  fontStyle: "italic",
-  marginRight: "5px"
-};
-const authorStyleBlack: object = { ...authorStyle, color: "black" };
+// Local modules
+import {
+  AuthorTag,
+  Container,
+  EditableAuthorTag,
+  EditableTag,
+  MarginContainer
+} from "./styled";
 
 // Type Definitions
 export interface AuthorObject {
+  /**
+   * Author's name
+   */
   name: string;
 }
 
 export interface HeaderDataProps {
+  /**
+   * Authors.
+   */
   authors: AuthorObject[];
+  /**
+   * Description.
+   */
   description: string;
+  /**
+   * Tags.
+   */
   tags: string[];
+  /**
+   * Title.
+   */
   title: string;
 }
 
@@ -59,7 +69,7 @@ export interface HeaderEditorBaseProps {
    */
   contentRef: ContentRef;
   /**
-   * The data that the header should be populated with.
+   * The data that the header editor should be populated with.
    */
   headerData: HeaderDataProps;
   /**
@@ -67,7 +77,7 @@ export interface HeaderEditorBaseProps {
    */
   onChange: (props?: Partial<HeaderDataProps>) => void;
   /**
-   *
+   * An event handler to handle whenever header fields are removed.
    */
   onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => void;
   /**
@@ -132,7 +142,6 @@ class HeaderEditor extends React.PureComponent<
   }
 
   render(): JSX.Element | null {
-    // Otherwise assume they have their own editor component
     const {
       editable,
       bookstoreEnabled,
@@ -140,12 +149,10 @@ class HeaderEditor extends React.PureComponent<
       onPublish,
       open
     } = this.props;
-    const marginStyles: object = { marginTop: "10px" };
-    const styles: object = { background: "#EEE", padding: "10px" };
 
     return open ? (
       <header>
-        <div style={styles}>
+        <Container>
           <H1>
             <EditableText
               value={headerData.title}
@@ -154,7 +161,7 @@ class HeaderEditor extends React.PureComponent<
               onChange={this.onTextChange}
             />
           </H1>
-          <div style={marginStyles}>
+          <MarginContainer>
             <EditableText
               maxLength={280}
               maxLines={12}
@@ -166,22 +173,21 @@ class HeaderEditor extends React.PureComponent<
               disabled={!editable}
               onChange={this.onEditorChange}
             />
-          </div>
+          </MarginContainer>
           <div>
             {headerData.authors.length <= 0 ? null : "By "}
             {headerData.authors.map((t, i) => (
-              <Tag
+              <AuthorTag
                 key={i}
                 large
                 minimal
-                style={authorStyle}
                 onRemove={this.onAuthorsRemove(t)}
               >
                 {t.name}
-              </Tag>
+              </AuthorTag>
             ))}
             {(this.state.editMode === "author" && (
-              <Tag style={authorStyleBlack}>
+              <EditableAuthorTag>
                 <EditableText
                   maxLength={40}
                   className="author-entry"
@@ -190,7 +196,7 @@ class HeaderEditor extends React.PureComponent<
                   onConfirm={this.onAuthorsConfirm}
                   onCancel={this.onCancel}
                 />
-              </Tag>
+              </EditableAuthorTag>
             )) || (
               <Tooltip
                 content={addAuthorMessage}
@@ -208,15 +214,14 @@ class HeaderEditor extends React.PureComponent<
               </Tooltip>
             )}
           </div>
-
           <div>
             {headerData.tags.map((t, i) => (
-              <Tag key={i} style={tagStyle} onRemove={this.onTagsRemove(t)}>
+              <EditableTag key={i} onRemove={this.onTagsRemove(t)}>
                 {t}
-              </Tag>
+              </EditableTag>
             ))}
             {(this.state.editMode === "tag" && (
-              <Tag style={tagStyle}>
+              <EditableTag>
                 <EditableText
                   maxLength={20}
                   placeholder="Enter Tag Name..."
@@ -224,7 +229,7 @@ class HeaderEditor extends React.PureComponent<
                   onConfirm={this.onTagsConfirm}
                   onCancel={this.onCancel}
                 />
-              </Tag>
+              </EditableTag>
             )) || (
               <Tooltip
                 content={addTagMessage}
@@ -246,7 +251,7 @@ class HeaderEditor extends React.PureComponent<
           {bookstoreEnabled ? (
             <Button type={"button"} text={"Publish"} onClick={onPublish} />
           ) : null}
-        </div>
+        </Container>
       </header>
     ) : null;
   }
@@ -255,14 +260,14 @@ class HeaderEditor extends React.PureComponent<
     this.props.onChange({ ...this.props.headerData, title: newText });
   };
 
-  private onEditorChange = (newText: string) => {
+  private onEditorChange = (newText: string): void => {
     this.props.onChange({ ...this.props.headerData, description: newText });
   };
 
   private onAuthorsRemove = (t: any) => (
     evt: React.MouseEvent<HTMLButtonElement>,
     props: ITagProps
-  ) => {
+  ): void => {
     if (this.props.editable === true) {
       this.props.onChange({
         ...this.props.headerData,
@@ -278,7 +283,7 @@ class HeaderEditor extends React.PureComponent<
   private onTagsRemove = (t: any) => (
     e: React.MouseEvent<HTMLButtonElement>,
     props: ITagProps
-  ) => {
+  ): void => {
     if (this.props.editable === true) {
       this.props.onChange({
         ...this.props.headerData,
@@ -289,7 +294,7 @@ class HeaderEditor extends React.PureComponent<
     return;
   };
 
-  private onTagsConfirm = (e: any) => {
+  private onTagsConfirm = (e: any): void => {
     this.props.onChange({
       ...this.props.headerData,
       tags: [...this.props.headerData.tags, e]
@@ -297,7 +302,7 @@ class HeaderEditor extends React.PureComponent<
     this.setState({ editMode: "none" });
   };
 
-  private onAuthorsConfirm = (e: any) => {
+  private onAuthorsConfirm = (e: any): void => {
     this.props.onChange({
       ...this.props.headerData,
       authors: [...this.props.headerData.authors, { name: e }]
@@ -305,18 +310,20 @@ class HeaderEditor extends React.PureComponent<
     this.setState({ editMode: "none" });
   };
 
-  private onCancel = () => this.setState({ editMode: "none" });
+  private onCancel = (): void => this.setState({ editMode: "none" });
 
-  private onClick = () => this.setState({ editMode: "author" });
+  private onClick = (): void => this.setState({ editMode: "author" });
 
-  private onAdd = () => this.setState({ editMode: "tag" });
+  private onAdd = (): void => this.setState({ editMode: "tag" });
 }
 
-const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
+const mapStateToProps = (
+  appState: AppState,
+  ownProps: HeaderEditorProps
+): HeaderEditorMapStateToProps => {
   const { core, app } = appState;
+  const host: HostRecord = app.host;
   const record = core.entities.contents.byRef.get(ownProps.contentRef);
-  const host = app.host;
-  console.log(host.toJS());
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
   const isHeaderEditorOpen: boolean | undefined =
     record !== undefined ? record.get("showHeaderEditor") : false;
@@ -330,7 +337,7 @@ const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
 const mapDispatchToProps = (
   dispatch: Dispatch,
   ownProps: { contentRef: ContentRef }
-) => {
+): HeaderEditorMapDispatchToProps => {
   return {
     onPublish: () =>
       dispatch(actions.publishToBookstore({ contentRef: ownProps.contentRef }))
