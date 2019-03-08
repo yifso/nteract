@@ -186,8 +186,6 @@ const makeMapStateToProps: any = (
         title = ""
       } = metadata;
 
-      console.log(authors, description, tags, title);
-
       headerData = Object.assign({}, headerData, {
         authors,
         description,

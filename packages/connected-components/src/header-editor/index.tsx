@@ -19,17 +19,10 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import {
-  actions,
-  AppState,
-  ContentRef,
-  HostRecord,
-  NotebookContentRecordProps
-} from "@nteract/core";
+import { actions, AppState, ContentRef } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { object } from "prop-types";
 
 // Styled Components
 const tagStyle: object = {
@@ -37,13 +30,11 @@ const tagStyle: object = {
   color: "#0366d6",
   marginRight: "5px"
 };
-
 const authorStyle: object = {
   background: "#E5E5E5",
   fontStyle: "italic",
   marginRight: "5px"
 };
-
 const authorStyleBlack: object = { ...authorStyle, color: "black" };
 
 // Type Definitions
@@ -87,23 +78,25 @@ export interface HeaderEditorBaseProps {
 
 interface HeaderEditorMapStateToProps {
   /**
-   * Mapped AppState to Props
    * Whether publishing to `Bookstore` is enabled.
    */
   bookstoreEnabled?: boolean;
-  /**
-   * Mapped from AppState to Props
-   * An event handler to publish notebook content to BookStore.
-   */
-  onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
    * Whether the Header Editor is open/visible.
    */
   open?: boolean | undefined;
 }
 
+interface HeaderEditorMapDispatchToProps {
+  /**
+   * An event handler to publish notebook content to BookStore.
+   */
+  onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+}
+
 export type HeaderEditorProps = HeaderEditorBaseProps &
-  HeaderEditorMapStateToProps;
+  HeaderEditorMapStateToProps &
+  HeaderEditorMapDispatchToProps;
 
 export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
@@ -126,10 +119,6 @@ class HeaderEditor extends React.PureComponent<
       tags: [],
       title: ""
     },
-    // tslint:disable no-empty
-    onChange: () => {},
-    onPublish: () => {},
-    onRemove: (e: React.MouseEvent<HTMLButtonElement>, props: ITagProps) => {},
     open: false,
     theme: "light"
   };
@@ -141,72 +130,6 @@ class HeaderEditor extends React.PureComponent<
       editMode: "none"
     };
   }
-
-  onTextChange = (newText: string): void => {
-    this.props.onChange({
-      ...this.props.headerData,
-      title: newText
-    });
-  };
-
-  onEditorChange = (newText: string) => {
-    this.props.onChange({
-      ...this.props.headerData,
-      description: newText
-    });
-  };
-
-  onAuthorsRemove = (t: any) => (
-    evt: React.MouseEvent<HTMLButtonElement>,
-    props: ITagProps
-  ) => {
-    if (this.props.editable === true) {
-      this.props.onChange({
-        ...this.props.headerData,
-        authors: Array.from(this.props.headerData.authors).filter(p => {
-          return p.name !== t.name;
-        })
-      });
-      return;
-    }
-    return;
-  };
-
-  onTagsRemove = (t: any) => (
-    e: React.MouseEvent<HTMLButtonElement>,
-    props: ITagProps
-  ) => {
-    if (this.props.editable === true) {
-      this.props.onChange({
-        ...this.props.headerData,
-        tags: this.props.headerData.tags.filter(p => p !== t)
-      });
-      return;
-    }
-    return;
-  };
-
-  onTagsConfirm = (e: any) => {
-    this.props.onChange({
-      ...this.props.headerData,
-      tags: [...this.props.headerData.tags, e]
-    });
-    this.setState({ editMode: "none" });
-  };
-
-  onAuthorsConfirm = (e: any) => {
-    this.props.onChange({
-      ...this.props.headerData,
-      authors: [...this.props.headerData.authors, { name: e }]
-    });
-    this.setState({ editMode: "none" });
-  };
-
-  onCancel = () => this.setState({ editMode: "none" });
-
-  onClick = () => this.setState({ editMode: "author" });
-
-  onAdd = () => this.setState({ editMode: "tag" });
 
   render(): JSX.Element | null {
     // Otherwise assume they have their own editor component
@@ -327,22 +250,78 @@ class HeaderEditor extends React.PureComponent<
       </header>
     ) : null;
   }
+
+  private onTextChange = (newText: string): void => {
+    this.props.onChange({ ...this.props.headerData, title: newText });
+  };
+
+  private onEditorChange = (newText: string) => {
+    this.props.onChange({ ...this.props.headerData, description: newText });
+  };
+
+  private onAuthorsRemove = (t: any) => (
+    evt: React.MouseEvent<HTMLButtonElement>,
+    props: ITagProps
+  ) => {
+    if (this.props.editable === true) {
+      this.props.onChange({
+        ...this.props.headerData,
+        authors: Array.from(this.props.headerData.authors).filter(p => {
+          return p.name !== t.name;
+        })
+      });
+      return;
+    }
+    return;
+  };
+
+  private onTagsRemove = (t: any) => (
+    e: React.MouseEvent<HTMLButtonElement>,
+    props: ITagProps
+  ) => {
+    if (this.props.editable === true) {
+      this.props.onChange({
+        ...this.props.headerData,
+        tags: this.props.headerData.tags.filter(p => p !== t)
+      });
+      return;
+    }
+    return;
+  };
+
+  private onTagsConfirm = (e: any) => {
+    this.props.onChange({
+      ...this.props.headerData,
+      tags: [...this.props.headerData.tags, e]
+    });
+    this.setState({ editMode: "none" });
+  };
+
+  private onAuthorsConfirm = (e: any) => {
+    this.props.onChange({
+      ...this.props.headerData,
+      authors: [...this.props.headerData.authors, { name: e }]
+    });
+    this.setState({ editMode: "none" });
+  };
+
+  private onCancel = () => this.setState({ editMode: "none" });
+
+  private onClick = () => this.setState({ editMode: "author" });
+
+  private onAdd = () => this.setState({ editMode: "tag" });
 }
 
 const mapStateToProps = (appState: AppState, ownProps: HeaderEditorProps) => {
-  // Host is in two separate parts of the app.
-  // get prevValue from
   const { core, app } = appState;
   const record = core.entities.contents.byRef.get(ownProps.contentRef);
   const host = app.host;
-
-  // default is false
+  console.log(host.toJS());
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
   const isHeaderEditorOpen: boolean | undefined =
     record !== undefined ? record.get("showHeaderEditor") : false;
 
   return {
-    ...ownProps,
     open: isHeaderEditorOpen,
     bookstoreEnabled: isBookstoreEnabled
   };
