@@ -32,13 +32,11 @@ export type ContentModel =
   | FileModelRecord
   | EmptyModelRecord;
 
-export type ContentRecord = {
-  showHeaderEditor?: boolean;
-} & (
+export type ContentRecord =
   | NotebookContentRecord
   | DummyContentRecord
   | FileContentRecord
-  | DirectoryContentRecord);
+  | DirectoryContentRecord;
 
 export interface ContentsRecordProps {
   byRef: Immutable.Map<ContentRef, ContentRecord>;
