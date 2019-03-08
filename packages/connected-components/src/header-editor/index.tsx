@@ -91,10 +91,6 @@ interface HeaderEditorMapStateToProps {
    * Whether publishing to `Bookstore` is enabled.
    */
   bookstoreEnabled?: boolean;
-  /**
-   * Whether the Header Editor is open/visible.
-   */
-  open?: boolean | undefined;
 }
 
 interface HeaderEditorMapDispatchToProps {
@@ -129,7 +125,6 @@ class HeaderEditor extends React.PureComponent<
       tags: [],
       title: ""
     },
-    open: false,
     theme: "light"
   };
 
@@ -142,15 +137,9 @@ class HeaderEditor extends React.PureComponent<
   }
 
   render(): JSX.Element | null {
-    const {
-      editable,
-      bookstoreEnabled,
-      headerData,
-      onPublish,
-      open
-    } = this.props;
+    const { editable, bookstoreEnabled, headerData, onPublish } = this.props;
 
-    return open ? (
+    return (
       <header>
         <Container>
           <H1>
@@ -253,7 +242,7 @@ class HeaderEditor extends React.PureComponent<
           ) : null}
         </Container>
       </header>
-    ) : null;
+    );
   }
 
   private onTextChange = (newText: string): void => {
@@ -321,15 +310,10 @@ const mapStateToProps = (
   appState: AppState,
   ownProps: HeaderEditorProps
 ): HeaderEditorMapStateToProps => {
-  const { core, app } = appState;
-  const host: HostRecord = app.host;
-  const record = core.entities.contents.byRef.get(ownProps.contentRef);
+  const host: HostRecord = appState.app.host;
   const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
-  const isHeaderEditorOpen: boolean | undefined =
-    record !== undefined ? record.get("showHeaderEditor") : false;
 
   return {
-    open: isHeaderEditorOpen,
     bookstoreEnabled: isBookstoreEnabled
   };
 };
