@@ -100,9 +100,9 @@ interface HeaderEditorMapDispatchToProps {
   onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-export type HeaderEditorProps = HeaderEditorBaseProps &
-  HeaderEditorMapStateToProps &
-  HeaderEditorMapDispatchToProps;
+export type HeaderEditorProps = Partial<HeaderEditorBaseProps> &
+  Partial<HeaderEditorMapStateToProps> &
+  Partial<HeaderEditorMapDispatchToProps>;
 
 export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
