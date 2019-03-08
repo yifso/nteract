@@ -67,7 +67,7 @@ export interface HeaderEditorBaseProps {
   /**
    * Notebook content reference.
    */
-  contentRef: ContentRef;
+  contentRef?: ContentRef;
   /**
    * The data that the header editor should be populated with.
    */
@@ -100,9 +100,9 @@ interface HeaderEditorMapDispatchToProps {
   onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-export type HeaderEditorProps = Partial<HeaderEditorBaseProps> &
-  Partial<HeaderEditorMapStateToProps> &
-  Partial<HeaderEditorMapDispatchToProps>;
+export type HeaderEditorProps = HeaderEditorBaseProps &
+  HeaderEditorMapStateToProps &
+  HeaderEditorMapDispatchToProps;
 
 export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
@@ -125,6 +125,7 @@ class HeaderEditor extends React.PureComponent<
       tags: [],
       title: ""
     },
+    onChange: props => props,
     theme: "light"
   };
 
@@ -246,25 +247,34 @@ class HeaderEditor extends React.PureComponent<
   }
 
   private onTextChange = (newText: string): void => {
-    this.props.onChange({ ...this.props.headerData, title: newText });
+    const { headerData, onChange } = this.props;
+
+    if (onChange) {
+      onChange({ ...headerData, title: newText });
+    }
   };
 
   private onEditorChange = (newText: string): void => {
-    this.props.onChange({ ...this.props.headerData, description: newText });
+    const { headerData, onChange } = this.props;
+
+    if (onChange) {
+      onChange({ ...headerData, description: newText });
+    }
   };
 
   private onAuthorsRemove = (t: any) => (
     evt: React.MouseEvent<HTMLButtonElement>,
     props: ITagProps
   ): void => {
-    if (this.props.editable === true) {
-      this.props.onChange({
+    const { editable, headerData, onChange } = this.props;
+
+    if (editable === true && onChange) {
+      onChange({
         ...this.props.headerData,
-        authors: Array.from(this.props.headerData.authors).filter(p => {
+        authors: Array.from(headerData!.authors).filter(p => {
           return p.name !== t.name;
         })
       });
-      return;
     }
     return;
   };
@@ -273,10 +283,12 @@ class HeaderEditor extends React.PureComponent<
     e: React.MouseEvent<HTMLButtonElement>,
     props: ITagProps
   ): void => {
-    if (this.props.editable === true) {
-      this.props.onChange({
-        ...this.props.headerData,
-        tags: this.props.headerData.tags.filter(p => p !== t)
+    const { editable, headerData, onChange } = this.props;
+
+    if (editable === true && onChange) {
+      onChange({
+        ...headerData,
+        tags: headerData!.tags.filter(p => p !== t)
       });
       return;
     }
@@ -284,18 +296,28 @@ class HeaderEditor extends React.PureComponent<
   };
 
   private onTagsConfirm = (e: any): void => {
-    this.props.onChange({
-      ...this.props.headerData,
-      tags: [...this.props.headerData.tags, e]
-    });
+    const { headerData, onChange } = this.props;
+
+    if (onChange) {
+      onChange({
+        ...headerData,
+        tags: [...headerData!.tags, e]
+      });
+    }
+
     this.setState({ editMode: "none" });
   };
 
   private onAuthorsConfirm = (e: any): void => {
-    this.props.onChange({
-      ...this.props.headerData,
-      authors: [...this.props.headerData.authors, { name: e }]
-    });
+    const { headerData, onChange } = this.props;
+
+    if (onChange) {
+      onChange({
+        ...headerData,
+        authors: [...headerData!.authors, { name: e }]
+      });
+    }
+
     this.setState({ editMode: "none" });
   };
 
