@@ -85,7 +85,9 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
       displayName,
       error,
       handlers,
+      headerData,
       loading,
+      onHeaderEditorChange,
       saving,
       showHeaderEditor
     } = this.props;
@@ -113,8 +115,8 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
                       <HeaderEditor
                         editable
                         contentRef={contentRef}
-                        headerData={this.props.headerData}
-                        onChange={this.props.onHeaderEditorChange}
+                        headerData={headerData}
+                        onChange={onHeaderEditorChange}
                       />
                     ) : null}
                   </React.Fragment>
