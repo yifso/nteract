@@ -44,6 +44,7 @@ interface IContentsState {
 
 interface IStateToProps {
   headerData?: HeaderDataProps;
+  showHeaderEditor?: boolean;
 }
 
 interface IDispatchFromProps {
@@ -85,7 +86,8 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
       error,
       handlers,
       loading,
-      saving
+      saving,
+      showHeaderEditor
     } = this.props;
 
     switch (contentType) {
@@ -107,12 +109,14 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
                 {contentType === "notebook" ? (
                   <React.Fragment>
                     <NotebookMenu contentRef={contentRef} />
-                    <HeaderEditor
-                      editable
-                      contentRef={contentRef}
-                      headerData={this.props.headerData}
-                      onChange={this.props.onHeaderEditorChange}
-                    />
+                    {showHeaderEditor ? (
+                      <HeaderEditor
+                        editable
+                        contentRef={contentRef}
+                        headerData={this.props.headerData}
+                        onChange={this.props.onHeaderEditorChange}
+                      />
+                    ) : null}
                   </React.Fragment>
                 ) : null}
               </FileHeader>
@@ -149,16 +153,15 @@ const makeMapStateToProps: any = (
   }
 
   const appBase: string = urljoin(host.basePath, "/nteract/edit");
+  let headerData: HeaderDataProps = {
+    authors: [],
+    description: "",
+    tags: [],
+    title: ""
+  };
 
   const mapStateToProps = (state: AppState): Partial<ContentsProps> => {
     const contentRef: ContentRef = initialProps.contentRef;
-
-    let headerData: HeaderDataProps = {
-      authors: [],
-      description: "",
-      tags: [],
-      title: ""
-    };
 
     if (!contentRef) {
       throw new Error("cant display without a contentRef");
