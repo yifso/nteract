@@ -23,9 +23,13 @@ export interface DataProps {
 
 export interface Schema {
   fields: Field[];
-  pandas_version: string;
-  primaryKey: string[];
+  pandas_version?: string;
+  primaryKey?: string[];
 }
+
+// If this string is the same as another field name, it would be a problem
+// so it must be unique
+export const defaultPrimaryKey = "dx-default-pk";
 export interface Field {
   name: string;
   type: string;
