@@ -229,9 +229,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     const dx = metadata.dx || {};
     const chart = dx.chart || {};
 
-    let { fields = [], primaryKey } = props.data.schema;
+    let { fields = [], primaryKey = [] } = props.data.schema;
     // Provide a default primaryKey if none provided
-    if (!primaryKey) {
+    if (primaryKey.length === 0) {
       primaryKey = [Dx.defaultPrimaryKey];
       fields.push({ name: Dx.defaultPrimaryKey, type: "integer" });
     }

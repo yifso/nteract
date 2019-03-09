@@ -20,7 +20,7 @@ interface State {
 }
 
 interface ParallelCoordinateOptions {
-  primaryKey: Dx.Schema["primaryKey"];
+  primaryKey: string[];
   metrics: Dx.Metric[];
   chart: Dx.Chart;
   colors: Dx.ChartOptions["colors"];
@@ -56,7 +56,7 @@ function parallelizeData(
   data: Dx.Datapoint[],
   metrics: Dx.Metric[],
   schemaFields: Dx.Field[],
-  primaryKey: Dx.Schema["primaryKey"]
+  primaryKey: string[]
 ) {
   const minmax: { [index: string]: ScaleLinear<number, number> } = {};
   const screenScales: { [index: string]: ScaleLinear<number, number> } = {};
