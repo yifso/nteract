@@ -1,11 +1,11 @@
-import { List, Map } from "immutable";
-import { Action } from "redux";
-import { combineReducers } from "redux-immutable";
-
+// Vendor modules
 import * as actions from "@nteract/actions";
 import { makeTransformsRecord } from "@nteract/types";
+import { List, Map } from "immutable";
+import { Action, Reducer } from "redux";
+import { combineReducers } from "redux-immutable";
 
-const byId = (state = Map(), action: Action) => {
+const byId = (state = Map(), action: Action): Map<{}, {}> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
@@ -22,7 +22,7 @@ const byId = (state = Map(), action: Action) => {
   }
 };
 
-const displayOrder = (state = List(), action: Action) => {
+const displayOrder = (state = List(), action: Action): List<any> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
@@ -36,7 +36,10 @@ const displayOrder = (state = List(), action: Action) => {
   }
 };
 
-export const transforms = combineReducers(
-  { byId, displayOrder },
-  makeTransformsRecord as any
-);
+export const transforms: Reducer<
+  {
+    byId: Map<{}, {}>;
+    displayOrder: List<any>;
+  },
+  Action<any>
+> = combineReducers({ byId, displayOrder }, makeTransformsRecord as any);
