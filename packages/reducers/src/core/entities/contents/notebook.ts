@@ -2,25 +2,24 @@
 import * as actionTypes from "@nteract/actions";
 import {
   CellId,
-  ImmutableCell,
-  ImmutableCodeCell,
-  ImmutableMarkdownCell,
-  ImmutableNotebook,
-  ImmutableOutput,
-  OnDiskOutput
-} from "@nteract/commutable";
-import {
   createFrozenMediaBundle,
   createImmutableOutput,
   deleteCell,
   emptyCodeCell,
   emptyMarkdownCell,
   emptyNotebook,
+  ImmutableCell,
+  ImmutableCodeCell,
+  ImmutableMarkdownCell,
+  ImmutableNotebook,
+  ImmutableOutput,
   insertCellAfter,
   insertCellAt,
   makeCodeCell,
   makeMarkdownCell,
-  makeRawCell
+  makeRawCell,
+  OnDiskOutput,
+  OnDiskStreamOutput
 } from "@nteract/commutable";
 import {
   DocumentRecordProps,
@@ -65,7 +64,7 @@ export function reduceOutputs(
     return outputs.push(createImmutableOutput(output));
   }
 
-  const streamOutput = output;
+  const streamOutput: OnDiskStreamOutput = output;
 
   if (typeof streamOutput.name === "undefined") {
     return outputs.push(createImmutableOutput(streamOutput));
