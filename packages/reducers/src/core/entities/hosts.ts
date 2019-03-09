@@ -1,15 +1,15 @@
-import { List, Map } from "immutable";
-import { Action } from "redux";
-import { combineReducers } from "redux-immutable";
-
+// Vendor modules
 import * as actions from "@nteract/actions";
 import {
   makeHostsRecord,
   makeJupyterHostRecord,
   makeLocalHostRecord
 } from "@nteract/types";
+import { List, Map } from "immutable";
+import { Action, Reducer } from "redux";
+import { combineReducers } from "redux-immutable";
 
-const byRef = (state = Map(), action: Action) => {
+const byRef = (state = Map(), action: Action): Map<{}, {}> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_HOST:
@@ -37,7 +37,7 @@ const byRef = (state = Map(), action: Action) => {
   }
 };
 
-const refs = (state = List(), action: Action) => {
+const refs = (state = List(), action: Action): List<any> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_HOST:
@@ -48,4 +48,10 @@ const refs = (state = List(), action: Action) => {
   }
 };
 
-export const hosts = combineReducers({ byRef, refs }, makeHostsRecord as any);
+export const hosts: Reducer<
+  {
+    byRef: Map<{}, {}>;
+    refs: List<any>;
+  },
+  Action<any>
+> = combineReducers({ byRef, refs }, makeHostsRecord as any);
