@@ -46,7 +46,7 @@ export default function handleApp(
     | Save
     | SaveFulfilled
     | SaveFailed
-) {
+): RecordOf<AppRecordProps> {
   switch (action.type) {
     case actions.SAVE:
       return save(state);
