@@ -229,7 +229,12 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     const dx = metadata.dx || {};
     const chart = dx.chart || {};
 
-    const { fields = [], primaryKey = [] } = props.data.schema;
+    let { fields = [], primaryKey = [] } = props.data.schema;
+    // Provide a default primaryKey if none provided
+    if (primaryKey.length === 0) {
+      primaryKey = [Dx.defaultPrimaryKey];
+      fields.push({ name: Dx.defaultPrimaryKey, type: "integer" });
+    }
 
     const dimensions = fields.filter(
       field =>
@@ -239,11 +244,14 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     ) as Dx.Dimension[];
 
     // Should datetime data types be transformed into js dates before getting to this resource?
-    const data = props.data.data.map(datapoint => {
+    const data = props.data.data.map((datapoint, datapointIndex) => {
       const mappedDatapoint: Dx.Datapoint = {
         ...datapoint
       };
       fields.forEach(field => {
+        if (field.name === Dx.defaultPrimaryKey) {
+          mappedDatapoint[Dx.defaultPrimaryKey] = datapointIndex;
+        }
         if (field.type === "datetime") {
           mappedDatapoint[field.name] = new Date(mappedDatapoint[field.name]);
         }
