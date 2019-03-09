@@ -2,9 +2,13 @@ import * as React from "react";
 
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
-import { Toolbar } from "./components/Toolbar";
 import { colors } from "./settings";
 import VizControls from "./VizControls";
+
+import { Toolbar } from "./components/Toolbar";
+import { Display } from "./Display";
+export { Display } from "./Display";
+export { Toolbar } from "./components/Toolbar";
 
 const mediaType = "application/vnd.dataresource+json";
 
@@ -147,11 +151,6 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-`;
-
-const FlexItem = styled.div`
-  flex: 1;
-  min-width: 0;
 `;
 
 const SemioticWrapper = styled.div`
@@ -518,19 +517,31 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
 
       display = this.state.displayChart[chartKey];
     }
+    const children = React.Children.map(this.props.children, child => {
+      if (!React.isValidElement(child)) {
+        return;
+      }
+      const { componentType } = child.props as any;
+      if (componentType === "display") {
+        const newProps = { children: display };
+        return React.cloneElement(child, newProps);
+      } else if (componentType === "toolbar") {
+        const toolbarProps = {
+          dimensions,
+          currentView: view,
+          setGrid: this.setGrid,
+          setView: this.setView
+        };
+        return React.cloneElement(child, toolbarProps);
+      }
+
+      return child;
+    });
 
     return (
       <div>
         <MetadataWarning metadata={this.props.metadata!} />
-        <FlexWrapper>
-          <FlexItem>{display}</FlexItem>
-          <Toolbar
-            dimensions={dimensions}
-            setGrid={this.setGrid}
-            setView={this.setView}
-            currentView={view}
-          />
-        </FlexWrapper>
+        <FlexWrapper>{children}</FlexWrapper>
       </div>
     );
   }

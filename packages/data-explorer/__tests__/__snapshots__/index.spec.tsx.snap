@@ -6,7 +6,10 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
     metadata={Object {}}
   />
   <styled.div>
-    <styled.div>
+    <Display
+      componentType="display"
+      key=".0"
+    >
       <DataResourceTransformGrid
         data={
           Object {
@@ -215,9 +218,23 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
         metadata={Object {}}
         models={Object {}}
         theme="light"
-      />
-    </styled.div>
-    <Component
+      >
+        <Display
+          componentType="display"
+        >
+          <PlaceHolder />
+        </Display>
+        <Toolbar
+          componentType="toolbar"
+          currentView=""
+          dimensions={Array []}
+          setGrid={[Function]}
+          setView={[Function]}
+        />
+      </DataResourceTransformGrid>
+    </Display>
+    <Toolbar
+      componentType="toolbar"
       currentView="grid"
       dimensions={
         Array [
@@ -231,6 +248,7 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
           },
         ]
       }
+      key=".1"
       setGrid={[Function]}
       setView={[Function]}
     />
@@ -289,7 +307,10 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
     }
   />
   <styled.div>
-    <styled.div>
+    <Display
+      componentType="display"
+      key=".0"
+    >
       <styled.div>
         <ResponsiveXYFrame
           afterElements={
@@ -760,8 +781,9 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
           view="scatter"
         />
       </styled.div>
-    </styled.div>
-    <Component
+    </Display>
+    <Toolbar
+      componentType="toolbar"
       currentView="scatter"
       dimensions={
         Array [
@@ -775,6 +797,7 @@ exports[`DataExplorerNoMetadata creates a data explorer with metadata 1`] = `
           },
         ]
       }
+      key=".1"
       setGrid={[Function]}
       setView={[Function]}
     />
