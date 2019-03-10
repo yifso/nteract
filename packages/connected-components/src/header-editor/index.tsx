@@ -18,7 +18,13 @@ import {
   Position,
   Tooltip
 } from "@blueprintjs/core";
-import { actions, AppState, ContentRef, HostRecord } from "@nteract/core";
+import {
+  actions,
+  AppState,
+  AuthorObject,
+  ContentRef,
+  HostRecord
+} from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -33,13 +39,6 @@ import {
 } from "./styled";
 
 // Type Definitions
-export interface AuthorObject {
-  /**
-   * Author's name
-   */
-  name: string;
-}
-
 export interface HeaderDataProps {
   /**
    * Authors.
