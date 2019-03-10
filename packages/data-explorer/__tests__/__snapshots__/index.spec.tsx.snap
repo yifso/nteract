@@ -3,7 +3,11 @@
 exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
 <div>
   <MetadataWarning
-    metadata={Object {}}
+    metadata={
+      Object {
+        "dx": Object {},
+      }
+    }
   />
   <styled.div>
     <Display
@@ -215,7 +219,11 @@ exports[`DataExplorerMetadata creates a data explorer without metadata 1`] = `
         height={500}
         initialView="grid"
         mediaType="application/vnd.dataresource+json"
-        metadata={Object {}}
+        metadata={
+          Object {
+            "dx": Object {},
+          }
+        }
         models={Object {}}
         theme="light"
       >

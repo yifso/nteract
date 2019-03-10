@@ -34,10 +34,11 @@ describe("DataExplorerNoMetadata", () => {
 
     expect(wrapper.state("primaryKey")).toEqual([Dx.defaultPrimaryKey]);
     // The range index should be equivalent to the array index, [0,1,2,...n]
+    const data = wrapper.state("data");
     expect(
-      wrapper
-        .state("data")
-        .filter((datapoint, index) => datapoint[Dx.defaultPrimaryKey] !== index)
+      (data as any[]).filter(
+        (datapoint, index) => datapoint[Dx.defaultPrimaryKey] !== index
+      )
     ).toEqual([]);
   });
 });
@@ -49,7 +50,7 @@ describe("DataExplorerMetadata", () => {
   });
 
   it("creates a data explorer without metadata", () => {
-    dataExplorerProps.metadata = {};
+    delete dataExplorerProps.metadata;
     const wrapper = shallow(
       <DataExplorer {...dataExplorerProps}>
         <Display />
