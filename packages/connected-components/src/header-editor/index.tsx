@@ -269,11 +269,11 @@ class HeaderEditor extends React.PureComponent<
 
     if (editable === true && onChange) {
       onChange({
-        ...this.props.headerData,
+        ...headerData,
         // shouldn't be using non-null assertions,
         // need to restructure the data so that you
         // always get an array from the headerData object
-        authors: Array.from(headerData!.authors).filter(p => {
+        authors: Array.from(headerData.authors).filter(p => {
           return p.name !== t.name;
         })
       });
