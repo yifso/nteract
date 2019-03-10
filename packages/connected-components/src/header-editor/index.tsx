@@ -270,10 +270,7 @@ class HeaderEditor extends React.PureComponent<
     if (editable === true && onChange) {
       onChange({
         ...headerData,
-        // shouldn't be using non-null assertions,
-        // need to restructure the data so that you
-        // always get an array from the headerData object
-        authors: Array.from(headerData.authors).filter(p => {
+        authors: headerData.authors.filter(p => {
           return p.name !== t.name;
         })
       });
@@ -290,7 +287,7 @@ class HeaderEditor extends React.PureComponent<
     if (editable === true && onChange) {
       onChange({
         ...headerData,
-        tags: headerData!.tags.filter(p => p !== t)
+        tags: headerData.tags.filter(p => p !== t)
       });
       return;
     }
@@ -303,7 +300,7 @@ class HeaderEditor extends React.PureComponent<
     if (onChange) {
       onChange({
         ...headerData,
-        tags: [...headerData!.tags, e]
+        tags: [...headerData.tags, e]
       });
     }
 
@@ -316,7 +313,7 @@ class HeaderEditor extends React.PureComponent<
     if (onChange) {
       onChange({
         ...headerData,
-        authors: [...headerData!.authors, { name: e }]
+        authors: [...headerData.authors, { name: e }]
       });
     }
 
