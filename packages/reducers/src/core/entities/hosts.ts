@@ -17,6 +17,8 @@ const byRef = (
   let typedAction;
   switch (action.type) {
     case actions.PUBLISH_TO_BOOKSTORE:
+      // Add something to state around last timestamp
+      // for something that was published to bookstore.
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:
       return state;

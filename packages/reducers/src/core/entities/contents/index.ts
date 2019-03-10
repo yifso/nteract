@@ -8,6 +8,7 @@ import {
   ContentsRecord,
   createContentRef,
   DummyContentRecordProps,
+  JupyterHostRecord,
   makeContentsRecord,
   makeDirectoryContentRecord,
   makeDirectoryModel,
@@ -15,9 +16,10 @@ import {
   makeDummyContentRecord,
   makeFileContentRecord,
   makeFileModelRecord,
-  makeNotebookContentRecord
+  makeNotebookContentRecord,
+  NotebookContentRecordProps
 } from "@nteract/types";
-import { List, Map, RecordOf } from "immutable";
+import { List, Map, Record, RecordOf } from "immutable";
 import { Action } from "redux";
 
 // Local modules
@@ -31,31 +33,66 @@ const byRef = (
   switch (action.type) {
     case actionTypes.OVERWRITE_METADATA_FIELDS:
       const overwriteMetadataFieldsAction = action as actionTypes.OverwriteMetadataFields;
-      const payload = overwriteMetadataFieldsAction.payload;
-      const { authors, description, tags, title } = payload;
+      const {
+        authors,
+        description,
+        tags,
+        title
+      } = overwriteMetadataFieldsAction.payload;
+      const headerData = {
+        authors,
+        description,
+        tags,
+        title
+      };
 
       return state
         .setIn(
-          [payload.contentRef, "model", "notebook", "metadata", "authors"],
-          authors
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "authors"
+          ],
+          headerData.authors
         )
         .setIn(
-          [payload.contentRef, "model", "notebook", "metadata", "description"],
-          description
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "description"
+          ],
+          headerData.description
         )
         .setIn(
-          [payload.contentRef, "model", "notebook", "metadata", "tags"],
-          tags
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "tags"
+          ],
+          headerData.tags
         )
         .setIn(
-          [payload.contentRef, "model", "notebook", "metadata", "title"],
-          title
+          [
+            overwriteMetadataFieldsAction.payload.contentRef,
+            "model",
+            "notebook",
+            "metadata",
+            "title"
+          ],
+          headerData.title
         );
     case actionTypes.TOGGLE_HEADER_EDITOR:
       const toggleHeaderAction = action as actionTypes.ToggleHeaderEditor;
       const ref = toggleHeaderAction.payload.contentRef;
       const content: any = state.get(ref);
       const prevValue = content.get("showHeaderEditor");
+      // toggle header
       return state.setIn([ref, "showHeaderEditor"], !prevValue);
     case actionTypes.CHANGE_CONTENT_NAME:
       const changeContentNameAction = action as actionTypes.ChangeContentName;
@@ -223,16 +260,10 @@ const byRef = (
         .updateIn(
           [saveFulfilledAction.payload.contentRef, "model"],
           (model: ContentModel) => {
-<<<<<<< HEAD
-            // Notebook ends up needing this because we store a last
-            // saved version of the notebook Alternatively, we could
-            // be storing a hash of the content to compare 🤔
-=======
             // Notebook ends up needing this because we store
             // a last saved version of the notebook
             // Alternatively, we could be storing a hash of the
             // content to compare 🤔
->>>>>>> updating
             if (model && model.type === "notebook") {
               return notebook(model, saveFulfilledAction);
             }
