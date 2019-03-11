@@ -25,11 +25,9 @@ const byRef = (
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:
       // This action signfies that the content was saved
       // to `Bookstore` successfully.
-      // TODO: Add timestamp for published bookstore content
-      console.log(state.toJS());
+      // TODO: Add last saved timestamp for published bookstore content
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_FAILED:
-      console.log(state.toJS());
       return state;
     case actions.ADD_HOST:
       typedAction = action as actions.AddHost;
