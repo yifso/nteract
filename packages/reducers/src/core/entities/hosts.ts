@@ -17,12 +17,19 @@ const byRef = (
   let typedAction;
   switch (action.type) {
     case actions.PUBLISH_TO_BOOKSTORE:
-      // Add something to state around last timestamp
-      // for something that was published to bookstore.
+      // This is more of a pass thru. This action
+      // kicks off an epic which establishes a connection
+      // to bookstore and saves a `notebook` at the
+      // bookstore S3 location.
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:
+      // This action signfies that the content was saved
+      // to `Bookstore` successfully.
+      // TODO: Add timestamp for published bookstore content
+      console.log(state.toJS());
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_FAILED:
+      console.log(state.toJS());
       return state;
     case actions.ADD_HOST:
       typedAction = action as actions.AddHost;
