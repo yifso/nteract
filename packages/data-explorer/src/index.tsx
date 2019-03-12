@@ -2,13 +2,13 @@ import * as React from "react";
 
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
+import { Toolbar } from "./components/Toolbar";
+import { Display } from "./Display";
 import { colors } from "./settings";
 import VizControls from "./VizControls";
 
-import { Toolbar } from "./components/Toolbar";
-import { Display } from "./Display";
-export { Display } from "./Display";
 export { Toolbar } from "./components/Toolbar";
+export { Display } from "./Display";
 
 const mediaType = "application/vnd.dataresource+json";
 
@@ -207,7 +207,7 @@ const SemioticWrapper = styled.div`
   }
 `;
 
-class DataExplorer extends React.PureComponent<Partial<Props>, State> {
+export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   static MIMETYPE = mediaType;
 
   static defaultProps = {
@@ -547,4 +547,11 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   }
 }
 
-export default DataExplorer;
+export default function(props: Props) {
+  return (
+    <DataExplorer {...props}>
+      <Display />
+      <Toolbar />
+    </DataExplorer>
+  );
+}
