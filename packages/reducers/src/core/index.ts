@@ -40,7 +40,7 @@ const currentKernelspecsRef = (state = "", action: Action) => {
   }
 };
 
-// const bookstore = (state = "", action: Action) => {
+// const bookstore = (state = {}, action: Action) => {
 //   return state;
 // };
 

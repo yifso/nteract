@@ -5,21 +5,71 @@
 // Vendor modules
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState } from "@nteract/types";
+import { AppState, NotebookContentRecordProps } from "@nteract/types";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents, ServerConfig } from "rx-jupyter";
-import { empty, of } from "rxjs";
+import { IContent } from "rx-jupyter/lib/contents";
+import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
 
+// Interface for Bookstore Data Models
+// For more info, see: https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#data-model
+interface BookstoreDataModel {
+  name: string;
+  path: string;
+  type: "notebook" | "file" | "directory";
+  created: Date | undefined | null;
+  last_modified: Date | undefined | null;
+  content: ,
+  mimetype: string | undefined | null;
+  format: string | undefined | null;
+}
+
+/**
+ * Converts a `Notebook` content to the Jupyter `Content`
+ * type expected in Bookstore.
+ *
+ * @param content {NotebookContentRecordProps}  Notebook
+ */
+function convertNotebookToContent(
+  content: NotebookContentRecordProps
+): IContent<"notebook"> {
+  const { filepath, lastSaved, mimetype, model, type, writable } = content;
+
+  return {
+    content: model.get("notebook"),
+    created: "",
+    format: "json",
+    last_modified: lastSaved!.toString() || "",
+    mimetype: mimetype || "",
+    name: filepath.split("/").pop() || "",
+    path: filepath,
+    type,
+    writable
+  };
+}
+
+/**
+ * Publishes `Content` to bookstore. Currently, only
+ * publishes `notebook`(s) to bookstore.
+ *
+ * @param action$ Publish to bookstore action type.
+ * @param state$  Application state.
+ */
 export function publishToBookstore(
   action$: ActionsObservable<actions.PublishToBookstore>,
   state$: StateObservable<AppState>
-) {
+): Observable<any> {
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE),
     switchMap(action => {
+      const bookstoreEndpoint: string = "api/bookstore/published";
+      const state: any = state$.value;
+      const host: any = selectors.currentHost(state);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
       if (!action.payload) {
         return of({
           type: "ERROR",
@@ -30,38 +80,51 @@ export function publishToBookstore(
         }) as any;
       }
 
-      const bookstoreEndpoint: string = "api/bookstore/published";
-      const state: any = state$.value;
-      const host: any = selectors.currentHost(state);
-
       // Dismiss any usage that isn't targeting a jupyter server
       if (host.type !== "jupyter") {
         return empty();
       }
 
-      const content: any = selectors.contentByRef(state);
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
+      const content = selectors
+        .contentByRef(state)
+        .get(action.payload.contentRef);
 
-      return contents.create(serverConfig, bookstoreEndpoint, content).pipe(
-        tap((xhr: AjaxResponse) => {
-          if (xhr.status !== 200) {
-            throw new Error(xhr.response);
+      if (!content || content.type !== "notebook") {
+        return of({
+          type: "ERROR",
+          error: true,
+          payload: {
+            error: new Error("Only Notebooks can be published to Bookstore")
           }
-        }),
-        map(() => {
-          actions.publishToBookstoreSucceeded({
-            contentRef: action.payload.contentRef
-          });
-        }),
-        catchError((xhrError: any) =>
-          of(
-            actions.publishToBookstoreFailed({
-              error: xhrError,
-              contentRef: action.payload.contentRef
-            })
-          )
+        }) as any;
+      }
+
+      return contents
+        .create(
+          serverConfig,
+          bookstoreEndpoint,
+          convertNotebookToContent(content)
         )
-      );
+        .pipe(
+          tap((xhr: AjaxResponse) => {
+            if (xhr.status !== 200) {
+              throw new Error(xhr.response);
+            }
+          }),
+          map(() => {
+            actions.publishToBookstoreSucceeded({
+              contentRef: action.payload.contentRef
+            });
+          }),
+          catchError((xhrError: any) =>
+            of(
+              actions.publishToBookstoreFailed({
+                error: xhrError,
+                contentRef: action.payload.contentRef
+              })
+            )
+          )
+        );
     })
   );
 }
