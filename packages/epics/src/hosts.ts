@@ -14,19 +14,6 @@ import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
 
-// Interface for Bookstore Data Models
-// For more info, see: https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#data-model
-interface BookstoreDataModel {
-  name: string;
-  path: string;
-  type: "notebook" | "file" | "directory";
-  created: Date | undefined | null;
-  last_modified: Date | undefined | null;
-  content: ,
-  mimetype: string | undefined | null;
-  format: string | undefined | null;
-}
-
 /**
  * Converts a `Notebook` content to the Jupyter `Content`
  * type expected in Bookstore.
@@ -35,19 +22,20 @@ interface BookstoreDataModel {
  */
 function convertNotebookToContent(
   content: NotebookContentRecordProps
-): IContent<"notebook"> {
-  const { filepath, lastSaved, mimetype, model, type, writable } = content;
+): Partial<IContent<"notebook">> {
+  const { filepath, lastSaved, mimetype, model, type } = content;
+  const notebook: any = model.toJS().savedNotebook;
 
   return {
-    content: model.get("notebook"),
-    created: "",
-    format: "json",
-    last_modified: lastSaved!.toString() || "",
-    mimetype: mimetype || "",
     name: filepath.split("/").pop() || "",
     path: filepath,
     type,
-    writable
+    created: "",
+    last_modified:
+      lastSaved && lastSaved.toString() ? lastSaved.toString() : "",
+    content: notebook,
+    mimetype: mimetype || "",
+    format: "json"
   };
 }
 
