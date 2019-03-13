@@ -547,7 +547,7 @@ export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   }
 }
 
-export default function(props: Props) {
+function DataExplorerDefault(props: Props) {
   return (
     <DataExplorer {...props}>
       <Display />
@@ -555,3 +555,10 @@ export default function(props: Props) {
     </DataExplorer>
   );
 }
+
+DataExplorerDefault.defaultProps = {
+  mediaType
+};
+
+DataExplorerDefault.displayName = "DataExplorerDefault";
+export default DataExplorerDefault;
