@@ -22,7 +22,7 @@ import { catchError, map, switchMap, tap } from "rxjs/operators";
  */
 function convertNotebookToContent(
   content: NotebookContentRecordProps
-): Partial<IContent<"notebook">> {
+): Partial<IContent<"notebook">> & { type: "notebook" } {
   const { filepath, lastSaved, mimetype, model, type } = content;
   const notebook: any = model.toJS().savedNotebook;
 
