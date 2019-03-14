@@ -7,7 +7,7 @@ import { Viz } from "./components/Viz";
 import { colors } from "./settings";
 import VizControls from "./VizControls";
 
-export { Toolbar, Viz };
+export { DataExplorer, Toolbar, Viz };
 
 const mediaType: Props["mediaType"] = "application/vnd.dataresource+json";
 
@@ -209,7 +209,7 @@ const SemioticWrapper = styled.div`
   }
 `;
 
-export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
+class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   static MIMETYPE: Props["mediaType"] = mediaType;
 
   static defaultProps = {
