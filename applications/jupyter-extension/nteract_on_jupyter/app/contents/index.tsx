@@ -186,12 +186,12 @@ const makeMapStateToProps: any = (
     if (content.type === "notebook") {
       const notebook: ImmutableNotebook = content.model.get("notebook");
       const metadata: object = notebook.metadata.toJS();
-      const { authors, description, tags, title } = metadata || {
-        authors: [],
-        description: "",
-        tags: [],
-        title: ""
-      };
+      const {
+        authors = [],
+        description = "",
+        tags = [],
+        title = ""
+      } = metadata;
 
       // Updates
       showHeaderEditor = content!.showHeaderEditor;
