@@ -12,15 +12,7 @@ import DataExplorerDefault, {
 
 import * as Dx from "../src/types";
 
-import {
-  DisplayData,
-  ExecuteResult,
-  KernelOutputError,
-  Media,
-  Output,
-  RichMedia,
-  StreamText
-} from "@nteract/outputs";
+import { DisplayData, Media, Output } from "@nteract/outputs";
 
 describe("Usage with @nteract/outputs", () => {
   let dataExplorerProps: Props;
@@ -49,7 +41,6 @@ describe("Usage with @nteract/outputs", () => {
           <Media.Json />
           <Media.Plain />
         </DisplayData>
-        {/* <ExecuteResult>{richMedia}</ExecuteResult> */}
       </Output>
     );
   }
@@ -57,5 +48,16 @@ describe("Usage with @nteract/outputs", () => {
   it("Renders the default DataExplorer export", () => {
     const wrapper = mount(<Usage output={testOutput} />);
     expect(wrapper.find(DataExplorerDefault).exists()).toEqual(true);
+    expect(wrapper.find(Toolbar).exists()).toEqual(true);
+    expect(wrapper.find(Display).exists()).toEqual(true);
+  });
+});
+
+describe("Integration with jext", () => {
+  it("Has MIMETYPE property", () => {
+    expect(DataExplorer.MIMETYPE).toEqual("application/vnd.dataresource+json");
+    expect(DataExplorerDefault.MIMETYPE).toEqual(
+      "application/vnd.dataresource+json"
+    );
   });
 });

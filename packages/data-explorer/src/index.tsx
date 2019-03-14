@@ -547,7 +547,7 @@ export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   }
 }
 
-function DataExplorerDefault(props: Props) {
+function DataExplorerDefault(props: Partial<Props>) {
   return (
     <DataExplorer {...props}>
       <Display />
@@ -559,6 +559,9 @@ function DataExplorerDefault(props: Props) {
 DataExplorerDefault.defaultProps = {
   mediaType
 };
-
 DataExplorerDefault.displayName = "DataExplorerDefault";
+
+// For the jupyter extension to load MIMETYPE must be present.
+DataExplorerDefault.MIMETYPE = mediaType;
+
 export default DataExplorerDefault;
