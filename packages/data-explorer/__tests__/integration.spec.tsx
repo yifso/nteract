@@ -5,9 +5,9 @@ import React from "react";
 import { getDxProps } from "../__mocks__/dx-props";
 import DataExplorerDefault, {
   DataExplorer,
-  Display,
   Props,
-  Toolbar
+  Toolbar,
+  Viz
 } from "../src/index";
 
 import * as Dx from "../src/types";
@@ -49,7 +49,7 @@ describe("Usage with @nteract/outputs", () => {
     const wrapper = mount(<Usage output={testOutput} />);
     expect(wrapper.find(DataExplorerDefault).exists()).toEqual(true);
     expect(wrapper.find(Toolbar).exists()).toEqual(true);
-    expect(wrapper.find(Display).exists()).toEqual(true);
+    expect(wrapper.find(Viz).exists()).toEqual(true);
   });
 });
 

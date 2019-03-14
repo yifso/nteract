@@ -102,3 +102,19 @@ export interface JSONObject {
   [key: string]: JSONType;
 }
 export interface JSONArray extends Array<JSONType> {}
+
+/**
+ *
+ * A custom `data-explorer` component is made up of at least one `viz` component
+ * and an optional toolbar. Additional components may be added in the future.
+ *
+ * The root `data-explorer` uses the following `componentType`'s to determine
+ * which props to pass down. If a child component does not have one of these types,
+ * it won't be passed any additional props.
+ *
+ * At the moment, these types are just an implementation detail, but in the future
+ * this could be used as a "public api" for creating custom components
+ * known to `data-explorer`.
+ *
+ */
+export type ComponentType = "viz" | "toolbar";

@@ -5,9 +5,9 @@ import React from "react";
 import { getDxProps } from "../__mocks__/dx-props";
 import DataExplorerDefault, {
   DataExplorer,
-  Display,
   Props,
-  Toolbar
+  Toolbar,
+  Viz
 } from "../src/index";
 import * as Dx from "../src/types";
 
@@ -28,11 +28,11 @@ describe("Default DataExplorer export", () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test("renders a Display and a Toolbar", () => {
+  test("renders a Viz and a Toolbar", () => {
     const wrapper = shallow(<DataExplorerDefault {...dataExplorerProps} />);
 
     expect(wrapper.find(Toolbar).exists()).toEqual(true);
-    expect(wrapper.find(Display).exists()).toEqual(true);
+    expect(wrapper.find(Viz).exists()).toEqual(true);
   });
 });
 
@@ -49,7 +49,7 @@ describe("DataExplorer composed", () => {
         metadata={dataExplorerProps.metadata}
       >
         <Toolbar />
-        <Display />
+        <Viz />
       </DataExplorer>
     );
 
@@ -63,7 +63,7 @@ describe("DataExplorer composed", () => {
         data={dataExplorerProps.data}
         metadata={dataExplorerProps.metadata}
       >
-        <Display />
+        <Viz />
         <Toolbar />
       </DataExplorer>
     );
@@ -72,17 +72,17 @@ describe("DataExplorer composed", () => {
     );
   });
 
-  test("With no Toolbar, still renders Display", () => {
+  test("With no Toolbar, still renders Viz", () => {
     const wrapper = shallow(
       <DataExplorer
         data={dataExplorerProps.data}
         metadata={dataExplorerProps.metadata}
       >
         {false ? <Toolbar /> : null}
-        <Display />
+        <Viz />
       </DataExplorer>
     );
-    expect(wrapper.find(Display).exists()).toEqual(true);
+    expect(wrapper.find(Viz).exists()).toEqual(true);
   });
 
   test("Default primaryKey if none provided", () => {
@@ -93,7 +93,7 @@ describe("DataExplorer composed", () => {
         metadata={dataExplorerProps.metadata}
       >
         <Toolbar />
-        <Display />
+        <Viz />
       </DataExplorer>
     );
 

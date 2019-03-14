@@ -3,14 +3,13 @@ import * as React from "react";
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
 import { Toolbar } from "./components/Toolbar";
-import { Display } from "./Display";
+import { Viz } from "./components/Viz";
 import { colors } from "./settings";
 import VizControls from "./VizControls";
 
-export { Toolbar } from "./components/Toolbar";
-export { Display } from "./Display";
+export { Toolbar, Viz };
 
-const mediaType = "application/vnd.dataresource+json";
+const mediaType: Props["mediaType"] = "application/vnd.dataresource+json";
 
 import styled from "styled-components";
 import * as Dx from "./types";
@@ -53,7 +52,10 @@ export interface Props {
   models?: {};
   mediaType: "application/vnd.dataresource+json";
   initialView: View;
-  onMetadataChange?: ({ dx }: { dx: dxMetaProps }, mediaType: string) => void;
+  onMetadataChange?: (
+    { dx }: { dx: dxMetaProps },
+    mediaType: Props["mediaType"]
+  ) => void;
 }
 
 interface State {
@@ -208,7 +210,7 @@ const SemioticWrapper = styled.div`
 `;
 
 export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
-  static MIMETYPE = mediaType;
+  static MIMETYPE: Props["mediaType"] = mediaType;
 
   static defaultProps = {
     metadata: {
@@ -522,7 +524,7 @@ export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         return;
       }
       const { componentType } = child.props as any;
-      if (componentType === "display") {
+      if (componentType === "viz") {
         const newProps = { children: display };
         return React.cloneElement(child, newProps);
       } else if (componentType === "toolbar") {
@@ -547,14 +549,16 @@ export class DataExplorer extends React.PureComponent<Partial<Props>, State> {
   }
 }
 
-function DataExplorerDefault(props: Partial<Props>) {
+const DataExplorerDefault: React.FunctionComponent<Props> & {
+  MIMETYPE: Props["mediaType"];
+} = (props: Partial<Props>) => {
   return (
     <DataExplorer {...props}>
-      <Display />
+      <Viz />
       <Toolbar />
     </DataExplorer>
   );
-}
+};
 
 DataExplorerDefault.defaultProps = {
   mediaType

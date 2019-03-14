@@ -70,8 +70,8 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
       setGrid={[Function]}
       setView={[Function]}
     />
-    <Display
-      componentType="display"
+    <Viz
+      componentType="viz"
       key=".1"
     >
       <styled.div>
@@ -544,7 +544,7 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
           view="scatter"
         />
       </styled.div>
-    </Display>
+    </Viz>
   </styled.div>
 </div>
 `;
@@ -804,11 +804,11 @@ exports[`Default DataExplorer export with metadata 1`] = `
   models={Object {}}
   theme="light"
 >
-  <Display
-    componentType="display"
+  <Viz
+    componentType="viz"
   >
     <PlaceHolder />
-  </Display>
+  </Viz>
   <Toolbar
     componentType="toolbar"
     currentView=""
@@ -1033,11 +1033,11 @@ exports[`Default DataExplorer export without metadata 1`] = `
   models={Object {}}
   theme="light"
 >
-  <Display
-    componentType="display"
+  <Viz
+    componentType="viz"
   >
     <PlaceHolder />
-  </Display>
+  </Viz>
   <Toolbar
     componentType="toolbar"
     currentView=""
