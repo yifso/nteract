@@ -22,7 +22,7 @@ const byId = (state = Map(), action: Action): Map<{}, {}> => {
   }
 };
 
-const displayOrder = (state = List(), action: Action): List<any> => {
+const displayOrder = (state = List(), action: Action): List<string> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
