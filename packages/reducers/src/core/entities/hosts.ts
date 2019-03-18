@@ -37,7 +37,7 @@ const byRef = (state = Map(), action: Action): Map<{}, {}> => {
   }
 };
 
-const refs = (state = List(), action: Action): List<any> => {
+const refs = (state = List(), action: Action): List<string> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_HOST:
@@ -51,7 +51,7 @@ const refs = (state = List(), action: Action): List<any> => {
 export const hosts: Reducer<
   {
     byRef: Map<{}, {}>;
-    refs: List<any>;
+    refs: List<string>;
   },
   Action<any>
 > = combineReducers({ byRef, refs }, makeHostsRecord as any);
