@@ -99,7 +99,8 @@ export function publishToBookstore(
               throw new Error(xhr.response);
             }
           }),
-          map(() => {
+          map(content => {
+            console.log(content);
             actions.publishToBookstoreSucceeded({
               contentRef: action.payload.contentRef
             });
