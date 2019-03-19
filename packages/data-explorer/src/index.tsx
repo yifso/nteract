@@ -3,10 +3,13 @@ import * as React from "react";
 import DataResourceTransformGrid from "./charts/grid";
 import { semioticSettings } from "./charts/settings";
 import { Toolbar } from "./components/Toolbar";
+import { Viz } from "./components/Viz";
 import { colors } from "./settings";
 import VizControls from "./VizControls";
 
-const mediaType = "application/vnd.dataresource+json";
+export { DataExplorer, Toolbar, Viz };
+
+const mediaType: Props["mediaType"] = "application/vnd.dataresource+json";
 
 import styled from "styled-components";
 import * as Dx from "./types";
@@ -49,7 +52,10 @@ export interface Props {
   models?: {};
   mediaType: "application/vnd.dataresource+json";
   initialView: View;
-  onMetadataChange?: ({ dx }: { dx: dxMetaProps }, mediaType: string) => void;
+  onMetadataChange?: (
+    { dx }: { dx: dxMetaProps },
+    mediaType: Props["mediaType"]
+  ) => void;
 }
 
 interface State {
@@ -149,11 +155,6 @@ const FlexWrapper = styled.div`
   width: 100%;
 `;
 
-const FlexItem = styled.div`
-  flex: 1;
-  min-width: 0;
-`;
-
 const SemioticWrapper = styled.div`
   width: 100%;
   .html-legend-item {
@@ -209,7 +210,7 @@ const SemioticWrapper = styled.div`
 `;
 
 class DataExplorer extends React.PureComponent<Partial<Props>, State> {
-  static MIMETYPE = mediaType;
+  static MIMETYPE: Props["mediaType"] = mediaType;
 
   static defaultProps = {
     metadata: {
@@ -518,22 +519,53 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
 
       display = this.state.displayChart[chartKey];
     }
+    const children = React.Children.map(this.props.children, child => {
+      if (!React.isValidElement(child)) {
+        return;
+      }
+      const { componentType } = child.props as any;
+      if (componentType === "viz") {
+        const newProps = { children: display };
+        return React.cloneElement(child, newProps);
+      } else if (componentType === "toolbar") {
+        const toolbarProps = {
+          dimensions,
+          currentView: view,
+          setGrid: this.setGrid,
+          setView: this.setView
+        };
+        return React.cloneElement(child, toolbarProps);
+      }
+
+      return child;
+    });
 
     return (
       <div>
         <MetadataWarning metadata={this.props.metadata!} />
-        <FlexWrapper>
-          <FlexItem>{display}</FlexItem>
-          <Toolbar
-            dimensions={dimensions}
-            setGrid={this.setGrid}
-            setView={this.setView}
-            currentView={view}
-          />
-        </FlexWrapper>
+        <FlexWrapper>{children}</FlexWrapper>
       </div>
     );
   }
 }
 
-export default DataExplorer;
+const DataExplorerDefault: React.FunctionComponent<Props> & {
+  MIMETYPE: Props["mediaType"];
+} = (props: Partial<Props>) => {
+  return (
+    <DataExplorer {...props}>
+      <Viz />
+      <Toolbar />
+    </DataExplorer>
+  );
+};
+
+DataExplorerDefault.defaultProps = {
+  mediaType
+};
+DataExplorerDefault.displayName = "DataExplorerDefault";
+
+// For the jupyter extension to load MIMETYPE must be present.
+DataExplorerDefault.MIMETYPE = mediaType;
+
+export default DataExplorerDefault;
