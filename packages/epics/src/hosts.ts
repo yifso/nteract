@@ -8,7 +8,7 @@ import * as selectors from "@nteract/selectors";
 import { AppState, NotebookContentRecordProps } from "@nteract/types";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { contents, ServerConfig } from "rx-jupyter";
+import { bookstore, contents, ServerConfig } from "rx-jupyter";
 import { IContent } from "rx-jupyter/lib/contents";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
@@ -88,7 +88,7 @@ export function publishToBookstore(
       }
 
       return contents
-        .create(
+        .save(
           serverConfig,
           bookstoreEndpoint,
           convertNotebookToContent(content)
@@ -99,15 +99,33 @@ export function publishToBookstore(
               throw new Error(xhr.response);
             }
           }),
-          map(content => {
-            console.log(content);
-            actions.publishToBookstoreSucceeded({
-              contentRef: action.payload.contentRef
-            });
+          map((req: AjaxResponse) => {
+            return bookstore
+              .publish(serverConfig, "", convertNotebookToContent(req.response))
+              .pipe(
+                tap((xhr: AjaxResponse) => {
+                  if (xhr.status !== 200) {
+                    throw new Error(xhr.response);
+                  }
+                }),
+                map(resp => {
+                  actions.publishToBookstoreSucceeded({
+                    contentRef: action.payload.contentRef
+                  });
+                }),
+                catchError((xhrError: any) =>
+                  of(
+                    actions.publishToBookstoreFailed({
+                      error: xhrError,
+                      contentRef: action.payload.contentRef
+                    })
+                  )
+                )
+              );
           }),
           catchError((xhrError: any) =>
             of(
-              actions.publishToBookstoreFailed({
+              actions.saveFailed({
                 error: xhrError,
                 contentRef: action.payload.contentRef
               })
