@@ -3,6 +3,7 @@
  */
 // Vendor modules
 import { ImmutableNotebook } from "@nteract/commutable";
+import { BookstoreDataModel } from "@nteract/types";
 import { Observable } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
@@ -11,19 +12,6 @@ import urljoin from "url-join";
 import { createAJAXSettings, ServerConfig } from "./base";
 
 const formURI = (path: string) => urljoin("/api/bookstore/", path);
-
-// `Bookstore` Data Model. For more info, see:
-// https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#data-model
-interface BookstoreDataModel {
-  name: string;
-  path: string;
-  type: "notebook";
-  created: string;
-  last_modified: string;
-  content: ImmutableNotebook;
-  mimetype: string;
-  format: "json";
-}
 
 /**
  * Creates an AjaxObservable for publishing content to `Bookstore`

@@ -40,8 +40,8 @@ function convertNotebookToContent(
 }
 
 /**
- * Publishes `Content` to bookstore. Currently, only
- * publishes `notebook`(s) to bookstore.
+ * Publishes `Content` to bookstore. Only
+ * publishes notebooks to bookstore.
  *
  * @param action$ Publish to bookstore action type.
  * @param state$  Application state.
@@ -100,28 +100,29 @@ export function publishToBookstore(
             }
           }),
           map((req: AjaxResponse) => {
-            return bookstore
-              .publish(serverConfig, "", convertNotebookToContent(req.response))
-              .pipe(
-                tap((xhr: AjaxResponse) => {
-                  if (xhr.status !== 200) {
-                    throw new Error(xhr.response);
-                  }
-                }),
-                map(resp => {
-                  actions.publishToBookstoreSucceeded({
-                    contentRef: action.payload.contentRef
-                  });
-                }),
-                catchError((xhrError: any) =>
-                  of(
-                    actions.publishToBookstoreFailed({
-                      error: xhrError,
-                      contentRef: action.payload.contentRef
-                    })
-                  )
-                )
-              );
+            console.log(req);
+            // return bookstore
+            //   .publish(serverConfig, "", convertNotebookToContent(req.response))
+            //   .pipe(
+            //     tap((xhr: AjaxResponse) => {
+            //       if (xhr.status !== 200) {
+            //         throw new Error(xhr.response);
+            //       }
+            //     }),
+            //     map(resp => {
+            //       actions.publishToBookstoreSucceeded({
+            //         contentRef: action.payload.contentRef
+            //       });
+            //     }),
+            //     catchError((xhrError: any) =>
+            //       of(
+            //         actions.publishToBookstoreFailed({
+            //           error: xhrError,
+            //           contentRef: action.payload.contentRef
+            //         })
+            //       )
+            //     )
+            //   );
           }),
           catchError((xhrError: any) =>
             of(

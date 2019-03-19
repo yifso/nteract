@@ -11,11 +11,25 @@ import * as Immutable from "immutable";
 
 import { KernelRef } from "../..";
 
+// `Bookstore` Data Model. For more info, see:
+// https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#data-model
+export interface BookstoreDataModel {
+  name: string;
+  path: string;
+  type: "notebook";
+  created: string;
+  last_modified: string;
+  content: ImmutableNotebook;
+  mimetype: string;
+  format: "json";
+}
+
 export interface DocumentRecordProps {
   type: "notebook";
   notebook: ImmutableNotebook;
   savedNotebook: ImmutableNotebook;
-  transient: Immutable.Map<string, any>; // has the keypaths for updating displays
+  // has the keypaths for updating displays
+  transient: Immutable.Map<string, any>;
   // transient should be more fully typed (be a record itself)
   // right now it's keypaths and then it looks like it's able to handle any per
   // cell transient data that will be deleted when the kernel is restarted
