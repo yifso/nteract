@@ -1,11 +1,18 @@
 /**
  * @module epics
  */
-
 // Vendor modules
 import * as actions from "@nteract/actions";
+import { toJS } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
-import { AppState, NotebookContentRecordProps } from "@nteract/types";
+import {
+  AppState,
+  DirectoryContentRecordProps,
+  DummyContentRecordProps,
+  FileContentRecordProps,
+  NotebookContentRecordProps
+} from "@nteract/types";
+import { RecordOf } from "immutable";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { bookstore, contents, ServerConfig } from "rx-jupyter";
@@ -53,7 +60,7 @@ export function publishToBookstore(
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE),
     switchMap(action => {
-      const bookstoreEndpoint: string = "api/bookstore/published";
+      const bookstoreEndpoint: string = "published";
       const state: any = state$.value;
       const host: any = selectors.currentHost(state);
       const serverConfig: ServerConfig = selectors.serverConfig(host);
@@ -73,7 +80,12 @@ export function publishToBookstore(
         return empty();
       }
 
-      const content = selectors
+      const content:
+        | RecordOf<NotebookContentRecordProps>
+        | RecordOf<DummyContentRecordProps>
+        | RecordOf<FileContentRecordProps>
+        | RecordOf<DirectoryContentRecordProps>
+        | undefined = selectors
         .contentByRef(state)
         .get(action.payload.contentRef);
 
@@ -87,20 +99,22 @@ export function publishToBookstore(
         }) as any;
       }
 
+      const notebook: NotebookV4 = content.model.savedNotebook;
+
+      // Save notebook first before sending to Bookstore
       return contents
-        .save(
-          serverConfig,
-          bookstoreEndpoint,
-          convertNotebookToContent(content)
-        )
+        .save(serverConfig, content.filepath, {
+          notebook,
+          type: "notebook"
+        })
         .pipe(
           tap((xhr: AjaxResponse) => {
             if (xhr.status !== 200) {
               throw new Error(xhr.response);
             }
           }),
-          map((req: AjaxResponse) => {
-            console.log(req);
+          map((nb: AjaxResponse) => {
+            console.log(nb);
             // return bookstore
             //   .publish(serverConfig, "", convertNotebookToContent(req.response))
             //   .pipe(

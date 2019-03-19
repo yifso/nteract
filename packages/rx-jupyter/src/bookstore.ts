@@ -2,7 +2,6 @@
  * @module rx-jupyter
  */
 // Vendor modules
-import { ImmutableNotebook } from "@nteract/commutable";
 import { BookstoreDataModel } from "@nteract/types";
 import { Observable } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
