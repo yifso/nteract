@@ -5,7 +5,10 @@ import { List, Map } from "immutable";
 import { Action, Reducer } from "redux";
 import { combineReducers } from "redux-immutable";
 
-const byId = (state = Map(), action: Action): Map<{}, {}> => {
+const byId = (
+  state = Map() as Map<string, React.ComponentClass>,
+  action: Action
+): Map<string, React.ComponentClass> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
@@ -22,7 +25,10 @@ const byId = (state = Map(), action: Action): Map<{}, {}> => {
   }
 };
 
-const displayOrder = (state = List(), action: Action): List<string> => {
+const displayOrder = (
+  state = List() as List<string>,
+  action: Action
+): List<string> => {
   let typedAction;
   switch (action.type) {
     case actions.ADD_TRANSFORM:
@@ -38,7 +44,7 @@ const displayOrder = (state = List(), action: Action): List<string> => {
 
 export const transforms: Reducer<
   {
-    byId: Map<{}, {}>;
+    byId: Map<string, React.ComponentClass>;
     displayOrder: List<any>;
   },
   Action<any>
