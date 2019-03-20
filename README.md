@@ -221,7 +221,7 @@ Follow instructions in [Releasing the Desktop application](https://github.com/nt
 
 Work on the nteract notebook is currently sponsored by
 
-[![NumFocus](https://www.flipcause.com/uploads/thumb_NumFocus_2C_RGB.png)](http://www.numfocus.org/)
+[![NumFocus](https://numfocus.salsalabs.org/donate-to-nteract/index.html)](http://www.numfocus.org/)
 
 We're on a common mission to build a great notebook experience. Feel free to
 [get in touch](mailto:rgbkrk@gmail.com) if you'd like to help. Resources go towards
