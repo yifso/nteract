@@ -385,7 +385,7 @@ export const semioticScatterplot = (
     };
   }
 
-  const xyPlotSettings = {
+  const xyPlotSettings: { [key: string]: any } = {
     xAccessor: type === "hexbin" || type === "heatmap" ? "x" : metric1,
     yAccessor: type === "hexbin" || type === "heatmap" ? "y" : metric2,
     axes: [

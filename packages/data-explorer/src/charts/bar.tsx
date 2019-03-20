@@ -13,6 +13,8 @@ interface BarOptions {
   colors: string[];
   setColor: (color: string[]) => void;
   barGrouping: Dx.BarGroupingType;
+  dimensions: object[];
+  metrics: object[];
 }
 
 export const semioticBarChart = (
@@ -36,6 +38,7 @@ export const semioticBarChart = (
   const additionalSettings: {
     afterElements?: JSX.Element;
     dynamicColumnWidth?: string;
+    rExtent?: number[];
     tooltipContent?: (hoveredDataPoint: {
       x: number;
       y: number;
@@ -63,7 +66,16 @@ export const semioticBarChart = (
       Math.max(...data.map(d => d[metric1] + d[metric4]))
     ];
 
-    errorBarAnnotations = (d: object, i: number, xy: object) => {
+    errorBarAnnotations = (
+      d: Dx.Datapoint,
+      i: number,
+      xy: {
+        width: number;
+        height: number;
+        styleFn: (args: object) => object;
+        rScale: (args: object) => number;
+      }
+    ) => {
       const errorBarSize = Math.abs(
         xy.rScale(d[metric1]) - xy.rScale(d[metric1] + d[metric4])
       );
@@ -129,13 +141,17 @@ export const semioticBarChart = (
       (selectedDimensions.length > 0 && selectedDimensions.join(",") !== dim1)
     ) {
       additionalSettings.pieceHoverAnnotation = true;
+      const combinedOptions = [
+        ...options.dimensions,
+        ...options.metrics
+      ] as Array<{ name: string }>;
       additionalSettings.tooltipContent = hoveredDatapoint => {
         return (
           <TooltipContent x={hoveredDatapoint.x} y={hoveredDatapoint.y}>
             <div
               style={{ heightMax: "300px", display: "flex", flexWrap: "wrap" }}
             >
-              {[...options.dimensions, ...options.metrics].map((dim, index) => (
+              {combinedOptions.map((dim: { name: string }, index: number) => (
                 <div
                   style={{
                     margin: "2px 5px 0",
