@@ -66,6 +66,7 @@ export interface Chart {
   metric1: string;
   metric2: string;
   metric3: string;
+  metric4: string;
   dim1: string;
   dim2: string;
   dim3: string;
@@ -75,7 +76,18 @@ export interface Chart {
 export type LineType = "line" | "stackedarea" | "bumparea" | "stackedpercent";
 export type AreaType = "hexbin" | "heatmap" | "contour";
 
+export type BarGroupingType = "Stacked" | "Clustered";
+
+export type TrendLineType =
+  | "none"
+  | "linear"
+  | "polynomial"
+  | "logarithmic"
+  | "exponential"
+  | "power";
+
 export type SummaryType =
+  | "none"
   | "violin"
   | "joy"
   | "histogram"
