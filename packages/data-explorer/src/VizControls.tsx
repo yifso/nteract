@@ -259,6 +259,9 @@ interface VizControlParams {
   areaType: Dx.AreaType;
   setAreaType: (label: Dx.AreaType) => void;
   data: Dx.Datapoint[];
+  trendLine: Dx.TrendLineType;
+  marginalGraphics: Dx.SummaryType;
+  barGrouping: Dx.BarGroupingType;
 }
 export default ({
   view,
@@ -269,6 +272,9 @@ export default ({
   selectedDimensions,
   selectedMetrics,
   hierarchyType,
+  trendLine,
+  marginalGraphics,
+  barGrouping,
   summaryType,
   networkType,
   setLineType,
@@ -341,6 +347,46 @@ export default ({
             false,
             chart.metric3,
             getControlHelpText(view, "metric3")
+          )}
+        {view === "bar" &&
+          metricDimSelector(
+            metricNames,
+            updateChartGenerator("metric4"),
+            "Error Bars",
+            false,
+            chart.metric4,
+            getControlHelpText(view, "metric4")
+          )}
+        {view === "bar" &&
+          metricDimSelector(
+            ["Clustered", "Stacked"],
+            selectedBarGrouping =>
+              updateChart({ barGrouping: selectedBarGrouping }),
+            "Stack or Cluster",
+            true,
+            barGrouping,
+            controlHelpText.barGrouping as string
+          )}
+        {view === "scatter" &&
+          metricDimSelector(
+            ["boxplot", "violin", "heatmap", "ridgeline", "histogram"],
+            selectedMarginalGraphics =>
+              updateChart({ marginalGraphics: selectedMarginalGraphics }),
+            "Marginal Graphics",
+            false,
+            marginalGraphics,
+            controlHelpText.marginalGraphics as string
+          )}
+
+        {view === "scatter" &&
+          metricDimSelector(
+            ["linear", "polynomial", "power", "exponential", "logarithmic"],
+            selectedRegressionType =>
+              updateChart({ trendLine: selectedRegressionType }),
+            "Trendline",
+            false,
+            trendLine,
+            controlHelpText.trendLine as string
           )}
         {(view === "summary" ||
           view === "scatter" ||

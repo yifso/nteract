@@ -3601,7 +3601,7 @@ d3-bboxCollide@^1.0.3:
   dependencies:
     d3-quadtree "1.0.1"
 
-d3-brush@^1.0.4:
+d3-brush@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/d3-brush/-/d3-brush-1.0.6.tgz#33691f2032d9db6c5d8cb684ff255a9883629e21"
   integrity sha512-lGSiF5SoSqO5/mYGD5FAeGKKS62JdA1EV7HPrU2b5rTX4qEJJtpjaGLJngjnkewQy7UnGstnFd3168wpf5z76w==
@@ -11285,6 +11285,11 @@ regjsparser@^0.6.0:
   dependencies:
     jsesc "~0.5.0"
 
+regression@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/regression/-/regression-2.0.1.tgz#8d29c3e8224a10850c35e337e85a8b2fac3b0c87"
+  integrity sha1-jSnD6CJKEIUMNeM36FqLL6w7DIc=
+
 remark-parse@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/remark-parse/-/remark-parse-5.0.0.tgz#4c077f9e499044d1d5c13f80d7a98cf7b9285d95"
@@ -11712,15 +11717,15 @@ semiotic-mark@0.3.1:
     prop-types "^15.6.0"
     roughjs-es5 "0.1.0"
 
-semiotic@^1.16.3:
-  version "1.16.4"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.16.4.tgz#b4a9728d72322e768705b376c1a04d07412d62af"
-  integrity sha512-ZWWH+ehpHGyc4KVrhC+Vuuthodt71nCgv0ChRjQLrqaKm5z3yi+2yTA/zwuUi05YD+XhLNkcKC6w1Q/vnXP8GQ==
+semiotic@^1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.19.1.tgz#1d1c93b737cfb5aa51f4cce96c13779f0b5aaefb"
+  integrity sha512-xDTMLXCtbqDRWvG2vwQsgdVuXeR98IJ6rncMitmLpcJ31tj4JFCb47WsyYeUNUHHsYlu7yQNWxCxBGVvSuSGeA==
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
     d3-bboxCollide "^1.0.3"
-    d3-brush "^1.0.4"
+    d3-brush "^1.0.6"
     d3-chord "^1.0.4"
     d3-collection "^1.0.1"
     d3-contour "^1.1.1"
@@ -11743,6 +11748,7 @@ semiotic@^1.16.3:
     promise "8.0.1"
     prop-types "15.6.0"
     react-annotation "2.1.5"
+    regression "^2.0.1"
     roughjs-es5 "0.1.0"
     semiotic-mark "0.3.1"
     svg-path-bounding-box "1.0.4"

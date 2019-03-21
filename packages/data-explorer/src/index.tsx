@@ -34,6 +34,9 @@ interface dxMetaProps {
   summaryType?: SummaryType;
   networkType?: NetworkType;
   hierarchyType?: HierarchyType;
+  trendLine?: Dx.TrendLineType;
+  marginalGraphics?: SummaryType;
+  barGrouping?: Dx.BarGroupingType;
   colors?: string[];
   chart?: Chart;
 }
@@ -75,6 +78,9 @@ interface State {
   displayChart: DisplayChart;
   primaryKey: string[];
   data: Dx.Datapoint[];
+  trendLine: Dx.TrendLineType;
+  marginalGraphics: Dx.SummaryType;
+  barGrouping: Dx.BarGroupingType;
 }
 
 const generateChartKey = ({
@@ -87,6 +93,9 @@ const generateChartKey = ({
   summaryType,
   networkType,
   hierarchyType,
+  trendLine,
+  marginalGraphics,
+  barGrouping,
   chart
 }: {
   view: View;
@@ -98,13 +107,16 @@ const generateChartKey = ({
   summaryType: SummaryType;
   networkType: NetworkType;
   hierarchyType: HierarchyType;
+  trendLine: Dx.TrendLineType;
+  marginalGraphics: SummaryType;
+  barGrouping: Dx.BarGroupingType;
   chart: Chart;
 }) =>
   `${view}-${lineType}-${areaType}-${selectedDimensions.join(
     ","
   )}-${selectedMetrics.join(
     ","
-  )}-${pieceType}-${summaryType}-${networkType}-${hierarchyType}-${JSON.stringify(
+  )}-${pieceType}-${summaryType}-${networkType}-${hierarchyType}-${trendLine}-${marginalGraphics}-${barGrouping}-${JSON.stringify(
     chart
   )}`;
 
@@ -234,7 +246,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     // Provide a default primaryKey if none provided
     if (primaryKey.length === 0) {
       primaryKey = [Dx.defaultPrimaryKey];
-      fields.push({ name: Dx.defaultPrimaryKey, type: "integer" });
+      fields = [...fields, { name: Dx.defaultPrimaryKey, type: "integer" }];
     }
 
     const dimensions = fields.filter(
@@ -276,6 +288,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       view: initialView,
       lineType: "line",
       areaType: "hexbin",
+      trendLine: "none",
+      marginalGraphics: "none",
+      barGrouping: "Clustered",
       selectedDimensions: [],
       selectedMetrics: [],
       pieceType: "bar",
@@ -290,6 +305,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         metric1: (metrics[0] && metrics[0].name) || "none",
         metric2: (metrics[1] && metrics[1].name) || "none",
         metric3: "none",
+        metric4: "none",
         dim1: (dimensions[0] && dimensions[0].name) || "none",
         dim2: (dimensions[1] && dimensions[1].name) || "none",
         dim3: "none",
@@ -325,6 +341,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       summaryType,
       networkType,
       hierarchyType,
+      trendLine,
+      marginalGraphics,
+      barGrouping,
       colors,
       primaryKey,
       data: stateData
@@ -348,7 +367,10 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       summaryType,
       networkType,
       hierarchyType,
-      chart
+      chart,
+      trendLine,
+      marginalGraphics,
+      barGrouping
     });
 
     const frameSettings = chartGenerator(stateData, data!.schema, {
@@ -366,6 +388,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       networkType,
       hierarchyType,
       primaryKey,
+      trendLine,
+      marginalGraphics,
+      barGrouping,
       setColor: this.setColor
     });
 
@@ -388,6 +413,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
             hierarchyType,
             summaryType,
             networkType,
+            trendLine,
+            marginalGraphics,
+            barGrouping,
             updateChart: this.updateChart,
             updateDimensions: this.updateDimensions,
             setLineType: this.setLineType,
@@ -416,6 +444,9 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
             summaryType,
             networkType,
             hierarchyType,
+            trendLine,
+            marginalGraphics,
+            barGrouping,
             colors,
             chart
           }
@@ -485,7 +516,10 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       pieceType,
       summaryType,
       networkType,
-      hierarchyType
+      hierarchyType,
+      trendLine,
+      marginalGraphics,
+      barGrouping
     } = this.state;
 
     let display: React.ReactNode = null;
@@ -514,7 +548,10 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
         summaryType,
         networkType,
         hierarchyType,
-        chart
+        chart,
+        trendLine,
+        marginalGraphics,
+        barGrouping
       });
 
       display = this.state.displayChart[chartKey];
