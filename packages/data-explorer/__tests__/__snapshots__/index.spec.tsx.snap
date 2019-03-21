@@ -129,15 +129,6 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
               },
             }
           }
-          areaStyle={[Function]}
-          areaType={
-            Object {
-              "bins": 10,
-              "thresholds": 6,
-              "type": "scatterplot",
-            }
-          }
-          areas={false}
           axes={
             Array [
               Object {
@@ -166,7 +157,7 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
             Object {
               "bottom": 50,
               "left": 75,
-              "right": 150,
+              "right": 30,
               "top": 30,
             }
           }
@@ -313,16 +304,18 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
           responsiveWidth={false}
           size={
             Array [
-              575,
+              455,
               430,
             ]
           }
+          summaryStyle={[Function]}
           tooltipContent={[Function]}
           xAccessor="Happiness Rank"
           yAccessor="Standard Error"
         />
         <Component
           areaType="hexbin"
+          barGrouping="Clustered"
           chart={
             Object {
               "dim1": "Region",
@@ -488,6 +481,7 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
           }
           hierarchyType="dendrogram"
           lineType="line"
+          marginalGraphics="none"
           metrics={
             Array [
               Object {
@@ -538,6 +532,7 @@ exports[`DataExplorer composed with Toolbar to the left 1`] = `
           setAreaType={[Function]}
           setLineType={[Function]}
           summaryType="violin"
+          trendLine="none"
           updateChart={[Function]}
           updateDimensions={[Function]}
           updateMetrics={[Function]}
