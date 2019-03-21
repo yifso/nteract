@@ -146,7 +146,9 @@ export const semioticScatterplot = (
   };
 
   const areaTooltip = (hoveredDatapoint: Dx.Datapoint) => {
-    if (hoveredDatapoint.binItems.length === 0) {
+    const binItems = hoveredDatapoint.binItems || hoveredDatapoint.data || [];
+
+    if (binItems.length === 0) {
       return null;
     }
     return (
@@ -154,7 +156,7 @@ export const semioticScatterplot = (
         <TooltipHeader>
           ID, {metric1}, {metric2}
         </TooltipHeader>
-        {hoveredDatapoint.binItems.map(
+        {binItems.map(
           (binnedDatapoint: { [index: string]: any }, index: number) => {
             const id = dimensions
               .map(
@@ -248,7 +250,6 @@ export const semioticScatterplot = (
   }
 
   let areas: Array<{ coordinates: Dx.Datapoint[] }> = [];
-
   if (
     type === "heatmap" ||
     type === "hexbin" ||
@@ -258,7 +259,7 @@ export const semioticScatterplot = (
 
     if (type !== "contour") {
       const calculatedAreas = binHash[type]({
-        areaType: { type, bins: 10 },
+        summaryType: { type, bins: 10 },
         data: {
           coordinates: filteredData.map(datapoint => ({
             ...datapoint,
@@ -268,6 +269,7 @@ export const semioticScatterplot = (
         },
         size: [height, height]
       });
+
       areas = calculatedAreas;
 
       const thresholdSteps = [0.2, 0.4, 0.6, 0.8, 1]
@@ -415,19 +417,18 @@ export const semioticScatterplot = (
       if (type === "scatterplot") {
         return { stroke: "darkred", strokeWidth: 2, fill: "none" };
       }
+
       return {
         fill:
           type === "contour"
             ? "none"
-            : thresholds(
-                (areaDatapoint.binItems || areaDatapoint.data.binItems).length
-              ),
+            : thresholds((areaDatapoint.binItems || areaDatapoint.data).length),
         stroke:
           type !== "contour"
             ? undefined
             : dim3 === "none"
             ? "#BBB"
-            : areaDatapoint.parentArea.color,
+            : areaDatapoint.parentSummary.color,
         strokeWidth: type === "contour" ? 2 : 1
       };
     },
