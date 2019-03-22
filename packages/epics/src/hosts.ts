@@ -4,6 +4,7 @@
 // Vendor modules
 import * as actions from "@nteract/actions";
 import { toJS } from "@nteract/commutable";
+import { NotebookV4 } from "@nteract/commutable/lib/v4";
 import * as selectors from "@nteract/selectors";
 import {
   AppState,
@@ -99,12 +100,12 @@ export function publishToBookstore(
         }) as any;
       }
 
-      const notebook: NotebookV4 = content.model.savedNotebook;
+      const notebook: NotebookV4 = toJS(content.model.savedNotebook);
 
       // Save notebook first before sending to Bookstore
       return contents
         .save(serverConfig, content.filepath, {
-          notebook,
+          content: notebook,
           type: "notebook"
         })
         .pipe(
@@ -114,29 +115,26 @@ export function publishToBookstore(
             }
           }),
           map((nb: AjaxResponse) => {
-            console.log(nb);
-            // return bookstore
-            //   .publish(serverConfig, "", convertNotebookToContent(req.response))
-            //   .pipe(
-            //     tap((xhr: AjaxResponse) => {
-            //       if (xhr.status !== 200) {
-            //         throw new Error(xhr.response);
-            //       }
-            //     }),
-            //     map(resp => {
-            //       actions.publishToBookstoreSucceeded({
-            //         contentRef: action.payload.contentRef
-            //       });
-            //     }),
-            //     catchError((xhrError: any) =>
-            //       of(
-            //         actions.publishToBookstoreFailed({
-            //           error: xhrError,
-            //           contentRef: action.payload.contentRef
-            //         })
-            //       )
-            //     )
-            //   );
+            return bookstore.publish(serverConfig, "/published", {}).pipe(
+              tap((xhr: AjaxResponse) => {
+                if (xhr.status !== 200) {
+                  throw new Error(xhr.response);
+                }
+              }),
+              map(resp => {
+                actions.publishToBookstoreSucceeded({
+                  contentRef: action.payload.contentRef
+                });
+              }),
+              catchError((xhrError: any) =>
+                of(
+                  actions.publishToBookstoreFailed({
+                    error: xhrError,
+                    contentRef: action.payload.contentRef
+                  })
+                )
+              )
+            );
           }),
           catchError((xhrError: any) =>
             of(
