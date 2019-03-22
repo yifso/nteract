@@ -43,3 +43,5 @@ export const StyledButtonGroup = styled(ButtonGroup)`
   }
 `;
 */
+
+export const StyledButtonGroup = null;

@@ -9,6 +9,7 @@ import styled, { css } from "styled-components";
 import * as Dx from "./types";
 
 // const NoResultsItem = <MenuItem disabled text="No results." />;
+/*
 
 const arrowHeadMarker = (
   <marker
@@ -123,6 +124,7 @@ const getIcon = (title: string) => {
     return title as IconName;
   }
 };
+*/
 
 const commonCSS = css`
   h2 {
@@ -192,13 +194,14 @@ const metricDimSelector = (
     */
     displayMetrics = (
       <select
-        onChange={(event?: React.SyntheticEvent<HTMLElement>): void => {
+        onChange={(event: { target: { value: string } }): void => {
           selectionFunction(event.target.value);
         }}
+        value={selectedValue}
       >
         {metricsList.map((metricName: string, i) => (
           <option
-            ariaSelected={metricName}
+            aria-selected={selectedValue === metricName}
             key={`display-metric-${i}`}
             label={metricName}
             value={metricName}
@@ -519,7 +522,6 @@ export default ({
                 key={lineTypeOption.type}
                 className={`button-text ${lineType === lineTypeOption.type &&
                   "selected"}`}
-                active={lineType === lineTypeOption.type}
                 onClick={() => setLineType(lineTypeOption.type)}
               >
                 {lineTypeOption.label}
@@ -572,7 +574,6 @@ export default ({
                       "selected"}`}
                     key={areaTypeOptionType}
                     onClick={() => setAreaType(areaTypeOptionType)}
-                    active={areaType === areaTypeOptionType}
                   >
                     {areaTypeOption.label}
                   </button>
@@ -646,7 +647,6 @@ export default ({
                   dim.name
                 ) !== -1 && "selected"}`}
                 onClick={() => updateDimensions(dim.name)}
-                active={selectedDimensions.indexOf(dim.name) !== -1}
               >
                 {dim.name}
               </button>
@@ -668,7 +668,6 @@ export default ({
                   metric.name
                 ) !== -1 && "selected"}`}
                 onClick={() => updateMetrics(metric.name)}
-                active={selectedMetrics.indexOf(metric.name) !== -1}
               >
                 {metric.name}
               </button>

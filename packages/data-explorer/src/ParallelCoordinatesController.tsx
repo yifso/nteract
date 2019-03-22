@@ -2,7 +2,6 @@ import { scaleLinear, ScaleLinear } from "d3-scale";
 import * as React from "react";
 import { Axis, ResponsiveOrdinalFrame } from "semiotic";
 
-import { StyledButtonGroup } from "./components/button-group";
 import HTMLLegend from "./HTMLLegend";
 
 import TooltipContent from "./tooltip-content";
@@ -257,7 +256,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
 
     return (
       <div>
-        <StyledButtonGroup>
+        <div>
           <button
             className={`button-text ${filterMode ? "selected" : ""}`}
             onClick={() => this.setState({ filterMode: true })}
@@ -270,7 +269,7 @@ class ParallelCoordinatesController extends React.Component<Props, State> {
           >
             Explore
           </button>
-        </StyledButtonGroup>
+        </div>
         <ResponsiveOrdinalFrame
           data={this.state.data}
           oAccessor="metric"
