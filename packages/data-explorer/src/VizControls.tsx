@@ -1,14 +1,14 @@
-import { Button, Code, IconName, MenuItem } from "@blueprintjs/core";
-import { Select } from "@blueprintjs/select";
+// import { Button, Code, IconName, MenuItem } from "@blueprintjs/core";
+// import { Select } from "@blueprintjs/select";
 import * as React from "react";
 
-import { StyledButtonGroup } from "./components/button-group";
+// import { StyledButtonGroup } from "./components/button-group";
 import { ChartOptionTypes, controlHelpText } from "./docs/chart-docs";
 
 import styled, { css } from "styled-components";
 import * as Dx from "./types";
 
-const NoResultsItem = <MenuItem disabled text="No results." />;
+// const NoResultsItem = <MenuItem disabled text="No results." />;
 
 const arrowHeadMarker = (
   <marker
@@ -163,6 +163,7 @@ const metricDimSelector = (
   let displayMetrics;
 
   if (metricsList.length > 1) {
+    /*
     displayMetrics = (
       <Select
         items={metricsList.map((metricName: string) => ({
@@ -188,6 +189,25 @@ const metricDimSelector = (
         />
       </Select>
     );
+    */
+    displayMetrics = (
+      <select
+        onChange={(event?: React.SyntheticEvent<HTMLElement>): void => {
+          selectionFunction(event.target.value);
+        }}
+      >
+        {metricsList.map((metricName: string, i) => (
+          <option
+            ariaSelected={metricName}
+            key={`display-metric-${i}`}
+            label={metricName}
+            value={metricName}
+          >
+            {metricName}
+          </option>
+        ))}
+      </select>
+    );
   } else {
     displayMetrics = <p style={{ margin: 0 }}>{metricsList[0]}</p>;
   }
@@ -195,7 +215,7 @@ const metricDimSelector = (
   return (
     <ControlWrapper title={contextTooltip}>
       <div>
-        <Code>{title}</Code>
+        <h3>{title}</h3>
       </div>
       {displayMetrics}
     </ControlWrapper>
@@ -492,6 +512,27 @@ export default ({
             style={{ display: "inline-block" }}
           >
             <div>
+              <h3>Chart Type</h3>
+            </div>
+            {availableLineTypes.map(lineTypeOption => (
+              <button
+                key={lineTypeOption.type}
+                className={`button-text ${lineType === lineTypeOption.type &&
+                  "selected"}`}
+                active={lineType === lineTypeOption.type}
+                onClick={() => setLineType(lineTypeOption.type)}
+              >
+                {lineTypeOption.label}
+              </button>
+            ))}
+          </div>
+        )
+        /*(
+          <div
+            title={controlHelpText.lineType as string}
+            style={{ display: "inline-block" }}
+          >
+            <div>
               <Code>Chart Type</Code>
             </div>
             <StyledButtonGroup vertical>
@@ -508,8 +549,41 @@ export default ({
               ))}
             </StyledButtonGroup>
           </div>
-        )}
+                  ) */
+        }
         {view === "hexbin" && (
+          <div
+            className="control-wrapper"
+            title={controlHelpText.areaType as string}
+          >
+            <div>
+              <h3>Chart Type</h3>
+            </div>
+            {availableAreaTypes.map(areaTypeOption => {
+              const areaTypeOptionType = areaTypeOption.type;
+              if (
+                areaTypeOptionType === "contour" ||
+                areaTypeOptionType === "hexbin" ||
+                areaTypeOptionType === "heatmap"
+              ) {
+                return (
+                  <button
+                    className={`button-text ${areaType === areaTypeOptionType &&
+                      "selected"}`}
+                    key={areaTypeOptionType}
+                    onClick={() => setAreaType(areaTypeOptionType)}
+                    active={areaType === areaTypeOptionType}
+                  >
+                    {areaTypeOption.label}
+                  </button>
+                );
+              } else {
+                return <div />;
+              }
+            })}
+          </div>
+        )
+        /*(
           <div
             className="control-wrapper"
             title={controlHelpText.areaType as string}
@@ -542,14 +616,15 @@ export default ({
               })}
             </StyledButtonGroup>
           </div>
-        )}
+            )*/
+        }
         {view === "hierarchy" && (
           <div
             className="control-wrapper"
             title={controlHelpText.nestingDimensions as string}
           >
             <div>
-              <Code>Nesting</Code>
+              <h3>Nesting</h3>
             </div>
             {selectedDimensions.length === 0
               ? "Select categories to nest"
@@ -562,22 +637,20 @@ export default ({
             title={controlHelpText.barDimensions as string}
           >
             <div>
-              <Code>Categories</Code>
+              <h3>Categories</h3>
             </div>
-            <StyledButtonGroup vertical>
-              {dimensions.map(dim => (
-                <Button
-                  key={`dimensions-select-${dim.name}`}
-                  className={`button-text ${selectedDimensions.indexOf(
-                    dim.name
-                  ) !== -1 && "selected"}`}
-                  onClick={() => updateDimensions(dim.name)}
-                  active={selectedDimensions.indexOf(dim.name) !== -1}
-                >
-                  {dim.name}
-                </Button>
-              ))}
-            </StyledButtonGroup>
+            {dimensions.map(dim => (
+              <button
+                key={`dimensions-select-${dim.name}`}
+                className={`button-text ${selectedDimensions.indexOf(
+                  dim.name
+                ) !== -1 && "selected"}`}
+                onClick={() => updateDimensions(dim.name)}
+                active={selectedDimensions.indexOf(dim.name) !== -1}
+              >
+                {dim.name}
+              </button>
+            ))}
           </div>
         )}
         {view === "line" && (
@@ -586,22 +659,20 @@ export default ({
             title={controlHelpText.lineDimensions as string}
           >
             <div>
-              <Code>Metrics</Code>
+              <h3>Metrics</h3>
             </div>
-            <StyledButtonGroup vertical>
-              {metrics.map(metric => (
-                <Button
-                  key={`metrics-select-${metric.name}`}
-                  className={`button-text ${selectedMetrics.indexOf(
-                    metric.name
-                  ) !== -1 && "selected"}`}
-                  onClick={() => updateMetrics(metric.name)}
-                  active={selectedMetrics.indexOf(metric.name) !== -1}
-                >
-                  {metric.name}
-                </Button>
-              ))}
-            </StyledButtonGroup>
+            {metrics.map(metric => (
+              <button
+                key={`metrics-select-${metric.name}`}
+                className={`button-text ${selectedMetrics.indexOf(
+                  metric.name
+                ) !== -1 && "selected"}`}
+                onClick={() => updateMetrics(metric.name)}
+                active={selectedMetrics.indexOf(metric.name) !== -1}
+              >
+                {metric.name}
+              </button>
+            ))}
           </div>
         )}
       </Wrapper>
