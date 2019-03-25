@@ -13,6 +13,20 @@ module.exports = {
   defaultExample: false,
   propsParser: typescriptPropsParser,
   resolver: require("react-docgen").resolver.findAllComponentDefinitions,
+  getComponentPathLine: componentPath => {
+    const toPascalCase = string => {
+      return string
+        .match(/[a-z]+/gi)
+        .map(function(word) {
+          return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+        })
+        .join("");
+    };
+    const name = path.basename(componentPath, ".tsx");
+    const dir = path.dirname(componentPath);
+    const package = dir.match(new RegExp("packages/(.*)/src"));
+    return `import { ${toPascalCase(name)} } from '@nteract/${package[1]}';`;
+  },
   sections: [
     {
       name: "Introduction",
