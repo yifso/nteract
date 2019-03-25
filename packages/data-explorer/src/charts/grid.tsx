@@ -1,4 +1,3 @@
-import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
 import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
@@ -36,43 +35,49 @@ const GridWrapper = styled.div`
 const NumberFilter = (props: NumberFilterProps) => {
   const { filterState, filterName, updateFunction, onChange } = props;
   const mode = filterState[filterName] || "=";
-  const lockButton = (
-    <Tooltip content={`Switch to ${switchMode(mode)}`}>
-      <Button
-        minimal
+
+  return (
+    <form
+      style={{
+        border: "1px solid gray",
+        background: "white",
+        borderRadius: "5px",
+        width: "100%"
+      }}
+    >
+      <input
+        type="text"
+        id="name"
+        name="user_name"
+        style={{ width: "calc(100% - 30px)", border: "none" }}
+        onChange={(event: React.FormEvent<HTMLInputElement>) => {
+          onChange(event.currentTarget.value);
+        }}
+        placeholder="number"
+      />
+      <button
         onClick={() => {
           updateFunction({ [filterName]: switchMode(mode) });
         }}
       >
         {mode}
-      </Button>
-    </Tooltip>
-  );
-
-  return (
-    <InputGroup
-      //      allowNumericCharactersOnly={true}
-      large
-      placeholder="number"
-      rightElement={lockButton}
-      small={false}
-      type={"text"}
-      onChange={(event: React.FormEvent<HTMLInputElement>) => {
-        onChange(event.currentTarget.value);
-      }}
-    />
+      </button>
+    </form>
   );
 };
 
 const stringFilter = () => ({ onChange }: { onChange: OnChangeProps }) => (
-  <InputGroup
-    large
-    placeholder="string"
-    type={"text"}
-    onChange={(event: React.FormEvent<HTMLInputElement>) => {
-      onChange(event.currentTarget.value);
-    }}
-  />
+  <form>
+    <input
+      type="text"
+      id="string-filter"
+      name="string-filter"
+      onChange={(event: React.FormEvent<HTMLInputElement>) => {
+        onChange(event.currentTarget.value);
+      }}
+      placeholder="string"
+    />
+  </form>
 );
 
 const numberFilterWrapper = (
@@ -209,12 +214,12 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
 
     return (
       <GridWrapper>
-        <Button
-          icon="filter"
+        <button
+          //          icon="filter"
           onClick={() => this.setState({ showFilters: !showFilters })}
         >
           {showFilters ? "Hide" : "Show"} Filters
-        </Button>
+        </button>
         <ReactTableFixedColumns
           data={data}
           columns={tableColumns}
