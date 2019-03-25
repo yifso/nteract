@@ -1,4 +1,3 @@
-// import { Button, InputGroup, Tooltip } from "@blueprintjs/core";
 import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
@@ -36,34 +35,6 @@ const GridWrapper = styled.div`
 const NumberFilter = (props: NumberFilterProps) => {
   const { filterState, filterName, updateFunction, onChange } = props;
   const mode = filterState[filterName] || "=";
-  /* old blueprint button
-  const lockButton = (
-    <Tooltip content={`Switch to ${switchMode(mode)}`}>
-      <Button
-        minimal
-        onClick={() => {
-          updateFunction({ [filterName]: switchMode(mode) });
-        }}
-      >
-        {mode}
-      </Button>
-    </Tooltip>
-  );
-
-  return (
-    <InputGroup
-      //      allowNumericCharactersOnly={true}
-      large
-      placeholder="number"
-      rightElement={lockButton}
-      small={false}
-      type={"text"}
-      onChange={(event: React.FormEvent<HTMLInputElement>) => {
-        onChange(event.currentTarget.value);
-      }}
-    />
-  );
-    */
 
   return (
     <form
@@ -108,19 +79,6 @@ const stringFilter = () => ({ onChange }: { onChange: OnChangeProps }) => (
     />
   </form>
 );
-
-/* Blueprint string filter
-
-(
-  <InputGroup
-    large
-    placeholder="string"
-    type={"text"}
-    onChange={(event: React.FormEvent<HTMLInputElement>) => {
-      onChange(event.currentTarget.value);
-    }}
-  />
-);*/
 
 const numberFilterWrapper = (
   filterState: NumberFilterProps["filterState"],
