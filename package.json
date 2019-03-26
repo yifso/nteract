@@ -228,7 +228,7 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules":"^5.4.0",
-    "tslint-react": "^3.6.0",
+    "tslint-react": "^4.0.0",
     "tslint-react-a11y": "^1.0.0",
     "tslint-react-perf": "^0.2.1",
     "typedoc": "^0.14.0",
