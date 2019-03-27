@@ -1,6 +1,6 @@
 {
   "name": "@nteract/connected-components",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "Connected components exported from @nteract/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@nteract/commutable": "^7.0.2",
-    "@nteract/core": "^10.1.1",
+    "@nteract/core": "^10.1.2",
     "@nteract/types": "^4.0.2",
     "rc-menu": "6.2.11",
     "react-redux": "^6.0.0",
