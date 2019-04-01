@@ -40,15 +40,14 @@ const byRef = (
       // communication state first and not requesting this information until
       // the communication state shows that it should exist.
       const fetchContentAction = action as actionTypes.FetchContent;
-      return state
-        .set(
-          fetchContentAction.payload.contentRef,
-          makeDummyContentRecord({
-            filepath: fetchContentAction.payload.filepath || ""
-            // TODO: we can set kernelRef when the content record uses it.
-          })
-        )
-        .setIn([fetchContentAction.payload.filepath, "loading"], true);
+      return state.set(
+        fetchContentAction.payload.contentRef,
+        makeDummyContentRecord({
+          filepath: fetchContentAction.payload.filepath || "",
+          loading: true
+          // TODO: we can set kernelRef when the content record uses it.
+        })
+      );
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
       // TODO: is this reasonable? We launched the kernel on behalf of this
       // content... so it makes sense to swap it, right?
