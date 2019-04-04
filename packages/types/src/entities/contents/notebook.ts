@@ -1,26 +1,62 @@
 /**
  * @module types
  */
+
+/**
+ * Description
+ */
+
+// Vendor modules
 import {
   CellId,
   emptyNotebook,
   ImmutableCell,
   ImmutableNotebook
 } from "@nteract/commutable";
+import { NotebookV4 } from "@nteract/commutable/lib/v4";
 import * as Immutable from "immutable";
 
+// Local modules
 import { KernelRef } from "../..";
 
-// `Bookstore` Data Model. For more info, see:
+// The data model that `nteract/bookstore` accepts. For more info, see:
 // https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#data-model
 export interface BookstoreDataModel {
-  name: string;
+  /**
+   * Basename of the entity.
+   */
+  name: string | undefined;
+  /**
+   * Full (API-style)*def path to entity.
+   * def => https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#apipaths
+   */
   path: string;
+  /**
+   * The entity type. One of "notebook", "file", or "directory".
+   */
   type: "notebook";
-  created: string;
-  last_modified: string;
-  content: ImmutableNotebook;
-  mimetype: string;
+  /**
+   * Creation date of the entity.
+   */
+  created: string | undefined | null;
+  /**
+   * Last modified date of the entity.
+   */
+  last_modified: string | undefined | null;
+  /**
+   * The "content" of the entity.
+   * See: https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#filesystem-entities
+   */
+  content: NotebookV4;
+  /**
+   * The mimetype of `content`, if any.
+   * See: https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#filesystem-entities
+   */
+  mimetype: string | undefined | null;
+  /**
+   * The format of `content`, if any.
+   * See: https://jupyter-notebook.readthedocs.io/en/stable/extending/contents.html#filesystem-entities
+   */
   format: "json";
 }
 
@@ -39,6 +75,7 @@ export interface DocumentRecordProps {
   copied: ImmutableCell | null;
   kernelRef?: KernelRef | null;
 }
+
 export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   type: "notebook",
   notebook: emptyNotebook,
@@ -52,6 +89,7 @@ export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   copied: null,
   kernelRef: null
 });
+
 export type NotebookModel = Immutable.RecordOf<DocumentRecordProps>;
 
 export interface NotebookContentRecordProps {

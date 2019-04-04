@@ -61,7 +61,6 @@ export function publishToBookstore(
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE),
     switchMap(action => {
-      const bookstoreEndpoint: string = "published";
       const state: any = state$.value;
       const host: any = selectors.currentHost(state);
       const serverConfig: ServerConfig = selectors.serverConfig(host);
@@ -115,26 +114,37 @@ export function publishToBookstore(
             }
           }),
           map((nb: AjaxResponse) => {
-            return bookstore.publish(serverConfig, "/published", {}).pipe(
-              tap((xhr: AjaxResponse) => {
-                if (xhr.status !== 200) {
-                  throw new Error(xhr.response);
-                }
-              }),
-              map(resp => {
-                actions.publishToBookstoreSucceeded({
-                  contentRef: action.payload.contentRef
-                });
-              }),
-              catchError((xhrError: any) =>
-                of(
-                  actions.publishToBookstoreFailed({
-                    error: xhrError,
+            return bookstore
+              .publish(serverConfig, "/published", {
+                name: content.filepath.split("/").pop(),
+                path: content.filepath,
+                type: content.type,
+                created: content.created!.toString(),
+                last_modified: "",
+                content: notebook,
+                mimetype: content.mimetype,
+                format: content.format
+              })
+              .pipe(
+                tap((xhr: AjaxResponse) => {
+                  if (xhr.status !== 200) {
+                    throw new Error(xhr.response);
+                  }
+                }),
+                map(resp => {
+                  actions.publishToBookstoreSucceeded({
                     contentRef: action.payload.contentRef
-                  })
+                  });
+                }),
+                catchError((xhrError: any) =>
+                  of(
+                    actions.publishToBookstoreFailed({
+                      error: xhrError,
+                      contentRef: action.payload.contentRef
+                    })
+                  )
                 )
-              )
-            );
+              );
           }),
           catchError((xhrError: any) =>
             of(

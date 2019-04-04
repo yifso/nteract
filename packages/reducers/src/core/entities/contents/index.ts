@@ -39,12 +39,6 @@ const byRef = (
         tags,
         title
       } = overwriteMetadataFieldsAction.payload;
-      const headerData = {
-        authors,
-        description,
-        tags,
-        title
-      };
 
       return state
         .setIn(
@@ -55,7 +49,7 @@ const byRef = (
             "metadata",
             "authors"
           ],
-          headerData.authors
+          authors
         )
         .setIn(
           [
@@ -65,7 +59,7 @@ const byRef = (
             "metadata",
             "description"
           ],
-          headerData.description
+          description
         )
         .setIn(
           [
@@ -75,7 +69,7 @@ const byRef = (
             "metadata",
             "tags"
           ],
-          headerData.tags
+          tags
         )
         .setIn(
           [
@@ -85,7 +79,7 @@ const byRef = (
             "metadata",
             "title"
           ],
-          headerData.title
+          title
         );
     case actionTypes.TOGGLE_HEADER_EDITOR:
       const toggleHeaderAction = action as actionTypes.ToggleHeaderEditor;
