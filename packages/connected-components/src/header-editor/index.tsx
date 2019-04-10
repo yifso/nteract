@@ -2,10 +2,6 @@
  * @nteract HeaderEditor component. For demo and documentation, see:
  * https://components.nteract.io/#headereditor.
  *
- * Note: The HeaderEditor is a @nteract connected component due to the
- * fact that it contains a publish to `Bookstore` function that is active
- * when `Bookstore` is enabled in the @nteract app.
- *
  * https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json#L67
  */
 
@@ -18,16 +14,8 @@ import {
   Position,
   Tooltip
 } from "@blueprintjs/core";
-import {
-  actions,
-  AppState,
-  AuthorObject,
-  ContentRef,
-  HostRecord
-} from "@nteract/core";
+import { AuthorObject, ContentRef } from "@nteract/core";
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 // Local modules
 import {
@@ -58,7 +46,7 @@ export interface HeaderDataProps {
   title: string;
 }
 
-export interface HeaderEditorBaseProps {
+export interface HeaderEditorProps {
   /**
    * Whether or not the fields of the header can be edited.
    */
@@ -85,24 +73,6 @@ export interface HeaderEditorBaseProps {
   theme: "light" | "dark";
 }
 
-interface HeaderEditorMapStateToProps {
-  /**
-   * Whether publishing to `Bookstore` is enabled.
-   */
-  bookstoreEnabled?: boolean;
-}
-
-interface HeaderEditorMapDispatchToProps {
-  /**
-   * An event handler to publish notebook content to BookStore.
-   */
-  onPublish: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-}
-
-export type HeaderEditorProps = HeaderEditorBaseProps &
-  HeaderEditorMapStateToProps &
-  HeaderEditorMapDispatchToProps;
-
 export interface HeaderEditorState {
   editMode: "none" | "author" | "tag";
 }
@@ -116,7 +86,6 @@ class HeaderEditor extends React.PureComponent<
   HeaderEditorState
 > {
   static defaultProps: Partial<HeaderEditorProps> = {
-    bookstoreEnabled: false,
     editable: true,
     headerData: {
       authors: [],
@@ -137,7 +106,7 @@ class HeaderEditor extends React.PureComponent<
   }
 
   render(): JSX.Element | null {
-    const { editable, bookstoreEnabled, headerData, onPublish } = this.props;
+    const { editable, headerData } = this.props;
 
     return (
       <header>
@@ -237,9 +206,6 @@ class HeaderEditor extends React.PureComponent<
               onChange={this.onEditorChange}
             />
           </MarginContainer>
-          {bookstoreEnabled ? (
-            <Button type={"button"} text={"Publish"} onClick={onPublish} />
-          ) : null}
         </Container>
       </header>
     );
@@ -327,32 +293,7 @@ class HeaderEditor extends React.PureComponent<
   private onAdd = (): void => this.setState({ editMode: "tag" });
 }
 
-const mapStateToProps = (
-  appState: AppState,
-  ownProps: HeaderEditorProps
-): HeaderEditorMapStateToProps => {
-  const host: HostRecord = appState.app.host;
-  const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
-
-  return {
-    bookstoreEnabled: isBookstoreEnabled
-  };
-};
-
-const mapDispatchToProps = (
-  dispatch: Dispatch,
-  ownProps: { contentRef: ContentRef }
-): HeaderEditorMapDispatchToProps => {
-  return {
-    onPublish: () =>
-      dispatch(actions.publishToBookstore({ contentRef: ownProps.contentRef }))
-  };
-};
-
 // We export this for testing purposes.
-export { HeaderEditor };
+// export { HeaderEditor };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HeaderEditor);
+export default HeaderEditor;

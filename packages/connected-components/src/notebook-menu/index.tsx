@@ -4,6 +4,7 @@ import { actions } from "@nteract/core";
 import {
   AppState,
   ContentRef,
+  HostRecord,
   KernelRef,
   KernelspecsByRefRecord,
   KernelspecsByRefRecordProps,
@@ -39,6 +40,7 @@ const Link = styled.a`
 `;
 
 interface Props {
+  bookstoreEnabled?: boolean;
   persistAfterClick?: boolean;
   defaultOpenKeys?: string[];
   openKeys?: string[];
@@ -97,6 +99,7 @@ interface Props {
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
   currentKernelspecs?: KernelspecsByRefRecord | null;
+  onPublish?: () => void;
 }
 
 interface State {
@@ -119,6 +122,7 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
       executeAllCellsBelow,
       clearAllOutputs,
       unhideAll,
+      onPublish,
       openAboutModal,
       pasteCell,
       setTheme,
@@ -280,6 +284,11 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
           });
         }
         break;
+      case MENU_ITEM_ACTIONS.PUBLISH_TO_BOOKSTORE:
+        if (onPublish) {
+          onPublish();
+        }
+        break;
       default:
         console.log(`unhandled action: ${action}`);
     }
@@ -303,6 +312,7 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
 
   render(): JSX.Element {
     const {
+      bookstoreEnabled,
       currentKernelspecs,
       defaultOpenKeys,
       persistAfterClick
@@ -337,6 +347,13 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
             >
               Download (.ipynb)
             </MenuItem>
+            {bookstoreEnabled ? (
+              <MenuItem
+                key={createActionKey(MENU_ITEM_ACTIONS.PUBLISH_TO_BOOKSTORE)}
+              >
+                Publish
+              </MenuItem>
+            ) : null}
           </SubMenu>
           <SubMenu key={MENUS.EDIT} title="Edit">
             <MenuItem key={createActionKey(MENU_ITEM_ACTIONS.CUT_CELL)}>
@@ -488,6 +505,8 @@ function makeMapStateToProps(
 
   const mapStateToProps = (state: AppState) => {
     const content = state.core.entities.contents.byRef.get(contentRef);
+    const host: HostRecord = state.app.host;
+    const isBookstoreEnabled: boolean = host.bookstoreEnabled || false;
 
     // The current kernelspecs setup is _overkill_ as we're only ever going to
     // have one collection of kernelspecs
@@ -513,6 +532,7 @@ function makeMapStateToProps(
     const currentKernelRef = content.model.kernelRef;
 
     return {
+      bookstoreEnabled: isBookstoreEnabled,
       currentContentRef,
       currentKernelRef,
       currentKernelspecs,
@@ -528,6 +548,10 @@ function makeMapDispatchToProps(
   initialProps: { contentRef: ContentRef }
 ) {
   const mapDispatchToProps = (dispatch: any) => ({
+    onPublish: () =>
+      dispatch(
+        actions.publishToBookstore({ contentRef: initialProps.contentRef })
+      ),
     toggleNotebookHeaderEditor: (payload: { contentRef: string }) =>
       dispatch(actions.toggleHeaderEditor(payload)),
     saveNotebook: (payload: { contentRef: string }) =>
