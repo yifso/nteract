@@ -171,7 +171,7 @@
     "@types/react-timeago": "^4.1.0",
     "@types/redux-immutable": "^4.0.0",
     "@types/redux-logger": "^3.0.6",
-    "@types/semver": "^5.5.0",
+    "@types/semver": "^6.0.0",
     "@types/styled-components": "^4.1.4",
     "@types/webfontloader": "^1.6.29",
     "concurrently": "^4.0.0",
