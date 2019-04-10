@@ -899,10 +899,10 @@
   resolved "https://registry.yarnpkg.com/@types/clone/-/clone-0.1.30.tgz#e7365648c1b42136a59c7d5040637b3b5c83b614"
   integrity sha1-5zZWSMG0ITalnH1QQGN7O1yDthQ=
 
-"@types/codemirror@^0.0.72":
-  version "0.0.72"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.72.tgz#75e95e3b488717605d2591cd80c4d2ed88ff276e"
-  integrity sha512-dKtEP139Jxdrog/6zW8akX3LdhJ3V8NjYNCpIHdBVVo6ZiYpShPamtQoGpVhzrUzTOu5A6NlozOSiZipCEVCow==
+"@types/codemirror@^0.0.73":
+  version "0.0.73"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.73.tgz#bfd8da3cad821ee3f075a4d2f47c0f68d6724855"
+  integrity sha512-Em3kVD7bmp4VK34309HscRM+KneFxqjgZGHjtId1SCuSu9+ggu5yl54vah9l3Y5/cd9Ew0y4ipNp4OXLpaD95Q==
   dependencies:
     "@types/tern" "*"
 
