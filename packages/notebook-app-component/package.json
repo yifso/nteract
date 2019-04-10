@@ -33,6 +33,7 @@
     "date-fns": "^1.29.0",
     "react-dnd": "^7.0.0",
     "react-dnd-html5-backend": "^7.0.0",
+    "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.1.2",
     "react-redux": "^6.0.0",
     "redux": "^4.0.0"
@@ -42,5 +43,8 @@
     "react": "^16.3.2"
   },
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@types/react-helmet": "^5.0.8"
+  }
 }
