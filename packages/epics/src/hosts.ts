@@ -131,7 +131,7 @@ export function publishToBookstore(
                     throw new Error(xhr.response);
                   }
                 }),
-                map(resp => {
+                map(() => {
                   actions.publishToBookstoreSucceeded({
                     contentRef: action.payload.contentRef
                   });
