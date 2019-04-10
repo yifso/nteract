@@ -48,8 +48,8 @@ function convertNotebookToContent(
 }
 
 /**
- * Publishes `Content` to bookstore. Only
- * publishes notebooks to bookstore.
+ * Publishes `Content` to bookstore.
+ * Only publishes notebooks to bookstore.
  *
  * @param action$ Publish to bookstore action type.
  * @param state$  Application state.
