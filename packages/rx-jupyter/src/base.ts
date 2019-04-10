@@ -41,8 +41,10 @@ export const createAJAXSettings = (
   // Use the server config provided token if available before trying cookies
   const xsrfToken = serverConfig.xsrfToken || Cookies.get("_xsrf");
   const headers = {
-    "X-XSRFToken": xsrfToken,
-    Authorization: `token ${serverConfig.token ? serverConfig.token : ""}`
+    ...(xsrfToken && { "X-XSRFToken": xsrfToken }),
+    ...(serverConfig.token && {
+      Authorization: `token ${serverConfig.token}`
+    })
   };
 
   // Merge in our typical settings for responseType, allow setting additional

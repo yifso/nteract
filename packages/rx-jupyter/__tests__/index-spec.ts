@@ -17,6 +17,7 @@ describe("rx-jupyter", () => {
       const request = apiVersion$.request;
       expect(request.url).toBe("https://somewhere.com/api");
       expect(request.method).toBe("GET");
+      expect(request.headers).toEqual({});
     });
   });
   describe("shutdown", () => {
