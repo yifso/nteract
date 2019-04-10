@@ -20,7 +20,6 @@
  */
 
 // Vendor modules
-import { NotebookRecordParams } from "@nteract/commutable";
 import {
   fromJS as immutableFromJS,
   List as ImmutableList,
@@ -39,7 +38,11 @@ import {
   makeMarkdownCell,
   makeRawCell
 } from "./cells";
-import { ImmutableNotebook, makeNotebookRecord } from "./notebook";
+import {
+  ImmutableNotebook,
+  makeNotebookRecord,
+  NotebookRecordParams
+} from "./notebook";
 import {
   createImmutableOutput,
   ImmutableOutput,
