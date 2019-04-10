@@ -218,7 +218,7 @@
     "remark-stringify": "^5.0.0",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "shell-env": "^2.2.0",
+    "shell-env": "^3.0.0",
     "spawn-rx": "^3.0.0",
     "spawnteract": "^5.0.0",
     "style-loader": "^0.23.0",
