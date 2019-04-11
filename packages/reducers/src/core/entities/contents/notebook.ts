@@ -214,7 +214,8 @@ function appendOutput(
   // If it's display data and it doesn't have a display id, fold it in like non
   // display data
   if (
-    output.output_type !== "display_data" ||
+    (output.output_type !== "execute_result" ||
+      output.output_type !== "display_data") &&
     !has(output, "transient.display_id")
   ) {
     return state.updateIn(
@@ -262,12 +263,8 @@ function appendOutput(
   const immutableOutput = createImmutableOutput(output);
 
   // We'll reduce the overall state based on each keypath, updating output
-  return keyPaths
-    .reduce(
-      (currState: NotebookModel, kp: KeyPath) =>
-        currState.setIn(kp, immutableOutput),
-      state
-    )
+  return state
+    .updateIn(keyPath, () => immutableOutput)
     .setIn(["transient", "keyPathsForDisplays", displayID], keyPaths);
 }
 
