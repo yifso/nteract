@@ -21,10 +21,6 @@ import { IContent } from "rx-jupyter/lib/contents";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
-import {
-  PublishToBookstoreSucceeded,
-  PublishToBookstoreFailed
-} from "@nteract/actions";
 
 /**
  * Converts a `Notebook` content to the Jupyter `Content`
@@ -120,7 +116,6 @@ export function publishToBookstore(
             }
           }),
           map((nb: AjaxResponse) => {
-            console.log("Saved Successfully!");
             return actions.publishToBookstoreAfterSave({
               contentRef: action.payload.contentRef,
               model: {
@@ -159,10 +154,12 @@ export function publishToBookstore(
 export function publishToBookstoreAfterSave(
   action$: ActionsObservable<actions.PublishToBookstoreAfterSave>,
   state$: StateObservable<AppState>
-): Observable<void | actions.PublishToBookstoreFailed> {
+) {
   const state: any = state$.value;
   const host: any = selectors.currentHost(state);
   const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+  console.log("did I just get here?");
 
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE_AFTER_SAVE),
