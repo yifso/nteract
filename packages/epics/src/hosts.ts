@@ -21,6 +21,10 @@ import { IContent } from "rx-jupyter/lib/contents";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
+import {
+  PublishToBookstoreSucceeded,
+  PublishToBookstoreFailed
+} from "@nteract/actions";
 
 /**
  * Converts a `Notebook` content to the Jupyter `Content`
@@ -48,10 +52,12 @@ function convertNotebookToContent(
 }
 
 /**
- * Publishes `Content` to bookstore.
- * Only publishes notebooks to bookstore.
+ * First step in publishing notebooks to bookstore.
+ * Saves notebook using the `content` API. Then,
+ * kicks off an action that saves the notebook
+ * to `Bookstore`.
  *
- * @param action$ Publish to bookstore action type.
+ * @param action$ Action type.
  * @param state$  Application state.
  */
 export function publishToBookstore(
@@ -99,7 +105,7 @@ export function publishToBookstore(
         }) as any;
       }
 
-      const notebook: NotebookV4 = toJS(content.model.savedNotebook);
+      const notebook: NotebookV4 = toJS(content.model.notebook);
 
       // Save notebook first before sending to Bookstore
       return contents
@@ -114,41 +120,71 @@ export function publishToBookstore(
             }
           }),
           map((nb: AjaxResponse) => {
-            return bookstore
-              .publish(serverConfig, "/published", {
+            console.log("Saved Successfully!");
+            return actions.publishToBookstoreAfterSave({
+              contentRef: action.payload.contentRef,
+              model: {
                 name: content.filepath.split("/").pop(),
                 path: content.filepath,
                 type: content.type,
-                created: content.created!.toString(),
+                created:
+                  content && content.created && content.created!.toString(),
                 last_modified: "",
                 content: notebook,
                 mimetype: content.mimetype,
                 format: content.format
-              })
-              .pipe(
-                tap((xhr: AjaxResponse) => {
-                  if (xhr.status !== 200) {
-                    throw new Error(xhr.response);
-                  }
-                }),
-                map(() => {
-                  actions.publishToBookstoreSucceeded({
-                    contentRef: action.payload.contentRef
-                  });
-                }),
-                catchError((xhrError: any) =>
-                  of(
-                    actions.publishToBookstoreFailed({
-                      error: xhrError,
-                      contentRef: action.payload.contentRef
-                    })
-                  )
-                )
-              );
+              }
+            });
           }),
           catchError((xhrError: any) =>
             of(
-              actions.saveFailed({
+              actions.publishToBookstoreFailed({
+                error: xhrError,
+                contentRef: action.payload.contentRef
+              })
+            )
+          )
+        );
+    })
+  );
+}
+
+/**
+ * Last step in publishing notebooks to bookstore.
+ * Saves notebook to `Bookstore`.
+ *
+ * @param action$ Action type.
+ * @param state$  Application state.
+ */
+export function publishToBookstoreAfterSave(
+  action$: ActionsObservable<actions.PublishToBookstoreAfterSave>,
+  state$: StateObservable<AppState>
+): Observable<void | actions.PublishToBookstoreFailed> {
+  const state: any = state$.value;
+  const host: any = selectors.currentHost(state);
+  const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+  return action$.pipe(
+    ofType(actions.PUBLISH_TO_BOOKSTORE_AFTER_SAVE),
+    switchMap(action => {
+      console.log("something happened");
+      // Publish notebook to Bookstore
+      return bookstore
+        .publish(serverConfig, "/published", action.payload.model)
+        .pipe(
+          tap((xhr: AjaxResponse) => {
+            if (xhr.status !== 200) {
+              throw new Error(xhr.response);
+            }
+          }),
+          map(() => {
+            actions.publishToBookstoreSucceeded({
+              contentRef: action.payload.contentRef
+            });
+          }),
+          catchError((xhrError: any) =>
+            of(
+              actions.publishToBookstoreFailed({
                 error: xhrError,
                 contentRef: action.payload.contentRef
               })

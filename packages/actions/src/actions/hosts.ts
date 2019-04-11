@@ -3,7 +3,7 @@
  */
 
 // Vendor modules
-import { ContentRef } from "@nteract/types";
+import { BookstoreDataModel, ContentRef } from "@nteract/types";
 
 // Local modules
 import * as actionTypes from "../actionTypes";
@@ -13,6 +13,16 @@ export const publishToBookstore = (payload: {
 }): actionTypes.PublishToBookstore => {
   return {
     type: actionTypes.PUBLISH_TO_BOOKSTORE,
+    payload
+  };
+};
+
+export const publishToBookstoreAfterSave = (payload: {
+  contentRef: ContentRef;
+  model: BookstoreDataModel;
+}): actionTypes.PublishToBookstoreAfterSave => {
+  return {
+    type: actionTypes.PUBLISH_TO_BOOKSTORE_AFTER_SAVE,
     payload
   };
 };

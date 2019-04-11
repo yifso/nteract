@@ -40,6 +40,10 @@ const Link = styled.a`
 `;
 
 interface Props {
+  /**
+   * Whether or not `Bookstore` is enabled
+   * https://github.com/nteract/bookstore#bookstore-books
+   */
   bookstoreEnabled?: boolean;
   persistAfterClick?: boolean;
   defaultOpenKeys?: string[];
@@ -99,7 +103,11 @@ interface Props {
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
   currentKernelspecs?: KernelspecsByRefRecord | null;
-  onPublish?: () => void;
+  /**
+   * Function required to publish notebooks to `Bookstore`.
+   * https://github.com/nteract/bookstore#bookstore-books
+   */
+  onPublish?: (payload: { contentRef: ContentRef }) => void;
 }
 
 interface State {
@@ -286,7 +294,7 @@ class PureNotebookMenu extends React.PureComponent<Props, State> {
         break;
       case MENU_ITEM_ACTIONS.PUBLISH_TO_BOOKSTORE:
         if (onPublish) {
-          onPublish();
+          onPublish({ contentRef: currentContentRef });
         }
         break;
       default:
@@ -548,10 +556,8 @@ function makeMapDispatchToProps(
   initialProps: { contentRef: ContentRef }
 ) {
   const mapDispatchToProps = (dispatch: any) => ({
-    onPublish: () =>
-      dispatch(
-        actions.publishToBookstore({ contentRef: initialProps.contentRef })
-      ),
+    onPublish: (payload: { contentRef: string }) =>
+      dispatch(actions.publishToBookstore(payload)),
     toggleNotebookHeaderEditor: (payload: { contentRef: string }) =>
       dispatch(actions.toggleHeaderEditor(payload)),
     saveNotebook: (payload: { contentRef: string }) =>

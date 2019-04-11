@@ -18,9 +18,14 @@ const byRef = (
   switch (action.type) {
     case actions.PUBLISH_TO_BOOKSTORE:
       // This is more of a pass thru. This action
-      // kicks off an epic which establishes a connection
-      // to bookstore and saves a `notebook` at the
-      // bookstore S3 location.
+      // kicks off an epic saves a `notebook` to the contents
+      // API. It then returns an action that saves
+      // the notebook to `Bookstore`.
+      return state;
+    case actions.PUBLISH_TO_BOOKSTORE_AFTER_SAVE:
+      // This action kicks off an epic which establishes
+      // a connection to bookstore and saves a `notebook`
+      // to the appropriate S3 bucket.
       return state;
     case actions.PUBLISH_TO_BOOKSTORE_SUCCEEDED:
       // This action signfies that the content was saved

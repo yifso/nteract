@@ -3,13 +3,23 @@
  */
 
 // Vendor modules
-import { ContentRef } from "@nteract/types";
+import { BookstoreDataModel, ContentRef } from "@nteract/types";
 
 export const PUBLISH_TO_BOOKSTORE = "CORE/PUBLISH_TO_BOOKSTORE";
 export interface PublishToBookstore {
   type: "CORE/PUBLISH_TO_BOOKSTORE";
   payload: {
     contentRef: ContentRef;
+  };
+}
+
+export const PUBLISH_TO_BOOKSTORE_AFTER_SAVE =
+  "CORE/PUBLISH_TO_BOOKSTORE_AFTER_SAVE";
+export interface PublishToBookstoreAfterSave {
+  type: "CORE/PUBLISH_TO_BOOKSTORE_AFTER_SAVE";
+  payload: {
+    contentRef: ContentRef;
+    model: BookstoreDataModel;
   };
 }
 
