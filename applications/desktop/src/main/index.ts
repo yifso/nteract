@@ -91,7 +91,9 @@ ipc.on("show-message-box", (event: Event, arg: any) => {
 app.on("ready", initAutoUpdater);
 
 const electronReady$ = new Observable(observer => {
-  app.on("ready", (event: Event) => observer.next(event));
+  app.on("ready", (event: Event) => {
+    return observer.next(event);
+  });
 });
 const windowReady$ = fromEvent(ipc, "react-ready");
 

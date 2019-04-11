@@ -120,6 +120,7 @@
     "nteract-assets": "^4.0.0"
   },
   "devDependencies": {
-    "electron": "3.1.7"
+    "electron": "3.1.7",
+    "electron-devtools-installer": "^2.2.4"
   }
 }

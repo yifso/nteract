@@ -257,3 +257,14 @@ export interface UpdateOutputMetadata {
     mediaType: string;
   };
 }
+
+export const PROMPT_INPUT_REQUEST = "PROMPT_INPUT_REQUEST";
+export interface PromptInputRequest {
+  type: "PROMPT_INPUT_REQUEST";
+  payload: {
+    id: CellId;
+    contentRef: ContentRef;
+    prompt: string;
+    password: boolean;
+  };
+}

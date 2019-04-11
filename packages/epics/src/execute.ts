@@ -7,6 +7,7 @@ import {
   createExecuteRequest,
   ExecuteRequest,
   executionCounts,
+  inputRequests,
   JupyterMessage,
   kernelStatuses,
   MessageType,
@@ -35,7 +36,12 @@ import {
 import * as actions from "@nteract/actions";
 import { CellId, OnDiskOutput } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
-import { AppState, ContentRef, PayloadMessage } from "@nteract/types";
+import {
+  AppState,
+  ContentRef,
+  InputRequestMessage,
+  PayloadMessage
+} from "@nteract/types";
 
 const Immutable = require("immutable");
 
@@ -107,6 +113,19 @@ export function executeCellStream(
     cellMessages.pipe(
       ofMessageType("clear_output") as any,
       mapTo(actions.clearOutputs({ id, contentRef }))
+    ),
+
+    // Prompt the user for input
+    cellMessages.pipe(
+      inputRequests() as any,
+      map((inputRequest: InputRequestMessage) => {
+        return actions.promptInputRequest({
+          id,
+          contentRef,
+          prompt: inputRequest.prompt,
+          password: inputRequest.password
+        });
+      })
     )
   );
 
