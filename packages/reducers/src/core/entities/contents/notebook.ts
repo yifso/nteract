@@ -18,6 +18,8 @@ import {
   makeCodeCell,
   makeMarkdownCell,
   makeRawCell,
+  OnDiskDisplayData,
+  OnDiskExecuteResult,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
@@ -236,7 +238,14 @@ function appendOutput(
   // }
 
   // We now have a display to track
-  const displayID = output.transient!.display_id;
+  let displayID;
+  let typedOutput;
+  if (output.output_type === "execute_result") {
+    typedOutput = output as OnDiskExecuteResult;
+  } else {
+    typedOutput = output as OnDiskDisplayData;
+  }
+  displayID = typedOutput.transient!.display_id;
 
   // Every time we see a display id we're going to capture the keypath
   // to the output
