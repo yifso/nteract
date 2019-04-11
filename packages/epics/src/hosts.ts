@@ -159,12 +159,9 @@ export function publishToBookstoreAfterSave(
   const host: any = selectors.currentHost(state);
   const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-  console.log("did I just get here?");
-
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE_AFTER_SAVE),
     switchMap(action => {
-      console.log("something happened");
       // Publish notebook to Bookstore
       return bookstore
         .publish(serverConfig, "/published", action.payload.model)
