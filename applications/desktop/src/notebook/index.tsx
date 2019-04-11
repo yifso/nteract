@@ -7,10 +7,8 @@ import * as MathJax from "@nteract/mathjax";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 
-import "codemirror/lib/codemirror.css";
 import "codemirror/addon/hint/show-hint.css";
-
-import "react-table/react-table.css";
+import "codemirror/lib/codemirror.css";
 
 import "@nteract/styles/app.css";
 import "@nteract/styles/global-variables.css";
