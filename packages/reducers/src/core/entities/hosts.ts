@@ -52,7 +52,7 @@ const refs = (state = List(), action: Action): List<string> => {
       return state.push(typedAction.payload.hostRef);
     case actions.REMOVE_HOST:
       typedAction = action as actions.RemoveHost;
-      return state.remove(typedAction.payload.hostRef);
+      return state.filter(hostRef => hostRef !== typedAction.payload.hostRef);
     default:
       return state;
   }
