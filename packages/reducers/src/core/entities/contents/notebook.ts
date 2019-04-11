@@ -211,11 +211,14 @@ function appendOutput(
   const output = action.payload.output;
   const cellId = action.payload.id;
 
-  // If it's display data and it doesn't have a display id, fold it in like non
-  // display data
+  /**
+   * If it is not a display_data or execute_result with
+   * a display_id, then treat it as a normal output and don't
+   * add its index to the keyPaths.
+   */
   if (
-    (output.output_type !== "execute_result" ||
-      output.output_type !== "display_data") &&
+    output.output_type !== "execute_result" &&
+    output.output_type !== "display_data" &&
     !has(output, "transient.display_id")
   ) {
     return state.updateIn(
