@@ -219,8 +219,8 @@ function appendOutput(
    * add its index to the keyPaths.
    */
   if (
-    output.output_type !== "execute_result" &&
-    output.output_type !== "display_data" &&
+    (output.output_type !== "execute_result" &&
+      output.output_type !== "display_data") ||
     !has(output, "transient.display_id")
   ) {
     return state.updateIn(
