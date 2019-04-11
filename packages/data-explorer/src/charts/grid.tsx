@@ -2,6 +2,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 
+import VendorizedStyles from "../css/";
 import * as Dx from "../types";
 
 import styled from "styled-components";
@@ -28,7 +29,7 @@ interface NumberFilterProps {
   updateFunction: (input: Dx.JSONObject) => void;
 }
 
-const GridWrapper = styled.div`
+const GridWrapper = styled(VendorizedStyles)`
   width: 100%;
 `;
 
