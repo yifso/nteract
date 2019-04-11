@@ -45,6 +45,12 @@ export interface AddHost {
   payload: { hostRef: HostRef; host: HostRecord };
 }
 
+export const REMOVE_HOST = "CORE/REMOVE_HOST";
+export interface RemoveHost {
+  type: "CORE/REMOVE_HOST";
+  payload: { hostRef: HostRef };
+}
+
 export const CHANGE_FILENAME = "CHANGE_FILENAME";
 export interface ChangeFilenameAction {
   type: "CHANGE_FILENAME";
