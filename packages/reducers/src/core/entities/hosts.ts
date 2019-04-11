@@ -36,6 +36,9 @@ const byRef = (
             `Unrecognized host type "${typedAction.payload.host.type}".`
           );
       }
+    case actions.REMOVE_HOST:
+      typedAction = action as actions.RemoveHost;
+      return state.remove(typedAction.payload.hostRef);
     default:
       return state;
   }
@@ -47,6 +50,9 @@ const refs = (state = List(), action: Action): List<string> => {
     case actions.ADD_HOST:
       typedAction = action as actions.AddHost;
       return state.push(typedAction.payload.hostRef);
+    case actions.REMOVE_HOST:
+      typedAction = action as actions.RemoveHost;
+      return state.remove(typedAction.payload.hostRef);
     default:
       return state;
   }

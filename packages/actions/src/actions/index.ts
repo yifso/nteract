@@ -47,6 +47,11 @@ export const addHost = (payload: {
   payload
 });
 
+export const removeHost = (payload: { hostRef: HostRef }) => ({
+  type: actionTypes.REMOVE_HOST,
+  payload
+});
+
 export function overwriteMetadataField(payload: {
   field: string;
   value: any;
