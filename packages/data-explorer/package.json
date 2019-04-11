@@ -3,6 +3,7 @@
   "version": "6.1.1",
   "description": "Transform for data resource JSON",
   "main": "lib/",
+  "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.js",
   "scripts": {},
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
