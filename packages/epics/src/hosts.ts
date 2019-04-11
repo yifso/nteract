@@ -154,7 +154,7 @@ export function publishToBookstore(
 export function publishToBookstoreAfterSave(
   action$: ActionsObservable<actions.PublishToBookstoreAfterSave>,
   state$: StateObservable<AppState>
-) {
+): Observable<void | actions.PublishToBookstoreFailed> {
   const state: any = state$.value;
   const host: any = selectors.currentHost(state);
   const serverConfig: ServerConfig = selectors.serverConfig(host);
