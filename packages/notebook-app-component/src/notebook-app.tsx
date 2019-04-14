@@ -273,6 +273,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       focusEditor,
       id,
       tags,
+      theme,
       selectCell,
       unfocusEditor,
       contentRef,

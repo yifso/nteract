@@ -18,30 +18,30 @@ export default `
 
   .rthfc .rt-th,
   .rthfc .rt-td {
-    background-color: #fff;
+    
   }
 
   .rthfc .-headerGroups .rt-th {
-    background-color: #f7f7f7;
+    
   }
 
   .rthfc.-striped .rt-tr.-odd .rt-td {
-    background-color: #f7f7f7;
+    
   }
 
   .rthfc.-highlight .rt-tr:hover .rt-td {
-    background-color: #f2f2f2;
+    
   }
 
   .rthfc .-filters .rt-th.rthfc-th-fixed-left-last,
   .rthfc .rt-th.rthfc-th-fixed-left-last,
   .rthfc .rt-td.rthfc-td-fixed-left-last {
-    border-right: solid 1px #ccc;
+    border-right: solid 1px;
   }
 
   .rthfc .rt-th.rthfc-th-fixed-right-first,
   .rthfc .rt-td.rthfc-td-fixed-right-first {
-    border-left: solid 1px #ccc;
+    border-left: solid 1px;
   }
 
   /*------------ Sticky position version: -sp ------------*/
@@ -57,7 +57,7 @@ export default `
   }
 
   .rthfc.-sp .rt-thead.-headerGroups {
-    border-bottom-color: #f2f2f2;
+    
   }
 
   .rthfc.-sp .rt-tfoot {
