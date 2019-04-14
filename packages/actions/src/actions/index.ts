@@ -13,7 +13,7 @@ import * as actionTypes from "../actionTypes";
 import {
   ContentRef,
   HostId,
-  HostRef
+  HostRef,
   KernelRef,
   LanguageInfoMetadata,
   PayloadMessage

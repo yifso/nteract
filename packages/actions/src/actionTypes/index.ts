@@ -9,7 +9,13 @@ import {
   OnDiskOutput
 } from "@nteract/commutable";
 
-import { ContentRef, HostRef, KernelRef, PayloadMessage } from "@nteract/types";
+import {
+  ContentRef,
+  HostRecordProps,
+  HostRef,
+  KernelRef,
+  PayloadMessage
+} from "@nteract/types";
 import { HostRecord } from "@nteract/types";
 import { LanguageInfoMetadata } from "@nteract/types";
 
@@ -49,6 +55,12 @@ export const REMOVE_HOST = "CORE/REMOVE_HOST";
 export interface RemoveHost {
   type: "CORE/REMOVE_HOST";
   payload: { hostRef: HostRef };
+}
+
+export const SET_APP_HOST = "SET_APP_HOST";
+export interface SetAppHostAction {
+  type: "SET_APP_HOST";
+  payload: HostRecord;
 }
 
 export const CHANGE_FILENAME = "CHANGE_FILENAME";
