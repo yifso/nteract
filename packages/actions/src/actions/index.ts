@@ -134,9 +134,13 @@ export const doneSavingConfig = () => ({
   type: actionTypes.DONE_SAVING_CONFIG
 });
 
-export const configLoaded = (payload: {
-  config: object;
-}): actionTypes.MergeConfigAction => ({
+interface ConfigPayload {
+  config: { [key: string]: string; theme: string };
+}
+
+export const configLoaded = (
+  payload: ConfigPayload
+): actionTypes.MergeConfigAction => ({
   payload,
   type: actionTypes.MERGE_CONFIG
 });
