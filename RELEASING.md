@@ -4,7 +4,7 @@
 Unless there is an emergency bug or security fix, packages are released on a weekly cadence on Mondays. The desktop app is released on a bi-weekly cadence on Mondays. So, every Monday a package release is cut and every other Monday a desktop release is cut.
 
 ## Releasing the Packages
-In order to release the JavaScript packages to npm, you will need to run the `npx lerna publish` command in the root directory. This will
+In order to release the JavaScript packages to npm, you will need to run the `npx lerna publish` command in the root directory. This will initialize the Lerna release process which will prompt you to set the new version numbers for each package.
 
 ## Releasing the Desktop App and Packages
 
