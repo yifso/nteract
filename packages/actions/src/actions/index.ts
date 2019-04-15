@@ -12,6 +12,7 @@ import * as actionTypes from "../actionTypes";
 
 import {
   ContentRef,
+  HostId,
   HostRef,
   KernelRef,
   LanguageInfoMetadata,
@@ -35,12 +36,12 @@ export const closeModal = () => ({
 export const addHost = (payload: {
   hostRef: HostRef;
   host: {
-    id?: string;
+    id?: HostId | null;
     type: "jupyter" | "local";
     defaultKernelName: string;
-    token?: string;
+    token?: string | null;
     serverUrl?: string;
-    crossDomain?: boolean;
+    crossDomain?: boolean | null;
   };
 }) => ({
   type: actionTypes.ADD_HOST,
