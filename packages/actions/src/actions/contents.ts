@@ -7,11 +7,9 @@ import * as actionTypes from "../actionTypes";
 
 import { contents } from "rx-jupyter";
 
-export const changeContentName = (payload: {
-  filepath: string;
-  contentRef: ContentRef;
-  prevFilePath: string;
-}): actionTypes.ChangeContentName => ({
+export const changeContentName = (
+  payload: actionTypes.ChangeContentName["payload"]
+): actionTypes.ChangeContentName => ({
   type: actionTypes.CHANGE_CONTENT_NAME,
   payload
 });
@@ -74,9 +72,9 @@ export function changeFilename(payload: {
   };
 }
 
-export function downloadContent(payload: {
-  contentRef: ContentRef;
-}): actionTypes.DownloadContent {
+export function downloadContent(
+  payload: actionTypes.DownloadContent["payload"]
+): actionTypes.DownloadContent {
   return {
     type: actionTypes.DOWNLOAD_CONTENT,
     payload
@@ -101,7 +99,7 @@ export function downloadContentFulfilled(payload: {
   };
 }
 
-export function save(payload: { contentRef: ContentRef }): actionTypes.Save {
+export function save(payload: actionTypes.Save["payload"]): actionTypes.Save {
   return {
     type: actionTypes.SAVE,
     payload

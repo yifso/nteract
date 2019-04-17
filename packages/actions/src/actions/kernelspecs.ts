@@ -10,10 +10,9 @@ import {
 
 import * as actionTypes from "../actionTypes";
 
-export const fetchKernelspecs = (payload: {
-  kernelspecsRef: KernelspecsRef;
-  hostRef: HostRef;
-}): actionTypes.FetchKernelspecs => ({
+export const fetchKernelspecs = (
+  payload: actionTypes.FetchKernelspecs["payload"]
+): actionTypes.FetchKernelspecs => ({
   type: actionTypes.FETCH_KERNELSPECS,
   payload
 });
