@@ -19,7 +19,7 @@ export const fetchKernelspecsEpic = (
     ofType(actions.FETCH_KERNELSPECS),
     mergeMap((action: actions.FetchKernelspecs) => {
       const {
-        payload: { hostRef, kernelspecsRef }
+        payload: { hostRef, kernelspecsRef, opts }
       } = action;
       const state = state$.value;
 
@@ -30,7 +30,7 @@ export const fetchKernelspecsEpic = (
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      return kernelspecs.list(serverConfig).pipe(
+      return kernelspecs.list(serverConfig, opts).pipe(
         map(data => {
           const defaultKernelName = data.response.default;
           const kernelspecs: { [key: string]: KernelspecProps } = {};

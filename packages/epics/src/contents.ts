@@ -42,11 +42,11 @@ export function updateContentEpic(
         return empty();
       }
 
-      const { contentRef, filepath, prevFilePath } = action.payload;
+      const { contentRef, filepath, prevFilePath, opts } = action.payload;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       return contents
-        .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
+        .update(serverConfig, prevFilePath, { path: filepath.slice(1) }, opts)
         .pipe(
           tap(xhr => {
             if (xhr.status !== 200) {
@@ -120,7 +120,8 @@ export function fetchContentEpic(
         .get(
           serverConfig,
           (action as actions.FetchContent).payload.filepath,
-          (action as actions.FetchContent).payload.params
+          (action as actions.FetchContent).payload.params,
+          (action as actions.FetchContent).payload.opts
         )
         .pipe(
           tap(xhr => {
@@ -381,59 +382,66 @@ export function saveContentEpic(
           }
           case actions.SAVE: {
             const serverConfig: ServerConfig = selectors.serverConfig(host);
+            const {
+              payload: { opts }
+            } = action;
 
             // Check to see if the file was modified since the last time we saved
             // TODO: Determine how we handle what to do
             // Don't bother doing this if the file is new(?)
-            return contents.get(serverConfig, filepath, { content: 0 }).pipe(
-              // Make sure that the modified time is within some delta
-              mergeMap(xhr => {
-                // TODO: What does it mean if we have a failed GET on the content
-                if (xhr.status !== 200) {
-                  throw new Error(xhr.response.toString());
-                }
-                if (typeof xhr.response === "string") {
-                  throw new Error(
-                    `jupyter server response invalid: ${xhr.response}`
-                  );
-                }
+            return contents
+              .get(serverConfig, filepath, { content: 0 }, opts)
+              .pipe(
+                // Make sure that the modified time is within some delta
+                mergeMap(xhr => {
+                  // TODO: What does it mean if we have a failed GET on the content
+                  if (xhr.status !== 200) {
+                    throw new Error(xhr.response.toString());
+                  }
+                  if (typeof xhr.response === "string") {
+                    throw new Error(
+                      `jupyter server response invalid: ${xhr.response}`
+                    );
+                  }
 
-                const model = xhr.response;
+                  const model = xhr.response;
 
-                const diskDate = new Date(model.last_modified);
-                const inMemoryDate = content.lastSaved
-                  ? new Date(content.lastSaved)
-                  : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
-                    diskDate;
-                const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+                  const diskDate = new Date(model.last_modified);
+                  const inMemoryDate = content.lastSaved
+                    ? new Date(content.lastSaved)
+                    : // FIXME: I'm unsure if we don't have a date if we should default to the disk date
+                      diskDate;
+                  const diffDate = diskDate.getTime() - inMemoryDate.getTime();
 
-                if (Math.abs(diffDate) > 600) {
-                  return of(
-                    actions.saveFailed({
-                      error: new Error("open in another tab possibly..."),
-                      contentRef: action.payload.contentRef
-                    })
-                  );
-                }
-
-                return contents.save(serverConfig, filepath, saveModel).pipe(
-                  map((xhr: AjaxResponse) => {
-                    return actions.saveFulfilled({
-                      contentRef: action.payload.contentRef,
-                      model: xhr.response
-                    });
-                  }),
-                  catchError((error: Error) =>
-                    of(
+                  if (Math.abs(diffDate) > 600) {
+                    return of(
                       actions.saveFailed({
-                        error,
+                        error: new Error("open in another tab possibly..."),
                         contentRef: action.payload.contentRef
                       })
-                    )
-                  )
-                );
-              })
-            );
+                    );
+                  }
+
+                  return contents
+                    .save(serverConfig, filepath, saveModel, opts)
+                    .pipe(
+                      map((xhr: AjaxResponse) => {
+                        return actions.saveFulfilled({
+                          contentRef: action.payload.contentRef,
+                          model: xhr.response
+                        });
+                      }),
+                      catchError((error: Error) =>
+                        of(
+                          actions.saveFailed({
+                            error,
+                            contentRef: action.payload.contentRef
+                          })
+                        )
+                      )
+                    );
+                })
+              );
           }
           default:
             // NOTE: Our ofType should prevent reaching here, this
