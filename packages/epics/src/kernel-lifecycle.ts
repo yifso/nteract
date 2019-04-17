@@ -257,7 +257,7 @@ export const restartKernelEpic = (
       });
 
       const relaunch = actions.launchKernelByName({
-        kernelSpecName: oldKernel.kernelSpecName,
+        kernelSpecName: oldKernel.kernelSpecName || "",
         cwd: oldKernel.cwd,
         kernelRef: newKernelRef,
         selectNextKernel: true,
