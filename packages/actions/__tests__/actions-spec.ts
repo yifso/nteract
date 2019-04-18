@@ -192,7 +192,7 @@ describe("launchKernelByName", () => {
         kernelRef,
         contentRef,
         selectNextKernel: false,
-        opts: { headers: { "Contennt-Type": "application/json" } }
+        opts: { headers: { "Content-Type": "application/json" } }
       })
     ).toEqual({
       type: actionTypes.LAUNCH_KERNEL_BY_NAME,
@@ -202,7 +202,7 @@ describe("launchKernelByName", () => {
         kernelRef,
         contentRef,
         selectNextKernel: false,
-        opts: { headers: { "Contennt-Type": "application/json" } }
+        opts: { headers: { "Content-Type": "application/json" } }
       }
     });
   });
@@ -645,13 +645,13 @@ describe("save", () => {
     expect(
       actions.save({
         contentRef,
-        opts: { headers: { "Contennt-Type": "application/json" } }
+        opts: { headers: { "Content-Type": "application/json" } }
       })
     ).toEqual({
       type: actionTypes.SAVE,
       payload: {
         contentRef,
-        opts: { headers: { "Contennt-Type": "application/json" } }
+        opts: { headers: { "Content-Type": "application/json" } }
       }
     });
   });
