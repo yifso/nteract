@@ -2,7 +2,7 @@
  * @module rx-jupyter
  */
 import { Observable } from "rxjs";
-import { ajax, AjaxResponse } from "rxjs/ajax";
+import { ajax, AjaxRequest, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 
 import { createAJAXSettings, normalizeBaseURL, ServerConfig } from "./base";
@@ -16,10 +16,14 @@ const formURI = (path: string) => urljoin("/api/terminals/", path);
  *
  * @returns An Observable with the request response
  */
-export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
+export const list = (
+  serverConfig: ServerConfig,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/terminals/", {
-      method: "GET"
+      method: "GET",
+      ...opts
     })
   );
 
@@ -30,10 +34,14 @@ export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
  *
  * @return An Observable with the request response
  */
-export const create = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
+export const create = (
+  serverConfig: ServerConfig,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/terminals/", {
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );
 
@@ -47,11 +55,13 @@ export const create = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
  */
 export const get = (
   serverConfig: ServerConfig,
-  id: string
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, formURI(id), {
-      method: "GET"
+      method: "GET",
+      ...opts
     })
   );
 
@@ -65,11 +75,13 @@ export const get = (
  */
 export const destroy = (
   serverConfig: ServerConfig,
-  id: string
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, formURI(id), {
-      method: "DELETE"
+      method: "DELETE",
+      ...opts
     })
   );
 

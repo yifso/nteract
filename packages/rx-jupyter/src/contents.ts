@@ -65,10 +65,15 @@ export interface IContent<FT extends FileType = FileType>
  *
  * @returns An Observable with the request response
  */
-export const remove = (serverConfig: ServerConfig, path: string) =>
+export const remove = (
+  serverConfig: ServerConfig,
+  path: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, formURI(path), {
-      method: "DELETE"
+      method: "DELETE",
+      ...opts
     })
   );
 
@@ -93,7 +98,8 @@ interface IGetParams {
 export function get(
   serverConfig: ServerConfig,
   path: string,
-  params: Partial<IGetParams> = {}
+  params: Partial<IGetParams> = {},
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) {
   let uri = formURI(path);
   const query = querystring.stringify(params);
@@ -104,7 +110,7 @@ export function get(
   // NOTE: If the user requests with params.content === 0
   // Then the response is IEmptyContent
   return ajax(
-    createAJAXSettings(serverConfig, uri, { cache: false })
+    createAJAXSettings(serverConfig, uri, { cache: false, ...opts })
   ) as Observable<JupyterAjaxResponse<IContent<FileType>>>;
 }
 
@@ -120,7 +126,8 @@ export function get(
 export function update<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent>
+  model: Partial<IContent>,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -128,7 +135,8 @@ export function update<FT extends FileType>(
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PATCH"
+      method: "PATCH",
+      ...opts
     })
   );
 }
@@ -145,7 +153,8 @@ export function update<FT extends FileType>(
 export function create<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT>> & { type: FT }
+  model: Partial<IContent<FT>> & { type: FT },
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -153,7 +162,8 @@ export function create<FT extends FileType>(
       headers: {
         "Content-Type": "application/json"
       },
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );
 }
@@ -171,7 +181,8 @@ export function create<FT extends FileType>(
 export function save<FT extends FileType>(
   serverConfig: ServerConfig,
   path: string,
-  model: Partial<IContent<FT>>
+  model: Partial<IContent<FT>>,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) {
   return ajax(
     createAJAXSettings(serverConfig, formURI(path), {
@@ -179,7 +190,8 @@ export function save<FT extends FileType>(
       headers: {
         "Content-Type": "application/json"
       },
-      method: "PUT"
+      method: "PUT",
+      ...opts
     })
   ) as Observable<
     JupyterAjaxResponse<{ path: string; [property: string]: string }>
@@ -194,11 +206,16 @@ export function save<FT extends FileType>(
  *
  * @returns An Observable with the request response
  */
-export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
+export const listCheckpoints = (
+  serverConfig: ServerConfig,
+  path: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, ""), {
       cache: false,
-      method: "GET"
+      method: "GET",
+      ...opts
     })
   );
 
@@ -212,10 +229,15 @@ export const listCheckpoints = (serverConfig: ServerConfig, path: string) =>
  *
  * @returns An Observable with the request response
  */
-export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
+export const createCheckpoint = (
+  serverConfig: ServerConfig,
+  path: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, ""), {
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );
 
@@ -231,11 +253,13 @@ export const createCheckpoint = (serverConfig: ServerConfig, path: string) =>
 export const deleteCheckpoint = (
   serverConfig: ServerConfig,
   path: string,
-  checkpointID: string
+  checkpointID: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, checkpointID), {
-      method: "DELETE"
+      method: "DELETE",
+      ...opts
     })
   );
 
@@ -251,10 +275,12 @@ export const deleteCheckpoint = (
 export const restoreFromCheckpoint = (
   serverConfig: ServerConfig,
   path: string,
-  checkpointID: string
+  checkpointID: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
 ) =>
   ajax(
     createAJAXSettings(serverConfig, formCheckpointURI(path, checkpointID), {
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );

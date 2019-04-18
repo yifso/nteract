@@ -45,7 +45,7 @@ export const launchWebSocketKernelEpic = (
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       const {
-        payload: { kernelSpecName, cwd, kernelRef, contentRef }
+        payload: { kernelSpecName, cwd, kernelRef, contentRef, opts }
       } = action;
 
       const content = selectors.content(state, { contentRef });
@@ -66,7 +66,7 @@ export const launchWebSocketKernelEpic = (
       };
 
       // TODO: Handle failure cases here
-      return sessions.create(serverConfig, sessionPayload).pipe(
+      return sessions.create(serverConfig, sessionPayload, opts).pipe(
         mergeMap(data => {
           const session = data.response;
 
@@ -116,7 +116,7 @@ export const changeWebSocketKernelEpic = (
     // coordinated in a different way.
     switchMap((action: actions.ChangeKernelByName) => {
       const {
-        payload: { contentRef, oldKernelRef, kernelSpecName }
+        payload: { contentRef, oldKernelRef, kernelSpecName, opts }
       } = action;
       const state = state$.value;
       const host = selectors.currentHost(state);
@@ -154,7 +154,7 @@ export const changeWebSocketKernelEpic = (
       const { cwd } = extractNewKernel(filepath, notebook);
 
       const kernelRef = createKernelRef();
-      return kernels.start(serverConfig, kernelSpecName, cwd).pipe(
+      return kernels.start(serverConfig, kernelSpecName, cwd, opts).pipe(
         mergeMap(({ response }) => {
           const { id: kernelId } = response;
           const sessionPayload = {
@@ -162,36 +162,38 @@ export const changeWebSocketKernelEpic = (
           };
           // The sessions API will close down the old kernel for us if it is
           // on this session
-          return sessions.update(serverConfig, sessionId, sessionPayload).pipe(
-            mergeMap(({ response: session }) => {
-              const kernel: RemoteKernelProps = Object.assign(
-                {},
-                session.kernel,
-                {
-                  type: "websocket",
-                  sessionId,
-                  cwd,
-                  channels: kernels.connect(
-                    serverConfig,
-                    session.kernel.id,
-                    sessionId
-                  ),
-                  kernelSpecName
-                }
-              );
-              return of(
-                actions.launchKernelSuccessful({
-                  kernel,
-                  kernelRef,
-                  contentRef: action.payload.contentRef,
-                  selectNextKernel: true
-                })
-              );
-            }),
-            catchError(error =>
-              of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
-            )
-          );
+          return sessions
+            .update(serverConfig, sessionId, sessionPayload, opts)
+            .pipe(
+              mergeMap(({ response: session }) => {
+                const kernel: RemoteKernelProps = Object.assign(
+                  {},
+                  session.kernel,
+                  {
+                    type: "websocket",
+                    sessionId,
+                    cwd,
+                    channels: kernels.connect(
+                      serverConfig,
+                      session.kernel.id,
+                      sessionId
+                    ),
+                    kernelSpecName
+                  }
+                );
+                return of(
+                  actions.launchKernelSuccessful({
+                    kernel,
+                    kernelRef,
+                    contentRef: action.payload.contentRef,
+                    selectNextKernel: true
+                  })
+                );
+              }),
+              catchError(error =>
+                of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
+              )
+            );
         }),
         catchError(error =>
           of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
@@ -240,8 +242,11 @@ export const interruptKernelEpic = (
       }
 
       const id = kernel.id;
+      const {
+        payload: { opts }
+      } = action;
 
-      return kernels.interrupt(serverConfig, id).pipe(
+      return kernels.interrupt(serverConfig, id, opts).pipe(
         map(() =>
           actions.interruptKernelSuccessful({
             kernelRef: action.payload.kernelRef
@@ -302,10 +307,14 @@ export const killKernelEpic = (
         );
       }
 
+      const {
+        payload: { opts }
+      } = action;
+
       // TODO: If this was a kernel language change, we shouldn't be using this
       //       kill kernel epic because we need to make sure that creation happens
       //       after deletion
-      return sessions.destroy(serverConfig, kernel.sessionId).pipe(
+      return sessions.destroy(serverConfig, kernel.sessionId, opts).pipe(
         map(() =>
           actions.killKernelSuccessful({
             kernelRef: action.payload.kernelRef

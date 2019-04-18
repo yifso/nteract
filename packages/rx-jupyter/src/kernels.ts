@@ -2,7 +2,7 @@
  * @module rx-jupyter
  */
 import { Subject, Subscriber } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { ajax, AjaxRequest } from "rxjs/ajax";
 import { delay, retryWhen, share, tap } from "rxjs/operators";
 import { webSocket } from "rxjs/webSocket";
 import urljoin from "url-join";
@@ -18,8 +18,13 @@ import { JupyterMessage } from "@nteract/messaging";
  *
  * @returns An Observable with the request response
  */
-export const list = (serverConfig: ServerConfig) =>
-  ajax(createAJAXSettings(serverConfig, "/api/kernels", { cache: false }));
+export const list = (
+  serverConfig: ServerConfig,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
+  ajax(
+    createAJAXSettings(serverConfig, "/api/kernels", { cache: false, ...opts })
+  );
 
 /**
  * Creates an AjaxObservable for getting info about a kernel.
@@ -29,9 +34,16 @@ export const list = (serverConfig: ServerConfig) =>
  *
  * @returns An Observable with the request response
  */
-export const get = (serverConfig: ServerConfig, id: string) =>
+export const get = (
+  serverConfig: ServerConfig,
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
-    createAJAXSettings(serverConfig, `/api/kernels/${id}`, { cache: false })
+    createAJAXSettings(serverConfig, `/api/kernels/${id}`, {
+      cache: false,
+      ...opts
+    })
   );
 
 /**
@@ -43,14 +55,20 @@ export const get = (serverConfig: ServerConfig, id: string) =>
  *
  * @returns An Observable with the request response
  */
-export const start = (serverConfig: ServerConfig, name: string, path: string) =>
+export const start = (
+  serverConfig: ServerConfig,
+  name: string,
+  path: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, "/api/kernels", {
       headers: {
         "Content-Type": "application/json"
       },
       method: "POST",
-      body: { path, name }
+      body: { path, name },
+      ...opts
     })
   );
 
@@ -62,9 +80,16 @@ export const start = (serverConfig: ServerConfig, name: string, path: string) =>
  *
  * @returns An Observable with the request response
  */
-export const kill = (serverConfig: ServerConfig, id: string) =>
+export const kill = (
+  serverConfig: ServerConfig,
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
-    createAJAXSettings(serverConfig, `/api/kernels/${id}`, { method: "DELETE" })
+    createAJAXSettings(serverConfig, `/api/kernels/${id}`, {
+      method: "DELETE",
+      ...opts
+    })
   );
 
 /**
@@ -75,10 +100,15 @@ export const kill = (serverConfig: ServerConfig, id: string) =>
  *
  * @returns An Observable with the request response
  */
-export const interrupt = (serverConfig: ServerConfig, id: string) =>
+export const interrupt = (
+  serverConfig: ServerConfig,
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernels/${id}/interrupt`, {
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );
 
@@ -90,10 +120,15 @@ export const interrupt = (serverConfig: ServerConfig, id: string) =>
  *
  * @returns An Observable with the request response
  */
-export const restart = (serverConfig: ServerConfig, id: string) =>
+export const restart = (
+  serverConfig: ServerConfig,
+  id: string,
+  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+) =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernels/${id}/restart`, {
-      method: "POST"
+      method: "POST",
+      ...opts
     })
   );
 

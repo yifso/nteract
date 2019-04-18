@@ -15,6 +15,7 @@ export interface FetchKernelspecs {
   payload: {
     kernelspecsRef: KernelspecsRef;
     hostRef: HostRef;
+    opts?: object;
   };
 }
 

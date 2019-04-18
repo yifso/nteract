@@ -145,7 +145,7 @@ export function promptUserAboutNewKernel(
 
           store.dispatch(
             actions.launchKernelByName({
-              kernelSpecName: kernel.kernelSpecName,
+              kernelSpecName: kernel.kernelSpecName || "",
               cwd,
               selectNextKernel: true,
               kernelRef,

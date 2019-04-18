@@ -88,6 +88,7 @@ export interface InterruptKernel {
   type: "INTERRUPT_KERNEL";
   payload: {
     kernelRef?: KernelRef | null;
+    opts?: object;
   };
 }
 
@@ -115,6 +116,7 @@ export interface KillKernelAction {
   payload: {
     restarting: boolean;
     kernelRef?: KernelRef | null;
+    opts?: object;
   };
 }
 
@@ -186,6 +188,7 @@ export interface ChangeKernelByName {
     kernelSpecName: string;
     oldKernelRef?: KernelRef | null;
     contentRef: ContentRef;
+    opts?: object;
   };
 }
 
@@ -198,6 +201,7 @@ export interface LaunchKernelByNameAction {
     kernelRef: KernelRef;
     selectNextKernel: boolean;
     contentRef: ContentRef;
+    opts?: object;
   };
 }
 
