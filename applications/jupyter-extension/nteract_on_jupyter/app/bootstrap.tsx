@@ -118,7 +118,7 @@ export async function main(config: JupyterConfigData, rootEl): Promise<void> {
             "text/html": Media.HTML,
             "text/markdown": Media.Markdown,
             "text/latex": Media.LaTeX,
-            "image/svg": Media.SVG,
+            "image/svg+xml": Media.SVG,
             "image/gif": Media.Image,
             "image/png": Media.Image,
             "image/jpeg": Media.Image,
