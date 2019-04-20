@@ -296,3 +296,12 @@ export function setKernelInfo(payload: {
     payload
   };
 }
+
+export function specVersionError(
+  payload: actionTypes.SpecVersionError["payload"]
+): actionTypes.SpecVersionError {
+  return {
+    type: actionTypes.SPEC_VERSION_ERROR,
+    payload
+  };
+}

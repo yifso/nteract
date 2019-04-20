@@ -90,18 +90,30 @@ export function acquireKernelInfo(
         nbconvertExporter: l.nbconvert_exporter
       };
 
-      return of(
-        // The original action we were using
-        actions.setLanguageInfo({
-          langInfo: msg.content.language_info,
-          kernelRef,
-          contentRef
-        }),
-        actions.setKernelInfo({
-          kernelRef,
-          info
-        })
-      );
+      let result;
+      if (!c.protocol_version.startsWith("5")) {
+        result = [
+          actions.specVersionError({
+            kernelRef,
+            info
+          })
+        ];
+      } else {
+        result = [
+          // The original action we were using
+          actions.setLanguageInfo({
+            langInfo: msg.content.language_info,
+            kernelRef,
+            contentRef
+          }),
+          actions.setKernelInfo({
+            kernelRef,
+            info
+          })
+        ];
+      }
+
+      return of(...result);
     })
   );
 
