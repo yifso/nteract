@@ -93,9 +93,12 @@ export function acquireKernelInfo(
       let result;
       if (!c.protocol_version.startsWith("5")) {
         result = [
-          actions.specVersionError({
+          actions.launchKernelFailed({
             kernelRef,
-            info
+            contentRef,
+            error: new Error(
+              "The kernel that you are attempting to launch does not support the latest version (v5) of the messaging protocol."
+            )
           })
         ];
       } else {

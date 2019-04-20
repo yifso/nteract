@@ -282,12 +282,3 @@ export interface ShutdownReplyTimedOut {
   };
   error: true;
 }
-
-export const SPEC_VERSION_ERROR = "SPEC_VERSION_ERROR";
-export interface SpecVersionError {
-  type: "SPEC_VERSION_ERROR";
-  payload: {
-    kernelRef: KernelRef;
-    info: KernelInfo;
-  };
-}
