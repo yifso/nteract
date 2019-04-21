@@ -87,7 +87,7 @@
       "desktop": {
         "Comment": "Interactive literate coding notebook",
         "Icon": "nteract",
-        "MimeType": "application/x-ipynb+json",
+        "MimeType": "application/x-ipynb+json;",
         "Name": "nteract",
         "Path": "/opt/nteract/",
         "StartupNotify": "true",
