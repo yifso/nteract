@@ -11180,13 +11180,6 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-electron-store@^0.6.1:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/redux-electron-store/-/redux-electron-store-0.6.4.tgz#c128114938d23673babd9b1eb541b95fe30b21a5"
-  integrity sha512-TimUtU32jxHYEcbHOvad1pS1LcPD9v7X+36SnaZUfFcj+Yzme/r4V1K5WnAwxBnvlRuM3byWLNuTVqTt165biQ==
-  dependencies:
-    lodash "^4.13.1"
-
 redux-immutable@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/redux-immutable/-/redux-immutable-4.0.0.tgz#3a1a32df66366462b63691f0e1dc35e472bbc9f3"
