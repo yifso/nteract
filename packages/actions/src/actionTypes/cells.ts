@@ -268,3 +268,11 @@ export interface PromptInputRequest {
     password: boolean;
   };
 }
+
+export const SEND_INPUT_REPLY = "SEND_INPUT_REPLY";
+export interface SendInputReply {
+  type: "SEND_INPUT_REPLY";
+  payload: {
+    value: string;
+  };
+}

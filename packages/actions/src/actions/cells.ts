@@ -368,3 +368,12 @@ export function promptInputRequest(payload: {
     payload
   };
 }
+
+export function sendInputReply(
+  payload: actionTypes.SendInputReply["payload"]
+): actionTypes.SendInputReply {
+  return {
+    type: actionTypes.SEND_INPUT_REPLY,
+    payload
+  };
+}

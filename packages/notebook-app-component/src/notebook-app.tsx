@@ -11,6 +11,7 @@ import {
   KernelOutputError,
   Media,
   Output,
+  PromptRequest,
   RichMedia,
   StreamText
 } from "@nteract/outputs";
@@ -130,6 +131,7 @@ const makeMapStateToCellProps = (
 
     const cellType = cell.cell_type;
     const outputs = cell.get("outputs", emptyList);
+    const prompt = cell.prompt;
 
     const sourceHidden =
       (cellType === "code" &&
@@ -168,6 +170,7 @@ const makeMapStateToCellProps = (
       outputHidden,
       outputs,
       pager,
+      prompt,
       source: cell.get("source", ""),
       sourceHidden,
       tags,
@@ -216,6 +219,8 @@ const makeMapDispatchToCellProps = (
       dispatch(actions.toggleOutputExpansion({ id, contentRef })),
     toggleParameterCell: () =>
       dispatch(actions.toggleParameterCell({ id, contentRef })),
+    sendInputReply: (value: string) =>
+      dispatch(actions.sendInputReply({ value })),
 
     updateOutputMetadata: (
       index: number,
@@ -272,6 +277,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       focusBelowCell,
       focusEditor,
       id,
+      prompt,
       tags,
       theme,
       selectCell,
@@ -339,6 +345,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                 </Output>
               ))}
             </Outputs>
+            {prompt && <PromptRequest {...prompt} />}
           </React.Fragment>
         );
 
