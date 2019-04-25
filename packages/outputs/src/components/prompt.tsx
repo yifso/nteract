@@ -6,21 +6,47 @@ interface Props {
   submitPromptReply: any;
 }
 
-export const PromptRequest = (props: Props) => {
-  if (props.password) {
+export class PromptRequest extends React.PureComponent<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { value: "" };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmitPromptReply = this.handleChange.bind(this);
+  }
+
+  handleSubmitPromptReply(event) {
+    event.preventDefault();
+    this.props.submitPromptReply(this.state.value);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  render() {
+    if (this.props.password) {
+      return (
+        <form onSubmit={this.handleSubmitPromptReply}>
+          <input
+            type="password"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          <input type="submit" />
+        </form>
+      );
+    }
     return (
-      <form onsubmit={props.submitPromptReply}>
-        <input type="password" />
+      <form onSubmit={this.handleSubmitPromptReply}>
+        <input
+          type="text"
+          value={this.state.value}
+          onChange={this.handleChange}
+        />
         <input type="submit" />
       </form>
     );
   }
-  return (
-    <form onsubmit={props.submitPromptReply}>
-      <input type="text" />
-      <input type="submit" />
-    </form>
-  );
-};
+}
 
 export default PromptRequest;

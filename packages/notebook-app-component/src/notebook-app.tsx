@@ -283,7 +283,8 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       selectCell,
       unfocusEditor,
       contentRef,
-      sourceHidden
+      sourceHidden,
+      sendInputReply
     } = this.props;
     const running = cellStatus === "busy";
     const queued = cellStatus === "queued";
@@ -345,7 +346,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                 </Output>
               ))}
             </Outputs>
-            {prompt && <PromptRequest {...prompt} />}
+            {prompt && (
+              <PromptRequest {...prompt} submitPromptReply={sendInputReply} />
+            )}
           </React.Fragment>
         );
 
