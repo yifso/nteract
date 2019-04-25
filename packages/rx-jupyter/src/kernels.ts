@@ -150,7 +150,7 @@ export const connect = (
 ): Subject<any> => {
   const wsSubject = webSocket<JupyterMessage>({
     url: formWebSocketURL(serverConfig, kernelID, sessionID),
-    protocol: serverConfig.wsOptions
+    protocol: serverConfig.wsProtocol
   });
 
   wsSubject.pipe(

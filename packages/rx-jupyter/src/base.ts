@@ -14,7 +14,7 @@ export interface ServerConfig {
   xsrfToken?: string;
   crossDomain?: boolean;
   ajaxOptions?: Partial<AjaxRequest>;
-  wsOptions?: string | string[];
+  wsProtocol?: string | string[];
 }
 
 /**
