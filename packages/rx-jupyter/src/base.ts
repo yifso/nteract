@@ -6,13 +6,15 @@ import Cookies from "js-cookie";
 import { AjaxRequest, AjaxResponse } from "rxjs/ajax";
 
 export const normalizeBaseURL = (url = "") => url.replace(/\/+$/, "");
-
+s;
 export interface ServerConfig {
   endpoint?: string;
   url?: string;
   token?: string;
   xsrfToken?: string;
   crossDomain?: boolean;
+  ajaxOptions?: Partial<AjaxRequest>;
+  wsOptions?: string | string[];
 }
 
 /**
@@ -54,6 +56,7 @@ export const createAJAXSettings = (
     responseType: "json",
     createXHR: () => new XMLHttpRequest(),
     ...serverConfig,
+    ...serverConfig.ajaxOptions,
     ...opts,
     // Make sure we merge in the auth headers with user given headers
     headers: { ...headers, ...opts.headers }
