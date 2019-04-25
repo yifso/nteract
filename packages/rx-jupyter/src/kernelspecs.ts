@@ -2,7 +2,7 @@
  * @module rx-jupyter
  */
 import { Observable } from "rxjs";
-import { ajax, AjaxRequest, AjaxResponse } from "rxjs/ajax";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import { createAJAXSettings, ServerConfig } from "./base";
 
 /**
@@ -12,16 +12,8 @@ import { createAJAXSettings, ServerConfig } from "./base";
  *
  * @return An Observable with the request response
  */
-export const list = (
-  serverConfig: ServerConfig,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
-): Observable<AjaxResponse> =>
-  ajax(
-    createAJAXSettings(serverConfig, "/api/kernelspecs", {
-      cache: false,
-      ...opts
-    })
-  );
+export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
+  ajax(createAJAXSettings(serverConfig, "/api/kernelspecs", { cache: false }));
 
 /**
  * Returns the specification of available kernels with the given
@@ -34,12 +26,10 @@ export const list = (
  */
 export const get = (
   serverConfig: ServerConfig,
-  name: string,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  name: string
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernelspecs/${name}`, {
-      cache: false,
-      ...opts
+      cache: false
     })
   );
