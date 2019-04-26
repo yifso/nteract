@@ -6,12 +6,16 @@ interface Props {
   submitPromptReply: any;
 }
 
-export class PromptRequest extends React.PureComponent<Props> {
+interface State {
+  value: string;
+}
+
+export class PromptRequest extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { value: "" };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmitPromptReply = this.handleChange.bind(this);
+    this.handleSubmitPromptReply = this.handleSubmitPromptReply.bind(this);
   }
 
   handleSubmitPromptReply(event) {
