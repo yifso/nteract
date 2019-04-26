@@ -2,6 +2,7 @@
  * @module types
  */
 import * as Immutable from "immutable";
+import { AjaxRequest } from "rxjs/ajax";
 
 import { HostId } from "../ids";
 import { HostRef } from "../refs";
@@ -31,6 +32,8 @@ export type JupyterHostRecordProps = BaseHostProps & {
   origin: string;
   basePath: string;
   crossDomain?: boolean | null;
+  ajaxOptions?: Partial<AjaxRequest>;
+  wsProtocol?: string | string[];
 };
 
 export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
@@ -40,7 +43,9 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   token: null,
   origin: typeof location === "undefined" ? "" : location.origin,
   basePath: "/",
-  crossDomain: false
+  crossDomain: false,
+  ajaxOptions: undefined,
+  wsProtocol: undefined
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;

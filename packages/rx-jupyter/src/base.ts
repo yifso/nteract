@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { AjaxRequest, AjaxResponse } from "rxjs/ajax";
 
 export const normalizeBaseURL = (url = "") => url.replace(/\/+$/, "");
-s;
+
 export interface ServerConfig {
   endpoint?: string;
   url?: string;
@@ -59,7 +59,11 @@ export const createAJAXSettings = (
     ...serverConfig.ajaxOptions,
     ...opts,
     // Make sure we merge in the auth headers with user given headers
-    headers: { ...headers, ...opts.headers }
+    headers: {
+      ...headers,
+      ...opts.headers,
+      ...(serverConfig.ajaxOptions && serverConfig.ajaxOptions.headers)
+    }
   };
   delete settings.endpoint;
   delete settings.cache;
