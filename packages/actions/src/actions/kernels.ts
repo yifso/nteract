@@ -49,18 +49,24 @@ export function launchKernel(payload: {
   };
 }
 
-export function changeKernelByName(
-  payload: actionTypes.ChangeKernelByName["payload"]
-): actionTypes.ChangeKernelByName {
+export function changeKernelByName(payload: {
+  kernelSpecName: any;
+  oldKernelRef?: KernelRef | null;
+  contentRef: ContentRef;
+}): actionTypes.ChangeKernelByName {
   return {
     type: actionTypes.CHANGE_KERNEL_BY_NAME,
     payload
   };
 }
 
-export function launchKernelByName(
-  payload: actionTypes.LaunchKernelByNameAction["payload"]
-): actionTypes.LaunchKernelByNameAction {
+export function launchKernelByName(payload: {
+  kernelSpecName: any;
+  cwd: string;
+  kernelRef: KernelRef;
+  selectNextKernel: boolean;
+  contentRef: ContentRef;
+}): actionTypes.LaunchKernelByNameAction {
   return {
     type: actionTypes.LAUNCH_KERNEL_BY_NAME,
     payload
@@ -87,9 +93,10 @@ export function kernelRawStderr(payload: {
   };
 }
 
-export function killKernel(
-  payload: actionTypes.KillKernelAction["payload"]
-): actionTypes.KillKernelAction {
+export function killKernel(payload: {
+  restarting: boolean;
+  kernelRef?: KernelRef | null;
+}): actionTypes.KillKernelAction {
   return {
     type: actionTypes.KILL_KERNEL,
     payload
@@ -116,9 +123,9 @@ export function killKernelSuccessful(payload: {
   };
 }
 
-export function interruptKernel(
-  payload: actionTypes.InterruptKernel["payload"]
-): actionTypes.InterruptKernel {
+export function interruptKernel(payload: {
+  kernelRef?: KernelRef | null;
+}): actionTypes.InterruptKernel {
   return {
     type: actionTypes.INTERRUPT_KERNEL,
     payload

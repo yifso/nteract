@@ -13,6 +13,8 @@ export interface ServerConfig {
   token?: string;
   xsrfToken?: string;
   crossDomain?: boolean;
+  ajaxOptions?: Partial<AjaxRequest>;
+  wsProtocol?: string | string[];
 }
 
 /**
@@ -54,9 +56,14 @@ export const createAJAXSettings = (
     responseType: "json",
     createXHR: () => new XMLHttpRequest(),
     ...serverConfig,
+    ...serverConfig.ajaxOptions,
     ...opts,
     // Make sure we merge in the auth headers with user given headers
-    headers: { ...headers, ...opts.headers }
+    headers: {
+      ...headers,
+      ...opts.headers,
+      ...(serverConfig.ajaxOptions && serverConfig.ajaxOptions.headers)
+    }
   };
   delete settings.endpoint;
   delete settings.cache;

@@ -2,7 +2,7 @@
  * @module rx-jupyter
  */
 import { Observable } from "rxjs";
-import { ajax, AjaxRequest, AjaxResponse } from "rxjs/ajax";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import { createAJAXSettings, ServerConfig } from "./base";
 
 /**
@@ -13,13 +13,8 @@ import { createAJAXSettings, ServerConfig } from "./base";
  *
  * @returns An Observable with the request response
  */
-export const list = (
-  serverConfig: ServerConfig,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
-): Observable<AjaxResponse> =>
-  ajax(
-    createAJAXSettings(serverConfig, "/api/sessions", { cache: false, ...opts })
-  );
+export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
+  ajax(createAJAXSettings(serverConfig, "/api/sessions", { cache: false }));
 
 /**
  * Creates an AjaxObservable for getting a particular session's information.
@@ -31,13 +26,11 @@ export const list = (
  */
 export const get = (
   serverConfig: ServerConfig,
-  sessionID: string,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  sessionID: string
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {
-      cache: false,
-      ...opts
+      cache: false
     })
   );
 
@@ -51,13 +44,11 @@ export const get = (
  */
 export const destroy = (
   serverConfig: ServerConfig,
-  sessionID: string,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  sessionID: string
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {
-      method: "DELETE",
-      ...opts
+      method: "DELETE"
     })
   );
 
@@ -74,8 +65,7 @@ export const destroy = (
 export const update = (
   serverConfig: ServerConfig,
   sessionID: string,
-  body: object,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  body: object
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, `/api/sessions/${sessionID}`, {
@@ -83,8 +73,7 @@ export const update = (
       headers: {
         "Content-Type": "application/json"
       },
-      body,
-      ...opts
+      body
     })
   );
 
@@ -99,8 +88,7 @@ export const update = (
  */
 export const create = (
   serverConfig: ServerConfig,
-  body: object,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  body: object
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/sessions", {
@@ -108,7 +96,6 @@ export const create = (
       headers: {
         "Content-Type": "application/json"
       },
-      body,
-      ...opts
+      body
     })
   );

@@ -232,7 +232,7 @@ describe("restartKernelEpic", () => {
           kernelRef: "oldKernelRef"
         }),
         d: actionsModule.launchKernelByName({
-          kernelSpecName: "",
+          kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,
@@ -301,17 +301,15 @@ describe("restartKernelEpic", () => {
           kernelRef: "oldKernelRef"
         }),
         d: actionsModule.launchKernelByName({
-          kernelSpecName: "",
+          kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
-          selectNextKernel: true,
-          contentRef: undefined
+          selectNextKernel: true
         }),
         e: actionsModule.restartKernelSuccessful({
-          kernelRef: newKernelRef,
-          contentRef: undefined
+          kernelRef: newKernelRef
         }),
-        f: actionsModule.executeAllCells({ contentRef: undefined })
+        f: actionsModule.executeAllCells({})
       };
 
       const inputMarbles = "a---b---|";

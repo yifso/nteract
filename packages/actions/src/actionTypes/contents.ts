@@ -10,7 +10,6 @@ export interface ChangeContentName {
     contentRef: ContentRef;
     filepath: string;
     prevFilePath: string;
-    opts?: object;
   };
 }
 
@@ -45,7 +44,6 @@ export interface FetchContent {
     params: object;
     kernelRef: KernelRef;
     contentRef: ContentRef;
-    opts?: object;
   };
 }
 
@@ -79,7 +77,6 @@ export interface DownloadContent {
   type: "CORE/DOWNLOAD_CONTENT";
   payload: {
     contentRef: ContentRef;
-    opts?: object;
   };
 }
 
@@ -100,7 +97,6 @@ export interface Save {
   type: "SAVE";
   payload: {
     contentRef: ContentRef;
-    opts?: object;
   };
 }
 

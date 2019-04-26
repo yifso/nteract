@@ -2,7 +2,7 @@
  * @module rx-jupyter
  */
 import { Observable } from "rxjs";
-import { ajax, AjaxRequest, AjaxResponse } from "rxjs/ajax";
+import { ajax, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 
 import { createAJAXSettings, normalizeBaseURL, ServerConfig } from "./base";
@@ -16,14 +16,10 @@ const formURI = (path: string) => urljoin("/api/terminals/", path);
  *
  * @returns An Observable with the request response
  */
-export const list = (
-  serverConfig: ServerConfig,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
-): Observable<AjaxResponse> =>
+export const list = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/terminals/", {
-      method: "GET",
-      ...opts
+      method: "GET"
     })
   );
 
@@ -34,14 +30,10 @@ export const list = (
  *
  * @return An Observable with the request response
  */
-export const create = (
-  serverConfig: ServerConfig,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
-): Observable<AjaxResponse> =>
+export const create = (serverConfig: ServerConfig): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, "/api/terminals/", {
-      method: "POST",
-      ...opts
+      method: "POST"
     })
   );
 
@@ -55,13 +47,11 @@ export const create = (
  */
 export const get = (
   serverConfig: ServerConfig,
-  id: string,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  id: string
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, formURI(id), {
-      method: "GET",
-      ...opts
+      method: "GET"
     })
   );
 
@@ -75,13 +65,11 @@ export const get = (
  */
 export const destroy = (
   serverConfig: ServerConfig,
-  id: string,
-  opts: Partial<AjaxRequest & { cache?: boolean }> = {}
+  id: string
 ): Observable<AjaxResponse> =>
   ajax(
     createAJAXSettings(serverConfig, formURI(id), {
-      method: "DELETE",
-      ...opts
+      method: "DELETE"
     })
   );
 
