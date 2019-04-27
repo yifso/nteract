@@ -29,6 +29,7 @@ import {
   mergeMap,
   share,
   switchMap,
+  take,
   takeUntil,
   tap
 } from "rxjs/operators";
@@ -119,6 +120,7 @@ export function executeCellStream(
     cellMessages.pipe(
       inputRequests() as any,
       map((inputRequest: InputRequestMessage) => {
+        debugger;
         return actions.promptInputRequest({
           id,
           contentRef,
@@ -320,6 +322,17 @@ export function executeCellEpic(
               id,
               action.payload.contentRef
             ).pipe(
+              ofType(actions.PROMPT_INPUT_REQUEST),
+              switchMap((_action: actions.PromptInputRequest) => {
+                return action$.pipe(
+                  ofType(actions.SEND_INPUT_REPLY),
+                  take(1),
+                  map((action: actions.SendInputReply) => {
+                    console.log(action);
+                    return empty();
+                  })
+                );
+              }),
               catchError((error, source) =>
                 merge(
                   of(
