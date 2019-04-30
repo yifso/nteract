@@ -40,6 +40,7 @@ export type JupyterHostRecordProps = BaseHostProps & {
   token?: string | null;
   origin: string;
   basePath: string;
+  bookstoreEnabled: boolean;
   crossDomain?: boolean | null;
   ajaxOptions?: Partial<AjaxRequest>;
   wsProtocol?: string | string[];
