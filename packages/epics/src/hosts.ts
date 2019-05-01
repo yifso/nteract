@@ -162,29 +162,31 @@ export function publishToBookstoreAfterSave(
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE_AFTER_SAVE),
     switchMap(action => {
+      const targetPath: string = action.payload.model.path;
+      const model: any = action.payload.model;
+
       // Publish notebook to Bookstore
-      return bookstore
-        .publish(serverConfig, "/published", action.payload.model)
-        .pipe(
-          tap((xhr: AjaxResponse) => {
-            if (xhr.status !== 200) {
-              throw new Error(xhr.response);
-            }
-          }),
-          map(() => {
-            actions.publishToBookstoreSucceeded({
+      return bookstore.publish(serverConfig, targetPath, model).pipe(
+        tap((xhr: AjaxResponse) => {
+          if (xhr.status !== 200) {
+            throw new Error(xhr.response);
+          }
+          console.log("XHR: ", xhr);
+        }),
+        map(() => {
+          actions.publishToBookstoreSucceeded({
+            contentRef: action.payload.contentRef
+          });
+        }),
+        catchError((xhrError: any) =>
+          of(
+            actions.publishToBookstoreFailed({
+              error: xhrError,
               contentRef: action.payload.contentRef
-            });
-          }),
-          catchError((xhrError: any) =>
-            of(
-              actions.publishToBookstoreFailed({
-                error: xhrError,
-                contentRef: action.payload.contentRef
-              })
-            )
+            })
           )
-        );
+        )
+      );
     })
   );
 }

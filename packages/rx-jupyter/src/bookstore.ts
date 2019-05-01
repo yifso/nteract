@@ -10,7 +10,7 @@ import urljoin from "url-join";
 // Local modules
 import { createAJAXSettings, ServerConfig } from "./base";
 
-const formURI = (path: string) => urljoin("/api/bookstore/", path);
+const formURI = (path: string) => urljoin("/api/bookstore/published", path);
 
 /**
  * Creates an AjaxObservable for publishing content to `Bookstore`
@@ -33,7 +33,7 @@ export function publish(
       headers: {
         "Content-Type": "application/json"
       },
-      method: "POST"
+      method: "PUT"
     })
   );
 }
