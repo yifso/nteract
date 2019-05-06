@@ -89,7 +89,7 @@ export const Cell = styled.div.attrs<CellProps>(props => ({
   @media print{
     /* make sure all cells look the same in print regarless of focus */
     & ${Prompt}, &.selected ${Prompt}, &:focus ${Prompt}, &:hover:not(.selected) ${Prompt} {
-      background-color: var(--theme-cell-prompt-bg, white) ! important;
+      background-color: var(--theme-cell-prompt-bg, white);
       color: var(--theme-cell-prompt-fg, black);
     }
   }
