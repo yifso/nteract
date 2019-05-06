@@ -275,15 +275,8 @@
 
       @media print {
         * {
+          /*remove the box-shadow around of cells when exporting to pdf */
           box-shadow: none !important;
-        }
-        .cell.focused {
-          border: none;
-          background: var(--theme-cell-bg, white) !important;
-        }
-        .cell:focus .prompt,
-        .cell.focused .prompt {
-          background: var(--theme-pager-bg, #fafafa) !important;
         }
       }
 
