@@ -1,7 +1,7 @@
 The `Prompt` component is typically a child of the `Input` component and serves two purposes.
 First, it serves as a visual indicator of input entry for end users. Secondly, it allows us to display relevant information about the state of a cell to the end user.
 
-```jsx static
+```js
 import { Prompt } from "@nteract/presentational-components"
 ```
 
@@ -27,4 +27,9 @@ You can use the `queued` prop to indicate that a cell is queued for execution. Y
 
 ```js
 <Prompt counter={12} queued />
+```
+
+Pass the `blank` prop to create a prompt with no brackets or other indicators. This is used for Markdown cells through the `<PromptBuffer />` component.
+```js
+<Prompt blank />
 ```
