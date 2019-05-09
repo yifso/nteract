@@ -1,7 +1,7 @@
 The `Prompt` component is typically a child of the `Input` component and serves two purposes.
 First, it serves as a visual indicator of input entry for end users. Secondly, it allows us to display relevant information about the state of a cell to the end user.
 
-```js
+```jsx static
 import { Prompt } from "@nteract/presentational-components"
 ```
 
