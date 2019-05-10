@@ -1,17 +1,17 @@
 /**
  * @module actions
  */
+
+// Vendor modules
 import {
   CellId,
   JSONObject,
   MediaBundle,
   OnDiskOutput
 } from "@nteract/commutable";
-
-import * as actionTypes from "../actionTypes";
-
 import {
   ContentRef,
+  HeaderDataProps,
   HostId,
   HostRef,
   KernelRef,
@@ -19,8 +19,12 @@ import {
   PayloadMessage
 } from "@nteract/types";
 
+// Local modules
+import * as actionTypes from "../actionTypes";
+
 export * from "./cells";
 export * from "./contents";
+export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
 
@@ -60,6 +64,15 @@ export function overwriteMetadataField(payload: {
 }): actionTypes.OverwriteMetadataField {
   return {
     type: actionTypes.OVERWRITE_METADATA_FIELD,
+    payload
+  };
+}
+
+export function overwriteMetadataFields(
+  payload: Partial<HeaderDataProps> & Partial<{ contentRef: ContentRef }>
+): actionTypes.OverwriteMetadataFields {
+  return {
+    type: actionTypes.OVERWRITE_METADATA_FIELDS,
     payload
   };
 }
@@ -130,7 +143,9 @@ export function toggleOutputExpansion(payload: {
 }
 
 export const loadConfig = () => ({ type: actionTypes.LOAD_CONFIG });
+
 export const saveConfig = () => ({ type: actionTypes.SAVE_CONFIG });
+
 export const doneSavingConfig = () => ({
   type: actionTypes.DONE_SAVING_CONFIG
 });

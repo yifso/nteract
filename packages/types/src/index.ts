@@ -122,6 +122,7 @@ export const makeStateRecord = Immutable.Record<StateRecordProps>({
   currentKernelspecsRef: null,
   entities: makeEntitiesRecord()
 });
+
 export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 
 export interface AppRecordProps {
