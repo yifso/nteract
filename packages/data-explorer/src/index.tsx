@@ -62,6 +62,7 @@ export interface Props {
 }
 
 interface State {
+  largeDataset: boolean;
   view: View;
   colors: string[];
   metrics: Dx.Field[];
@@ -256,7 +257,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
           field.type === "boolean" ||
           field.type === "datetime"
       )
-      .map(field => ({ ...field })) as Dx.Dimension[];
+      .map(field => ({ ...field, cardinality: 0 })) as Dx.Dimension[];
 
     // Should datetime data types be transformed into js dates before getting to this resource?
     const data = props.data.data.map((datapoint, datapointIndex) => {
@@ -274,21 +275,27 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       return mappedDatapoint;
     });
 
-    const cardinalityHash: { [key: string]: { [key: string]: true } } = {};
-    dimensions.forEach(dim => {
-      cardinalityHash[dim.name] = {};
-      data.forEach(datapoint => {
-        const dimValue = datapoint[dim.name];
-        cardinalityHash[dim.name][dimValue] = true;
+    let largeDataset = true;
+    let selectedDimensions: string[] = [];
+
+    if (data.length < 5000) {
+      largeDataset = false;
+      const cardinalityHash: { [key: string]: { [key: string]: true } } = {};
+      dimensions.forEach(dim => {
+        cardinalityHash[dim.name] = {};
+        data.forEach(datapoint => {
+          const dimValue = datapoint[dim.name];
+          cardinalityHash[dim.name][dimValue] = true;
+        });
+
+        dim.cardinality = Object.entries(cardinalityHash[dim.name]).length;
       });
 
-      dim.cardinality = Object.entries(cardinalityHash[dim.name]).length;
-    });
-
-    const selectedDimensions = dimensions
-      .sort((a, b) => a.cardinality - b.cardinality)
-      .filter((data, index) => index === 0)
-      .map(dim => dim.name);
+      selectedDimensions = dimensions
+        .sort((a, b) => a.cardinality - b.cardinality)
+        .filter((data, index) => index === 0)
+        .map(dim => dim.name);
+    }
 
     const metrics = fields
       .filter(
@@ -303,6 +310,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
 
     const displayChart: DisplayChart = {};
     this.state = {
+      largeDataset,
       view: initialView,
       lineType: "line",
       areaType: "hexbin",
@@ -364,7 +372,8 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       barGrouping,
       colors,
       primaryKey,
-      data: stateData
+      data: stateData,
+      largeDataset
     } = { ...this.state, ...updatedState };
 
     if (!this.props.data && !this.props.metadata && !this.props.initialView) {
@@ -575,7 +584,8 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       hierarchyType,
       trendLine,
       marginalGraphics,
-      barGrouping
+      barGrouping,
+      largeDataset
     } = this.state;
 
     let display: React.ReactNode = null;
@@ -625,7 +635,8 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
           dimensions,
           currentView: view,
           setGrid: this.setGrid,
-          setView: this.setView
+          setView: this.setView,
+          largeDataset
         };
         return React.cloneElement(child, toolbarProps);
       }
@@ -648,7 +659,7 @@ const DataExplorerDefault: React.FunctionComponent<Props> & {
   return (
     <DataExplorer {...props}>
       <Viz />
-      <Toolbar />
+      <Toolbar largeDataset={false} />
     </DataExplorer>
   );
 };
