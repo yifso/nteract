@@ -26,7 +26,7 @@ interface Props {
   currentView: string;
   // How we tell the root DataExplorer to pass toolbar props to this component:
   componentType: "toolbar";
-  largeDataset: boolean;
+  largeDataset?: boolean;
 }
 
 const ToolbarWrapper = styled.div`

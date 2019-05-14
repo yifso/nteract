@@ -372,8 +372,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       barGrouping,
       colors,
       primaryKey,
-      data: stateData,
-      largeDataset
+      data: stateData
     } = { ...this.state, ...updatedState };
 
     if (!this.props.data && !this.props.metadata && !this.props.initialView) {
@@ -659,7 +658,7 @@ const DataExplorerDefault: React.FunctionComponent<Props> & {
   return (
     <DataExplorer {...props}>
       <Viz />
-      <Toolbar largeDataset={false} />
+      <Toolbar />
     </DataExplorer>
   );
 };
