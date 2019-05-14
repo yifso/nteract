@@ -813,7 +813,6 @@ exports[`Default DataExplorer export with metadata 1`] = `
     componentType="toolbar"
     currentView=""
     dimensions={Array []}
-    largeDataset={false}
     setGrid={[Function]}
     setView={[Function]}
   />
@@ -1043,7 +1042,6 @@ exports[`Default DataExplorer export without metadata 1`] = `
     componentType="toolbar"
     currentView=""
     dimensions={Array []}
-    largeDataset={false}
     setGrid={[Function]}
     setView={[Function]}
   />
