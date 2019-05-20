@@ -97,7 +97,12 @@ describe("saveAs", () => {
       .pipe(toArray())
       .toPromise();
 
-    expect(responses).toEqual([]);
+    expect(responses).toEqual([
+      actions.saveAsFailed({
+        contentRef,
+        error: new Error("Cannot save content if no host is set.")
+      })
+    ]);
   });
   it("does not save if there is no content", async () => {
     const state = {

@@ -345,8 +345,12 @@ export function saveContentEpic(
 
         const host = selectors.currentHost(state);
         if (host.type !== "jupyter") {
-          // Dismiss any usage that isn't targeting a jupyter server
-          return empty();
+          return of(
+            actions.saveFailed({
+              error: new Error("Cannot save content if no host is set."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
         const contentRef = action.payload.contentRef;
         const content = selectors.content(state, { contentRef });
@@ -367,8 +371,12 @@ export function saveContentEpic(
         }
 
         if (content.type === "directory") {
-          // Don't save directories
-          return empty();
+          return of(
+            actions.saveFailed({
+              error: new Error("Cannot save directories."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
 
         const filepath = content.filepath;
@@ -376,7 +384,12 @@ export function saveContentEpic(
         const { serializedData, saveModel } = serializeContent(state, content);
 
         if (!saveModel || !serializedData) {
-          return empty();
+          return of(
+            actions.saveFailed({
+              error: new Error("No serialized model created for this content."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
 
         switch (action.type) {
@@ -492,8 +505,12 @@ export function saveAsContentEpic(
 
         const host = selectors.currentHost(state);
         if (host.type !== "jupyter") {
-          // Dismiss any usage that isn't targeting a jupyter server
-          return empty();
+          return of(
+            actions.saveAsFailed({
+              error: new Error("Cannot save content if no host is set."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
         const contentRef = action.payload.contentRef;
         const content = selectors.content(state, { contentRef });
@@ -507,8 +524,12 @@ export function saveAsContentEpic(
         }
 
         if (content.type === "directory") {
-          // Don't save directories
-          return empty();
+          return of(
+            actions.saveAsFailed({
+              error: new Error("Cannot save directories."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
 
         const filepath = content.filepath;
@@ -516,7 +537,12 @@ export function saveAsContentEpic(
         const { saveModel } = serializeContent(state, content);
 
         if (!saveModel) {
-          return empty();
+          return of(
+            actions.saveAsFailed({
+              error: new Error("No serialized model created for this content."),
+              contentRef: action.payload.contentRef
+            })
+          );
         }
 
         const serverConfig: ServerConfig = selectors.serverConfig(host);
