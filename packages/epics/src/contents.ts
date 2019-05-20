@@ -14,10 +14,19 @@ import { catchError, map, mergeMap, switchMap, tap } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState, ContentRef } from "@nteract/types";
+import {
+  AppState,
+  ContentRef,
+  DirectoryContentRecordProps,
+  DummyContentRecordProps,
+  FileContentRecordProps,
+  NotebookContentRecordProps
+} from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
 import urljoin from "url-join";
+
+import { RecordOf } from "immutable";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -270,6 +279,46 @@ export function autoSaveCurrentContentEpic(
   );
 }
 
+function serializeContent(
+  state: AppState,
+  content:
+    | RecordOf<NotebookContentRecordProps>
+    | RecordOf<DummyContentRecordProps>
+    | RecordOf<FileContentRecordProps>
+    | RecordOf<DirectoryContentRecordProps>
+) {
+  // This could be object for notebook, or string for files
+  let serializedData: Notebook | string;
+  let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
+  if (content.type === "notebook") {
+    const appVersion = selectors.appVersion(state);
+
+    // contents API takes notebook as raw JSON whereas downloading takes
+    // a string
+    serializedData = toJS(
+      content.model.notebook.setIn(
+        ["metadata", "nteract", "version"],
+        appVersion
+      )
+    );
+    saveModel = {
+      content: serializedData,
+      type: content.type
+    };
+  } else if (content.type === "file") {
+    serializedData = content.model.text;
+    saveModel = {
+      content: serializedData,
+      type: content.type,
+      format: "text"
+    };
+  } else {
+    return { saveModel: null, serializedData: null };
+  }
+
+  return { saveModel, serializedData };
+}
+
 export function saveContentEpic(
   action$: ActionsObservable<actions.Save | actions.DownloadContent>,
   state$: StateObservable<AppState>
@@ -324,33 +373,9 @@ export function saveContentEpic(
 
         const filepath = content.filepath;
 
-        // This could be object for notebook, or string for files
-        let serializedData: Notebook | string;
-        let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
-        if (content.type === "notebook") {
-          const appVersion = selectors.appVersion(state);
+        const { serializedData, saveModel } = serializeContent(state, content);
 
-          // contents API takes notebook as raw JSON whereas downloading takes
-          // a string
-          serializedData = toJS(
-            content.model.notebook.setIn(
-              ["metadata", "nteract", "version"],
-              appVersion
-            )
-          );
-          saveModel = {
-            content: serializedData,
-            type: content.type
-          };
-        } else if (content.type === "file") {
-          serializedData = content.model.text;
-          saveModel = {
-            content: serializedData,
-            type: content.type,
-            format: "text"
-          };
-        } else {
-          // We shouldn't save directories
+        if (!saveModel || !serializedData) {
           return empty();
         }
 
@@ -391,13 +416,9 @@ export function saveContentEpic(
 
             // Check to see if the file was modified since the last time
             // we saved.
-            // TODO: Determine how we handle what to do
-            // Don't bother doing this if the file is new(?)
             return contents.get(serverConfig, filepath, { content: 0 }).pipe(
               // Make sure that the modified time is within some delta
               mergeMap(xhr => {
-                // TODO: What does it mean if we have a failed GET
-                // on the content
                 if (xhr.status !== 200) {
                   throw new Error(xhr.response.toString());
                 }
@@ -492,35 +513,12 @@ export function saveAsContentEpic(
 
         const filepath = content.filepath;
 
-        // This could be object for notebook, or string for files
-        let serializedData: Notebook | string;
-        let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
-        if (content.type === "notebook") {
-          const appVersion = selectors.appVersion(state);
+        const { saveModel } = serializeContent(state, content);
 
-          // contents API takes notebook as raw JSON whereas downloading takes
-          // a string
-          serializedData = toJS(
-            content.model.notebook.setIn(
-              ["metadata", "nteract", "version"],
-              appVersion
-            )
-          );
-          saveModel = {
-            content: serializedData,
-            type: content.type
-          };
-        } else if (content.type === "file") {
-          serializedData = content.model.text;
-          saveModel = {
-            content: serializedData,
-            type: content.type,
-            format: "text"
-          };
-        } else {
-          // We shouldn't save directories
+        if (!saveModel) {
           return empty();
         }
+
         const serverConfig: ServerConfig = selectors.serverConfig(host);
 
         return contents.save(serverConfig, filepath, saveModel).pipe(
