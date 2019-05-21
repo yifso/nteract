@@ -2962,10 +2962,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@5.45.0:
-  version "5.45.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.45.0.tgz#db5ebbb3bf44028c684053f3954d011efcec27ad"
-  integrity sha512-c19j644usCE8gQaXa0jqn2B/HN9MnB2u6qPIrrhrMkB+QAP42y8G4QnTwuwbVSoUS1jEl7JU9HZMGhCDL0nsAw==
+codemirror@5.47.0:
+  version "5.47.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.47.0.tgz#c13a521ae5660d3acc655af252f4955065293789"
+  integrity sha512-kV49Fr+NGFHFc/Imsx6g180hSlkGhuHxTSDDmDHOuyln0MQYFLixDY4+bFkBVeCEiepYfDimAF/e++9jPJk4QA==
 
 collapse-white-space@^1.0.2:
   version "1.0.4"
@@ -11858,10 +11858,10 @@ semiotic-mark@0.3.1:
     prop-types "^15.6.0"
     roughjs-es5 "0.1.0"
 
-semiotic@^1.19.7:
-  version "1.19.7"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.19.7.tgz#b495a115d20b0167bc97f56de8a87b72c26e31ad"
-  integrity sha512-Ue1L08jcqx5zNx3+8dcRPkqSxwwgXEW4FJ+QJeX8lb9y0fbTCp90zcBJNYoRTytHUf2WPfy7aMbCrnwTSYT1Mw==
+semiotic@^1.19.8:
+  version "1.19.8"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.19.8.tgz#e36d72167c6fa38849e4a170563fd1773aac779d"
+  integrity sha512-AUabbg9mxb9vPQPlBhCWTXg+6QrbHS4zqX6syxTGEdAIFiu0eM4GD3UIEyLB72wi8ZkpXVxBitEKZojf31a+BA==
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
