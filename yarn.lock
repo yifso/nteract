@@ -1137,10 +1137,10 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.5.1.tgz#a38f69c62528d56ba7bd1f91335a8004988d72f7"
   integrity sha512-mNhVdZHdtKHMMxbqzNK3RzkBcN1cux3AvuCYGTvjEIQT2uheH3eCAyYsbMbh2Bq8nXkeOWs1kyDiF7geWRFQ4Q==
 
-"@types/react-color@^2.13.6", "@types/react-color@^2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-2.14.0.tgz#e01f6069902819fe9f6544375829a485f894206f"
-  integrity sha512-5UfGjUsu7bXop7K064nNrIGgS7wPjGEY7Or9tAE6BLslDtfhRnAlqWo9N2BIntEZ/3KpXlRnt0MBuc+hZJTevw==
+"@types/react-color@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-3.0.0.tgz#626ae0f3da34338ccae37279de32d1d9828424e4"
+  integrity sha512-vmEFBimsqXc9N3pBNNM2KXtLxgjSGCxrrSiJ8IBeQG4R1u+HMnw+BdxOPEI4EG7ClI+TmL9Yc0aL6S3mdA/RlA==
   dependencies:
     "@types/react" "*"
 
