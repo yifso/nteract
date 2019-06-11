@@ -63,8 +63,11 @@ export interface OnDiskMediaBundle {
   "application/x-nteract-model-debug+json"?: {};
   "application/vnd.vega.v2+json"?: {};
   "application/vnd.vega.v3+json"?: {};
+  "application/vnd.vega.v4+json"?: {};
+  "application/vnd.vega.v5+json"?: {};
   "application/vnd.vegalite.v1+json"?: {};
   "application/vnd.vegalite.v2+json"?: {};
+  "application/vnd.vegalite.v3+json"?: {};
 
   [key: string]: string | string[] | {} | undefined;
 }
@@ -90,8 +93,11 @@ export interface MediaBundle {
   "application/x-nteract-model-debug+json"?: { [key: string]: any };
   "application/vnd.vega.v2+json"?: { [key: string]: any };
   "application/vnd.vega.v3+json"?: { [key: string]: any };
+  "application/vnd.vega.v4+json"?: { [key: string]: any };
+  "application/vnd.vega.v5+json"?: { [key: string]: any };
   "application/vnd.vegalite.v1+json"?: { [key: string]: any };
   "application/vnd.vegalite.v2+json"?: { [key: string]: any };
+  "application/vnd.vegalite.v3+json"?: { [key: string]: any };
   // Other media types can also come in that we don't recognize
   [key: string]: string | string[] | {} | undefined;
 }

@@ -5,8 +5,11 @@ import vegaEmbed3 from "vega-embed";
 
 const MIMETYPE_VEGA2 = "application/vnd.vega.v2+json";
 const MIMETYPE_VEGA3 = "application/vnd.vega.v3+json";
+const MIMETYPE_VEGA4 = "application/vnd.vega.v4+json";
+const MIMETYPE_VEGA5 = "application/vnd.vega.v5+json";
 const MIMETYPE_VEGALITE1 = "application/vnd.vegalite.v1+json";
 const MIMETYPE_VEGALITE2 = "application/vnd.vegalite.v2+json";
+const MIMETYPE_VEGALITE3 = "application/vnd.vegalite.v3+json";
 
 const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = DEFAULT_WIDTH / 1.5;
@@ -22,7 +25,11 @@ interface EmbedProps {
   renderedCallback: (err: any, result: any) => any;
 }
 
-const defaultCallback = (): any => {};
+const defaultCallback = (err?: any, result?:any): any => {
+  if (err !== null) {
+    console.log(err);
+  }
+};
 
 function embed(
   el: HTMLElement,
@@ -30,7 +37,7 @@ function embed(
   mode: "vega" | "vega-lite" | undefined,
   version: string,
   cb: (err?: any, result?: any) => any
-) {
+): void {
   if (version === "vega2") {
     const embedSpec = {
       mode,
@@ -175,10 +182,36 @@ VegaLite2.defaultProps = {
   mediaType: MIMETYPE_VEGALITE2
 };
 
+export function VegaLite3(
+  props: Partial<Props<"application/vnd.vegalite.v3+json">>
+) {
+  return <VegaEmbed data={props.data} embedMode="vega-lite" version="vega5" />;
+}
+VegaLite3.MIMETYPE = MIMETYPE_VEGALITE3;
+VegaLite3.defaultProps = {
+  mediaType: MIMETYPE_VEGALITE3
+};
+
 export function Vega3(props: Partial<Props<"application/vnd.vega.v3+json">>) {
   return <VegaEmbed data={props.data} embedMode="vega" version="vega3" />;
 }
 Vega3.MIMETYPE = MIMETYPE_VEGA3;
 Vega3.defaultProps = {
   mediaType: MIMETYPE_VEGA3
+};
+
+export function Vega4(props: Partial<Props<"application/vnd.vega.v4+json">>) {
+  return <VegaEmbed data={props.data} embedMode="vega" version="vega4" />;
+}
+Vega4.MIMETYPE = MIMETYPE_VEGA4;
+Vega4.defaultProps = {
+  mediaType: MIMETYPE_VEGA4
+};
+
+export function Vega5(props: Partial<Props<"application/vnd.vega.v5+json">>) {
+  return <VegaEmbed data={props.data} embedMode="vega" version="vega5" />;
+}
+Vega5.MIMETYPE = MIMETYPE_VEGA5;
+Vega5.defaultProps = {
+  mediaType: MIMETYPE_VEGA5
 };
