@@ -71,6 +71,9 @@ function embed(
       );
     }
 
+    // vega-dataflow will fail on an immutable spec
+    spec = JSON.parse(JSON.stringify(spec));
+
     vegaEmbed3(el, spec, {
       mode,
       actions: false
