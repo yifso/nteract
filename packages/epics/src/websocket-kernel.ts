@@ -12,7 +12,8 @@ import {
   filter,
   map,
   mergeMap,
-  switchMap
+  switchMap,
+  withLatestFrom
 } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
@@ -316,6 +317,105 @@ export const killKernelEpic = (
             actions.killKernelFailed({
               error: err,
               kernelRef: action.payload.kernelRef
+            })
+          )
+        )
+      );
+    })
+  );
+
+export const restartWebSocketKernelEpic = (
+  action$: ActionsObservable<actions.RestartKernel>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.RESTART_KERNEL),
+    mergeMap((action: actions.RestartKernel) => {
+      const state = state$.value;
+
+      const { contentRef, kernelRef, outputHandling } = action.payload;
+
+      console.log(action);
+
+      if (!kernelRef) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't execute restart without kernel ref."),
+            kernelRef: "none provided",
+            contentRef
+          })
+        );
+      }
+
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't restart a kernel with no Jupyter host."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      const kernel = selectors.kernel(state, { kernelRef });
+      if (!kernel) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't restart a kernel that does not exist."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      if (kernel.type !== "websocket" || !kernel.id) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can only restart Websocket kernels via API."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      const id = kernel.id;
+
+      return kernels.restart(serverConfig, id).pipe(
+        map(() => {
+          if (outputHandling === "Run All") {
+            return of(
+              actions.restartKernelSuccessful({
+                kernelRef,
+                contentRef
+              }),
+              actions.executeAllCells({ contentRef })
+            );
+          } else if (outputHandling === "Clear All") {
+            return of(
+              actions.restartKernelSuccessful({
+                kernelRef,
+                contentRef
+              }),
+              actions.clearAllOutputs({ contentRef })
+            );
+          } else {
+            return of(
+              actions.restartKernelSuccessful({
+                kernelRef,
+                contentRef
+              })
+            );
+          }
+        }),
+        catchError(err =>
+          of(
+            actions.restartKernelFailed({
+              error: err,
+              kernelRef,
+              contentRef
             })
           )
         )
