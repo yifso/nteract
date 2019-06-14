@@ -9,7 +9,6 @@ import { HostRef } from "../refs";
 
 export interface Bookstore {
   version: string;
-  enabled: boolean;
 }
 
 export interface ServerConfig {
