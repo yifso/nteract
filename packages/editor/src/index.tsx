@@ -262,8 +262,14 @@ export default class CodeMirrorEditor extends React.PureComponent<
       this.cm.focus();
     }
 
-    this.cm.on("topBoundary", focusAbove!);
-    this.cm.on("bottomBoundary", focusBelow!);
+    this.cm.on("topBoundary", (editor: Editor) => {
+      this.deleteTip();
+      focusAbove!(editor);
+    });
+    this.cm.on("bottomBoundary", (editor: Editor) => {
+      this.deleteTip();
+      focusBelow!(editor);
+    });
 
     this.cm.on("cursorActivity", this.handleCursorChange);
 
@@ -459,9 +465,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
       tool(channels!, editor).subscribe((resp: { [dict: string]: any }) => {
         const bundle = Object.keys(resp.dict).length > 0 ? resp.dict : null;
         this.setState({ bundle });
-        // do we need??
-        //
-        // editor.addWidget({ line: editor.getCursor().line, ch: 0 }, node, true);
       });
     }
   }
