@@ -12,8 +12,7 @@ import {
   filter,
   map,
   mergeMap,
-  switchMap,
-  withLatestFrom
+  switchMap
 } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
@@ -23,6 +22,7 @@ import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
 import { RemoteKernelProps } from "@nteract/types";
 
+import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";
 
 export const launchWebSocketKernelEpic = (
@@ -330,12 +330,10 @@ export const restartWebSocketKernelEpic = (
 ) =>
   action$.pipe(
     ofType(actions.RESTART_KERNEL),
-    mergeMap((action: actions.RestartKernel) => {
+    concatMap((action: actions.RestartKernel) => {
       const state = state$.value;
 
       const { contentRef, kernelRef, outputHandling } = action.payload;
-
-      console.log(action);
 
       if (!kernelRef) {
         return of(
@@ -384,40 +382,50 @@ export const restartWebSocketKernelEpic = (
       const id = kernel.id;
 
       return kernels.restart(serverConfig, id).pipe(
-        map(() => {
-          if (outputHandling === "Run All") {
+        mergeMap<
+          AjaxResponse,
+          | actions.RestartKernelFailed
+          | actions.RestartKernelSuccessful
+          | actions.ExecuteAllCells
+          | actions.ClearAllOutputs
+        >((response: AjaxResponse) => {
+          if (response.status !== 200) {
             return of(
-              actions.restartKernelSuccessful({
-                kernelRef,
-                contentRef
-              }),
-              actions.executeAllCells({ contentRef })
-            );
-          } else if (outputHandling === "Clear All") {
-            return of(
-              actions.restartKernelSuccessful({
-                kernelRef,
-                contentRef
-              }),
-              actions.clearAllOutputs({ contentRef })
-            );
-          } else {
-            return of(
-              actions.restartKernelSuccessful({
+              actions.restartKernelFailed({
+                error: new Error("Unsuccessful kernel restart."),
                 kernelRef,
                 contentRef
               })
             );
+          } else {
+            if (outputHandling === "Run All") {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                }),
+                actions.executeAllCells({ contentRef })
+              );
+            } else if (outputHandling === "Clear All") {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                }),
+                actions.clearAllOutputs({ contentRef })
+              );
+            } else {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                })
+              );
+            }
           }
         }),
-        catchError(err =>
-          of(
-            actions.restartKernelFailed({
-              error: err,
-              kernelRef,
-              contentRef
-            })
-          )
+        catchError(error =>
+          of(actions.restartKernelFailed({ error, kernelRef, contentRef }))
         )
       );
     })
