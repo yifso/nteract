@@ -25,7 +25,8 @@ import {
   changeWebSocketKernelEpic,
   interruptKernelEpic,
   killKernelEpic,
-  launchWebSocketKernelEpic
+  launchWebSocketKernelEpic,
+  restartWebSocketKernelEpic
 } from "./websocket-kernel";
 
 // Because `@nteract/core` ends up being a commonjs import, we can't currently
@@ -50,7 +51,8 @@ const allEpics = [
   saveContentEpic,
   autoSaveCurrentContentEpic,
   publishToBookstore,
-  publishToBookstoreAfterSave
+  publishToBookstoreAfterSave,
+  restartWebSocketKernelEpic
 ];
 
 export {
@@ -73,5 +75,6 @@ export {
   saveContentEpic,
   autoSaveCurrentContentEpic,
   publishToBookstore,
-  publishToBookstoreAfterSave
+  publishToBookstoreAfterSave,
+  restartWebSocketKernelEpic
 };
