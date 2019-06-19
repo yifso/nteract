@@ -1,4 +1,5 @@
 import vegaEmbedV2 from "@nteract/vega-embed-v2";
+import vegaEmbedV3 from "@nteract/vega-embed-v3";
 import { promisify } from "util";
 import vegaEmbedV4 from "vega-embed";
 import { MEDIA_TYPES, VegaMediaType } from "./mime";
@@ -14,6 +15,9 @@ export async function doEmbedding(
 
   if (version.vegaLevel <= 2) {
     await promisify(vegaEmbedV2)(anchor, {...options, spec});
+  }
+  else if (version.vegaLevel <= 3) {
+    await vegaEmbedV3(anchor, deepThaw(spec), options);
   }
   else {
     await vegaEmbedV4(anchor, deepThaw(spec), options);
