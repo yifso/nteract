@@ -1,4 +1,4 @@
-import { mount} from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 
 import {
@@ -145,7 +145,7 @@ describe("VegaLite2", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = (result: any) => {
+    const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
     };
@@ -166,7 +166,7 @@ describe("VegaLite3", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = (result: any) => {
+    const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
     };
@@ -196,7 +196,7 @@ describe("Vega3", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = (result: any) => {
+    const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
     };
@@ -217,7 +217,7 @@ describe("Vega4", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = (result: any) => {
+    const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
     };
@@ -238,7 +238,7 @@ describe("Vega5", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = (result: any) => {
+    const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
     };
