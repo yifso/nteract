@@ -4,7 +4,7 @@
   "description": "Vega Transform",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "nteractDesktop": "src/index.ts",
+  "nteractDesktop": "src/index.tsx",
   "scripts": {},
   "author": "",
   "publishConfig": {

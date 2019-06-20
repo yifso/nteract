@@ -1,10 +1,26 @@
 import * as React from "react";
+import { VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 import { VegaEmbed } from "./react";
 
+export { VegaOptions, VegaMediaType };
+
+export interface VegaProps  {
+  data: Readonly<{}>;
+  options?: Partial<VegaOptions>;
+  onResult?: (result: any) => void;
+  onError?: (error: Error) => void;
+}
+
 export const Vega = (mediaType: VegaMediaType) => {
-  const embed = ({ data: spec }: { data: Readonly<{}> })  =>
-    <VegaEmbed mediaType={mediaType} spec={spec} />;
+  const embed = ({data, options, onResult, onError}: VegaProps)  =>
+    <VegaEmbed
+      mediaType={mediaType}
+      spec={data}
+      options={options}
+      resultHandler={onResult}
+      errorHandler={onError}
+    />;
 
   embed.MIMETYPE = mediaType;
   return embed;
