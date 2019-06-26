@@ -264,11 +264,11 @@ export default class CodeMirrorEditor extends React.PureComponent<
 
     this.cm.on("topBoundary", (editor: Editor) => {
       this.deleteTip();
-      focusAbove!(editor);
+      focusAbove && focusAbove(editor);
     });
     this.cm.on("bottomBoundary", (editor: Editor) => {
       this.deleteTip();
-      focusBelow!(editor);
+      focusBelow && focusBelow(editor);
     });
 
     this.cm.on("cursorActivity", this.handleCursorChange);
