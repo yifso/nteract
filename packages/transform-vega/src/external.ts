@@ -1,7 +1,4 @@
-import vegaEmbedV2 from "@nteract/vega-embed-v2";
-import vegaEmbedV3 from "@nteract/vega-embed-v3";
 import { promisify } from "util";
-import vegaEmbedV4 from "vega-embed";
 import { MEDIA_TYPES, VegaMediaType } from "./mime";
 
 export interface VegaOptions {
@@ -22,13 +19,22 @@ export async function doEmbedding(
   };
 
   if (version.vegaLevel <= 2) {
-    await promisify(vegaEmbedV2)(anchor, {...defaults, ...options, spec});
+    return await import("@nteract/vega-embed-v2").then(
+      ({ default: vegaEmbed }) =>
+        promisify(vegaEmbed)(anchor, { ...defaults, ...options, spec })
+    );
   }
   else if (version.vegaLevel <= 3) {
-    await vegaEmbedV3(anchor, deepThaw(spec), {...defaults, ...options});
+    return await import("@nteract/vega-embed-v3").then(
+      ({ default: vegaEmbed }) =>
+        vegaEmbed(anchor, deepThaw(spec), {...defaults, ...options})
+    );
   }
   else {
-    await vegaEmbedV4(anchor, deepThaw(spec), {...defaults, ...options} as {});
+    return await import("vega-embed").then(
+      ({ default: vegaEmbed }) =>
+        vegaEmbed(anchor, deepThaw(spec), {...defaults, ...options})
+    );
   }
 }
 
