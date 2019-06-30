@@ -235,7 +235,7 @@
     "typescript": "^3.2.2",
     "typescript-styled-plugin": "^0.14.0",
     "typescript-tslint-plugin": "^0.3.0",
-    "unified": "^7.0.0",
+    "unified": "^8.0.0",
     "unist-builder": "^1.0.2",
     "webfontloader": "^1.6.28",
     "webpack": "^4.28.3",
