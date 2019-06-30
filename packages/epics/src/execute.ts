@@ -350,6 +350,7 @@ export const updateDisplayEpic = (
             contentRef: action.payload.contentRef
           })
         ),
+        takeUntil(action$.pipe(ofType(actions.KILL_KERNEL_SUCCESSFUL))),
         catchError(error =>
           of(
             actions.updateDisplayFailed({
