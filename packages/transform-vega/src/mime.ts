@@ -67,7 +67,7 @@ export const MEDIA_TYPES: VegaMediaTypes = {
   "application/vnd.vegalite.v3+json": {
     kind: "vega-lite",
     version: "3",
-    vegaLevel: 4,
+    vegaLevel: 5,
     mediaType: "application/vnd.vegalite.v3+json",
     schemaPrefix: "https://vega.github.io/schema/vega-lite/v3",
   },
