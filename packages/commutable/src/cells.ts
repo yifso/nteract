@@ -21,7 +21,7 @@ export interface CodeCellParams {
   execution_count: ExecutionCount;
   source: string;
   outputs: ImmutableList<ImmutableOutput>;
-  prompt: ImmutableMap<string, any>;
+  prompt?: ImmutableMap<string, any>;
 }
 
 export const makeCodeCell = Record<CodeCellParams>({
@@ -34,7 +34,7 @@ export const makeCodeCell = Record<CodeCellParams>({
   }),
   source: "",
   outputs: ImmutableList(),
-  prompt: null
+  prompt: undefined
 });
 
 export type ImmutableCodeCell = RecordOf<CodeCellParams>;

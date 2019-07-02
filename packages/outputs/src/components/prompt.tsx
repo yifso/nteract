@@ -18,12 +18,12 @@ export class PromptRequest extends React.PureComponent<Props, State> {
     this.handleSubmitPromptReply = this.handleSubmitPromptReply.bind(this);
   }
 
-  handleSubmitPromptReply(event) {
+  handleSubmitPromptReply(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     this.props.submitPromptReply(this.state.value);
   }
 
-  handleChange(event) {
+  handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ value: event.target.value });
   }
 

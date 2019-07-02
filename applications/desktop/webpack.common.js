@@ -36,7 +36,7 @@ const mainConfig = {
   },
   resolve: {
     mainFields: ["nteractDesktop", "es2015", "jsnext:main", "module", "main"],
-    extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: configurator.mergeDefaultAliases()
   },
   plugins: [new webpack.IgnorePlugin(/\.(css|less)$/)]
