@@ -13,6 +13,7 @@ import {
   executeCellEpic,
   updateDisplayEpic
 } from "./execute";
+import { publishToBookstore, publishToBookstoreAfterSave } from "./hosts";
 import {
   acquireKernelInfoEpic,
   launchKernelWhenNotebookSetEpic,
@@ -24,7 +25,8 @@ import {
   changeWebSocketKernelEpic,
   interruptKernelEpic,
   killKernelEpic,
-  launchWebSocketKernelEpic
+  launchWebSocketKernelEpic,
+  restartWebSocketKernelEpic
 } from "./websocket-kernel";
 
 // Because `@nteract/core` ends up being a commonjs import, we can't currently
@@ -47,7 +49,10 @@ const allEpics = [
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
-  autoSaveCurrentContentEpic
+  autoSaveCurrentContentEpic,
+  publishToBookstore,
+  publishToBookstoreAfterSave,
+  restartWebSocketKernelEpic
 ];
 
 export {
@@ -68,5 +73,8 @@ export {
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
-  autoSaveCurrentContentEpic
+  autoSaveCurrentContentEpic,
+  publishToBookstore,
+  publishToBookstoreAfterSave,
+  restartWebSocketKernelEpic
 };

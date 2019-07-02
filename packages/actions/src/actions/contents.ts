@@ -1,15 +1,25 @@
 /**
  * @module actions
  */
+// Vendor modules
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
-
-import * as actionTypes from "../actionTypes";
-
 import { contents } from "rx-jupyter";
 
-export const changeContentName = (
-  payload: actionTypes.ChangeContentName["payload"]
-): actionTypes.ChangeContentName => ({
+// Local modules
+import * as actionTypes from "../actionTypes";
+
+export const toggleHeaderEditor = (payload: {
+  contentRef: ContentRef;
+}): actionTypes.ToggleHeaderEditor => ({
+  type: actionTypes.TOGGLE_HEADER_EDITOR,
+  payload
+});
+
+export const changeContentName = (payload: {
+  filepath: string;
+  contentRef: ContentRef;
+  prevFilePath: string;
+}): actionTypes.ChangeContentName => ({
   type: actionTypes.CHANGE_CONTENT_NAME,
   payload
 });
@@ -72,9 +82,9 @@ export function changeFilename(payload: {
   };
 }
 
-export function downloadContent(
-  payload: actionTypes.DownloadContent["payload"]
-): actionTypes.DownloadContent {
+export function downloadContent(payload: {
+  contentRef: ContentRef;
+}): actionTypes.DownloadContent {
   return {
     type: actionTypes.DOWNLOAD_CONTENT,
     payload
@@ -99,7 +109,7 @@ export function downloadContentFulfilled(payload: {
   };
 }
 
-export function save(payload: actionTypes.Save["payload"]): actionTypes.Save {
+export function save(payload: { contentRef: ContentRef }): actionTypes.Save {
   return {
     type: actionTypes.SAVE,
     payload
@@ -133,6 +143,25 @@ export function saveFulfilled(payload: {
 }): actionTypes.SaveFulfilled {
   return {
     type: actionTypes.SAVE_FULFILLED,
+    payload
+  };
+}
+
+export function saveAsFailed(
+  payload: actionTypes.SaveAsFailed["payload"]
+): actionTypes.SaveAsFailed {
+  return {
+    type: actionTypes.SAVE_AS_FAILED,
+    payload,
+    error: true
+  };
+}
+
+export function saveAsFulfilled(
+  payload: actionTypes.SaveAsFulfilled["payload"]
+): actionTypes.SaveAsFulfilled {
+  return {
+    type: actionTypes.SAVE_AS_FULFILLED,
     payload
   };
 }

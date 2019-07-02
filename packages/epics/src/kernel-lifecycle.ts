@@ -20,6 +20,7 @@ import {
   mergeMap,
   switchMap,
   take,
+  takeUntil,
   timeout
 } from "rxjs/operators";
 
@@ -49,7 +50,8 @@ export const watchExecutionStateEpic = (
             kernelStatus: msg.content.execution_state,
             kernelRef: action.payload.kernelRef
           })
-        )
+        ),
+        takeUntil(action$.pipe(ofType(actions.KILL_KERNEL_SUCCESSFUL)))
       )
     )
   );
@@ -272,7 +274,7 @@ export const restartKernelEpic = (
       });
 
       const relaunch = actions.launchKernelByName({
-        kernelSpecName: oldKernel.kernelSpecName || "",
+        kernelSpecName: oldKernel.kernelSpecName,
         cwd: oldKernel.cwd,
         kernelRef: newKernelRef,
         selectNextKernel: true,

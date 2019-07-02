@@ -22,6 +22,7 @@ import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
 import { RemoteKernelProps } from "@nteract/types";
 
+import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";
 
 export const launchWebSocketKernelEpic = (
@@ -45,7 +46,7 @@ export const launchWebSocketKernelEpic = (
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
       const {
-        payload: { kernelSpecName, cwd, kernelRef, contentRef, opts }
+        payload: { kernelSpecName, cwd, kernelRef, contentRef }
       } = action;
 
       const content = selectors.content(state, { contentRef });
@@ -66,7 +67,7 @@ export const launchWebSocketKernelEpic = (
       };
 
       // TODO: Handle failure cases here
-      return sessions.create(serverConfig, sessionPayload, opts).pipe(
+      return sessions.create(serverConfig, sessionPayload).pipe(
         mergeMap(data => {
           const session = data.response;
 
@@ -116,7 +117,7 @@ export const changeWebSocketKernelEpic = (
     // coordinated in a different way.
     switchMap((action: actions.ChangeKernelByName) => {
       const {
-        payload: { contentRef, oldKernelRef, kernelSpecName, opts }
+        payload: { contentRef, oldKernelRef, kernelSpecName }
       } = action;
       const state = state$.value;
       const host = selectors.currentHost(state);
@@ -154,7 +155,7 @@ export const changeWebSocketKernelEpic = (
       const { cwd } = extractNewKernel(filepath, notebook);
 
       const kernelRef = createKernelRef();
-      return kernels.start(serverConfig, kernelSpecName, cwd, opts).pipe(
+      return kernels.start(serverConfig, kernelSpecName, cwd).pipe(
         mergeMap(({ response }) => {
           const { id: kernelId } = response;
           const sessionPayload = {
@@ -162,38 +163,36 @@ export const changeWebSocketKernelEpic = (
           };
           // The sessions API will close down the old kernel for us if it is
           // on this session
-          return sessions
-            .update(serverConfig, sessionId, sessionPayload, opts)
-            .pipe(
-              mergeMap(({ response: session }) => {
-                const kernel: RemoteKernelProps = Object.assign(
-                  {},
-                  session.kernel,
-                  {
-                    type: "websocket",
-                    sessionId,
-                    cwd,
-                    channels: kernels.connect(
-                      serverConfig,
-                      session.kernel.id,
-                      sessionId
-                    ),
-                    kernelSpecName
-                  }
-                );
-                return of(
-                  actions.launchKernelSuccessful({
-                    kernel,
-                    kernelRef,
-                    contentRef: action.payload.contentRef,
-                    selectNextKernel: true
-                  })
-                );
-              }),
-              catchError(error =>
-                of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
-              )
-            );
+          return sessions.update(serverConfig, sessionId, sessionPayload).pipe(
+            mergeMap(({ response: session }) => {
+              const kernel: RemoteKernelProps = Object.assign(
+                {},
+                session.kernel,
+                {
+                  type: "websocket",
+                  sessionId,
+                  cwd,
+                  channels: kernels.connect(
+                    serverConfig,
+                    session.kernel.id,
+                    sessionId
+                  ),
+                  kernelSpecName
+                }
+              );
+              return of(
+                actions.launchKernelSuccessful({
+                  kernel,
+                  kernelRef,
+                  contentRef: action.payload.contentRef,
+                  selectNextKernel: true
+                })
+              );
+            }),
+            catchError(error =>
+              of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
+            )
+          );
         }),
         catchError(error =>
           of(actions.launchKernelFailed({ error, kernelRef, contentRef }))
@@ -242,11 +241,8 @@ export const interruptKernelEpic = (
       }
 
       const id = kernel.id;
-      const {
-        payload: { opts }
-      } = action;
 
-      return kernels.interrupt(serverConfig, id, opts).pipe(
+      return kernels.interrupt(serverConfig, id).pipe(
         map(() =>
           actions.interruptKernelSuccessful({
             kernelRef: action.payload.kernelRef
@@ -307,14 +303,10 @@ export const killKernelEpic = (
         );
       }
 
-      const {
-        payload: { opts }
-      } = action;
-
       // TODO: If this was a kernel language change, we shouldn't be using this
       //       kill kernel epic because we need to make sure that creation happens
       //       after deletion
-      return sessions.destroy(serverConfig, kernel.sessionId, opts).pipe(
+      return sessions.destroy(serverConfig, kernel.sessionId).pipe(
         map(() =>
           actions.killKernelSuccessful({
             kernelRef: action.payload.kernelRef
@@ -327,6 +319,113 @@ export const killKernelEpic = (
               kernelRef: action.payload.kernelRef
             })
           )
+        )
+      );
+    })
+  );
+
+export const restartWebSocketKernelEpic = (
+  action$: ActionsObservable<actions.RestartKernel>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.RESTART_KERNEL),
+    concatMap((action: actions.RestartKernel) => {
+      const state = state$.value;
+
+      const { contentRef, kernelRef, outputHandling } = action.payload;
+
+      if (!kernelRef) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't execute restart without kernel ref."),
+            kernelRef: "none provided",
+            contentRef
+          })
+        );
+      }
+
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't restart a kernel with no Jupyter host."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      const kernel = selectors.kernel(state, { kernelRef });
+      if (!kernel) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can't restart a kernel that does not exist."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      if (kernel.type !== "websocket" || !kernel.id) {
+        return of(
+          actions.restartKernelFailed({
+            error: new Error("Can only restart Websocket kernels via API."),
+            kernelRef,
+            contentRef
+          })
+        );
+      }
+
+      const id = kernel.id;
+
+      return kernels.restart(serverConfig, id).pipe(
+        mergeMap<
+          AjaxResponse,
+          | actions.RestartKernelFailed
+          | actions.RestartKernelSuccessful
+          | actions.ExecuteAllCells
+          | actions.ClearAllOutputs
+        >((response: AjaxResponse) => {
+          if (response.status !== 200) {
+            return of(
+              actions.restartKernelFailed({
+                error: new Error("Unsuccessful kernel restart."),
+                kernelRef,
+                contentRef
+              })
+            );
+          } else {
+            if (outputHandling === "Run All") {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                }),
+                actions.executeAllCells({ contentRef })
+              );
+            } else if (outputHandling === "Clear All") {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                }),
+                actions.clearAllOutputs({ contentRef })
+              );
+            } else {
+              return of(
+                actions.restartKernelSuccessful({
+                  kernelRef,
+                  contentRef
+                })
+              );
+            }
+          }
+        }),
+        catchError(error =>
+          of(actions.restartKernelFailed({ error, kernelRef, contentRef }))
         )
       );
     })

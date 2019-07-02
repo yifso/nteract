@@ -21,6 +21,7 @@ data.
 
 - Share documents understood across the Jupyter ecosystem, [all in the comfort of a desktop app.](https://medium.com/nteract/nteract-revolutionizing-the-notebook-experience-d106ca5d2c38)
 - [Explore new ways of working with compute and playing with data](https://play.nteract.io).
+- Bring the nteract experience to your web-based Jupyter installation with the [nteract server extension](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension).
 
 We support [Jupyter kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels)
 locally on your system and on remote JupyterHubs via Binder.
@@ -31,26 +32,26 @@ locally on your system and on remote JupyterHubs via Binder.
 
 If you're here to install the nteract desktop app, visit
 [nteract.io](https://nteract.io) to download a binary and install or visit the
-[releases page](https://github.com/nteract/nteract/releases/latest).
+[releases page](https://github.com/nteract/nteract/releases/latest). The nteract desktop app ships with a NodeJS kernel by default. If you'd like to use other Jupyter kernels, you will need to [install them](https://nteract.io/kernels).
 
 ### Installing nteract web
 
-Our current flavor of nteract web runs on top of the jupyter server. Install it with `pip`:
+Our current flavor of nteract web runs on top of the Jupyter server. Install it with `pip`:
 
 ```
 pip install nteract_on_jupyter
 jupyter serverextension enable nteract_on_jupyter
 ```
 
-Now, run `jupyter nteract` and you're running nteract on jupyter!
+Now, run `jupyter nteract` and you're running nteract on the Jupyter web application!
 
 ### Try the nteract playground
 
-We're still hard at work on the playground. Here's a sneak peek to explore: https://play.nteract.io
+The nteract playground is a web-based application that allows you to write code and execute code in a web-based editor supported by Binder and Jupyter kernels. You can learn more about in the [nteract play GitHub repo](https://github.com/nteract/play).
 
 ### User Guide
 
-For the user guide, please check [USER_GUIDE.md](https://github.com/nteract/nteract/blob/master/USER_GUIDE.md)
+To learn more about using the nteract desktop app, please check out the [user guide](https://github.com/nteract/nteract/blob/master/USER_GUIDE.md)
 
 ---
 
@@ -64,8 +65,7 @@ This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDU
 By participating, you are expected to uphold this code. Please report unacceptable behavior to rgbkrk@gmail.com.
 
 Feel free to post issues on GitHub or chat with us in [Slack](https://nteract.slack.com/) ([request an invite](https://slack.nteract.io/)) if you need help or have
-questions. If you have trouble creating an account on Slack, either email
-rgbkrk@gmail.com or post an issue on GitHub.
+questions. If you have trouble creating an account on Slack, please post an issue on GitHub.
 
 ## Development
 
@@ -89,7 +89,7 @@ elements together so they are easy to discover and use. Another benefit
 is that the monorepo makes it easy to iterate on applications that share
 common components. For example, if we update a component, such as the Jupyter
 message handling, and happen to introduce an issue when making a change to the
-desktop app and happened to break it for use by play.nteract.io web app we would
+desktop app, we would
 notice the issue in tandem.
 
 ### Getting Started
@@ -198,34 +198,18 @@ behaviors.
 
 ---
 
-## Maintainers
-
-### Creating a release
-
-#### Individual packages
-
-Allow lerna to publish all of `packages/*`
-
-```
-$ lerna publish
-... follow prompts to publish any packages, choosing the appropriate semver
-```
-
-#### Desktop application
-
-Follow instructions in [Releasing the Desktop application](https://github.com/nteract/nteract/blob/master/RELEASING.md).
-
----
-
 ## Sponsors
 
 Work on the nteract notebook is currently sponsored by
 
-[![NumFocus](https://numfocus.salsalabs.org/donate-to-nteract/index.html)](http://www.numfocus.org/)
+[![NumFocus](https://numfocus.org/wp-content/uploads/2017/07/NumFocus_LRG.png)](https://numfocus.salsalabs.org/donate-to-nteract/index.html)
 
-We're on a common mission to build a great notebook experience. Feel free to
-[get in touch](mailto:rgbkrk@gmail.com) if you'd like to help. Resources go towards
-paying for additional work by seasoned designers and engineers.
+We're on a common mission to build a great interactive computing experience. You can help by:
+
+- QAing the desktop application and helping create meaningful bug reports
+- Providing support on GitHub issues or the Slack team
+- Donating money to nteract, which is a non-profit fiscally sponsored by NumFOCUS
+- Contributing your organization's engineering hours to the nteract project
 
 ## Made possible by
 

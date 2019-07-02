@@ -1,30 +1,36 @@
 /**
  * @module actions
  */
+
+// Vendor modules
 import {
   CellId,
-  ImmutableJSONType,
   JSONObject,
   MediaBundle,
   OnDiskOutput
 } from "@nteract/commutable";
-
 import {
   ContentRef,
-  HostRecordProps,
+  HeaderDataProps,
   HostRef,
   KernelRef,
   PayloadMessage
 } from "@nteract/types";
 import { HostRecord } from "@nteract/types";
 import { LanguageInfoMetadata } from "@nteract/types";
-
 import { System as NotificationSystem } from "react-notification-system";
 
 export * from "./cells";
 export * from "./contents";
+export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
+
+export const OVERWRITE_METADATA_FIELDS = "CORE/OVERWRITE_METADATA_FIELDS";
+export interface OverwriteMetadataFields {
+  type: "CORE/OVERWRITE_METADATA_FIELDS";
+  payload: Partial<HeaderDataProps> & Partial<{ contentRef: ContentRef }>;
+}
 
 export interface ErrorAction<T extends string> {
   type: T;

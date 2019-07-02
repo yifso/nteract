@@ -15,10 +15,10 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "jozPvG",
+            "lastClassName": "jlbNeh",
             "rules": Array [
               "
-  z-index: 9999;
+  z-index: 9;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -44,7 +44,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX jozPvG"
+        className="sc-ifAKCX jlbNeh"
         style={
           Object {
             "display": "none",
@@ -60,7 +60,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
                   "isStatic": true,
-                  "lastClassName": "cgnLcD",
+                  "lastClassName": "igjdMy",
                   "rules": Array [
                     "
   background-color: var(--theme-cell-toolbar-bg);
@@ -73,6 +73,10 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
 
   :hover {
     opacity: 1;
+  }
+
+  @media print {
+    display: none ;
   }
 
   button {
@@ -125,7 +129,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
             forwardedRef={null}
           >
             <div
-              className="sc-bxivhb cgnLcD"
+              className="sc-bxivhb igjdMy"
             >
               <button
                 className="executeButton"
@@ -358,10 +362,10 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "jozPvG",
+            "lastClassName": "jlbNeh",
             "rules": Array [
               "
-  z-index: 9999;
+  z-index: 9;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -387,7 +391,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX jozPvG"
+        className="sc-ifAKCX jlbNeh"
         style={
           Object {
             "display": "none",
@@ -403,7 +407,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
                   "isStatic": true,
-                  "lastClassName": "cgnLcD",
+                  "lastClassName": "igjdMy",
                   "rules": Array [
                     "
   background-color: var(--theme-cell-toolbar-bg);
@@ -416,6 +420,10 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
 
   :hover {
     opacity: 1;
+  }
+
+  @media print {
+    display: none ;
   }
 
   button {
@@ -468,7 +476,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
             forwardedRef={null}
           >
             <div
-              className="sc-bxivhb cgnLcD"
+              className="sc-bxivhb igjdMy"
             >
               <button
                 className="executeButton"
