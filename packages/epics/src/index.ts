@@ -11,6 +11,7 @@ import {
 import {
   executeAllCellsEpic,
   executeCellEpic,
+  sendInputReplyEpic,
   updateDisplayEpic
 } from "./execute";
 import { publishToBookstore, publishToBookstoreAfterSave } from "./hosts";
@@ -52,7 +53,8 @@ const allEpics = [
   autoSaveCurrentContentEpic,
   publishToBookstore,
   publishToBookstoreAfterSave,
-  restartWebSocketKernelEpic
+  restartWebSocketKernelEpic,
+  sendInputReplyEpic
 ];
 
 export {
@@ -76,5 +78,6 @@ export {
   autoSaveCurrentContentEpic,
   publishToBookstore,
   publishToBookstoreAfterSave,
-  restartWebSocketKernelEpic
+  restartWebSocketKernelEpic,
+  sendInputReplyEpic
 };

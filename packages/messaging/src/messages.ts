@@ -384,3 +384,9 @@ export function shutdownRequest(
 ): JupyterMessage<"shutdown_request", { restart?: boolean }> {
   return message({ msg_type: "shutdown_request" }, content);
 }
+
+export function inputReply(content: {
+  value: string;
+}): JupyterMessage<"input_reply"> {
+  return message({ msg_type: "input_reply" }, content);
+}

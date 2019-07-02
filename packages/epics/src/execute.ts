@@ -7,6 +7,7 @@ import {
   createExecuteRequest,
   ExecuteRequest,
   executionCounts,
+  inputReply,
   inputRequests,
   JupyterMessage,
   kernelStatuses,
@@ -43,7 +44,6 @@ import {
   InputRequestMessage,
   PayloadMessage
 } from "@nteract/types";
-import { Action } from "rxjs/internal/scheduler/Action";
 
 const Immutable = require("immutable");
 
@@ -381,4 +381,23 @@ export const updateDisplayEpic = (
         )
       )
     )
+  );
+
+export const sendInputReplyEpic = (
+  action$: ActionsObservable<actions.SendInputReply>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.SEND_INPUT_REPLY),
+    switchMap((action: actions.SendInputReply) => {
+      const state = state$.value;
+      const kernel = selectors.currentKernel(state);
+
+      if (kernel && kernel.type === "websocket") {
+        const reply = inputReply({ value: action.payload.value });
+        kernel.channels.next(reply);
+      }
+
+      return empty();
+    })
   );
