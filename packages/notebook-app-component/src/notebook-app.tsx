@@ -85,7 +85,7 @@ interface AnyCellProps {
   executionCount: ExecutionCount;
   outputs: Immutable.List<any>;
   pager: Immutable.List<any>;
-  prompt?: Immutable.Map<string, any>;
+  prompt?: InputRequestMessage;
   cellStatus: string;
   cellFocused: boolean; // not the ID of which is focused
   editorFocused: boolean;
@@ -134,10 +134,7 @@ const makeMapStateToCellProps = (
 
     const cellType = cell.cell_type;
     const outputs = cell.get("outputs", emptyList);
-    const prompt =
-      cellType === "code"
-        ? ((cell as ImmutableCodeCell).get("prompt") as any)
-        : null;
+    const prompt = selectors.notebook.cellPromptById(model, { id });
 
     const sourceHidden =
       (cellType === "code" &&
@@ -353,11 +350,7 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
               ))}
             </Outputs>
             {prompt && (
-              <PromptRequest
-                prompt={prompt.get("prompt")}
-                password={prompt.get("password")}
-                submitPromptReply={sendInputReply}
-              />
+              <PromptRequest {...prompt} submitPromptReply={sendInputReply} />
             )}
           </React.Fragment>
         );

@@ -875,13 +875,10 @@ function promptInputRequest(
   action: actionTypes.PromptInputRequest
 ): RecordOf<DocumentRecordProps> {
   const { id, password, prompt } = action.payload;
-  return state.setIn(
-    ["notebook", "cellMap", id, "prompt"],
-    fromJS({
-      prompt,
-      password
-    })
-  );
+  return state.setIn(["cellPrompts", id], {
+    prompt,
+    password
+  });
 }
 
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
