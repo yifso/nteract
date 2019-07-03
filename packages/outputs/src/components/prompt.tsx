@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 
 interface Props {
   prompt: string;
@@ -9,6 +10,15 @@ interface Props {
 interface State {
   value: string;
 }
+
+const Container = styled.div`
+  margin-left: var(--prompt-width, 50px);
+  padding: 5px;
+
+  & label {
+    padding-right: 5px;
+  }
+`;
 
 export class PromptRequest extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -28,27 +38,18 @@ export class PromptRequest extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (this.props.password) {
-      return (
+    return (
+      <Container>
         <form onSubmit={this.handleSubmitPromptReply}>
+          {this.props.prompt && <label>{this.props.prompt}</label>}
           <input
-            type="password"
+            type={this.props.password ? "password" : "text"}
             value={this.state.value}
             onChange={this.handleChange}
           />
           <input type="submit" />
         </form>
-      );
-    }
-    return (
-      <form onSubmit={this.handleSubmitPromptReply}>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
-        <input type="submit" />
-      </form>
+      </Container>
     );
   }
 }
