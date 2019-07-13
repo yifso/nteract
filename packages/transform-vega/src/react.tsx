@@ -1,5 +1,5 @@
 import * as React from "react";
-import { doEmbedding, VegaOptions } from "./external";
+import { embed, VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 
 /** Props needed for embedding a certain Vega (Lite) media type. */
@@ -30,7 +30,7 @@ export class VegaEmbed<T extends VegaMediaType>
     if (this.anchorRef.current === null) { return; }
 
     try {
-      const result =  await doEmbedding(
+      const result = await embed(
         this.anchorRef.current,
         this.props.mediaType,
         this.props.spec,

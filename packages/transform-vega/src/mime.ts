@@ -12,7 +12,7 @@ export type VegaMediaType =
 export interface VegaMediaTypeInfo<T extends VegaMediaType> {
   kind: "vega" | "vega-lite",
   version: string,
-  vegaLevel: number,
+  vegaLevel: 2 | 3 | 4 | 5,
   mediaType: T,
   schemaPrefix: string,
 }
