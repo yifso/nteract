@@ -1493,7 +1493,7 @@ exports[`Plain Should render markdown 1`] = `
 >
   <pre>
     <Ansi
-      linkify={false}
+      linkify={true}
     >
       <code>
         <span
@@ -1501,7 +1501,19 @@ exports[`Plain Should render markdown 1`] = `
           key="0"
           style={Object {}}
         >
-          The text in Spain is mainly plain
+          The
+           
+          text
+           
+          in
+           
+          Spain
+           
+          is
+           
+          mainly
+           
+          plain
         </span>
       </code>
     </Ansi>
