@@ -1520,3 +1520,40 @@ exports[`Plain Should render markdown 1`] = `
   </pre>
 </Plaintext>
 `;
+
+exports[`Plain should render urls as links 1`] = `
+<Plaintext
+  data="Let's go to https://google.com today!"
+  mediaType="text/plain"
+>
+  <pre>
+    <Ansi
+      linkify={true}
+    >
+      <code>
+        <span
+          className={null}
+          key="0"
+          style={Object {}}
+        >
+          Let's
+           
+          go
+           
+          to
+           
+          <a
+            href="https://google.com"
+            key="3"
+            target="_blank"
+          >
+            https://google.com
+          </a>
+           
+          today!
+        </span>
+      </code>
+    </Ansi>
+  </pre>
+</Plaintext>
+`;
