@@ -877,9 +877,10 @@
     datalib "^1.9.1"
     json-stable-stringify "^1.0.1"
 
-"@nteract/vega-embed-v3@https://github.com/nteract/vega-embed-v3.git":
-  version "1.1.0"
-  resolved "https://github.com/nteract/vega-embed-v3.git#62481cbe4de62156a831213da09a00997d62812b"
+"@nteract/vega-embed-v3@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@nteract/vega-embed-v3/-/vega-embed-v3-1.1.1.tgz#07bf0defba022dec05d8bbe6e58b817fe8caa82e"
+  integrity sha512-tPMGmYI3aJIu4+HI03Rtub6yjCmACuvtVTjrq8+h2/OIgxBIrzaexo/QCdTKgV4bg0Pd88hskwZ8heqdMFDoHw==
   dependencies:
     d3 "3.5.17"
     d3-cloud "^1.2.5"
