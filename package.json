@@ -230,7 +230,7 @@
     "tslint-eslint-rules":"^5.4.0",
     "tslint-react": "^4.0.0",
     "tslint-react-a11y": "^1.0.0",
-    "tslint-react-perf": "^0.2.1",
+    "tslint-react-perf": "^0.3.0",
     "typedoc": "^0.14.0",
     "typedoc-plugin-external-module-name": "^2.0.0",
     "typescript": "^3.2.2",
