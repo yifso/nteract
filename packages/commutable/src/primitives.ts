@@ -180,6 +180,12 @@ export function createFrozenMediaBundle(
     ) {
       // Because it's a string; we can't mutate it anyways (and don't have to Object.freeze it)
       bundle[key] = demultiline(mediaBundle[key] as MultiLineString);
+    } else if (typeof mediaBundle[key] === "string") {
+      // This is something claiming to be JSON, but consisting only of a single
+      // string -- Bokeh's output_notebook() is known to send such -- which will
+      // fail if we deepFreeze it. Since strings are immutable, we can just use
+      // it as-is.
+      bundle[key] = mediaBundle[key];
     } else {
       // we now know it's an Object of some kind
       bundle[key] = deepFreeze(mediaBundle[key]!);
