@@ -187,7 +187,7 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.1",
-    "husky": "^2.0.0",
+    "husky": "^3.0.0",
     "immutable": "^4.0.0-rc.12",
     "jest": "^24.0.0",
     "jest-junit": "^6.0.0",
