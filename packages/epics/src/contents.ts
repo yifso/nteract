@@ -532,7 +532,7 @@ export function saveAsContentEpic(
           );
         }
 
-        const filepath = content.filepath;
+        const filepath = action.payload.filepath;
 
         const { saveModel } = serializeContent(state, content);
 
