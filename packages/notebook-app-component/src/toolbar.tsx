@@ -113,9 +113,9 @@ export const CellToolbarMask = styled.div.attrs<CellToolbarMaskProps>(
   right: 0;
   height: 34px;
   margin: 0 0 0 -100%; /* allow code cell to completely overlap (underlap?) */
-  padding: 0px 0px 0px 50px; /* give users extra room to move their mouse to the
-                                toolbar without causing the cell to go out of
-                                focus/hide the toolbar before they get there */
+  padding: 0 0 0 50px; /* give users extra room to move their mouse to the
+                          toolbar without causing the cell to go out of
+                          focus/hide the toolbar before they get there */
 ` as StyledComponent<"div", any, CellToolbarMaskProps, never>;
 
 export class PureToolbar extends React.PureComponent<PureToolbarProps> {

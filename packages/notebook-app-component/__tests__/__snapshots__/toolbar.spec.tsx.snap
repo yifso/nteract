@@ -15,7 +15,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "dCEcYn",
+            "lastClassName": "iXeJZQ",
             "rules": Array [
               "
   z-index: 9;
@@ -25,9 +25,9 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
   right: 0;
   height: 34px;
   margin: 0 0 0 -100%; /* allow code cell to completely overlap (underlap?) */
-  padding: 0px 0px 0px 50px; /* give users extra room to move their mouse to the
-                                toolbar without causing the cell to go out of
-                                focus/hide the toolbar before they get there */
+  padding: 0 0 0 50px; /* give users extra room to move their mouse to the
+                          toolbar without causing the cell to go out of
+                          focus/hide the toolbar before they get there */
 ",
             ],
           },
@@ -44,7 +44,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX dCEcYn"
+        className="sc-ifAKCX iXeJZQ"
         style={
           Object {
             "display": "none",
@@ -362,7 +362,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
           "componentStyle": ComponentStyle {
             "componentId": "sc-ifAKCX",
             "isStatic": false,
-            "lastClassName": "dCEcYn",
+            "lastClassName": "iXeJZQ",
             "rules": Array [
               "
   z-index: 9;
@@ -372,9 +372,9 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
   right: 0;
   height: 34px;
   margin: 0 0 0 -100%; /* allow code cell to completely overlap (underlap?) */
-  padding: 0px 0px 0px 50px; /* give users extra room to move their mouse to the
-                                toolbar without causing the cell to go out of
-                                focus/hide the toolbar before they get there */
+  padding: 0 0 0 50px; /* give users extra room to move their mouse to the
+                          toolbar without causing the cell to go out of
+                          focus/hide the toolbar before they get there */
 ",
             ],
           },
@@ -391,7 +391,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
       forwardedRef={null}
     >
       <div
-        className="sc-ifAKCX dCEcYn"
+        className="sc-ifAKCX iXeJZQ"
         style={
           Object {
             "display": "none",
