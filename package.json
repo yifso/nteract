@@ -221,7 +221,7 @@
     "shell-env": "^3.0.0",
     "spawn-rx": "^3.0.0",
     "spawnteract": "^5.0.0",
-    "style-loader": "^0.23.0",
+    "style-loader": "^1.0.0",
     "ts-jest": "^24.0.0",
     "ts-loader": "^6.0.0",
     "ts-node": "^8.0.0",
