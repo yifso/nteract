@@ -482,8 +482,7 @@ const makeMapStateToProps = (
   const mapStateToProps = (state: AppState): NotebookStateProps => {
     const content = selectors.content(state, { contentRef });
     const model = selectors.model(state, { contentRef });
-    const focusedCell = selectors.notebook.cellFocused(model);
-    const cellMap = selectors.notebook.cellMap(model);
+
 
     if (!model || !content) {
       throw new Error(
@@ -507,6 +506,9 @@ const makeMapStateToProps = (
         "<Notebook /> has to have content & model that are notebook types"
       );
     }
+
+    const focusedCell = selectors.notebook.cellFocused(model);
+    const cellMap = selectors.notebook.cellMap(model);
 
     return {
       cellOrder: model.notebook.cellOrder,
@@ -620,7 +622,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
         nextCell === undefined ||
         (nextCell && nextCell.get("cell_type") === "code")
       ) {
-        focusNextCellEditor({ id: focusedCell, contentRef });
+        focusNextCellEditor({ id: focusedCell || undefined, contentRef });
       }
     }
   }
