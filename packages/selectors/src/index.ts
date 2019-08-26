@@ -337,6 +337,22 @@ export const filepath = (
 };
 
 /**
+ * Returns the ContentRef associated with a given filepath.
+ *
+ * @param   state       The state of the nteract application
+ * @param   ownProps    An object containing the filepath
+ *
+ * @returns             The ContentRef for the content under a filepath
+ */
+export const contentRefByFilepath = (
+  state: AppState,
+  ownProps: { filepath: string }
+): string | undefined => {
+  const byRef = contentByRef(state);
+  return byRef.findKey(content => content.filepath === ownProps.filepath);
+};
+
+/**
  * Returns the type of modal, such as the about modal, that is currently open
  * in the nteract application.
  */
