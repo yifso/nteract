@@ -439,6 +439,8 @@ interface NotebookStateProps {
   cellOrder: Immutable.List<any>;
   theme: string;
   contentRef: ContentRef;
+  focusedCell: CellId | null | undefined;
+  cellMap: Immutable.Map<CellId, any>;
 }
 
 interface NotebookDispatchProps {
@@ -481,6 +483,7 @@ const makeMapStateToProps = (
     const content = selectors.content(state, { contentRef });
     const model = selectors.model(state, { contentRef });
 
+
     if (!model || !content) {
       throw new Error(
         "<Notebook /> has to have content & model that are notebook types"
@@ -492,7 +495,9 @@ const makeMapStateToProps = (
       return {
         cellOrder: Immutable.List(),
         contentRef,
-        theme
+        theme,
+        focusedCell: null,
+        cellMap: Immutable.Map()
       };
     }
 
@@ -502,10 +507,15 @@ const makeMapStateToProps = (
       );
     }
 
+    const focusedCell = selectors.notebook.cellFocused(model);
+    const cellMap = selectors.notebook.cellMap(model);
+
     return {
       cellOrder: model.notebook.cellOrder,
       contentRef,
-      theme
+      theme,
+      focusedCell,
+      cellMap
     };
   };
   return mapStateToProps;
@@ -573,7 +583,10 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
       executeFocusedCell,
       focusNextCell,
       focusNextCellEditor,
-      contentRef
+      contentRef,
+      cellOrder,
+      focusedCell,
+      cellMap
     } = this.props;
 
     let ctrlKeyPressed = e.ctrlKey;
@@ -595,9 +608,22 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
     executeFocusedCell({ contentRef });
 
     if (e.shiftKey) {
-      // Couldn't focusNextCell just do focusing of both?
+      /** Get the next cell and check if it is a markdown cell. */
+      const focusedCellIndex = cellOrder.indexOf(focusedCell);
+      const nextCellId = cellOrder.get(focusedCellIndex + 1);
+      const nextCell = cellMap.get(nextCellId);
+
+      /** Always focus the next cell. */
       focusNextCell({ id: undefined, createCellIfUndefined: true, contentRef });
-      focusNextCellEditor({ id: undefined, contentRef });
+
+      /** Only focus the next editor if it is a code cell or a cell
+       * created at the bottom of the notebook. */
+      if (
+        nextCell === undefined ||
+        (nextCell && nextCell.get("cell_type") === "code")
+      ) {
+        focusNextCellEditor({ id: focusedCell || undefined, contentRef });
+      }
     }
   }
 
