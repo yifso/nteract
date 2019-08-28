@@ -5,8 +5,6 @@ import { AppState, KernelRef } from "@nteract/types";
 
 import { createSelector } from "reselect";
 
-import { currentHostType } from "./hosts";
-
 /**
  * Returns a map of the available kernels keyed by the
  * kernel ref.
