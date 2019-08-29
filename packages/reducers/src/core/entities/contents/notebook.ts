@@ -18,8 +18,6 @@ import {
   makeCodeCell,
   makeMarkdownCell,
   makeRawCell,
-  OnDiskDisplayData,
-  OnDiskExecuteResult,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
