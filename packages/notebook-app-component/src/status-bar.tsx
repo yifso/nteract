@@ -36,7 +36,7 @@ export const Bar = styled.div`
   background: var(--status-bar);
   z-index: 99;
   @media print {
-     display: none;
+    display: none;
   }
 `;
 
@@ -112,7 +112,7 @@ const makeMapStateToProps = (
       kernelSpecDisplayName = "no kernel";
     } else if (kernel != null && kernel.kernelSpecName != null) {
       kernelSpecDisplayName = kernel.kernelSpecName;
-    } else if (content !== undefined && content.type === "notebook") {
+    } else if (content && content.type === "notebook") {
       kernelSpecDisplayName =
         selectors.notebook.displayName(content.model) || " ";
     }
