@@ -160,7 +160,7 @@ export const metadata = (model: NotebookModel) =>
  * Returns the GitHub username the user has authenticated through.
  */
 export const githubUsername = createSelector(
-  [metadata],
+  metadata,
   metadata => metadata.get("github_username", null)
 );
 
@@ -169,7 +169,7 @@ export const githubUsername = createSelector(
  * to.
  */
 export const gistId = createSelector(
-  [metadata],
+  metadata,
   metadata => metadata.get("gist_id", null)
 );
 
@@ -181,8 +181,7 @@ export const savedNotebook = (model: NotebookModel) => model.savedNotebook;
  * false otherwise.
  */
 export const isDirty = createSelector(
-  notebook,
-  savedNotebook,
+  [notebook, savedNotebook],
   (original, disk) => !Immutable.is(original, disk)
 );
 
@@ -190,7 +189,7 @@ export const isDirty = createSelector(
  * Returns the JSON representation of the notebook.
  */
 export const asJSON = createSelector(
-  [notebook],
+  notebook,
   notebook => {
     return commutable.toJS(notebook);
   }
@@ -203,7 +202,7 @@ export const asJSON = createSelector(
  * module.
  */
 export const asString = createSelector(
-  [asJSON],
+  asJSON,
   notebookJS => {
     if (notebookJS) {
       return commutable.stringifyNotebook(notebookJS);
@@ -233,6 +232,6 @@ export const codeMirrorMode = createSelector(
  * running against.
  */
 export const displayName = createSelector(
-  [metadata],
+  metadata,
   metadata => metadata.getIn(["kernelspec", "display_name"], "")
 );
