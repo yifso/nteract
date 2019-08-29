@@ -1,5 +1,5 @@
-import { Channels } from "@nteract/messaging";
 import { MediaBundle } from "@nteract/commutable";
+import { Channels } from "@nteract/messaging";
 import CodeMirror, {
   Doc,
   Editor,

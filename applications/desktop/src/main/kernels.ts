@@ -18,7 +18,7 @@ export function ipyKernelTryObservable(env: { prefix: string; name: string }) {
   const executable = path.join(env.prefix, "bin", "python");
   return (spawn(executable, ["-m", "ipykernel", "--version"], {
     split: true // When split is true the observable's return value is { source: 'stdout', text: '...' }
-  }) as Observable<{ source: "stdout" | "stderr"; text: string }>).pipe(
+  })).pipe(
     filter(x => x.source && x.source === "stdout"),
     mapTo(env),
     catchError(() => empty())

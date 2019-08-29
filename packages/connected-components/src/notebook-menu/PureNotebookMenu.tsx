@@ -1,4 +1,12 @@
 // Vendor modules
+import {
+  IMenuItemProps,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  PopoverInteractionKind,
+  Position
+} from "@blueprintjs/core";
 import { CellType } from "@nteract/commutable";
 import { actions } from "@nteract/core";
 import {
@@ -7,19 +15,11 @@ import {
   KernelspecsByRefRecord,
   KernelspecsRef
 } from "@nteract/types";
-import React, { SyntheticEvent, CSSProperties } from "react";
-import {
-  Menu,
-  MenuItem,
-  MenuDivider,
-  Position,
-  PopoverInteractionKind,
-  IMenuItemProps
-} from "@blueprintjs/core";
+import React, { CSSProperties, SyntheticEvent } from "react";
 
 // Local modules
-import { MENU_ITEM_LABELS, MENU_ITEM_ACTIONS } from "./constants";
 import { IconNames } from "@blueprintjs/icons";
+import { MENU_ITEM_ACTIONS, MENU_ITEM_LABELS } from "./constants";
 
 const {
   TOGGLE_EDITOR,
