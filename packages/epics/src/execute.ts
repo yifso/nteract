@@ -30,7 +30,6 @@ import {
   mergeMap,
   share,
   switchMap,
-  take,
   takeUntil,
   tap
 } from "rxjs/operators";

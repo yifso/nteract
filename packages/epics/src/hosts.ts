@@ -123,7 +123,7 @@ export function publishToBookstore(
                 path: content.filepath,
                 type: content.type,
                 created:
-                  content && content.created && content.created!.toString(),
+                  content && content.created && content.created.toString(),
                 last_modified: "",
                 content: notebook,
                 mimetype: content.mimetype,

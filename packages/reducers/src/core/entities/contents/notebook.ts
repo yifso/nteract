@@ -18,8 +18,6 @@ import {
   makeCodeCell,
   makeMarkdownCell,
   makeRawCell,
-  OnDiskDisplayData,
-  OnDiskExecuteResult,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
@@ -241,9 +239,9 @@ function appendOutput(
   let displayID;
   let typedOutput;
   if (output.output_type === "execute_result") {
-    typedOutput = output as OnDiskExecuteResult;
+    typedOutput = output;
   } else {
-    typedOutput = output as OnDiskDisplayData;
+    typedOutput = output;
   }
   displayID = typedOutput.transient!.display_id;
 

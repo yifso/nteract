@@ -88,7 +88,7 @@ describe("newNotebookEpic", () => {
         payload: {
           contentRef: "cRef",
           kernelRef: "kRef",
-          filepath: filepath,
+          filepath,
           model: {
             type: "notebook",
             mimetype: "application/x-ipynb+json",

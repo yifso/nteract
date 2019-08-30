@@ -44,7 +44,6 @@ import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
 
-import { CodeCell } from "@nteract/commutable/lib/v4";
 import styled from "styled-components";
 
 function getTheme(theme: string) {
@@ -482,7 +481,6 @@ const makeMapStateToProps = (
   const mapStateToProps = (state: AppState): NotebookStateProps => {
     const content = selectors.content(state, { contentRef });
     const model = selectors.model(state, { contentRef });
-
 
     if (!model || !content) {
       throw new Error(

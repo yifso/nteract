@@ -1,5 +1,5 @@
-import React from "react";
 import { mount, shallow } from "enzyme";
+import React from "react";
 import renderer from "react-test-renderer";
 
 import { PureNotebookMenu } from "../src/notebook-menu";
