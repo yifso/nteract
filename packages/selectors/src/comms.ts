@@ -15,7 +15,7 @@ export const comms = (state: AppState) => state.comms;
  */
 export const models = createSelector(
   comms,
-  comms => comms.get("models")
+  comms => comms.models
 );
 
 /**
@@ -23,7 +23,7 @@ export const models = createSelector(
  */
 export const targets = createSelector(
   comms,
-  comms => comms.get("targets")
+  comms => comms.targets
 );
 
 /**
@@ -31,7 +31,7 @@ export const targets = createSelector(
  */
 export const info = createSelector(
   comms,
-  comms => comms.get("info")
+  comms => comms.info
 );
 
 /**
