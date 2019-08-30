@@ -12,7 +12,7 @@ import {
 import {
   ContentRef,
   HeaderDataProps,
-  HostId,
+  HostRecord,
   HostRef,
   KernelRef,
   LanguageInfoMetadata,
@@ -37,17 +37,7 @@ export const closeModal = () => ({
   type: actionTypes.CLOSE_MODAL
 });
 
-export const addHost = (payload: {
-  hostRef: HostRef;
-  host: {
-    id?: HostId | null;
-    type: "jupyter" | "local";
-    defaultKernelName: string;
-    token?: string | null;
-    serverUrl?: string;
-    crossDomain?: boolean | null;
-  };
-}) => ({
+export const addHost = (payload: { hostRef: HostRef; host: HostRecord }) => ({
   type: actionTypes.ADD_HOST,
   payload
 });
