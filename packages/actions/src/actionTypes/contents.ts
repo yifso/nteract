@@ -1,6 +1,3 @@
-/**
- * @module actions
- */
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 
 export const TOGGLE_HEADER_EDITOR = "CORE/TOGGLE_HEADER_EDITOR";

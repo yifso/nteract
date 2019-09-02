@@ -1,6 +1,3 @@
-/**
- * @module messaging
- */
 import { PayloadMessage } from "@nteract/types";
 import { from, Observable, Subscriber } from "rxjs";
 import { filter, map, mergeMap } from "rxjs/operators";

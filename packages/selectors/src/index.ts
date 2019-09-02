@@ -1,7 +1,3 @@
-/**
- * @module selectors
- */
-
 import { AppState } from "@nteract/types";
 
 import * as notebook from "./core/contents/notebook";

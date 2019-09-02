@@ -1,6 +1,3 @@
-/**
- * @module actions
- */
 import { CellId, CellType, JSONObject } from "@nteract/commutable";
 import { ContentRef } from "@nteract/types";
 

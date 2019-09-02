@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
 import { kernelspecs, ServerConfig } from "rx-jupyter";

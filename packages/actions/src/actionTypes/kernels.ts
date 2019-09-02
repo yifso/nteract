@@ -1,6 +1,3 @@
-/**
- * @module actions
- */
 import { CellId } from "@nteract/commutable";
 import { ExecuteRequest } from "@nteract/messaging";
 import {

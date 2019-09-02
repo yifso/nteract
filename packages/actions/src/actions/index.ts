@@ -1,7 +1,3 @@
-/**
- * @module actions
- */
-
 // Vendor modules
 import {
   CellId,

@@ -1,6 +1,3 @@
-/**
- * @module rx-jupyter
- */
 import { Observable } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";

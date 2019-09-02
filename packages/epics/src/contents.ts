@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { stringifyNotebook, toJS } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 import FileSaver from "file-saver";
@@ -330,162 +327,158 @@ export function saveContentEpic(
 > {
   return action$.pipe(
     ofType(actions.SAVE, actions.DOWNLOAD_CONTENT),
-    mergeMap(
-      (
-        action: actions.Save | actions.DownloadContent
-      ):
-        | Observable<
-            | actions.DownloadContentFailed
-            | actions.DownloadContentFulfilled
-            | actions.SaveFailed
-            | actions.SaveFulfilled
-          >
-        | Observable<never> => {
-        const state = state$.value;
+    mergeMap((action: actions.Save | actions.DownloadContent):
+      | Observable<
+          | actions.DownloadContentFailed
+          | actions.DownloadContentFulfilled
+          | actions.SaveFailed
+          | actions.SaveFulfilled
+        >
+      | Observable<never> => {
+      const state = state$.value;
 
-        const host = selectors.currentHost(state);
-        if (host.type !== "jupyter") {
-          return of(
-            actions.saveFailed({
-              error: new Error("Cannot save content if no host is set."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
-        const contentRef = action.payload.contentRef;
-        const content = selectors.content(state, { contentRef });
-
-        // NOTE: This could save by having selectors for each model type
-        //       have toDisk() selectors
-        //       It will need to be cased off when we have more than one type
-        //       of content we actually save
-        if (!content) {
-          const errorPayload = {
-            error: new Error("Content was not set."),
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        return of(
+          actions.saveFailed({
+            error: new Error("Cannot save content if no host is set."),
             contentRef: action.payload.contentRef
-          };
-          if (action.type === actions.DOWNLOAD_CONTENT) {
-            return of(actions.downloadContentFailed(errorPayload));
-          }
-          return of(actions.saveFailed(errorPayload));
+          })
+        );
+      }
+      const contentRef = action.payload.contentRef;
+      const content = selectors.content(state, { contentRef });
+
+      // NOTE: This could save by having selectors for each model type
+      //       have toDisk() selectors
+      //       It will need to be cased off when we have more than one type
+      //       of content we actually save
+      if (!content) {
+        const errorPayload = {
+          error: new Error("Content was not set."),
+          contentRef: action.payload.contentRef
+        };
+        if (action.type === actions.DOWNLOAD_CONTENT) {
+          return of(actions.downloadContentFailed(errorPayload));
         }
+        return of(actions.saveFailed(errorPayload));
+      }
 
-        if (content.type === "directory") {
-          return of(
-            actions.saveFailed({
-              error: new Error("Cannot save directories."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
+      if (content.type === "directory") {
+        return of(
+          actions.saveFailed({
+            error: new Error("Cannot save directories."),
+            contentRef: action.payload.contentRef
+          })
+        );
+      }
 
-        const filepath = content.filepath;
+      const filepath = content.filepath;
 
-        const { serializedData, saveModel } = serializeContent(state, content);
+      const { serializedData, saveModel } = serializeContent(state, content);
 
-        if (!saveModel || !serializedData) {
-          return of(
-            actions.saveFailed({
-              error: new Error("No serialized model created for this content."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
+      if (!saveModel || !serializedData) {
+        return of(
+          actions.saveFailed({
+            error: new Error("No serialized model created for this content."),
+            contentRef: action.payload.contentRef
+          })
+        );
+      }
 
-        switch (action.type) {
-          case actions.DOWNLOAD_CONTENT: {
-            // FIXME: Convert this to downloadString, so it works for
-            // both files & notebooks
-            if (
-              content.type === "notebook" &&
-              typeof serializedData === "object"
-            ) {
-              downloadString(
-                stringifyNotebook(serializedData),
-                filepath || "notebook.ipynb",
-                "application/json"
-              );
-            } else if (
-              content.type === "file" &&
-              typeof serializedData === "string"
-            ) {
-              downloadString(
-                serializedData,
-                filepath,
-                content.mimetype || "application/octet-stream"
-              );
-            } else {
-              // This shouldn't happen, is here for safety
-              return empty();
-            }
-            return of(
-              actions.downloadContentFulfilled({
-                contentRef: action.payload.contentRef
-              })
+      switch (action.type) {
+        case actions.DOWNLOAD_CONTENT: {
+          // FIXME: Convert this to downloadString, so it works for
+          // both files & notebooks
+          if (
+            content.type === "notebook" &&
+            typeof serializedData === "object"
+          ) {
+            downloadString(
+              stringifyNotebook(serializedData),
+              filepath || "notebook.ipynb",
+              "application/json"
             );
+          } else if (
+            content.type === "file" &&
+            typeof serializedData === "string"
+          ) {
+            downloadString(
+              serializedData,
+              filepath,
+              content.mimetype || "application/octet-stream"
+            );
+          } else {
+            // This shouldn't happen, is here for safety
+            return empty();
           }
-          case actions.SAVE: {
-            const serverConfig: ServerConfig = selectors.serverConfig(host);
+          return of(
+            actions.downloadContentFulfilled({
+              contentRef: action.payload.contentRef
+            })
+          );
+        }
+        case actions.SAVE: {
+          const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-            // Check to see if the file was modified since the last time
-            // we saved.
-            return contents.get(serverConfig, filepath, { content: 0 }).pipe(
-              // Make sure that the modified time is within some delta
-              mergeMap(xhr => {
-                if (xhr.status !== 200) {
-                  throw new Error(xhr.response.toString());
-                }
-                if (typeof xhr.response === "string") {
-                  throw new Error(
-                    `jupyter server response invalid: ${xhr.response}`
-                  );
-                }
+          // Check to see if the file was modified since the last time
+          // we saved.
+          return contents.get(serverConfig, filepath, { content: 0 }).pipe(
+            // Make sure that the modified time is within some delta
+            mergeMap(xhr => {
+              if (xhr.status !== 200) {
+                throw new Error(xhr.response.toString());
+              }
+              if (typeof xhr.response === "string") {
+                throw new Error(
+                  `jupyter server response invalid: ${xhr.response}`
+                );
+              }
 
-                const model = xhr.response;
+              const model = xhr.response;
 
-                const diskDate = new Date(model.last_modified);
-                const inMemoryDate = content.lastSaved
-                  ? new Date(content.lastSaved)
-                  : // FIXME: I'm unsure if we don't have a date if we should
-                    // default to the disk date
-                    diskDate;
-                const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+              const diskDate = new Date(model.last_modified);
+              const inMemoryDate = content.lastSaved
+                ? new Date(content.lastSaved)
+                : // FIXME: I'm unsure if we don't have a date if we should
+                  // default to the disk date
+                  diskDate;
+              const diffDate = diskDate.getTime() - inMemoryDate.getTime();
 
-                if (Math.abs(diffDate) > 600) {
-                  return of(
+              if (Math.abs(diffDate) > 600) {
+                return of(
+                  actions.saveFailed({
+                    error: new Error("open in another tab possibly..."),
+                    contentRef: action.payload.contentRef
+                  })
+                );
+              }
+
+              return contents.save(serverConfig, filepath, saveModel).pipe(
+                map((xhr: AjaxResponse) => {
+                  return actions.saveFulfilled({
+                    contentRef: action.payload.contentRef,
+                    model: xhr.response
+                  });
+                }),
+                catchError((error: Error) =>
+                  of(
                     actions.saveFailed({
-                      error: new Error("open in another tab possibly..."),
+                      error,
                       contentRef: action.payload.contentRef
                     })
-                  );
-                }
-
-                return contents.save(serverConfig, filepath, saveModel).pipe(
-                  map((xhr: AjaxResponse) => {
-                    return actions.saveFulfilled({
-                      contentRef: action.payload.contentRef,
-                      model: xhr.response
-                    });
-                  }),
-                  catchError((error: Error) =>
-                    of(
-                      actions.saveFailed({
-                        error,
-                        contentRef: action.payload.contentRef
-                      })
-                    )
                   )
-                );
-              })
-            );
-          }
-          default:
-            // NOTE: Our ofType should prevent reaching here, this
-            // is here merely as safety
-            return empty();
+                )
+              );
+            })
+          );
         }
+        default:
+          // NOTE: Our ofType should prevent reaching here, this
+          // is here merely as safety
+          return empty();
       }
-    )
+    })
   );
 }
 
@@ -495,75 +488,71 @@ export function saveAsContentEpic(
 ): Observable<actions.SaveAsFailed | actions.SaveAsFulfilled> {
   return action$.pipe(
     ofType(actions.SAVE_AS),
-    mergeMap(
-      (
-        action: actions.SaveAs
-      ):
-        | Observable<actions.SaveAsFailed | actions.SaveAsFulfilled>
-        | Observable<never> => {
-        const state = state$.value;
+    mergeMap((action: actions.SaveAs):
+      | Observable<actions.SaveAsFailed | actions.SaveAsFulfilled>
+      | Observable<never> => {
+      const state = state$.value;
 
-        const host = selectors.currentHost(state);
-        if (host.type !== "jupyter") {
-          return of(
-            actions.saveAsFailed({
-              error: new Error("Cannot save content if no host is set."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
-        const contentRef = action.payload.contentRef;
-        const content = selectors.content(state, { contentRef });
-
-        if (!content) {
-          const errorPayload = {
-            error: new Error("Content was not set."),
+      const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        return of(
+          actions.saveAsFailed({
+            error: new Error("Cannot save content if no host is set."),
             contentRef: action.payload.contentRef
-          };
-          return of(actions.saveAsFailed(errorPayload));
-        }
-
-        if (content.type === "directory") {
-          return of(
-            actions.saveAsFailed({
-              error: new Error("Cannot save directories."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
-
-        const filepath = action.payload.filepath;
-
-        const { saveModel } = serializeContent(state, content);
-
-        if (!saveModel) {
-          return of(
-            actions.saveAsFailed({
-              error: new Error("No serialized model created for this content."),
-              contentRef: action.payload.contentRef
-            })
-          );
-        }
-
-        const serverConfig: ServerConfig = selectors.serverConfig(host);
-
-        return contents.save(serverConfig, filepath, saveModel).pipe(
-          map((xhr: AjaxResponse) => {
-            return actions.saveAsFulfilled({
-              contentRef: action.payload.contentRef,
-              model: xhr.response
-            });
-          }),
-          catchError((error: Error) =>
-            of(
-              actions.saveAsFailed({
-                error,
-                contentRef: action.payload.contentRef
-              })
-            )
-          )
+          })
         );
       }
-    )
+      const contentRef = action.payload.contentRef;
+      const content = selectors.content(state, { contentRef });
+
+      if (!content) {
+        const errorPayload = {
+          error: new Error("Content was not set."),
+          contentRef: action.payload.contentRef
+        };
+        return of(actions.saveAsFailed(errorPayload));
+      }
+
+      if (content.type === "directory") {
+        return of(
+          actions.saveAsFailed({
+            error: new Error("Cannot save directories."),
+            contentRef: action.payload.contentRef
+          })
+        );
+      }
+
+      const filepath = action.payload.filepath;
+
+      const { saveModel } = serializeContent(state, content);
+
+      if (!saveModel) {
+        return of(
+          actions.saveAsFailed({
+            error: new Error("No serialized model created for this content."),
+            contentRef: action.payload.contentRef
+          })
+        );
+      }
+
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+
+      return contents.save(serverConfig, filepath, saveModel).pipe(
+        map((xhr: AjaxResponse) => {
+          return actions.saveAsFulfilled({
+            contentRef: action.payload.contentRef,
+            model: xhr.response
+          });
+        }),
+        catchError((error: Error) =>
+          of(
+            actions.saveAsFailed({
+              error,
+              contentRef: action.payload.contentRef
+            })
+          )
+        )
+      );
+    })
   );
 }

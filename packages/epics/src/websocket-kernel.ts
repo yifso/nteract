@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { kernelInfoRequest } from "@nteract/messaging";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";

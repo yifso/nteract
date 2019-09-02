@@ -1,6 +1,3 @@
-/**
- * @module selectors
- */
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
 
 /**
