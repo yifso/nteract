@@ -1,7 +1,7 @@
 module.exports = {
   name: "nteract",
   mode: "modules",
-  out: "nteract-packages/dist",
+  out: "nteract-packages/public",
   theme: "default",
   ignoreCompilerErrors: "true",
   preserveConstEnums: "false",
