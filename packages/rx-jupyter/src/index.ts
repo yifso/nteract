@@ -1,6 +1,3 @@
-/**
- * @module rx-jupyter
- */
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { createAJAXSettings, ServerConfig as _ServerConfig } from "./base";
 

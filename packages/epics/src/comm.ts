@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { createMessage, ofMessageType } from "@nteract/messaging";
 import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";

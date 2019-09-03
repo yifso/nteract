@@ -1,7 +1,3 @@
-/**
- * @module actions
- */
-
 // Vendor modules
 import { BookstoreDataModel, ContentRef } from "@nteract/types";
 

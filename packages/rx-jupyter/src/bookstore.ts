@@ -1,6 +1,3 @@
-/**
- * @module rx-jupyter
- */
 // Vendor modules
 import { BookstoreDataModel } from "@nteract/types";
 import { Observable } from "rxjs";

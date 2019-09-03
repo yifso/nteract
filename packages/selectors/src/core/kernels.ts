@@ -1,6 +1,3 @@
-/**
- * @module selectors
- */
 import { AppState, KernelRef } from "@nteract/types";
 
 import { createSelector } from "reselect";

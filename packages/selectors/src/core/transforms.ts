@@ -1,6 +1,3 @@
-/**
- * @module selectors
- */
 import { AppState } from "@nteract/types";
 
 export const transformsById = (state: AppState) =>

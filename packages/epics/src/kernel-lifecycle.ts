@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { ImmutableNotebook } from "@nteract/commutable";
 import {
   Channels,

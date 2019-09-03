@@ -1,6 +1,3 @@
-/**
- * @module messaging
- */
 import { Subject } from "rxjs";
 
 export type MessageType =
