@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import {
   Channels,
   childOf,

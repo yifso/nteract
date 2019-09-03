@@ -1,6 +1,3 @@
-/**
- * @module rx-jupyter
- */
 import { Subject, Subscriber } from "rxjs";
 import { ajax } from "rxjs/ajax";
 import { delay, retryWhen, share, tap } from "rxjs/operators";

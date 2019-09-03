@@ -1,6 +1,3 @@
-/**
- * @module actions
- */
 // Vendor modules
 import { ContentRef, KernelRef, KernelspecInfo } from "@nteract/types";
 import { contents } from "rx-jupyter";

@@ -1,6 +1,3 @@
-/**
- * @module rx-jupyter
- */
 import { Notebook } from "@nteract/commutable";
 import querystring from "querystring";
 import { Observable } from "rxjs";

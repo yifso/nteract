@@ -1,6 +1,3 @@
-/**
- * @module selectors
- */
 import * as commutable from "@nteract/commutable";
 import * as Immutable from "immutable";
 

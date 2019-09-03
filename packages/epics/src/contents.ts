@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 import { stringifyNotebook, toJS } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 import FileSaver from "file-saver";

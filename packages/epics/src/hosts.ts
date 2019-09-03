@@ -1,6 +1,3 @@
-/**
- * @module epics
- */
 // Vendor modules
 import * as actions from "@nteract/actions";
 import { toJS } from "@nteract/commutable";

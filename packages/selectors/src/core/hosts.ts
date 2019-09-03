@@ -1,6 +1,3 @@
-/**
- * @module selectors
- */
 import { AppState, JupyterHostRecord } from "@nteract/types";
 
 import { ServerConfig } from "rx-jupyter";
