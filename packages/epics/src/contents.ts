@@ -10,7 +10,16 @@ import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents, ServerConfig } from "rx-jupyter";
 import { empty, from, interval, Observable, of } from "rxjs";
-import { catchError, map, mergeMap, switchMap, tap } from "rxjs/operators";
+import {
+  catchError,
+  concatMap,
+  distinctUntilChanged,
+  map,
+  mergeMap,
+  pluck,
+  switchMap,
+  tap
+} from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
@@ -229,36 +238,34 @@ export function autoSaveCurrentContentEpic(
       const contentRef$ = from(
         state.core.entities.contents.byRef
           .filter(
-            // Don't bother with non-file and non-notebook types for saving
-            // (no dummy or directory)
-            content => content.type === "file" || content.type === "notebook"
+            /**
+             * Only save contents that are files or notebooks with
+             * a filepath already set.
+             */
+            content =>
+              (content.type === "file" || content.type === "notebook") &&
+              content.filepath !== ""
           )
           .keys()
       );
 
       return contentRef$;
     }),
-    /**
-     * TODO: Now that we are on redux observable 1.0.0, we should use the
-     * state$ stream to only save when the content has changed.
-     */
-    mergeMap((contentRef: ContentRef) => {
-      const state = state$.value;
-      const content = selectors.content(state, { contentRef });
-
-      if (
-        // Don't bother saving nothing
-        content &&
-        // Only files and notebooks
-        (content.type === "file" || content.type === "notebook") &&
-        // Only save if they have a real filepath
-        content.filepath !== ""
-      ) {
-        return of(actions.save({ contentRef }));
-      } else {
-        return empty();
-      }
-    })
+    mergeMap((contentRef: ContentRef) =>
+      state$.pipe(
+        pluck(
+          "core",
+          "entities",
+          "contents",
+          "byRef",
+          contentRef,
+          "model",
+          "notebook"
+        ),
+        distinctUntilChanged(),
+        concatMap(() => of(actions.save({ contentRef })))
+      )
+    )
   );
 }
 
