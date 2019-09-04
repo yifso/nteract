@@ -26,6 +26,7 @@ const createContextualFragment = html => {
 Range.prototype.createContextualFragment = html =>
   createContextualFragment(html);
 
+global.window.URL.createObjectURL = function() {};
 global.window.focus = () => {};
 
 // HACK: Polyfill that allows codemirror to render in a JSDOM env.
