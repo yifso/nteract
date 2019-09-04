@@ -10,8 +10,12 @@ export interface Bookstore {
 
 export interface ServerConfig {
   endpoint: string;
-  crossDomain: boolean | null | undefined;
-  token: string | null | undefined;
+  url?: string;
+  crossDomain?: boolean;
+  token?: string;
+  xsrfToken?: string;
+  ajaxOptions?: Partial<AjaxRequest>;
+  wsProtocol?: string | string[];
 }
 
 export interface EmptyHost {

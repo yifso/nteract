@@ -4,8 +4,9 @@ import { delay, retryWhen, share, tap } from "rxjs/operators";
 import { webSocket } from "rxjs/webSocket";
 import urljoin from "url-join";
 import URLSearchParams from "url-search-params";
-import { createAJAXSettings, ServerConfig } from "./base";
+import { createAJAXSettings } from "./base";
 
+import { ServerConfig } from "@nteract/types";
 import { JupyterMessage } from "@nteract/messaging";
 
 /**

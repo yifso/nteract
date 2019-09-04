@@ -1,7 +1,7 @@
 import { kernelInfoRequest } from "@nteract/messaging";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { kernels, ServerConfig, sessions } from "rx-jupyter";
+import { kernels, sessions } from "rx-jupyter";
 import { empty, of } from "rxjs";
 import {
   catchError,
@@ -17,7 +17,7 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import { RemoteKernelProps } from "@nteract/types";
+import { RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";

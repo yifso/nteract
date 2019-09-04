@@ -8,12 +8,13 @@ import {
   DirectoryContentRecordProps,
   DummyContentRecordProps,
   FileContentRecordProps,
-  NotebookContentRecordProps
+  NotebookContentRecordProps,
+  ServerConfig
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { bookstore, contents, ServerConfig } from "rx-jupyter";
+import { bookstore, contents } from "rx-jupyter";
 import { IContent } from "rx-jupyter/lib/contents";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";

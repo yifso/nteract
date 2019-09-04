@@ -5,7 +5,7 @@ import { sample } from "lodash";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { contents, ServerConfig } from "rx-jupyter";
+import { contents } from "rx-jupyter";
 import { empty, from, interval, Observable, of } from "rxjs";
 import {
   catchError,
@@ -26,7 +26,8 @@ import {
   DirectoryContentRecordProps,
   DummyContentRecordProps,
   FileContentRecordProps,
-  NotebookContentRecordProps
+  NotebookContentRecordProps,
+  ServerConfig
 } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
 
