@@ -1,11 +1,8 @@
 # nteract <img src="https://cloud.githubusercontent.com/assets/836375/15271096/98e4c102-19fe-11e6-999a-a74ffe6e2000.gif" alt="nteract animated logo" height="80px" align="right" />
 
-[![](https://img.shields.io/badge/version-latest-blue.svg)](https://github.com/nteract/nteract)
-[![](https://img.shields.io/badge/version-stable-blue.svg)](https://github.com/nteract/nteract/releases)
 [![codecov.io](https://codecov.io/github/nteract/nteract/coverage.svg?branch=master)](https://codecov.io/github/nteract/nteract?branch=master)
 [![slack in](https://slack.nteract.io/badge.svg)](https://slack.nteract.io)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![node@lts](https://img.shields.io/npm/v/node/lts.svg?label=node@lts&colorB=cc00ff)](https://nodejs.org/)
 [![Azure Pipelines CI status](https://dev.azure.com/nteract/nteract/_apis/build/status/nteract.nteract?branch=master)](https://dev.azure.com/nteract/nteract/_build/latest?definitionId=1&branch=master)
 [![Circle CI status](https://circleci.com/gh/nteract/nteract/tree/master.svg?style=shield)](https://circleci.com/gh/nteract/nteract/tree/master)
 
@@ -13,11 +10,19 @@
 
 ## Basics
 
-**nteract** is first and foremost a dynamic tool to give you flexibility when
+**nteract** is first and foremost a dynamic ecosystem to give you flexibility when
 writing code, [exploring data](https://github.com/nteract/nteract/tree/master/packages/data-explorer), and authoring text to share insights about the
 data.
 
-**Edit code, write prose, and visualize.**
+**Build your own interactive computing experiences with nteract's core SDK.**
+
+The nteract core SDK is an ecossytem of React components and JavaScript packages that give you the flexibility to build your own interactive computing experiences on top of the Jupyter ecosystem.
+
+- Connect to remote Binder deployments using [rx-binder](https://github.com/nteract/nteract/tree/master/packages/rx-binder) and [host-cache](https://github.com/nteract/nteract/tree/master/packages/host-cache)
+- Build clients on top of Jupyter servers running locally or remotely using [rx-jupyter](https://github.com/nteract/nteract/tree/master/packages/rx-jupyter)
+- Build your own notebook UI using [presentational components](https://github.com/nteract/nteract/tree/master/packages/presentational-components)
+
+**Edit code, write prose, and visualize with nteract's applications.**
 
 - Share documents understood across the Jupyter ecosystem, [all in the comfort of a desktop app.](https://medium.com/nteract/nteract-revolutionizing-the-notebook-experience-d106ca5d2c38)
 - [Explore new ways of working with compute and playing with data](https://play.nteract.io).
@@ -26,7 +31,7 @@ data.
 We support [Jupyter kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels)
 locally on your system and on remote JupyterHubs via Binder.
 
-## Users
+## Using nteract's applications
 
 ### Installing the nteract desktop application
 
@@ -89,8 +94,7 @@ elements together so they are easy to discover and use. Another benefit
 is that the monorepo makes it easy to iterate on applications that share
 common components. For example, if we update a component, such as the Jupyter
 message handling, and happen to introduce an issue when making a change to the
-desktop app, we would
-notice the issue in tandem.
+desktop app, we would notice the issue in tandem.
 
 ### Getting Started
 
@@ -119,20 +123,23 @@ When changes are made to the root nteract/nteract, they can then be pulled from 
 
 In some cases you'll want to modify an individual base package (i.e. commutable
 or transforms) and not rebuild all of the other packages. To target a build of a
-specific package, use this command, replacing `packageName` with the fully qualified name of the package you
-want to hack on:
+specific package, use this command, replacing `packageName` with the fully qualified name of the package you want to build:
 
 ```
-yarn build:only packageName
+tsc -b packageName
 ```
 
 For example, to hack on the `transforms` package, use
 
 ```
-yarn build:only @nteract/transforms
+tsc -b packages/transforms
 ```
 
-### Hacking on the Desktop application
+### Hacking on the web application
+
+If you're looking to test out changes you make to the core SDK, the web application is the best integrated environment to test on. You can run the web application in development mode, by [configuring the Jupyter extension to run in development mode](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/README.md#development).
+
+### Hacking on the desktop application
 
 #### Quick and dirty (manual)
 
