@@ -552,17 +552,20 @@ export function dispatchNewNotebook(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
   event: Event,
+  filepath: string | null,
   kernelSpec: KernelSpec
 ) {
   // It's a brand new notebook so we create a kernelRef for it
   const kernelRef = createKernelRef();
 
   store.dispatch(
+    // if filepath is null
     // for desktop, we _can_ assume this has no path except for living in `cwd`
     // which I suppose _could_ be called `${cwd}/UntitledN.ipynb`
     // for jupyter extension, we _would_ call this `${cwd}/UntitledN.ipynb`
 
     actions.newNotebook({
+      filepath,
       kernelSpec,
       cwd: cwdKernelFallback(),
       kernelRef,
