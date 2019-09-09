@@ -1454,6 +1454,7 @@ exports[`Markdown Should render markdown 1`] = `
       rawSourcePos={false}
       renderers={
         Object {
+          "code": [Function],
           "inlineMath": [Function],
           "math": [Function],
         }

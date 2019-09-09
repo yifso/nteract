@@ -1,4 +1,5 @@
 import * as MathJax from "@nteract/mathjax";
+import { Source } from "@nteract/presentational-components";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -12,6 +13,10 @@ const inlineMath = (props: { value: string }): React.ReactNode => (
   <MathJax.Node inline>{props.value}</MathJax.Node>
 );
 
+const code = (props: { language: string; value: string }): React.ReactNode => (
+  <Source language={props.language}>{props.value}</Source>
+);
+
 const MarkdownRender = (props: ReactMarkdown.ReactMarkdownProps) => {
   const newProps = {
     // https://github.com/rexxars/react-markdown#options
@@ -21,7 +26,8 @@ const MarkdownRender = (props: ReactMarkdown.ReactMarkdownProps) => {
     renderers: {
       ...props.renderers,
       math,
-      inlineMath
+      inlineMath,
+      code
     } as any
   };
 
