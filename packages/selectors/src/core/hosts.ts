@@ -1,6 +1,4 @@
-import { AppState, JupyterHostRecord } from "@nteract/types";
-
-import { ServerConfig } from "rx-jupyter";
+import { AppState, JupyterHostRecord, ServerConfig } from "@nteract/types";
 
 import { createSelector } from "reselect";
 
