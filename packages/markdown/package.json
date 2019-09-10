@@ -18,6 +18,8 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@nteract/mathjax": "^4.0.0",
+    "@nteract/presentational-components": "^3.0.0",
+    "@nteract/outputs": "^2.0.0",
     "react-markdown": "^4.0.0"
   }
 }
