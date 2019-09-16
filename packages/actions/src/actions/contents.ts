@@ -165,6 +165,7 @@ export function saveAsFulfilled(
 
 // TODO: New Notebook action should use a kernel spec type
 export function newNotebook(payload: {
+  filepath: string | null;
   kernelSpec: KernelspecInfo;
   cwd: string;
   kernelRef: KernelRef;
@@ -173,6 +174,7 @@ export function newNotebook(payload: {
   return {
     type: actionTypes.NEW_NOTEBOOK,
     payload: {
+      filepath: payload.filepath,
       kernelSpec: payload.kernelSpec,
       cwd: payload.cwd || process.cwd(), // Desktop should be passing in the cwd
       kernelRef: payload.kernelRef,

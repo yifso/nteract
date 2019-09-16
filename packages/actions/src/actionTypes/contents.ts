@@ -157,6 +157,7 @@ export const NEW_NOTEBOOK = "NEW_NOTEBOOK";
 export interface NewNotebook {
   type: "NEW_NOTEBOOK";
   payload: {
+    filepath: string | null;
     cwd: string;
     kernelSpec: KernelspecInfo;
     kernelRef: KernelRef;
