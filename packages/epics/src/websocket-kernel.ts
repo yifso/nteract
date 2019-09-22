@@ -17,7 +17,7 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import { RemoteKernelProps, ServerConfig } from "@nteract/types";
+import { RemoteKernelProps, ServerConfig, KernelRecord } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";
@@ -218,7 +218,17 @@ export const interruptKernelEpic = (
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      const kernel = selectors.currentKernel(state);
+      const { contentRef } = action.payload;
+
+      let kernel: KernelRecord | null | undefined;
+      if (contentRef) {
+        kernel = selectors.kernelByContentRef(state$.value, {
+          contentRef
+        });
+      } else {
+        kernel = selectors.currentKernel(state$.value);
+      }
+
       if (!kernel) {
         return of(
           actions.interruptKernelFailed({
@@ -228,10 +238,19 @@ export const interruptKernelEpic = (
         );
       }
 
-      if (kernel.type !== "websocket" || !kernel.id) {
+      if (kernel.type !== "websocket") {
         return of(
           actions.interruptKernelFailed({
             error: new Error("Invalid kernel type for interrupting"),
+            kernelRef: action.payload.kernelRef
+          })
+        );
+      }
+
+      if (!kernel.id) {
+          return of(
+          actions.interruptKernelFailed({
+            error: new Error("Kernel does not have ID set"),
             kernelRef: action.payload.kernelRef
           })
         );
