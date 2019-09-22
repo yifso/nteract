@@ -276,7 +276,6 @@ export const interruptKernelEpic = (
     })
   );
 
-// NB: This epic kills the *current* kernel. ZMQ killKernelEpic kills a *specified* kernel.
 export const killKernelEpic = (
   action$: ActionsObservable<actions.KillKernelAction>,
   state$: StateObservable<AppState>
@@ -298,7 +297,17 @@ export const killKernelEpic = (
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      const kernel = selectors.currentKernel(state);
+      const { contentRef, kernelRef } = action.payload;
+
+      let kernel: KernelRecord | null | undefined;
+      if (contentRef) {
+          kernel = selectors.kernelByContentRef(state, { contentRef });
+      } else if (kernelRef) {
+          kernel = selectors.kernel(state, { kernelRef: kernelRef });
+      } else {
+          kernel = selectors.currentKernel(state);
+      }
+
       if (!kernel) {
         return of(
           actions.killKernelFailed({
@@ -308,7 +317,18 @@ export const killKernelEpic = (
         );
       }
 
-      if (kernel.type !== "websocket" || !kernel.id || !kernel.sessionId) {
+      if (kernel.type !== "websocket") {
+        return of(
+          actions.killKernelFailed({
+            error: new Error(
+              "websocket kernel epic can only kill websocket kernels with an id"
+            ),
+            kernelRef: action.payload.kernelRef
+          })
+        );
+      }
+
+            if (!kernel.id || !kernel.sessionId) {
         return of(
           actions.killKernelFailed({
             error: new Error(

@@ -113,6 +113,7 @@ export interface KillKernelAction {
   payload: {
     restarting: boolean;
     kernelRef?: KernelRef | null;
+    contentRef?: ContentRef | null;
   };
 }
 
