@@ -5,5 +5,9 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../commutable" }, { "path": "../messaging" }, { "path": "../types" }]
+  "references": [
+    { "path": "../commutable" },
+    { "path": "../messaging" },
+    { "path": "../types" }
+  ]
 }

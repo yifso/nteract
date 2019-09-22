@@ -15,24 +15,21 @@ interface Props {
 
 interface ConnectedProps {
   above: boolean;
-  createCellAppend: (
-    payload: { cellType: CellType; contentRef: ContentRef }
-  ) => void;
-  createCellAbove: (
-    payload: {
-      cellType: CellType;
-      id?: string;
-      contentRef: ContentRef;
-    }
-  ) => void;
-  createCellBelow: (
-    payload: {
-      cellType: CellType;
-      id?: string;
-      source: string;
-      contentRef: ContentRef;
-    }
-  ) => void;
+  createCellAppend: (payload: {
+    cellType: CellType;
+    contentRef: ContentRef;
+  }) => void;
+  createCellAbove: (payload: {
+    cellType: CellType;
+    id?: string;
+    contentRef: ContentRef;
+  }) => void;
+  createCellBelow: (payload: {
+    cellType: CellType;
+    id?: string;
+    source: string;
+    contentRef: ContentRef;
+  }) => void;
   id?: string;
   contentRef: ContentRef;
 }
@@ -81,7 +78,7 @@ const CreatorHoverMask = styled.div`
   overflow: visible;
   height: 0px;
 
-  @media print{
+  @media print {
     display: none;
   }
 `;

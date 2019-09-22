@@ -42,7 +42,7 @@ export type ExplorationTypes =
   | "barGrouping"
   | "marginalGraphics";
 export const controlHelpText: {
-  [key in ExplorationTypes]?: { [key: string]: string } | string
+  [key in ExplorationTypes]?: { [key: string]: string } | string;
 } = {
   metric1: {
     default: "Plot this metric",

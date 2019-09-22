@@ -206,8 +206,11 @@ class DataResourceTransformGrid extends React.PureComponent<Props, State> {
         return {
           Header: field.name,
           id: field.name,
-          accessor: (rowValue:{ [key: string]: any }) => {
-            return field.type === "boolean" ? rowValue[field.name].toString() : rowValue[field.name]},
+          accessor: (rowValue: { [key: string]: any }) => {
+            return field.type === "boolean"
+              ? rowValue[field.name].toString()
+              : rowValue[field.name];
+          },
           fixed: primaryKey.indexOf(field.name) !== -1 && "left"
         };
       }

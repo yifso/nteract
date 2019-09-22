@@ -20,7 +20,7 @@ export { FullEditorConfiguration };
 // Declare which options we allow being configured
 export const configurableCodeMirrorOptions: {
   // Ensure we capture each of the editor configuration options
-  [k in keyof FullEditorConfiguration]: boolean
+  [k in keyof FullEditorConfiguration]: boolean;
 } = {
   // Do nothing with value, we handle it in a separately managed way
   value: false,

@@ -220,7 +220,9 @@ export const restartKernelEpic = (
     ofType(actions.RESTART_KERNEL),
     concatMap((action: actions.RestartKernel | actions.NewKernelAction) => {
       const state = state$.value;
-      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, { contentRef: action.payload.contentRef });
+      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, {
+        contentRef: action.payload.contentRef
+      });
       const notificationSystem = selectors.notificationSystem(state);
 
       if (!oldKernelRef) {

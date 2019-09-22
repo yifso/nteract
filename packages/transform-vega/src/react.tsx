@@ -6,15 +6,15 @@ import { VegaMediaType } from "./mime";
 export interface VegaEmbedProps<T extends VegaMediaType> {
   spec: Readonly<{}>;
   mediaType: T;
-  options?: Partial<VegaOptions>,
+  options?: Partial<VegaOptions>;
   resultHandler?: (result: any) => void;
   errorHandler?: (error: Error) => void;
 }
 
 /** React component embedding a certain Vega (Lite) media type. */
-export class VegaEmbed<T extends VegaMediaType>
-  extends React.Component<VegaEmbedProps<T>> {
-
+export class VegaEmbed<T extends VegaMediaType> extends React.Component<
+  VegaEmbedProps<T>
+> {
   private anchorRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: VegaEmbedProps<T>) {
@@ -27,21 +27,22 @@ export class VegaEmbed<T extends VegaMediaType>
   }
 
   async callEmbedder(): Promise<void> {
-    if (this.anchorRef.current === null) { return; }
+    if (this.anchorRef.current === null) {
+      return;
+    }
 
     try {
       const result = await embed(
         this.anchorRef.current,
         this.props.mediaType,
         this.props.spec,
-        this.props.options,
+        this.props.options
       );
 
       if (this.props.resultHandler) {
         this.props.resultHandler(result);
       }
-    }
-    catch (error) {
+    } catch (error) {
       (this.props.errorHandler || console.error)(error);
     }
   }

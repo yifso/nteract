@@ -202,11 +202,13 @@ describe("restartKernelEpic", () => {
             })
           }),
           contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -278,12 +280,14 @@ describe("restartKernelEpic", () => {
               })
             })
           }),
-                    contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -326,7 +330,7 @@ describe("restartKernelEpic", () => {
           kernelRef: newKernelRef,
           contentRef: "contentRef"
         }),
-        f: actionsModule.executeAllCells({ contentRef: "contentRef"})
+        f: actionsModule.executeAllCells({ contentRef: "contentRef" })
       };
 
       const inputMarbles = "a---b---|";
