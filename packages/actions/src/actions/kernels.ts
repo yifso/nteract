@@ -149,11 +149,7 @@ export function interruptKernelFailed(payload: {
   };
 }
 
-export function restartKernel(payload: {
-  outputHandling: actionTypes.RestartKernelOutputHandling;
-  kernelRef?: KernelRef | null;
-  contentRef: ContentRef;
-}): actionTypes.RestartKernel {
+export function restartKernel(payload: actionTypes.RestartKernel["payload"]): actionTypes.RestartKernel {
   return {
     type: actionTypes.RESTART_KERNEL,
     payload
