@@ -120,9 +120,9 @@ export function killKernelSuccessful(payload: {
   };
 }
 
-export function interruptKernel(payload: {
-  kernelRef?: KernelRef | null;
-}): actionTypes.InterruptKernel {
+export function interruptKernel(
+  payload: actionTypes.InterruptKernel["payload"]
+): actionTypes.InterruptKernel {
   return {
     type: actionTypes.INTERRUPT_KERNEL,
     payload

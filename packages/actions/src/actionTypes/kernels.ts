@@ -85,6 +85,7 @@ export interface InterruptKernel {
   type: "INTERRUPT_KERNEL";
   payload: {
     kernelRef?: KernelRef | null;
+    contentRef?: ContentRef | null;
   };
 }
 

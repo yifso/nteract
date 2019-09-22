@@ -85,9 +85,7 @@ export function launchKernelObservable(
           };
 
           console.log(
-            `\n>>>> %cLogging kernel ${
-              kernelSpec.name
-            } (ref ${kernelRef}) stdout and stderr to javascript console in %cthis color %c  %c <<<<\n`,
+            `\n>>>> %cLogging kernel ${kernelSpec.name} (ref ${kernelRef}) stdout and stderr to javascript console in %cthis color %c  %c <<<<\n`,
             "font-weight: bold;",
             `color: ${logColor}; font-weight: bold;`,
             `background-color: ${logColor}; padding: 2px;`,
@@ -195,11 +193,7 @@ export const launchKernelByNameEpic = (
             return actions.launchKernelFailed({
               contentRef: action.payload.contentRef,
               error: new Error(
-                `A kernel named ${
-                  action.payload.kernelSpecName
-                } does not appear to be available. Try installing the ${
-                  action.payload.kernelSpecName
-                } kernelspec or selecting a kernel from the runtime menu.`
+                `A kernel named ${action.payload.kernelSpecName} does not appear to be available. Try installing the ${action.payload.kernelSpecName} kernelspec or selecting a kernel from the runtime menu.`
               ),
               kernelRef: action.payload.kernelRef
             });
@@ -301,7 +295,17 @@ export const interruptKernelEpic = (
     // interrupt, instead doing it after the last one happens
     concatMap(
       (action: actions.InterruptKernel): Observable<InterruptActions> => {
-        const kernel = selectors.currentKernel(state$.value);
+        const { contentRef } = action.payload;
+        let kernel;
+
+        if (contentRef) {
+          kernel = selectors.kernelByContentRef(state$.value, {
+            contentRef
+          });
+        } else {
+          kernel = selectors.currentKernel(state$.value);
+        }
+
         if (!kernel) {
           return of(
             actions.interruptKernelFailed({

@@ -218,7 +218,17 @@ export const interruptKernelEpic = (
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      const kernel = selectors.currentKernel(state);
+      const { contentRef } = action.payload;
+
+      let kernel;
+      if (contentRef) {
+        kernel = selectors.kernelByContentRef(state$.value, {
+          contentRef
+        });
+      } else {
+        kernel = selectors.currentKernel(state$.value);
+      }
+
       if (!kernel) {
         return of(
           actions.interruptKernelFailed({
