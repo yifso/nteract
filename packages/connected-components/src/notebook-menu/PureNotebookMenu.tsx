@@ -101,10 +101,7 @@ export interface PureNotebookMenuProps {
     kernelRef?: string | null;
     contentRef: string;
   }) => void;
-  killKernel?: (payload: {
-    restarting: boolean;
-    kernelRef?: string | null;
-  }) => void;
+  killKernel?: (payload: actions.KillKernelAction["payload"]) => void;
   interruptKernel?: (payload: actions.InterruptKernel["payload"]) => void;
   currentContentRef: ContentRef;
   currentKernelspecsRef?: KernelspecsRef | null;
@@ -270,7 +267,7 @@ class PureNotebookMenu extends React.PureComponent<PureNotebookMenuProps> {
         break;
       case KILL_KERNEL:
         killKernel &&
-          killKernel({ restarting: false, kernelRef: currentKernelRef });
+          killKernel({ restarting: false, kernelRef: currentKernelRef, contentRef: currentContentRef });
         break;
       case CHANGE_KERNEL:
         changeKernelByName &&

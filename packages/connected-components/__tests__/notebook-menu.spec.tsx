@@ -260,6 +260,7 @@ describe("PureNotebookMenu", () => {
       expect(props.killKernel).toHaveBeenCalledTimes(1);
       expect(props.killKernel).toHaveBeenCalledWith({
         kernelRef: props.currentKernelRef,
+        contentRef: props.currentContentRef,
         restarting: false
       });
     });
