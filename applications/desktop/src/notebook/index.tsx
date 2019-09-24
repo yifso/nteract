@@ -18,12 +18,20 @@ import "@nteract/styles/editor-overrides.css";
 import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
 
 import DataExplorer from "@nteract/data-explorer";
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import WidgetDisplay from "@nteract/jupyter-widgets";
 import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform from "@nteract/transform-plotly";
 import VDOMDisplay from "@nteract/transform-vdom";
-import { Vega2, Vega3, Vega4, Vega5, VegaLite1, VegaLite2, VegaLite3 } from "@nteract/transform-vega";
+import {
+  Vega2,
+  Vega3,
+  Vega4,
+  Vega5,
+  VegaLite1,
+  VegaLite2,
+  VegaLite3
+} from "@nteract/transform-vega";
 
 import { ipcRenderer as ipc, remote } from "electron";
 import { mathJaxPath } from "mathjax-electron";

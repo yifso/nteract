@@ -27,5 +27,8 @@
   },
   "dependencies": {
     "backbone": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/backbone": "^1.4.1"
   }
 }
