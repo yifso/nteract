@@ -17,7 +17,7 @@ $ npm install --save @nteract/jupyter-widgets
 ## Usage
 
 ```javascript
-import { WidgetDisplay } from "@nteract/jupyter-widgets";
+import WidgetDisplay from "@nteract/jupyter-widgets";
 
 export default class MyNotebookApp extends ReactComponent {
   render() {
