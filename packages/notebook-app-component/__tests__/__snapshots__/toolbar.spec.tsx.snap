@@ -60,7 +60,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
                   "isStatic": true,
-                  "lastClassName": "igjdMy",
+                  "lastClassName": "grkuc",
                   "rules": Array [
                     "
   background-color: var(--theme-cell-toolbar-bg);
@@ -76,7 +76,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
   }
 
   @media print {
-    display: none ;
+    display: none;
   }
 
   button {
@@ -129,7 +129,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
             forwardedRef={null}
           >
             <div
-              className="sc-bxivhb igjdMy"
+              className="sc-bxivhb grkuc"
             >
               <button
                 className="executeButton"
@@ -407,7 +407,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
                   "isStatic": true,
-                  "lastClassName": "igjdMy",
+                  "lastClassName": "grkuc",
                   "rules": Array [
                     "
   background-color: var(--theme-cell-toolbar-bg);
@@ -423,7 +423,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
   }
 
   @media print {
-    display: none ;
+    display: none;
   }
 
   button {
@@ -476,7 +476,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
             forwardedRef={null}
           >
             <div
-              className="sc-bxivhb igjdMy"
+              className="sc-bxivhb grkuc"
             >
               <button
                 className="executeButton"
@@ -705,7 +705,10 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                             <div
                               className="sc-htpNat juMQnP"
                             >
-                              <ul>
+                              <ul
+                                aria-label="dropdown-content"
+                                role="listbox"
+                              >
                                 <li
                                   aria-selected="false"
                                   className="clearOutput"
