@@ -23,6 +23,8 @@ global.Blob = function(content, options) {
 import $ from "jquery";
 global.$ = global.jQuery = $;
 require("jquery-ui");
+require("jquery-ui/ui/widget");
+require("jquery-ui/ui/widgets/mouse");
 
 const createContextualFragment = html => {
   const div = document.createElement("div");
