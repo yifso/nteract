@@ -4,7 +4,7 @@ import React from "react";
 
 import PlotlyTransform from "../src";
 
-jest.mock("plotly.js-dist")
+jest.mock("plotly.js-dist");
 const plotly = require("plotly.js-dist");
 
 function deepFreeze(obj) {

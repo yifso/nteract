@@ -4,6 +4,7 @@ import {
   actions,
   AppState,
   ContentRef,
+  KernelRecord,
   KernelRef,
   LocalKernelProps,
   selectors
@@ -237,7 +238,9 @@ export const launchKernelEpic = (
 
       ipc.send("nteract:ping:kernel", action.payload.kernelSpec);
 
-      const oldKernelRef = selectors.currentKernelRef(state$.value);
+      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, {
+        contentRef: action.payload.contentRef
+      });
 
       // Kill the old kernel by emitting the action to kill it if it exists
       let cleanupOldKernel$:
@@ -296,7 +299,7 @@ export const interruptKernelEpic = (
     concatMap(
       (action: actions.InterruptKernel): Observable<InterruptActions> => {
         const { contentRef } = action.payload;
-        let kernel;
+        let kernel: KernelRecord | null | undefined;
 
         if (contentRef) {
           kernel = selectors.kernelByContentRef(state$.value, {

@@ -57,10 +57,7 @@ class KernelAllocator extends React.Component<
               };
             }
             return {
-              channels: kernels.connect(
-                host,
-                xhr.response.id
-              ),
+              channels: kernels.connect(host, xhr.response.id),
               error: false
             };
           }

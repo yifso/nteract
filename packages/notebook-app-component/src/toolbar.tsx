@@ -51,7 +51,7 @@ export const CellToolbar = styled.div`
   }
 
   @media print {
-    display: none ;
+    display: none;
   }
 
   button {

@@ -222,7 +222,7 @@ describe("PureNotebookMenu", () => {
       interruptKernelItem.simulate("click", eventMock);
       expect(props.interruptKernel).toHaveBeenCalledTimes(1);
       expect(props.interruptKernel).toHaveBeenCalledWith({
-        kernelRef: props.currentKernelRef
+        contentRef: props.currentContentRef
       });
 
       const restartKernelItem = wrapper.find({ text: RESTART_KERNEL });
@@ -231,8 +231,7 @@ describe("PureNotebookMenu", () => {
       expect(props.restartKernel).toHaveBeenCalledTimes(1);
       expect(props.restartKernel).toHaveBeenCalledWith({
         outputHandling: "None",
-        contentRef: props.currentContentRef,
-        kernelRef: props.currentKernelRef
+        contentRef: props.currentContentRef
       });
 
       const restartKernelAndClearOutputsItem = wrapper.find({
@@ -242,8 +241,7 @@ describe("PureNotebookMenu", () => {
       restartKernelAndClearOutputsItem.simulate("click", eventMock);
       expect(props.restartKernelAndClearOutputs).toHaveBeenCalledTimes(1);
       expect(props.restartKernelAndClearOutputs).toHaveBeenCalledWith({
-        contentRef: props.currentContentRef,
-        kernelRef: props.currentKernelRef
+        contentRef: props.currentContentRef
       });
 
       const restartKernelAndRunAllOutputsItem = wrapper.find({
@@ -253,8 +251,7 @@ describe("PureNotebookMenu", () => {
       restartKernelAndRunAllOutputsItem.simulate("click", eventMock);
       expect(props.restartKernelAndRunAllOutputs).toHaveBeenCalledTimes(1);
       expect(props.restartKernelAndRunAllOutputs).toHaveBeenCalledWith({
-        contentRef: props.currentContentRef,
-        kernelRef: props.currentKernelRef
+        contentRef: props.currentContentRef
       });
 
       const killKernelItem = wrapper.find({ text: KILL_KERNEL });
@@ -263,6 +260,7 @@ describe("PureNotebookMenu", () => {
       expect(props.killKernel).toHaveBeenCalledTimes(1);
       expect(props.killKernel).toHaveBeenCalledWith({
         kernelRef: props.currentKernelRef,
+        contentRef: props.currentContentRef,
         restarting: false
       });
     });

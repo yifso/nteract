@@ -200,6 +200,15 @@ describe("restartKernelEpic", () => {
                 status: "not connected"
               })
             })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
+              })
+            })
           })
         })
       }),
@@ -270,6 +279,15 @@ describe("restartKernelEpic", () => {
                 status: "not connected"
               })
             })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
+              })
+            })
           })
         })
       }),
@@ -286,7 +304,8 @@ describe("restartKernelEpic", () => {
       const inputActions = {
         a: actionsModule.restartKernel({
           outputHandling: "Run All",
-          kernelRef: "oldKernelRef"
+          kernelRef: "oldKernelRef",
+          contentRef: "contentRef"
         }),
         b: actionsModule.launchKernelSuccessful({
           kernel: "",
@@ -304,12 +323,14 @@ describe("restartKernelEpic", () => {
           kernelSpecName: null,
           cwd: ".",
           kernelRef: newKernelRef,
-          selectNextKernel: true
+          selectNextKernel: true,
+          contentRef: "contentRef"
         }),
         e: actionsModule.restartKernelSuccessful({
-          kernelRef: newKernelRef
+          kernelRef: newKernelRef,
+          contentRef: "contentRef"
         }),
-        f: actionsModule.executeAllCells({})
+        f: actionsModule.executeAllCells({ contentRef: "contentRef" })
       };
 
       const inputMarbles = "a---b---|";

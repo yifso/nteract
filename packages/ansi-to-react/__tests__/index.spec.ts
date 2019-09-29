@@ -116,7 +116,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-green\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-green">world</span></code>'
       );
     });
 
@@ -131,7 +131,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-yellow\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-yellow">world</span></code>'
       );
     });
 
@@ -146,7 +146,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-yellow ansi-green\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-yellow ansi-green">world</span></code>'
       );
     });
 
@@ -161,7 +161,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("this is a link: https://nteract.io/");
       expect(el.html()).toBe(
-        "<code><span class=\"ansi-green\">this is a link: <a href=\"https://nteract.io/\" target=\"_blank\">https://nteract.io/</a></span></code>"
+        '<code><span class="ansi-green">this is a link: <a href="https://nteract.io/" target="_blank">https://nteract.io/</a></span></code>'
       );
     });
   });
