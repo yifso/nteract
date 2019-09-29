@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import BackboneWrapper from "../../src/renderer/backbone-wrapper";
 import Backbone from "backbone";
+import BackboneWrapper from "../../src/renderer/backbone-wrapper";
 
 describe("BackboneWrapper", () => {
   it("can be rendered", () => {

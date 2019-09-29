@@ -17,6 +17,13 @@ global.Blob = function(content, options) {
   return { content, options };
 };
 
+/**
+ * Mock jQuery to allow jupyter-widgets tests to run.
+ */
+import $ from "jquery";
+global.$ = global.jQuery = $;
+require("jquery-ui");
+
 const createContextualFragment = html => {
   const div = document.createElement("div");
   div.innerHTML = html;
