@@ -8,14 +8,20 @@ interface Props {
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
-  static widgetContainerRef = React.createRef();
+  widgetContainerRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: Props) {
+    super(props);
+    this.widgetContainerRef = React.createRef<HTMLDivElement>();
+  }
 
   componentDidMount() {
-    const viewName = model.get("_view_name");
+    const { model } = this.props;
+    const viewName: string = model.get("_view_name");
     if (viewName) {
-      const WidgetView = Widgets[viewName];
+      const WidgetView = (Widgets as { [index: string]: any })[viewName];
       const widget = new WidgetView({
-        model: this.props.model,
+        model,
         el: this.widgetContainerRef.current
       });
       widget.render();
