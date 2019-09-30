@@ -3,8 +3,10 @@ import * as React from "react";
 
 import * as Widgets from "@jupyter-widgets/controls";
 
+type Indexed = { [index: string]: any };
+
 interface Props {
-  model: Backbone.Model;
+  model: Indexed;
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
@@ -17,11 +19,13 @@ export default class BackboneWrapper extends React.Component<Props> {
 
   componentDidMount() {
     const { model } = this.props;
-    const viewName: string = model.get("_view_name");
+    const viewName: string = model["_view_name"];
+    const modelName: string = model["_model_name"];
     if (viewName) {
-      const WidgetView = (Widgets as { [index: string]: any })[viewName];
+      const WidgetView = (Widgets as Indexed)[viewName];
+      const WidgetModel = (Widgets as Indexed)[modelName];
       const widget = new WidgetView({
-        model,
+        model: new WidgetModel(model),
         el: this.widgetContainerRef.current
       });
       widget.render();
