@@ -34,6 +34,7 @@ import { AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 
 import { RecordOf } from "immutable";
+import { existsSync } from "fs";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -242,7 +243,8 @@ export function autoSaveCurrentContentEpic(
              */
             content =>
               (content.type === "file" || content.type === "notebook") &&
-              content.filepath !== ""
+              content.filepath !== "" &&
+              existsSync(content.filepath)
           )
           .keys()
       );
