@@ -705,7 +705,10 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                             <div
                               className="sc-htpNat juMQnP"
                             >
-                              <ul>
+                              <ul
+                                aria-label="dropdown-content"
+                                role="listbox"
+                              >
                                 <li
                                   aria-selected="false"
                                   className="clearOutput"

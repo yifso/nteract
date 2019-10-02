@@ -23,7 +23,11 @@ export const Vega = (mediaType: VegaMediaType) => {
     />
   );
 
+  embed.defaultProps = {
+    mediaType
+  };
   embed.MIMETYPE = mediaType;
+  
   return embed;
 };
 
