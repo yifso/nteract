@@ -229,7 +229,6 @@ export function autoSaveCurrentContentEpic(
   // Pick an autosave duration that won't have the exact
   // same cycle as another open tab
   const duration = sample(someArbitraryPrimesAround30k);
-
   return interval(duration).pipe(
     mergeMap(() => {
       const state = state$.value;
@@ -244,7 +243,9 @@ export function autoSaveCurrentContentEpic(
             content =>
               (content.type === "file" || content.type === "notebook") &&
               content.filepath !== "" &&
-              existsSync(content.filepath)
+              selectors.isCurrentKernelZeroMQ(state)
+                ? existsSync(content.path)
+                : false
           )
           .keys()
       );
