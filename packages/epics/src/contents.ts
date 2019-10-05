@@ -244,7 +244,7 @@ export function autoSaveCurrentContentEpic(
               (content.type === "file" || content.type === "notebook") &&
               content.filepath !== "" &&
               selectors.isCurrentKernelZeroMQ(state)
-                ? existsSync(content.path)
+                ? existsSync(content.filepath)
                 : false
           )
           .keys()
