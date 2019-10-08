@@ -273,7 +273,7 @@ const byRef = (
         .setIn([saveFulfilledAction.payload.contentRef, "error"], null);
     }
     case actionTypes.CLOSE_NOTEBOOK: {
-      const typedAction = action as actionTypes.CloseNotebookAction;
+      const typedAction = action as actionTypes.CloseNotebook;
       return state.delete(typedAction.payload.contentRef);
     }
     // Defer all notebook actions to the notebook reducer

@@ -664,4 +664,12 @@ describe("save", () => {
       payload: { contentRef, model: { fake: true } }
     });
   });
+
+  test("creates a CLOSE_NOTEBOOK action", () => {
+    const contentRef = createContentRef();
+    expect(actions.closeNotebook({ contentRef })).toEqual({
+      type: actionTypes.CLOSE_NOTEBOOK,
+      payload: { contentRef }
+    });
+  });
 });
