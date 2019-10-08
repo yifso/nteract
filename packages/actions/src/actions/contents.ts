@@ -206,3 +206,14 @@ export function closeNotebook(payload: {
     }
   };
 }
+
+export function disposeContent(payload: {
+  contentRef: ContentRef;
+}): actionTypes.DisposeContent {
+  return {
+    type: actionTypes.DISPOSE_CONTENT,
+    payload: {
+      contentRef: payload.contentRef
+    }
+  };
+}

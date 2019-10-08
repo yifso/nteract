@@ -181,3 +181,12 @@ export interface CloseNotebook {
     contentRef: ContentRef;
   };
 }
+
+export const DISPOSE_CONTENT = "DISPOSE_CONTENT";
+export interface DisposeContent {
+  type: "DISPOSE_CONTENT";
+  payload: {
+    contentRef: ContentRef;
+  }
+}
+

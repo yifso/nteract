@@ -672,4 +672,20 @@ describe("save", () => {
       payload: { contentRef }
     });
   });
+
+  test("creates a DISPOSE_CONTENT action", () => {
+    const contentRef = createContentRef();
+    expect(actions.disposeContent({ contentRef })).toEqual({
+      type: actionTypes.DISPOSE_CONTENT,
+      payload: { contentRef }
+    });
+  });
+
+  test("creates a DISPOSE_KERNEL action", () => {
+    const kernelRef = createKernelRef();
+    expect(actions.disposeKernel({ kernelRef })).toEqual({
+      type: actionTypes.DISPOSE_KERNEL,
+      payload: { kernelRef }
+    });
+  });
 });

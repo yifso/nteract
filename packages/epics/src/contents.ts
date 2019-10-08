@@ -547,3 +547,19 @@ export function saveAsContentEpic(
     })
   );
 }
+
+export function closeNotebookEpic(
+  action$: ActionsObservable<actions.CloseNotebook>,
+  state$: StateObservable<AppState>
+): Observable<actions.DisposeContent | actions.KillKernelAction> {
+  return action$.pipe(
+    ofType(actions.CLOSE_NOTEBOOK),
+    mergeMap((action: actions.CloseNotebook):
+      Observable<actions.DisposeContent | actions.KillKernelAction> => {
+      const state = state$.value;
+      const contentRef = (action as actions.CloseNotebook).payload.contentRef;
+      const kernelRef = selectors.kernelRefByContentRef(state, { contentRef });
+      return of(actions.disposeContent({ contentRef }), actions.killKernel({ kernelRef, restarting: false, dispose: true }));
+    })
+  );
+}

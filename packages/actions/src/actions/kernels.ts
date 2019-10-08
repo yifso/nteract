@@ -93,6 +93,7 @@ export function kernelRawStderr(payload: {
 export function killKernel(payload: {
   restarting: boolean;
   kernelRef?: KernelRef | null;
+  dispose?: boolean;
 }): actionTypes.KillKernelAction {
   return {
     type: actionTypes.KILL_KERNEL,
@@ -299,4 +300,13 @@ export function setKernelInfo(payload: {
     type: actionTypes.SET_KERNEL_INFO,
     payload
   };
+}
+
+export function disposeKernel(payload: {
+  kernelRef: KernelRef;
+}): actionTypes.DisposeKernel {
+  return {
+    type: actionTypes.DISPOSE_KERNEL,
+    payload
+  }
 }

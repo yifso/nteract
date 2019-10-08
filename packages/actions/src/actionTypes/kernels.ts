@@ -112,6 +112,7 @@ export interface KillKernelAction {
   payload: {
     restarting: boolean;
     kernelRef?: KernelRef | null;
+    dispose?: boolean;
   };
 }
 
@@ -274,4 +275,12 @@ export interface ShutdownReplyTimedOut {
     kernelRef: KernelRef;
   };
   error: true;
+}
+
+export const DISPOSE_KERNEL = "DISPOSE_KERNEL";
+export interface DisposeKernel {
+  type: "DISPOSE_KERNEL";
+  payload: {
+    kernelRef: KernelRef;
+  };
 }
