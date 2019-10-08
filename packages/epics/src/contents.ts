@@ -245,7 +245,7 @@ export function autoSaveCurrentContentEpic(
               content.filepath !== "" &&
               selectors.isCurrentKernelZeroMQ(state)
                 ? existsSync(content.filepath)
-                : false
+                : true
           )
           .keys()
       );
