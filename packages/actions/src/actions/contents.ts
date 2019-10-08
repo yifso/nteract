@@ -195,3 +195,14 @@ export function updateFileText(payload: {
     }
   };
 }
+
+export function closeNotebook(payload: {
+  contentRef: ContentRef;
+}): actionTypes.CloseNotebook {
+  return {
+    type: actionTypes.CLOSE_NOTEBOOK,
+    payload: {
+      contentRef: payload.contentRef
+    }
+  };
+}

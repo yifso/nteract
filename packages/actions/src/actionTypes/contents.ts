@@ -173,3 +173,11 @@ export interface UpdateFileText {
     contentRef: ContentRef;
   };
 }
+
+export const CLOSE_NOTEBOOK = "CLOSE_NOTEBOOK";
+export interface CloseNotebook {
+  type: "CLOSE_NOTEBOOK";
+  payload: {
+    contentRef: ContentRef;
+  };
+}
