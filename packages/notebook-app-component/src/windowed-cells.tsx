@@ -50,7 +50,12 @@ const useWindowResize = () => {
   return size;
 };
 
-export const CellsContext = React.createContext({});
+interface CellsContextItems {
+  setSize?: any;
+  windowWidth?: number;
+}
+
+export const CellsContext = React.createContext<CellsContextItems>({});
 
 interface CellContainerProps {
   children: any;
@@ -61,9 +66,12 @@ interface CellContainerProps {
 const CellContainer = (props: CellContainerProps) => {
   const { children, style, index } = props;
   const { setSize, windowWidth } = React.useContext(CellsContext);
-  const root = React.useRef();
+  const root = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    setSize(index, root.current.getBoundingClientRect().height);
+    setSize(
+      index,
+      root && root.current ? root.current.getBoundingClientRect().height : 0
+    );
   }, [windowWidth]);
   return (
     <div
@@ -77,67 +85,63 @@ const CellContainer = (props: CellContainerProps) => {
   );
 };
 
-export class PureWindowedCells extends React.Component<WindowedCellsProps> {
-  sizeMap = React.useRef({});
-  setSize = React.useCallback((index, size) => {
-    this.sizeMap.current = { ...this.sizeMap.current, [index]: size };
+const PureWindowedCells = (props: WindowedCellsProps) => {
+  const sizeMap = React.useRef<{ [index: number]: number }>({});
+  const setSize = React.useCallback((index, size) => {
+    sizeMap.current = { ...sizeMap.current, [index]: size };
   }, []);
-  getSize = React.useCallback(index => this.sizeMap.current[index] || 100, []);
-  windowWidth = useWindowResize()[0];
+  const getSize = React.useCallback(index => sizeMap.current[index] || 100, []);
+  const [windowWidth] = useWindowResize();
 
-  render() {
-    return (
-      <CellsContext.Provider
-        value={{ setSize: this.setSize, windowWidth: this.windowWidth }}
-      >
-        <Cells>
-          <CellCreator
-            id={this.props.cellOrder.get(0)}
-            above
-            contentRef={this.props.contentRef}
-          />
-          <AutoSizer>
-            {({ height, width }: { height: number; width: number }) => {
-              return (
-                <List
-                  height={height}
-                  itemCount={this.props.cellOrder.size}
-                  itemSize={this.getSize}
-                  width={width}
-                >
-                  {({ index, style }) => {
-                    const cellId = this.props.cellOrder.get(index);
-                    return (
-                      <CellContainer index={index} style={style}>
-                        <DraggableCell
-                          moveCell={this.props.moveCell}
+  return (
+    <CellsContext.Provider value={{ setSize, windowWidth }}>
+      <Cells>
+        <CellCreator
+          id={props.cellOrder.get(0)}
+          above
+          contentRef={props.contentRef}
+        />
+        <AutoSizer>
+          {({ height, width }: { height: number; width: number }) => {
+            return (
+              <List
+                height={height}
+                itemCount={props.cellOrder.size}
+                itemSize={getSize}
+                width={width}
+              >
+                {({ index, style }) => {
+                  const cellId = props.cellOrder.get(index);
+                  return (
+                    <CellContainer index={index} style={style}>
+                      <DraggableCell
+                        moveCell={props.moveCell}
+                        id={cellId}
+                        focusCell={props.focusCell}
+                        contentRef={props.contentRef}
+                      >
+                        <ConnectedCell
                           id={cellId}
-                          focusCell={this.props.focusCell}
-                          contentRef={this.props.contentRef}
-                        >
-                          <ConnectedCell
-                            id={cellId}
-                            contentRef={this.props.contentRef}
-                          />
-                        </DraggableCell>
-                        <CellCreator
-                          key={`creator-${cellId}`}
-                          id={cellId}
-                          above={false}
-                          contentRef={this.props.contentRef}
+                          contentRef={props.contentRef}
                         />
-                      </CellContainer>
-                    );
-                  }}
-                </List>
-              );
-            }}
-          </AutoSizer>
-        </Cells>
-      </CellsContext.Provider>
-    );
-  }
-}
+                      </DraggableCell>
+                      <CellCreator
+                        key={`creator-${cellId}`}
+                        id={cellId}
+                        above={false}
+                        contentRef={props.contentRef}
+                      />
+                    </CellContainer>
+                  );
+                }}
+              </List>
+            );
+          }}
+        </AutoSizer>
+      </Cells>
+    </CellsContext.Provider>
+  );
+};
 
 const makeMapStateToProps = (
   initialState: AppState,
