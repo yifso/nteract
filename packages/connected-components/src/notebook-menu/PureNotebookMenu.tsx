@@ -141,6 +141,7 @@ class PureNotebookMenu extends React.PureComponent<PureNotebookMenuProps> {
     // console.log(`::handleActionClick -> ${currentKey.key}`);
     this.handleClick(currentKey);
   };
+
   handleClick = ({ key }: { key: string }) => {
     const {
       saveNotebook,

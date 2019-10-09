@@ -7,7 +7,7 @@ interface LastSavedProps {
 }
 
 const TimeAgoTD = styled.span`
-  color: #6a737d;
+  color: #565d66;
 `;
 
 // Rather than showing a continual counter like "0 seconds ago"
