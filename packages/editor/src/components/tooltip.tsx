@@ -11,11 +11,7 @@ const TipButton: StyledComponent<"button", never> = styled.button`
   top: 0px;
 `;
 
-interface CursorCoords {
-  top: number;
-  left: number;
-  bottom?: number;
-}
+interface CursorCoords { top: number; left: number; bottom?: number }
 
 interface TipProps {
   cursorCoords: CursorCoords;

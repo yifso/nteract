@@ -84,7 +84,7 @@ export const semioticLineChart = (
         selectedMetrics.some(selectedMetric => selectedMetric === metric.label)
     );
 
-  const canvasRender: boolean = lineData[0].coordinates.length > 250;
+  const canvasRender:boolean = lineData[0].coordinates.length > 250
 
   return {
     lineType: { type: lineType, interpolator: curveMonotoneX },

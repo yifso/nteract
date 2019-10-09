@@ -90,9 +90,7 @@ export function kernelRawStderr(payload: {
   };
 }
 
-export function killKernel(
-  payload: actionTypes.KillKernelAction["payload"]
-): actionTypes.KillKernelAction {
+export function killKernel(payload: actionTypes.KillKernelAction["payload"]): actionTypes.KillKernelAction {
   return {
     type: actionTypes.KILL_KERNEL,
     payload
@@ -148,9 +146,7 @@ export function interruptKernelFailed(payload: {
   };
 }
 
-export function restartKernel(
-  payload: actionTypes.RestartKernel["payload"]
-): actionTypes.RestartKernel {
+export function restartKernel(payload: actionTypes.RestartKernel["payload"]): actionTypes.RestartKernel {
   return {
     type: actionTypes.RESTART_KERNEL,
     payload

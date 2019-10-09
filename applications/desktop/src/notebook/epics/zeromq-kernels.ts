@@ -238,9 +238,7 @@ export const launchKernelEpic = (
 
       ipc.send("nteract:ping:kernel", action.payload.kernelSpec);
 
-      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, {
-        contentRef: action.payload.contentRef
-      });
+      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, { contentRef: action.payload.contentRef });
 
       // Kill the old kernel by emitting the action to kill it if it exists
       let cleanupOldKernel$:

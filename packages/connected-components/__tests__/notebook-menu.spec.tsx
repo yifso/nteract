@@ -231,7 +231,7 @@ describe("PureNotebookMenu", () => {
       expect(props.restartKernel).toHaveBeenCalledTimes(1);
       expect(props.restartKernel).toHaveBeenCalledWith({
         outputHandling: "None",
-        contentRef: props.currentContentRef
+        contentRef: props.currentContentRef,
       });
 
       const restartKernelAndClearOutputsItem = wrapper.find({
@@ -241,7 +241,7 @@ describe("PureNotebookMenu", () => {
       restartKernelAndClearOutputsItem.simulate("click", eventMock);
       expect(props.restartKernelAndClearOutputs).toHaveBeenCalledTimes(1);
       expect(props.restartKernelAndClearOutputs).toHaveBeenCalledWith({
-        contentRef: props.currentContentRef
+        contentRef: props.currentContentRef,
       });
 
       const restartKernelAndRunAllOutputsItem = wrapper.find({
@@ -251,7 +251,7 @@ describe("PureNotebookMenu", () => {
       restartKernelAndRunAllOutputsItem.simulate("click", eventMock);
       expect(props.restartKernelAndRunAllOutputs).toHaveBeenCalledTimes(1);
       expect(props.restartKernelAndRunAllOutputs).toHaveBeenCalledWith({
-        contentRef: props.currentContentRef
+        contentRef: props.currentContentRef,
       });
 
       const killKernelItem = wrapper.find({ text: KILL_KERNEL });

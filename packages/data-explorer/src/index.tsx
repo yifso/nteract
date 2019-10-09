@@ -473,15 +473,17 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
       chart
     });
 
-    this.setState((prevState): any => {
-      return {
-        ...updatedState,
-        displayChart: {
-          ...prevState.displayChart,
-          [chartKey]: display
-        }
-      };
-    });
+    this.setState(
+      (prevState): any => {
+        return {
+          ...updatedState,
+          displayChart: {
+            ...prevState.displayChart,
+            [chartKey]: display
+          }
+        };
+      }
+    );
   };
   setView = (view: View) => {
     this.updateChart({ view });
@@ -588,7 +590,7 @@ class DataExplorer extends React.PureComponent<Partial<Props>, State> {
     let display: React.ReactNode = null;
 
     if (view === "grid") {
-      display = <DataResourceTransformGrid {...(this.props as Props)} />;
+      display = <DataResourceTransformGrid {...this.props as Props} />;
     } else if (
       [
         "line",

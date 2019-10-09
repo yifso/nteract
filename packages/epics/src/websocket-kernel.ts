@@ -248,7 +248,7 @@ export const interruptKernelEpic = (
       }
 
       if (!kernel.id) {
-        return of(
+          return of(
           actions.interruptKernelFailed({
             error: new Error("Kernel does not have ID set"),
             kernelRef: action.payload.kernelRef
@@ -301,11 +301,11 @@ export const killKernelEpic = (
 
       let kernel: KernelRecord | null | undefined;
       if (contentRef) {
-        kernel = selectors.kernelByContentRef(state, { contentRef });
+          kernel = selectors.kernelByContentRef(state, { contentRef });
       } else if (kernelRef) {
         kernel = selectors.kernel(state, { kernelRef });
       } else {
-        kernel = selectors.currentKernel(state);
+          kernel = selectors.currentKernel(state);
       }
 
       if (!kernel) {
@@ -328,7 +328,7 @@ export const killKernelEpic = (
         );
       }
 
-      if (!kernel.id || !kernel.sessionId) {
+            if (!kernel.id || !kernel.sessionId) {
         return of(
           actions.killKernelFailed({
             error: new Error(

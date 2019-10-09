@@ -2,20 +2,15 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import {
-  Vega2,
-  Vega3,
-  Vega4,
-  Vega5,
-  VegaLite1,
-  VegaLite2,
-  VegaLite3,
-  VegaOptions
+  Vega2, Vega3, Vega4, Vega5,
+  VegaLite1, VegaLite2, VegaLite3,
+  VegaOptions,
 } from "../src/";
 
 const vlSpec = {
   description: "A scatterplot showing horsepower and miles per gallons.",
   data: {
-    values: require("../data/cars.json")
+    values: require("../data/cars.json"),
   },
   mark: "point",
   encoding: {
@@ -26,117 +21,114 @@ const vlSpec = {
   }
 };
 const vgSpec = {
-  width: 200,
-  height: 200,
-  padding: 5,
+  "width": 200,
+  "height": 200,
+  "padding": 5,
 
-  data: [
+  "data": [
     {
-      name: "source",
-      values: require("../data/cars.json"),
-      transform: [
+      "name": "source",
+      "values": require("../data/cars.json"),
+      "transform": [
         {
-          type: "filter",
+          "type": "filter",
           // tslint:disable-next-line:max-line-length
-          expr:
-            "datum['Horsepower'] != null && datum['Miles_per_Gallon'] != null && datum['Acceleration'] != null"
+          "expr": "datum['Horsepower'] != null && datum['Miles_per_Gallon'] != null && datum['Acceleration'] != null"
         }
       ]
     }
   ],
 
-  scales: [
+  "scales": [
     {
-      name: "x",
-      type: "linear",
-      round: true,
-      nice: true,
-      zero: true,
-      domain: { data: "source", field: "Horsepower" },
-      range: "width"
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "source", "field": "Horsepower"},
+      "range": "width"
     },
     {
-      name: "y",
-      type: "linear",
-      round: true,
-      nice: true,
-      zero: true,
-      domain: { data: "source", field: "Miles_per_Gallon" },
-      range: "height"
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "source", "field": "Miles_per_Gallon"},
+      "range": "height"
     },
     {
-      name: "size",
-      type: "linear",
-      round: true,
-      nice: false,
-      zero: true,
-      domain: { data: "source", field: "Acceleration" },
-      range: [4, 361]
+      "name": "size",
+      "type": "linear",
+      "round": true,
+      "nice": false,
+      "zero": true,
+      "domain": {"data": "source", "field": "Acceleration"},
+      "range": [4,361]
     }
   ],
 
-  axes: [
+  "axes": [
     {
-      scale: "x",
-      grid: true,
-      domain: false,
-      orient: "bottom",
-      tickCount: 5,
-      title: "Horsepower"
+      "scale": "x",
+      "grid": true,
+      "domain": false,
+      "orient": "bottom",
+      "tickCount": 5,
+      "title": "Horsepower"
     },
     {
-      scale: "y",
-      grid: true,
-      domain: false,
-      orient: "left",
-      titlePadding: 5,
-      title: "Miles_per_Gallon"
+      "scale": "y",
+      "grid": true,
+      "domain": false,
+      "orient": "left",
+      "titlePadding": 5,
+      "title": "Miles_per_Gallon"
     }
   ],
 
-  legends: [
+  "legends": [
     {
-      size: "size",
-      title: "Acceleration",
-      format: "s",
-      encode: {
-        symbols: {
-          update: {
-            strokeWidth: { value: 2 },
-            opacity: { value: 0.5 },
-            stroke: { value: "#4682b4" },
-            shape: { value: "circle" }
+      "size": "size",
+      "title": "Acceleration",
+      "format": "s",
+      "encode": {
+        "symbols": {
+          "update": {
+            "strokeWidth": {"value": 2},
+            "opacity": {"value": 0.5},
+            "stroke": {"value": "#4682b4"},
+            "shape": {"value": "circle"}
           }
         }
       }
     }
   ],
 
-  marks: [
+  "marks": [
     {
-      name: "marks",
-      type: "symbol",
-      from: { data: "source" },
-      encode: {
-        update: {
-          x: { scale: "x", field: "Horsepower" },
-          y: { scale: "y", field: "Miles_per_Gallon" },
-          size: { scale: "size", field: "Acceleration" },
-          shape: { value: "circle" },
-          strokeWidth: { value: 2 },
-          opacity: { value: 0.5 },
-          stroke: { value: "#4682b4" },
-          fill: { value: "transparent" }
+      "name": "marks",
+      "type": "symbol",
+      "from": {"data": "source"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": {"scale": "size", "field": "Acceleration"},
+          "shape": {"value": "circle"},
+          "strokeWidth": {"value": 2},
+          "opacity": {"value": 0.5},
+          "stroke": {"value": "#4682b4"},
+          "fill": {"value": "transparent"}
         }
       }
     }
   ]
 };
 
-const handleError = (error: Error) => {
-  throw error;
-};
-const options: VegaOptions = { renderer: "svg" };
+const handleError = (error: Error) => { throw error };
+const options: VegaOptions = {renderer: "svg"};
 
 describe("VegaLite1", () => {
   it("has the correct media type", () => {
@@ -152,7 +144,7 @@ describe("VegaLite2", () => {
     expect(VegaLite2.MIMETYPE).toBe("application/vnd.vegalite.v2+json");
   });
 
-  it("renders the spec as SVG properly", done => {
+  it("renders the spec as SVG properly", (done) => {
     const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
@@ -173,7 +165,7 @@ describe("VegaLite3", () => {
     expect(VegaLite3.MIMETYPE).toBe("application/vnd.vegalite.v3+json");
   });
 
-  it("renders the spec as SVG properly", done => {
+  it("renders the spec as SVG properly", (done) => {
     const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
@@ -203,7 +195,7 @@ describe("Vega3", () => {
     expect(Vega3.MIMETYPE).toBe("application/vnd.vega.v3+json");
   });
 
-  it("renders the spec as SVG properly", done => {
+  it("renders the spec as SVG properly", (done) => {
     const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
@@ -224,7 +216,7 @@ describe("Vega4", () => {
     expect(Vega4.MIMETYPE).toBe("application/vnd.vega.v4+json");
   });
 
-  it("renders the spec as SVG properly", done => {
+  it("renders the spec as SVG properly", (done) => {
     const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();
@@ -245,7 +237,7 @@ describe("Vega5", () => {
     expect(Vega5.MIMETYPE).toBe("application/vnd.vega.v5+json");
   });
 
-  it("renders the spec as SVG properly", done => {
+  it("renders the spec as SVG properly", (done) => {
     const handleResult = () => {
       expect(wrapper.render()).toMatchSnapshot();
       done();

@@ -79,10 +79,9 @@ describe("newNotebookEpic", () => {
     const responseActions = await newNotebookEpic(action$)
       .pipe(toArray())
       .toPromise();
-    const filepath =
-      process.platform === "win32"
-        ? "\\home\\whatever\\Untitled.ipynb"
-        : "/home/whatever/Untitled.ipynb";
+    const filepath = process.platform === "win32"
+      ? "\\home\\whatever\\Untitled.ipynb"
+      : "/home/whatever/Untitled.ipynb";
 
     expect(responseActions).toEqual([
       {
@@ -113,51 +112,52 @@ describe("newNotebookEpic", () => {
 });
 
 describe("newNotebookEpicNamed", () => {
-  test("calls new Kernel after creating a new notebook with given name", async () => {
-    const action$ = ActionsObservable.of({
-      type: actions.NEW_NOTEBOOK,
-      payload: {
-        filepath: "/home/whatever2/some.ipynb",
-        cwd: "/home/whatever",
-        kernelSpec: {
-          name: "hylang"
-        },
-        kernelRef: "kRef",
-        contentRef: "cRef"
-      }
-    });
-    const responseActions = await newNotebookEpic(action$)
-      .pipe(toArray())
-      .toPromise();
-    const filepath =
-      process.platform === "win32"
+  test(
+    "calls new Kernel after creating a new notebook with given name",
+      async () => {
+      const action$ = ActionsObservable.of({
+        type: actions.NEW_NOTEBOOK,
+        payload: {
+          filepath: "/home/whatever2/some.ipynb",
+          cwd: "/home/whatever",
+          kernelSpec: {
+            name: "hylang"
+          },
+          kernelRef: "kRef",
+          contentRef: "cRef"
+        }
+      });
+      const responseActions = await newNotebookEpic(action$)
+        .pipe(toArray())
+        .toPromise();
+      const filepath = process.platform === "win32"
         ? "\\home\\whatever2\\some.ipynb"
         : "/home/whatever2/some.ipynb";
-
-    expect(responseActions).toEqual([
-      {
-        type: actions.FETCH_CONTENT_FULFILLED,
-        payload: {
-          contentRef: "cRef",
-          kernelRef: "kRef",
-          filepath,
-          model: {
-            type: "notebook",
-            mimetype: "application/x-ipynb+json",
-            format: "json",
-            content: toJS(
-              monocellNotebook
-                .setIn(["metadata", "kernel_info", "name"], "hylang")
-                .setIn(["metadata", "language_info", "name"], "hylang")
-            ),
-            writable: true,
-            name: "some.ipynb",
-            path: filepath,
-            created: expect.any(String),
-            last_modified: expect.any(String)
+  
+      expect(responseActions).toEqual([
+        {
+          type: actions.FETCH_CONTENT_FULFILLED,
+          payload: {
+            contentRef: "cRef",
+            kernelRef: "kRef",
+            filepath,
+            model: {
+              type: "notebook",
+              mimetype: "application/x-ipynb+json",
+              format: "json",
+              content: toJS(
+                monocellNotebook
+                  .setIn(["metadata", "kernel_info", "name"], "hylang")
+                  .setIn(["metadata", "language_info", "name"], "hylang")
+              ),
+              writable: true,
+              name: "some.ipynb",
+              path: filepath,
+              created: expect.any(String),
+              last_modified: expect.any(String)
+            }
           }
         }
-      }
-    ]);
-  });
+      ]);
+    });
 });

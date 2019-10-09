@@ -56,11 +56,11 @@ export class TextFile extends React.PureComponent<
   };
 
   componentDidMount(): void {
-    import(
-      /* webpackChunkName: "monaco-editor" */ "@nteract/monaco-editor"
-    ).then(module => {
-      this.setState({ Editor: module.default });
-    });
+    import(/* webpackChunkName: "monaco-editor" */ "@nteract/monaco-editor").then(
+      module => {
+        this.setState({ Editor: module.default });
+      }
+    );
   }
 
   render(): JSX.Element {

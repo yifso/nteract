@@ -211,9 +211,10 @@ export const newNotebookEpic = (
 
       const timestamp = new Date();
       const filepath =
-        (action.payload.filepath !== null &&
-          path.resolve(action.payload.filepath)) ||
-        path.join(action.payload.cwd, "Untitled.ipynb");
+        (
+          action.payload.filepath !== null &&
+          path.resolve(action.payload.filepath)
+        ) || path.join(action.payload.cwd, "Untitled.ipynb");
 
       return actions.fetchContentFulfilled({
         filepath,
