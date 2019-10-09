@@ -36,6 +36,8 @@
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.1.2",
     "react-redux": "^6.0.0",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.8.5",
     "redux": "^4.0.0"
   },
   "peerDependencies": {
