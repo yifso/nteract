@@ -70,7 +70,7 @@ export const kernelRefByContentRef = (
 /*
  * Returns the kernel associated with the current ContentRef.
  */
-export const kernelForContentRef = (
+export const kernelByContentRef = (
   state: AppState,
   ownProps: { contentRef: ContentRef }
 ) => {
