@@ -194,7 +194,7 @@ export const launchKernelByNameEpic = (
             return actions.launchKernelFailed({
               contentRef: action.payload.contentRef,
               error: new Error(
-                `A kernel named ${action.payload.kernelSpecName} does not appear to be available. Try installing the ${action.payload.kernelSpecName} kernelspec or selecting a kernel from the runtime menu.`
+                `A kernel named ${action.payload.kernelSpecName} does not appear to be available. Try installing the ${action.payload.kernelSpecName} kernelspec or selecting a different kernel.`
               ),
               kernelRef: action.payload.kernelRef
             });
@@ -238,7 +238,9 @@ export const launchKernelEpic = (
 
       ipc.send("nteract:ping:kernel", action.payload.kernelSpec);
 
-      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, { contentRef: action.payload.contentRef });
+      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, {
+        contentRef: action.payload.contentRef
+      });
 
       // Kill the old kernel by emitting the action to kill it if it exists
       let cleanupOldKernel$:
