@@ -87,7 +87,7 @@ function convertBundleIntoReact(
     );
   }
 
-  const words = bundle.content.split(/\s+/).reduce(
+  const words = bundle.content.split(/(\s+)/).reduce(
     (words: React.ReactNode[], word: string, index: number) => {
       // If this is a separator, re-add the space removed from split.
       if (index % 2 === 1) {
