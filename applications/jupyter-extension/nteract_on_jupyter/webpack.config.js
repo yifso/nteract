@@ -21,7 +21,7 @@ if (isProd) {
 }
 
 module.exports = {
-  externals: ["canvas", "fs"],
+  externals: ["canvas"],
   mode: isProd ? "production" : "development",
   devtool: isProd ? "hidden-source-map" : "cheap-eval-source-map",
   entry: {
@@ -37,6 +37,9 @@ module.exports = {
   target: "web",
   output: {
     chunkFilename: isProd ? "[name]-[chunkhash].bundle.js" : "[name].bundle.js"
+  },
+  node: {
+    fs: "empty"
   },
   module: {
     rules: [
