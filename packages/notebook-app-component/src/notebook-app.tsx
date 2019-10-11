@@ -222,7 +222,7 @@ const makeMapDispatchToCellProps = (
     toggleParameterCell: () =>
       dispatch(actions.toggleParameterCell({ id, contentRef })),
     sendInputReply: (value: string) =>
-      dispatch(actions.sendInputReply({ value })),
+      dispatch(actions.sendInputReply({ value, contentRef })),
 
     updateOutputMetadata: (
       index: number,
@@ -520,9 +520,7 @@ const makeMapStateToProps = (
 };
 
 const Cells = styled.div`
-  padding-top: var(--nt-spacing-m, 10px);
-  padding-left: var(--nt-spacing-m, 10px);
-  padding-right: var(--nt-spacing-m, 10px);
+  padding: var(--nt-spacing-m, 10px);
 `;
 
 const mapDispatchToProps = (dispatch: Dispatch): NotebookDispatchProps => ({
