@@ -21,7 +21,7 @@ const rootEpic = (
 ) =>
   combineEpics(...epics)(action$, store$, dependencies).pipe(
     catchError((error: any, source: Observable<any>) => {
-      console.log(error);
+      console.error(error);
       return source;
     })
   );
