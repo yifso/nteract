@@ -17,8 +17,8 @@ const code = (props: {
   language: string;
   value: string
 }): React.ReactElement<unknown> => (
-    <Source language={props.language}>{props.value}</Source>
-  );
+  <Source language={props.language}>{props.value}</Source>
+);
 
 const MarkdownRender = (props: ReactMarkdown.ReactMarkdownProps) => {
   const newProps: ReactMarkdown.ReactMarkdownProps = {
