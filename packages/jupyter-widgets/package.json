@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@jupyter-widgets/controls": "^1.5.2",
-    "backbone": "^1.4.0"
+    "backbone": "^1.4.0",
+    "jquery-ui": "^1.12.1"
   },
   "devDependencies": {
     "@types/backbone": "^1.4.1"

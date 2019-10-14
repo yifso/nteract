@@ -9,24 +9,32 @@ interface Props {
 }
 
 export default class Manager extends React.Component<Props> {
-  ref = React.createRef<HTMLDivElement>();
+  widgetContainerRef = React.createRef<HTMLDivElement>();
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      manager: new WidgetManager(this.ref.current as HTMLElement)
+      manager: null
     };
+  }
+
+  componentDidMount() {
+    if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
+      this.setState({
+        manager: new WidgetManager(this.widgetContainerRef.current)
+      });
+    }
   }
 
   render() {
     console.log(this.props);
     return (
       <React.Fragment>
-        <div ref={this.ref} />
         <BackboneWrapper
           model={this.props.model.get("state").toJS()}
           manager={this.state.manager}
           model_id={this.props.model_id}
+          widgetContainerRef={this.widgetContainerRef}
         />
       </React.Fragment>
     );
