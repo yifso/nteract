@@ -24,10 +24,10 @@ const MarkdownRender = (props: ReactMarkdown.ReactMarkdownProps) => {
     escapeHtml: false,
     plugins: [RemarkMathPlugin],
     renderers: {
-      ...props.renderers,
       math,
       inlineMath,
-      code
+      code,
+      ...props.renderers
     } as any
   };
 
