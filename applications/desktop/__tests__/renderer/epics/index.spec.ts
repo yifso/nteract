@@ -1,3 +1,4 @@
+import { Subject } from "rxjs";
 import { ActionsObservable, StateObservable } from "redux-observable";
 
 import epics, { retryAndEmitError } from "../../../src/notebook/epics";
@@ -7,7 +8,7 @@ describe("epics", () => {
     expect(Array.isArray(epics)).toBe(true);
 
     const action$ = new ActionsObservable();
-    const state$ = new StateObservable({});
+    const state$ = new StateObservable(new Subject(), {});
     const mapped = epics.map(epic => epic(action$, state$));
     expect(Array.isArray(mapped)).toBe(true);
   });
