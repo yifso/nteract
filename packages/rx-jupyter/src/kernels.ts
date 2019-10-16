@@ -1,6 +1,5 @@
 import { Subject, Subscriber } from "rxjs";
 import { ajax } from "rxjs/ajax";
-import { delay, retryWhen, share, tap } from "rxjs/operators";
 import { webSocket } from "rxjs/webSocket";
 import urljoin from "url-join";
 import URLSearchParams from "url-search-params";
