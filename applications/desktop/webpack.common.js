@@ -63,15 +63,20 @@ const rendererConfig = {
       {
         test: /\.tsx?$/,
         use: [configurator.tsLoaderConfig]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        use: [{ loader: "file-loader" }]
       }
     ]
   },
   resolve: {
     mainFields: ["nteractDesktop", "module", "main"],
     extensions: [".js", ".jsx", ".ts", ".tsx"],
-    alias: configurator.mergeDefaultAliases()
-  },
-  plugins: []
+    alias: {
+      ...configurator.mergeDefaultAliases()
+    }
+  }
 };
 
 module.exports = {

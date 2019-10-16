@@ -27,7 +27,6 @@ export default class Manager extends React.Component<Props> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         <BackboneWrapper
