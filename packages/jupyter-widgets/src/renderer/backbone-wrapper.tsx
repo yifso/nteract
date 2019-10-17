@@ -43,7 +43,7 @@ require("jquery-ui/themes/base/tooltip.css");
 type Indexed = { [index: string]: any };
 
 interface Props {
-  model: Indexed;
+  model: any;
   manager: any;
   model_id: any;
   widgetContainerRef: any;
@@ -53,6 +53,7 @@ export default class BackboneWrapper extends React.Component<Props> {
   async componentDidUpdate() {
     const { model, manager, widgetContainerRef } = this.props;
     if (manager) {
+      console.log(model);
       const managerModel = await manager.new_model({
         model_id: this.props.model_id,
         model_name: model._model_name,
@@ -61,7 +62,8 @@ export default class BackboneWrapper extends React.Component<Props> {
         view_name: model._view_name,
         view_module: model._view_module,
         view_module_version: model._view_module_version
-      });
+      }, model);
+      managerModel.on("change", (model: any) => {console.log(model)});
       const WidgetView = await manager.loadClass(
         managerModel.get("_view_name"),
         managerModel.get("_view_module"),

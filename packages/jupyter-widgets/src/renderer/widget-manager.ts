@@ -7,13 +7,18 @@ import {
   WidgetView,
   DOMWidgetModel
 } from "@jupyter-widgets/base";
+import { WidgetComm } from "./widget-comms";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   el: HTMLElement;
+  dispatch: Dispatch;
 
-  constructor(el: HTMLElement) {
+  constructor(el: HTMLElement, dispatch: Dispatch) {
     super();
     this.el = el;
+    this.dispatch = dispatch;
   }
 
   loadClass(className: string, moduleName: string, moduleVersion: string): any {
@@ -50,7 +55,12 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     return Promise.resolve({});
   }
 
-  _create_comm() {
-    return Promise.reject("no comms available");
+  _create_comm(comm_target_name: string,
+    model_id: string,
+    data?: any,
+    metadata?: any,
+    buffers?: ArrayBuffer[] | ArrayBufferView[]) {
+    console.log("_create_comm called");
+    return Promise.resolve(new WidgetComm({} as Dispatch, model_id, this.comm_target_name, "not used"));
   }
 }

@@ -2,19 +2,26 @@ import * as React from "react";
 import { WidgetManager } from "../renderer/widget-manager";
 import Renderer from "../renderer";
 import BackboneWrapper from "../renderer/backbone-wrapper";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 interface Props {
   model: any;
   model_id: any;
+  dispatch: Dispatch;
 }
 
-export default class Manager extends React.Component<Props> {
+interface State {
+  manager?: WidgetManager
+}
+
+class Manager extends React.Component<Props, State> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      manager: null
+      manager: undefined
     };
   }
 
@@ -39,3 +46,6 @@ export default class Manager extends React.Component<Props> {
     );
   }
 }
+
+export default connect(null, dispatch => {return {dispatch: dispatch}})(Manager);
+
