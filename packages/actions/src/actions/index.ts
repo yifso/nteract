@@ -214,6 +214,7 @@ export function acceptPayloadMessage(payload: {
 
 export function updateDisplay(payload: {
   content: {
+    output_type: "update_display_data";
     data: MediaBundle;
     metadata: JSONObject;
     transient: { display_id: string };
