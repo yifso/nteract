@@ -121,6 +121,7 @@
     "nteract-assets": "^4.0.0"
   },
   "devDependencies": {
-    "electron": "3.1.13"
+    "electron": "3.1.13",
+    "file-loader": "^4.2.0"
   }
 }
