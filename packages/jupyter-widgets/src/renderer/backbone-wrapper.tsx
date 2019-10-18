@@ -50,11 +50,17 @@ interface Props {
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
+  widget: any = undefined;
+  constructor(props: any){
+    super(props)
+    console.log("i feel like a new man")
+  }
   async componentDidUpdate() {
     const { model, manager, widgetContainerRef } = this.props;
-    if (manager) {
-      console.log(model);
-      const managerModel = await manager.new_model({
+    if (manager && this.widget === undefined) {
+      this.widget = null;
+      console.log("model yo", model);
+      const managerModel = await manager.new_widget({
         model_id: this.props.model_id,
         model_name: model._model_name,
         model_module: model._model_module,
@@ -63,7 +69,7 @@ export default class BackboneWrapper extends React.Component<Props> {
         view_module: model._view_module,
         view_module_version: model._view_module_version
       }, model);
-      managerModel.on("change", (model: any) => {console.log(model)});
+      //managerModel.on("change", (model: any) => {console.log(model)});
       const WidgetView = await manager.loadClass(
         managerModel.get("_view_name"),
         managerModel.get("_view_module"),
@@ -74,6 +80,8 @@ export default class BackboneWrapper extends React.Component<Props> {
         el: widgetContainerRef.current
       });
       widget.render();
+      this.widget = widget;
+      console.log("thiswidget", this.widget);
     }
   }
 
