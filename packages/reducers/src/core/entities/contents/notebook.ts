@@ -273,9 +273,11 @@ function appendOutput(
   const immutableOutput = createImmutableOutput(output);
 
   // We'll reduce the overall state based on each keypath, updating output
-  return state
-    .updateIn(keyPath, () => immutableOutput)
-    .setIn(["transient", "keyPathsForDisplays", displayID], keyPaths);
+  return keyPaths.reduce(
+    (currState: NotebookModel, kp: KeyPath) =>
+      currState.updateIn(kp, () => immutableOutput),
+    state
+  ).setIn(["transient", "keyPathsForDisplays", displayID], keyPaths);
 }
 
 function updateDisplay(
