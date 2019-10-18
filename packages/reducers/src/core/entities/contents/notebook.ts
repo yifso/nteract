@@ -17,11 +17,10 @@ import {
   insertCellAt,
   makeCodeCell,
   makeMarkdownCell,
-  makeRawCell, OnDiskDisplayData, OnDiskExecuteResult, OnDiskMediaBundle,
+  makeRawCell,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
-import { JSONObject } from "@nteract/data-explorer/lib/types";
 import {
   DocumentRecordProps,
   makeDocumentRecord,
@@ -205,53 +204,6 @@ function clearAllOutputs(
     .set("transient", transient);
 }
 
-// Utility function used in two reducers below
-function updateAllDisplaysWithID(
-  state: NotebookModel,
-  content: OnDiskExecuteResult | OnDiskDisplayData | {
-    output_type: "update_display_data";
-    data: OnDiskMediaBundle;
-    metadata: JSONObject;
-    transient?: {display_id?: string};
-  },
-): NotebookModel {
-  if (!content || !content.transient || !content.transient.display_id) {
-    return state;
-  }
-
-  const keyPaths: KeyPaths = state.getIn([
-    "transient",
-    "keyPathsForDisplays",
-    content.transient.display_id
-  ]);
-
-  const updateOutput = (output: any) => {
-    if (output) {
-      // We already have something here, don't change the other fields
-      return output.merge({
-        data: createFrozenMediaBundle(content.data),
-        metadata: fromJS(content.metadata || {}),
-      });
-    } else if (content.output_type === "update_display_data") {
-      // Nothing here and we have no valid output, just create a basic output
-      return {
-        data: createFrozenMediaBundle(content.data),
-        metadata: fromJS(content.metadata || {}),
-        output_type: "display_data",
-      };
-    } else {
-      // Nothing here, but we have a valid output
-      return createImmutableOutput(content);
-    }
-  };
-
-  const updateOneDisplay =
-    (currState: NotebookModel, keyPath: KeyPath) =>
-      currState.updateIn(keyPath, updateOutput);
-
-  return keyPaths.reduce(updateOneDisplay, state);
-}
-
 function appendOutput(
   state: NotebookModel,
   action: actionTypes.AppendOutput
@@ -284,11 +236,14 @@ function appendOutput(
   // }
 
   // We now have a display to track
-  const displayID = output.transient!.display_id;
-
-  if (!displayID || typeof displayID !== "string") {
-    return state;
+  let displayID;
+  let typedOutput;
+  if (output.output_type === "execute_result") {
+    typedOutput = output;
+  } else {
+    typedOutput = output;
   }
+  displayID = typedOutput.transient!.display_id;
 
   // Every time we see a display id we're going to capture the keypath
   // to the output
@@ -315,17 +270,44 @@ function appendOutput(
     // Append our current output's keyPath
     .push(keyPath);
 
-  return updateAllDisplaysWithID(
-    state.setIn(["transient", "keyPathsForDisplays", displayID], keyPaths),
-    output,
-  );
+  const immutableOutput = createImmutableOutput(output);
+
+  // We'll reduce the overall state based on each keypath, updating output
+  return keyPaths.reduce(
+    (currState: NotebookModel, kp: KeyPath) =>
+      currState.updateIn(kp, () => immutableOutput),
+    state
+  ).setIn(["transient", "keyPathsForDisplays", displayID], keyPaths);
 }
 
 function updateDisplay(
   state: NotebookModel,
   action: actionTypes.UpdateDisplay
 ): RecordOf<DocumentRecordProps> {
-  return updateAllDisplaysWithID(state, action.payload.content);
+  const { content } = action.payload;
+  if (!(content && content.transient && content.transient.display_id)) {
+    return state;
+  }
+  const displayID = content.transient.display_id;
+
+  const keyPaths: KeyPaths = state.getIn([
+    "transient",
+    "keyPathsForDisplays",
+    displayID
+  ]);
+
+  const updatedContent = {
+    data: createFrozenMediaBundle(content.data),
+    metadata: fromJS(content.metadata || {})
+  };
+
+  return keyPaths.reduce(
+    (currState: NotebookModel, kp: KeyPath) =>
+      currState.updateIn(kp, output => {
+        return output.merge(updatedContent);
+      }),
+    state
+  );
 }
 
 function focusNextCell(
