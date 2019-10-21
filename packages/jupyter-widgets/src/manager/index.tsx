@@ -19,6 +19,7 @@ interface State {
 
 class Manager extends React.Component<Props, State> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
+  static manager: WidgetManager;
 
   constructor(props: Props) {
     super(props);
@@ -27,10 +28,19 @@ class Manager extends React.Component<Props, State> {
     };
   }
 
+  getManager(){
+    if(Manager.manager == undefined){
+      Manager.manager = new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
+    }else{
+      Manager.manager.init(this.props.dispatch, this.props.model_lookup_by_id);
+    }
+    return Manager.manager;
+  }
+
   componentDidMount() {
     if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
       this.setState({
-        manager: new WidgetManager(this.widgetContainerRef.current, this.props.dispatch, this.props.model_lookup_by_id)
+        manager: new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
       });
     }
   }
@@ -40,7 +50,7 @@ class Manager extends React.Component<Props, State> {
       <React.Fragment>
         <BackboneWrapper
           model={this.props.model.get("state").toJS()}
-          manager={this.state.manager}
+          manager={this.getManager()}
           model_id={this.props.model_id}
           widgetContainerRef={this.widgetContainerRef}
         />

@@ -14,14 +14,11 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
-  el: HTMLElement;
   dispatch: Dispatch;
   model_comm_lookup: (id: string)=>any;
-  i = 0;
 
-  constructor(el: HTMLElement, dispatch: Dispatch, model_comm_lookup: (id: string)=>any) {
+  constructor(dispatch: Dispatch, model_comm_lookup: (id: string)=>any) {
     super();
-    this.el = el;
     this.dispatch = dispatch;
     this.model_comm_lookup = model_comm_lookup;
     // WidgetModel.serializers = {
@@ -29,6 +26,10 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     //   layout: {deserialize: unpack_models, serialize: pack_models},
     //   style: {deserialize: unpack_models},
     // };
+  }
+  init(dispatch: Dispatch, model_comm_lookup: (id: string)=>any) {
+    this.dispatch = dispatch;
+    this.model_comm_lookup = model_comm_lookup;
   }
 
   loadClass(className: string, moduleName: string, moduleVersion: string): any {
@@ -55,10 +56,9 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
 
   get_model(model_id: string): Promise<WidgetModel> | undefined {
     let model = super.get_model(model_id);
-    if(model === undefined && this.i < 10){
+    if(model === undefined){
       let model_state = this.model_comm_lookup(model_id).state;
       model = this.new_model_from_state_and_id(model_state, model_id);
-      this.i++;
     }
     return model;
   }
@@ -90,6 +90,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     return this.new_widget(modelInfo, state);
   }
 
+  new_widget(options: any, serialized_state: any = {}): Promise<WidgetModel>{
+    let widget = super.get_model(options.model_id);
+    if(!widget){
+      widget = super.new_widget(options, serialized_state);
+    }
+    return widget;
+  }
   // async new_model(options: ModelOptions, serialized_state: any = {}): Promise<NteractWidgetModel> {
   //   return super.new_model(options, serialized_state)
   //     .then(model => {
@@ -119,21 +126,4 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     console.log("_create_comm called");
     return Promise.resolve(new WidgetComm(this.dispatch, model_id, this.comm_target_name, "not used"));
   }
-}
-
-class NteractWidgetModel extends WidgetModel {
-  static serializers: ISerializers = {
-      ...WidgetModel.serializers,
-      layout: {deserialize: unpack_modelssss, serialize: pack_modelssss},
-      style: {deserialize: unpack_modelssss, serialize: pack_modelssss},
-  };
-}
-
-function unpack_modelssss(value?: any, manager?: base.ManagerBase<any>){
-  console.log("deserialize", value);
-  return value;
-}
-function pack_modelssss(value?: any, widget?: base.WidgetModel | undefined){
-  console.log("serialize", value);
-  return value.model_id;
 }

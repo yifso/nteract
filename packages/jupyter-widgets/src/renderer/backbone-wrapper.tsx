@@ -53,13 +53,11 @@ export default class BackboneWrapper extends React.Component<Props> {
   widget: any = undefined;
   constructor(props: any){
     super(props)
-    console.log("i feel like a new man")
   }
   async componentDidUpdate() {
     const { model, manager, widgetContainerRef } = this.props;
     if (manager && this.widget === undefined) {
       this.widget = null;
-      console.log("model yo", model);
       const managerModel = await manager.new_widget({
         model_id: this.props.model_id,
         model_name: model._model_name,
@@ -81,7 +79,7 @@ export default class BackboneWrapper extends React.Component<Props> {
       });
       widget.render();
       this.widget = widget;
-      console.log("thiswidget", this.widget);
+      //console.log("thiswidget", this.widget);
     }
   }
 
