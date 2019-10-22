@@ -16,9 +16,9 @@ import { HostRecord } from "@nteract/types";
 import { LanguageInfoMetadata } from "@nteract/types";
 import { System as NotificationSystem } from "react-notification-system";
 
+export * from "./bookstore";
 export * from "./cells";
 export * from "./contents";
-export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
 
