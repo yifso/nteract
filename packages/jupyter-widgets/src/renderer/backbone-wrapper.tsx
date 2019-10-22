@@ -4,7 +4,7 @@ import * as React from "react";
  * Import the styles for jupyter-widgets. This overrides some of the
  * styles that jQuery applies to the widgets.
  */
-// import "@jupyter-widgets/base/css/index.css";
+import "@jupyter-widgets/base/css/index.css";
 import "@jupyter-widgets/controls/css/widgets-base.css";
 import "@jupyter-widgets/controls/css/phosphor.css";
 import "@jupyter-widgets/controls/css/widgets.css";
