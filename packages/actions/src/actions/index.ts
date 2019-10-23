@@ -18,6 +18,7 @@ import {
 // Local modules
 import * as actionTypes from "../actionTypes";
 
+export * from "./bookstore";
 export * from "./cells";
 export * from "./contents";
 export * from "./hosts";

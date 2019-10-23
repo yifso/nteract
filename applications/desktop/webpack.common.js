@@ -65,8 +65,8 @@ const rendererConfig = {
         use: [configurator.tsLoaderConfig]
       },
       {
-        test: /\.(jpg|png)$/,
-        use: [{ loader: "file-loader" }]
+        test: /\.(jpg|png|gif)$/,
+        use: "file-loader"
       }
     ]
   },

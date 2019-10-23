@@ -1,12 +1,12 @@
 import * as React from "react";
-import { WidgetManager } from "./manager";
-import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import BackboneWrapper from "../renderer/backbone-wrapper";
+import { WidgetManager } from "./manager";
 
 interface Props {
   model: any;
-  model_id: any;
+  model_id: string;
   dispatch: Dispatch;
 }
 
@@ -54,6 +54,6 @@ class Manager extends React.Component<Props, State> {
 export default connect(
   null,
   dispatch => {
-    return { dispatch: dispatch };
+    return { dispatch };
   }
 )(Manager);
