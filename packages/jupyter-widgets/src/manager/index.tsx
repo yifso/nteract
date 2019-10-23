@@ -1,17 +1,18 @@
 import * as React from "react";
-import { WidgetManager } from "../renderer/widget-manager";
+import { RecordOf } from "immutable";
+import { WidgetManager } from "./widget-manager";
 import Renderer from "../renderer";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, selectors } from "@nteract/core";
+import { AppState, selectors, KernelNotStartedProps, LocalKernelProps, RemoteKernelProps } from "@nteract/core";
 import { commOpenAction, commMessageAction } from "@nteract/actions";
 
 interface Props {
   model: any;
   model_id: any;
   model_lookup_by_id: (id: string) => any;
-  kernel: any;
+  kernel?: RecordOf<KernelNotStartedProps> | RecordOf<LocalKernelProps> | RecordOf<RemoteKernelProps> | null | undefined
 }
 
 interface State {
@@ -33,25 +34,14 @@ class Manager extends React.Component<Props, State> {
     if(Manager.manager == undefined){
       Manager.manager = new WidgetManager(this.props.kernel, this.props.model_lookup_by_id)
     }else{
-      Manager.manager.init(this.props.kernel, this.props.model_lookup_by_id);
+      Manager.manager.update(this.props.kernel, this.props.model_lookup_by_id);
     }
     return Manager.manager;
   }
 
   getManager2(){
-    this.state.manager.init(this.props.kernel, this.props.model_lookup_by_id);
+    this.state.manager.update(this.props.kernel, this.props.model_lookup_by_id);
     return this.state.manager;
-  }
-  // componentDidUpdate(){
-  //   console.log(this.props.comms);
-  // }
-
-  componentDidMount() {
-    // if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
-    //   this.setState({
-    //     manager: new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
-    //   });
-    // }
   }
 
   render() {
