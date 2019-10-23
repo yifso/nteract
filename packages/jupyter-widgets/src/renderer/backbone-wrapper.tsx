@@ -1,4 +1,5 @@
 import * as React from "react";
+import { WidgetManager } from "../manager/manager";
 
 /**
  * Import the styles for jupyter-widgets. This overrides some of the
@@ -40,44 +41,18 @@ require("jquery-ui/themes/base/spinner.css");
 require("jquery-ui/themes/base/tabs.css");
 require("jquery-ui/themes/base/tooltip.css");
 
-type Indexed = { [index: string]: any };
-
 interface Props {
   model: any;
-  manager: any;
-  model_id: any;
-  widgetContainerRef: any;
+  manager: WidgetManager;
+  model_id: string;
+  widgetContainerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
   async componentDidUpdate() {
-    const { model, manager, widgetContainerRef } = this.props;
+    const { model, manager } = this.props;
     if (manager) {
-      console.log(model);
-      const managerModel = await manager.new_model(
-        {
-          model_id: this.props.model_id,
-          model_name: model._model_name,
-          model_module: model._model_module,
-          model_module_version: model._module_version,
-          view_name: model._view_name,
-          view_module: model._view_module,
-          view_module_version: model._view_module_version
-        },
-        model
-      );
-      managerModel.on("change", (model: any) => {
-        console.log(model);
-      });
-      const WidgetView = await manager.loadClass(
-        managerModel.get("_view_name"),
-        managerModel.get("_view_module"),
-        managerModel.get("_view_module_version")
-      );
-      const widget = new WidgetView({
-        model: managerModel,
-        el: widgetContainerRef.current
-      });
+      const widget = await manager.create_view(model, {});
       widget.render();
     }
   }

@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 
 interface Props {
   model: any;
-  model_id: any;
+  model_id: string;
   dispatch: Dispatch;
 }
 
@@ -38,7 +38,7 @@ class Manager extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        {this.props.model ? (
+        {this.props.model && this.state.manager ? (
           <BackboneWrapper
             model={this.props.model.get("state").toJS()}
             manager={this.state.manager}
