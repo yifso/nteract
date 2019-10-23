@@ -15,7 +15,7 @@ interface Props {
 }
 
 interface State {
-  manager?: WidgetManager
+  manager: WidgetManager
 }
 
 class Manager extends React.Component<Props, State> {
@@ -25,7 +25,7 @@ class Manager extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      manager: undefined
+      manager: new WidgetManager(this.props.kernel, this.props.model_lookup_by_id)
     };
   }
 
@@ -38,6 +38,10 @@ class Manager extends React.Component<Props, State> {
     return Manager.manager;
   }
 
+  getManager2(){
+    this.state.manager.init(this.props.kernel, this.props.model_lookup_by_id);
+    return this.state.manager;
+  }
   // componentDidUpdate(){
   //   console.log(this.props.comms);
   // }
