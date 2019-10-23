@@ -1,7 +1,6 @@
 import { stringifyNotebook, toJS } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 import FileSaver from "file-saver";
-import { sample } from "lodash";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
