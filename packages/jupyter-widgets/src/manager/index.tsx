@@ -5,12 +5,13 @@ import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState, selectors } from "@nteract/core";
+import { commOpenAction, commMessageAction } from "@nteract/actions";
 
 interface Props {
   model: any;
   model_id: any;
-  dispatch: Dispatch;
   model_lookup_by_id: (id: string) => any;
+  kernel: any;
 }
 
 interface State {
@@ -30,19 +31,23 @@ class Manager extends React.Component<Props, State> {
 
   getManager(){
     if(Manager.manager == undefined){
-      Manager.manager = new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
+      Manager.manager = new WidgetManager(this.props.kernel, this.props.model_lookup_by_id)
     }else{
-      Manager.manager.init(this.props.dispatch, this.props.model_lookup_by_id);
+      Manager.manager.init(this.props.kernel, this.props.model_lookup_by_id);
     }
     return Manager.manager;
   }
 
+  // componentDidUpdate(){
+  //   console.log(this.props.comms);
+  // }
+
   componentDidMount() {
-    if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
-      this.setState({
-        manager: new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
-      });
-    }
+    // if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
+    //   this.setState({
+    //     manager: new WidgetManager(this.props.dispatch, this.props.model_lookup_by_id)
+    //   });
+    // }
   }
 
   render() {
@@ -61,11 +66,9 @@ class Manager extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState, props: Props) => {
   return {
-    model_lookup_by_id: (model_id: string) => selectors.modelById(state, { commId: model_id }).toJS()
+    model_lookup_by_id: (model_id: string) => selectors.modelById(state, { commId: model_id }).toJS(),
+    kernel: selectors.currentKernel(state)
   };
 };
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {dispatch: dispatch}
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Manager);
+export default connect(mapStateToProps)(Manager);
 

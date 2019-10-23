@@ -14,21 +14,17 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
-  dispatch: Dispatch;
   model_comm_lookup: (id: string)=>any;
+  kernel: any;
 
-  constructor(dispatch: Dispatch, model_comm_lookup: (id: string)=>any) {
+  constructor(kernel: any, model_comm_lookup: (id: string)=>any) {
     super();
-    this.dispatch = dispatch;
+    this.kernel = kernel;
     this.model_comm_lookup = model_comm_lookup;
-    // WidgetModel.serializers = {
-    //   ...WidgetModel.serializers,
-    //   layout: {deserialize: unpack_models, serialize: pack_models},
-    //   style: {deserialize: unpack_models},
-    // };
   }
-  init(dispatch: Dispatch, model_comm_lookup: (id: string)=>any) {
-    this.dispatch = dispatch;
+
+  init(kernel: any, model_comm_lookup: (id: string)=>any) {
+    this.kernel = kernel;
     this.model_comm_lookup = model_comm_lookup;
   }
 
@@ -97,14 +93,6 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     }
     return widget;
   }
-  // async new_model(options: ModelOptions, serialized_state: any = {}): Promise<NteractWidgetModel> {
-  //   return super.new_model(options, serialized_state)
-  //     .then(model => {
-  //       model.style = {};
-  //       model.layout = {};
-  //       return Promise.resolve(model);
-  //     });
-  // }
 
   display_view(
     msg: KernelMessage.IMessage,
@@ -124,6 +112,6 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     metadata?: any,
     buffers?: ArrayBuffer[] | ArrayBufferView[]) {
     console.log("_create_comm called");
-    return Promise.resolve(new WidgetComm(this.dispatch, model_id, this.comm_target_name, "not used"));
+    return Promise.resolve(new WidgetComm(model_id, this.comm_target_name, "not used", this.kernel));
   }
 }

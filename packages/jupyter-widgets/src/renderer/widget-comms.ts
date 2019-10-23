@@ -1,36 +1,27 @@
 import { IClassicComm } from "@jupyter-widgets/base"
-import { commOpenAction, commMessageAction } from "@nteract/actions";
 import { Dispatch } from "redux";
-import { createCommMessage } from "@nteract/epics/lib/comm";
+import { createCommMessage, createCommOpenMessage } from "@nteract/epics/lib/comm";
+import { childOf, ofMessageType } from "@nteract/messaging";
+import { Observable } from "rxjs";
 
 export class WidgetComm implements IClassicComm {
     comm_id: string;
     target_name: string;
     target_module: string;
-    store_dispatch: Dispatch;
+    kernel: any;
 
-    constructor(store_dispatch: Dispatch, comm_id: string, target_name:string, target_module: string){
+    constructor(comm_id: string, target_name:string, target_module: string, kernel: any){
         this.comm_id = comm_id;
         this.target_name = target_name;
         this.target_module = target_module;
-        this.store_dispatch = store_dispatch;
+        this.kernel = kernel;
     }
 
     open(data: any, callbacks: any, metadata?: any, buffers?: ArrayBuffer[] | ArrayBufferView[]): string{
-        const message = {
-            content: {
-                comm_id: this.comm_id,
-                target_name: this.target_name,
-                data,
-                metadata
-            },
-            buffers
-        }
-        console.log("commopen", message);
-        this.store_dispatch(commOpenAction(message));
-        // for(let callback of callbacks){
-        //     callback();
-        // }
+        const message = createCommOpenMessage(this.comm_id, this.target_name, this.flattenBufferArrays(buffers), this.target_module);
+        //console.log("commopen", message);
+        this.kernel.channels.next(message);
+
         if(callbacks.iopub)
         {
             callbacks.iopub.status({content: {execution_state: "idle"}});
@@ -39,30 +30,27 @@ export class WidgetComm implements IClassicComm {
     }
 
     send(data: any, callbacks: any, metadata?: any, buffers?: ArrayBuffer[] | ArrayBufferView[]): string {
-        // Send the message
-        /*const message = {
-            content: {
-                comm_id: this.comm_id,
-                data
-            },
-            buffers
-        }*/
+        //Create message
         const message = createCommMessage(this.comm_id, data, this.flattenBufferArrays(buffers));
-        console.log("sending message", message);
-        this.store_dispatch(commMessageAction(message));
-        // Fire all the callbacks now since dispatch isn't async, so it is done by now
-        // for(let callback of callbacks){
-        //     callback();
-        // }
-        if(callbacks.iopub)
-        {
-            callbacks.iopub.status({content: {execution_state: "idle"}});
-        }
-        return ""; // It doesn't appear that this is used anywhere, so we'll return an empty string
+        //Send
+        //console.log("sending message", message);
+        this.kernel.channels.next(message);
+        //Register callbacks
+        this.kernel.channels.pipe(
+            childOf(message)
+        ).subscribe((reply: any) => {
+            console.log("reply", reply);
+            let callbackFunc = callbacks[reply.channel][reply.header.msg_type];
+            if(callbackFunc){
+                callbackFunc(reply);
+            }
+        });
+        return message.header.msg_id;
     }
 
     close(data?: any, callbacks?: any, metadata?: any, buffers?: ArrayBuffer[] | ArrayBufferView[]): string{
         console.log("close");
+        return "";
     }
 
      /**
@@ -70,7 +58,14 @@ export class WidgetComm implements IClassicComm {
      * @param  callback, which is given a message
      */
     on_msg(callback: (x: any) => void): void{
-        console.log("on_msg not implemented");
+        console.log("on_msg");
+        this.kernel.channels.pipe(
+            ofMessageType("comm_msg"),
+            withCommId(this.comm_id)
+        ).subscribe((msg:any) => {
+            console.log("calling back", msg);
+            callback(msg);
+        })
     }
 
     /**
@@ -78,7 +73,14 @@ export class WidgetComm implements IClassicComm {
      * @param  callback, which is given a message
      */
     on_close(callback: (x: any) => void): void{
-        console.log("on_close not implemented");
+        console.log("on_close");
+        this.kernel.channels.pipe(
+            ofMessageType("comm_close"),
+            withCommId(this.comm_id)
+        ).subscribe((msg:any) => {
+            console.log("calling back", msg);
+            callback(msg);
+        })
     }
 
     flattenBufferArrays(buffers?: ArrayBuffer[] | ArrayBufferView[]): Uint8Array | undefined{
@@ -94,4 +96,26 @@ export class WidgetComm implements IClassicComm {
         }
         return flattened;
     }
+}
+
+/**
+ * operator for getting all messages that declare their parent header as
+ * parentMessage's header.
+ *
+ * @param parentMessage The parent message whose children we should fetch
+ *
+ * @returns A function that takes an Observable of kernel messages and returns
+ * messages that are children of parentMessage.
+ */
+function withCommId(comm_id: string) {
+    return (source: Observable<any>) => {
+        return Observable.create((subscriber: any) => source.subscribe(msg => {
+            if (msg && msg.content && msg.content.comm_id === comm_id) {
+                subscriber.next(msg);
+            }
+        }, 
+        // be sure to handle errors and completions as appropriate and
+        // send them along
+        err => subscriber.error(err), () => subscriber.complete()));
+    };
 }
