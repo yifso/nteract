@@ -4,6 +4,15 @@ import * as controls from "@jupyter-widgets/controls";
 import { DOMWidgetView, DOMWidgetModel } from "@jupyter-widgets/base";
 import { Dispatch } from "redux";
 
+interface IDomWidgetModel extends DOMWidgetModel {
+  _model_name: string;
+  _model_module: string;
+  _module_version: string;
+  _view_name: string;
+  _view_module: string;
+  _view_module_version: string;
+}
+
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   el: HTMLElement;
   dispatch: Dispatch;
@@ -65,12 +74,12 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     const managerModel = await this.new_model(
       {
         model_id: model.model_id,
-        model_name: model._model_name,
-        model_module: model._model_module,
-        model_module_version: model._module_version,
-        view_name: model._view_name,
-        view_module: model._view_module,
-        view_module_version: model._view_module_version
+        model_name: (model as IDomWidgetModel)._model_name,
+        model_module: (model as IDomWidgetModel)._model_module,
+        model_module_version: (model as IDomWidgetModel)._module_version,
+        view_name: (model as IDomWidgetModel)._view_name,
+        view_module: (model as IDomWidgetModel)._view_module,
+        view_module_version: (model as IDomWidgetModel)._view_module_version
       },
       model
     );
