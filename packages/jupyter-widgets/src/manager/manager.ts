@@ -73,7 +73,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   ): Promise<DOMWidgetView> {
     const managerModel = await this.new_model(
       {
-        model_id: model.model_id,
+        model_id: options.model_id,
         model_name: (model as IDomWidgetModel)._model_name,
         model_module: (model as IDomWidgetModel)._model_module,
         model_module_version: (model as IDomWidgetModel)._module_version,
@@ -83,13 +83,15 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
       },
       model
     );
-    managerModel.on("change", (model: any) => {
-      console.log(model);
-    });
-    return this.loadClass(
+    const WidgetView = await this.loadClass(
       managerModel.get("_view_name"),
       managerModel.get("_view_module"),
       managerModel.get("_view_module_version")
     );
+    const widget = new WidgetView({
+      model: managerModel,
+      el: options.el || this.el
+    });
+    return widget;
   }
 }

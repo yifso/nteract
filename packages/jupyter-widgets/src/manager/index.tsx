@@ -38,7 +38,7 @@ class Manager extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        {this.props.model && this.state.manager ? (
+        {this.props.model ? (
           <BackboneWrapper
             model={this.props.model.get("state").toJS()}
             manager={this.state.manager}

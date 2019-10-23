@@ -43,16 +43,19 @@ require("jquery-ui/themes/base/tooltip.css");
 
 interface Props {
   model: any;
-  manager: WidgetManager;
+  manager?: WidgetManager;
   model_id: string;
   widgetContainerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
   async componentDidUpdate() {
-    const { model, manager } = this.props;
+    const { model, manager, widgetContainerRef } = this.props;
     if (manager) {
-      const widget = await manager.create_view(model, {});
+      const widget = await manager.create_view(model, {
+        model_id: this.props.model_id,
+        el: widgetContainerRef.current
+      });
       widget.render();
     }
   }
