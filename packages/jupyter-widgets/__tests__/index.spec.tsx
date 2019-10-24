@@ -22,16 +22,14 @@ describe("WidgetDisplay", () => {
       description: "Test:",
       description_tooltip: null,
       disabled: false,
-      layout: "IPY_MODEL_db277618a5c443009a6aa5b07f6b1812",
       max: 10,
       min: 0,
       orientation: "horizontal",
       readout: true,
       readout_format: "d",
       step: 1,
-      style: "IPY_MODEL_2e810dab21354e9381f53582e51e9a79",
       value: 7
     };
-    expect(<WidgetDisplay data={data} model={model} />).not.toBeNull();
+    expect(<WidgetDisplay data={data} model={model} />).toMatchSnapshot();
   });
 });

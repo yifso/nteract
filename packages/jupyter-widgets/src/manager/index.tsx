@@ -1,9 +1,10 @@
 import * as React from "react";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { WidgetManager } from "./manager";
+import { WidgetModel } from "@jupyter-widgets/base";
 
 interface Props {
-  model: any;
+  model: WidgetModel;
   model_id: string;
 }
 
