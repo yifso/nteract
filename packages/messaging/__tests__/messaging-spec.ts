@@ -315,7 +315,6 @@ describe("executionCounts", () => {
   });
 });
 
-
 describe("kernelStatuses", () => {
   it("extracts all the execution states from status messages", () => {
     return of(
