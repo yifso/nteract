@@ -14,7 +14,7 @@ interface State {
   manager?: WidgetManager;
 }
 
-class Manager extends React.Component<Props, State> {
+export default class Manager extends React.Component<Props, State> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
 
   constructor(props: Props) {
@@ -27,10 +27,7 @@ class Manager extends React.Component<Props, State> {
   componentDidMount() {
     if (this.widgetContainerRef && this.widgetContainerRef.current !== null) {
       this.setState({
-        manager: new WidgetManager(
-          this.widgetContainerRef.current,
-          this.props.dispatch
-        )
+        manager: new WidgetManager(this.widgetContainerRef.current)
       });
     }
   }
@@ -50,10 +47,3 @@ class Manager extends React.Component<Props, State> {
     );
   }
 }
-
-export default connect(
-  null,
-  dispatch => {
-    return { dispatch };
-  }
-)(Manager);

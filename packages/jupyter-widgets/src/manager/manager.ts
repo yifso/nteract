@@ -15,12 +15,10 @@ interface IDomWidgetModel extends DOMWidgetModel {
 
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   el: HTMLElement;
-  dispatch: Dispatch;
 
-  constructor(el: HTMLElement, dispatch: Dispatch) {
+  constructor(el: HTMLElement) {
     super();
     this.el = el;
-    this.dispatch = dispatch;
   }
 
   loadClass(className: string, moduleName: string, moduleVersion: string): any {
