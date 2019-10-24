@@ -162,7 +162,7 @@ export const payloads = () => (
  */
 export const executionCounts = () => (source: Observable<JupyterMessage>) =>
   source.pipe(
-    ofMessageType("execute_input"),
+    ofMessageType("execute_input", "execute_reply"),
     map(entry => entry.content.execution_count)
   );
 

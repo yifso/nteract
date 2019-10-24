@@ -1,6 +1,6 @@
 import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, KernelRef } from "@nteract/types";
-import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import { formatDistanceToNow } from "date-fns";
 import React from "react";
 import { connect } from "react-redux";
 
@@ -58,7 +58,7 @@ export class StatusBar extends React.Component<Props> {
       <Bar>
         <RightStatus>
           {this.props.lastSaved ? (
-            <p> Last saved {distanceInWordsToNow(this.props.lastSaved)} </p>
+            <p> Last saved {formatDistanceToNow(this.props.lastSaved)} </p>
           ) : (
             <p> Not saved yet </p>
           )}
