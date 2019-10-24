@@ -1,7 +1,6 @@
 import * as React from "react";
 import { RecordOf } from "immutable";
 import { WidgetManager } from "./widget-manager";
-import Renderer from "../renderer";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

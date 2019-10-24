@@ -13,6 +13,14 @@ import { WidgetComm } from "./widget-comms";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
+interface IDomWidgetModel extends DOMWidgetModel {
+  _model_name: string;
+  _model_module: string;
+  _module_version: string;
+  _view_name: string;
+  _view_module: string;
+  _view_module_version: string;
+}
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   model_comm_lookup: (id: string)=>any;
   kernel: any;
@@ -148,5 +156,46 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     //TODO: Check if we need to open a comm
     //TODO: Find a way to supply correct target module (only used in comm opens)
     return Promise.resolve(new WidgetComm(model_id, this.comm_target_name, "<target module>", this.kernel));
+  }
+
+  /**
+   * This method creates a view for a given model. It starts off
+   * by registering a new model from the serialized model data. It
+   * then uses the loadClass method to resolve a reference to the
+   * WidgetView. Finally, it returns a reference to that Widget.
+   * Note that we don't display the view here. Instead, we invoke
+   * the `render` method on the WidgetView from within the
+   * `BackboneWrapper` component and pass a reference to a React
+   * element in this method.
+   *
+   * @param model   The Backbone-model associated with the widget
+   * @param options Configuration options for rendering the widget
+   */
+  async create_view(
+    model: DOMWidgetModel,
+    options: any
+  ): Promise<DOMWidgetView> {
+    const managerModel = await this.new_widget(
+      {
+        model_id: options.model_id,
+        model_name: (model as IDomWidgetModel)._model_name,
+        model_module: (model as IDomWidgetModel)._model_module,
+        model_module_version: (model as IDomWidgetModel)._module_version,
+        view_name: (model as IDomWidgetModel)._view_name,
+        view_module: (model as IDomWidgetModel)._view_module,
+        view_module_version: (model as IDomWidgetModel)._view_module_version
+      },
+      model
+    );
+    const WidgetView = await this.loadClass(
+      managerModel.get("_view_name"),
+      managerModel.get("_view_module"),
+      managerModel.get("_view_module_version")
+    );
+    const widget = new WidgetView({
+      model: managerModel,
+      el: options.el
+    });
+    return widget;
   }
 }
