@@ -53,12 +53,17 @@ export class StatusBar extends React.Component<Props> {
 
   render() {
     const name = this.props.kernelSpecDisplayName || "Loading...";
-
+    console.log(this.props.lastSaved);
     return (
       <Bar>
         <RightStatus>
           {this.props.lastSaved ? (
-            <p> Last saved {formatDistanceToNow(this.props.lastSaved)} </p>
+            <p>
+              {" "}
+              Last saved {formatDistanceToNow(
+                new Date(this.props.lastSaved)
+              )}{" "}
+            </p>
           ) : (
             <p> Not saved yet </p>
           )}
