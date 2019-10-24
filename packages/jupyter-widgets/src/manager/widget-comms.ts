@@ -1,7 +1,7 @@
 import { IClassicComm } from "@jupyter-widgets/base"
 import { Dispatch } from "redux";
 import { createCommMessage, createCommOpenMessage } from "@nteract/epics/lib/comm";
-import { childOf, ofMessageType, JupyterMessage } from "@nteract/messaging";
+import { childOf, ofMessageType, withCommId, JupyterMessage } from "@nteract/messaging";
 import { Observable } from "rxjs";
 
 /**
@@ -148,23 +148,3 @@ export class WidgetComm implements IClassicComm {
     }
 }
 
-/**
- * operator for getting all messages with the given comm id
- *
- * @param comm_id The comm id that we are filtering by
- *
- * @returns A function that takes an Observable of kernel messages and returns
- * messages that have the given comm id
- */
-function withCommId(comm_id: string) {
-    return (source: Observable<any>) => {
-        return Observable.create((subscriber: any) => source.subscribe(msg => {
-            if (msg && msg.content && msg.content.comm_id === comm_id) {
-                subscriber.next(msg);
-            }
-        }, 
-        // be sure to handle errors and completions as appropriate and
-        // send them along
-        err => subscriber.error(err), () => subscriber.complete()));
-    };
-}

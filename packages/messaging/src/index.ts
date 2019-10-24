@@ -64,6 +64,27 @@ export function childOf(
 }
 
 /**
+ * operator for getting all messages with the given comm id
+ *
+ * @param comm_id The comm id that we are filtering by
+ *
+ * @returns A function that takes an Observable of kernel messages and returns
+ * messages that have the given comm id
+ */
+export function withCommId(comm_id: string): (source: Observable<JupyterMessage<MessageType, any>>) => any  {
+  return (source: Observable<JupyterMessage>) => {
+      return Observable.create((subscriber: Subscriber<JupyterMessage>) => source.subscribe(msg => {
+          if (msg && msg.content && msg.content.comm_id === comm_id) {
+              subscriber.next(msg);
+          }
+      }, 
+      // be sure to handle errors and completions as appropriate and
+      // send them along
+      err => subscriber.error(err), () => subscriber.complete()));
+  };
+}
+
+/**
  * ofMessageType is an Rx Operator that filters on msg.header.msg_type
  * being one of messageTypes.
  *
