@@ -33,7 +33,7 @@ describe("BackboneWrapper", () => {
       <BackboneWrapper
         model={model}
         model_id="f5b390fef51d5aa538984bd8"
-        manager={new WidgetManager(containerRef.current, null as any)}
+        manager={new WidgetManager(containerRef.current)}
         widgetContainerRef={React.createRef()}
       />
     ).not.toBeNull();

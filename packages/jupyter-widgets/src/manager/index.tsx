@@ -1,6 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { WidgetManager } from "./manager";
 

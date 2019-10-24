@@ -2,7 +2,6 @@ import * as base from "@jupyter-widgets/base";
 import { DOMWidgetModel, DOMWidgetView } from "@jupyter-widgets/base";
 import * as controls from "@jupyter-widgets/controls";
 import { KernelMessage } from "@jupyterlab/services";
-import { Dispatch } from "redux";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
