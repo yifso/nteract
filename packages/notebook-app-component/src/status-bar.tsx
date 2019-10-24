@@ -58,7 +58,9 @@ export class StatusBar extends React.Component<Props> {
       <Bar>
         <RightStatus>
           {this.props.lastSaved ? (
-            <p> Last saved {formatDistanceToNow(this.props.lastSaved)} </p>
+            <p>
+              Last saved {formatDistanceToNow(new Date(this.props.lastSaved))}
+            </p>
           ) : (
             <p> Not saved yet </p>
           )}
