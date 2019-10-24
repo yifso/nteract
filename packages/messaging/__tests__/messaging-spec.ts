@@ -287,6 +287,32 @@ describe("executionCounts", () => {
         expect(arr).toEqual([0, 1]);
       });
   });
+  it("extracts all execution counts from a session", () => {
+    return of(
+      status("starting"),
+      status("idle"),
+      status("busy"),
+      executeReply({
+        status: "idle",
+        execution_count: 0
+      }),
+      displayData({ data: { "text/plain": "woo" } }),
+      displayData({ data: { "text/plain": "hoo" } }),
+      executeReply({
+        status: "idle",
+        execution_count: 1
+      }),
+      status("idle")
+    )
+      .pipe(
+        executionCounts(),
+        toArray()
+      )
+      .toPromise()
+      .then(arr => {
+        expect(arr).toEqual([0, 1]);
+      });
+  });
 });
 
 describe("kernelStatuses", () => {
