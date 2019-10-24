@@ -12,6 +12,13 @@ interface State {
   manager?: WidgetManager;
 }
 
+/**
+ * This component is is a wrapper component that initializes a
+ * WidgetManager singleton and passes a model reference to the
+ * BackboneModelWrapper. It's doing most of the heavy lifting with
+ * respect to bridging the kernels comms that the WidgetManager provides,
+ * our client-side state model, and the view.
+ */
 export default class Manager extends React.Component<Props, State> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
 

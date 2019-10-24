@@ -12,6 +12,12 @@ interface IDomWidgetModel extends DOMWidgetModel {
   _view_module_version: string;
 }
 
+/**
+ * The WidgetManager extends the ManagerBase class and is required
+ * by the ipywidgets implementation for rendering all models. This
+ * WidgetManager contains some overrides to get it to play nice
+ * with our RxJS-based kernel communication.
+ */
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   el: HTMLElement;
 
@@ -20,6 +26,16 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     this.el = el;
   }
 
+  /**
+   * Given a class name and module reference, this method will
+   * attempt to resolve a reference to that module if it is found.
+   * For non-supported widget models, this method will through
+   * an error.
+   *
+   * @param className     The name of the WidgetView to load
+   * @param moduleName    The module to load the widget from
+   * @param moduleVersion The module version to laod from
+   */
   loadClass(className: string, moduleName: string, moduleVersion: string): any {
     return new Promise(function(resolve, reject) {
       if (moduleName === "@jupyter-widgets/controls") {
@@ -64,6 +80,19 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     return Promise.resolve(null as any);
   }
 
+  /**
+   * This method creates a view for a given model. It starts off
+   * by registering a new model from the serialized model data. It
+   * then uses the loadClass method to resolve a reference to the
+   * WidgetView. Finally, it returns a reference to that Widget.
+   * Note that we don't display the view here. Instead, we invoke
+   * the `render` method on the WidgetView from within the
+   * `BackboneWrapper` component and pass a reference to a React
+   * element in this method.
+   *
+   * @param model   The Backbone-model associated with the widget
+   * @param options Configuration options for rendering the widget
+   */
   async create_view(
     model: DOMWidgetModel,
     options: any
