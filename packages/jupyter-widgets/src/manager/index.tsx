@@ -7,7 +7,6 @@ import { WidgetManager } from "./manager";
 interface Props {
   model: any;
   model_id: string;
-  dispatch: Dispatch;
 }
 
 interface State {
