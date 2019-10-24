@@ -104,7 +104,8 @@
       "^@nteract/vega-embed-v3": "@nteract/vega-embed-v3",
       "^@nteract/([^/]*)$": "<rootDir>/packages/$1/src",
       "^(ansi-to-react|enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
-      "\\.css$": "<rootDir>/scripts/noop-module.ts"
+      "\\.css$": "<rootDir>/scripts/noop-module.ts",
+      "react-syntax-highlighter/dist/esm/styles/prism/.+": "<rootDir>/scripts/noop-module.ts"
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/scripts",
@@ -173,7 +174,7 @@
     "@types/react-json-tree": "^0.6.8",
     "@types/react-notification-system": "^0.2.39",
     "@types/react-redux": "^7.0.0",
-    "@types/react-syntax-highlighter": "^0.0.8",
+    "@types/react-syntax-highlighter": "^11.0.1",
     "@types/react-table": "^6.7.21",
     "@types/react-test-renderer": "^16.0.3",
     "@types/react-timeago": "^4.1.0",
