@@ -14,9 +14,7 @@ import {
 import { commOpenAction, commMessageAction } from "@nteract/actions";
 import { WidgetModel } from "@jupyter-widgets/base";
 
-interface Props {
-  model: WidgetModel;
-  model_id: string;
+interface ConnectedProps {
   modelById: (id: string) => any;
   kernel?:
     | RecordOf<KernelNotStartedProps>
@@ -24,6 +22,12 @@ interface Props {
     | RecordOf<RemoteKernelProps>
     | null;
 }
+interface OwnProps {
+  model: WidgetModel;
+  model_id: string;
+}
+
+type Props = ConnectedProps & OwnProps;
 
 /**
  * This component is is a wrapper component that initializes a
@@ -73,7 +77,7 @@ class Manager extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState, props: Props) => {
+const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   return {
     modelById: (model_id: string) =>
       selectors.modelById(state, { commId: model_id }).toJS(),
