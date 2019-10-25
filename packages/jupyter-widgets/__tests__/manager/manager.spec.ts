@@ -1,10 +1,12 @@
 import { IntSliderView } from "@jupyter-widgets/controls";
-import { WidgetManager } from "../../src/manager/manager";
+import { WidgetManager } from "../../src/manager/widget-manager";
+import { DOMWidgetModel } from "@jupyter-widgets/base";
 
 describe("WidgetManager", () => {
   describe("loadClass", () => {
     it("returns a class if it exists", () => {
-      const manager = new WidgetManager(document.createElement("div"));
+      const modelById = (id: string) => undefined;
+      const manager = new WidgetManager(null, modelById);
       const view = manager.loadClass(
         "IntSliderView",
         "@jupyter-widgets/controls",
@@ -15,7 +17,8 @@ describe("WidgetManager", () => {
   });
   describe("create_view", () => {
     it("returns a widget mounted on the provided element", async () => {
-      const manager = new WidgetManager(document.createElement("div"));
+      const modelById = (id: string) => undefined;
+      const manager = new WidgetManager(null, modelById);
       const model = {
         _dom_classes: [],
         _model_module: "@jupyter-widgets/controls",

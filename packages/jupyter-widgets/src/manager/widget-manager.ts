@@ -104,6 +104,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
       view_module: state._view_module,
       view_module_version: state._view_module_version
     };
+    console.log(modelInfo);
     return this.new_widget(modelInfo, state);
   }
 
@@ -156,14 +157,18 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   ) {
     //TODO: Check if we need to open a comm
     //TODO: Find a way to supply correct target module (only used in comm opens)
-    return Promise.resolve(
-      new WidgetComm(
-        model_id,
-        this.comm_target_name,
-        "<target module>",
-        this.kernel
-      )
-    );
+    if (this.kernel) {
+      return Promise.resolve(
+        new WidgetComm(
+          model_id,
+          this.comm_target_name,
+          "<target module>",
+          this.kernel
+        )
+      );
+    } else {
+      return Promise.reject("Kernel is null or undefined");
+    }
   }
 
   /**
@@ -179,10 +184,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param model   The Backbone-model associated with the widget
    * @param options Configuration options for rendering the widget
    */
-  async create_view(
-    model: DOMWidgetModel,
-    options: any
-  ): Promise<DOMWidgetView> {
+  async create_view(model: any, options: any): Promise<DOMWidgetView> {
     const managerModel = await this.new_widget(
       {
         model_id: options.model_id,

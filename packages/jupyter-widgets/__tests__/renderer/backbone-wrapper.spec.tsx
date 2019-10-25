@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import BackboneWrapper from "../../src/renderer/backbone-wrapper";
-import { WidgetManager } from "../../src/manager/manager";
+import { WidgetManager } from "../../src/manager/widget-manager";
 
 describe("BackboneWrapper", () => {
   it("can render an IntSlider", () => {
@@ -29,11 +29,12 @@ describe("BackboneWrapper", () => {
       value: 7
     };
     const containerRef = React.createRef<HTMLDivElement>();
+    const modelById = (id: string) => undefined;
     expect(
       <BackboneWrapper
         model={model}
         model_id="f5b390fef51d5aa538984bd8"
-        manager={new WidgetManager(containerRef.current)}
+        manager={new WidgetManager(null, modelById)}
         widgetContainerRef={React.createRef()}
       />
     ).not.toBeNull();
