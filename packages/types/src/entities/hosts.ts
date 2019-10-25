@@ -18,6 +18,11 @@ export interface ServerConfig {
   wsProtocol?: string | string[];
 }
 
+export interface JupyterHubServerConfig {
+  endpoint: string;
+  ajaxOptions?: Partial<AjaxRequest>;
+}
+
 export interface EmptyHost {
   type: "empty";
   bookstoreEnabled?: boolean;
