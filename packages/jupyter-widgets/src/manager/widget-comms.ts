@@ -1,5 +1,4 @@
 import { IClassicComm } from "@jupyter-widgets/base";
-import { Dispatch } from "redux";
 import {
   createCommMessage,
   createCommOpenMessage
@@ -10,7 +9,6 @@ import {
   withCommId,
   JupyterMessage
 } from "@nteract/messaging";
-import { Observable } from "rxjs";
 
 /**
  * Class used by widgets to communicate with the backend

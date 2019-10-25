@@ -3,7 +3,6 @@ import { RecordOf } from "immutable";
 import { WidgetManager } from "./widget-manager";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import {
   AppState,
   selectors,
@@ -11,7 +10,6 @@ import {
   LocalKernelProps,
   RemoteKernelProps
 } from "@nteract/core";
-import { commOpenAction, commMessageAction } from "@nteract/actions";
 import { WidgetModel } from "@jupyter-widgets/base";
 
 interface ConnectedProps {

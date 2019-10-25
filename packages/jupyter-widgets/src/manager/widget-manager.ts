@@ -4,10 +4,7 @@ import * as controls from "@jupyter-widgets/controls";
 import {
   DOMWidgetView,
   WidgetModel,
-  WidgetView,
-  DOMWidgetModel,
-  ModelOptions,
-  ISerializers
+  DOMWidgetModel
 } from "@jupyter-widgets/base";
 import { WidgetComm } from "./widget-comms";
 import { RecordOf } from "immutable";
@@ -33,22 +30,22 @@ interface IDomWidgetModel extends DOMWidgetModel {
  * with our RxJS-based kernel communication.
  */
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
-  model_comm_lookup: (id: string) => any;
+  stateModelById: (id: string) => any;
   kernel:
     | RecordOf<KernelNotStartedProps>
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
 
-  constructor(kernel: any, model_comm_lookup: (id: string) => any) {
+  constructor(kernel: any, stateModelById: (id: string) => any) {
     super();
     this.kernel = kernel;
-    this.model_comm_lookup = model_comm_lookup;
+    this.stateModelById = stateModelById;
   }
 
-  update(kernel: any, model_comm_lookup: (id: string) => any) {
+  update(kernel: any, stateModelById: (id: string) => any) {
     this.kernel = kernel;
-    this.model_comm_lookup = model_comm_lookup;
+    this.stateModelById = stateModelById;
   }
 
   /**
@@ -86,7 +83,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   get_model(model_id: string): Promise<WidgetModel> | undefined {
     let model = super.get_model(model_id);
     if (model === undefined) {
-      let model_state = this.model_comm_lookup(model_id).state;
+      let model_state = this.stateModelById(model_id).state;
       model = this.new_widget_from_state_and_id(model_state, model_id);
     }
     return model;
