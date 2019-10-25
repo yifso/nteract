@@ -6,10 +6,11 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState, selectors, KernelNotStartedProps, LocalKernelProps, RemoteKernelProps } from "@nteract/core";
 import { commOpenAction, commMessageAction } from "@nteract/actions";
+import { WidgetModel } from "@jupyter-widgets/base";
 
 interface Props {
-  model: any;
-  model_id: any;
+  model: WidgetModel;
+  model_id: string;
   model_lookup_by_id: (id: string) => any;
   kernel?: RecordOf<KernelNotStartedProps> | RecordOf<LocalKernelProps> | RecordOf<RemoteKernelProps> | null | undefined
 }
@@ -18,6 +19,13 @@ interface State {
   manager: WidgetManager
 }
 
+/**
+ * This component is is a wrapper component that initializes a
+ * WidgetManager singleton and passes a model reference to the
+ * BackboneModelWrapper. It's doing most of the heavy lifting with
+ * respect to bridging the kernels comms that the WidgetManager provides,
+ * our client-side state model, and the view.
+ */
 class Manager extends React.Component<Props, State> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
   static manager: WidgetManager;

@@ -21,6 +21,13 @@ interface IDomWidgetModel extends DOMWidgetModel {
   _view_module: string;
   _view_module_version: string;
 }
+
+/**
+ * The WidgetManager extends the ManagerBase class and is required
+ * by the ipywidgets implementation for rendering all models. This
+ * WidgetManager contains some overrides to get it to play nice
+ * with our RxJS-based kernel communication.
+ */
 export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   model_comm_lookup: (id: string)=>any;
   kernel: any;
