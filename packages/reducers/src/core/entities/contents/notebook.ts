@@ -17,17 +17,14 @@ import {
   insertCellAt,
   makeCodeCell,
   makeMarkdownCell,
-  makeRawCell, OnDiskDisplayData, OnDiskExecuteResult, OnDiskMediaBundle,
+  makeRawCell,
+  OnDiskDisplayData,
+  OnDiskExecuteResult,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
-import { JSONObject } from "@nteract/data-explorer/lib/types";
-import {
-  DocumentRecordProps,
-  makeDocumentRecord,
-  NotebookModel,
-  PayloadMessage
-} from "@nteract/types";
+import { UpdateDisplayDataContent } from "@nteract/messaging";
+import { DocumentRecordProps, makeDocumentRecord, NotebookModel, PayloadMessage } from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
 import { has } from "lodash";
@@ -205,15 +202,16 @@ function clearAllOutputs(
     .set("transient", transient);
 }
 
+type UpdatableOutputContent =
+  | OnDiskExecuteResult
+  | OnDiskDisplayData
+  | UpdateDisplayDataContent
+  ;
+
 // Utility function used in two reducers below
 function updateAllDisplaysWithID(
   state: NotebookModel,
-  content: OnDiskExecuteResult | OnDiskDisplayData | {
-    output_type: "update_display_data";
-    data: OnDiskMediaBundle;
-    metadata: JSONObject;
-    transient?: {display_id?: string};
-  },
+  content: UpdatableOutputContent,
 ): NotebookModel {
   if (!content || !content.transient || !content.transient.display_id) {
     return state;
