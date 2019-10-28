@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WidgetManager } from "../manager/manager";
+import { WidgetManager } from "../manager/widget-manager";
 
 /**
  * Import the styles for jupyter-widgets. This overrides some of the
@@ -29,14 +29,18 @@ interface Props {
 }
 
 export default class BackboneWrapper extends React.Component<Props> {
+  created = false;
   async componentDidUpdate() {
     const { model, manager, widgetContainerRef } = this.props;
-    if (manager) {
-      const widget = await manager.create_view(model, {
-        model_id: this.props.model_id,
-        el: widgetContainerRef.current
-      });
-      widget.render();
+    if (!this.created) {
+      if (manager) {
+        this.created = true;
+        const widget = await manager.create_view(model, {
+          model_id: this.props.model_id,
+          el: widgetContainerRef.current
+        });
+        widget.render();
+      }
     }
   }
 
