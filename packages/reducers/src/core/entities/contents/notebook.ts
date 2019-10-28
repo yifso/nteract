@@ -220,8 +220,8 @@ function updateAllDisplaysWithID(
   const keyPaths: KeyPaths = state.getIn([
     "transient",
     "keyPathsForDisplays",
-    content.transient.display_id
-  ]);
+    content.transient.display_id,
+  ]) || List();
 
   const updateOutput = (output: any) => {
     if (output) {
