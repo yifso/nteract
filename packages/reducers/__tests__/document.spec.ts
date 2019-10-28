@@ -853,6 +853,28 @@ describe("appendOutput", () => {
 });
 
 describe("updateDisplay", () => {
+  test("handles a non-existent keypath gracefully", () => {
+    const originalState = monocellDocument;
+
+    const id = originalState.getIn(["notebook", "cellOrder", 2]);
+
+    const action = actions.updateDisplay({
+      content: {
+        output_type: "update_display_data",
+        data: { "text/html": "🐱😼😹" },
+        metadata: {},
+        transient: { display_id: "1234" }
+      },
+      contentRef: undefined,
+    });
+
+    const state = reducers(originalState, action);
+
+    expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
+      Immutable.List([])
+    );
+  });
+
   test("updates all displays which use the keypath", () => {
     const originalState = monocellDocument;
 
