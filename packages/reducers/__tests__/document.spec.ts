@@ -875,6 +875,29 @@ describe("updateDisplay", () => {
           transient: { display_id: "1234" }
         }
       }),
+    ];
+
+    const state = actionArray.reduce(
+      (s, action) => reducers(s, action),
+      originalState
+    );
+
+    expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
+      Immutable.List([
+        makeDisplayData({
+          output_type: "display_data",
+          data: { "text/plain": "shennagins afoot" },
+          metadata: Immutable.Map({})
+        }),
+        makeExecuteResult({
+          output_type: "execute_result",
+          data: { "text/plain": "shennagins afoot" },
+          metadata: Immutable.Map({})
+        })
+      ])
+    );
+
+    const moreActionArray = [
       actions.updateDisplay({
         content: {
           output_type: "update_display_data",
@@ -884,12 +907,12 @@ describe("updateDisplay", () => {
       })
     ];
 
-    const state = actionArray.reduce(
+    const moreState = moreActionArray.reduce(
       (s, action) => reducers(s, action),
-      originalState
+      state
     );
 
-    expect(state.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
+    expect(moreState.getIn(["notebook", "cellMap", id, "outputs"])).toEqual(
       Immutable.List([
         makeDisplayData({
           output_type: "display_data",

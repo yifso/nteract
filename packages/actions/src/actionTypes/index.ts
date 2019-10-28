@@ -89,6 +89,7 @@ export interface UpdateDisplay {
   type: "UPDATE_DISPLAY";
   payload: {
     content: {
+      output_type: "update_display_data";
       data: MediaBundle;
       metadata: JSONObject;
       transient: { display_id: string };
