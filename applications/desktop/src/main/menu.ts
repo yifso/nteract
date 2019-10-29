@@ -20,7 +20,7 @@ function send(
   focusedWindow: BrowserWindow,
   eventName: string,
   obj?: object | string | number
-) {
+): void {
   if (!focusedWindow) {
     console.error("renderer window not in focus (are your devtools open?)");
     return;
@@ -28,7 +28,12 @@ function send(
   focusedWindow.webContents.send(eventName, obj);
 }
 
-function createSender(eventName: string, obj?: object | string | number) {
+type Sender = (item: object, focusedWindow: BrowserWindow) => void;
+
+function createSender(
+  eventName: string,
+  obj?: object | string | number,
+): Sender {
   return (item: object, focusedWindow: BrowserWindow) => {
     send(focusedWindow, eventName, obj);
   };
@@ -542,6 +547,15 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Editor options",
         submenu: blink_menu
+      },
+      {
+        label: "Default kernel",
+        submenu: sortBy(kernelSpecs, "spec.display_name").map(
+          kernel => ({
+            label: kernel.spec.display_name,
+            click: createSender("menu:set-default-kernel", kernel.name),
+          })
+        ),
       }
     ]
   };
