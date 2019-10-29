@@ -97,7 +97,9 @@ const fullAppReady$ = zip(electronReady$, prepareEnv).pipe(first());
 const jupyterConfigDir = join(app.getPath("home"), ".jupyter");
 const nteractConfigFilename = join(jupyterConfigDir, "nteract.json");
 
-const CONFIG = {};
+const CONFIG = {
+  defaultKernel: "python3",
+};
 
 const prepJupyterObservable = prepareEnv.pipe(
   mergeMap(() =>
@@ -280,11 +282,13 @@ openFile$
     const cliLaunchNewNotebook = (filepath: string | null) => {
       kernelSpecsPromise.then((specs: Kernelspecs) => {
         let kernel: string;
+        const passedKernel = argv.kernel as string;
+        const defaultKernel = CONFIG.defaultKernel;
 
-        if (argv.kernel && argv.kernel in specs) {
-          kernel = argv.kernel;
-        } else if (CONFIG.defaultKernel && CONFIG.defaultKernel in specs) {
-          kernel = CONFIG.defaultKernel;
+        if (passedKernel && passedKernel in specs) {
+          kernel = passedKernel;
+        } else if (defaultKernel && defaultKernel in specs) {
+          kernel = defaultKernel;
         } else {
           const specList = Object.keys(specs);
           specList.sort();
