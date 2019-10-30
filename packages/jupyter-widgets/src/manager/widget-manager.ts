@@ -1,6 +1,7 @@
 import { KernelMessage } from "@jupyterlab/services";
 import * as base from "@jupyter-widgets/base";
 import * as controls from "@jupyter-widgets/controls";
+import * as output from "@jupyter-widgets/output";
 import {
   DOMWidgetView,
   WidgetModel,
@@ -36,11 +37,21 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
+  id: string;
+  contentRef: string;
 
-  constructor(kernel: any, stateModelById: (id: string) => any) {
+  constructor(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    id: string,
+    contentRef: string
+  ) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+
+    this.id = id;
+    this.contentRef = contentRef;
   }
 
   update(kernel: any, stateModelById: (id: string) => any) {
@@ -57,6 +68,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
         resolve(controls);
       } else if (moduleName === "@jupyter-widgets/base") {
         resolve(base);
+      } else if (moduleName === "@jupyter-widgets/output") {
+        resolve(output);
       } else {
         return Promise.reject(
           `Module ${moduleName}@${moduleVersion} not found`
@@ -104,7 +117,6 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
       view_module: state._view_module,
       view_module_version: state._view_module_version
     };
-    console.log(modelInfo);
     return this.new_widget(modelInfo, state);
   }
 
@@ -185,6 +197,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param options Configuration options for rendering the widget
    */
   async create_view(model: any, options: any): Promise<DOMWidgetView> {
+    console.log(model);
     const managerModel = await this.new_widget(
       {
         model_id: options.model_id,

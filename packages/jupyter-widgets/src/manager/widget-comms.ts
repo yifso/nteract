@@ -1,4 +1,5 @@
 import { IClassicComm } from "@jupyter-widgets/base";
+import * as actions from "@nteract/actions";
 import {
   createCommMessage,
   createCommOpenMessage
@@ -7,8 +8,12 @@ import {
   childOf,
   ofMessageType,
   withCommId,
-  JupyterMessage
+  JupyterMessage,
+  outputs
 } from "@nteract/messaging";
+
+import { Observable, Observer } from "rxjs";
+import { map } from "rxjs/operators";
 
 /**
  * Class used by widgets to communicate with the backend
@@ -18,6 +23,8 @@ export class WidgetComm implements IClassicComm {
   target_name: string;
   target_module: string;
   kernel: any;
+  id: string;
+  contentRef: string;
 
   /**
    *
@@ -30,12 +37,16 @@ export class WidgetComm implements IClassicComm {
     comm_id: string,
     target_name: string,
     target_module: string,
-    kernel: any
+    kernel: any,
+    id: string,
+    contentRef: string
   ) {
     this.comm_id = comm_id;
     this.target_name = target_name;
     this.target_module = target_module;
     this.kernel = kernel;
+    this.id = id;
+    this.contentRef = contentRef;
   }
 
   /**
@@ -81,8 +92,25 @@ export class WidgetComm implements IClassicComm {
       data,
       this.flattenBufferArrays(buffers)
     );
-    this.kernel.channels.next(message);
-    this.hookupReplyCallbacks(message, callbacks);
+
+    const callbackAction$ = this.kernel.channels.pipe(
+      childOf(message),
+      outputs() as any,
+      map((output: any) =>
+        actions.appendOutput({
+          id: this.id,
+          output,
+          contentRef: this.contentRef
+        })
+      )
+    );
+
+    Observable.create((observer: Observer<any>) => {
+      const subscription = callbackAction$.subscribe(observer);
+      this.kernel.channels.next(message);
+      return subscription;
+    });
+
     return message.header.msg_id;
   }
 

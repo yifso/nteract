@@ -812,7 +812,7 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@jupyter-widgets/base@^1.0.0 || ^2.0.0":
+"@jupyter-widgets/base@^1.0.0 || ^2.0.0", "@jupyter-widgets/base@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@jupyter-widgets/base/-/base-2.0.1.tgz#b31b5c8b2206bb008216f32abd488e5414bce3b7"
   integrity sha512-jRNeQzvEf6MMGUaEPfBzgZ+IT4XOInpw8Ef+CunNUmUCiQZ8WfNpFR671S0Vu3xO6yGKMTU2QPdk8/aCsJRw9w==
@@ -843,6 +843,13 @@
     jquery "^3.1.1"
     jquery-ui "^1.12.1"
     underscore "^1.8.3"
+
+"@jupyter-widgets/output@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@jupyter-widgets/output/-/output-2.0.0.tgz#d78365ec9e357a7132fad40ac3ddbb094a4bb982"
+  integrity sha512-R6e23UjX6FcoVPvgtaNRPV4Zb8/PtT8j68fRtF2Qa7jZxtHcAdS/Pq8qwUYXirwgreHFJ8aT7X/mGe4j+AiJlQ==
+  dependencies:
+    "@jupyter-widgets/base" "^2.0.1"
 
 "@jupyterlab/coreutils@^3.1.0":
   version "3.1.0"
