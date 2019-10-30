@@ -370,15 +370,9 @@ export const restartWebSocketKernelEpic = (
       const state = state$.value;
 
       const { contentRef, outputHandling } = action.payload;
-      let { kernelRef } = action.payload;
-
-      /**
-       * If there is no KernelRef provided try to resolve one from
-       * the ContentRef.
-       */
-      if (!kernelRef) {
-        kernelRef = selectors.kernelRefByContentRef(state, { contentRef });
-      }
+      const kernelRef =
+        selectors.kernelRefByContentRef(state, { contentRef }) ||
+        action.payload.kernelRef;
 
       /**
        * If there is still no KernelRef, then throw an error.
