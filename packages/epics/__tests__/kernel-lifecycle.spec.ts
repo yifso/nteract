@@ -409,5 +409,6 @@ describe("restartKernelEpic", () => {
       );
 
       expectObservable(outputAction$).toBe(outputMarbles, outputActions);
-  })
+    });
+  });
 });
