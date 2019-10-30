@@ -1,18 +1,18 @@
 import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { of, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { toArray } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as stateModule from "@nteract/types";
 
-import { makeDocumentRecord } from "@nteract/types";
 import * as coreEpics from "../src";
 
 describe("launchWebSocketKernelEpic", () => {
   test("launches remote kernels", async () => {
     const contentRef = "fakeContentRef";
     const kernelRef = "fake";
+    const hostRef = "fakeHostRef";
     const value = {
       app: stateModule.makeAppRecord({
         host: stateModule.makeJupyterHostRecord({
@@ -39,6 +39,15 @@ describe("launchWebSocketKernelEpic", () => {
                 channels: new Subject<any>(),
                 kernelSpecName: "fancy",
                 id: "0"
+              })
+            })
+          }),
+          hosts: stateModule.makeHostsRecord({
+            byRef: Immutable.Map({
+              [hostRef]: stateModule.makeJupyterHostRecord({
+                type: "jupyter",
+                token: "eh",
+                basePath: "http://localhost:8888/"
               })
             })
           })
@@ -74,6 +83,7 @@ describe("launchWebSocketKernelEpic", () => {
           kernel: {
             info: null,
             sessionId: "1",
+            hostRef,
             type: "websocket",
             channels: expect.any(Subject),
             kernelSpecName: "fancy",
