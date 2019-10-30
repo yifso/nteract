@@ -40,12 +40,17 @@ describe("WidgetManager", () => {
         step: 1,
         value: 7
       };
-      const widget = await manager.create_view(model, {
-        el: document.createElement("div"),
-        model_id: "test_model_id"
-      });
-      expect(widget).not.toBeNull();
-      expect(widget instanceof IntSliderView).toBe(true);
+      const widget = await manager.new_widget_from_state_and_id(
+        model,
+        "test_model_id"
+      );
+      const view = await manager.create_view(
+        widget,
+        {},
+        document.createElement("div")
+      );
+      expect(view).not.toBeNull();
+      expect(view instanceof IntSliderView).toBe(true);
     });
   });
 });
