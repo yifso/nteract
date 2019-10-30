@@ -112,10 +112,11 @@ describe("WidgetManager", () => {
         document.createElement("div")
       );
       manager.render_view(view);
+      // render_view sends out an event that the view waits for before it it sets the style and layout promise.
+      // this means we need to wait for the callbacks to finish before we check their value
       setTimeout(async () => {
         const styleView = await view.stylePromise;
         const layoutView = await view.layoutPromise;
-        console.dir(styleView);
         expect(styleView).toBeTruthy();
         expect(layoutView).toBeTruthy();
       }, 1000);
