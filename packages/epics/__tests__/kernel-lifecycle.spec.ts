@@ -202,11 +202,13 @@ describe("restartKernelEpic", () => {
             })
           }),
           contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -278,12 +280,14 @@ describe("restartKernelEpic", () => {
               })
             })
           }),
-                    contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -326,7 +330,7 @@ describe("restartKernelEpic", () => {
           kernelRef: newKernelRef,
           contentRef: "contentRef"
         }),
-        f: actionsModule.executeAllCells({ contentRef: "contentRef"})
+        f: actionsModule.executeAllCells({ contentRef: "contentRef" })
       };
 
       const inputMarbles = "a---b---|";
@@ -342,4 +346,68 @@ describe("restartKernelEpic", () => {
       expectObservable(outputAction$).toBe(outputMarbles, outputActions);
     });
   });
+  test("emits no action for remote kernel", () => {
+    const contentRef = "contentRef";
+    const newKernelRef = "newKernelRef";
+
+    const state = {
+      core: stateModule.makeStateRecord({
+        kernelRef: "oldKernelRef",
+        entities: stateModule.makeEntitiesRecord({
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              oldKernelRef: stateModule.makeRemoteKernelRecord({
+                status: "idle",
+                type: "websocket"
+              })
+            })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
+              })
+            })
+          })
+        })
+      }),
+      app: stateModule.makeAppRecord({
+        notificationSystem: { addNotification: () => {} }
+      })
+    };
+
+    const testScheduler = buildScheduler();
+
+    testScheduler.run(helpers => {
+      const { hot, expectObservable } = helpers;
+      const inputActions = {
+        a: actionsModule.restartKernel({
+          outputHandling: "None",
+          kernelRef: "oldKernelRef",
+          contentRef
+        }),
+        b: actionsModule.launchKernelSuccessful({
+          kernel: "",
+          kernelRef: newKernelRef,
+          contentRef,
+          selectNextKernel: true
+        })
+      };
+
+      const outputActions = {};
+
+      const inputMarbles = "a---b|";
+      const outputMarbles = "";
+
+      const inputAction$ = hot(inputMarbles, inputActions);
+      const outputAction$ = restartKernelEpic(
+        inputAction$,
+        { value: state },
+        () => newKernelRef
+      );
+
+      expectObservable(outputAction$).toBe(outputMarbles, outputActions);
+  })
 });

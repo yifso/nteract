@@ -248,7 +248,7 @@ export const interruptKernelEpic = (
       }
 
       if (!kernel.id) {
-          return of(
+        return of(
           actions.interruptKernelFailed({
             error: new Error("Kernel does not have ID set"),
             kernelRef: action.payload.kernelRef
@@ -301,11 +301,11 @@ export const killKernelEpic = (
 
       let kernel: KernelRecord | null | undefined;
       if (contentRef) {
-          kernel = selectors.kernelByContentRef(state, { contentRef });
+        kernel = selectors.kernelByContentRef(state, { contentRef });
       } else if (kernelRef) {
         kernel = selectors.kernel(state, { kernelRef });
       } else {
-          kernel = selectors.currentKernel(state);
+        kernel = selectors.currentKernel(state);
       }
 
       if (!kernel) {
@@ -328,7 +328,7 @@ export const killKernelEpic = (
         );
       }
 
-            if (!kernel.id || !kernel.sessionId) {
+      if (!kernel.id || !kernel.sessionId) {
         return of(
           actions.killKernelFailed({
             error: new Error(
@@ -369,8 +369,20 @@ export const restartWebSocketKernelEpic = (
     concatMap((action: actions.RestartKernel) => {
       const state = state$.value;
 
-      const { contentRef, kernelRef, outputHandling } = action.payload;
+      const { contentRef, outputHandling } = action.payload;
+      let { kernelRef } = action.payload;
 
+      /**
+       * If there is no KernelRef provided try to resolve one from
+       * the ContentRef.
+       */
+      if (!kernelRef) {
+        kernelRef = selectors.kernelRefByContentRef(state, { contentRef });
+      }
+
+      /**
+       * If there is still no KernelRef, then throw an error.
+       */
       if (!kernelRef) {
         return of(
           actions.restartKernelFailed({
