@@ -1,4 +1,5 @@
 import * as React from "react";
+import Immutable from "immutable";
 import { WidgetManager } from "../manager/widget-manager";
 
 /**
@@ -22,7 +23,7 @@ require("jquery-ui/themes/base/base.css");
 require("jquery-ui/themes/base/theme.css");
 
 interface Props {
-  model: any;
+  model: Immutable.Map<string, any>;
   manager?: WidgetManager;
   model_id: string;
   widgetContainerRef: React.RefObject<HTMLDivElement>;
@@ -35,7 +36,7 @@ export default class BackboneWrapper extends React.Component<Props> {
     if (!this.created) {
       if (manager) {
         this.created = true;
-        const widget = await manager.create_view(model, {
+        const widget = await manager.create_view(model.toJS(), {
           model_id: this.props.model_id,
           el: widgetContainerRef.current
         });

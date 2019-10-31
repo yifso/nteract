@@ -65,7 +65,7 @@ class Manager extends React.Component<Props> {
     return (
       <React.Fragment>
         <BackboneWrapper
-          model={this.props.model.get("state").toJS()}
+          model={this.props.model.get("state")}
           manager={this.getManager()}
           model_id={this.props.model_id}
           widgetContainerRef={this.widgetContainerRef}
@@ -78,7 +78,7 @@ class Manager extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   return {
     modelById: (model_id: string) =>
-      selectors.modelById(state, { commId: model_id }).toJS(),
+      selectors.modelById(state, { commId: model_id }),
     kernel: selectors.currentKernel(state)
   };
 };
