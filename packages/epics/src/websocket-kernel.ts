@@ -21,7 +21,6 @@ import {
   KernelRecord,
   RemoteKernelProps,
   ServerConfig,
-  HostRef
 } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
