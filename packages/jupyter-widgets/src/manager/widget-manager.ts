@@ -195,7 +195,10 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
       .create_view(model, options)
       .then(view => {
         if (el) {
-          view.setElement(el);
+          //setting the element has to be done this way, not using setElement()
+          //otherwise it somehow breaks the interaction between mutliple views on
+          //the same widget model
+          view.el = el;
         }
         return Promise.resolve(view);
       })
