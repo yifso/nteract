@@ -1,7 +1,7 @@
 import { actions as actionsModule, state as stateModule } from "@nteract/core";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
 import * as Immutable from "immutable";
-import { ActionsObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { of, Subject } from "rxjs";
 import { toArray } from "rxjs/operators";
 import { TestScheduler } from "rxjs/testing";
@@ -196,7 +196,7 @@ describe("restartKernelEpic", () => {
         entities: stateModule.makeEntitiesRecord({
           kernels: stateModule.makeKernelsRecord({
             byRef: Immutable.Map({
-              oldKernelRef: stateModule.makeRemoteKernelRecord({
+              oldKernelRef: stateModule.makeLocalKernelRecord({
                 status: "not connected"
               })
             })
@@ -275,7 +275,7 @@ describe("restartKernelEpic", () => {
         entities: stateModule.makeEntitiesRecord({
           kernels: stateModule.makeKernelsRecord({
             byRef: Immutable.Map({
-              oldKernelRef: stateModule.makeRemoteKernelRecord({
+              oldKernelRef: stateModule.makeLocalKernelRecord({
                 status: "not connected"
               })
             })
@@ -346,7 +346,7 @@ describe("restartKernelEpic", () => {
       expectObservable(outputAction$).toBe(outputMarbles, outputActions);
     });
   });
-  test("emits no action for remote kernel", () => {
+  test("emits no action for remote kernel", async () => {
     const contentRef = "contentRef";
     const newKernelRef = "newKernelRef";
 
@@ -378,37 +378,19 @@ describe("restartKernelEpic", () => {
       })
     };
 
-    const testScheduler = buildScheduler();
-
-    testScheduler.run(helpers => {
-      const { hot, expectObservable } = helpers;
-      const inputActions = {
-        a: actionsModule.restartKernel({
-          outputHandling: "None",
+    const responses = await restartKernelEpic(
+      ActionsObservable.of(
+        actionsModule.restartKernel({
+          outputHandling: "Run All",
           kernelRef: "oldKernelRef",
-          contentRef
-        }),
-        b: actionsModule.launchKernelSuccessful({
-          kernel: "",
-          kernelRef: newKernelRef,
-          contentRef,
-          selectNextKernel: true
+          contentRef: "contentRef"
         })
-      };
+      ),
+      new StateObservable(new Subject(), state)
+    )
+      .pipe(toArray())
+      .toPromise();
 
-      const outputActions = {};
-
-      const inputMarbles = "a---b|";
-      const outputMarbles = "";
-
-      const inputAction$ = hot(inputMarbles, inputActions);
-      const outputAction$ = restartKernelEpic(
-        inputAction$,
-        { value: state },
-        () => newKernelRef
-      );
-
-      expectObservable(outputAction$).toBe(outputMarbles, outputActions);
-    });
+    expect(responses).toEqual([]);
   });
 });
