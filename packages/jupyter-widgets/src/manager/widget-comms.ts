@@ -23,8 +23,7 @@ export class WidgetComm implements IClassicComm {
   target_name: string;
   target_module: string;
   kernel: any;
-  id: string;
-  contentRef: string;
+  actions: any;
 
   /**
    *
@@ -38,15 +37,13 @@ export class WidgetComm implements IClassicComm {
     target_name: string,
     target_module: string,
     kernel: any,
-    id: string,
-    contentRef: string
+    actions: any
   ) {
     this.comm_id = comm_id;
     this.target_name = target_name;
     this.target_module = target_module;
     this.kernel = kernel;
-    this.id = id;
-    this.contentRef = contentRef;
+    this.actions = actions;
   }
 
   /**
@@ -69,7 +66,6 @@ export class WidgetComm implements IClassicComm {
       this.target_module
     );
     this.kernel.channels.next(message);
-    this.hookupReplyCallbacks(message, callbacks);
     return message.header.msg_id;
   }
 
@@ -96,20 +92,14 @@ export class WidgetComm implements IClassicComm {
     const callbackAction$ = this.kernel.channels.pipe(
       childOf(message),
       outputs() as any,
-      map((output: any) =>
-        actions.appendOutput({
-          id: this.id,
-          output,
-          contentRef: this.contentRef
-        })
-      )
+      map((output: any) => this.actions.appendOutput(output))
     );
 
     Observable.create((observer: Observer<any>) => {
       const subscription = callbackAction$.subscribe(observer);
       this.kernel.channels.next(message);
       return subscription;
-    });
+    }).subscribe(console.log, console.error, console.log);
 
     return message.header.msg_id;
   }

@@ -37,21 +37,14 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
-  id: string;
-  contentRef: string;
+  actions: any;
 
-  constructor(
-    kernel: any,
-    stateModelById: (id: string) => any,
-    id: string,
-    contentRef: string
-  ) {
+  constructor(kernel: any, stateModelById: (id: string) => any, actions: any) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
 
-    this.id = id;
-    this.contentRef = contentRef;
+    this.actions = actions;
   }
 
   update(kernel: any, stateModelById: (id: string) => any) {
@@ -175,7 +168,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
           model_id,
           this.comm_target_name,
           "<target module>",
-          this.kernel
+          this.kernel,
+          this.actions
         )
       );
     } else {
@@ -197,7 +191,6 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param options Configuration options for rendering the widget
    */
   async create_view(model: any, options: any): Promise<DOMWidgetView> {
-    console.log(model);
     const managerModel = await this.new_widget(
       {
         model_id: options.model_id,

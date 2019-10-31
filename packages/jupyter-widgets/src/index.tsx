@@ -14,6 +14,8 @@ interface JupyterWidgetData {
 interface Props {
   data: JupyterWidgetData;
   model: WidgetModel;
+  cellId: string;
+  contentRef: string;
 }
 
 /**
@@ -28,7 +30,12 @@ export class WidgetDisplay extends React.Component<Props> {
 
   render() {
     return (
-      <Manager model={this.props.model} model_id={this.props.data.model_id} />
+      <Manager
+        model={this.props.model}
+        model_id={this.props.data.model_id}
+        contentRef={this.props.contentRef}
+        id={this.props.cellId}
+      />
     );
   }
 }

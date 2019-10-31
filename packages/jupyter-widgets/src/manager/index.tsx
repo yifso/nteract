@@ -3,9 +3,11 @@ import { RecordOf } from "immutable";
 import { WidgetManager } from "./widget-manager";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import {
   AppState,
   selectors,
+  actions,
   KernelNotStartedProps,
   LocalKernelProps,
   RemoteKernelProps
@@ -20,12 +22,21 @@ interface ConnectedProps {
     | RecordOf<RemoteKernelProps>
     | null;
 }
+
+interface DispatchProps {
+  actions: {
+    appendOutput: (output: any) => void;
+  };
+}
+
 interface OwnProps {
   model: WidgetModel;
   model_id: string;
+  id: string;
+  contentRef: string;
 }
 
-type Props = ConnectedProps & OwnProps;
+type Props = ConnectedProps & OwnProps & DispatchProps;
 
 /**
  * This component is is a wrapper component that initializes a
@@ -53,7 +64,8 @@ class Manager extends React.Component<Props> {
     if (Manager.manager === undefined) {
       Manager.manager = new WidgetManager(
         this.props.kernel,
-        this.props.modelById
+        this.props.modelById,
+        this.props.actions
       );
     } else {
       Manager.manager.update(this.props.kernel, this.props.modelById);
@@ -82,4 +94,27 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
     kernel: selectors.currentKernel(state)
   };
 };
-export default connect(mapStateToProps)(Manager);
+
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  props: OwnProps
+): DispatchProps => {
+  return {
+    actions: {
+      appendOutput: output => {
+        console.log("inside appendOutput");
+        return dispatch(
+          actions.appendOutput({
+            id: props.id,
+            output,
+            contentRef: props.contentRef
+          })
+        );
+      }
+    }
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Manager);
