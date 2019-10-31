@@ -76,7 +76,7 @@ questions. If you have trouble creating an account on Slack, please post an issu
 
 ### Overview of nteract's monorepo
 
-This repository is a [monorepo](./doc/design/monorepo.md), which basically
+This repository is a [monorepo](https://trunkbaseddevelopment.com/monorepos/), which basically
 means that the repository hosts more than one module or application. In our
 case, we have two main directories:
 
