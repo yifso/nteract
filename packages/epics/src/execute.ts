@@ -13,7 +13,7 @@ import {
   outputs,
   payloads
 } from "@nteract/messaging";
-import { ofType } from "redux-observable";
+import { ofType, combineEpics } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { empty, merge, Observable, Observer, of, throwError } from "rxjs";
 import {
@@ -150,7 +150,9 @@ export function createExecuteCellStream(
   id: string,
   contentRef: ContentRef
 ): Observable<any> {
-  const kernel = selectors.kernelByContentRef(state, { contentRef: contentRef });
+  const kernel = selectors.kernelByContentRef(state, {
+    contentRef: contentRef
+  });
 
   const channels = kernel ? kernel.channels : null;
 
@@ -198,9 +200,6 @@ export function createExecuteCellStream(
   );
 
   return merge(
-    // We make sure to propagate back to "ourselves" the actual message
-    // that we sent to the kernel with the sendExecuteRequest action
-    of(actions.sendExecuteRequest({ id, message, contentRef })),
     // Merging it in with the actual stream
     cellStream
   );
@@ -388,7 +387,9 @@ export const sendInputReplyEpic = (
     ofType(actions.SEND_INPUT_REPLY),
     switchMap((action: actions.SendInputReply) => {
       const state = state$.value;
-      const kernel = selectors.kernelByContentRef(state, { contentRef: action.payload.contentRef });
+      const kernel = selectors.kernelByContentRef(state, {
+        contentRef: action.payload.contentRef
+      });
 
       if (kernel && kernel.type === "websocket") {
         const reply = inputReply({ value: action.payload.value });
@@ -397,4 +398,71 @@ export const sendInputReplyEpic = (
 
       return empty();
     })
+  );
+
+export const mapToExecuteRequest = (
+  action$: ActionsObservable<
+    | actions.ExecuteCell
+    | actions.ExecuteFocusedCell
+    | actions.ExecuteAllCells
+    | actions.ExecuteAllCellsBelow
+  >,
+  state$: StateObservable<AppState>
+) =>
+  merge(
+    action$.pipe(
+      ofType(actions.EXECUTE_FOCUSED_CELL),
+      switchMap((action: actions.ExecuteFocusedCell) => {
+        const { contentRef } = action.payload;
+        const state = state$.value;
+        const model = selectors.model(state, { contentRef });
+
+        if (!model || model.type !== "notebook") {
+          return empty();
+        }
+
+        const id = model.cellFocused;
+
+        if (!id) {
+          throw new Error("Could not find focused cell ID.");
+        }
+      })
+    ),
+    action$.pipe(
+      ofType(actions.EXECUTE_CELL),
+      switchMap((action: actions.ExecuteCell) => {
+        const { id } = action.payload;
+        if (!id) {
+          throw new Error("No ID provided for ExecuteCell request.");
+        }
+      })
+    ),
+    action$.pipe(
+      ofType(actions.EXECUTE_ALL_CELLS_BELOW),
+      concatMap((action: actions.ExecuteAllCellsBelow) => {
+        const { contentRef } = action.payload;
+        const state = state$.value;
+        const model = selectors.model(state, { contentRef });
+        if (!model || model.type !== "notebook") {
+          return empty();
+        }
+
+        const codeCellIds = selectors.notebook.codeCellIdsBelow(model);
+        return of();
+      })
+    ),
+    action$.pipe(
+      ofType(actions.EXECUTE_ALL_CELLS),
+      concatMap((action: actions.ExecuteAllCells) => {
+        const { contentRef } = action.payload;
+        const state = state$.value;
+        const model = selectors.model(state, { contentRef });
+        if (!model || model.type !== "notebook") {
+          return empty();
+        }
+
+        const codeCellIds = selectors.notebook.codeCellIds(model);
+        return of();
+      })
+    )
   );
