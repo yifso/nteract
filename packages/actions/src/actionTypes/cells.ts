@@ -111,8 +111,8 @@ export const UNHIDE_ALL = "UNHIDE_ALL";
 export interface UnhideAll {
   type: "UNHIDE_ALL";
   payload: {
-    inputHidden: boolean;
-    outputHidden: boolean;
+    inputHidden?: boolean;
+    outputHidden?: boolean;
     contentRef: ContentRef;
   };
 }

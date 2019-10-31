@@ -196,11 +196,9 @@ export function updateCellExecutionCount(payload: {
   return setInCell({ ...payload, path: ["execution_count"] });
 }
 
-export function unhideAll(payload: {
-  outputHidden: boolean;
-  inputHidden: boolean;
-  contentRef: ContentRef;
-}): actionTypes.UnhideAll {
+export function unhideAll(
+  payload: actionTypes.UnhideAll["payload"]
+): actionTypes.UnhideAll {
   return {
     type: "UNHIDE_ALL",
     payload

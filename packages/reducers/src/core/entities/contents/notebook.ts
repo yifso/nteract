@@ -655,15 +655,19 @@ function unhideAll(
   state: NotebookModel,
   action: actionTypes.UnhideAll
 ): RecordOf<DocumentRecordProps> {
+  const metadataMixin: any = {};
+  if (action.payload.outputHidden !== undefined) {
+    // TODO: Verify that we convert to one namespace
+    // for hidden input/output
+    metadataMixin.outputHidden = action.payload.outputHidden
+  }
+  if (action.payload.inputHidden !== undefined) {
+    metadataMixin.inputHidden = action.payload.inputHidden
+  }
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
       if ((cell as any).get("cell_type") === "code") {
-        return cell.mergeIn(["metadata"], {
-          // TODO: Verify that we convert to one namespace
-          // for hidden input/output
-          outputHidden: action.payload.outputHidden,
-          inputHidden: action.payload.inputHidden
-        });
+        return cell.mergeIn(["metadata"], metadataMixin);
       }
       return cell;
     })
