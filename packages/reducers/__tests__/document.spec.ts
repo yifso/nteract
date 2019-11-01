@@ -1235,4 +1235,89 @@ describe("unhideAll", () => {
         .toArray()
     ).toEqual([false,false,false,true]);
   });
+
+  test("should reveal all inputs and outputs", () => {
+    // Act
+    const actualState = reducers(
+      initialState,
+      actions.unhideAll({
+        inputHidden: false,
+        outputHidden: false,
+        contentRef: undefined
+       })
+    );
+
+    // Assert
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .toList()
+        .toArray()
+    ).not.toContain(true);
+
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .toList()
+        .toArray()
+    ).not.toContain(true);
+  });
+
+  test("should hide all inputs and outputs", () => {
+    // Act
+    const actualState = reducers(
+      initialState,
+      actions.unhideAll({
+        inputHidden: true,
+        outputHidden: true,
+        contentRef: undefined
+       })
+    );
+
+    // Assert
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .toList()
+        .toArray()
+    ).not.toContain(false);
+
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .toList()
+        .toArray()
+    ).not.toContain(false);
+  });
+
+  test("should no-op", () => {
+    // Act
+    const actualState = reducers(
+      initialState,
+      actions.unhideAll({
+        contentRef: undefined
+       })
+    );
+
+    // Assert: should keep all inputs' and outputs' visibility unchanged
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .toList()
+        .toArray()
+    ).toEqual([false,false,false,true]);
+
+    expect(
+      actualState
+        .getIn(["notebook", "cellMap"])
+        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .toList()
+        .toArray()
+    ).toEqual([false,true,false,false]);
+  });
 });
