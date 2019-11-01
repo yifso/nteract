@@ -1,7 +1,7 @@
 import { actions as actionsModule, state as stateModule } from "@nteract/core";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
 import * as Immutable from "immutable";
-import { ActionsObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { of, Subject } from "rxjs";
 import { toArray } from "rxjs/operators";
 import { TestScheduler } from "rxjs/testing";
@@ -196,17 +196,19 @@ describe("restartKernelEpic", () => {
         entities: stateModule.makeEntitiesRecord({
           kernels: stateModule.makeKernelsRecord({
             byRef: Immutable.Map({
-              oldKernelRef: stateModule.makeRemoteKernelRecord({
+              oldKernelRef: stateModule.makeLocalKernelRecord({
                 status: "not connected"
               })
             })
           }),
           contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -273,17 +275,19 @@ describe("restartKernelEpic", () => {
         entities: stateModule.makeEntitiesRecord({
           kernels: stateModule.makeKernelsRecord({
             byRef: Immutable.Map({
-              oldKernelRef: stateModule.makeRemoteKernelRecord({
+              oldKernelRef: stateModule.makeLocalKernelRecord({
                 status: "not connected"
               })
             })
           }),
-                    contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                  contentRef: stateModule.makeNotebookContentRecord({
-                      model: stateModule.makeDocumentRecord({ kernelRef: "oldKernelRef" })
-                  })
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
               })
+            })
           })
         })
       }),
@@ -326,7 +330,7 @@ describe("restartKernelEpic", () => {
           kernelRef: newKernelRef,
           contentRef: "contentRef"
         }),
-        f: actionsModule.executeAllCells({ contentRef: "contentRef"})
+        f: actionsModule.executeAllCells({ contentRef: "contentRef" })
       };
 
       const inputMarbles = "a---b---|";
@@ -341,5 +345,52 @@ describe("restartKernelEpic", () => {
 
       expectObservable(outputAction$).toBe(outputMarbles, outputActions);
     });
+  });
+  test("emits no action for remote kernel", async () => {
+    const contentRef = "contentRef";
+    const newKernelRef = "newKernelRef";
+
+    const state = {
+      core: stateModule.makeStateRecord({
+        kernelRef: "oldKernelRef",
+        entities: stateModule.makeEntitiesRecord({
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              oldKernelRef: stateModule.makeRemoteKernelRecord({
+                status: "idle",
+                type: "websocket"
+              })
+            })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
+              })
+            })
+          })
+        })
+      }),
+      app: stateModule.makeAppRecord({
+        notificationSystem: { addNotification: () => {} }
+      })
+    };
+
+    const responses = await restartKernelEpic(
+      ActionsObservable.of(
+        actionsModule.restartKernel({
+          outputHandling: "Run All",
+          kernelRef: "oldKernelRef",
+          contentRef: "contentRef"
+        })
+      ),
+      new StateObservable(new Subject(), state)
+    )
+      .pipe(toArray())
+      .toPromise();
+
+    expect(responses).toEqual([]);
   });
 });

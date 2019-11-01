@@ -375,8 +375,14 @@ export const restartWebSocketKernelEpic = (
     concatMap((action: actions.RestartKernel) => {
       const state = state$.value;
 
-      const { contentRef, kernelRef, outputHandling } = action.payload;
+      const { contentRef, outputHandling } = action.payload;
+      const kernelRef =
+        selectors.kernelRefByContentRef(state, { contentRef }) ||
+        action.payload.kernelRef;
 
+      /**
+       * If there is still no KernelRef, then throw an error.
+       */
       if (!kernelRef) {
         return of(
           actions.restartKernelFailed({
