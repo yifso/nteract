@@ -32,19 +32,21 @@ export default class BackboneWrapper extends React.Component<Props> {
   created = false;
   async componentDidUpdate() {
     const { model, manager, widgetContainerRef, model_id } = this.props;
-    if (!this.created) {
-      if (manager) {
-        this.created = true;
+    if (!this.created && manager) {
+      this.created = true;
+      try {
         const widget = await manager.new_widget_from_state_and_id(
           model,
           model_id
         );
         const view = await manager.create_view(
           widget,
-          {},
+          undefined, //no options
           widgetContainerRef.current
         );
         manager.render_view(view);
+      } catch (err) {
+        throw err;
       }
     }
   }

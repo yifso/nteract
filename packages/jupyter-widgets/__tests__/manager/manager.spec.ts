@@ -51,6 +51,7 @@ describe("WidgetManager", () => {
       );
       expect(view).not.toBeNull();
       expect(view instanceof IntSliderView).toBe(true);
+      expect(view.model.attributes.value).toBe(7);
     });
   });
   describe("layout and style", () => {
