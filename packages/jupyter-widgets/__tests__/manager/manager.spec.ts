@@ -1,6 +1,6 @@
 import { IntSliderView } from "@jupyter-widgets/controls";
 import { WidgetManager } from "../../src/manager/widget-manager";
-import { DOMWidgetModel } from "@jupyter-widgets/base";
+import { Map } from "immutable";
 
 describe("WidgetManager", () => {
   describe("loadClass", () => {
@@ -100,7 +100,7 @@ describe("WidgetManager", () => {
       };
       const modelById = (id: string) => {
         const model = id == "layout_id" ? layoutModel : styleModel;
-        return { state: model };
+        return Map({ state: Map(model) });
       };
       const manager = new WidgetManager(null, modelById);
       const widget = await manager.new_widget_from_state_and_id(
