@@ -202,25 +202,20 @@ export function executeRequest(
 // Overload 1: with second parameter
 export function displayData<
   C extends BasicOutputMessageContent,
-  T extends MessageType,
->(
-  content: C,
-  msg_type: T,
-): JupyterMessage<T, C>;
+  T extends MessageType
+>(content: C, msg_type: T): JupyterMessage<T, C>;
 
 // Overload 2: without second parameter (required to get TS to behave)
-export function displayData<
-  C extends BasicOutputMessageContent,
->(
+export function displayData<C extends BasicOutputMessageContent>(
   content: C,
-  msg_type?: undefined,
+  msg_type?: undefined
 ): JupyterMessage<"display_data", C>;
 
 // The actual displayData function; generics should infer correctly, based on
 // the overloads above.
 export function displayData(
   content: BasicOutputMessageContent,
-  msg_type?: MessageType,
+  msg_type?: MessageType
 ): JupyterMessage {
   if (msg_type === undefined) {
     msg_type = "display_data";
@@ -245,7 +240,7 @@ export function displayData(
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#update-display-data
  */
 export function updateDisplayData(
-  content: UpdateDisplayDataContent,
+  content: UpdateDisplayDataContent
 ): UpdateDisplayData {
   // TODO: Enforce the transient display_id here?
   return displayData(content, "update_display_data");

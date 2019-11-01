@@ -1,6 +1,6 @@
 {
   "name": "@nteract/presentational-components",
-  "version": "3.0.7",
+  "version": "3.0.9",
   "description": "pure presentational components for nteract",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,7 +9,7 @@
   "dependencies": {
     "@blueprintjs/core": "^3.7.0",
     "@blueprintjs/select": "^3.2.0",
-    "react-syntax-highlighter": "^11.0.2",
+    "react-syntax-highlighter": "^9.0.0",
     "styled-components": "^4.1.3"
   },
   "peerDependencies": {

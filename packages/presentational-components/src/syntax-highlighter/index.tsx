@@ -1,7 +1,11 @@
 import * as React from "react";
-import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
-import lightTheme from "react-syntax-highlighter/dist/esm/styles/prism/vs";
-import darkTheme from "react-syntax-highlighter/dist/esm/styles/prism/xonokai";
+import SyntaxHighlighter from "react-syntax-highlighter/prism";
+import {
+  vs as lightTheme,
+  xonokai as darkTheme
+} from "react-syntax-highlighter/styles/prism";
+
+// import syntax from "./theme";
 
 interface HighlighterProps {
   language: string;
@@ -9,13 +13,6 @@ interface HighlighterProps {
   children?: React.ReactNode;
   theme?: "light" | "dark";
 }
-
-const customStyle = {
-  padding: "10px 0px 10px 10px",
-  margin: "0px",
-  backgroundColor: "var(--cm-background, #fafafa)",
-  border: "none"
-};
 
 const Highlighter = (props: HighlighterProps) => {
   let language = props.language;
@@ -33,7 +30,12 @@ const Highlighter = (props: HighlighterProps) => {
       style={props.theme === "light" ? lightTheme : darkTheme}
       language={language}
       className={props.className}
-      customStyle={customStyle}
+      customStyle={{
+        padding: "10px 0px 10px 10px",
+        margin: "0px",
+        backgroundColor: "var(--cm-background, #fafafa)",
+        border: "none"
+      }}
     >
       {props.children}
     </SyntaxHighlighter>

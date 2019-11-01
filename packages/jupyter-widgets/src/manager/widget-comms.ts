@@ -1,13 +1,11 @@
 import { IClassicComm } from "@jupyter-widgets/base";
 import {
-  createCommMessage,
-  createCommOpenMessage
-} from "@nteract/epics/lib/comm";
-import {
   childOf,
   ofMessageType,
   withCommId,
-  JupyterMessage
+  JupyterMessage,
+  createCommMessage,
+  createCommOpenMessage
 } from "@nteract/messaging";
 
 /**
