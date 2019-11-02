@@ -651,11 +651,16 @@ function toggleCellOutputVisibility(
   );
 }
 
+interface ICellVisibilityMetadata {
+  inputHidden?:boolean;
+  outputHidden?: boolean;
+}
+
 function unhideAll(
   state: NotebookModel,
   action: actionTypes.UnhideAll
 ): RecordOf<DocumentRecordProps> {
-  const metadataMixin: any = {};
+  const metadataMixin: ICellVisibilityMetadata = {};
   if (action.payload.outputHidden !== undefined) {
     // TODO: Verify that we convert to one namespace
     // for hidden input/output
