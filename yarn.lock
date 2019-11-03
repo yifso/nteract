@@ -6277,7 +6277,7 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-fsevents@^1.2.2, fsevents@^1.2.3, fsevents@^1.2.6, fsevents@^1.2.7:
+fsevents@^1.2.2, fsevents@^1.2.3, fsevents@^1.2.7:
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.9.tgz#3f5ed66583ccd6f400b5a00db6f7e861363e388f"
   integrity sha512-oeyj2H3EjjonWcFjD5NvZNE9Rqe4UW+nQBU2HNeKw0koVLEFIhtyETyAakeAM3de7Z/SW5kcA+fZUait9EApnw==
@@ -11595,10 +11595,10 @@ react-syntax-highlighter@^9.0.0:
     prismjs "^1.8.4"
     refractor "^2.4.1"
 
-react-table-hoc-fixed-columns@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-table-hoc-fixed-columns/-/react-table-hoc-fixed-columns-2.1.1.tgz#4f772150ee1f74d8cb914fc8a5143ae33b017ac4"
-  integrity sha512-oFo0mtjAr8NmNnYXr3YTrAuz38iYiLXa0SteOu8/18NGbygLJRdfdwj+lZREzC7bSjwWWDKgnDCK0wdU6l7Apg==
+react-table-hoc-fixed-columns@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-table-hoc-fixed-columns/-/react-table-hoc-fixed-columns-2.1.2.tgz#1384462da3682135cc349fb6dae3978ffad734ff"
+  integrity sha512-gAL8oWcLMqsdMxLQwYxdQKkihsdTFNOcrL2rK67ETqtbNSqLSckSYF8PY7vAY+6x1Gwkzb5qyuD79q2b0E9V5A==
   dependencies:
     classnames "^2.2.6"
     uniqid "^5.0.3"
@@ -15520,7 +15520,7 @@ yn@^2.0.0:
   resolved "https://registry.yarnpkg.com/yn/-/yn-2.0.0.tgz#e5adabc8acf408f6385fc76495684c88e6af689a"
   integrity sha1-5a2ryKz0CPY4X8dklWhMiOavaJo=
 
-zeromq@5, zeromq@5.1.1:
+zeromq@5:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/zeromq/-/zeromq-5.1.1.tgz#dce98a5bf5ccc3164f46b807520d6560f1c005f3"
   integrity sha512-ZInBjczu5qjKW9WFnFcaOoAqCqDqTn1QqVzB6nTt5SGu9OQb9K8qk9RjBoXJY+fxTpRDparqBnhFxYBZFEgJyw==
