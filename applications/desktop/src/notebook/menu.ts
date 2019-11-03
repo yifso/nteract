@@ -577,7 +577,7 @@ export function dispatchNewNotebook(
   store: DesktopStore,
   event: Event,
   filepath: string | null,
-  kernelSpec?: KernelSpec,
+  kernelSpec: KernelSpec,
 ): void {
   // It's a brand new notebook so we create a kernelRef for it
   const kernelRef = createKernelRef();

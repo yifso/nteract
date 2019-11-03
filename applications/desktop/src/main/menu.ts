@@ -549,7 +549,7 @@ export function loadFullMenu(store = global.store) {
         submenu: blink_menu
       },
       {
-        label: "Default kernel",
+        label: "Set default kernel",
         submenu: sortBy(kernelSpecs, "spec.display_name").map(
           kernel => ({
             label: kernel.spec.display_name,
