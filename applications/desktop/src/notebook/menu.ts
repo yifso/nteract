@@ -22,7 +22,7 @@ function isWriteable(pathToCheck: string): boolean {
 
 function getDocumentDirectory(): string {
   const cwd = path.normalize(process.cwd());
-  const cwdIsPropertyDocumentDirectory =
+  const cwdIsProperDocumentDirectory =
     // launchctl on macOS might set the path to "/"
     (cwd !== "/") &&
     // cwd was likely set from nteract executable
@@ -30,7 +30,7 @@ function getDocumentDirectory(): string {
     // document dir needs to be writeable
     isWriteable(cwd);
 
-  return cwdIsPropertyDocumentDirectory
+  return cwdIsProperDocumentDirectory
     ? cwd
     : remote.app.getPath("documents");
 }
