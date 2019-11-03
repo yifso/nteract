@@ -10,13 +10,29 @@ type NotificationSystemRef = any;
 type KernelSpec = any;
 type Actions = any; // We have to combine all of @nteract/actions actionTypes + actionTypes.ts
 
-export function cwdKernelFallback() {
-  // HACK: If we see they're at /, we assume that was the OS launching the Application
-  //       from a launcher (launchctl on macOS)
-  if (process.cwd() === "/") {
-    return remote.app.getPath("home");
+function isWriteable(pathToCheck: string): boolean {
+  try {
+    fs.accessSync(pathToCheck, fs.constants.W_OK);
+    return true;
   }
-  return process.cwd();
+  catch (err) {
+    return false;
+  }
+}
+
+function getDocumentDirectory(): string {
+  const cwd = path.normalize(process.cwd());
+  const cwdIsPropertyDocumentDirectory =
+    // launchctl on macOS might set the path to "/"
+    (cwd !== "/") &&
+    // cwd was likely set from nteract executable
+    (cwd !== path.normalize(path.dirname(process.execPath))) &&
+    // document dir needs to be writeable
+    isWriteable(cwd);
+
+  return cwdIsPropertyDocumentDirectory
+    ? cwd
+    : remote.app.getPath("documents");
 }
 
 export function dispatchSaveAs(
@@ -46,7 +62,7 @@ export function showSaveAsDialog(): Promise<string> {
     // In Electron, we want an object we can merge into dialog opts, falling back
     // to the defaults from the dialog by not defining defaultPath. Electron treats
     // a literal undefined differently than this not being set.
-    const defaultPath = cwdKernelFallback();
+    const defaultPath = getDocumentDirectory();
     if (process.cwd() !== defaultPath) {
       options.defaultPath = defaultPath;
     }
@@ -138,7 +154,7 @@ export function promptUserAboutNewKernel(
 
           const cwd = filepath
             ? path.dirname(path.resolve(filepath))
-            : cwdKernelFallback();
+            : getDocumentDirectory();
 
           // Create a brand new kernel
           const kernelRef = createKernelRef();
@@ -197,7 +213,7 @@ export function dispatchNewKernel(
   const cwd =
     filepath !== null
       ? path.dirname(path.resolve(filepath))
-      : cwdKernelFallback();
+      : getDocumentDirectory();
 
   // Create a brand new kernel
   const kernelRef = createKernelRef();
@@ -569,7 +585,7 @@ export function dispatchNewNotebook(
     actions.newNotebook({
       filepath,
       kernelSpec,
-      cwd: cwdKernelFallback(),
+      cwd: getDocumentDirectory(),
       kernelRef,
       contentRef: ownProps.contentRef
     })
