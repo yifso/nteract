@@ -7095,11 +7095,12 @@ ignore@^3.3.5:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
   integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
 
-ijavascript@lgeiger/ijavascript:
-  version "5.0.20"
-  resolved "https://codeload.github.com/lgeiger/ijavascript/tar.gz/d4265f91f410c69a6e86c3ce7f6978efcf71f23f"
+ijavascript@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/ijavascript/-/ijavascript-5.2.0.tgz#ebcb2d5143f41e90c04ed56e9afcad425d9850ed"
+  integrity sha512-MIV3R9d2o9uucTmNH5IU5bvXcevljsOrsH7Sv3rmf/uoXjl/iXb8hx4ZnymBpdt48f7U2m0iKmpWlQzxjthtjw==
   dependencies:
-    jp-kernel lgeiger/jp-kernel
+    jp-kernel "1 || 2"
 
 immer@1.7.2:
   version "1.7.2"
@@ -8159,7 +8160,7 @@ jest@^24.0.0:
     import-local "^2.0.0"
     jest-cli "^24.0.0"
 
-jmp@2, jmp@^2.0.0:
+"jmp@1 || 2", jmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/jmp/-/jmp-2.0.0.tgz#4f2be3540e25a35b68183ec2d79c990884e0a9f0"
   integrity sha512-VATfWVHErQJA2XMtmQjJQHHyQ/hxjHMmsy+egmwRk/RzFchQB4xjrR1iX496VZr+Hyhcr4zvL+IkkSlIYKx6Yw==
@@ -8167,11 +8168,12 @@ jmp@2, jmp@^2.0.0:
     uuid "3"
     zeromq "5"
 
-jp-kernel@lgeiger/jp-kernel:
-  version "1.2.0"
-  resolved "https://codeload.github.com/lgeiger/jp-kernel/tar.gz/fec616a3d507860d26dcf3c1c7f4ba37342682a3"
+"jp-kernel@1 || 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/jp-kernel/-/jp-kernel-2.0.0.tgz#39e9b6430f0aa7732e3b3bf460b92c4bc7e82754"
+  integrity sha512-Apz3AqpJhToFlo70mwnlbVyqhJRagzhNKKp84ZMeTqe/Ay9oIno8unm7eFepdlR8m8wz/9JXJQxUjK/3Ku/cpg==
   dependencies:
-    jmp "2"
+    jmp "1 || 2"
     nel "^1.1.0"
     uuid "3"
 
