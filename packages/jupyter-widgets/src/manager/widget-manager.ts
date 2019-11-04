@@ -129,7 +129,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     view: base.DOMWidgetView,
     options: any
   ): Promise<base.DOMWidgetView> {
+    this.render_view(view);
     return Promise.resolve(view);
+  }
+
+  render_view(view: base.DOMWidgetView): void {
+    view.render();
+    view.trigger("displayed");
   }
 
   _get_comm_info() {
@@ -173,40 +179,32 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   }
 
   /**
-   * This method creates a view for a given model. It starts off
-   * by registering a new model from the serialized model data. It
-   * then uses the loadClass method to resolve a reference to the
-   * WidgetView. Finally, it returns a reference to that Widget.
-   * Note that we don't display the view here. Instead, we invoke
-   * the `render` method on the WidgetView from within the
-   * `BackboneWrapper` component and pass a reference to a React
-   * element in this method.
-   *
-   * @param model   The Backbone-model associated with the widget
-   * @param options Configuration options for rendering the widget
+   * This method creates a view for a given model. Essentially, it calls the parent create_view function
+   * and then attaches the view to the element passed in. The parent create_view does a few extra things
+   * for us such as adding a reference to the view in the model and subscribing to the models "destroy"
+   * event to delete the view.
+   * Note that we don't display the view here. To display, use the `render_view` function
+   * @param model Widget model (backbone) to be associated with the view
+   * @param options View options to be passed on to BaseManager.create_view
+   * @param el HTMLElement to attach view to
    */
-  async create_view(model: any, options: any): Promise<DOMWidgetView> {
-    const managerModel = await this.new_widget(
-      {
-        model_id: options.model_id,
-        model_name: (model as IDomWidgetModel)._model_name,
-        model_module: (model as IDomWidgetModel)._model_module,
-        model_module_version: (model as IDomWidgetModel)._module_version,
-        view_name: (model as IDomWidgetModel)._view_name,
-        view_module: (model as IDomWidgetModel)._view_module,
-        view_module_version: (model as IDomWidgetModel)._view_module_version
-      },
-      model
-    );
-    const WidgetView = await this.loadClass(
-      managerModel.get("_view_name"),
-      managerModel.get("_view_module"),
-      managerModel.get("_view_module_version")
-    );
-    const widget = new WidgetView({
-      model: managerModel,
-      el: options.el
-    });
-    return widget;
+  create_view(
+    model: DOMWidgetModel,
+    options = {},
+    el?: HTMLElement | null
+  ): Promise<DOMWidgetView> {
+    return super
+      .create_view(model, options)
+      .then(view => {
+        if (el) {
+          //setting the element has to be done this way, not using setElement()
+          //otherwise it somehow breaks the interaction between mutliple views on
+          //the same widget model
+          view.el = el;
+          view.delegateEvents();
+        }
+        return Promise.resolve(view);
+      })
+      .catch(err => err);
   }
 }

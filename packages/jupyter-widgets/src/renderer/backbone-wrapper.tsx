@@ -32,15 +32,22 @@ interface Props {
 export default class BackboneWrapper extends React.Component<Props> {
   created = false;
   async componentDidUpdate() {
-    const { model, manager, widgetContainerRef } = this.props;
-    if (!this.created) {
-      if (manager) {
-        this.created = true;
-        const widget = await manager.create_view(model.toJS(), {
-          model_id: this.props.model_id,
-          el: widgetContainerRef.current
-        });
-        widget.render();
+    const { model, manager, widgetContainerRef, model_id } = this.props;
+    if (!this.created && manager) {
+      this.created = true;
+      try {
+        const widget = await manager.new_widget_from_state_and_id(
+          model.toJS(),
+          model_id
+        );
+        const view = await manager.create_view(
+          widget,
+          undefined, //no options
+          widgetContainerRef.current
+        );
+        manager.render_view(view);
+      } catch (err) {
+        throw err;
       }
     }
   }
