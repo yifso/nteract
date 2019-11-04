@@ -180,7 +180,9 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
 
   /**
    * This method creates a view for a given model. Essentially, it calls the parent create_view function
-   * and then attaches the view to the element passed in.
+   * and then attaches the view to the element passed in. The parent create_view does a few extra things
+   * for us such as adding a reference to the view in the model and subscribing to the models "destroy"
+   * event to delete the view.
    * Note that we don't display the view here. To display, use the `render_view` function
    * @param model Widget model (backbone) to be associated with the view
    * @param options View options to be passed on to BaseManager.create_view
