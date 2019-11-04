@@ -179,11 +179,9 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   }
 
   /**
-   * This method creates a view for a given model.
-   * Note that we don't display the view here. Instead, we use
-   * the `render` method in here from within the
-   * `BackboneWrapper` component and pass a reference to a HTML
-   * element in this method.
+   * This method creates a view for a given model. Essentially, it calls the parent create_view function
+   * and then attaches the view to the element passed in.
+   * Note that we don't display the view here. To display, use the `render_view` function
    * @param model Widget model (backbone) to be associated with the view
    * @param options View options to be passed on to BaseManager.create_view
    * @param el HTMLElement to attach view to
@@ -201,6 +199,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
           //otherwise it somehow breaks the interaction between mutliple views on
           //the same widget model
           view.el = el;
+          view.delegateEvents();
         }
         return Promise.resolve(view);
       })
