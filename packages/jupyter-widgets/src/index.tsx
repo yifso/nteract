@@ -1,9 +1,9 @@
+import { AppState, selectors } from "@nteract/core";
 import * as React from "react";
 import { connect } from "react-redux";
-import { selectors, AppState } from "@nteract/core";
 
-import Manager from "./manager";
 import { WidgetModel } from "@jupyter-widgets/base";
+import Manager from "./manager";
 
 interface JupyterWidgetData {
   model_id: string;

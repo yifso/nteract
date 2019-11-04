@@ -1,5 +1,5 @@
-import * as React from "react";
 import Immutable from "immutable";
+import * as React from "react";
 import { WidgetManager } from "../manager/widget-manager";
 
 /**
@@ -41,6 +41,7 @@ export default class BackboneWrapper extends React.Component<Props> {
           el: widgetContainerRef.current
         });
         widget.render();
+        // widget.trigger("displayed");
       }
     }
   }

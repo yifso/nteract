@@ -1,4 +1,4 @@
-import { commListenEpic } from "./comm";
+import { commListenEpic, outputRedirectEpic } from "./comm";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
@@ -51,7 +51,8 @@ const allEpics = [
   publishToBookstore,
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
-  sendInputReplyEpic
+  sendInputReplyEpic,
+  outputRedirectEpic
 ];
 
 export {
@@ -76,5 +77,6 @@ export {
   publishToBookstore,
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
-  sendInputReplyEpic
+  sendInputReplyEpic,
+  outputRedirectEpic
 };

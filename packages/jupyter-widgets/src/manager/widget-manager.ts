@@ -1,18 +1,20 @@
-import { KernelMessage } from "@jupyterlab/services";
 import * as base from "@jupyter-widgets/base";
-import * as controls from "@jupyter-widgets/controls";
 import {
+  DOMWidgetModel,
   DOMWidgetView,
-  WidgetModel,
-  DOMWidgetModel
+  WidgetModel
 } from "@jupyter-widgets/base";
-import { WidgetComm } from "./widget-comms";
-import { RecordOf } from "immutable";
+import * as controls from "@jupyter-widgets/controls";
+import { KernelMessage } from "@jupyterlab/services";
 import {
   KernelNotStartedProps,
   LocalKernelProps,
   RemoteKernelProps
 } from "@nteract/core";
+import { RecordOf } from "immutable";
+import WidgetComm from "./widget-comms";
+
+import * as output from "@jupyter-widgets/output";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
@@ -29,7 +31,7 @@ interface IDomWidgetModel extends DOMWidgetModel {
  * WidgetManager contains some overrides to get it to play nice
  * with our RxJS-based kernel communication.
  */
-export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
+export default class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   stateModelById: (id: string) => any;
   kernel:
     | RecordOf<KernelNotStartedProps>
@@ -57,6 +59,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
         resolve(controls);
       } else if (moduleName === "@jupyter-widgets/base") {
         resolve(base);
+      } else if (moduleName === "@jupyter-widgets/output") {
+        resolve(output);
       } else {
         return Promise.reject(
           `Module ${moduleName}@${moduleVersion} not found`
@@ -73,6 +77,14 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     });
   }
 
+  callbacks() {
+    return {
+      iopub: {
+        output: data => console.log(data)
+      }
+    };
+  }
+
   /**
    * Get a promise for a model by model id.
    *
@@ -83,7 +95,7 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   get_model(model_id: string): Promise<WidgetModel> | undefined {
     let model = super.get_model(model_id);
     if (model === undefined) {
-      let model_state = this.stateModelById(model_id)
+      const model_state = this.stateModelById(model_id)
         .get("state")
         .toJS();
       model = this.new_widget_from_state_and_id(model_state, model_id);
@@ -97,8 +109,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param model_id
    */
   async new_widget_from_state_and_id(state: any, model_id: string) {
-    let modelInfo = {
-      model_id: model_id,
+    const modelInfo = {
+      model_id,
       model_name: state._model_name,
       model_module: state._model_module,
       model_module_version: state._module_version,
@@ -116,8 +128,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param  serialized_state - serialized model attributes.
    */
   new_widget(options: any, serialized_state: any = {}): Promise<WidgetModel> {
-    //first we check if the model was already created
-    let widget = super.get_model(options.model_id); //we need to use the super because we override get_model to create what it can't find
+    // first we check if the model was already created
+    let widget = super.get_model(options.model_id); // we need to use the super because we override get_model to create what it can't find
     if (!widget) {
       widget = super.new_widget(options, serialized_state);
     }
@@ -156,8 +168,8 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     metadata?: any,
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ) {
-    //TODO: Check if we need to open a comm
-    //TODO: Find a way to supply correct target module (only used in comm opens)
+    // TODO: Check if we need to open a comm
+    // TODO: Find a way to supply correct target module (only used in comm opens)
     if (this.kernel) {
       return Promise.resolve(
         new WidgetComm(

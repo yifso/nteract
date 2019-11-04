@@ -1,16 +1,16 @@
-import * as React from "react";
-import { RecordOf } from "immutable";
-import { WidgetManager } from "./widget-manager";
-import BackboneWrapper from "../renderer/backbone-wrapper";
-import { connect } from "react-redux";
+import { WidgetModel } from "@jupyter-widgets/base";
 import {
   AppState,
-  selectors,
   KernelNotStartedProps,
   LocalKernelProps,
-  RemoteKernelProps
+  RemoteKernelProps,
+  selectors
 } from "@nteract/core";
-import { WidgetModel } from "@jupyter-widgets/base";
+import { RecordOf } from "immutable";
+import * as React from "react";
+import { connect } from "react-redux";
+import BackboneWrapper from "../renderer/backbone-wrapper";
+import WidgetManager from "./widget-manager";
 
 interface ConnectedProps {
   modelById: (id: string) => any;
@@ -35,8 +35,8 @@ type Props = ConnectedProps & OwnProps;
  * our client-side state model, and the view.
  */
 class Manager extends React.Component<Props> {
-  widgetContainerRef = React.createRef<HTMLDivElement>();
   static manager: WidgetManager;
+  widgetContainerRef = React.createRef<HTMLDivElement>();
 
   constructor(props: Props) {
     super(props);

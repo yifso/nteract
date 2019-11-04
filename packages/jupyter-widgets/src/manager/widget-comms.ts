@@ -1,17 +1,20 @@
 import { IClassicComm } from "@jupyter-widgets/base";
 import {
   childOf,
-  ofMessageType,
-  withCommId,
-  JupyterMessage,
   createCommMessage,
-  createCommOpenMessage
+  createCommOpenMessage,
+  kernelStatuses,
+  kernelStatuses,
+  ofMessageType,
+  withCommId
 } from "@nteract/messaging";
+
+import { map, tap } from "rxjs/operators";
 
 /**
  * Class used by widgets to communicate with the backend
  */
-export class WidgetComm implements IClassicComm {
+export default class WidgetComm implements IClassicComm {
   comm_id: string;
   target_name: string;
   target_module: string;
@@ -56,7 +59,6 @@ export class WidgetComm implements IClassicComm {
       this.target_module
     );
     this.kernel.channels.next(message);
-    this.hookupReplyCallbacks(message, callbacks);
     return message.header.msg_id;
   }
 
@@ -79,8 +81,11 @@ export class WidgetComm implements IClassicComm {
       data,
       this.flattenBufferArrays(buffers)
     );
+
     this.kernel.channels.next(message);
+
     this.hookupReplyCallbacks(message, callbacks);
+
     return message.header.msg_id;
   }
 
@@ -97,7 +102,7 @@ export class WidgetComm implements IClassicComm {
     metadata?: any,
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ): string {
-    throw "close not yet implemented!";
+    throw new Error("close not yet implemented!");
   }
 
   /**
@@ -139,39 +144,35 @@ export class WidgetComm implements IClassicComm {
   flattenBufferArrays(
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ): Uint8Array | undefined {
-    if (buffers === undefined) return undefined;
+    if (buffers === undefined) {
+      return undefined;
+    }
     // determining size and creating array
     let byteLength = 0;
-    for (let b of buffers) {
+    for (const b of buffers) {
       byteLength += b.byteLength;
     }
-    let flattened = new Uint8Array(byteLength);
+    const flattened = new Uint8Array(byteLength);
     // copying buffers over
-    for (let b of buffers) {
-      let arr =
+    for (const b of buffers) {
+      const arr =
         b instanceof ArrayBuffer ? new Uint8Array(b) : (b as Uint8Array);
       flattened.set(arr);
     }
     return flattened;
   }
 
-  /**
-   * Subscribes to message replies and routes them to the right callbacks
-   * provided by widgets
-   * @param message
-   * @param callbacks
-   */
   hookupReplyCallbacks(message: JupyterMessage<any, any>, callbacks: any) {
     this.kernel.channels.pipe(childOf(message)).subscribe((reply: any) => {
       if (
-        reply.channel == "shell" &&
+        reply.channel === "shell" &&
         callbacks.shell &&
         callbacks.shell.reply
       ) {
         callbacks.shell.reply(reply);
-      } else if (reply.channel == "stdin" && callbacks.input) {
+      } else if (reply.channel === "stdin" && callbacks.input) {
         callbacks.input(reply);
-      } else if (reply.channel == "iopub" && callbacks.iopub) {
+      } else if (reply.channel === "iopub" && callbacks.iopub) {
         if (callbacks.iopub.status && reply.header.msg_type === "status") {
           callbacks.iopub.status(reply);
         } else if (
