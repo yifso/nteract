@@ -1,6 +1,6 @@
 {
   "name": "@nteract/selectors",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "A colletion of state selectors",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
