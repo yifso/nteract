@@ -1,4 +1,4 @@
-import { ofMessageType, outputs } from "@nteract/messaging";
+import { JupyterMessage, ofMessageType, outputs } from "@nteract/messaging";
 import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
 import { merge } from "rxjs";
@@ -59,15 +59,13 @@ export const outputRedirectEpic = (
         ofMessageType("comm_msg"),
         filter((message: any) => {
           const { data } = message.content;
-          if (
+          return (
             data.method === "update" &&
             data.state.msg_id &&
             data.state.msg_id !== ""
-          ) {
-            return true;
-          }
+          );
         }),
-        switchMap((message: any) => {
+        switchMap((message: JupyterMessage) => {
           const { comm_id } = message.content;
           const processOutput$ = kernel.channels.pipe(
             outputs(),
@@ -82,10 +80,22 @@ export const outputRedirectEpic = (
 
           const processClearOutput$ = kernel.channels.pipe(
             ofMessageType("clear_output"),
-            map((msg: any) => clearOutputInModel({ modelId: comm_id }))
+            map((msg: JupyterMessage) =>
+              clearOutputInModel({ modelId: comm_id })
+            )
           );
 
-          return merge(processOutput$, processClearOutput$);
+          return merge(processOutput$, processClearOutput$).pipe(
+            takeUntil(
+              kernel.channels.pipe(
+                ofMessageType("comm_msg"),
+                filter((msg: JupyterMessage) => {
+                  const { data } = msg.content;
+                  return data.method === "update" && !data.state.msg_id;
+                })
+              )
+            )
+          );
         }),
         takeUntil(action$.pipe(ofType(KILL_KERNEL_SUCCESSFUL)))
       );
