@@ -49,7 +49,7 @@ describe("comm reducers", () => {
       a: 3
     });
   });
-  test("handles update messages for ipywidgets correctly", () => {
+  test("does a straight replacement for unknown comm messages", () => {
     const state = stateModule.makeCommsRecord();
 
     // Note that we're not starting with a COMM_OPEN in order to process
@@ -67,14 +67,15 @@ describe("comm reducers", () => {
       x: 5113
     });
   });
-  test("does a straight replacement for unknown comm messages", () => {
+  test("handles update messages for ipywidgets correctly", () => {
     const state = stateModule.makeCommsRecord({
       models: Immutable.Map({
-        101: {
-          state: {
-            x: 5112
-          }
-        }
+        test: Immutable.Map({
+          state: Immutable.Map({
+            x: 5112,
+            y: "test"
+          })
+        })
       })
     });
 
@@ -83,14 +84,15 @@ describe("comm reducers", () => {
     const action = {
       type: "COMM_MESSAGE",
       data: { method: "update", state: { x: 5113, bagels: true } },
-      comm_id: 101
+      comm_id: "test"
     };
 
     const nextState = commsReducer(state, action);
 
-    expect(nextState.getIn(["models", 101, "state"]).toJS()).toEqual({
+    expect(nextState.getIn(["models", "test", "state"]).toJS()).toEqual({
       bagels: true,
-      x: 5113
+      x: 5113,
+      y: "test"
     });
   });
 });

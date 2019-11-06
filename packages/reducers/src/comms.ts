@@ -57,7 +57,7 @@ function processCommMessage(
      * update method and modify the comm state accordingly
      * when this is the case.
      */
-    return state.mergeIn(["models", comm_id, "state"], data.state);
+    return state.mergeIn(["models", comm_id, "state"], fromJS(data.state));
   } else {
     // Default to overwrite / replace for now
     return state.setIn(["models", comm_id], fromJS(data));
