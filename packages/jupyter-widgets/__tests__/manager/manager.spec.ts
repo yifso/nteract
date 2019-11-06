@@ -44,11 +44,7 @@ describe("WidgetManager", () => {
         model,
         "test_model_id"
       );
-      const view = await manager.create_view(
-        widget,
-        {},
-        document.createElement("div")
-      );
+      const view = await manager.create_view(widget, {});
       expect(view).not.toBeNull();
       expect(view instanceof IntSliderView).toBe(true);
       expect(view.model.attributes.value).toBe(7);
@@ -107,12 +103,10 @@ describe("WidgetManager", () => {
         model,
         "test_model_id"
       );
-      const view = await manager.create_view(
-        widget,
-        {},
-        document.createElement("div")
-      );
-      manager.render_view(view);
+      const view = await manager.create_view(widget, {});
+      const el = document.createElement("div");
+      document.body.appendChild(el);
+      manager.render_view(view, el);
       // render_view sends out an event that the view waits for before it it sets the style and layout promise.
       // this means we need to wait for the callbacks to finish before we check their value
       setTimeout(async () => {
