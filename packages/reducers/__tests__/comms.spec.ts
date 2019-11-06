@@ -1,6 +1,7 @@
 import * as stateModule from "@nteract/types";
 
 import commsReducer from "../src/comms";
+import Immutable from "immutable";
 
 describe("registerCommTarget", () => {
   test("sets comm targets", () => {
@@ -48,7 +49,7 @@ describe("comm reducers", () => {
       a: 3
     });
   });
-  test("does a straight replacement for unknown comm messages", () => {
+  test("handles update messages for ipywidgets correctly", () => {
     const state = stateModule.makeCommsRecord();
 
     // Note that we're not starting with a COMM_OPEN in order to process
@@ -62,6 +63,32 @@ describe("comm reducers", () => {
     const nextState = commsReducer(state, action);
 
     expect(nextState.getIn(["models", 101]).toJS()).toEqual({
+      bagels: true,
+      x: 5113
+    });
+  });
+  test("does a straight replacement for unknown comm messages", () => {
+    const state = stateModule.makeCommsRecord({
+      models: Immutable.Map({
+        101: {
+          state: {
+            x: 5112
+          }
+        }
+      })
+    });
+
+    // Note that we're not starting with a COMM_OPEN in order to process
+    // a COMM_MESSAGE that hasn't been "opened"
+    const action = {
+      type: "COMM_MESSAGE",
+      data: { method: "update", state: { x: 5113, bagels: true } },
+      comm_id: 101
+    };
+
+    const nextState = commsReducer(state, action);
+
+    expect(nextState.getIn(["models", 101, "state"]).toJS()).toEqual({
       bagels: true,
       x: 5113
     });
