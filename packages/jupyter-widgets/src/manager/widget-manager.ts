@@ -14,7 +14,7 @@ import {
 import { RecordOf } from "immutable";
 import WidgetComm from "./widget-comms";
 
-import * as output from "@jupyter-widgets/output";
+import * as output from "../renderer/output";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
@@ -33,21 +33,32 @@ interface IDomWidgetModel extends DOMWidgetModel {
  */
 export default class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   stateModelById: (id: string) => any;
+  outputsByModelId: (id: string) => any;
   kernel:
     | RecordOf<KernelNotStartedProps>
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
 
-  constructor(kernel: any, stateModelById: (id: string) => any) {
+  constructor(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    outputsByModelId: (id: string) => any
+  ) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.outputsByModelId = outputsByModelId;
   }
 
-  update(kernel: any, stateModelById: (id: string) => any) {
+  update(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    outputsByModelId: (id: string) => any
+  ) {
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.outputsByModelId = outputsByModelId;
   }
 
   /**
@@ -75,14 +86,6 @@ export default class WidgetManager extends base.ManagerBase<DOMWidgetView> {
         );
       }
     });
-  }
-
-  callbacks() {
-    return {
-      iopub: {
-        output: data => console.log(data)
-      }
-    };
   }
 
   /**

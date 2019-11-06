@@ -1,16 +1,17 @@
 import { ofMessageType, outputs } from "@nteract/messaging";
-import { ofType, StateObservable } from "redux-observable";
+import { ofType } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
 import { merge } from "rxjs";
 import { filter, map, switchMap, takeUntil } from "rxjs/operators";
 
 import {
+  clearOutputInModel,
   commMessageAction,
-  CommMessageAction,
   commOpenAction,
   KILL_KERNEL_SUCCESSFUL,
   LAUNCH_KERNEL_SUCCESSFUL,
-  NewKernelAction
+  NewKernelAction,
+  redirectOutputToModel
 } from "@nteract/actions";
 
 /**
@@ -51,14 +52,13 @@ export const outputRedirectEpic = (
     ofType(LAUNCH_KERNEL_SUCCESSFUL),
     switchMap((action: NewKernelAction) => {
       const {
-        payload: { kernel }
+        payload: { kernel, contentRef }
       } = action;
-      console.log("Inside output redirect epic");
 
       const outputRedirectAction$ = kernel.channels.pipe(
         ofMessageType("comm_msg"),
         filter((message: any) => {
-          const { comm_id, data } = message.content;
+          const { data } = message.content;
           if (
             data.method === "update" &&
             data.state.msg_id &&
@@ -68,14 +68,21 @@ export const outputRedirectEpic = (
           }
         }),
         switchMap((message: any) => {
+          const { comm_id } = message.content;
           const processOutput$ = kernel.channels.pipe(
             outputs(),
-            map((output: OnDiskOutput) => console.log(output))
+            map((output: any) => {
+              return redirectOutputToModel({
+                modelId: comm_id,
+                output,
+                contentRef
+              });
+            })
           );
 
           const processClearOutput$ = kernel.channels.pipe(
             ofMessageType("clear_output"),
-            map((msg: any) => console.log(msg))
+            map((msg: any) => clearOutputInModel({ modelId: comm_id }))
           );
 
           return merge(processOutput$, processClearOutput$);

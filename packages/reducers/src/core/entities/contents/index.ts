@@ -311,6 +311,7 @@ const byRef = (
     case actionTypes.TOGGLE_TAG_IN_CELL:
     case actionTypes.UPDATE_OUTPUT_METADATA:
     case actionTypes.PROMPT_INPUT_REQUEST:
+    case actionTypes.REDIRECT_OUTPUT_TO_MODEL:
     case actionTypes.UNHIDE_ALL: {
       const cellAction = action as actionTypes.FocusCell;
       const path = [cellAction.payload.contentRef, "model"];

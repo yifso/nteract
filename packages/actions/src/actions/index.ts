@@ -24,6 +24,7 @@ export * from "./contents";
 export * from "./hosts";
 export * from "./kernels";
 export * from "./kernelspecs";
+export * from "./ipywidgets";
 
 export const openModal = (payload: { modalType: string }) => ({
   type: actionTypes.OPEN_MODAL,

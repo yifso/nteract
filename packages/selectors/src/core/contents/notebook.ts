@@ -120,6 +120,16 @@ export const transientCellMap = (model: NotebookModel) =>
 export const cellPromptById = (model: NotebookModel, { id }: { id: CellId }) =>
   model.cellPrompts.get(id);
 
+export const outputsByModelId = (
+  model: NotebookModel,
+  { modelId }: { modelId: string }
+) => {
+  return model.transient.getIn(
+    ["outputsForRedirection", modelId],
+    Immutable.Map()
+  );
+};
+
 /**
  * Returns the CellIds of the code cells within a notebook.
  */

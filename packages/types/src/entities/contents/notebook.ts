@@ -74,7 +74,8 @@ export const makeDocumentRecord = Immutable.Record<DocumentRecordProps>({
   notebook: emptyNotebook,
   savedNotebook: emptyNotebook,
   transient: Immutable.Map({
-    keyPathsForDisplays: Immutable.Map()
+    keyPathsForDisplays: Immutable.Map(),
+    outputsForRedirection: Immutable.Map()
   }),
   cellPagers: Immutable.Map(),
   cellPrompts: Immutable.Map(),

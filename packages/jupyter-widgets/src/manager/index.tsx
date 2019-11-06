@@ -14,6 +14,7 @@ import WidgetManager from "./widget-manager";
 
 interface ConnectedProps {
   modelById: (id: string) => any;
+  outputsByModelId: any;
   kernel?:
     | RecordOf<KernelNotStartedProps>
     | RecordOf<LocalKernelProps>
@@ -23,6 +24,7 @@ interface ConnectedProps {
 interface OwnProps {
   model: WidgetModel;
   model_id: string;
+  contentRef: string;
 }
 
 type Props = ConnectedProps & OwnProps;
@@ -53,10 +55,15 @@ class Manager extends React.Component<Props> {
     if (Manager.manager === undefined) {
       Manager.manager = new WidgetManager(
         this.props.kernel,
-        this.props.modelById
+        this.props.modelById,
+        this.props.outputsByModelId
       );
     } else {
-      Manager.manager.update(this.props.kernel, this.props.modelById);
+      Manager.manager.update(
+        this.props.kernel,
+        this.props.modelById,
+        this.props.outputsByModelId
+      );
     }
     return Manager.manager;
   }
@@ -79,6 +86,11 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   return {
     modelById: (model_id: string) =>
       selectors.modelById(state, { commId: model_id }),
+    outputsByModelId: (modelId: string) =>
+      selectors.notebook.outputsByModelId(
+        selectors.model(state, { contentRef: props.contentRef }),
+        { modelId }
+      ),
     kernel: selectors.currentKernel(state)
   };
 };

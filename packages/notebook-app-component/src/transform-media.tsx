@@ -29,6 +29,7 @@ interface MappedProps {
   data?: any;
   metadata?: Immutable.Map<string, any>;
   theme?: string;
+  contentRef: ContentRef;
 }
 
 interface DispatchProps {
@@ -38,7 +39,15 @@ interface DispatchProps {
 }
 
 const PureTransformMedia = (props: MappedProps & DispatchProps) => {
-  const { Media, mediaActions, mediaType, data, metadata, theme } = props;
+  const {
+    Media,
+    mediaActions,
+    mediaType,
+    data,
+    metadata,
+    theme,
+    contentRef
+  } = props;
 
   // If we had no valid result, return an empty output
   if (!mediaType || !data) {
@@ -46,7 +55,13 @@ const PureTransformMedia = (props: MappedProps & DispatchProps) => {
   }
 
   return (
-    <Media {...mediaActions} data={data} metadata={metadata} theme={theme} />
+    <Media
+      contentRef={contentRef}
+      {...mediaActions}
+      data={data}
+      metadata={metadata}
+      theme={theme}
+    />
   );
 };
 
@@ -115,14 +130,16 @@ const makeMapStateToProps = (
         mediaType,
         data,
         metadata,
-        theme
+        theme,
+        contentRef
       };
     }
     return {
       Media: () => null,
       mediaType,
       output,
-      theme
+      theme,
+      contentRef
     };
   };
   return mapStateToProps;
