@@ -42,10 +42,11 @@ export default class BackboneWrapper extends React.Component<Props> {
         );
         const view = await manager.create_view(
           widget,
-          undefined, //no options
-          widgetContainerRef.current
+          undefined //no options
         );
-        manager.render_view(view);
+        if (widgetContainerRef.current) {
+          manager.render_view(view, widgetContainerRef.current);
+        }
       } catch (err) {
         throw err;
       }
