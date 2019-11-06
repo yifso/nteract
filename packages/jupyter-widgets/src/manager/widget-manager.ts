@@ -1,6 +1,7 @@
 import { KernelMessage } from "@jupyterlab/services";
 import * as base from "@jupyter-widgets/base";
 import * as controls from "@jupyter-widgets/controls";
+import * as pWidget from "@phosphor/widgets";
 import {
   DOMWidgetView,
   WidgetModel,
@@ -124,18 +125,30 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     return widget;
   }
 
+  /**
+   * Do not use this method. Use `render_view` instead for displaying the widget.
+   *
+   * This method is here because it is required to be implemented by the ManagerBase,
+   * so even though it is not used, do not delete it.
+   * @param msg
+   * @param view
+   * @param options
+   */
   display_view(
     msg: KernelMessage.IMessage,
     view: base.DOMWidgetView,
     options: any
   ): Promise<base.DOMWidgetView> {
-    this.render_view(view);
-    return Promise.resolve(view);
+    throw Error("display_view not implemented. Use render_view instead.");
   }
 
-  render_view(view: base.DOMWidgetView): void {
-    view.render();
-    view.trigger("displayed");
+  /**
+   * Render the given view to a target element
+   * @param view View to be rendered
+   * @param el Target element that the view will be rendered within
+   */
+  render_view(view: base.DOMWidgetView, el: HTMLElement): void {
+    pWidget.Widget.attach(view.pWidget, el);
   }
 
   _get_comm_info() {
@@ -176,35 +189,5 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     } else {
       return Promise.reject("Kernel is null or undefined");
     }
-  }
-
-  /**
-   * This method creates a view for a given model. Essentially, it calls the parent create_view function
-   * and then attaches the view to the element passed in. The parent create_view does a few extra things
-   * for us such as adding a reference to the view in the model and subscribing to the models "destroy"
-   * event to delete the view.
-   * Note that we don't display the view here. To display, use the `render_view` function
-   * @param model Widget model (backbone) to be associated with the view
-   * @param options View options to be passed on to BaseManager.create_view
-   * @param el HTMLElement to attach view to
-   */
-  create_view(
-    model: DOMWidgetModel,
-    options = {},
-    el?: HTMLElement | null
-  ): Promise<DOMWidgetView> {
-    return super
-      .create_view(model, options)
-      .then(view => {
-        if (el) {
-          //setting the element has to be done this way, not using setElement()
-          //otherwise it somehow breaks the interaction between mutliple views on
-          //the same widget model
-          view.el = el;
-          view.delegateEvents();
-        }
-        return Promise.resolve(view);
-      })
-      .catch(err => err);
   }
 }
