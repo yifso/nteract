@@ -915,7 +915,10 @@ function redirectOutputToModel(
   action: actionTypes.RedirectOutputToModel
 ): RecordOf<DocumentRecordProps> {
   const { modelId, output } = action.payload;
-  return state.setIn(["transient", "outputsForRedirection", modelId], output);
+  return state.updateIn(
+    ["transient", "outputsForRedirection", modelId],
+    outputs => reduceOutputs(outputs, output)
+  );
 }
 
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
