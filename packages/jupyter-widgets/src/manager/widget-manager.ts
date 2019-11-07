@@ -37,13 +37,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
-  widgetsBeingCreated: Promise<WidgetModel>[];
+  widgetsBeingCreated: { [model_id: string]: Promise<WidgetModel> };
 
   constructor(kernel: any, stateModelById: (id: string) => any) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
-    this.widgetsBeingCreated = [];
+    this.widgetsBeingCreated = {};
   }
 
   update(kernel: any, stateModelById: (id: string) => any) {
