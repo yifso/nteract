@@ -99,6 +99,30 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): any => {
             contentRef: props.contentRef,
             output
           })
+        ),
+      clearOutput: () =>
+        dispatch(
+          actions.clearOutputs({
+            id: props.id,
+            contentRef: props.contentRef
+          })
+        ),
+      updateCellStatus: status =>
+        dispatch(
+          actions.updateCellStatus({
+            id: props.id,
+            contentRef: props.contentRef,
+            status
+          })
+        ),
+      promptImputRequest: (prompt, password) =>
+        dispatch(
+          actions.promptInputRequest({
+            id: props.id,
+            contentRef: props.contentRef,
+            prompt,
+            password
+          })
         )
     }
   };

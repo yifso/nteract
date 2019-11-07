@@ -152,8 +152,16 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
           this.actions.appendOutput({
             ...reply.content,
             output_type: reply.header.msg_type
-          })
-      }
+          }),
+        clear_output: reply => this.actions.clearOutput(),
+        status: reply =>
+          this.actions.updateCellStatus(reply.content.execution_state)
+      },
+      input: reply =>
+        this.actions.promptInputRequest(
+          reply.content.prompt,
+          reply.content.password
+        )
     };
   }
 
