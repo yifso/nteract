@@ -120,16 +120,23 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    */
   new_widget(options: any, serialized_state: any = {}): Promise<WidgetModel> {
     const model_id = options.model_id;
-    if (super.get_model(model_id)) {
-      //if this widget is already created
-      return super.get_model(model_id)!; //we can assert that it's not undefined because we just checked
-    } else if (this.widgetsBeingCreated[model_id]) {
-      //if this widget is in the process of being created
+    //if this widget is already created
+    const existing_widget = super.get_model(model_id);
+    if (existing_widget) {
+      return existing_widget;
+    }
+    //if this widget is in the process of being created
+    else if (this.widgetsBeingCreated[model_id]) {
       return this.widgetsBeingCreated[model_id];
-    } else {
+    }
+    //otherwise create a new widget
+    else {
       let widget = super.new_widget(options, serialized_state);
       this.widgetsBeingCreated[model_id] = widget;
-      return widget;
+      return widget.then((new_widget: WidgetModel) => {
+        delete this.widgetsBeingCreated[new_widget.model_id];
+        return Promise.resolve(new_widget);
+      });
     }
   }
 
