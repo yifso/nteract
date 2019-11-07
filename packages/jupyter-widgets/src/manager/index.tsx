@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import {
   AppState,
   selectors,
+  actions,
   KernelNotStartedProps,
   LocalKernelProps,
   RemoteKernelProps
@@ -53,10 +54,15 @@ class Manager extends React.Component<Props> {
     if (Manager.manager === undefined) {
       Manager.manager = new WidgetManager(
         this.props.kernel,
-        this.props.modelById
+        this.props.modelById,
+        this.props.actions
       );
     } else {
-      Manager.manager.update(this.props.kernel, this.props.modelById);
+      Manager.manager.update(
+        this.props.kernel,
+        this.props.modelById,
+        this.props.actions
+      );
     }
     return Manager.manager;
   }
@@ -82,4 +88,23 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
     kernel: selectors.currentKernel(state)
   };
 };
-export default connect(mapStateToProps)(Manager);
+
+const mapDispatchToProps = (dispatch: any, props: OwnProps): any => {
+  return {
+    actions: {
+      appendOutput: (output: any) =>
+        dispatch(
+          actions.appendOutput({
+            id: props.id,
+            contentRef: props.contentRef,
+            output
+          })
+        )
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Manager);

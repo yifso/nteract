@@ -28,7 +28,12 @@ export class WidgetDisplay extends React.Component<Props> {
 
   render() {
     return (
-      <Manager model={this.props.model} model_id={this.props.data.model_id} />
+      <Manager
+        model={this.props.model}
+        model_id={this.props.data.model_id}
+        id={this.props.id}
+        contentRef={this.props.contentRef}
+      />
     );
   }
 }

@@ -37,16 +37,19 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
+  actions: any;
 
-  constructor(kernel: any, stateModelById: (id: string) => any) {
+  constructor(kernel: any, stateModelById: (id: string) => any, actions: any) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.actions = actions;
   }
 
-  update(kernel: any, stateModelById: (id: string) => any) {
+  update(kernel: any, stateModelById: (id: string) => any, actions: any) {
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.actions = actions;
   }
 
   /**
@@ -140,6 +143,18 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     options: any
   ): Promise<base.DOMWidgetView> {
     throw Error("display_view not implemented. Use render_view instead.");
+  }
+
+  callbacks() {
+    return {
+      iopub: {
+        output: reply =>
+          this.actions.appendOutput({
+            ...reply.content,
+            output_type: reply.header.msg_type
+          })
+      }
+    };
   }
 
   /**
