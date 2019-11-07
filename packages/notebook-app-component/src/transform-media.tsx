@@ -37,7 +37,7 @@ interface DispatchProps {
   };
 }
 
-const PureTransformMedia = (props: MappedProps & DispatchProps) => {
+const PureTransformMedia = (props: MappedProps & DispatchProps & OwnProps) => {
   const {
     Media,
     mediaActions,

@@ -9,8 +9,10 @@ import {
   actions,
   KernelNotStartedProps,
   LocalKernelProps,
-  RemoteKernelProps
+  RemoteKernelProps,
+  ContentRef
 } from "@nteract/core";
+import { CellId } from "@nteract/commutable";
 import { WidgetModel } from "@jupyter-widgets/base";
 
 interface ConnectedProps {
@@ -21,12 +23,24 @@ interface ConnectedProps {
     | RecordOf<RemoteKernelProps>
     | null;
 }
+
+interface DispatchProps {
+  actions: {
+    appendOutput: (output: any) => void;
+    clearOutput: () => void;
+    updateCellStatus: (status: string) => void;
+    promptImputRequest: (prompt: string, password: boolean) => void;
+  };
+}
+
 interface OwnProps {
   model: WidgetModel;
   model_id: string;
+  id: CellId;
+  contentRef: ContentRef;
 }
 
-type Props = ConnectedProps & OwnProps;
+type Props = ConnectedProps & OwnProps & DispatchProps;
 
 /**
  * This component is is a wrapper component that initializes a
@@ -89,7 +103,7 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any, props: OwnProps): any => {
+const mapDispatchToProps = (dispatch: any, props: OwnProps): DispatchProps => {
   return {
     actions: {
       appendOutput: (output: any) =>
@@ -107,7 +121,7 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): any => {
             contentRef: props.contentRef
           })
         ),
-      updateCellStatus: status =>
+      updateCellStatus: (status: string) =>
         dispatch(
           actions.updateCellStatus({
             id: props.id,
@@ -115,7 +129,7 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): any => {
             status
           })
         ),
-      promptImputRequest: (prompt, password) =>
+      promptImputRequest: (prompt: string, password: boolean) =>
         dispatch(
           actions.promptInputRequest({
             id: props.id,

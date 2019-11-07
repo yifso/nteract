@@ -1,9 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { selectors, AppState } from "@nteract/core";
+import { selectors, AppState, ContentRef } from "@nteract/core";
 
 import Manager from "./manager";
 import { WidgetModel } from "@jupyter-widgets/base";
+import { CellId } from "@nteract/commutable";
 
 interface JupyterWidgetData {
   model_id: string;
@@ -14,6 +15,8 @@ interface JupyterWidgetData {
 interface Props {
   data: JupyterWidgetData;
   model: WidgetModel;
+  id: CellId;
+  contentRef: ContentRef;
 }
 
 /**

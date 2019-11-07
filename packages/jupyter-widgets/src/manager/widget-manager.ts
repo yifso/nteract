@@ -14,6 +14,7 @@ import {
   LocalKernelProps,
   RemoteKernelProps
 } from "@nteract/core";
+import { JupyterMessage } from "@nteract/messaging";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
@@ -145,19 +146,26 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     throw Error("display_view not implemented. Use render_view instead.");
   }
 
-  callbacks() {
+  /**
+   * The ManagerBase type definition for the callbacks method expects
+   * the message types to be as defined by the IMessage interface from
+   * @jupyterlab/services. It is typed as any here so that we can use
+   * our JupyterMessage types that are emitted from our kernel.channels
+   * pipeline.
+   */
+  callbacks(): any {
     return {
       iopub: {
-        output: reply =>
+        output: (reply: JupyterMessage) =>
           this.actions.appendOutput({
             ...reply.content,
             output_type: reply.header.msg_type
           }),
-        clear_output: reply => this.actions.clearOutput(),
-        status: reply =>
+        clear_output: (reply: JupyterMessage) => this.actions.clearOutput(),
+        status: (reply: JupyterMessage) =>
           this.actions.updateCellStatus(reply.content.execution_state)
       },
-      input: reply =>
+      input: (reply: JupyterMessage) =>
         this.actions.promptInputRequest(
           reply.content.prompt,
           reply.content.password
