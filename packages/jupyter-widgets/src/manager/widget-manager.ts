@@ -15,6 +15,7 @@ import {
   RemoteKernelProps
 } from "@nteract/core";
 import { JupyterMessage } from "@nteract/messaging";
+import { ManagerActions } from "../manager/index";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
@@ -38,16 +39,24 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
-  actions: any;
+  actions: ManagerActions["actions"];
 
-  constructor(kernel: any, stateModelById: (id: string) => any, actions: any) {
+  constructor(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    actions: ManagerActions["actions"]
+  ) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
     this.actions = actions;
   }
 
-  update(kernel: any, stateModelById: (id: string) => any, actions: any) {
+  update(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    actions: ManagerActions["actions"]
+  ) {
     this.kernel = kernel;
     this.stateModelById = stateModelById;
     this.actions = actions;

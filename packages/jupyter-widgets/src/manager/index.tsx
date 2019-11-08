@@ -24,12 +24,12 @@ interface ConnectedProps {
     | null;
 }
 
-interface DispatchProps {
+export interface ManagerActions {
   actions: {
     appendOutput: (output: any) => void;
     clearOutput: () => void;
     updateCellStatus: (status: string) => void;
-    promptImputRequest: (prompt: string, password: boolean) => void;
+    promptInputRequest: (prompt: string, password: boolean) => void;
   };
 }
 
@@ -40,7 +40,7 @@ interface OwnProps {
   contentRef: ContentRef;
 }
 
-type Props = ConnectedProps & OwnProps & DispatchProps;
+type Props = ConnectedProps & OwnProps & ManagerActions;
 
 /**
  * This component is is a wrapper component that initializes a
@@ -103,7 +103,7 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any, props: OwnProps): DispatchProps => {
+const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
   return {
     actions: {
       appendOutput: (output: any) =>
@@ -129,7 +129,7 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): DispatchProps => {
             status
           })
         ),
-      promptImputRequest: (prompt: string, password: boolean) =>
+      promptInputRequest: (prompt: string, password: boolean) =>
         dispatch(
           actions.promptInputRequest({
             id: props.id,
