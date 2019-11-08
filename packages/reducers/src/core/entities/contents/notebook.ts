@@ -147,7 +147,7 @@ function clearOutputs(
     return cleanedState
       .setIn(["notebook", "cellMap", id, "outputs"], List())
       .setIn(["notebook", "cellMap", id, "execution_count"], null)
-      .setIn(["cellPrompts", id], null);
+      .setIn(["cellPrompts", id], List());
   }
   return cleanedState;
 }
@@ -906,10 +906,12 @@ function promptInputRequest(
   action: actionTypes.PromptInputRequest
 ): RecordOf<DocumentRecordProps> {
   const { id, password, prompt } = action.payload;
-  return state.setIn(["cellPrompts", id], {
-    prompt,
-    password
-  });
+  return state.updateIn(["cellPrompts", id], prompts =>
+    prompts.push({
+      prompt,
+      password
+    })
+  );
 }
 
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
