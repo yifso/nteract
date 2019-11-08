@@ -14,6 +14,8 @@ import {
   LocalKernelProps,
   RemoteKernelProps
 } from "@nteract/core";
+import { JupyterMessage } from "@nteract/messaging";
+import { ManagerActions } from "../manager/index";
 
 interface IDomWidgetModel extends DOMWidgetModel {
   _model_name: string;
@@ -37,18 +39,29 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
+  actions: ManagerActions["actions"];
   widgetsBeingCreated: { [model_id: string]: Promise<WidgetModel> };
 
-  constructor(kernel: any, stateModelById: (id: string) => any) {
+  constructor(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    actions: ManagerActions["actions"]
+  ) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.actions = actions;
     this.widgetsBeingCreated = {};
   }
 
-  update(kernel: any, stateModelById: (id: string) => any) {
+  update(
+    kernel: any,
+    stateModelById: (id: string) => any,
+    actions: ManagerActions["actions"]
+  ) {
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.actions = actions;
   }
 
   /**
@@ -155,6 +168,33 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     options: any
   ): Promise<base.DOMWidgetView> {
     throw Error("display_view not implemented. Use render_view instead.");
+  }
+
+  /**
+   * The ManagerBase type definition for the callbacks method expects
+   * the message types to be as defined by the IMessage interface from
+   * @jupyterlab/services. It is typed as any here so that we can use
+   * our JupyterMessage types that are emitted from our kernel.channels
+   * pipeline.
+   */
+  callbacks(): any {
+    return {
+      iopub: {
+        output: (reply: JupyterMessage) =>
+          this.actions.appendOutput({
+            ...reply.content,
+            output_type: reply.header.msg_type
+          }),
+        clear_output: (reply: JupyterMessage) => this.actions.clearOutput(),
+        status: (reply: JupyterMessage) =>
+          this.actions.updateCellStatus(reply.content.execution_state)
+      },
+      input: (reply: JupyterMessage) =>
+        this.actions.promptInputRequest(
+          reply.content.prompt,
+          reply.content.password
+        )
+    };
   }
 
   /**

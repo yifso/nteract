@@ -6,10 +6,13 @@ import { connect } from "react-redux";
 import {
   AppState,
   selectors,
+  actions,
   KernelNotStartedProps,
   LocalKernelProps,
-  RemoteKernelProps
+  RemoteKernelProps,
+  ContentRef
 } from "@nteract/core";
+import { CellId } from "@nteract/commutable";
 import { WidgetModel } from "@jupyter-widgets/base";
 
 interface ConnectedProps {
@@ -20,12 +23,24 @@ interface ConnectedProps {
     | RecordOf<RemoteKernelProps>
     | null;
 }
+
+export interface ManagerActions {
+  actions: {
+    appendOutput: (output: any) => void;
+    clearOutput: () => void;
+    updateCellStatus: (status: string) => void;
+    promptInputRequest: (prompt: string, password: boolean) => void;
+  };
+}
+
 interface OwnProps {
   model: WidgetModel;
   model_id: string;
+  id: CellId;
+  contentRef: ContentRef;
 }
 
-type Props = ConnectedProps & OwnProps;
+type Props = ConnectedProps & OwnProps & ManagerActions;
 
 /**
  * This component is is a wrapper component that initializes a
@@ -53,10 +68,15 @@ class Manager extends React.Component<Props> {
     if (Manager.manager === undefined) {
       Manager.manager = new WidgetManager(
         this.props.kernel,
-        this.props.modelById
+        this.props.modelById,
+        this.props.actions
       );
     } else {
-      Manager.manager.update(this.props.kernel, this.props.modelById);
+      Manager.manager.update(
+        this.props.kernel,
+        this.props.modelById,
+        this.props.actions
+      );
     }
     return Manager.manager;
   }
@@ -82,4 +102,47 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
     kernel: selectors.currentKernel(state)
   };
 };
-export default connect(mapStateToProps)(Manager);
+
+const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
+  return {
+    actions: {
+      appendOutput: (output: any) =>
+        dispatch(
+          actions.appendOutput({
+            id: props.id,
+            contentRef: props.contentRef,
+            output
+          })
+        ),
+      clearOutput: () =>
+        dispatch(
+          actions.clearOutputs({
+            id: props.id,
+            contentRef: props.contentRef
+          })
+        ),
+      updateCellStatus: (status: string) =>
+        dispatch(
+          actions.updateCellStatus({
+            id: props.id,
+            contentRef: props.contentRef,
+            status
+          })
+        ),
+      promptInputRequest: (prompt: string, password: boolean) =>
+        dispatch(
+          actions.promptInputRequest({
+            id: props.id,
+            contentRef: props.contentRef,
+            prompt,
+            password
+          })
+        )
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Manager);

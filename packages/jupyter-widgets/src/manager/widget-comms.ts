@@ -183,6 +183,8 @@ export class WidgetComm implements IClassicComm {
           switch (reply.header.msg_type) {
             case "display_data":
             case "execute_result":
+            case "stream":
+            case "error":
               callbacks.iopub.output(reply);
               break;
             default:
