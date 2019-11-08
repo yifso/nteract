@@ -37,11 +37,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     | RecordOf<LocalKernelProps>
     | RecordOf<RemoteKernelProps>
     | null;
+  widgetsBeingCreated: { [model_id: string]: Promise<WidgetModel> };
 
   constructor(kernel: any, stateModelById: (id: string) => any) {
     super();
     this.kernel = kernel;
     this.stateModelById = stateModelById;
+    this.widgetsBeingCreated = {};
   }
 
   update(kernel: any, stateModelById: (id: string) => any) {
@@ -117,12 +119,25 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
    * @param  serialized_state - serialized model attributes.
    */
   new_widget(options: any, serialized_state: any = {}): Promise<WidgetModel> {
-    //first we check if the model was already created
-    let widget = super.get_model(options.model_id); //we need to use the super because we override get_model to create what it can't find
-    if (!widget) {
-      widget = super.new_widget(options, serialized_state);
+    const model_id = options.model_id;
+    //if this widget is already created
+    const existing_widget = super.get_model(model_id);
+    if (existing_widget) {
+      return existing_widget;
     }
-    return widget;
+    //if this widget is in the process of being created
+    else if (this.widgetsBeingCreated[model_id]) {
+      return this.widgetsBeingCreated[model_id];
+    }
+    //otherwise create a new widget
+    else {
+      let widget = super.new_widget(options, serialized_state);
+      this.widgetsBeingCreated[model_id] = widget;
+      return widget.then((new_widget: WidgetModel) => {
+        delete this.widgetsBeingCreated[new_widget.model_id];
+        return Promise.resolve(new_widget);
+      });
+    }
   }
 
   /**
