@@ -32,9 +32,15 @@ export const commListenEpic = (
       const {
         payload: { kernel, contentRef }
       } = action;
+      /**
+       * We need the model of the currently loaded notebook so we can
+       * determine what notebook to render the output of the widget onto.
+       */
       const model = selectors.model(state$.value, { contentRef });
-      // Listen for comm_open messages from the kernel that are associated
-      // with models that will not be rendered on the page
+      /**
+       * Listen for comm_open messages from the kernel that are associated
+       * with models that will not be rendered on the page.
+       */
       const ipywidgetsModel$ = kernel.channels.pipe(
         ofMessageType("comm_open"),
         filter((msg: JupyterMessage) => {
@@ -46,22 +52,41 @@ export const commListenEpic = (
         switchMap((msg: JupyterMessage) =>
           of(
             commOpenAction(msg),
-            appendOutput({
-              id: model.notebook.cellOrder.first(),
-              contentRef,
-              output: {
-                output_type: "display_data",
-                data: {
-                  "application/vnd.jupyter.widget-view+json": {
-                    model_id: msg.content.comm_id,
-                    version_major: 2,
-                    version_minor: 0
+            /**
+             * If the content we are running under is a notebook,
+             * then append a mock output for the linkModel to the
+             * notebook.
+             */
+            model && model.type === "notebook"
+              ? appendOutput({
+                  /**
+                   * We currently append the output to the first cell
+                   * in the notebook. Since we are just doing this to
+                   * get the LinkModel loaded into our WidgetManager
+                   * singleton, it doesn't matter which cell it is rendered
+                   * under.
+                   *
+                   * However, this approach is rather messy since this
+                   * output will be serialized to the notebook. TODO: we
+                   * should try to get the cell that contained the jslink
+                   * code and store the tempoary output there.
+                   */
+                  id: model.notebook.cellOrder.first(),
+                  contentRef,
+                  output: {
+                    output_type: "display_data",
+                    data: {
+                      "application/vnd.jupyter.widget-view+json": {
+                        model_id: msg.content.comm_id,
+                        version_major: 2,
+                        version_minor: 0
+                      }
+                    },
+                    metadata: {},
+                    transient: {}
                   }
-                },
-                metadata: {},
-                transient: {}
-              }
-            })
+                })
+              : null
           )
         ),
         takeUntil(action$.pipe(ofType(KILL_KERNEL_SUCCESSFUL)))
