@@ -84,7 +84,7 @@ interface AnyCellProps {
   executionCount: ExecutionCount;
   outputs: Immutable.List<any>;
   pager: Immutable.List<any>;
-  prompt?: InputRequestMessage;
+  prompts: Immutable.List<InputRequestMessage>;
   cellStatus: string;
   cellFocused: boolean; // not the ID of which is focused
   editorFocused: boolean;
@@ -133,7 +133,7 @@ const makeMapStateToCellProps = (
 
     const cellType = cell.cell_type;
     const outputs = cell.get("outputs", emptyList);
-    const prompt = selectors.notebook.cellPromptById(model, { id });
+    const prompts = selectors.notebook.cellPromptsById(model, { id });
 
     const sourceHidden =
       (cellType === "code" &&
@@ -172,7 +172,7 @@ const makeMapStateToCellProps = (
       outputHidden,
       outputs,
       pager,
-      prompt,
+      prompts,
       source: cell.get("source", ""),
       sourceHidden,
       tags,
@@ -279,7 +279,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       focusBelowCell,
       focusEditor,
       id,
-      prompt,
       tags,
       theme,
       selectCell,
@@ -348,9 +347,9 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
                 </Output>
               ))}
             </Outputs>
-            {prompt && (
+            {this.props.prompts.map((prompt: InputRequestMessage) => (
               <PromptRequest {...prompt} submitPromptReply={sendInputReply} />
-            )}
+            ))}
           </React.Fragment>
         );
 

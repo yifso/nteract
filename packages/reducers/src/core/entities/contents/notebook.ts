@@ -24,7 +24,12 @@ import {
   OnDiskStreamOutput
 } from "@nteract/commutable";
 import { UpdateDisplayDataContent } from "@nteract/messaging";
-import { DocumentRecordProps, makeDocumentRecord, NotebookModel, PayloadMessage } from "@nteract/types";
+import {
+  DocumentRecordProps,
+  makeDocumentRecord,
+  NotebookModel,
+  PayloadMessage
+} from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
 import { has } from "lodash";
@@ -141,7 +146,8 @@ function clearOutputs(
   if (type === "code") {
     return cleanedState
       .setIn(["notebook", "cellMap", id, "outputs"], List())
-      .setIn(["notebook", "cellMap", id, "execution_count"], null);
+      .setIn(["notebook", "cellMap", id, "execution_count"], null)
+      .setIn(["cellPrompts", id], List());
   }
   return cleanedState;
 }
@@ -199,43 +205,44 @@ function clearAllOutputs(
 
   return state
     .setIn(["notebook", "cellMap"], cellMap)
-    .set("transient", transient);
+    .set("transient", transient)
+    .setIn("cellPrompts", Map());
 }
 
 type UpdatableOutputContent =
   | OnDiskExecuteResult
   | OnDiskDisplayData
-  | UpdateDisplayDataContent
-  ;
+  | UpdateDisplayDataContent;
 
 // Utility function used in two reducers below
 function updateAllDisplaysWithID(
   state: NotebookModel,
-  content: UpdatableOutputContent,
+  content: UpdatableOutputContent
 ): NotebookModel {
   if (!content || !content.transient || !content.transient.display_id) {
     return state;
   }
 
-  const keyPaths: KeyPaths = state.getIn([
-    "transient",
-    "keyPathsForDisplays",
-    content.transient.display_id,
-  ]) || List();
+  const keyPaths: KeyPaths =
+    state.getIn([
+      "transient",
+      "keyPathsForDisplays",
+      content.transient.display_id
+    ]) || List();
 
   const updateOutput = (output: any) => {
     if (output) {
       // We already have something here, don't change the other fields
       return output.merge({
         data: createFrozenMediaBundle(content.data),
-        metadata: fromJS(content.metadata || {}),
+        metadata: fromJS(content.metadata || {})
       });
     } else if (content.output_type === "update_display_data") {
       // Nothing here and we have no valid output, just create a basic output
       return {
         data: createFrozenMediaBundle(content.data),
         metadata: fromJS(content.metadata || {}),
-        output_type: "display_data",
+        output_type: "display_data"
       };
     } else {
       // Nothing here, but we have a valid output
@@ -243,9 +250,8 @@ function updateAllDisplaysWithID(
     }
   };
 
-  const updateOneDisplay =
-    (currState: NotebookModel, keyPath: KeyPath) =>
-      currState.updateIn(keyPath, updateOutput);
+  const updateOneDisplay = (currState: NotebookModel, keyPath: KeyPath) =>
+    currState.updateIn(keyPath, updateOutput);
 
   return keyPaths.reduce(updateOneDisplay, state);
 }
@@ -315,7 +321,7 @@ function appendOutput(
 
   return updateAllDisplaysWithID(
     state.setIn(["transient", "keyPathsForDisplays", displayID], keyPaths),
-    output,
+    output
   );
 }
 
@@ -652,7 +658,7 @@ function toggleCellOutputVisibility(
 }
 
 interface ICellVisibilityMetadata {
-  inputHidden?:boolean;
+  inputHidden?: boolean;
   outputHidden?: boolean;
 }
 
@@ -664,10 +670,10 @@ function unhideAll(
   if (action.payload.outputHidden !== undefined) {
     // TODO: Verify that we convert to one namespace
     // for hidden input/output
-    metadataMixin.outputHidden = action.payload.outputHidden
+    metadataMixin.outputHidden = action.payload.outputHidden;
   }
   if (action.payload.inputHidden !== undefined) {
-    metadataMixin.inputHidden = action.payload.inputHidden
+    metadataMixin.inputHidden = action.payload.inputHidden;
   }
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
@@ -900,10 +906,12 @@ function promptInputRequest(
   action: actionTypes.PromptInputRequest
 ): RecordOf<DocumentRecordProps> {
   const { id, password, prompt } = action.payload;
-  return state.setIn(["cellPrompts", id], {
-    prompt,
-    password
-  });
+  return state.updateIn(["cellPrompts", id], prompts =>
+    prompts.push({
+      prompt,
+      password
+    })
+  );
 }
 
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
