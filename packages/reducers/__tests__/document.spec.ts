@@ -451,6 +451,28 @@ describe("clearOutputs", () => {
     const outputs = state.getIn(["notebook", "cellMap", id, "outputs"]);
     expect(outputs).toBeUndefined();
   });
+  test("clear prompts on code cells", () => {
+    let originalState = initialDocument.set(
+      "notebook",
+      appendCellToNotebook(
+        fixtureCommutable,
+        emptyCodeCell.set("outputs", ["dummy outputs"])
+      )
+    );
+    const id: string = originalState.getIn(["notebook", "cellOrder"]).last();
+    originalState = originalState.set(
+      "cellPrompts",
+      Immutable.Map({
+        [id]: Immutable.List([{ prompt: "Test: ", password: false }])
+      })
+    );
+
+    expect(originalState.getIn(["cellPrompts", id]).size).toBe(1);
+
+    const state = reducers(originalState, actions.clearOutputs({ id }));
+    const prompts = state.getIn(["cellPrompts", id]);
+    expect(prompts.size).toBe(0);
+  });
 });
 
 describe("createCellBelow", () => {
@@ -865,7 +887,7 @@ describe("updateDisplay", () => {
         metadata: {},
         transient: { display_id: "1234" }
       },
-      contentRef: undefined,
+      contentRef: undefined
     });
 
     const state = reducers(originalState, action);
@@ -896,7 +918,7 @@ describe("updateDisplay", () => {
           data: { "text/plain": "shennagins afoot" },
           transient: { display_id: "1234" }
         }
-      }),
+      })
     ];
 
     const state = actionArray.reduce(
@@ -1104,24 +1126,32 @@ describe("updateOutputMetadata", () => {
 });
 
 describe("unhideAll", () => {
-  const cellOrder = [ uuid(), uuid(), uuid(), uuid() ];
+  const cellOrder = [uuid(), uuid(), uuid(), uuid()];
   let initialState = Immutable.Map();
 
   beforeEach(() => {
     // Arrange
-    initialState = initialDocument
-      .set(
-        "notebook",
-        Immutable.fromJS({
-          cellOrder,
-          cellMap: {
-            [cellOrder[0]]: emptyCodeCell.setIn(["metadata", "outputHidden"], false),
-            [cellOrder[1]]: emptyCodeCell.setIn(["metadata", "outputHidden"], true),
-            [cellOrder[2]]: emptyCodeCell.setIn(["metadata", "inputHidden"], false),
-            [cellOrder[3]]: emptyCodeCell.setIn(["metadata", "inputHidden"], true)
-          }
-        })
-      );
+    initialState = initialDocument.set(
+      "notebook",
+      Immutable.fromJS({
+        cellOrder,
+        cellMap: {
+          [cellOrder[0]]: emptyCodeCell.setIn(
+            ["metadata", "outputHidden"],
+            false
+          ),
+          [cellOrder[1]]: emptyCodeCell.setIn(
+            ["metadata", "outputHidden"],
+            true
+          ),
+          [cellOrder[2]]: emptyCodeCell.setIn(
+            ["metadata", "inputHidden"],
+            false
+          ),
+          [cellOrder[3]]: emptyCodeCell.setIn(["metadata", "inputHidden"], true)
+        }
+      })
+    );
   });
 
   test("should reveal all inputs", () => {
@@ -1131,7 +1161,7 @@ describe("unhideAll", () => {
       actions.unhideAll({
         inputHidden: false,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert: should unhide inputs and keep outputs' visibility unchanged
@@ -1149,7 +1179,7 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "outputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,true,false,false]);
+    ).toEqual([false, true, false, false]);
   });
 
   test("should hide all inputs", () => {
@@ -1159,7 +1189,7 @@ describe("unhideAll", () => {
       actions.unhideAll({
         inputHidden: true,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert: should hide inputs and keep outputs' visibility unchanged
@@ -1177,7 +1207,7 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "outputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,true,false,false]);
+    ).toEqual([false, true, false, false]);
   });
 
   test("should reveal all outputs", () => {
@@ -1187,7 +1217,7 @@ describe("unhideAll", () => {
       actions.unhideAll({
         outputHidden: false,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert: should unhide outputs and keep inputs' visibility unchanged
@@ -1205,7 +1235,7 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "inputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,false,false,true]);
+    ).toEqual([false, false, false, true]);
   });
 
   test("should hide all outputs", () => {
@@ -1215,7 +1245,7 @@ describe("unhideAll", () => {
       actions.unhideAll({
         outputHidden: true,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert: should hide outputs and keep inputs' visibility unchanged
@@ -1233,7 +1263,7 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "inputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,false,false,true]);
+    ).toEqual([false, false, false, true]);
   });
 
   test("should reveal all inputs and outputs", () => {
@@ -1244,7 +1274,7 @@ describe("unhideAll", () => {
         inputHidden: false,
         outputHidden: false,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert
@@ -1273,7 +1303,7 @@ describe("unhideAll", () => {
         inputHidden: true,
         outputHidden: true,
         contentRef: undefined
-       })
+      })
     );
 
     // Assert
@@ -1300,7 +1330,7 @@ describe("unhideAll", () => {
       initialState,
       actions.unhideAll({
         contentRef: undefined
-       })
+      })
     );
 
     // Assert: should keep all inputs' and outputs' visibility unchanged
@@ -1310,7 +1340,7 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "inputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,false,false,true]);
+    ).toEqual([false, false, false, true]);
 
     expect(
       actualState
@@ -1318,6 +1348,6 @@ describe("unhideAll", () => {
         .map(cell => cell.getIn(["metadata", "outputHidden"]))
         .toList()
         .toArray()
-    ).toEqual([false,true,false,false]);
+    ).toEqual([false, true, false, false]);
   });
 });
