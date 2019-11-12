@@ -1,6 +1,6 @@
 {
   "name": "rx-jupyter",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "RxJS 5 bindings for the Jupyter Notebook API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,14 +19,14 @@
   },
   "dependencies": {
     "@nteract/commutable": "^7.1.4",
-    "@nteract/messaging": "^6.1.6",
+    "@nteract/messaging": "^6.1.7",
     "js-cookie": "^2.2.0",
     "rxjs": "^6.3.3",
     "url-join": "^4.0.0",
     "url-search-params": "^1.0.0"
   },
   "devDependencies": {
-    "@nteract/types": "^4.4.0",
+    "@nteract/types": "^4.4.1",
     "@types/js-cookie": "^2.2.0",
     "@types/url-join": "^4.0.0",
     "@types/url-search-params": "^1.0.0"
