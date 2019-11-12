@@ -27,6 +27,7 @@ export type MessageType =
   | "comm_open"
   | "comm_msg"
   | "comm_close"
+  | "complete_reply"
   | "execute_reply";
 
 export interface JupyterMessageHeader<MT extends MessageType = MessageType> {
