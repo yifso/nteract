@@ -1682,10 +1682,10 @@
   resolved "https://registry.yarnpkg.com/@types/clone/-/clone-0.1.30.tgz#e7365648c1b42136a59c7d5040637b3b5c83b614"
   integrity sha1-5zZWSMG0ITalnH1QQGN7O1yDthQ=
 
-"@types/codemirror@^0.0.79":
-  version "0.0.79"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.79.tgz#914ff1723d3bb858c3639b428c33db28fb6bb426"
-  integrity sha512-3+rAlG9lCc14eGfz/eZJHoKa6YGNE+weFN2ReiHm+BuepscBnA45T37Gp/hfZFCcsvyxRecnYVPk2fAWPDAPEw==
+"@types/codemirror@^0.0.80":
+  version "0.0.80"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.80.tgz#c047bb30462582615c3d51e5be6155315f764427"
+  integrity sha512-oTi/s9PkWo3+/L9UrRpqngc4i6fRFMp3YQS0nv3Wy5vjl9n6GsqI9oNF6rjl/7J16Ipe67F9eatwRMTSB/Bo0w==
   dependencies:
     "@types/tern" "*"
 
