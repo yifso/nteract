@@ -1,13 +1,23 @@
 import { ofMessageType, JupyterMessage } from "@nteract/messaging";
 import { commOpenAction, appendOutput } from "@nteract/actions";
+import {
+  selectors,
+  NotebookModel,
+  ContentRef,
+  KernelRecord
+} from "@nteract/core";
 import { of } from "rxjs";
-import { filter, switchMap, takeUntil } from "rxjs/operators";
+import { filter, switchMap, tap } from "rxjs/operators";
 
 /**
  * Listen for comm_open messages from the kernel that are associated
  * with models that will not be rendered on the page.
  */
-export const ipywidgetsModel$ = (kernel, model, contentRef) =>
+export const ipywidgetsModel$ = (
+  kernel: KernelRecord,
+  model: NotebookModel,
+  contentRef: ContentRef
+) =>
   kernel.channels.pipe(
     ofMessageType("comm_open"),
     filter((msg: JupyterMessage) => {
@@ -24,21 +34,17 @@ export const ipywidgetsModel$ = (kernel, model, contentRef) =>
          * then append a mock output for the linkModel to the
          * notebook.
          */
-        model && model.type === "notebook"
+        model && model.get("type") === "notebook"
           ? appendOutput({
               /**
-               * We currently append the output to the first cell
-               * in the notebook. Since we are just doing this to
-               * get the LinkModel loaded into our WidgetManager
-               * singleton, it doesn't matter which cell it is rendered
-               * under.
+               * Append the output to the currently focused cell.
                *
-               * However, this approach is rather messy since this
-               * output will be serialized to the notebook. TODO: we
-               * should try to get the cell that contained the jslink
-               * code and store the tempoary output there.
+               * Ideally, we would append the output to the cell
+               * that the output was generated in. However, we
+               * don't currently do any associated between the source
+               * of execution and the follow-on actions.
                */
-              id: model.notebook.cellOrder.first(),
+              id: selectors.notebook.cellFocused(model) || "",
               contentRef,
               output: {
                 output_type: "display_data",
