@@ -2,16 +2,15 @@ import { toArray } from "rxjs/operators";
 import Immutable from "immutable";
 
 import { emptyCodeCell, appendCellToNotebook } from "@nteract/commutable";
-import { actions, createContentRef } from "@nteract/core";
+import { actions, createContentRef, makeDocumentRecord } from "@nteract/core";
 import { fixtureCommutable } from "@nteract/fixtures";
 
 import { ipywidgetsModel$ } from "../src/ipywidgets";
 import { from } from "rxjs";
 
-const monocellDocument = Immutable.Map()
-  .set("type", "notebook")
-  .set("notebook", appendCellToNotebook(fixtureCommutable, emptyCodeCell))
-  .set("transient", Immutable.Map({ keyPathsForDisplays: Immutable.Map() }));
+const monocellDocument = makeDocumentRecord({
+  notebook: appendCellToNotebook(fixtureCommutable, emptyCodeCell)
+});
 
 describe("ipywidgetsModel$", () => {
   test("emits AppendOutput if comm_open for LinkModel is sent", done => {

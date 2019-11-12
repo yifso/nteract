@@ -6,12 +6,13 @@ import {
   RemoteKernelProps,
   LocalKernelProps,
   DocumentRecordProps,
-  AppState
+  EmptyModelRecordProps,
+  FileModelRecordProps,
+  DirectoryModelRecordProps
 } from "@nteract/types";
 
 import { of } from "rxjs";
 import { filter, switchMap } from "rxjs/operators";
-import { StateObservable } from "redux-observable";
 import { RecordOf } from "immutable";
 
 /**
@@ -24,23 +25,27 @@ import { RecordOf } from "immutable";
  */
 export const ipywidgetsModel$ = (
   kernel: LocalKernelProps | RemoteKernelProps,
-  state$: StateObservable<AppState>,
+  model:
+    | RecordOf<DocumentRecordProps>
+    | RecordOf<EmptyModelRecordProps>
+    | RecordOf<FileModelRecordProps>
+    | RecordOf<DirectoryModelRecordProps>
+    | null,
   contentRef: ContentRef
 ) =>
   kernel.channels.pipe(
     ofMessageType("comm_open"),
     filter((msg: JupyterMessage) => {
-      if (msg.content.data.state._model_name === "LinkModel") {
+      if (
+        msg.content.data &&
+        msg.content.data.state &&
+        msg.content.data.state._model_name === "LinkModel"
+      ) {
         return true;
       }
       return false;
     }),
     switchMap((msg: JupyterMessage) => {
-      /**
-       * We need the model of the currently loaded notebook so we can
-       * determine what notebook to render the output of the widget onto.
-       */
-      const model = selectors.model(state$.value, { contentRef });
       return of(
         commOpenAction(msg),
         /**
@@ -48,7 +53,7 @@ export const ipywidgetsModel$ = (
          * then append a mock output for the linkModel to the
          * notebook.
          */
-        model && model.get("type", null) === "notebook"
+        model && model.type === "notebook"
           ? appendOutput({
               /**
                * Append the output to the currently focused cell.

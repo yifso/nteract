@@ -11,6 +11,7 @@ import {
   LAUNCH_KERNEL_SUCCESSFUL,
   NewKernelAction
 } from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
 import { AppState } from "@nteract/types";
 
 import { ipywidgetsModel$ } from "./ipywidgets";
@@ -33,6 +34,12 @@ export const commListenEpic = (
         payload: { kernel, contentRef }
       } = action;
 
+      /**
+       * We need the model of the currently loaded notebook so we can
+       * determine what notebook to render the output of the widget onto.
+       */
+      const model = selectors.model(state$.value, { contentRef });
+
       // Listen on the comms channel until KILL_KERNEL_SUCCESSFUL is emitted
       const commOpenAction$ = kernel.channels.pipe(
         ofMessageType("comm_open"),
@@ -47,7 +54,7 @@ export const commListenEpic = (
       );
 
       return merge(
-        ipywidgetsModel$(kernel, state$, contentRef),
+        ipywidgetsModel$(kernel, model, contentRef),
         commOpenAction$,
         commMessageAction$
       );
