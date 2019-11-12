@@ -11,8 +11,8 @@ import {
   LAUNCH_KERNEL_SUCCESSFUL,
   NewKernelAction
 } from "@nteract/actions";
-
-import { selectors, AppState } from "@nteract/core";
+import selectors from "@nteract/selectors";
+import { AppState } from "@nteract/types";
 
 import { ipywidgetsModel$ } from "./ipywidgets";
 

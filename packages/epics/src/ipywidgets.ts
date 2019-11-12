@@ -1,21 +1,36 @@
 import { ofMessageType, JupyterMessage } from "@nteract/messaging";
 import { commOpenAction, appendOutput } from "@nteract/actions";
+import selectors from "@nteract/selectors";
 import {
-  selectors,
-  NotebookModel,
+  DocumentRecordProps,
+  EmptyModelRecordProps,
+  FileModelRecordProps,
+  DirectoryModelRecordProps,
   ContentRef,
-  KernelRecord
-} from "@nteract/core";
+  RemoteKernelProps,
+  LocalKernelProps
+} from "@nteract/types";
 import { of } from "rxjs";
-import { filter, switchMap, tap } from "rxjs/operators";
+import { filter, switchMap } from "rxjs/operators";
+
+import { RecordOf } from "immutable";
 
 /**
  * Listen for comm_open messages from the kernel that are associated
  * with models that will not be rendered on the page.
+ *
+ * Note: this is not an ideal solution but we need to do this
+ * so that we can keep the WidgetManager contextualized to the
+ * WidgetDisplay as opposed to at the top-level.
  */
 export const ipywidgetsModel$ = (
-  kernel: KernelRecord,
-  model: NotebookModel,
+  kernel: LocalKernelProps | RemoteKernelProps,
+  model:
+    | RecordOf<DocumentRecordProps>
+    | RecordOf<EmptyModelRecordProps>
+    | RecordOf<FileModelRecordProps>
+    | RecordOf<DirectoryModelRecordProps>
+    | null,
   contentRef: ContentRef
 ) =>
   kernel.channels.pipe(
@@ -34,7 +49,7 @@ export const ipywidgetsModel$ = (
          * then append a mock output for the linkModel to the
          * notebook.
          */
-        model && model.get("type") === "notebook"
+        model && model.get("type", null) === "notebook"
           ? appendOutput({
               /**
                * Append the output to the currently focused cell.

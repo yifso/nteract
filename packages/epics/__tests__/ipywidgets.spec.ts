@@ -37,7 +37,7 @@ describe("ipywidgetsModel$", () => {
     );
     expect(resultingActions[1]).toEqual(
       actions.appendOutput({
-        id: "",
+        id: monocellDocument.getIn(["notebook", "cellOrder"]).first(),
         contentRef,
         output: {
           output_type: "display_data",
@@ -53,6 +53,7 @@ describe("ipywidgetsModel$", () => {
         }
       })
     );
+    expect(resultingActions).toHaveLength(2);
     done();
   });
   test("does not emit anything for non-comm open messages", done => {
