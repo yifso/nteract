@@ -1,18 +1,17 @@
 import { ofMessageType, JupyterMessage } from "@nteract/messaging";
 import { commOpenAction, appendOutput } from "@nteract/actions";
-import selectors from "@nteract/selectors";
+import * as selectors from "@nteract/selectors";
 import {
-  DocumentRecordProps,
-  EmptyModelRecordProps,
-  FileModelRecordProps,
-  DirectoryModelRecordProps,
   ContentRef,
   RemoteKernelProps,
-  LocalKernelProps
+  LocalKernelProps,
+  DocumentRecordProps,
+  AppState
 } from "@nteract/types";
+
 import { of } from "rxjs";
 import { filter, switchMap } from "rxjs/operators";
-
+import { StateObservable } from "redux-observable";
 import { RecordOf } from "immutable";
 
 /**
@@ -25,12 +24,7 @@ import { RecordOf } from "immutable";
  */
 export const ipywidgetsModel$ = (
   kernel: LocalKernelProps | RemoteKernelProps,
-  model:
-    | RecordOf<DocumentRecordProps>
-    | RecordOf<EmptyModelRecordProps>
-    | RecordOf<FileModelRecordProps>
-    | RecordOf<DirectoryModelRecordProps>
-    | null,
+  state$: StateObservable<AppState>,
   contentRef: ContentRef
 ) =>
   kernel.channels.pipe(
@@ -41,8 +35,13 @@ export const ipywidgetsModel$ = (
       }
       return false;
     }),
-    switchMap((msg: JupyterMessage) =>
-      of(
+    switchMap((msg: JupyterMessage) => {
+      /**
+       * We need the model of the currently loaded notebook so we can
+       * determine what notebook to render the output of the widget onto.
+       */
+      const model = selectors.model(state$.value, { contentRef });
+      return of(
         commOpenAction(msg),
         /**
          * If the content we are running under is a notebook,
@@ -60,8 +59,12 @@ export const ipywidgetsModel$ = (
                * of execution and the follow-on actions.
                */
               id:
-                selectors.notebook.cellFocused(model) ||
-                selectors.notebook.cellOrder(model).first(),
+                selectors.notebook.cellFocused(model as RecordOf<
+                  DocumentRecordProps
+                >) ||
+                selectors.notebook
+                  .cellOrder(model as RecordOf<DocumentRecordProps>)
+                  .first(),
               contentRef,
               output: {
                 output_type: "display_data",
@@ -77,6 +80,6 @@ export const ipywidgetsModel$ = (
               }
             })
           : null
-      )
-    )
+      );
+    })
   );
