@@ -44,7 +44,9 @@ export const ipywidgetsModel$ = (
                * don't currently do any associated between the source
                * of execution and the follow-on actions.
                */
-              id: selectors.notebook.cellFocused(model) || "",
+              id:
+                selectors.notebook.cellFocused(model) ||
+                selectors.notebook.cellOrder(model).first(),
               contentRef,
               output: {
                 output_type: "display_data",
