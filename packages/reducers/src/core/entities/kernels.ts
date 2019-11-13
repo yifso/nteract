@@ -120,6 +120,10 @@ const byRef = (state = Map(), action: Action): Map<{}, {}> => {
             `Unrecognized kernel type in kernel ${typedAction.payload.kernel}.`
           );
       }
+    case actionTypes.DISPOSE_KERNEL: {
+      typedAction = action as actionTypes.DisposeKernel;
+      return state.delete(typedAction.payload.kernelRef);
+    }
     default:
       return state;
   }

@@ -273,6 +273,10 @@ const byRef = (
         .setIn([saveFulfilledAction.payload.contentRef, "saving"], false)
         .setIn([saveFulfilledAction.payload.contentRef, "error"], null);
     }
+    case actionTypes.DISPOSE_CONTENT: {
+      const typedAction = action as actionTypes.DisposeContent;
+      return state.delete(typedAction.payload.contentRef);
+    }
     // Defer all notebook actions to the notebook reducer
     case actionTypes.SEND_EXECUTE_REQUEST:
     case actionTypes.FOCUS_CELL:
