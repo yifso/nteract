@@ -1,7 +1,6 @@
 import { stringifyNotebook, toJS } from "@nteract/commutable";
 import { Notebook } from "@nteract/commutable";
 import FileSaver from "file-saver";
-import { sample } from "lodash";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
@@ -34,6 +33,7 @@ import { AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 
 import { RecordOf } from "immutable";
+import { existsSync } from "fs";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -183,58 +183,17 @@ export function downloadString(
   FileSaver.saveAs(blob, filename);
 }
 
-// Generated with Python + SymPy
-// >>> import sympy
-// >>> import random
-// >>> random.sample(list(sympy.primerange(28000, 32000)), 30)
-
-const someArbitraryPrimesAround30k = [
-  30137,
-  30713,
-  30593,
-  28403,
-  29153,
-  30509,
-  31727,
-  28229,
-  29327,
-  28867,
-  28201,
-  31907,
-  29167,
-  28433,
-  28151,
-  31063,
-  29833,
-  29243,
-  28901,
-  28909,
-  28607,
-  30517,
-  28307,
-  28547,
-  29009,
-  31183,
-  30773,
-  29017,
-  31601,
-  28109
-];
-
 export function autoSaveCurrentContentEpic(
   action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ): Observable<actions.Save> {
-  // Pick an autosave duration that won't have the exact
-  // same cycle as another open tab
-  const duration = sample(someArbitraryPrimesAround30k);
-
+  const state = state$.value;
+  const duration = selectors.autoSaveInterval(state);
   return interval(duration).pipe(
     mergeMap(() => {
-      const state = state$.value;
-
       const contentRef$ = from(
-        state.core.entities.contents.byRef
+        selectors
+          .contentByRef(state)
           .filter(
             /**
              * Only save contents that are files or notebooks with
@@ -242,7 +201,10 @@ export function autoSaveCurrentContentEpic(
              */
             content =>
               (content.type === "file" || content.type === "notebook") &&
-              content.filepath !== ""
+              content.filepath !== "" &&
+              selectors.isCurrentKernelZeroMQ(state)
+                ? existsSync(content.filepath)
+                : true
           )
           .keys()
       );

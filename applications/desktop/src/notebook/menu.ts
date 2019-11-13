@@ -236,7 +236,7 @@ export function dispatchPublishGist(
   // Create our oauth window
   const win = new remote.BrowserWindow({
     show: false,
-    webPreferences: { zoomFactor: 0.75 }
+    webPreferences: { zoomFactor: 0.75, nodeIntegration: true }
   });
 
   // TODO: This needs to be moved to an epic
@@ -343,7 +343,9 @@ export function dispatchInterruptKernel(
       return;
     }
 
-    store.dispatch(actions.interruptKernel({ kernelRef }));
+    store.dispatch(
+      actions.interruptKernel({ kernelRef, contentRef: ownProps.contentRef })
+    );
   }
 }
 

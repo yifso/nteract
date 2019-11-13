@@ -1,6 +1,6 @@
 {
   "name": "@nteract/types",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "A collection of type definitions used within core nteract packages",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

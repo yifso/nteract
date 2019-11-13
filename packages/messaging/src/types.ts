@@ -1,3 +1,4 @@
+import { JSONObject, MediaBundle } from "@nteract/commutable";
 import { Subject } from "rxjs";
 
 export type MessageType =
@@ -26,6 +27,7 @@ export type MessageType =
   | "comm_open"
   | "comm_msg"
   | "comm_close"
+  | "complete_reply"
   | "execute_reply";
 
 export interface JupyterMessageHeader<MT extends MessageType = MessageType> {
@@ -62,6 +64,24 @@ export interface ExecuteMessageContent {
 export type ExecuteRequest = JupyterMessage<
   "execute_request",
   ExecuteMessageContent
+>;
+
+export interface BasicOutputMessageContent {
+  data?: object;
+  metadata?: object;
+  transient?: object;
+}
+
+export interface UpdateDisplayDataContent extends BasicOutputMessageContent {
+  output_type: "update_display_data";
+  data: MediaBundle;
+  metadata: JSONObject;
+  transient?: {display_id?: string};
+}
+
+export type UpdateDisplayData = JupyterMessage<
+  "update_display_data",
+  UpdateDisplayDataContent
 >;
 
 export type Channels = Subject<JupyterMessage>;

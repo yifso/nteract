@@ -1,4 +1,9 @@
-import { AppState, JupyterHostRecord, ServerConfig } from "@nteract/types";
+import {
+  AppState,
+  JupyterHostRecord,
+  ServerConfig,
+  HostRef
+} from "@nteract/types";
 
 import { createSelector } from "reselect";
 
@@ -70,3 +75,41 @@ export const isCurrentKernelZeroMQ = createSelector(
     return hostType === "local" && kernelType === "zeromq";
   }
 );
+
+/**
+ * Returns the hosts currently registered on the application by their refs.
+ *
+ * @param state   The crrent application state
+ */
+export const hostsByRef = (state: AppState) => state.core.entities.hosts.byRef;
+
+/**
+ * Returns the HostRef associated with a HostRecord.
+ *
+ * ```
+ * const host = makeJupyterHostRecord({ endpoint: "https://example.com "});
+ * const ref = selectors.hostRefByHostRecord(state, { host });
+ * ```
+ *
+ * @param state     The current application state
+ * @param { host }  An object containing the hostRecord to retrieve an HostRef for
+ */
+export const hostRefByHostRecord = (
+  state: AppState,
+  { host }: { host: JupyterHostRecord }
+) => hostsByRef(state).findKey((record, ref) => record.equals(host));
+
+/**
+ * Returns the HostRecord associated with a hostRef.
+ *
+ * ```
+ * const hostRef = "someHostRef";
+ * const hostRecord = selectors.hostRecordByHostRef(state, { hostRef });
+ * ```
+ * @param state         The current application sate
+ * @param { hostRef }   An object containing the hostRef to retrieve a record for
+ */
+export const hostRecordByHostRef = (
+  state: AppState,
+  { hostRef }: { hostRef: HostRef }
+) => hostsByRef(state).get(hostRef);

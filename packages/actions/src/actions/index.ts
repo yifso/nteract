@@ -18,6 +18,7 @@ import {
 // Local modules
 import * as actionTypes from "../actionTypes";
 
+export * from "./bookstore";
 export * from "./cells";
 export * from "./contents";
 export * from "./hosts";
@@ -213,6 +214,7 @@ export function acceptPayloadMessage(payload: {
 
 export function updateDisplay(payload: {
   content: {
+    output_type: "update_display_data";
     data: MediaBundle;
     metadata: JSONObject;
     transient: { display_id: string };

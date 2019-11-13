@@ -16,7 +16,7 @@ data.
 
 **Build your own interactive computing experiences with nteract's core SDK.**
 
-The nteract core SDK is an ecossytem of React components and JavaScript packages that give you the flexibility to build your own interactive computing experiences on top of the Jupyter ecosystem.
+The nteract core SDK is an ecosystem of React components and JavaScript packages that give you the flexibility to build your own interactive computing experiences on top of the Jupyter ecosystem.
 
 - Connect to remote Binder deployments using [rx-binder](https://github.com/nteract/nteract/tree/master/packages/rx-binder) and [host-cache](https://github.com/nteract/nteract/tree/master/packages/host-cache)
 - Build clients on top of Jupyter servers running locally or remotely using [rx-jupyter](https://github.com/nteract/nteract/tree/master/packages/rx-jupyter)
@@ -76,7 +76,7 @@ questions. If you have trouble creating an account on Slack, please post an issu
 
 ### Overview of nteract's monorepo
 
-This repository is a [monorepo](./doc/design/monorepo.md), which basically
+This repository is a [monorepo](https://trunkbaseddevelopment.com/monorepos/), which basically
 means that the repository hosts more than one module or application. In our
 case, we have two main directories:
 
@@ -148,7 +148,7 @@ yarn app:desktop
 ```
 
 As you make changes, you will have to close the entire app (CMD-q on macOS or
-CNTL-c at the terminal) and then run `yarn app:desktop` again to see the
+CTRL-c at the terminal) and then run `yarn app:desktop` again to see the
 changes.
 
 #### Progressive Webpack build (automatic)

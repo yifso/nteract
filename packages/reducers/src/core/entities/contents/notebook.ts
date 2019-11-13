@@ -18,9 +18,12 @@ import {
   makeCodeCell,
   makeMarkdownCell,
   makeRawCell,
+  OnDiskDisplayData,
+  OnDiskExecuteResult,
   OnDiskOutput,
   OnDiskStreamOutput
 } from "@nteract/commutable";
+import { UpdateDisplayDataContent } from "@nteract/messaging";
 import {
   DocumentRecordProps,
   makeDocumentRecord,
@@ -143,7 +146,8 @@ function clearOutputs(
   if (type === "code") {
     return cleanedState
       .setIn(["notebook", "cellMap", id, "outputs"], List())
-      .setIn(["notebook", "cellMap", id, "execution_count"], null);
+      .setIn(["notebook", "cellMap", id, "execution_count"], null)
+      .setIn(["cellPrompts", id], List());
   }
   return cleanedState;
 }
@@ -201,7 +205,55 @@ function clearAllOutputs(
 
   return state
     .setIn(["notebook", "cellMap"], cellMap)
-    .set("transient", transient);
+    .set("transient", transient)
+    .setIn("cellPrompts", Map());
+}
+
+type UpdatableOutputContent =
+  | OnDiskExecuteResult
+  | OnDiskDisplayData
+  | UpdateDisplayDataContent;
+
+// Utility function used in two reducers below
+function updateAllDisplaysWithID(
+  state: NotebookModel,
+  content: UpdatableOutputContent
+): NotebookModel {
+  if (!content || !content.transient || !content.transient.display_id) {
+    return state;
+  }
+
+  const keyPaths: KeyPaths =
+    state.getIn([
+      "transient",
+      "keyPathsForDisplays",
+      content.transient.display_id
+    ]) || List();
+
+  const updateOutput = (output: any) => {
+    if (output) {
+      // We already have something here, don't change the other fields
+      return output.merge({
+        data: createFrozenMediaBundle(content.data),
+        metadata: fromJS(content.metadata || {})
+      });
+    } else if (content.output_type === "update_display_data") {
+      // Nothing here and we have no valid output, just create a basic output
+      return {
+        data: createFrozenMediaBundle(content.data),
+        metadata: fromJS(content.metadata || {}),
+        output_type: "display_data"
+      };
+    } else {
+      // Nothing here, but we have a valid output
+      return createImmutableOutput(content);
+    }
+  };
+
+  const updateOneDisplay = (currState: NotebookModel, keyPath: KeyPath) =>
+    currState.updateIn(keyPath, updateOutput);
+
+  return keyPaths.reduce(updateOneDisplay, state);
 }
 
 function appendOutput(
@@ -236,14 +288,11 @@ function appendOutput(
   // }
 
   // We now have a display to track
-  let displayID;
-  let typedOutput;
-  if (output.output_type === "execute_result") {
-    typedOutput = output;
-  } else {
-    typedOutput = output;
+  const displayID = output.transient!.display_id;
+
+  if (!displayID || typeof displayID !== "string") {
+    return state;
   }
-  displayID = typedOutput.transient!.display_id;
 
   // Every time we see a display id we're going to capture the keypath
   // to the output
@@ -270,42 +319,17 @@ function appendOutput(
     // Append our current output's keyPath
     .push(keyPath);
 
-  const immutableOutput = createImmutableOutput(output);
-
-  // We'll reduce the overall state based on each keypath, updating output
-  return state
-    .updateIn(keyPath, () => immutableOutput)
-    .setIn(["transient", "keyPathsForDisplays", displayID], keyPaths);
+  return updateAllDisplaysWithID(
+    state.setIn(["transient", "keyPathsForDisplays", displayID], keyPaths),
+    output
+  );
 }
 
 function updateDisplay(
   state: NotebookModel,
   action: actionTypes.UpdateDisplay
 ): RecordOf<DocumentRecordProps> {
-  const { content } = action.payload;
-  if (!(content && content.transient && content.transient.display_id)) {
-    return state;
-  }
-  const displayID = content.transient.display_id;
-
-  const keyPaths: KeyPaths = state.getIn([
-    "transient",
-    "keyPathsForDisplays",
-    displayID
-  ]);
-
-  const updatedContent = {
-    data: createFrozenMediaBundle(content.data),
-    metadata: fromJS(content.metadata || {})
-  };
-
-  return keyPaths.reduce(
-    (currState: NotebookModel, kp: KeyPath) =>
-      currState.updateIn(kp, output => {
-        return output.merge(updatedContent);
-      }),
-    state
-  );
+  return updateAllDisplaysWithID(state, action.payload.content);
 }
 
 function focusNextCell(
@@ -633,19 +657,28 @@ function toggleCellOutputVisibility(
   );
 }
 
+interface ICellVisibilityMetadata {
+  inputHidden?: boolean;
+  outputHidden?: boolean;
+}
+
 function unhideAll(
   state: NotebookModel,
   action: actionTypes.UnhideAll
 ): RecordOf<DocumentRecordProps> {
+  const metadataMixin: ICellVisibilityMetadata = {};
+  if (action.payload.outputHidden !== undefined) {
+    // TODO: Verify that we convert to one namespace
+    // for hidden input/output
+    metadataMixin.outputHidden = action.payload.outputHidden;
+  }
+  if (action.payload.inputHidden !== undefined) {
+    metadataMixin.inputHidden = action.payload.inputHidden;
+  }
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
       if ((cell as any).get("cell_type") === "code") {
-        return cell.mergeIn(["metadata"], {
-          // TODO: Verify that we convert to one namespace
-          // for hidden input/output
-          outputHidden: action.payload.outputHidden,
-          inputHidden: action.payload.inputHidden
-        });
+        return cell.mergeIn(["metadata"], metadataMixin);
       }
       return cell;
     })
@@ -873,10 +906,12 @@ function promptInputRequest(
   action: actionTypes.PromptInputRequest
 ): RecordOf<DocumentRecordProps> {
   const { id, password, prompt } = action.payload;
-  return state.setIn(["cellPrompts", id], {
-    prompt,
-    password
-  });
+  return state.updateIn(["cellPrompts", id], prompts =>
+    prompts.push({
+      prompt,
+      password
+    })
+  );
 }
 
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
