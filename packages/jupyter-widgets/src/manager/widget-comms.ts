@@ -7,7 +7,7 @@ import {
   createCommMessage,
   createCommOpenMessage
 } from "@nteract/messaging";
-import { first, filter } from "rxjs/operators";
+import { first } from "rxjs/operators";
 
 /**
  * Class used by widgets to communicate with the backend
@@ -85,6 +85,12 @@ export class WidgetComm implements IClassicComm {
     return message.header.msg_id;
   }
 
+  /**
+   * Requests the state of a model from the kernel. This method is static because it
+   * needs to be called before a Comm object is made
+   * @param kernel
+   * @param comm_id
+   */
   static request_state(kernel: any, comm_id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const message = createCommMessage(comm_id, { method: "request_state" });
@@ -95,7 +101,6 @@ export class WidgetComm implements IClassicComm {
           first()
         )
         .subscribe((reply: any) => {
-          console.log("reply", reply);
           return resolve(reply);
         });
       kernel.channels.next(message);

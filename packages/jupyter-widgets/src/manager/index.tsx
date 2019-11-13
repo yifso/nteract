@@ -13,7 +13,6 @@ import {
   ContentRef
 } from "@nteract/core";
 import { CellId } from "@nteract/commutable";
-import { WidgetModel } from "@jupyter-widgets/base";
 import { WidgetComm } from "./widget-comms";
 
 interface ConnectedProps {
@@ -82,18 +81,15 @@ class Manager extends React.Component<Props> {
   }
 
   render() {
-    const getModel = async () => {
-      const model = await this.props.modelById(this.props.model_id);
-      const model_state = model.get("state");
-      console.log(model_state);
-      return model_state;
-    };
+    const { modelById, model_id } = this.props;
     return (
       <React.Fragment>
         <BackboneWrapper
-          getModelState={getModel}
+          getModelAsync={() => {
+            return modelById(model_id);
+          }}
           manager={this.getManager()}
-          model_id={this.props.model_id}
+          model_id={model_id}
           widgetContainerRef={this.widgetContainerRef}
         />
       </React.Fragment>
@@ -106,19 +102,17 @@ const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
   return {
     modelById: async (model_id: string) => {
       let model = selectors.modelById(state, { commId: model_id });
-      //if we can't find the model, request the state from the kernel and try again
+      //if we can't find the model, request the state from the kernel
       if (!model) {
-        console.log(`requesting state for ${model_id}`);
-        model = WidgetComm.request_state(currentKernel, model_id).then(
-          reply => {
-            console.log("setting model", reply);
-            return Promise.resolve(fromJS(reply.content.data));
-          }
+        let request_state_response = await WidgetComm.request_state(
+          currentKernel,
+          model_id
         );
+        model = fromJS(request_state_response.content.data);
       }
       return model;
     },
-    kernel: selectors.currentKernel(state)
+    kernel: currentKernel
   };
 };
 

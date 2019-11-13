@@ -1,5 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
 import { selectors, AppState, ContentRef } from "@nteract/core";
 
 import Manager from "./manager";
@@ -14,7 +13,6 @@ interface JupyterWidgetData {
 
 interface Props {
   data: JupyterWidgetData;
-  model: WidgetModel;
   id: CellId;
   contentRef: ContentRef;
 }
@@ -32,7 +30,6 @@ export class WidgetDisplay extends React.Component<Props> {
   render() {
     return (
       <Manager
-        model={this.props.model}
         model_id={this.props.data.model_id}
         id={this.props.id}
         contentRef={this.props.contentRef}
@@ -41,16 +38,4 @@ export class WidgetDisplay extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState, props: Props) => {
-  const {
-    data: { model_id }
-  } = props;
-  return {
-    model: selectors.modelById(state, { commId: model_id })
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(WidgetDisplay);
+export default WidgetDisplay;

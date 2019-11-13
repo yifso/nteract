@@ -207,8 +207,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     pWidget.Widget.attach(view.pWidget, el);
   }
 
-  _get_comm_info() {
-    return Promise.resolve({});
+  /**
+   * This is not needed in our implementation. Instead, our stateModelById function
+   * sends an "update_state" message to the kernel if the model state cannot be found in
+   * the redux store
+   */
+  _get_comm_info(): Promise<{}> {
+    throw new Error("_get_comm_info is not implemented!");
   }
 
   /**
