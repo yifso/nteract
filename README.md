@@ -224,6 +224,8 @@ The nteract project was made possible with the support of
 
 [![Netflix OSS](https://netflix.github.io/images/Netflix-OSS-Logo.png)](https://netflix.github.io/)
 
+<a href="https://opensource.microsoft.com"><img src="https://user-images.githubusercontent.com/1857993/68797361-4f1d1600-0609-11ea-9421-24148b6d2b5a.png" alt="Microsoft" width="350px"/></a>
+
 If your employer allows you to work on nteract during the day and would like
 recognition, feel free to add them to this "Made possible by" list.
 
