@@ -96,7 +96,7 @@ describe("WidgetManager", () => {
       };
       const modelById = (id: string) => {
         const model = id == "layout_id" ? layoutModel : styleModel;
-        return Map({ state: Map(model) });
+        return Promise.resolve(Map({ state: Map(model) }));
       };
       const manager = new WidgetManager(null, modelById);
       const widget = await manager.new_widget_from_state_and_id(

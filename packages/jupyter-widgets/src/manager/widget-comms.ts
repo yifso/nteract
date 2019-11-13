@@ -7,7 +7,6 @@ import {
   createCommMessage,
   createCommOpenMessage
 } from "@nteract/messaging";
-import { first } from "rxjs/operators";
 
 /**
  * Class used by widgets to communicate with the backend
@@ -83,36 +82,6 @@ export class WidgetComm implements IClassicComm {
     this.kernel.channels.next(message);
     this.hookupReplyCallbacks(message, callbacks);
     return message.header.msg_id;
-  }
-
-  /**
-   * Requests the state of a model from the kernel. This method is static because it
-   * needs to be called before a Comm object is made
-   * @param kernel
-   * @param comm_id
-   */
-  static request_state(kernel: any, comm_id: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const message = createCommMessage(comm_id, { method: "request_state" });
-      let replySubscription = kernel.channels
-        .pipe(childOf(message))
-        .subscribe((reply: any) => {
-          //if we get a comm message back, it is the state we requested
-          if (reply.msg_type === "comm_msg") {
-            replySubscription.unsubscribe();
-            return resolve(reply);
-          }
-          // otherwise, if we havent gotten a comm message and it goes idle, it wasn't found
-          else if (
-            reply.msg_type === "status" &&
-            reply.content.execution_state === "idle"
-          ) {
-            replySubscription.unsubscribe();
-            return reject(`'${comm_id}' could not be found`);
-          }
-        });
-      kernel.channels.next(message);
-    });
   }
 
   /**
@@ -225,4 +194,34 @@ export class WidgetComm implements IClassicComm {
       }
     });
   }
+}
+
+/**
+ * Requests the state of a model from the kernel. This method is static because it
+ * needs to be called before a Comm object is made
+ * @param kernel
+ * @param comm_id
+ */
+export function request_state(kernel: any, comm_id: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const message = createCommMessage(comm_id, { method: "request_state" });
+    let replySubscription = kernel.channels
+      .pipe(childOf(message))
+      .subscribe((reply: any) => {
+        //if we get a comm message back, it is the state we requested
+        if (reply.msg_type === "comm_msg") {
+          replySubscription.unsubscribe();
+          return resolve(reply);
+        }
+        // otherwise, if we havent gotten a comm message and it goes idle, it wasn't found
+        else if (
+          reply.msg_type === "status" &&
+          reply.content.execution_state === "idle"
+        ) {
+          replySubscription.unsubscribe();
+          return reject(`'${comm_id}' could not be found`);
+        }
+      });
+    kernel.channels.next(message);
+  });
 }

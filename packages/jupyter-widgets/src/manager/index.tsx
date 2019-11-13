@@ -1,11 +1,9 @@
 import * as React from "react";
-import { RecordOf, fromJS } from "immutable";
+import { RecordOf } from "immutable";
 import { WidgetManager } from "./widget-manager";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import {
-  AppState,
-  selectors,
   actions,
   KernelNotStartedProps,
   LocalKernelProps,
@@ -13,10 +11,10 @@ import {
   ContentRef
 } from "@nteract/core";
 import { CellId } from "@nteract/commutable";
-import { WidgetComm } from "./widget-comms";
+import { WidgetModel } from "@jupyter-widgets/base";
 
 interface ConnectedProps {
-  modelById: (id: string) => any;
+  modelById: (id: string) => Promise<WidgetModel>;
   kernel?:
     | RecordOf<KernelNotStartedProps>
     | RecordOf<LocalKernelProps>
@@ -34,6 +32,7 @@ export interface ManagerActions {
 }
 
 interface OwnProps {
+  model: WidgetModel;
   model_id: string;
   id: CellId;
   contentRef: ContentRef;
@@ -81,40 +80,18 @@ class Manager extends React.Component<Props> {
   }
 
   render() {
-    const { modelById, model_id } = this.props;
     return (
       <React.Fragment>
         <BackboneWrapper
-          getModelAsync={() => {
-            return modelById(model_id);
-          }}
+          model={this.props.model.get("state")}
           manager={this.getManager()}
-          model_id={model_id}
+          model_id={this.props.model_id}
           widgetContainerRef={this.widgetContainerRef}
         />
       </React.Fragment>
     );
   }
 }
-
-const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
-  let currentKernel = selectors.currentKernel(state);
-  return {
-    modelById: async (model_id: string) => {
-      let model = selectors.modelById(state, { commId: model_id });
-      //if we can't find the model, request the state from the kernel
-      if (!model) {
-        let request_state_response = await WidgetComm.request_state(
-          currentKernel,
-          model_id
-        );
-        model = fromJS(request_state_response.content.data);
-      }
-      return model;
-    },
-    kernel: currentKernel
-  };
-};
 
 const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
   return {
@@ -156,6 +133,6 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Manager);
