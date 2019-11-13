@@ -25,6 +25,7 @@ import {
   Prompt,
   Source
 } from "@nteract/presentational-components";
+import { MarkdownPreviewer } from "@nteract/markdown";
 import { AppState, ContentRef, InputRequestMessage } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -38,7 +39,6 @@ import CellCreator from "./cell-creator";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
 import { HijackScroll } from "./hijack-scroll";
-import MarkdownPreviewer from "./markdown-preview";
 import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
