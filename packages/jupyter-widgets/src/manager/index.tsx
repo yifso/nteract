@@ -1,5 +1,5 @@
 import * as React from "react";
-import { RecordOf } from "immutable";
+import { RecordOf, fromJS } from "immutable";
 import { WidgetManager } from "./widget-manager";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
@@ -14,6 +14,7 @@ import {
 } from "@nteract/core";
 import { CellId } from "@nteract/commutable";
 import { WidgetModel } from "@jupyter-widgets/base";
+import { WidgetComm } from "./widget-comms";
 
 interface ConnectedProps {
   modelById: (id: string) => any;
@@ -34,7 +35,6 @@ export interface ManagerActions {
 }
 
 interface OwnProps {
-  model: WidgetModel;
   model_id: string;
   id: CellId;
   contentRef: ContentRef;
@@ -82,10 +82,16 @@ class Manager extends React.Component<Props> {
   }
 
   render() {
+    const getModel = async () => {
+      const model = await this.props.modelById(this.props.model_id);
+      const model_state = model.get("state");
+      console.log(model_state);
+      return model_state;
+    };
     return (
       <React.Fragment>
         <BackboneWrapper
-          model={this.props.model.get("state")}
+          getModelState={getModel}
           manager={this.getManager()}
           model_id={this.props.model_id}
           widgetContainerRef={this.widgetContainerRef}
@@ -96,9 +102,22 @@ class Manager extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
+  let currentKernel = selectors.currentKernel(state);
   return {
-    modelById: (model_id: string) =>
-      selectors.modelById(state, { commId: model_id }),
+    modelById: async (model_id: string) => {
+      let model = selectors.modelById(state, { commId: model_id });
+      //if we can't find the model, request the state from the kernel and try again
+      if (!model) {
+        console.log(`requesting state for ${model_id}`);
+        model = WidgetComm.request_state(currentKernel, model_id).then(
+          reply => {
+            console.log("setting model", reply);
+            return Promise.resolve(fromJS(reply.content.data));
+          }
+        );
+      }
+      return model;
+    },
     kernel: selectors.currentKernel(state)
   };
 };

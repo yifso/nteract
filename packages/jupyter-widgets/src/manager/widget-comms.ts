@@ -7,6 +7,7 @@ import {
   createCommMessage,
   createCommOpenMessage
 } from "@nteract/messaging";
+import { first, filter } from "rxjs/operators";
 
 /**
  * Class used by widgets to communicate with the backend
@@ -82,6 +83,23 @@ export class WidgetComm implements IClassicComm {
     this.kernel.channels.next(message);
     this.hookupReplyCallbacks(message, callbacks);
     return message.header.msg_id;
+  }
+
+  static request_state(kernel: any, comm_id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const message = createCommMessage(comm_id, { method: "request_state" });
+      kernel.channels
+        .pipe(
+          childOf(message),
+          ofMessageType("comm_msg"),
+          first()
+        )
+        .subscribe((reply: any) => {
+          console.log("reply", reply);
+          return resolve(reply);
+        });
+      kernel.channels.next(message);
+    });
   }
 
   /**

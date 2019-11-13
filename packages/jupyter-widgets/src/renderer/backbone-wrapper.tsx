@@ -23,7 +23,7 @@ require("jquery-ui/themes/base/base.css");
 require("jquery-ui/themes/base/theme.css");
 
 interface Props {
-  model: Immutable.Map<string, any>;
+  getModelState: () => Promise<Immutable.Map<string, any>>;
   manager?: WidgetManager;
   model_id: string;
   widgetContainerRef: React.RefObject<HTMLDivElement>;
@@ -32,12 +32,13 @@ interface Props {
 export default class BackboneWrapper extends React.Component<Props> {
   created = false;
   async componentDidUpdate() {
-    const { model, manager, widgetContainerRef, model_id } = this.props;
+    const { manager, widgetContainerRef, model_id } = this.props;
     if (!this.created && manager) {
       this.created = true;
+      const model_state = await this.props.getModelState();
       try {
         const widget = await manager.new_widget_from_state_and_id(
-          model.toJS(),
+          model_state.toJS(),
           model_id
         );
         const view = await manager.create_view(

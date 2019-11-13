@@ -99,12 +99,13 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   get_model(model_id: string): Promise<WidgetModel> | undefined {
     let model = super.get_model(model_id);
     if (model === undefined) {
-      let model_state = this.stateModelById(model_id)
-        .get("state")
-        .toJS();
-      model = this.new_widget_from_state_and_id(model_state, model_id);
+      return this.stateModelById(model_id).then((model: WidgetModel) => {
+        let model_state = model.get("state").toJS();
+        return this.new_widget_from_state_and_id(model_state, model_id);
+      });
+    } else {
+      return model;
     }
-    return model;
   }
 
   /**
