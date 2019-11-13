@@ -207,7 +207,7 @@ export function request_state(kernel: any, comm_id: string): Promise<any> {
     const message = createCommMessage(comm_id, { method: "request_state" });
     let replySubscription = kernel.channels
       .pipe(childOf(message))
-      .subscribe((reply: any) => {
+      .subscribe((reply: JupyterMessage) => {
         //if we get a comm message back, it is the state we requested
         if (reply.msg_type === "comm_msg") {
           replySubscription.unsubscribe();

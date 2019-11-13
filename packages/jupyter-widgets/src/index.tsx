@@ -46,7 +46,7 @@ interface State {
 export class WidgetDisplay extends React.Component<Props, State> {
   static MIMETYPE = "application/vnd.jupyter.widget-view+json";
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
     this.state = { model: undefined };
   }
@@ -81,9 +81,6 @@ export class WidgetDisplay extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props) => {
-  const {
-    data: { model_id }
-  } = props;
   let currentKernel = selectors.currentKernel(state);
   return {
     modelById: async (model_id: string) => {
