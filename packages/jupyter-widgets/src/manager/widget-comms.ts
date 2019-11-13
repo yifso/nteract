@@ -94,14 +94,22 @@ export class WidgetComm implements IClassicComm {
   static request_state(kernel: any, comm_id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const message = createCommMessage(comm_id, { method: "request_state" });
-      kernel.channels
-        .pipe(
-          childOf(message),
-          ofMessageType("comm_msg"),
-          first()
-        )
+      let replySubscription = kernel.channels
+        .pipe(childOf(message))
         .subscribe((reply: any) => {
-          return resolve(reply);
+          //if we get a comm message back, it is the state we requested
+          if (reply.msg_type === "comm_msg") {
+            replySubscription.unsubscribe();
+            return resolve(reply);
+          }
+          // otherwise, if we havent gotten a comm message and it goes idle, it wasn't found
+          else if (
+            reply.msg_type === "status" &&
+            reply.content.execution_state === "idle"
+          ) {
+            replySubscription.unsubscribe();
+            return reject(`'${comm_id}' could not be found`);
+          }
         });
       kernel.channels.next(message);
     });
