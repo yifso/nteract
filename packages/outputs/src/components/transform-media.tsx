@@ -169,9 +169,7 @@ const makeMapDispatchToProps = (
   return mapDispatchToProps;
 };
 
-const TransformMedia = connect(
+export const TransformMedia = connect(
   makeMapStateToProps,
   makeMapDispatchToProps
 )(PureTransformMedia);
-
-export default TransformMedia;
