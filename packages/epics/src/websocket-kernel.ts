@@ -279,8 +279,17 @@ export const killKernelEpic = (
       }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      const kernel = selectors.currentKernel(state);
       const kernelRef = action.payload.kernelRef;
+      if (!kernelRef) {
+        return of(
+          actions.killKernelFailed({
+            error: new Error("kernel not available for killing"),
+            kernelRef
+          })
+        );
+      }
+
+      const kernel = selectors.kernel(state, { kernelRef });
       if (!kernel) {
         return of(
           actions.killKernelFailed({
@@ -305,12 +314,19 @@ export const killKernelEpic = (
       //       kill kernel epic because we need to make sure that creation happens
       //       after deletion
       return sessions.destroy(serverConfig, kernel.sessionId).pipe(
-        mergeMap(() => action.payload.dispose && action.payload.kernelRef ?
-          of(
-            actions.killKernelSuccessful({ kernelRef: action.payload.kernelRef }),
-            actions.disposeKernel({ kernelRef: action.payload.kernelRef })
-          ): of(actions.killKernelSuccessful({ kernelRef: action.payload.kernelRef }))
-
+        mergeMap(() =>
+          action.payload.dispose && action.payload.kernelRef
+            ? of(
+                actions.killKernelSuccessful({
+                  kernelRef: action.payload.kernelRef
+                }),
+                actions.disposeKernel({ kernelRef: action.payload.kernelRef })
+              )
+            : of(
+                actions.killKernelSuccessful({
+                  kernelRef: action.payload.kernelRef
+                })
+              )
         ),
         catchError(err =>
           of(

@@ -196,9 +196,9 @@ export function updateFileText(payload: {
   };
 }
 
-export function closeNotebook(payload: {
-  contentRef: ContentRef;
-}): actionTypes.CloseNotebook {
+export function closeNotebook(
+  payload: actionTypes.DisposeContent["payload"]
+): actionTypes.CloseNotebook {
   return {
     type: actionTypes.CLOSE_NOTEBOOK,
     payload: {
@@ -207,9 +207,9 @@ export function closeNotebook(payload: {
   };
 }
 
-export function disposeContent(payload: {
-  contentRef: ContentRef;
-}): actionTypes.DisposeContent {
+export function disposeContent(
+  payload: actionTypes.DisposeContent["payload"]
+): actionTypes.DisposeContent {
   return {
     type: actionTypes.DISPOSE_CONTENT,
     payload: {

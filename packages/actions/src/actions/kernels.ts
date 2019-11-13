@@ -90,11 +90,9 @@ export function kernelRawStderr(payload: {
   };
 }
 
-export function killKernel(payload: {
-  restarting: boolean;
-  kernelRef?: KernelRef | null;
-  dispose?: boolean;
-}): actionTypes.KillKernelAction {
+export function killKernel(
+  payload: actionTypes.KillKernelAction["payload"]
+): actionTypes.KillKernelAction {
   return {
     type: actionTypes.KILL_KERNEL,
     payload
@@ -302,11 +300,11 @@ export function setKernelInfo(payload: {
   };
 }
 
-export function disposeKernel(payload: {
-  kernelRef: KernelRef;
-}): actionTypes.DisposeKernel {
+export function disposeKernel(
+  payload: actionTypes.DisposeKernel["payload"]
+): actionTypes.DisposeKernel {
   return {
     type: actionTypes.DISPOSE_KERNEL,
     payload
-  }
+  };
 }
