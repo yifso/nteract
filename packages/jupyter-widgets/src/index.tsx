@@ -57,7 +57,6 @@ export class WidgetDisplay extends React.Component<Props, State> {
       data: { model_id }
     } = this.props;
     const model = await modelById(model_id);
-    console.log(model);
     this.setState({ model });
   }
 
