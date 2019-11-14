@@ -4,8 +4,6 @@ import { WidgetManager } from "./widget-manager";
 import BackboneWrapper from "../renderer/backbone-wrapper";
 import { connect } from "react-redux";
 import {
-  AppState,
-  selectors,
   actions,
   KernelNotStartedProps,
   LocalKernelProps,
@@ -16,7 +14,7 @@ import { CellId } from "@nteract/commutable";
 import { WidgetModel } from "@jupyter-widgets/base";
 
 interface ConnectedProps {
-  modelById: (id: string) => any;
+  modelById: (id: string) => Promise<WidgetModel>;
   kernel?:
     | RecordOf<KernelNotStartedProps>
     | RecordOf<LocalKernelProps>
@@ -95,14 +93,6 @@ class Manager extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState, props: OwnProps): ConnectedProps => {
-  return {
-    modelById: (model_id: string) =>
-      selectors.modelById(state, { commId: model_id }),
-    kernel: selectors.currentKernel(state)
-  };
-};
-
 const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
   return {
     actions: {
@@ -143,6 +133,6 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Manager);
