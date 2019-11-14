@@ -13,7 +13,8 @@ import {
   Output,
   PromptRequest,
   RichMedia,
-  StreamText
+  StreamText,
+  TransformMedia
 } from "@nteract/outputs";
 import {
   Cell as PlainCell,
@@ -42,7 +43,6 @@ import MarkdownPreviewer from "./markdown-preview";
 import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
-import TransformMedia from "./transform-media";
 
 import styled from "styled-components";
 
