@@ -14,7 +14,7 @@ import {
 import { RecordOf } from "immutable";
 import { dirname } from "path";
 import * as React from "react";
-import { HotKeys, KeyMap } from "react-hotkeys";
+import { HotKeys, KeyMap, configure } from "react-hotkeys";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import urljoin from "url-join";
@@ -53,6 +53,16 @@ interface IDispatchFromProps {
 }
 
 type ContentsProps = IContentsBaseProps & IStateToProps & IDispatchFromProps;
+
+// https://github.com/greena13/react-hotkeys#configuration
+// should be called at the earliest use of react-hotkeys
+configure({
+  // 'textinput' tags are ignored by react-hotkeys by default
+  // these tags are also ignored, but shouldnt make a difference for our notebook so leaving them.
+  ignoreTags: ["input", "select"]
+  // , Uncomment for HotKeys based logging
+  // logLevel: "debug"
+});
 
 class Contents extends React.PureComponent<ContentsProps, IContentsState> {
   private keyMap: KeyMap = {
@@ -274,12 +284,13 @@ const mapDispatchToProps = (
             : "Clear All";
         return dispatch(actions.restartKernel({ outputHandling, contentRef }));
       },
-      SAVE: () => dispatch(actions.save({ contentRef }))
+      SAVE: (event: KeyboardEvent) => {
+        // prevent browser trying to save the raw html
+        event.preventDefault();
+        return dispatch(actions.save({ contentRef }));
+      }
     }
   };
 };
 
-export default connect(
-  makeMapStateToProps,
-  mapDispatchToProps
-)(Contents);
+export default connect(makeMapStateToProps, mapDispatchToProps)(Contents);
