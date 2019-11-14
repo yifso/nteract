@@ -114,7 +114,7 @@
   },
   "dependencies": {
     "@nteract/examples": "3.1.1",
-    "ijavascript": "lgeiger/ijavascript",
+    "ijavascript": "^5.2.0",
     "jmp": "^2.0.0",
     "mathjax-electron": "^3.0.0",
     "nteract-assets": "^4.0.0"
