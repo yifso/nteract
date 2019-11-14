@@ -20,5 +20,8 @@
     "@nteract/mathjax": "^4.0.1",
     "@nteract/presentational-components": "^3.1.0",
     "react-markdown": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.11.0"
   }
 }
