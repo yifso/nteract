@@ -213,11 +213,6 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
   /**
    * Create a comm which can be used for communication for a widget.
    *
-   * If the data/metadata is passed in, open the comm before returning (i.e.,
-   * send the comm_open message). If the data and metadata is undefined, we
-   * want to reconstruct a comm that already exists in the kernel, so do not
-   * open the comm by sending the comm_open message.
-   *
    * @param comm_target_name Comm target name
    * @param model_id The comm id
    * @param data The initial data for the comm
@@ -230,14 +225,19 @@ export class WidgetManager extends base.ManagerBase<DOMWidgetView> {
     metadata?: any,
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ) {
-    //TODO: Check if we need to open a comm
-    //TODO: Find a way to supply correct target module (only used in comm opens)
+    // Despite the doc string in iPyWidgets ManagerBase, we do not open a comm
+    // regardless of if data or metadata is passed in because a Manager is only
+    // instantiated once we already have recieved model information. This means that
+    // a comm is already open in the Kernel.
+    // If we ever find that we do need to open a comm, use the WidgetComm you create
+    // to send a comm_open message. To figure out the target module, you can call
+    // super.get_model(model_id) and read it from the state there.
     if (this.kernel) {
       return Promise.resolve(
         new WidgetComm(
           model_id,
           this.comm_target_name,
-          "<target module>",
+          "<target module>", // This is only used in comm opens, which is currently never used
           this.kernel
         )
       );
