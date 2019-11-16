@@ -20,6 +20,7 @@
   "dependencies": {
     "@nteract/commutable": "^7.1.4",
     "@nteract/messaging": "^6.1.7",
+    "@types/ungap__url-search-params": "^0.1.0",
     "@ungap/url-search-params": "^0.1.2",
     "js-cookie": "^2.2.0",
     "rxjs": "^6.3.3",
@@ -28,7 +29,6 @@
   "devDependencies": {
     "@nteract/types": "^4.4.1",
     "@types/js-cookie": "^2.2.0",
-    "@types/url-join": "^4.0.0",
-    "@types/url-search-params": "^1.0.0"
+    "@types/url-join": "^4.0.0"
   }
 }
