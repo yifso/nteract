@@ -114,7 +114,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
   textarea?: HTMLTextAreaElement | null;
   cm!: EditorFromTextArea;
   defaultOptions: FullEditorConfiguration;
-  keyupEventsSubscriber!: Subscription;
   completionSubject!: Subject<CodeCompletionEvent>;
   completionEventsSubscriber!: Subscription;
   debounceNextCompletionRequest: boolean;
@@ -275,37 +274,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
     this.cm.on("blur", this.focusChanged.bind(this, false));
     this.cm.on("change", this.codemirrorValueChanged.bind(this));
 
-    const keyupEvents: Observable<EditorKeyEvent> = fromEvent<EditorKeyEvent>(
-      this.cm as any,
-      "keyup",
-      (editor, ev) => ({ editor, ev })
-    );
-
-    // Initiate code completion in response to some keystrokes *other than*
-    //  "Ctrl-Space" (which is bound in extraKeys, above)
-    this.keyupEventsSubscriber = keyupEvents
-      .pipe(switchMap<EditorKeyEvent, EditorKeyEvent>(i => of(i)))
-      .subscribe(({ editor, ev }) => {
-        if (
-          completion &&
-          !editor.state.completionActive &&
-          !excludedIntelliSenseTriggerKeys[(ev.keyCode || ev.which).toString()]
-        ) {
-          const cursor: Position = editor.getDoc().getCursor();
-          const token: Token = editor.getTokenAt(cursor);
-          if (
-            token.type === "tag" ||
-            token.type === "variable" ||
-            token.string === " " ||
-            token.string === "<" ||
-            token.string === "/" ||
-            token.string === "."
-          ) {
-            editor.execCommand("autocomplete");
-          }
-        }
-      });
-
     this.completionSubject = new Subject<CodeCompletionEvent>();
 
     // tslint:disable no-shadowed-variable
@@ -326,9 +294,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
       )
     );
 
-    const completionResults: Observable<
-      () => void
-    > = mergedCompletionEvents.pipe(
+    const completionResults: Observable<() => void> = mergedCompletionEvents.pipe(
       switchMap(ev => {
         const { channels } = this.props;
         if (!channels) {
@@ -415,7 +381,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
     if (this.cm) {
       this.cm.toTextArea();
     }
-    this.keyupEventsSubscriber.unsubscribe();
     this.completionEventsSubscriber.unsubscribe();
   }
 
