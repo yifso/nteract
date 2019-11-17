@@ -5,28 +5,15 @@ import CodeMirror, {
   Editor,
   EditorChangeLinkedList,
   EditorFromTextArea,
-  Position,
-  Token
+  Position
 } from "codemirror";
 
-import {
-  configurableCodeMirrorOptions,
-  FullEditorConfiguration,
-  isConfigurable
-} from "./configurable";
+import { FullEditorConfiguration, isConfigurable } from "./configurable";
 
 import { debounce } from "lodash";
 import * as React from "react";
 import ReactDOM from "react-dom";
-import {
-  empty,
-  fromEvent,
-  merge,
-  Observable,
-  of,
-  Subject,
-  Subscription
-} from "rxjs";
+import { empty, merge, Observable, Subject, Subscription } from "rxjs";
 import {
   catchError,
   debounceTime,
@@ -37,7 +24,6 @@ import {
   takeUntil
 } from "rxjs/operators";
 
-import { excludedIntelliSenseTriggerKeys } from "./excludedIntelliSenseKeys";
 import { codeComplete, pick } from "./jupyter/complete";
 import { tool } from "./jupyter/tooltip";
 
@@ -228,7 +214,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
 
     require("./mode/ipython");
 
-    const { completion, editorFocused, focusAbove, focusBelow } = this.props;
+    const { editorFocused, focusAbove, focusBelow } = this.props;
 
     // ensure a single tooltip holder exists on document.body
     const tipHolder = document.getElementsByClassName(
