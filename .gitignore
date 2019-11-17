@@ -54,3 +54,6 @@ nteract-packages/public
 
 # jest reporting coverage
 junit.xml
+
+# ignore notebooks created while running dev copy of the desktop app
+applications/desktop/*.ipynb
