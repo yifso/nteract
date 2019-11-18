@@ -1,13 +1,13 @@
 
 # Implementing Jupyter Widgets
-1. Extend the `ManageBase` class
+1. Extend the `ManageBase` class (I'll refer to this as your `Manager` class going forward)
 2. Implement the loadClass function. This will be called whenever a new widget is created, and essentially just maps a string like `“@jupyter-widgets/controls”` to the module. Unless you are writing custom widgets, you can just copy this from the examples.
 ```
 // Declared at top of file:
 // const base  =  require('@jupyter-widgets/base');
 // const controls  =  require('@jupyter-widgets/controls');
 
-// Within your concrete ManageBase class
+// Within your concrete Manage class
 loadClass(className, moduleName, moduleVersion) {
 	return  new  Promise(function(resolve, reject) {
 		if (moduleName  ===  '@jupyter-widgets/controls') {
@@ -39,8 +39,8 @@ const let  modelInfo  = {
 	view_module:  state._view_module,
 	view_module_version:  state._view_module_version
 };
-const widget_model = await MyManagerBase.new_model(modelInfo, state) 
-const widget_view = await MyManagerBase.create_view(widget_model)
+const widget_model = await manager.new_model(modelInfo, state) 
+const widget_view = await manager.create_view(widget_model)
 widget_view.el = getElementIWantToRenderTo() // This wont work for all widgets. We will replace this later
 ```
 4. Implement the `IClassicComm` interface. How you implement this depends solely on how your app communicates with the Kernel, so the only real direction I can give here is with the callbacks. This is  the decision tree for which you should call the callback functions depending on the reply. You will be implementing some of these later.
@@ -68,14 +68,14 @@ if (reply.channel  ==  "shell"  &&  callbacks.shell  &&  callbacks.shell.reply) 
 	}
 }
 ```
-5. Write your `_create_comm` function in the `ManagerBase`. This will basically just instantiate your implementation of the `IClassicComm` you just made.
-6. Write your `display_view` function. It is tempting to simply use `view.setElement(el)` and pass in the element you want this displayed to. **Do not do this!** Some widgets, specifically Box based widgets, are designed to make their own Phosphor element and not allow their element to be set. I highly, *highly*, recommend that you just use Phosphor. If you do, all you need to write is something like this:
+5. Write your `_create_comm` function in your `Manager` class. This will basically just instantiate your implementation of the `IClassicComm` you just made.
+6. Write your `display_view` function in your `Manager` class. It is tempting to simply use `view.setElement(el)` and pass in the element you want this displayed to. **Do not do this!** Some widgets, specifically Box based widgets, are designed to make their own Phosphor element and not allow their element to be set. I highly, *highly*, recommend that you just use Phosphor. If you do, all you need to write is something like this:
 ```
 display_view(msg:  KernelMessage.IMessage, view:  base.DOMWidgetView, options:  any):  Promise<base.DOMWidgetView> {
 	pWidget.Widget.attach(view.pWidget, options.el);
 }
 ```
-7. If you decide not to list to me in 6 and don't want to use Phosphor, you need to:
+7. If you decide not to use Phosphor in step 6, you need to:
 	* Call `view.trigger("displayed")`
 	* Call `view.delegateEvents()`
 	* Figure out a way to display the Box elements without passing your own in. You can possibly get away with something like `el.appendChild(view.el)`, but I have not tried this.
@@ -102,5 +102,5 @@ display_view(msg:  KernelMessage.IMessage, view:  base.DOMWidgetView, options:  
 	}
 }
 ``` 
-10. Because you can have multiple views for the same widget, you need to make sure you are not creating the same widget model multiple times. You can do this by calling `Manager.get_model(model_id)` and not creating the model if it returns undefined. Note that this means that you want your `Manager` to be a Singleton class, so that you don't have different `Manager`s making them same models.
+10. Because you can have multiple views for the same widget, you need to make sure you are not creating the same widget model multiple times. You can do this by calling `Manager.get_model(model_id)` and not creating the model if it doesn't return undefined. Note that this means that you want your `Manager` to be a Singleton class, so that you don't have different `Manager`s making them same models.
 
