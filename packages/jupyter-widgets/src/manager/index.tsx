@@ -49,7 +49,7 @@ type Props = ConnectedProps & OwnProps & ManagerActions;
  */
 class Manager extends React.Component<Props> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
-  static manager: WidgetManager;
+  static managerByContentRef: { [contentRef: string]: WidgetManager };
 
   constructor(props: Props) {
     super(props);
@@ -63,20 +63,21 @@ class Manager extends React.Component<Props> {
    * model
    */
   getManager() {
-    if (Manager.manager === undefined) {
-      Manager.manager = new WidgetManager(
-        this.props.kernel,
-        this.props.modelById,
-        this.props.actions
+    const { contentRef, kernel, modelById, actions } = this.props;
+    if (Manager.managerByContentRef === undefined) {
+      Manager.managerByContentRef = {};
+    }
+    let manager = Manager.managerByContentRef[contentRef];
+    if (manager === undefined) {
+      manager = Manager.managerByContentRef[contentRef] = new WidgetManager(
+        kernel,
+        modelById,
+        actions
       );
     } else {
-      Manager.manager.update(
-        this.props.kernel,
-        this.props.modelById,
-        this.props.actions
-      );
+      manager.update(kernel, modelById, actions);
     }
-    return Manager.manager;
+    return manager;
   }
 
   render() {

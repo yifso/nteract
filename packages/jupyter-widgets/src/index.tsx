@@ -80,7 +80,9 @@ export class WidgetDisplay extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props) => {
-  let currentKernel = selectors.currentKernel(state);
+  let currentKernel = selectors.kernelByContentRef(state, {
+    contentRef: props.contentRef
+  });
   return {
     modelById: async (model_id: string) => {
       let model = selectors.modelById(state, { commId: model_id });
