@@ -5,7 +5,6 @@ export { DisplayData } from "./components/display-data";
 export { ExecuteResult } from "./components/execute-result";
 export { StreamText } from "./components/stream-text";
 export { PromptRequest } from "./components/prompt";
-export { TransformMedia } from "./components/transform-media";
 
 import * as Media from "./components/media";
 
