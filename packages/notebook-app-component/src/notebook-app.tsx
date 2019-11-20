@@ -13,8 +13,7 @@ import {
   Output,
   PromptRequest,
   RichMedia,
-  StreamText,
-  TransformMedia
+  StreamText
 } from "@nteract/outputs";
 import {
   Cell as PlainCell,
@@ -43,6 +42,7 @@ import { HijackScroll } from "./hijack-scroll";
 import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
+import TransformMedia from "./transform-media";
 
 import styled from "styled-components";
 
