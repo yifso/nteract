@@ -17,14 +17,26 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import {
-  KernelRecord,
-  RemoteKernelProps,
-  ServerConfig,
-} from "@nteract/types";
+import { KernelRecord, RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
-import { extractNewKernel } from "./kernel-lifecycle";
+
+export const extractNewKernel = (
+  filepath: string | null,
+  notebook: ImmutableNotebook
+) => {
+  const cwd = (filepath && path.dirname(filepath)) || "/";
+
+  const kernelSpecName =
+    notebook.getIn(["metadata", "kernelspec", "name"]) ||
+    notebook.getIn(["metadata", "language_info", "name"]) ||
+    "python3";
+
+  return {
+    cwd,
+    kernelSpecName
+  };
+};
 
 export const launchWebSocketKernelEpic = (
   action$: ActionsObservable<actions.LaunchKernelByNameAction>,
@@ -484,6 +496,52 @@ export const restartWebSocketKernelEpic = (
         catchError(error =>
           of(actions.restartKernelFailed({ error, kernelRef, contentRef }))
         )
+      );
+    })
+  );
+
+/**
+ * NOTE: This function is _exactly_ the same as the desktop loading.js version
+ *       with one strong exception -- extractNewKernel
+ *       Can they be combined without incurring a penalty on the web app?
+ *       The native functions used are `path.dirname`, `path.resolve`, and `process.cwd()`
+ *       We could always inject those dependencies separately...
+ */
+export const launchKernelWhenNotebookSetEpic = (
+  action$: ActionsObservable<actions.FetchContentFulfilled>,
+  state$: any
+) =>
+  action$.pipe(
+    ofType(actions.FETCH_CONTENT_FULFILLED),
+    mergeMap((action: actions.FetchContentFulfilled) => {
+      const state: AppState = state$.value;
+
+      const contentRef = action.payload.contentRef;
+
+      const content = selectors.content(state, { contentRef });
+
+      if (
+        !content ||
+        content.type !== "notebook" ||
+        content.model.type !== "notebook"
+      ) {
+        // This epic only handles notebook content
+        return empty();
+      }
+
+      const filepath = content.filepath;
+      const notebook = content.model.notebook;
+
+      const { cwd, kernelSpecName } = extractNewKernel(filepath, notebook);
+
+      return of(
+        actions.launchKernelByName({
+          kernelSpecName,
+          cwd,
+          kernelRef: action.payload.kernelRef,
+          selectNextKernel: true,
+          contentRef: action.payload.contentRef
+        })
       );
     })
   );
