@@ -1018,40 +1018,6 @@ describe("cleanCellTransient", () => {
   });
 });
 
-describe("sendExecuteRequest", () => {
-  test("cleans up the outputs, pagers, and status", () => {
-    const notebook = appendCellToNotebook(emptyNotebook, emptyCodeCell);
-    const id = notebook.get("cellOrder").first();
-
-    const initialState = makeDocumentRecord({
-      filename: "test.ipynb",
-      notebook,
-      cellPagers: Immutable.Map({
-        // Hokey data, we're just expecting it to be cleared
-        id: Immutable.List(["a", "b"])
-      }),
-      transient: Immutable.Map({
-        cellMap: Immutable.Map({
-          id: Immutable.Map({
-            status: "idle"
-          })
-        })
-      })
-    });
-
-    const state = reducers(
-      initialState,
-      actions.sendExecuteRequest({ id, message: {} })
-    );
-
-    expect(state.getIn(["transient", "cellMap", id, "status"])).toEqual(
-      "queued"
-    );
-
-    expect(state.getIn(["cellPagers", id])).toEqual(Immutable.List());
-  });
-});
-
 describe("acceptPayloadMessage", () => {
   test("processes jupyter payload message types", () => {
     const notebook = appendCellToNotebook(emptyNotebook, emptyCodeCell);

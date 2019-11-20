@@ -9,16 +9,6 @@ import {
   RemoteKernelProps
 } from "@nteract/types";
 
-export const SEND_EXECUTE_REQUEST = "SEND_EXECUTE_REQUEST";
-export interface SendExecuteRequest {
-  type: "SEND_EXECUTE_REQUEST";
-  payload: {
-    id: CellId;
-    message: ExecuteRequest;
-    contentRef: ContentRef;
-  };
-}
-
 export const EXECUTE_CELL = "EXECUTE_CELL";
 export interface ExecuteCell {
   type: "EXECUTE_CELL";

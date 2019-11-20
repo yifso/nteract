@@ -148,7 +148,9 @@ export function interruptKernelFailed(payload: {
   };
 }
 
-export function restartKernel(payload: actionTypes.RestartKernel["payload"]): actionTypes.RestartKernel {
+export function restartKernel(
+  payload: actionTypes.RestartKernel["payload"]
+): actionTypes.RestartKernel {
   return {
     type: actionTypes.RESTART_KERNEL,
     payload
@@ -177,16 +179,6 @@ export function restartKernelSuccessful(payload: {
   };
 }
 
-export function sendExecuteRequest(payload: {
-  id: string;
-  message: ExecuteRequest;
-  contentRef: ContentRef;
-}): actionTypes.SendExecuteRequest {
-  return {
-    type: actionTypes.SEND_EXECUTE_REQUEST,
-    payload
-  };
-}
 export function executeCell(payload: {
   id: string;
   contentRef: ContentRef;

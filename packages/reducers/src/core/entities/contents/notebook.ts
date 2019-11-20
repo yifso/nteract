@@ -606,32 +606,6 @@ function acceptPayloadMessage(
   return state;
 }
 
-function sendExecuteRequest(
-  state: NotebookModel,
-  action: actionTypes.SendExecuteRequest
-): RecordOf<DocumentRecordProps> {
-  const id = action.payload.id ? action.payload.id : state.cellFocused;
-  const contentRef = action.payload.contentRef;
-  if (!id) {
-    return state;
-  }
-
-  // TODO: Record the last execute request for this cell
-
-  // * Clear outputs
-  // * Set status to queued, as all we've done is submit the execution request
-  // FIXME: This is a weird pattern. We're basically faking a dispatch here
-  // inside a reducer and then appending to the result. I think that both of
-  // these reducers should just handle the original action.
-  return clearOutputs(state, {
-    type: "CLEAR_OUTPUTS",
-    payload: {
-      id,
-      contentRef
-    }
-  }).setIn(["transient", "cellMap", id, "status"], "queued");
-}
-
 function setInCell(
   state: NotebookModel,
   action: actionTypes.SetInCell<string>
@@ -948,7 +922,6 @@ type DocumentAction =
   | actionTypes.ChangeCellType
   | actionTypes.ToggleCellExpansion
   | actionTypes.AcceptPayloadMessage
-  | actionTypes.SendExecuteRequest
   | actionTypes.SaveFulfilled
   | actionTypes.RestartKernel
   | actionTypes.ClearAllOutputs
@@ -967,8 +940,6 @@ export function notebook(
   switch (action.type) {
     case actionTypes.TOGGLE_TAG_IN_CELL:
       return toggleTagInCell(state, action);
-    case actionTypes.SEND_EXECUTE_REQUEST:
-      return sendExecuteRequest(state, action);
     case actionTypes.SAVE_FULFILLED:
       return setNotebookCheckpoint(state);
     case actionTypes.FOCUS_CELL:

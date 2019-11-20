@@ -67,9 +67,8 @@ describe("createExecuteCellStream", () => {
       }
     };
     const action$ = ActionsObservable.of(
-      actions.sendExecuteRequest({
+      actions.executeCell({
         id: "id",
-        message: "test",
         contentRef: "fakeContentRef"
       })
     );
@@ -128,11 +127,13 @@ describe("createExecuteCellStream", () => {
       "fakeContentRef"
     );
     const actionBuffer = [];
-    observable.subscribe(x => actionBuffer.push(x), err => done.fail(err));
+    observable.subscribe(
+      x => actionBuffer.push(x),
+      err => done.fail(err)
+    );
     expect(actionBuffer).toEqual([
-      actions.sendExecuteRequest({
+      actions.executeCell({
         id: "id",
-        message,
         contentRef: "fakeContentRef"
       })
     ]);

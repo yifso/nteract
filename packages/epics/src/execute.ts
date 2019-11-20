@@ -66,12 +66,10 @@ export function executeCellStream(
   const executeRequest = message;
 
   // All the streams intended for all frontends
-  const cellMessages: Observable<
-    JupyterMessage<MessageType, any>
-  > = channels.pipe(
-    childOf(executeRequest),
-    share()
-  );
+  const cellMessages: Observable<JupyterMessage<
+    MessageType,
+    any
+  >> = channels.pipe(childOf(executeRequest), share());
 
   // All the payload streams, intended for one user
   const payloadStream = cellMessages.pipe(payloads());
@@ -200,9 +198,14 @@ export function createExecuteCellStream(
   );
 
   return merge(
-    // We make sure to propagate back to "ourselves" the actual message
-    // that we sent to the kernel with the sendExecuteRequest action
-    of(actions.sendExecuteRequest({ id, message, contentRef })),
+    /**
+     * Clear the existing contents of the cell if it is being re-run
+     */
+    of(actions.clearOutputs({ id, contentRef })),
+    /**
+     * Update the cell-status to queued when it is about to be run
+     */
+    of(actions.updateCellStatus({ id, contentRef, status: "queued" })),
     // Merging it in with the actual stream
     cellStream
   );
