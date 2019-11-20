@@ -12,6 +12,7 @@ import {
   switchMap
 } from "rxjs/operators";
 
+import { ImmutableNotebook } from "@nteract/commutable";
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
@@ -20,6 +21,8 @@ import { AppState } from "@nteract/types";
 import { KernelRecord, RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
+
+const path = require("path");
 
 export const extractNewKernel = (
   filepath: string | null,

@@ -1,3 +1,11 @@
+import * as actions from "@nteract/actions";
+import * as selectors from "@nteract/selectors";
+import { KernelRef, createKernelRef } from "@nteract/types";
+
+import { ActionsObservable, ofType } from "redux-observable";
+import { empty, of, merge } from "rxjs";
+import { concatMap, filter, take, timeout, catchError } from "rxjs/operators";
+
 /**
  * Restarts a Jupyter kernel in the local scenario, where a restart requires
  * killing the existing kernel process and starting an ew one.
