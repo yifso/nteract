@@ -33,5 +33,6 @@
     "outputs"
   ],
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "gitHead": "bee6f44ab6d411d20864ff7f7b1a056cba74754b"
 }

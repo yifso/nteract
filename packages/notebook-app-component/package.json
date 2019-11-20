@@ -46,5 +46,6 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@types/react-helmet": "^5.0.8"
-  }
+  },
+  "gitHead": "bee6f44ab6d411d20864ff7f7b1a056cba74754b"
 }
