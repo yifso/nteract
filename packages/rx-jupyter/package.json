@@ -1,6 +1,6 @@
 {
   "name": "rx-jupyter",
-  "version": "5.4.3",
+  "version": "5.4.4",
   "description": "RxJS 5 bindings for the Jupyter Notebook API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
