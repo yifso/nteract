@@ -59,9 +59,6 @@ export const launchWebSocketKernelEpic = (
         // Dismiss any usage that isn't targeting a jupyter server
         return empty();
       }
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
-      const hostRef = selectors.hostRefByHostRecord(state, { host });
-
       const {
         payload: { kernelSpecName, cwd, kernelRef, contentRef }
       } = action;
@@ -71,7 +68,6 @@ export const launchWebSocketKernelEpic = (
         return empty();
       }
 
-      // TODO: Create a START_SESSION action instead (?)
       const sessionPayload = {
         kernel: {
           id: null,
@@ -80,11 +76,29 @@ export const launchWebSocketKernelEpic = (
         name: "",
         // TODO: Figure where the leading slash comes from in the content store
         path: content.filepath.replace(/^\/+/g, ""),
-        type: "notebook"
+        type: "notebook",
+        cwd,
+        kernelRef
       };
+      return of(actions.startSession(sessionPayload));
+    })
+  );
+
+export const startSessionEpic = (
+  action$: ActionsObservable<actions.StartSession>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.START_SESSION),
+    switchMap((action: actions.StartSession) => {
+      const state = state$.value;
+      const host = selectors.currentHost(state);
+      const serverConfig: ServerConfig = selectors.serverConfig(host);
+      const hostRef = selectors.hostRefByHostRecord(state, { host });
+      const { payload } = action;
 
       // TODO: Handle failure cases here
-      return sessions.create(serverConfig, sessionPayload).pipe(
+      return sessions.create(serverConfig, payload).pipe(
         mergeMap(data => {
           const session = data.response;
 
@@ -301,7 +315,6 @@ export const killKernelEpic = (
   action$: ActionsObservable<actions.KillKernelAction>,
   state$: StateObservable<AppState>
 ) =>
-  // TODO: Use the sessions API for this
   action$.pipe(
     ofType(actions.KILL_KERNEL),
     // This epic can only interrupt kernels on jupyter websockets
