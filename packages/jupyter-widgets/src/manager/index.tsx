@@ -49,6 +49,14 @@ type Props = ConnectedProps & OwnProps & ManagerActions;
  */
 class Manager extends React.Component<Props> {
   widgetContainerRef = React.createRef<HTMLDivElement>();
+  /**
+   * Because each contentRef will have its own Kernel, we also want it to
+   * have its own WidgetManager because things like the modelById, the kernel
+   * object we pass down, and potential future actions will only apply to the one
+   * kernel. Also widgets will not interact with widgets in another kernel,
+   * so there is no point in managing them together.
+   * We get the kernel by contentRef, so that is why we use it as the key
+   */
   static managerByContentRef: { [contentRef: string]: WidgetManager };
 
   constructor(props: Props) {
@@ -133,7 +141,4 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Manager);
+export default connect(null, mapDispatchToProps)(Manager);
