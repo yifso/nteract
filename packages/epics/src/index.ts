@@ -1,32 +1,35 @@
-import { commListenEpic } from "./comm";
+import { commListenEpic } from "./jupyter/generic/comm";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
   saveContentEpic,
   updateContentEpic,
   closeNotebookEpic
-} from "./contents";
+} from "./jupyter/remote/contents";
 import {
   executeAllCellsEpic,
   executeCellEpic,
   sendInputReplyEpic,
   updateDisplayEpic
-} from "./execute";
-import { publishToBookstore, publishToBookstoreAfterSave } from "./hosts";
+} from "./jupyter/generic/execute";
+import {
+  publishToBookstore,
+  publishToBookstoreAfterSave
+} from "./jupyter/remote/bookstore";
 import {
   acquireKernelInfoEpic,
-  launchKernelWhenNotebookSetEpic,
-  restartKernelEpic,
   watchExecutionStateEpic
-} from "./kernel-lifecycle";
-import { fetchKernelspecsEpic } from "./kernelspecs";
+} from "./jupyter/generic/kernel";
+import { restartKernelEpic } from "./jupyter/local/kernel";
+import { fetchKernelspecsEpic } from "./jupyter/remote/kernelspecs";
 import {
   changeWebSocketKernelEpic,
   interruptKernelEpic,
   killKernelEpic,
   launchWebSocketKernelEpic,
-  restartWebSocketKernelEpic
-} from "./websocket-kernel";
+  restartWebSocketKernelEpic,
+  launchKernelWhenNotebookSetEpic
+} from "./jupyter/remote/kernel";
 
 // Because `@nteract/core` ends up being a commonjs import, we can't currently
 // rely on `import { epics } from ""@nteract/core"`
