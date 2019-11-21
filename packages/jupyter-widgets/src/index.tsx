@@ -56,8 +56,9 @@ export class WidgetDisplay extends React.Component<Props, State> {
       modelById,
       data: { model_id }
     } = this.props;
+
     const model = await modelById(model_id);
-    this.setState({ model });
+    await this.setState({ model });
   }
 
   render() {
@@ -85,7 +86,7 @@ const mapStateToProps = (state: AppState, props: Props) => {
     modelById: async (model_id: string) => {
       let model = selectors.modelById(state, { commId: model_id });
       //if we can't find the model, request the state from the kernel
-      if (!model) {
+      if (!model && currentKernel) {
         let request_state_response = await request_state(
           currentKernel,
           model_id
@@ -98,7 +99,4 @@ const mapStateToProps = (state: AppState, props: Props) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(WidgetDisplay);
+export default connect(mapStateToProps, null)(WidgetDisplay);

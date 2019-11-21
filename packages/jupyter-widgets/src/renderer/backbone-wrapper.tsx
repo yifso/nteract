@@ -31,7 +31,15 @@ interface Props {
 
 export default class BackboneWrapper extends React.Component<Props> {
   created = false;
+
+  async componentDidMount() {
+    return this.createWidgetIfNotCreated();
+  }
   async componentDidUpdate() {
+    return this.createWidgetIfNotCreated();
+  }
+
+  async createWidgetIfNotCreated() {
     const { model, manager, widgetContainerRef, model_id } = this.props;
     if (!this.created && manager) {
       this.created = true;

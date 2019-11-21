@@ -132,7 +132,4 @@ const mapDispatchToProps = (dispatch: any, props: OwnProps): ManagerActions => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Manager);
+export default connect(null, mapDispatchToProps)(Manager);
