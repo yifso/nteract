@@ -121,6 +121,6 @@
   },
   "devDependencies": {
     "electron": "5.0.12",
-    "file-loader": "^4.2.0"
+    "file-loader": "^5.0.0"
   }
 }

@@ -57,6 +57,6 @@
     "webpack": "^4.17.2"
   },
   "devDependencies": {
-    "file-loader": "^4.2.0"
+    "file-loader": "^5.0.0"
   }
 }
