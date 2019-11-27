@@ -278,7 +278,6 @@ const byRef = (
       return state.delete(typedAction.payload.contentRef);
     }
     // Defer all notebook actions to the notebook reducer
-    case actionTypes.SEND_EXECUTE_REQUEST:
     case actionTypes.FOCUS_CELL:
     case actionTypes.CLEAR_OUTPUTS:
     case actionTypes.CLEAR_ALL_OUTPUTS:

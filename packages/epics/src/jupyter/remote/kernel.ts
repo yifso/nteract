@@ -70,7 +70,7 @@ export const launchWebSocketKernelEpic = (
 
       const sessionPayload = {
         kernel: {
-          id: null,
+          id: undefined,
           name: kernelSpecName
         },
         name: "",
@@ -78,7 +78,8 @@ export const launchWebSocketKernelEpic = (
         path: content.filepath.replace(/^\/+/g, ""),
         type: "notebook",
         cwd,
-        kernelRef
+        kernelRef,
+        contentRef
       };
       return of(actions.startSession(sessionPayload));
     })
@@ -93,6 +94,10 @@ export const startSessionEpic = (
     switchMap((action: actions.StartSession) => {
       const state = state$.value;
       const host = selectors.currentHost(state);
+      if (host.type !== "jupyter") {
+        // Dismiss any usage that isn't targeting a jupyter server
+        return empty();
+      }
       const serverConfig: ServerConfig = selectors.serverConfig(host);
       const hostRef = selectors.hostRefByHostRecord(state, { host });
       const { payload } = action;

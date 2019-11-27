@@ -3,11 +3,14 @@ export interface StartSession {
   type: "START_SESSION";
   payload: {
     kernel: {
-      id: string;
+      id?: string;
       name: string;
     };
     name: string;
     path: string;
     type: string;
+    cwd: string;
+    kernelRef: string;
+    contentRef: string;
   };
 }
