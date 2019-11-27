@@ -1,4 +1,32 @@
+/**
+ * Imports for epics that are agnostic across both local and
+ * remote Jupyter hosts.
+ */
 import { commListenEpic } from "./jupyter/generic/comm";
+import {
+  executeAllCellsEpic,
+  executeCellEpic,
+  sendInputReplyEpic,
+  updateDisplayEpic
+} from "./jupyter/generic/execute";
+
+import {
+  acquireKernelInfoEpic,
+  watchExecutionStateEpic
+} from "./jupyter/generic/kernel";
+
+/**
+ * Imports for epics that are specific to local Jupyter hosts.
+ */
+import { restartKernelEpic } from "./jupyter/local/kernel";
+
+/**
+ * Imports for epics that are specific to remote Jupyter hosts.
+ */
+import {
+  publishToBookstore,
+  publishToBookstoreAfterSave
+} from "./jupyter/remote/bookstore";
 import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
@@ -7,29 +35,15 @@ import {
   closeNotebookEpic
 } from "./jupyter/remote/contents";
 import {
-  executeAllCellsEpic,
-  executeCellEpic,
-  sendInputReplyEpic,
-  updateDisplayEpic
-} from "./jupyter/generic/execute";
-import {
-  publishToBookstore,
-  publishToBookstoreAfterSave
-} from "./jupyter/remote/bookstore";
-import {
-  acquireKernelInfoEpic,
-  watchExecutionStateEpic
-} from "./jupyter/generic/kernel";
-import { restartKernelEpic } from "./jupyter/local/kernel";
-import { fetchKernelspecsEpic } from "./jupyter/remote/kernelspecs";
-import {
   changeWebSocketKernelEpic,
   interruptKernelEpic,
   killKernelEpic,
   launchWebSocketKernelEpic,
   restartWebSocketKernelEpic,
-  launchKernelWhenNotebookSetEpic
+  launchKernelWhenNotebookSetEpic,
+  startSessionEpic
 } from "./jupyter/remote/kernel";
+import { fetchKernelspecsEpic } from "./jupyter/remote/kernelspecs";
 
 // Because `@nteract/core` ends up being a commonjs import, we can't currently
 // rely on `import { epics } from ""@nteract/core"`
@@ -56,7 +70,8 @@ const allEpics = [
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
-  closeNotebookEpic
+  closeNotebookEpic,
+  startSessionEpic
 ];
 
 export {
@@ -82,5 +97,6 @@ export {
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
-  closeNotebookEpic
+  closeNotebookEpic,
+  startSessionEpic
 };

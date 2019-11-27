@@ -108,13 +108,13 @@ export const startSessionEpic = (
             type: "websocket",
             info: null,
             sessionId,
-            cwd,
+            cwd: payload.cwd,
             channels: kernels.connect(
               serverConfig,
               session.kernel.id,
               sessionId
             ),
-            kernelSpecName,
+            kernelSpecName: payload.kernel.name,
             hostRef
           });
 
@@ -123,7 +123,7 @@ export const startSessionEpic = (
           return of(
             actions.launchKernelSuccessful({
               kernel,
-              kernelRef,
+              kernelRef: payload.kernelRef,
               contentRef: action.payload.contentRef,
               selectNextKernel: true
             })

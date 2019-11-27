@@ -21,6 +21,7 @@ export * from "./cells";
 export * from "./contents";
 export * from "./kernels";
 export * from "./kernelspecs";
+export * from "./sessions";
 
 export const OVERWRITE_METADATA_FIELDS = "CORE/OVERWRITE_METADATA_FIELDS";
 export interface OverwriteMetadataFields {
