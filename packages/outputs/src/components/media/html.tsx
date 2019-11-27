@@ -1,4 +1,5 @@
 import * as React from "react";
+import Frame from "react-frame-component";
 import styled from "styled-components";
 
 import outputStyle from "../outputStyle";
@@ -8,6 +9,10 @@ interface Props {
    * The HTML string that will be rendered.
    */
   data: string;
+  /**
+   * The metadata associated with the display object.
+   */
+  metadata: any;
   /**
    * The media type associated with the HTML
    * string. This defaults to text/html.
@@ -69,7 +74,10 @@ export class HTML extends React.PureComponent<Props> {
   }
 
   render() {
-    return (
+    const { metadata } = this.props;
+    const shouldIsolate = metadata["isolated"];
+
+    const display = (
       <StyledDiv
         dangerouslySetInnerHTML={{ __html: this.props.data }}
         ref={el => {
@@ -77,6 +85,12 @@ export class HTML extends React.PureComponent<Props> {
         }}
       />
     );
+
+    if (shouldIsolate) {
+      return <Frame>{display}</Frame>;
+    } else {
+      return display;
+    }
   }
 }
 

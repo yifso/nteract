@@ -77,8 +77,7 @@ This will run two servers, a webpack server for live reloading javascript and ht
 
 Once the assets have been built, you won't need to refresh the page, but you may need to manually refresh the page if it loads before the assets are built.
 
-
-#### 3.2 Separate commands w/ hot reloading 
+#### 3.2 Separate commands w/ hot reloading
 
 First we need to run the webpack server to live reload javascript and html assets. Anywhere in the nteract repository, run
 
@@ -92,13 +91,13 @@ In another terminal, go to the directory that you want to run notebooks from and
 jupyter nteract --NteractConfig.asset_url="http://localhost:8080/"
 ```
 
-The ``--NteractConfig.asset_url`` flag tells the Jupyter server where the webpack server will be serving the assets.
+The `--NteractConfig.asset_url` flag tells the Jupyter server where the webpack server will be serving the assets.
 
 If you wait until the assets are built, you won't need to manually reload the Jupyter webpage. If you start the server before the assets have been built, you will need to manually refresh the page once before live reloading
 
 #### 3.2 Separate commands w/o hot reloading
 
-If you don't want to run the webpack server, you will still need to build the assets once (to start). You will need rebuild assets and refresh the page in order for changes to take effect.  
+If you don't want to run the webpack server, you will still need to build the assets once (to start). You will need rebuild assets and refresh the page in order for changes to take effect.
 
 To create an optimized build that will run faster in the browser but will take more time to complete, (in the `nteract` repo) run:
 
@@ -120,9 +119,8 @@ Then you will want to use the `jupyter nteract` command.
 
 When you launch the Jupyter notebook server, there is a new `NteractConfig` that allows setting a number of things. In particular it allows setting:
 
-* `asset_url` - Where to load nteract js from
-* `ga_code` - Google Analytics code to track usage
-
+- `asset_url` - Where to load nteract js from
+- `ga_code` - Google Analytics code to track usage
 
 Example:
 
