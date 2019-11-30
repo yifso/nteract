@@ -127,8 +127,14 @@ const vgSpec = {
   ]
 };
 
-const handleError = (error: Error) => { throw error };
 const options: VegaOptions = {renderer: "svg"};
+
+const handleError = (error: Error) => { throw error };
+const handleAnyResult = (name, wrapper, done) => {
+  expect(wrapper.render()).toMatchSnapshot(name);
+  wrapper.unmount();   // must not throw
+  done();
+};
 
 describe("VegaLite1", () => {
   it("has the correct media type", () => {
@@ -145,10 +151,7 @@ describe("VegaLite2", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => {
-      expect(wrapper.render()).toMatchSnapshot();
-      done();
-    };
+    const handleResult = () => handleAnyResult("VegaLite2", wrapper, done);
     const wrapper = mount(
       <VegaLite2
         data={vlSpec}
@@ -166,10 +169,7 @@ describe("VegaLite3", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => {
-      expect(wrapper.render()).toMatchSnapshot();
-      done();
-    };
+    const handleResult = () => handleAnyResult("VegaLite3", wrapper, done);
     const wrapper = mount(
       <VegaLite3
         data={vlSpec}
@@ -196,10 +196,7 @@ describe("Vega3", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => {
-      expect(wrapper.render()).toMatchSnapshot();
-      done();
-    };
+    const handleResult = () => handleAnyResult("Vega3", wrapper, done);
     const wrapper = mount(
       <Vega3
         data={vgSpec}
@@ -217,10 +214,7 @@ describe("Vega4", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => {
-      expect(wrapper.render()).toMatchSnapshot();
-      done();
-    };
+    const handleResult = () => handleAnyResult("Vega4", wrapper, done);
     const wrapper = mount(
       <Vega4
         data={vgSpec}
@@ -238,10 +232,7 @@ describe("Vega5", () => {
   });
 
   it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => {
-      expect(wrapper.render()).toMatchSnapshot();
-      done();
-    };
+    const handleResult = () => handleAnyResult("Vega5", wrapper, done);
     const wrapper = mount(
       <Vega5
         data={vgSpec}

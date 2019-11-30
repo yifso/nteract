@@ -1,4 +1,5 @@
 import { promisify } from "util";
+import { Result } from "vega-embed";
 import { MEDIA_TYPES, VegaMediaType } from "./mime";
 
 export interface VegaOptions {
@@ -11,7 +12,7 @@ export async function embed(
   mediaType: VegaMediaType,
   spec: Readonly<{}>,
   options: Partial<VegaOptions> = {},
-): Promise<any> {
+): Promise<Result | void> {
   const version = MEDIA_TYPES[mediaType];
   const defaults = {
     actions: false,
