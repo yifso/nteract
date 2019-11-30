@@ -127,119 +127,58 @@ const vgSpec = {
   ]
 };
 
-const options: VegaOptions = {renderer: "svg"};
+const makeTestBody = (
+  component,
+  mimetype,
+  spec,
+  {canRender} = {canRender: true}
+) => () => {
+  it("has the correct media type", () => {
+    expect(component.MIMETYPE).toBe(mimetype);
+  });
 
-const handleError = (error: Error) => { throw error };
-const handleAnyResult = (name, wrapper, done) => {
-  expect(wrapper.render()).toMatchSnapshot(name);
-  wrapper.unmount();   // must not throw
-  done();
+  if (canRender) {
+    it("renders the spec as SVG properly", done => {
+      const wrapper = mount(component({
+        data: spec,
+        options: {renderer: "svg"},
+        onError: error => { throw error },
+        onResult: () => {
+          expect(wrapper.render()).toMatchSnapshot();
+          wrapper.unmount();   // must not throw
+          done();
+        },
+      }));
+    });
+  }
 };
 
-describe("VegaLite1", () => {
-  it("has the correct media type", () => {
-    expect(VegaLite1.MIMETYPE).toBe("application/vnd.vegalite.v1+json");
-  });
+describe("VegaLite1", makeTestBody(
+  VegaLite1, "application/vnd.vegalite.v1+json", vlSpec,
+  {canRender: false},   // use canvas to measure text even in SVG mode
+));
 
-  // VegaLite1 still uses canvas to measure text, even in SVG mode, so can't
-  // check contents here :(
-});
+describe("VegaLite2", makeTestBody(
+  VegaLite2, "application/vnd.vegalite.v2+json", vlSpec,
+));
 
-describe("VegaLite2", () => {
-  it("has the correct media type", () => {
-    expect(VegaLite2.MIMETYPE).toBe("application/vnd.vegalite.v2+json");
-  });
+describe("VegaLite3", makeTestBody(
+  VegaLite3, "application/vnd.vegalite.v3+json", vlSpec,
+));
 
-  it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => handleAnyResult("VegaLite2", wrapper, done);
-    const wrapper = mount(
-      <VegaLite2
-        data={vlSpec}
-        options={options}
-        onResult={handleResult}
-        onError={handleError}
-      />
-    );
-  });
-});
+describe("Vega2", makeTestBody(
+  Vega2, "application/vnd.vega.v2+json", vgSpec,
+  {canRender: false},   // use canvas to measure text even in SVG mode
+));
 
-describe("VegaLite3", () => {
-  it("has the correct media type", () => {
-    expect(VegaLite3.MIMETYPE).toBe("application/vnd.vegalite.v3+json");
-  });
+describe("Vega3", makeTestBody(
+  Vega3, "application/vnd.vega.v3+json", vgSpec,
+));
 
-  it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => handleAnyResult("VegaLite3", wrapper, done);
-    const wrapper = mount(
-      <VegaLite3
-        data={vlSpec}
-        options={options}
-        onResult={handleResult}
-        onError={handleError}
-      />
-    );
-  });
-});
+describe("Vega4", makeTestBody(
+  Vega4, "application/vnd.vega.v4+json", vgSpec,
+));
 
-describe("Vega2", () => {
-  it("has the correct media type", () => {
-    expect(Vega2.MIMETYPE).toBe("application/vnd.vega.v2+json");
-  });
-
-  // Vega2 still uses canvas to measure text, even in SVG mode, so can't
-  // check contents here :(
-});
-
-describe("Vega3", () => {
-  it("has the correct media type", () => {
-    expect(Vega3.MIMETYPE).toBe("application/vnd.vega.v3+json");
-  });
-
-  it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => handleAnyResult("Vega3", wrapper, done);
-    const wrapper = mount(
-      <Vega3
-        data={vgSpec}
-        options={options}
-        onResult={handleResult}
-        onError={handleError}
-      />
-    );
-  });
-});
-
-describe("Vega4", () => {
-  it("has the correct media type", () => {
-    expect(Vega4.MIMETYPE).toBe("application/vnd.vega.v4+json");
-  });
-
-  it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => handleAnyResult("Vega4", wrapper, done);
-    const wrapper = mount(
-      <Vega4
-        data={vgSpec}
-        options={options}
-        onResult={handleResult}
-        onError={handleError}
-      />
-    );
-  });
-});
-
-describe("Vega5", () => {
-  it("has the correct media type", () => {
-    expect(Vega5.MIMETYPE).toBe("application/vnd.vega.v5+json");
-  });
-
-  it("renders the spec as SVG properly", (done) => {
-    const handleResult = () => handleAnyResult("Vega5", wrapper, done);
-    const wrapper = mount(
-      <Vega5
-        data={vgSpec}
-        options={options}
-        onResult={handleResult}
-        onError={handleError}
-      />
-    );
-  });
-});
+describe("Vega5", makeTestBody(
+  Vega5, "application/vnd.vega.v5+json", vgSpec,
+));

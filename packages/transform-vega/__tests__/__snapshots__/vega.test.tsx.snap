@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Vega3 renders the spec as SVG properly: Vega3 1`] = `
+exports[`Vega3 renders the spec as SVG properly 1`] = `
 <div
   class="vega-embed"
 >
@@ -2500,7 +2500,7 @@ exports[`Vega3 renders the spec as SVG properly: Vega3 1`] = `
 </div>
 `;
 
-exports[`Vega4 renders the spec as SVG properly: Vega4 1`] = `
+exports[`Vega4 renders the spec as SVG properly 1`] = `
 <div
   class="vega-embed"
 >
@@ -5099,7 +5099,7 @@ exports[`Vega4 renders the spec as SVG properly: Vega4 1`] = `
 </div>
 `;
 
-exports[`Vega5 renders the spec as SVG properly: Vega5 1`] = `
+exports[`Vega5 renders the spec as SVG properly 1`] = `
 <div
   class="vega-embed"
 >
@@ -7698,7 +7698,7 @@ exports[`Vega5 renders the spec as SVG properly: Vega5 1`] = `
 </div>
 `;
 
-exports[`VegaLite2 renders the spec as SVG properly: VegaLite2 1`] = `
+exports[`VegaLite2 renders the spec as SVG properly 1`] = `
 <div
   class="vega-embed"
 >
@@ -10131,7 +10131,7 @@ exports[`VegaLite2 renders the spec as SVG properly: VegaLite2 1`] = `
 </div>
 `;
 
-exports[`VegaLite3 renders the spec as SVG properly: VegaLite3 1`] = `
+exports[`VegaLite3 renders the spec as SVG properly 1`] = `
 <div
   class="vega-embed"
 >
