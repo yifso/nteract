@@ -3,13 +3,15 @@ import React from "react";
 
 import { ContentRef } from "@nteract/core";
 import { Media, KernelOutputError, StreamText } from "@nteract/outputs";
-import { Source, Input, Prompt } from "@nteract/presentational-components";
+import { Source } from "@nteract/presentational-components";
 import CodeMirrorEditor from "@nteract/editor";
 
 import Editor from "../inputs/editor";
+import Prompt from "../inputs/prompt";
 import TransformMedia from "../outputs/transform-media";
 import Outputs from "../outputs";
 import Pagers from "../outputs/pagers";
+import Input from "../inputs/input";
 
 interface ComponentProps {
   id: string;
@@ -17,6 +19,13 @@ interface ComponentProps {
   cell: Immutable.Map<string, any>;
   cell_type: "code";
 }
+
+const PromptText = (props: any) => {
+  if (props.status === "busy") {
+    return <React.Fragment>{"[*]"}</React.Fragment>;
+  }
+  return <React.Fragment>{"[ ]"}</React.Fragment>;
+};
 
 export default class CodeCell extends React.Component<ComponentProps> {
   static defaultProps = {
@@ -28,8 +37,10 @@ export default class CodeCell extends React.Component<ComponentProps> {
 
     return (
       <div className="nteract-code-cell">
-        <Input>
-          <Prompt id={id} contentRef={contentRef} />
+        <Input id={id} contentRef={contentRef}>
+          <Prompt id={id} contentRef={contentRef}>
+            <PromptText />
+          </Prompt>
           <Source>
             <Editor id={id} contentRef={contentRef}>
               <CodeMirrorEditor />

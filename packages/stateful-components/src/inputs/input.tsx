@@ -47,4 +47,6 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps, null)(Input);
+export default connect<StateProps, void, ComponentProps, AppState>(
+  makeMapStateToProps
+)(Input);
