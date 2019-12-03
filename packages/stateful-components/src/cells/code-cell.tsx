@@ -24,6 +24,12 @@ const PromptText = (props: any) => {
   if (props.status === "busy") {
     return <React.Fragment>{"[*]"}</React.Fragment>;
   }
+  if (props.status === "queued") {
+    return <React.Fragment>{"[…]"}</React.Fragment>;
+  }
+  if (typeof props.executionCount === "number") {
+    return <React.Fragment>{`[${props.counter}]`}</React.Fragment>;
+  }
   return <React.Fragment>{"[ ]"}</React.Fragment>;
 };
 
