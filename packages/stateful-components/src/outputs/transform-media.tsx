@@ -6,7 +6,6 @@ import { Dispatch } from "redux";
 import {
   ImmutableDisplayData,
   ImmutableExecuteResult,
-  ImmutableOutput,
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors, AppState, ContentRef } from "@nteract/core";
@@ -89,7 +88,7 @@ const makeMapStateToProps = (
   initialState: AppState,
   ownProps: ComponentProps
 ) => {
-  const { contentRef, index, id, output_type, output } = ownProps;
+  const { output_type, output } = ownProps;
 
   const memoizedMetadata = memoizeOne(immutableMetadata =>
     immutableMetadata ? immutableMetadata.toJS() : {}
