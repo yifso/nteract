@@ -34,7 +34,7 @@ export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
   }
 }
 
-const makeMapStateToProps = (
+export const makeMapStateToProps = (
   initialState: AppState,
   ownProps: ComponentProps
 ): ((state: AppState) => StateProps) => {

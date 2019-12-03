@@ -22,7 +22,7 @@ export class Cell extends React.Component<ComponentProps & StateProps> {
       return null;
     }
 
-    const cell_type = this.props.cell.cell_type;
+    const cell_type = this.props.cell.get("cell_type");
 
     // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
@@ -30,19 +30,15 @@ export class Cell extends React.Component<ComponentProps & StateProps> {
         return;
       }
 
-      const childElement = child;
       if (chosenOne) {
         // Already have a selection
         return;
       }
-      if (childElement.props && childElement.props.cell_type) {
-        const child_cell_type: string[] = Array.isArray(
-          childElement.props.cell_type
-        )
-          ? childElement.props.cell_type
-          : [childElement.props.cell_type];
 
-        chosenOne = child_cell_type.includes(cell_type) ? childElement : null;
+      if (child.props && child.props.cell_type) {
+        const child_cell_type = child.props.cell_type;
+
+        chosenOne = child_cell_type === cell_type ? child : null;
         return;
       }
     });

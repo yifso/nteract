@@ -34,24 +34,27 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
   }
 }
 
-const mapStateToProps = (
+const makeMapStateToProps = (
   state: AppState,
   ownProps: ComponentProps
-): StateProps => {
-  const { contentRef } = ownProps;
-  const model = selectors.model(state, { contentRef });
+): ((state: AppState) => StateProps) => {
+  const mapStateToProps = (state: AppState) => {
+    const { contentRef } = ownProps;
+    const model = selectors.model(state, { contentRef });
 
-  let cellOrder = Immutable.List();
+    let cellOrder = Immutable.List();
 
-  if (model && model.type === "notebook") {
-    cellOrder = model.notebook.cellOrder;
-  }
+    if (model && model.type === "notebook") {
+      cellOrder = model.notebook.cellOrder;
+    }
 
-  return {
-    cellOrder
+    return {
+      cellOrder
+    };
   };
+  return mapStateToProps;
 };
 
 export default connect<StateProps, void, ComponentProps, AppState>(
-  mapStateToProps
+  makeMapStateToProps
 )(Cells);

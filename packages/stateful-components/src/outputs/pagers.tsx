@@ -30,7 +30,7 @@ export class Pagers extends React.PureComponent<ComponentProps & StateProps> {
   }
 }
 
-const makeMapStateToProps = (
+export const makeMapStateToProps = (
   initialState: AppState,
   ownProps: ComponentProps
 ): ((state: AppState) => StateProps) => {
@@ -52,4 +52,6 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps, null)(Pagers);
+export default connect<StateProps, void, ComponentProps, AppState>(
+  makeMapStateToProps
+)(Pagers);

@@ -25,28 +25,31 @@ export class Prompt extends React.Component<ComponentProps, StateProps> {
   }
 }
 
-const mapStateToProps = (
+const makeMapStateToProps = (
   state: AppState,
   ownProps: ComponentProps
-): StateProps => {
-  const { contentRef, id } = ownProps;
-  const model = selectors.model(state, { contentRef });
+): ((state: AppState) => StateProps) => {
+  const mapStateToProps = (state: AppState) => {
+    const { contentRef, id } = ownProps;
+    const model = selectors.model(state, { contentRef });
 
-  let status;
-  let executionCount;
+    let status;
+    let executionCount;
 
-  if (model && model.type == "notebook") {
-    status = model.transient.getIn(["cellMap", id, "status"]);
-    const cell = selectors.notebook.cellById(model, { id });
-    if (cell) {
-      executionCount = cell.get("execution_count", undefined);
+    if (model && model.type == "notebook") {
+      status = model.transient.getIn(["cellMap", id, "status"]);
+      const cell = selectors.notebook.cellById(model, { id });
+      if (cell) {
+        executionCount = cell.get("execution_count", undefined);
+      }
     }
-  }
 
-  return {
-    status,
-    executionCount
+    return {
+      status,
+      executionCount
+    };
   };
+  return mapStateToProps;
 };
 
 export default connect<StateProps, void, ComponentProps, AppState>(

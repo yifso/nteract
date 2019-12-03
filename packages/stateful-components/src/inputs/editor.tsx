@@ -7,6 +7,7 @@ import { AppState, ContentRef, actions, selectors } from "@nteract/core";
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
+  children: React.ReactNode;
 }
 
 interface StateProps {
@@ -35,15 +36,9 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
         return;
       }
       if (childElement.props && childElement.props.editorType) {
-        const child_editor_type: string[] = Array.isArray(
-          childElement.props.editorType
-        )
-          ? childElement.props.editorType
-          : [childElement.props.editorType];
+        const child_editor_type = childElement.props.editorType;
 
-        chosenOne = child_editor_type.includes(editorType)
-          ? childElement
-          : null;
+        chosenOne = child_editor_type === editorType ? childElement : null;
         return;
       }
     });
@@ -65,7 +60,7 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
   }
 }
 
-const makeMapStateToProps = (
+export const makeMapStateToProps = (
   initialState: AppState,
   ownProps: ComponentProps
 ) => {
@@ -84,6 +79,7 @@ const makeMapStateToProps = (
       if (cell) {
         editorFocused = model.editorFocused === id;
         value = cell.get("source", "");
+        console.log(cell);
         if (cell.cell_type === "code") {
           const kernel = selectors.kernelByContentRef(state, { contentRef });
           if (kernel) {
@@ -106,7 +102,7 @@ const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-const makeMapDispatchToProps = (
+export const makeMapDispatchToProps = (
   initialDispatch: Dispatch,
   ownProps: ComponentProps
 ) => {

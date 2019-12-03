@@ -3,7 +3,7 @@ import Immutable from "immutable";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { ContentRef, actions } from "@nteract/core";
+import { ContentRef, actions, AppState } from "@nteract/core";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
@@ -58,10 +58,13 @@ const mapDispatchToProps = (
   };
 };
 
-const RawCell = connect(null, mapDispatchToProps)(PureRawCell);
-
 PureRawCell.defaultProps = {
   cell_type: "raw"
 };
+
+const RawCell = connect<void, DispatchProps, ComponentProps, AppState>(
+  null,
+  mapDispatchToProps
+)(PureRawCell);
 
 export default RawCell;

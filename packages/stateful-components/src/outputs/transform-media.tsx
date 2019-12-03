@@ -66,10 +66,10 @@ const PureTransformMedia = (
   );
 };
 
-const richestMediaType = (
+export const richestMediaType = (
   output: ImmutableExecuteResult | ImmutableDisplayData,
   order: Immutable.List<string>,
-  handlers: { [k: string]: any } | Immutable.Map<string, any>
+  handlers: Immutable.Map<string, any>
 ) => {
   const outputData = output.data;
 
