@@ -66,12 +66,10 @@ export function executeCellStream(
   const executeRequest = message;
 
   // All the streams intended for all frontends
-  const cellMessages: Observable<
-    JupyterMessage<MessageType, any>
-  > = channels.pipe(
-    childOf(executeRequest),
-    share()
-  );
+  const cellMessages: Observable<JupyterMessage<
+    MessageType,
+    any
+  >> = channels.pipe(childOf(executeRequest), share());
 
   // All the payload streams, intended for one user
   const payloadStream = cellMessages.pipe(payloads());
@@ -193,6 +191,18 @@ export function createExecuteCellStream(
             actions.LAUNCH_KERNEL,
             actions.LAUNCH_KERNEL_BY_NAME,
             actions.KILL_KERNEL
+          ),
+          filter(
+            (
+              action:
+                | actions.ExecuteCanceled
+                | actions.DeleteCell
+                | actions.LaunchKernelAction
+                | actions.LaunchKernelByNameAction
+                | actions.KillKernelAction
+                | actions.ExecuteCell
+                | actions.ExecuteFocusedCell
+            ) => action.payload.contentRef === contentRef
           )
         )
       )
