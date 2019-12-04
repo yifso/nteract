@@ -9,203 +9,178 @@
 module.exports = {
   lernaModules: [
     {
-      name: "@nteract/actions",
-      version: "2.9.0",
-      private: false
-    },
-    {
       name: "ansi-to-react",
-      version: "5.1.0",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/commutable",
-      version: "7.1.4",
+      version: "6.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/connected-components",
-      version: "6.7.0",
+      version: "5.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/core",
-      version: "10.9.0",
-      private: false
-    },
-    {
-      name: "@nteract/data-explorer",
-      version: "7.1.6",
+      version: "9.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/directory-listing",
-      version: "2.0.6",
+      version: "1.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/dropdown-menu",
-      version: "1.0.1",
+      version: "0.5.7",
       private: false
     },
     {
       name: "@nteract/editor",
-      version: "9.3.2",
+      version: "8.0.0-alpha.0",
       private: false
     },
     {
       name: "enchannel-zmq-backend",
-      version: "9.1.7",
-      private: false
-    },
-    {
-      name: "@nteract/epics",
-      version: "2.9.0",
-      private: false
-    },
-    {
-      name: "@nteract/fixtures",
-      version: "2.2.6",
-      private: false
-    },
-    {
-      name: "@nteract/fs-kernels",
-      version: "2.1.7",
+      version: "8.0.0-alpha.0",
       private: false
     },
     {
       name: "fs-observable",
-      version: "4.0.0",
+      version: "3.0.2",
       private: false
     },
     {
       name: "@mybinder/host-cache",
-      version: "2.1.9",
+      version: "1.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/iron-icons",
-      version: "1.0.0",
+      version: "0.2.5",
       private: false
     },
     {
       name: "@nteract/jupyter-widgets",
-      version: "4.3.0-alpha.0",
+      version: "1.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/logos",
-      version: "1.0.0",
+      version: "0.1.5",
       private: false
     },
     {
       name: "@nteract/markdown",
-      version: "4.2.0",
+      version: "3.0.1",
       private: false
     },
     {
       name: "@nteract/mathjax",
-      version: "4.0.1",
+      version: "3.0.1",
       private: false
     },
     {
       name: "@nteract/messaging",
-      version: "6.1.7",
+      version: "5.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/monaco-editor",
-      version: "3.0.3",
+      version: "2.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/notebook-app-component",
-      version: "6.0.1-alpha.0",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/octicons",
-      version: "2.0.0",
+      version: "1.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/outputs",
-      version: "2.6.0",
+      version: "1.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/presentational-components",
-      version: "3.2.0",
-      private: false
-    },
-    {
-      name: "@nteract/reducers",
-      version: "2.8.0",
+      version: "2.0.0-alpha.0",
       private: false
     },
     {
       name: "rx-binder",
-      version: "4.0.2",
+      version: "3.0.0-alpha.0",
       private: false
     },
     {
       name: "rx-jupyter",
-      version: "5.4.4",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/selectors",
-      version: "2.5.0",
-      private: false
-    },
-    {
-      name: "@nteract/stateful-components",
       version: "1.0.0",
       private: false
     },
     {
       name: "@nteract/styled-blueprintjsx",
-      version: "2.0.2",
+      version: "1.1.1",
       private: false
     },
     {
-      name: "@nteract/styles",
-      version: "2.1.0",
+      name: "@nteract/styleguide-components",
+      version: "0.1.4",
+      private: false
+    },
+    {
+      name: "@nteract/data-explorer",
+      version: "5.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/transform-geojson",
-      version: "5.1.0",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/transform-model-debug",
-      version: "5.0.1",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/transform-plotly",
-      version: "6.0.0",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/transform-vdom",
-      version: "4.0.3",
+      version: "3.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/transform-vega",
-      version: "6.0.3",
+      version: "4.0.0-alpha.0",
       private: false
     },
     {
       name: "@nteract/types",
-      version: "4.4.1",
+      version: "1.0.0",
       private: false
     },
     {
       name: "@nteract/webpack-configurator",
-      version: "3.0.0",
+      version: "2.0.0-alpha.0",
+      private: false
+    },
+    {
+      name: "@nteract/stateful-components",
+      version: "1.0.0",
       private: false
     }
   ]
