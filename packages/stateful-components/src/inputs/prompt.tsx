@@ -53,5 +53,5 @@ const makeMapStateToProps = (
 };
 
 export default connect<StateProps, void, ComponentProps, AppState>(
-  mapStateToProps
+  makeMapStateToProps
 )(Prompt);

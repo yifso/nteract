@@ -115,13 +115,13 @@ const makeMapDispatchToProps = (
   return mapDispatchToProps;
 };
 
-MarkdownCell.defaultProps = {
-  cell_type: "markdown"
-};
-
 const MarkdownCell = connect(
   makeMapStateToProps,
   makeMapDispatchToProps
 )(PureMarkdownCell);
+
+MarkdownCell.defaultProps = {
+  cell_type: "markdown"
+};
 
 export default MarkdownCell;
