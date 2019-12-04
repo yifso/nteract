@@ -11,6 +11,7 @@ import CodeCell from "./code-cell";
 
 interface ComponentProps {
   contentRef: ContentRef;
+  children?: React.ReactNode;
 }
 
 interface StateProps {
@@ -19,16 +20,20 @@ interface StateProps {
 
 export class Cells extends React.Component<StateProps & ComponentProps> {
   render() {
-    const { cellOrder, contentRef } = this.props;
+    const { cellOrder, contentRef, children } = this.props;
     return (
       <div className="nteract-cells">
-        {cellOrder.map((id: string) => (
-          <Cell id={id} contentRef={contentRef} key={id}>
-            <MarkdownCell id={id} contentRef={contentRef} />
-            <RawCell id={id} contentRef={contentRef} />
-            <CodeCell id={id} contentRef={contentRef} />
-          </Cell>
-        ))}
+        {cellOrder.map((id: string) =>
+          children ? (
+            React.cloneElement(children, { id, contentRef })
+          ) : (
+            <Cell id={id} contentRef={contentRef} key={id}>
+              <MarkdownCell id={id} contentRef={contentRef} />
+              <RawCell id={id} contentRef={contentRef} />
+              <CodeCell id={id} contentRef={contentRef} />
+            </Cell>
+          )
+        )}
       </div>
     );
   }
