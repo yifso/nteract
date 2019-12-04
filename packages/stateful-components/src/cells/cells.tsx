@@ -39,7 +39,7 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
   }
 }
 
-const makeMapStateToProps = (
+export const makeMapStateToProps = (
   state: AppState,
   ownProps: ComponentProps
 ): ((state: AppState) => StateProps) => {

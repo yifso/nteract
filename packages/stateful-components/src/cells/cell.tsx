@@ -57,16 +57,22 @@ export class Cell extends React.Component<ComponentProps & StateProps> {
   }
 }
 
-const mapStateToProps = (state: AppState, ownProps: ComponentProps) => {
-  const { id, contentRef } = ownProps;
-  const model = selectors.model(state, { contentRef });
-  let cell = undefined;
+export const makeMapStateToProps = (
+  initialState: AppState,
+  ownProps: ComponentProps
+) => {
+  const mapStateToProps = (state: AppState) => {
+    const { id, contentRef } = ownProps;
+    const model = selectors.model(state, { contentRef });
+    let cell = undefined;
 
-  if (model && model.type === "notebook") {
-    cell = selectors.notebook.cellById(model, { id });
-  }
+    if (model && model.type === "notebook") {
+      cell = selectors.notebook.cellById(model, { id });
+    }
 
-  return { cell };
+    return { cell };
+  };
+  return mapStateToProps;
 };
 
-export default connect(mapStateToProps)(Cell);
+export default connect(makeMapStateToProps)(Cell);

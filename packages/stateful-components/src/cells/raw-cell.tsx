@@ -39,32 +39,35 @@ export class PureRawCell extends React.Component<
   }
 }
 
-const mapDispatchToProps = (
+export const makeMapDispatchToProps = (
   dispatch: Dispatch,
   ownProps: ComponentProps
-): DispatchProps => {
-  const { id, contentRef } = ownProps;
-  return {
-    focusAboveCell: () => {
-      dispatch(actions.focusPreviousCell({ id, contentRef }));
-      dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
-    },
-    focusBelowCell: () => {
-      dispatch(
-        actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
-      );
-      dispatch(actions.focusNextCellEditor({ id, contentRef }));
-    }
+): ((dispatch: Dispatch) => DispatchProps) => {
+  const mapDispatchToProps = (dispatch: Dispatch) => {
+    const { id, contentRef } = ownProps;
+    return {
+      focusAboveCell: () => {
+        dispatch(actions.focusPreviousCell({ id, contentRef }));
+        dispatch(actions.focusPreviousCellEditor({ id, contentRef }));
+      },
+      focusBelowCell: () => {
+        dispatch(
+          actions.focusNextCell({ id, createCellIfUndefined: true, contentRef })
+        );
+        dispatch(actions.focusNextCellEditor({ id, contentRef }));
+      }
+    };
   };
-};
-
-PureRawCell.defaultProps = {
-  cell_type: "raw"
+  return mapDispatchToProps;
 };
 
 const RawCell = connect<void, DispatchProps, ComponentProps, AppState>(
   null,
-  mapDispatchToProps
+  makeMapDispatchToProps
 )(PureRawCell);
+
+RawCell.defaultProps = {
+  cell_type: "raw"
+};
 
 export default RawCell;
