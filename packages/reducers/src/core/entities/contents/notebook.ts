@@ -752,6 +752,21 @@ function setKernelspecInfo(
     .setIn(["notebook", "metadata", "kernel_info", "name"], kernelInfo.name);
 }
 
+function setKernelInfo(
+  state: NotebookModel,
+  action: actionTypes.SetKernelInfo
+): RecordOf<DocumentRecordProps> {
+  const { info } = action.payload;
+  return state
+    .setIn(
+      ["notebook", "metadata", "kernelspec"],
+      fromJS({
+        name: info.languageName
+      })
+    )
+    .setIn(["notebook", "metadata", "kernel_info", "name"], info.languageName);
+}
+
 function overwriteMetadataField(
   state: NotebookModel,
   action: actionTypes.OverwriteMetadataField
@@ -1033,8 +1048,9 @@ export function notebook(
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
     case actionTypes.SET_KERNELSPEC_INFO:
-    case actionTypes.SET_KERNEL_INFO:
       return setKernelspecInfo(state, action);
+    case actionTypes.SET_KERNEL_INFO:
+      return setKernelInfo(state, action);
     case actionTypes.OVERWRITE_METADATA_FIELD:
       return overwriteMetadataField(state, action);
     case actionTypes.DELETE_METADATA_FIELD:
