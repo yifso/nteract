@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Result } from "vega-embed";
 import { embed, VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 
@@ -16,10 +17,12 @@ export class VegaEmbed<T extends VegaMediaType>
   extends React.Component<VegaEmbedProps<T>> {
 
   private anchorRef: React.RefObject<HTMLDivElement>;
+  private embedResult: Result | void;
 
   constructor(props: VegaEmbedProps<T>) {
     super(props);
     this.anchorRef = React.createRef<HTMLDivElement>();
+    this.embedResult = undefined;
   }
 
   render(): JSX.Element {
@@ -30,7 +33,7 @@ export class VegaEmbed<T extends VegaMediaType>
     if (this.anchorRef.current === null) { return; }
 
     try {
-      const result = await embed(
+      this.embedResult = await embed(
         this.anchorRef.current,
         this.props.mediaType,
         this.props.spec,
@@ -38,7 +41,7 @@ export class VegaEmbed<T extends VegaMediaType>
       );
 
       if (this.props.resultHandler) {
-        this.props.resultHandler(result);
+        this.props.resultHandler(this.embedResult);
       }
     }
     catch (error) {
@@ -56,5 +59,17 @@ export class VegaEmbed<T extends VegaMediaType>
 
   componentDidUpdate(): void {
     this.callEmbedder().then();
+  }
+
+  componentWillUnmount(): void {
+    if (
+      this.embedResult &&
+      this.embedResult.view &&
+      this.embedResult.view.finalize
+    ) {
+      this.embedResult.view.finalize();
+    }
+
+    this.embedResult = undefined;
   }
 }
