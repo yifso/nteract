@@ -1,4 +1,8 @@
-import { AppState, KernelspecsByRefRecord } from "@nteract/types";
+import {
+  AppState,
+  KernelspecsByRefRecord,
+  KernelSpecsRecord
+} from "@nteract/types";
 
 /**
  * Returns a ref to the kernelspec of the kernel the nteract application
@@ -38,5 +42,19 @@ export const currentKernelspecs: (
   }
 
   // If we don't have a current kernelspecs ref, return null
+  return null;
+};
+
+export const kernelspecByName: (
+  state: AppState,
+  { name }: { name: string }
+) => KernelSpecsRecord | null = (
+  state: AppState,
+  { name }: { name: string }
+) => {
+  const kernelspecs = currentKernelspecs(state);
+  if (kernelspecs) {
+    return kernelspecs.get(name, null);
+  }
   return null;
 };
