@@ -35,21 +35,35 @@ const path = require("path");
  * @oaram  {ActionObservable}  action$ ActionObservable for LAUNCH_KERNEL_SUCCESSFUL action
  */
 export const watchExecutionStateEpic = (
-  action$: ActionsObservable<actions.NewKernelAction>
+  action$: ActionsObservable<
+    actions.NewKernelAction | actions.KillKernelSuccessful
+  >
 ) =>
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
-    switchMap((action: actions.NewKernelAction) =>
-      action.payload.kernel.channels.pipe(
-        filter((msg: JupyterMessage) => msg.header.msg_type === "status"),
-        map((msg: JupyterMessage) =>
-          actions.setExecutionState({
-            kernelStatus: msg.content.execution_state,
-            kernelRef: action.payload.kernelRef
-          })
-        ),
-        takeUntil(action$.pipe(ofType(actions.KILL_KERNEL_SUCCESSFUL)))
-      )
+    switchMap(
+      (action: actions.NewKernelAction | actions.KillKernelSuccessful) =>
+        (action as actions.NewKernelAction).payload.kernel.channels.pipe(
+          filter((msg: JupyterMessage) => msg.header.msg_type === "status"),
+          map((msg: JupyterMessage) =>
+            actions.setExecutionState({
+              kernelStatus: msg.content.execution_state,
+              kernelRef: (action as actions.NewKernelAction).payload.kernelRef
+            })
+          ),
+          takeUntil(
+            action$.pipe(
+              ofType(actions.KILL_KERNEL_SUCCESSFUL),
+              filter(
+                (
+                  killAction:
+                    | actions.KillKernelSuccessful
+                    | actions.NewKernelAction
+                ) => killAction.payload.kernelRef === action.payload.kernelRef
+              )
+            )
+          )
+        )
     )
   );
 
