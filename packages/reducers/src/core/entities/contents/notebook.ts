@@ -940,6 +940,7 @@ type DocumentAction =
   | actionTypes.UpdateOutputMetadata
   | actionTypes.SetLanguageInfo
   | actionTypes.SetKernelspecInfo
+  | actionTypes.SetKernelInfo
   | actionTypes.OverwriteMetadataField
   | actionTypes.DeleteMetadataField
   | actionTypes.CopyCell
@@ -1032,6 +1033,7 @@ export function notebook(
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
     case actionTypes.SET_KERNELSPEC_INFO:
+    case actionTypes.SET_KERNEL_INFO:
       return setKernelspecInfo(state, action);
     case actionTypes.OVERWRITE_METADATA_FIELD:
       return overwriteMetadataField(state, action);
