@@ -194,12 +194,20 @@ export class DropdownContent extends React.PureComponent<{
         <ul role="listbox" aria-label="dropdown-content" ref={this.props.ulRef}>
           {React.Children.map(this.props.children, child => {
             const childElement = child as React.ReactElement<any>;
+            const elRef: React.RefObject<HTMLElement> = React.createRef();
             return React.cloneElement(childElement, {
               onClick: (ev: React.MouseEvent<HTMLElement>) => {
                 childElement.props.onClick(ev);
                 // Hide the menu
                 this.props.onItemClick(ev);
-              }
+              },
+              onKeyUp: (ev: React.KeyboardEvent<HTMLElement>) => {
+                childElement.props.onKeyUp(ev); //forward the event
+                if (ev.key === "Enter" && elRef.current) {
+                  (elRef.current as HTMLElement).click();
+                }
+              },
+              ref: elRef
             });
           })}
         </ul>
