@@ -11,6 +11,7 @@ import Prompt from "../inputs/prompt";
 import TransformMedia from "../outputs/transform-media";
 import Outputs from "../outputs";
 import Pagers from "../outputs/pagers";
+import InputPrompts from "../outputs/input-prompts";
 import Input from "../inputs/input";
 
 interface ComponentProps {
@@ -77,7 +78,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
           <KernelOutputError />
           <StreamText />
         </Outputs>
-        {/* <InputPrompts id={id} contentRef={contentRef} /> */}
+        <InputPrompts id={id} contentRef={contentRef} />
       </div>
     );
   }
