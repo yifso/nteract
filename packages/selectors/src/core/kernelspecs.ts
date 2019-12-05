@@ -1,8 +1,6 @@
 import {
   AppState,
   KernelspecsByRefRecord,
-  KernelSpecsRecord,
-  KernelspecsRecordProps,
   KernelspecRecord
 } from "@nteract/types";
 
@@ -50,7 +48,7 @@ export const currentKernelspecs: (
 export const kernelspecByName: (
   state: AppState,
   { name }: { name: string }
-) => KernelSpecsRecord | undefined = (
+) => KernelspecRecord | null | undefined = (
   state: AppState,
   { name }: { name: string }
 ) => {
