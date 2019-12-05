@@ -1,9 +1,9 @@
 import {
   ContentRef,
   HostRef,
+  KernelspecInfo,
   KernelspecProps,
-  KernelspecsRef,
-  KernelspecRecord
+  KernelspecsRef
 } from "@nteract/types";
 
 export const FETCH_KERNELSPECS = "CORE/FETCH_KERNELSPECS";
@@ -41,7 +41,7 @@ export const SET_KERNELSPEC_INFO = "SET_KERNELSPEC_INFO";
 export interface SetKernelspecInfo {
   type: "SET_KERNELSPEC_INFO";
   payload: {
-    kernelInfo: KernelspecRecord;
+    kernelInfo: KernelspecInfo;
     contentRef: ContentRef;
   };
 }

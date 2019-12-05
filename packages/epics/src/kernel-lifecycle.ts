@@ -101,7 +101,8 @@ export function acquireKernelInfo(
           })
         ];
       } else {
-        const kernelInfo = selectors.kernelspecByName(state, { name: l.name });
+        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
+        const kernelInfo = { name: l.name, spec: kernelspec };
         result = [
           // The original action we were using
           actions.setLanguageInfo({

@@ -115,7 +115,7 @@ export function launchKernelObservable(
           observer.next(
             actions.setKernelspecInfo({
               contentRef,
-              kernelInfo: { name: kernelSpec.name, ...kernelSpec.spec }
+              kernelInfo: kernelSpec
             })
           );
 
