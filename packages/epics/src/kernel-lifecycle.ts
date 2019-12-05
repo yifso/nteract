@@ -23,9 +23,8 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, KernelRef } from "@nteract/types";
+import { ContentRef, KernelRef, AppState, KernelInfo } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
-import { AppState, KernelInfo } from "@nteract/types";
 
 const path = require("path");
 
@@ -63,7 +62,7 @@ export function acquireKernelInfo(
   channels: Channels,
   kernelRef: KernelRef,
   contentRef: ContentRef,
-  state: Appstate
+  state: AppState
 ) {
   const message = createMessage("kernel_info_request");
 
