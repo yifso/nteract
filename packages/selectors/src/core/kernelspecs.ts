@@ -1,7 +1,9 @@
 import {
   AppState,
   KernelspecsByRefRecord,
-  KernelSpecsRecord
+  KernelSpecsRecord,
+  KernelspecsRecordProps,
+  KernelspecRecord
 } from "@nteract/types";
 
 /**
@@ -48,13 +50,18 @@ export const currentKernelspecs: (
 export const kernelspecByName: (
   state: AppState,
   { name }: { name: string }
-) => KernelSpecsRecord | null = (
+) => KernelSpecsRecord | undefined = (
   state: AppState,
   { name }: { name: string }
 ) => {
   const kernelspecs = currentKernelspecs(state);
-  if (kernelspecs) {
-    return kernelspecs.get(name, null);
+  if (kernelspecs && kernelspecs.byName) {
+    return kernelspecs.byName.get(
+      name,
+      kernelspecs.byName.find(
+        (value: KernelspecRecord) => value.language === name
+      )
+    );
   }
   return null;
 };
