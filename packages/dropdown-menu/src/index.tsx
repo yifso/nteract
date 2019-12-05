@@ -202,7 +202,9 @@ export class DropdownContent extends React.PureComponent<{
                 this.props.onItemClick(ev);
               },
               onKeyUp: (ev: React.KeyboardEvent<HTMLElement>) => {
-                childElement.props.onKeyUp(ev); //forward the event
+                if (childElement.props.onKeyUp) {
+                  childElement.props.onKeyUp(ev); //forward the event
+                }
                 if (ev.key === "Enter" && elRef.current) {
                   (elRef.current as HTMLElement).click();
                 }
