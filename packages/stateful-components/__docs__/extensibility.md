@@ -2,7 +2,7 @@
 
 This suite of React components provides several points of extensibility for the UI. This document covers them here.
 
-## Extending editors
+## Extending Editors
 
 nteract ships with the CodeMirror editor in its desktop and Jupyter extensions. However, you might want to use an alternative editor in your own notebook based UI. To add your own editor to the nteract UI, create a React component that encompasses the editor.
 
@@ -68,3 +68,44 @@ class MyCells extends React.Component {
 ```
 
 Similar to the pattern for creating configurable editors, configurable cells require that a `cell_type` prop exist on the child component that matches the `cell_type` the component is intended to render.
+
+## Display Name-based Component Overrides
+
+We've all been in that situation where we were generally happy with something but wanted one small thing changed. The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract, but what if we wanted to override only particular components.
+
+The @nteract/stateful-components package has support for display name-based component overrides. For example, let's say you want to override just the `Prompt` component within a CodeCell. You can do this by defining your own `Prompt` component and setting the display name to `Prompt`.
+
+```
+class MyPrompt extends React.Component {
+    static displayName = "Prompt";
+
+    render() {
+        return <p>Your custom prompt here</p>;
+    }
+}
+```
+
+Then passing that `Prompt` component as a child to the `CodeCell` component exported by nteract.
+
+```
+import { CodeCell } from "@nteract/stateful-components";
+
+class MyCodeCell extends React.Component {
+    render() {
+        return <CodeCell>
+            <Prompt>
+        </CodeCell>
+    }
+}
+```
+
+Display name-based overrides are currently enabled for the following parent and child components.
+
+| Parent Component | Child Component |
+| ---------------- | --------------- |
+| CodeCell         | Pagers          |
+| CodeCell         | Prompt          |
+| CodeCell         | Outputs         |
+| CodeCell         | Editors         |
+
+Since this override interface depends on having the display name on the React component set to the name of the child component, be sure that the display names for your overrides are set correctly.
