@@ -13,12 +13,15 @@ import Outputs from "../outputs";
 import Pagers from "../outputs/pagers";
 import InputPrompts from "../outputs/input-prompts";
 import Input from "../inputs/input";
+import React from "react";
+import React from "react";
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "code";
+  children: React.ReactNode;
 }
 
 const PromptText = (props: any) => {
@@ -34,50 +37,84 @@ const PromptText = (props: any) => {
   return <React.Fragment>{"[ ]"}</React.Fragment>;
 };
 
+const childWithDisplayName = (
+  children: React.ReactNode,
+  displayName: string
+): React.ReactNode => {
+  let chosenOne;
+  React.Children.forEach(children, child => {
+    if (child.type && child.type.displayName === displayName) {
+      chosenOne = child;
+    }
+  });
+  return chosenOne;
+};
+
 export default class CodeCell extends React.Component<ComponentProps> {
   static defaultProps = {
     cell_type: "code"
   };
 
   render() {
-    const { id, contentRef } = this.props;
+    const { id, contentRef, children } = this.props;
+
+    /**
+     * Consumers of this React component can override specific subcomponents
+     * without having to override the entire component.
+     */
+    const OutputsOverride = childWithDisplayName(children, "Outputs");
+    const PromptOverride = childWithDisplayName(children, "Prompt");
+    const PagersOverride = childWithDisplayName(children, "Pagers");
+    const EditorsOverride = childWithDisplayName(children, "Editors");
 
     return (
       <div className="nteract-code-cell">
         <Input id={id} contentRef={contentRef}>
-          <Prompt id={id} contentRef={contentRef}>
-            <PromptText />
-          </Prompt>
+          {PromptOverride ? (
+            <PromptOverride id={id} contentRef={contentRef} />
+          ) : (
+            <Prompt id={id} contentRef={contentRef}>
+              <PromptText />
+            </Prompt>
+          )}
           <Source>
             <Editor id={id} contentRef={contentRef}>
-              <CodeMirrorEditor />
+              {EditorsOverride ? <EditorsOverride /> : <CodeMirrorEditor />}
             </Editor>
           </Source>
         </Input>
-        <Pagers id={id} contentRef={contentRef}>
-          <Media.Json />
-          <Media.JavaScript />
-          <Media.HTML />
-          <Media.Markdown />
-          <Media.LaTeX />
-          <Media.SVG />
-          <Media.Image />
-          <Media.Plain />
-        </Pagers>
-        <Outputs id={id} contentRef={contentRef}>
-          <TransformMedia
-            output_type={"display_data"}
-            id={id}
-            contentRef={contentRef}
-          />
-          <TransformMedia
-            output_type={"execute_result"}
-            id={id}
-            contentRef={contentRef}
-          />
-          <KernelOutputError />
-          <StreamText />
-        </Outputs>
+        {PagersOverride ? (
+          <PagersOverride id={id} contentRef={contentRef} />
+        ) : (
+          <Pagers id={id} contentRef={contentRef}>
+            <Media.Json />
+            <Media.JavaScript />
+            <Media.HTML />
+            <Media.Markdown />
+            <Media.LaTeX />
+            <Media.SVG />
+            <Media.Image />
+            <Media.Plain />
+          </Pagers>
+        )}
+        {OutputsOverride ? (
+          <OutputsOverride id={id} contentRef={contentRef} />
+        ) : (
+          <Outputs id={id} contentRef={contentRef}>
+            <TransformMedia
+              output_type={"display_data"}
+              id={id}
+              contentRef={contentRef}
+            />
+            <TransformMedia
+              output_type={"execute_result"}
+              id={id}
+              contentRef={contentRef}
+            />
+            <KernelOutputError />
+            <StreamText />
+          </Outputs>
+        )}
         <InputPrompts id={id} contentRef={contentRef} />
       </div>
     );
