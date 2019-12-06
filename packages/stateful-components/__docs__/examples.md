@@ -4,6 +4,8 @@ This document showcases how the @nteract/stateful-components package can be used
 
 ## How do I render a notebook without any customizations?
 
+To import the standard layout of the notebook, use the `Notebook` default export from the `@nteract/stateful-components` package.
+
 ```
 import Notebook from "@nteract/stateful-components";
 
@@ -20,22 +22,16 @@ class MyApp extends React.Component {
 
 ## How do I override the default editors in the Notebook component?
 
+Create a React component with the `displayName` set to `Editor`. Set this component as a child component for each cell component.
+
 ```
 import Notebook, { CodeCell, MarkdownCell, RawCell } from "@nteract/stateful-components";
 
-class CodeEditor extends React.Component {
+class Editor extends React.Component {
     static displayName = "Editor";
 
     render() {
-        return <div><Editor />{this.props.editorButtons.map(Button => <Button/>)}</div>;
-    }
-}
-
-class MDEditor extends React.Component {
-    static displayName = "Editor";
-
-    render() {
-        return <div><Editor />{this.props.editorButtons.map(Button => <Button/>)}</div>;
+        return <div>Test</div>
     }
 }
 
@@ -43,34 +39,30 @@ class MyNotebook extends React.Component {
     render() {
         return <Notebook>
             <CodeCell>
-                <CodeEditor>
+                <Editor>
             </CodeCell>
             <MarkdownCell>
-                <MDEditor>
+                <Editor>
             </MarkdownCell>
             <RawCell>
-                <Editors>
+                <Editor>
             </RawCell>
         </Notebook>;
     }
 }
-
-data = {
-    CodeCell:{
-            Editor:"CodeEditor"
-    }
-}
-
-function
 ```
 
 ## How do I disable editing of markdown cells in my notebook application?
 
+Create a React component with the `displayName` set to `Editor`. Implement a renderer in your React component, using `@nteract/markdown`. Rejoice!
+
+In the example below, only the `MarkdownCell` is customized. The `CodeCell` and `RawCell` maintain their standard configurations.
+
 ```
-import Notebook, { CodeCell, MarkdownCell, RawCell } from "@nteract/stateful-components";
+import Notebook, { MarkdownCell } from "@nteract/stateful-components";
 
 class Editors extends React.Component {
-    static displayName = "Editors";
+    static displayName = "Editor";
 
     render() {
         return <MyMarkdownRenderer />;
@@ -80,13 +72,9 @@ class Editors extends React.Component {
 class MyNotebook extends React.Component {
     render() {
         return <Notebook>
-            <CodeCell/>
             <MarkdownCell>
-            <Override>
-                <Editors>
-                </Override>
+                <Editor>
             </MarkdownCell>
-            <RawCell/>
         </Notebook>;
     }
 }
@@ -94,8 +82,12 @@ class MyNotebook extends React.Component {
 
 ## How do I override the Output display in code cells?
 
+Create a React component with the `displayName` set to `Outputs` and add it as a child to the `Notebook` component.
+
+In the example below, only the `CodeCell` is customized. The `MarkdownCell` and `RawCell` maintain their standard configurations.
+
 ```
-import Notebook, { CodeCell, MarkdownCell, RawCell } from "@nteract/stateful-component";
+import Notebook, { CodeCell } from "@nteract/stateful-component";
 
 class Outputs extends React.Component {
     static displayName = "Outputs";
@@ -107,33 +99,14 @@ class Outputs extends React.Component {
     }
 }
 
-class OurPrompt extends React.Component {
-    static displayName = "Prompt";
 
-    render() {
-        return <div>
-            <h1>No promt for you!</h1>
-        </div>;
-    }
-}
-
-clas MyNotebook extends React.Component {
+class MyNotebook extends React.Component {
     render() {
         return <Notebook>
             <CodeCell>
                 <Outputs/>
             </CodeCell>
         </Notebook>;
-    }
-}
-
-class OurOutputs {
-    displayName = "Outputs";
-
-    render() {
-        return <React.Fragment>
-            <NteractOutputs id={id} contentRef={contentRef}/>
-            {this.props.extensionOutputs.map(Outputs => <Outputs/>)}
     }
 }
 ```
