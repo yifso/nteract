@@ -13,8 +13,6 @@ import Outputs from "../outputs";
 import Pagers from "../outputs/pagers";
 import InputPrompts from "../outputs/input-prompts";
 import Input from "../inputs/input";
-import React from "react";
-import React from "react";
 
 interface ComponentProps {
   id: string;
