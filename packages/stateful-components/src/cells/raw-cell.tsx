@@ -8,6 +8,8 @@ import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
 
+import childWithDisplayName from "../pickers/display-name";
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
@@ -26,14 +28,17 @@ export class PureRawCell extends React.Component<
   render() {
     const { id, contentRef, focusAboveCell, focusBelowCell } = this.props;
 
+    const EditorOverride = childWithDisplayName(children, "Editor");
+
     return (
       <Source>
-        <Editor
-          id={id}
-          contentRef={contentRef}
-          focusAbove={focusAboveCell}
-          focusBelow={focusBelowCell}
-        />
+        {EditorOerride ? (
+          <EditorOverride id={id} contentRef={contentRef} />
+        ) : (
+          <Editor id={id} contentRef={contentRef}>
+            <CodeMirrorEditor />
+          </Editor>
+        )}
       </Source>
     );
   }

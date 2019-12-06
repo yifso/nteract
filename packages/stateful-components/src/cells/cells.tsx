@@ -9,6 +9,8 @@ import RawCell from "./raw-cell";
 import MarkdownCell from "./markdown-cell";
 import CodeCell from "./code-cell";
 
+import childWithDisplayName from "./markdown-cell";
+
 interface ComponentProps {
   contentRef: ContentRef;
   children?: React.ReactNode;
@@ -21,6 +23,11 @@ interface StateProps {
 export class Cells extends React.Component<StateProps & ComponentProps> {
   render() {
     const { cellOrder, contentRef, children } = this.props;
+
+    const MarkdownCellOverride = childWithDisplayName(children, "MarkdownCell");
+    const CodeCellOverride = childWithDisplayName(children, "CodeCell");
+    const RawCellOverride = childWithDisplayName(children, "RawCell");
+
     return (
       <div className="nteract-cells">
         {cellOrder.map((id: string) =>
@@ -28,9 +35,21 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
             React.cloneElement(children, { id, contentRef })
           ) : (
             <Cell id={id} contentRef={contentRef} key={id}>
-              <MarkdownCell id={id} contentRef={contentRef} />
-              <RawCell id={id} contentRef={contentRef} />
-              <CodeCell id={id} contentRef={contentRef} />
+              {MarkdownCellOverride ? (
+                <MarkdownCellOverride id={id} contentRef={contentRef} />
+              ) : (
+                <MarkdownCell id={id} contentRef={contentRef} />
+              )}
+              {RawCellOverride ? (
+                <RawCellOverride id={id} contentRef={contentRef} />
+              ) : (
+                <RawCell id={id} contentRef={contentRef} />
+              )}
+              {CodeCellOverride ? (
+                <CodeCellOverride id={id} contentRef={contentRef} />
+              ) : (
+                <CodeCell id={id} contentRef={contentRef} />
+              )}
             </Cell>
           )
         )}

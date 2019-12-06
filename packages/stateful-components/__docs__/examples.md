@@ -23,11 +23,19 @@ class MyApp extends React.Component {
 ```
 import Notebook, { CodeCell, MarkdownCell, RawCell } from "@nteract/stateful-components";
 
-class Editors extends React.Component {
-    static displayName = "Editors";
+class CodeEditor extends React.Component {
+    static displayName = "Editor";
 
     render() {
-        return <MyCustomEditor />;
+        return <div><Editor />{this.props.editorButtons.map(Button => <Button/>)}</div>;
+    }
+}
+
+class MDEditor extends React.Component {
+    static displayName = "Editor";
+
+    render() {
+        return <div><Editor />{this.props.editorButtons.map(Button => <Button/>)}</div>;
     }
 }
 
@@ -35,10 +43,10 @@ class MyNotebook extends React.Component {
     render() {
         return <Notebook>
             <CodeCell>
-                <Editors>
+                <CodeEditor>
             </CodeCell>
             <MarkdownCell>
-                <Editors>
+                <MDEditor>
             </MarkdownCell>
             <RawCell>
                 <Editors>
@@ -46,6 +54,14 @@ class MyNotebook extends React.Component {
         </Notebook>;
     }
 }
+
+data = {
+    CodeCell:{
+            Editor:"CodeEditor"
+    }
+}
+
+function
 ```
 
 ## How do I disable editing of markdown cells in my notebook application?
@@ -66,7 +82,9 @@ class MyNotebook extends React.Component {
         return <Notebook>
             <CodeCell/>
             <MarkdownCell>
+            <Override>
                 <Editors>
+                </Override>
             </MarkdownCell>
             <RawCell/>
         </Notebook>;
@@ -89,6 +107,16 @@ class Outputs extends React.Component {
     }
 }
 
+class OurPrompt extends React.Component {
+    static displayName = "Prompt";
+
+    render() {
+        return <div>
+            <h1>No promt for you!</h1>
+        </div>;
+    }
+}
+
 clas MyNotebook extends React.Component {
     render() {
         return <Notebook>
@@ -96,6 +124,16 @@ clas MyNotebook extends React.Component {
                 <Outputs/>
             </CodeCell>
         </Notebook>;
+    }
+}
+
+class OurOutputs {
+    displayName = "Outputs";
+
+    render() {
+        return <React.Fragment>
+            <NteractOutputs id={id} contentRef={contentRef}/>
+            {this.props.extensionOutputs.map(Outputs => <Outputs/>)}
     }
 }
 ```

@@ -14,6 +14,8 @@ import Pagers from "../outputs/pagers";
 import InputPrompts from "../outputs/input-prompts";
 import Input from "../inputs/input";
 
+import childWithDisplayName from "../pickers/display-name";
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
@@ -35,19 +37,6 @@ const PromptText = (props: any) => {
   return <React.Fragment>{"[ ]"}</React.Fragment>;
 };
 
-const childWithDisplayName = (
-  children: React.ReactNode,
-  displayName: string
-): React.ReactNode => {
-  let chosenOne;
-  React.Children.forEach(children, child => {
-    if (child.type && child.type.displayName === displayName) {
-      chosenOne = child;
-    }
-  });
-  return chosenOne;
-};
-
 export default class CodeCell extends React.Component<ComponentProps> {
   static defaultProps = {
     cell_type: "code"
@@ -64,6 +53,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
     const PromptOverride = childWithDisplayName(children, "Prompt");
     const PagersOverride = childWithDisplayName(children, "Pagers");
     const EditorsOverride = childWithDisplayName(children, "Editors");
+    const InputPromptsOverride = childWithDisplayName(children, "InputPrompts");
 
     return (
       <div className="nteract-code-cell">
@@ -113,7 +103,11 @@ export default class CodeCell extends React.Component<ComponentProps> {
             <StreamText />
           </Outputs>
         )}
-        <InputPrompts id={id} contentRef={contentRef} />
+        {InputPromptsOverride ? (
+          <InputPromptsOverride id={id} contentRef={contentRef} />
+        ) : (
+          <InputPrompts id={id} contentRef={contentRef} />
+        )}
       </div>
     );
   }
