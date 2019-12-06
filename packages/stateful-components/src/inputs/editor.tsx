@@ -79,7 +79,6 @@ export const makeMapStateToProps = (
       if (cell) {
         editorFocused = model.editorFocused === id;
         value = cell.get("source", "");
-        console.log(cell);
         if (cell.cell_type === "code") {
           const kernel = selectors.kernelByContentRef(state, { contentRef });
           if (kernel) {

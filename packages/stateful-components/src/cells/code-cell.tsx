@@ -30,7 +30,7 @@ const PromptText = (props: any) => {
     return <React.Fragment>{"[…]"}</React.Fragment>;
   }
   if (typeof props.executionCount === "number") {
-    return <React.Fragment>{`[${props.counter}]`}</React.Fragment>;
+    return <React.Fragment>{`[${props.executionCount}]`}</React.Fragment>;
   }
   return <React.Fragment>{"[ ]"}</React.Fragment>;
 };
