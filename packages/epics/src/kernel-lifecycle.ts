@@ -6,7 +6,7 @@ import {
   JupyterMessage,
   ofMessageType
 } from "@nteract/messaging";
-import { ActionsObservable, ofType } from "redux-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { empty, merge, Observable, Observer, of } from "rxjs";
 import {
   catchError,
@@ -23,9 +23,8 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, KernelRef } from "@nteract/types";
+import { ContentRef, KernelRef, AppState, KernelInfo } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
-import { AppState, KernelInfo } from "@nteract/types";
 
 const path = require("path");
 
@@ -76,7 +75,8 @@ export const watchExecutionStateEpic = (
 export function acquireKernelInfo(
   channels: Channels,
   kernelRef: KernelRef,
-  contentRef: ContentRef
+  contentRef: ContentRef,
+  state: AppState
 ) {
   const message = createMessage("kernel_info_request");
 
@@ -115,6 +115,8 @@ export function acquireKernelInfo(
           })
         ];
       } else {
+        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
+        const kernelInfo = { name: l.name, spec: kernelspec };
         result = [
           // The original action we were using
           actions.setLanguageInfo({
@@ -125,6 +127,10 @@ export function acquireKernelInfo(
           actions.setKernelInfo({
             kernelRef,
             info
+          }),
+          actions.setKernelspecInfo({
+            contentRef,
+            kernelInfo
           })
         ];
       }
@@ -146,7 +152,8 @@ export function acquireKernelInfo(
  * @param  {ActionObservable}  The action type
  */
 export const acquireKernelInfoEpic = (
-  action$: ActionsObservable<actions.NewKernelAction>
+  action$: ActionsObservable<actions.NewKernelAction>,
+  state$: StateObservable<AppState>
 ) =>
   action$.pipe(
     ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
@@ -158,7 +165,7 @@ export const acquireKernelInfoEpic = (
           contentRef
         }
       } = action;
-      return acquireKernelInfo(channels, kernelRef, contentRef);
+      return acquireKernelInfo(channels, kernelRef, contentRef, state$.value);
     })
   );
 
