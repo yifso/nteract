@@ -1,5 +1,9 @@
+import React from "react";
+
 import Cells from "./cells/cells";
 
-const Notebook = Cells;
-
-export default Notebook;
+export default class Notebook extends React.Component {
+  render() {
+    return <Cells contentRef={this.props.contentRef} />;
+  }
+}

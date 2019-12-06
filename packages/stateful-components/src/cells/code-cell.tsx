@@ -21,7 +21,7 @@ interface ComponentProps {
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "code";
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const PromptText = (props: any) => {
@@ -52,7 +52,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
     const OutputsOverride = childWithDisplayName(children, "Outputs");
     const PromptOverride = childWithDisplayName(children, "Prompt");
     const PagersOverride = childWithDisplayName(children, "Pagers");
-    const EditorsOverride = childWithDisplayName(children, "Editors");
+    const EditorOverride = childWithDisplayName(children, "Editor");
     const InputPromptsOverride = childWithDisplayName(children, "InputPrompts");
 
     return (
@@ -67,7 +67,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
           )}
           <Source>
             <Editor id={id} contentRef={contentRef}>
-              {EditorsOverride ? <EditorsOverride /> : <CodeMirrorEditor />}
+              {EditorOverride ? <EditorOverride /> : <CodeMirrorEditor />}
             </Editor>
           </Source>
         </Input>

@@ -30,29 +30,25 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
 
     return (
       <div className="nteract-cells">
-        {cellOrder.map((id: string) =>
-          children ? (
-            React.cloneElement(children, { id, contentRef })
-          ) : (
-            <Cell id={id} contentRef={contentRef} key={id}>
-              {MarkdownCellOverride ? (
-                <MarkdownCellOverride id={id} contentRef={contentRef} />
-              ) : (
-                <MarkdownCell id={id} contentRef={contentRef} />
-              )}
-              {RawCellOverride ? (
-                <RawCellOverride id={id} contentRef={contentRef} />
-              ) : (
-                <RawCell id={id} contentRef={contentRef} />
-              )}
-              {CodeCellOverride ? (
-                <CodeCellOverride id={id} contentRef={contentRef} />
-              ) : (
-                <CodeCell id={id} contentRef={contentRef} />
-              )}
-            </Cell>
-          )
-        )}
+        {cellOrder.map((id: string) => (
+          <Cell id={id} contentRef={contentRef} key={id}>
+            {MarkdownCellOverride ? (
+              <MarkdownCellOverride id={id} contentRef={contentRef} />
+            ) : (
+              <MarkdownCell id={id} contentRef={contentRef} />
+            )}
+            {RawCellOverride ? (
+              <RawCellOverride id={id} contentRef={contentRef} />
+            ) : (
+              <RawCell id={id} contentRef={contentRef} />
+            )}
+            {CodeCellOverride ? (
+              <CodeCellOverride id={id} contentRef={contentRef} />
+            ) : (
+              <CodeCell id={id} contentRef={contentRef} />
+            )}
+          </Cell>
+        ))}
       </div>
     );
   }

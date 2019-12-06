@@ -15,6 +15,7 @@ interface ComponentProps {
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "raw";
+  children?: React.ReactNode;
 }
 
 interface DispatchProps {
@@ -26,19 +27,19 @@ export class PureRawCell extends React.Component<
   ComponentProps & DispatchProps
 > {
   render() {
-    const { id, contentRef, focusAboveCell, focusBelowCell } = this.props;
+    const { id, contentRef, children } = this.props;
 
     const EditorOverride = childWithDisplayName(children, "Editor");
 
     return (
       <Source>
-        {EditorOerride ? (
-          <EditorOverride id={id} contentRef={contentRef} />
-        ) : (
-          <Editor id={id} contentRef={contentRef}>
+        <Editor id={id} contentRef={contentRef}>
+          {EditorOverride ? (
+            <EditorOverride id={id} contentRef={contentRef} />
+          ) : (
             <CodeMirrorEditor />
-          </Editor>
-        )}
+          )}
+        </Editor>
       </Source>
     );
   }

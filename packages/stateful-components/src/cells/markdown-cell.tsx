@@ -17,6 +17,7 @@ interface ComponentProps {
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "markdown";
+  children?: React.ReactNode;
 }
 
 interface StateProps {
@@ -46,7 +47,7 @@ export class PureMarkdownCell extends React.Component<
       unfocusEditor
     } = this.props;
 
-    const EditorsOverride = childWithDisplayName(children, "Editors");
+    const EditorOverride = childWithDisplayName(children, "Editor");
 
     const source = cell.get("source", "");
 
@@ -61,13 +62,13 @@ export class PureMarkdownCell extends React.Component<
         source={source}
       >
         <Source>
-          {EditorsOverride ? (
-            <EditorsOverride id={id} contentRef={contentRef} />
-          ) : (
-            <Editor id={id} contentRef={contentRef}>
+          <Editor id={id} contentRef={contentRef}>
+            {EditorOverride ? (
+              <EditorOverride id={id} contentRef={contentRef} />
+            ) : (
               <CodeMirrorEditor />
-            </Editor>
-          )}
+            )}
+          </Editor>
         </Source>
       </MarkdownPreviewer>
     );

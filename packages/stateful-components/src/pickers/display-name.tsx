@@ -5,11 +5,14 @@ const childWithDisplayName = (
   displayName: string
 ): React.ReactNode => {
   let chosenOne;
-  React.Children.forEach(children, child => {
-    if (child.type && child.type.displayName === displayName) {
-      chosenOne = child;
-    }
-  });
+  if (children) {
+    React.Children.forEach(children, child => {
+      if (child.type && child.type.displayName === displayName) {
+        chosenOne = child;
+      }
+    });
+  }
+
   return chosenOne;
 };
 
