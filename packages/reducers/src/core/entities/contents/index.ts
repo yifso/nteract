@@ -292,6 +292,8 @@ const byRef = (
     case actionTypes.FOCUS_PREVIOUS_CELL_EDITOR:
     case actionTypes.SET_IN_CELL:
     case actionTypes.MOVE_CELL:
+    case actionTypes.MARK_CELL_AS_DELETING:
+    case actionTypes.UNMARK_CELL_AS_DELETING:
     case actionTypes.DELETE_CELL:
     case actionTypes.REMOVE_CELL: // DEPRECATION WARNING: This action type is being deprecated. Please use DELETE_CELL instead
     case actionTypes.CREATE_CELL_BELOW:

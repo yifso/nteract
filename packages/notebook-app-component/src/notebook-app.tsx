@@ -7,6 +7,7 @@ import {
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
+import { MarkdownPreviewer } from "@nteract/markdown";
 import {
   KernelOutputError,
   Media,
@@ -25,7 +26,6 @@ import {
   Prompt,
   Source
 } from "@nteract/presentational-components";
-import { MarkdownPreviewer } from "@nteract/markdown";
 import { AppState, ContentRef, InputRequestMessage } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -35,6 +35,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Subject } from "rxjs";
 
+import styled from "styled-components";
 import CellCreator from "./cell-creator";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
@@ -43,8 +44,7 @@ import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
-
-import styled from "styled-components";
+import { UndoDeletableCell } from "./undo-deletable-cell";
 
 function getTheme(theme: string) {
   switch (theme) {
@@ -202,16 +202,8 @@ const makeMapDispatchToCellProps = (
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
 
-    changeCellType: (to: CellType) =>
-      dispatch(
-        actions.changeCellType({
-          contentRef,
-          id,
-          to
-        })
-      ),
     clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
-    deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
+    deleteCell: () => dispatch(actions.markCellAsDeleting({ id, contentRef })),
     executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
     toggleCellInputVisibility: () =>
       dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
@@ -270,7 +262,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       toggleCellInputVisibility,
       toggleCellOutputVisibility,
       toggleOutputExpansion,
-      changeCellType,
       cellFocused,
       cellStatus,
       cellType,
@@ -280,7 +271,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       focusEditor,
       id,
       tags,
-      theme,
       selectCell,
       unfocusEditor,
       contentRef,
@@ -634,14 +624,16 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
           />
           {this.props.cellOrder.map(cellID => (
             <div className="cell-container" key={`cell-container-${cellID}`}>
-              <DraggableCell
-                moveCell={this.props.moveCell}
-                id={cellID}
-                focusCell={this.props.focusCell}
-                contentRef={this.props.contentRef}
-              >
-                <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
-              </DraggableCell>
+              <UndoDeletableCell id={cellID} contentRef={this.props.contentRef}>
+                <DraggableCell
+                  moveCell={this.props.moveCell}
+                  id={cellID}
+                  focusCell={this.props.focusCell}
+                  contentRef={this.props.contentRef}
+                >
+                  <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
+                </DraggableCell>
+              </UndoDeletableCell>
               <CellCreator
                 key={`creator-${cellID}`}
                 id={cellID}
