@@ -57,3 +57,6 @@ junit.xml
 
 # ignore notebooks created while running dev copy of the desktop app
 applications/desktop/*.ipynb
+
+# Typescript incremental build data
+*.tsbuildinfo

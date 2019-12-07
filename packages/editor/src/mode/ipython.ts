@@ -20,7 +20,6 @@ CodeMirror.defineMode(
     });
     return CodeMirror.getMode(conf, ipythonConf);
   },
-  "python"
 );
 
 // @ts-ignore
