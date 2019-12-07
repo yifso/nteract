@@ -202,6 +202,14 @@ const makeMapDispatchToCellProps = (
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
 
+    changeCellType: (to: CellType) =>
+      dispatch(
+        actions.changeCellType({
+          contentRef,
+          id,
+          to
+        })
+      ),
     clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
     deleteCell: () => dispatch(actions.markCellAsDeleting({ id, contentRef })),
     executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
