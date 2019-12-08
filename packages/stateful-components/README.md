@@ -14,7 +14,7 @@ $ npm install --save @nteract/stateful-components
 
 ## Usage
 
-You can import the top-leval Notebook component which contains the canonical setup for a Jupyter-backed notebook application.
+You can import the top-level Notebook component which contains the canonical setup for a Jupyter-backed notebook application.
 
 ```
 import { Notebook }  from "@nteract/stateful-components"
