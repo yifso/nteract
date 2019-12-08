@@ -37,6 +37,7 @@ import { Subject } from "rxjs";
 
 import styled from "styled-components";
 import CellCreator from "./cell-creator";
+import UndoableCellDelete from "./decorators/undoable-cell-delete";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
 import { HijackScroll } from "./hijack-scroll";
@@ -44,7 +45,6 @@ import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
-import { UndoDeletableCell } from "./undo-deletable-cell";
 
 function getTheme(theme: string) {
   switch (theme) {
@@ -632,7 +632,11 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
           />
           {this.props.cellOrder.map(cellID => (
             <div className="cell-container" key={`cell-container-${cellID}`}>
-              <UndoDeletableCell id={cellID} contentRef={this.props.contentRef}>
+              <UndoableCellDelete
+                id={cellID}
+                contentRef={this.props.contentRef}
+                secondsDelay={10}
+              >
                 <DraggableCell
                   moveCell={this.props.moveCell}
                   id={cellID}
@@ -641,7 +645,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
                 >
                   <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
                 </DraggableCell>
-              </UndoDeletableCell>
+              </UndoableCellDelete>
               <CellCreator
                 key={`creator-${cellID}`}
                 id={cellID}
