@@ -8,11 +8,14 @@ import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
 
+import childWithDisplayName from "../pickers/display-name";
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "raw";
+  children?: React.ReactNode;
 }
 
 interface DispatchProps {
@@ -24,16 +27,19 @@ export class PureRawCell extends React.Component<
   ComponentProps & DispatchProps
 > {
   render() {
-    const { id, contentRef, focusAboveCell, focusBelowCell } = this.props;
+    const { id, contentRef, children } = this.props;
+
+    const EditorOverride = childWithDisplayName(children, "Editor");
 
     return (
-      <Source>
-        <Editor
-          id={id}
-          contentRef={contentRef}
-          focusAbove={focusAboveCell}
-          focusBelow={focusBelowCell}
-        />
+      <Source className="nteract-cell-source">
+        <Editor id={id} contentRef={contentRef} className="nteract-cell-editor">
+          {EditorOverride ? (
+            <EditorOverride id={id} contentRef={contentRef} />
+          ) : (
+            <CodeMirrorEditor />
+          )}
+        </Editor>
       </Source>
     );
   }

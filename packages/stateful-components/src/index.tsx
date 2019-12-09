@@ -2,13 +2,8 @@ import React from "react";
 
 import Cells from "./cells/cells";
 
-interface ComponentProps {
-  contentRef: string;
-}
-
-export class Notebook extends React.Component<ComponentProps> {
+export default class Notebook extends React.Component {
   render() {
-    const { contentRef } = this.props;
-    return <Cells contentRef={contentRef} />;
+    return <Cells contentRef={this.props.contentRef} />;
   }
 }

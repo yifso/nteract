@@ -62,7 +62,7 @@ class MyCells extends React.Component {
             <MarkdownCell id={cellId} contentRef={contentRef}/>
             <CodeCell id={cellId} contentRef={contentRef}/>
             <RawCell id={cellId} contentRef={contentRef}/>
-        </Cells>
+        </Cells>;
     }
 }
 ```
@@ -94,7 +94,7 @@ class MyCodeCell extends React.Component {
     render() {
         return <CodeCell>
             <Prompt>
-        </CodeCell>
+        </CodeCell>;
     }
 }
 ```
@@ -106,6 +106,9 @@ Display name-based overrides are currently enabled for the following parent and 
 | CodeCell         | Pagers          |
 | CodeCell         | Prompt          |
 | CodeCell         | Outputs         |
-| CodeCell         | Editors         |
+| CodeCell         | Editor          |
+| CodeCell         | InputPrompts    |
+| MarkdownCell     | Editor          |
+| RawCell          | Editor          |
 
 Since this override interface depends on having the display name on the React component set to the name of the child component, be sure that the display names for your overrides are set correctly.

@@ -10,11 +10,14 @@ import CodeMirrorEditor from "@nteract/editor";
 
 import Editor from "../inputs/editor";
 
+import childWithDisplayName from "../pickers/display-name";
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "markdown";
+  children?: React.ReactNode;
 }
 
 interface StateProps {
@@ -44,6 +47,8 @@ export class PureMarkdownCell extends React.Component<
       unfocusEditor
     } = this.props;
 
+    const EditorOverride = childWithDisplayName(children, "Editor");
+
     const source = cell.get("source", "");
 
     return (
@@ -55,10 +60,19 @@ export class PureMarkdownCell extends React.Component<
         editorFocused={isEditorFocused}
         unfocusEditor={unfocusEditor}
         source={source}
+        className="nteract-cell-md-previewer"
       >
-        <Source>
-          <Editor id={id} contentRef={contentRef}>
-            <CodeMirrorEditor />
+        <Source className="nteract-cell-source">
+          <Editor
+            id={id}
+            contentRef={contentRef}
+            className="nteract-cell-editor"
+          >
+            {EditorOverride ? (
+              <EditorOverride id={id} contentRef={contentRef} />
+            ) : (
+              <CodeMirrorEditor />
+            )}
           </Editor>
         </Source>
       </MarkdownPreviewer>

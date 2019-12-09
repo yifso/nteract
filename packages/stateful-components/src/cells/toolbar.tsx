@@ -31,7 +31,10 @@ interface DispatchProps {
 
 export class CellToolbar extends React.Component {
   render() {
-    return React.cloneElement(this.props.children, this.props);
+    return React.cloneElement(this.props.children, {
+      ...this.props,
+      className: "nteract-cell-toolbar"
+    });
   }
 }
 

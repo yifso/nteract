@@ -19,7 +19,7 @@ export class Pagers extends React.PureComponent<ComponentProps & StateProps> {
   render() {
     const { pagers, children } = this.props;
     return (
-      <div className="nteract-pagers">
+      <div className="nteract-cell-pagers">
         {pagers.map(pager => (
           <RichMedia data={pager.data} metadata={pager.metadata}>
             {children}
