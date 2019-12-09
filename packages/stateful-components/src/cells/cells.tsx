@@ -9,7 +9,7 @@ import RawCell from "./raw-cell";
 import MarkdownCell from "./markdown-cell";
 import CodeCell from "./code-cell";
 
-import childWithDisplayName from "./markdown-cell";
+import childWithDisplayName from "../pickers/display-name";
 
 interface ComponentProps {
   contentRef: ContentRef;
