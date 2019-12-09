@@ -1,5 +1,5 @@
 // https://github.com/nteract/nteract/issues/389
-import CodeMirror, { EditorConfiguration, Mode } from "codemirror";
+import CodeMirror from "codemirror";
 
 import "codemirror/mode/meta";
 import "codemirror/mode/python/python";
