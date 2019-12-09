@@ -21,7 +21,7 @@ export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
     const { outputs, children, hidden, expanded } = this.props;
     return (
       <div
-        className={`nteract-outputs ${hidden && "hidden"} ${expanded &&
+        className={`nteract-cell-outputs ${hidden && "hidden"} ${expanded &&
           "expanded"}`}
       >
         {outputs.map((output, index) => (

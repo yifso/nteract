@@ -55,7 +55,7 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
       channels: this.props.channels,
       kernelStatus: this.props.kernelStatus,
       editorType: this.props.editorType,
-      className: "nteract-editor"
+      className: "nteract-cell-editor"
     });
   }
 }

@@ -31,21 +31,50 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
     return (
       <div className="nteract-cells">
         {cellOrder.map((id: string) => (
-          <Cell id={id} contentRef={contentRef} key={id}>
+          <Cell
+            id={id}
+            contentRef={contentRef}
+            key={id}
+            className="nteract-cell"
+          >
             {MarkdownCellOverride ? (
-              <MarkdownCellOverride id={id} contentRef={contentRef} />
+              <MarkdownCellOverride
+                id={id}
+                contentRef={contentRef}
+                className="nteract-md-cell"
+              />
             ) : (
-              <MarkdownCell id={id} contentRef={contentRef} />
+              <MarkdownCell
+                id={id}
+                contentRef={contentRef}
+                className="nteract-md-cell"
+              />
             )}
             {RawCellOverride ? (
-              <RawCellOverride id={id} contentRef={contentRef} />
+              <RawCellOverride
+                id={id}
+                contentRef={contentRef}
+                className="nteract-raw-cell"
+              />
             ) : (
-              <RawCell id={id} contentRef={contentRef} />
+              <RawCell
+                id={id}
+                contentRef={contentRef}
+                className="nteract-raw-cell"
+              />
             )}
             {CodeCellOverride ? (
-              <CodeCellOverride id={id} contentRef={contentRef} />
+              <CodeCellOverride
+                id={id}
+                contentRef={contentRef}
+                className="nteract-code-cell"
+              />
             ) : (
-              <CodeCell id={id} contentRef={contentRef} />
+              <CodeCell
+                id={id}
+                contentRef={contentRef}
+                className="nteract-code-cell"
+              />
             )}
           </Cell>
         ))}

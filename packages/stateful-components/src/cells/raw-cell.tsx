@@ -32,8 +32,8 @@ export class PureRawCell extends React.Component<
     const EditorOverride = childWithDisplayName(children, "Editor");
 
     return (
-      <Source>
-        <Editor id={id} contentRef={contentRef}>
+      <Source className="nteract-cell-source">
+        <Editor id={id} contentRef={contentRef} className="nteract-cell-editor">
           {EditorOverride ? (
             <EditorOverride id={id} contentRef={contentRef} />
           ) : (

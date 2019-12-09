@@ -19,7 +19,7 @@ export class Input extends React.Component<ComponentProps & StateProps> {
       return null;
     }
 
-    return <div className="nteract-input">{this.props.children}</div>;
+    return <div className="nteract-cell-input">{this.props.children}</div>;
   }
 }
 

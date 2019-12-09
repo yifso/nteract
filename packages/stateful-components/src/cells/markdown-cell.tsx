@@ -60,9 +60,14 @@ export class PureMarkdownCell extends React.Component<
         editorFocused={isEditorFocused}
         unfocusEditor={unfocusEditor}
         source={source}
+        className="nteract-cell-md-previewer"
       >
-        <Source>
-          <Editor id={id} contentRef={contentRef}>
+        <Source className="nteract-cell-source">
+          <Editor
+            id={id}
+            contentRef={contentRef}
+            className="nteract-cell-editor"
+          >
             {EditorOverride ? (
               <EditorOverride id={id} contentRef={contentRef} />
             ) : (
