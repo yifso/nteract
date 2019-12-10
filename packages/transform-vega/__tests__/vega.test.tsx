@@ -3,8 +3,7 @@ import * as React from "react";
 
 import {
   Vega2, Vega3, Vega4, Vega5,
-  VegaLite1, VegaLite2, VegaLite3,
-  VegaOptions,
+  VegaLite1, VegaLite2, VegaLite3, VegaLite4
 } from "../src/";
 
 const vlSpec = {
@@ -164,6 +163,10 @@ describe("VegaLite2", makeTestBody(
 
 describe("VegaLite3", makeTestBody(
   VegaLite3, "application/vnd.vegalite.v3+json", vlSpec,
+));
+
+describe("VegaLite4", makeTestBody(
+  VegaLite4, "application/vnd.vegalite.v4+json", vlSpec,
 ));
 
 describe("Vega2", makeTestBody(
