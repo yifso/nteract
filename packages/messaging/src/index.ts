@@ -266,3 +266,7 @@ export const inputRequests = () => (source: Observable<JupyterMessage>) =>
   );
 
 export * from "./messages";
+
+import { encode, decode } from "./wire-protocol";
+
+export const wireProtocol = { encode, decode };
