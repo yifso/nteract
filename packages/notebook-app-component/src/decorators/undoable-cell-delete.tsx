@@ -1,4 +1,5 @@
 import { actions } from "@nteract/core";
+import { cell } from "@nteract/selectors";
 import { AppState } from "@nteract/types";
 import React from "react";
 import { connect } from "react-redux";
@@ -6,9 +7,8 @@ import { Dispatch } from "redux";
 import styled from "styled-components";
 
 import UndoableDelete from "./undoable-delete";
-import { cellAddress, CellAddress, cellFromState } from "./utils";
 
-interface InitialProps extends CellAddress {
+interface InitialProps extends cell.CellAddress {
   secondsDelay: number;
   children: React.ReactNode;
 }
@@ -36,12 +36,14 @@ BareUndoableCellDelete.displayName = "BareUndoableCellDelete";
 
 const UnstyledUndoableCellDelete = connect(
   (state: AppState, props: InitialProps) => ({
-    isDeleting: !!cellFromState(state, cellAddress(props))
+    isDeleting: !!cell.cellFromState(state, cell.cellAddress(props))
       .getIn(["transient", "deleting"]),
   }),
   (dispatch: Dispatch, props: InitialProps) => ({
-    doDelete: () => dispatch(actions.deleteCell(cellAddress(props))),
-    doUndo: () => dispatch(actions.unmarkCellAsDeleting(cellAddress(props))),
+    doDelete:
+      () => dispatch(actions.deleteCell(cell.cellAddress(props))),
+    doUndo:
+      () => dispatch(actions.unmarkCellAsDeleting(cell.cellAddress(props))),
   })
 )(BareUndoableCellDelete);
 UnstyledUndoableCellDelete.displayName = "UnstyledUndoableCellDelete";

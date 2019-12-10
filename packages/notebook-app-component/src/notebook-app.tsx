@@ -434,6 +434,7 @@ type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 interface NotebookStateProps {
   cellOrder: Immutable.List<any>;
   theme: string;
+  deleteDelay: number;
   contentRef: ContentRef;
   focusedCell: CellId | null | undefined;
   cellMap: Immutable.Map<CellId, any>;
@@ -485,12 +486,14 @@ const makeMapStateToProps = (
       );
     }
     const theme = selectors.userTheme(state);
+    const deleteDelay = selectors.deleteDelay(state) / 1000;
 
     if (model.type !== "notebook") {
       return {
         cellOrder: Immutable.List(),
         contentRef,
         theme,
+        deleteDelay,
         focusedCell: null,
         cellMap: Immutable.Map()
       };
@@ -509,6 +512,7 @@ const makeMapStateToProps = (
       cellOrder: model.notebook.cellOrder,
       contentRef,
       theme,
+      deleteDelay,
       focusedCell,
       cellMap
     };
@@ -635,7 +639,7 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
               <UndoableCellDelete
                 id={cellID}
                 contentRef={this.props.contentRef}
-                secondsDelay={10}
+                secondsDelay={this.props.deleteDelay}
               >
                 <DraggableCell
                   moveCell={this.props.moveCell}

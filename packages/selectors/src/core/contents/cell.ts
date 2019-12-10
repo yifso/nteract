@@ -1,5 +1,6 @@
-import { selectors } from "@nteract/core";
 import { AppState, ContentRef } from "@nteract/types";
+import { model } from "./index";
+import { cellById } from "./notebook";
 
 export interface CellAddress {
   id: string;
@@ -14,12 +15,12 @@ export const cellFromState = (
   state: AppState,
   { id, contentRef }: CellAddress,
 ) => {
-  const model = selectors.model(state, { contentRef });
-  if (!model || model.type !== "notebook") {
+  const notebook = model(state, { contentRef });
+  if (!notebook || notebook.type !== "notebook") {
     throw new Error("non-notebook model");
   }
 
-  const cell = selectors.notebook.cellById(model, { id });
+  const cell = cellById(notebook, { id });
   if (!cell) {
     throw new Error("cell not found inside cell map");
   }

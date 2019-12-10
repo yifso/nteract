@@ -6,7 +6,7 @@ interface Props {
   isDeleting: boolean;
   doDelete: () => void;
   doUndo: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 class TimedUndoableDelete
