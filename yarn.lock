@@ -5389,10 +5389,10 @@ electron-is-dev@^1.0.1:
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.0.1.tgz#6e0a184736fe7aea77d18210b0b0f6a02402c4bc"
   integrity sha512-iwM3EotA9HTXqMGpQRkR/kT8OZqBbdfHTnlwcxsjSLYqY8svvsq0MuujsWCn3/vtgRmDv/PC/gKUUpoZvi5C1w==
 
-electron-log@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-3.0.0.tgz#5f29a461e45785fbcaa9d3e9365c659e0728eb27"
-  integrity sha512-Y5IaeYF4kF1b4zyZJU7tfu0Aof9cLt3fk6aXdpPFig7ZQyeuLGwqyw0B3WKMDOx41fgkChmdQSjYPJhn9BO+3w==
+electron-log@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-4.0.0.tgz#9315e4a5e6be5e2a158909856b2d2cb4d760cd6d"
+  integrity sha512-pj5Om0XoImjoq60zgvTv86W+2+7VMQIW0jmKWkXXTTjiC2L2WNfNDfMbpqo8Qj2szY1LsVyFhgRNBLXVrYNDJQ==
 
 electron-publish@21.2.0:
   version "21.2.0"
