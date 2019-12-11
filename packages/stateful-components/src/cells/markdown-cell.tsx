@@ -1,23 +1,25 @@
+import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import Immutable from "immutable";
 
-import { ContentRef, AppState, selectors, actions } from "@nteract/core";
-import { Source } from "@nteract/presentational-components";
-import { MarkdownPreviewer } from "@nteract/markdown";
+import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 import CodeMirrorEditor from "@nteract/editor";
+import { MarkdownPreviewer } from "@nteract/markdown";
+import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
 
-import childWithDisplayName from "../pickers/display-name";
+interface NamedMDCellSlots {
+  editor?: React.ReactNode;
+}
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "markdown";
-  children?: React.ReactNode;
+  children?: NamedMDCellSlots;
 }
 
 interface StateProps {
@@ -47,7 +49,8 @@ export class PureMarkdownCell extends React.Component<
       unfocusEditor
     } = this.props;
 
-    const EditorOverride = childWithDisplayName(children, "Editor");
+    const { children } = this.props;
+    const { editor } = children;
 
     const source = cell.get("source", "");
 
@@ -68,8 +71,8 @@ export class PureMarkdownCell extends React.Component<
             contentRef={contentRef}
             className="nteract-cell-editor"
           >
-            {EditorOverride ? (
-              <EditorOverride id={id} contentRef={contentRef} />
+            {editor ? (
+              <React.Fragment>{editor}</React.Fragment>
             ) : (
               <CodeMirrorEditor />
             )}

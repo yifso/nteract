@@ -1,21 +1,23 @@
-import React from "react";
 import Immutable from "immutable";
+import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { ContentRef, actions, AppState } from "@nteract/core";
+import { actions, AppState, ContentRef } from "@nteract/core";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
 
-import childWithDisplayName from "../pickers/display-name";
+interface NamedRawCellSlots {
+  editor?: React.ReactChild;
+}
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "raw";
-  children?: React.ReactNode;
+  children?: NamedRawCellSlots;
 }
 
 interface DispatchProps {
@@ -29,13 +31,13 @@ export class PureRawCell extends React.Component<
   render() {
     const { id, contentRef, children } = this.props;
 
-    const EditorOverride = childWithDisplayName(children, "Editor");
+    const { editor } = children;
 
     return (
       <Source className="nteract-cell-source">
         <Editor id={id} contentRef={contentRef} className="nteract-cell-editor">
-          {EditorOverride ? (
-            <EditorOverride id={id} contentRef={contentRef} />
+          {editor ? (
+            <React.Fragment>{editor}</React.Fragment>
           ) : (
             <CodeMirrorEditor />
           )}

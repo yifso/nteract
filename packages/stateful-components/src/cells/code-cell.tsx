@@ -2,26 +2,32 @@ import Immutable from "immutable";
 import React from "react";
 
 import { ContentRef } from "@nteract/core";
-import { Media, KernelOutputError, StreamText } from "@nteract/outputs";
-import { Source } from "@nteract/presentational-components";
 import CodeMirrorEditor from "@nteract/editor";
+import { KernelOutputError, Media, StreamText } from "@nteract/outputs";
+import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
-import Prompt from "../inputs/prompt";
-import TransformMedia from "../outputs/transform-media";
-import Outputs from "../outputs";
-import Pagers from "../outputs/pagers";
-import InputPrompts from "../outputs/input-prompts";
 import Input from "../inputs/input";
+import Prompt from "../inputs/prompt";
+import Outputs from "../outputs";
+import InputPrompts from "../outputs/input-prompts";
+import Pagers from "../outputs/pagers";
+import TransformMedia from "../outputs/transform-media";
 
-import childWithDisplayName from "../pickers/display-name";
+interface NamedCodeCellSlots {
+  editor?: React.ReactChild;
+  prompt?: React.ReactChild;
+  pagers?: React.ReactChild;
+  inputPrompts?: React.ReactChild;
+  outputs?: React.ReactChild;
+}
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   cell: Immutable.Map<string, any>;
   cell_type: "code";
-  children?: React.ReactNode;
+  children?: NamedCodeCellSlots;
 }
 
 const PromptText = (props: any) => {
@@ -44,26 +50,13 @@ export default class CodeCell extends React.Component<ComponentProps> {
 
   render() {
     const { id, contentRef, children } = this.props;
-
-    /**
-     * Consumers of this React component can override specific subcomponents
-     * without having to override the entire component.
-     */
-    const OutputsOverride = childWithDisplayName(children, "Outputs");
-    const PromptOverride = childWithDisplayName(children, "Prompt");
-    const PagersOverride = childWithDisplayName(children, "Pagers");
-    const EditorOverride = childWithDisplayName(children, "Editor");
-    const InputPromptsOverride = childWithDisplayName(children, "InputPrompts");
+    const { editor, prompt, pagers, inputPrompts, outputs } = children;
 
     return (
       <div>
         <Input id={id} contentRef={contentRef} className="nteract-cell-input">
-          {PromptOverride ? (
-            <PromptOverride
-              id={id}
-              contentRef={contentRef}
-              className="nteract-cell-prompt"
-            />
+          {prompt ? (
+            <React.Fragment>{prompt}</React.Fragment>
           ) : (
             <Prompt id={id} contentRef={contentRef}>
               <PromptText />
@@ -75,16 +68,16 @@ export default class CodeCell extends React.Component<ComponentProps> {
               contentRef={contentRef}
               className="nteract-cell-editor"
             >
-              {EditorOverride ? <EditorOverride /> : <CodeMirrorEditor />}
+              {editor ? (
+                <React.Fragment>{editor}</React.Fragment>
+              ) : (
+                <CodeMirrorEditor />
+              )}
             </Editor>
           </Source>
         </Input>
-        {PagersOverride ? (
-          <PagersOverride
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-pagers"
-          />
+        {pagers ? (
+          <React.Fragment>{pagers}</React.Fragment>
         ) : (
           <Pagers
             id={id}
@@ -101,12 +94,8 @@ export default class CodeCell extends React.Component<ComponentProps> {
             <Media.Plain />
           </Pagers>
         )}
-        {OutputsOverride ? (
-          <OutputsOverride
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-outputs"
-          />
+        {outputs ? (
+          <React.Fragment>{outputs}</React.Fragment>
         ) : (
           <Outputs
             id={id}
@@ -127,12 +116,8 @@ export default class CodeCell extends React.Component<ComponentProps> {
             <StreamText />
           </Outputs>
         )}
-        {InputPromptsOverride ? (
-          <InputPromptsOverride
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-input-prompts"
-          />
+        {inputPrompts ? (
+          <React.Fragment>{inputPrompts}</React.Fragment>
         ) : (
           <InputPrompts
             id={id}

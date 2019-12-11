@@ -5,15 +5,18 @@ import { connect } from "react-redux";
 import { AppState, ContentRef, selectors } from "@nteract/core";
 
 import Cell from "./cell";
-import RawCell from "./raw-cell";
-import MarkdownCell from "./markdown-cell";
 import CodeCell from "./code-cell";
+import MarkdownCell from "./markdown-cell";
+import RawCell from "./raw-cell";
 
-import childWithDisplayName from "../pickers/display-name";
-
+interface NamedCellSlots {
+  code?: React.ReactChild;
+  markdown?: React.ReactChild;
+  raw?: React.ReactChild;
+}
 interface ComponentProps {
   contentRef: ContentRef;
-  children?: React.ReactNode;
+  children?: NamedCellSlots;
 }
 
 interface StateProps {
@@ -23,10 +26,7 @@ interface StateProps {
 export class Cells extends React.Component<StateProps & ComponentProps> {
   render() {
     const { cellOrder, contentRef, children } = this.props;
-
-    const MarkdownCellOverride = childWithDisplayName(children, "MarkdownCell");
-    const CodeCellOverride = childWithDisplayName(children, "CodeCell");
-    const RawCellOverride = childWithDisplayName(children, "RawCell");
+    const { code, raw, markdown } = children;
 
     return (
       <div className="nteract-cells">
@@ -37,12 +37,8 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
             key={id}
             className="nteract-cell"
           >
-            {MarkdownCellOverride ? (
-              <MarkdownCellOverride
-                id={id}
-                contentRef={contentRef}
-                className="nteract-md-cell"
-              />
+            {markdown ? (
+              <React.Fragment>{markdown}</React.Fragment>
             ) : (
               <MarkdownCell
                 id={id}
@@ -50,12 +46,8 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
                 className="nteract-md-cell"
               />
             )}
-            {RawCellOverride ? (
-              <RawCellOverride
-                id={id}
-                contentRef={contentRef}
-                className="nteract-raw-cell"
-              />
+            {raw ? (
+              <React.Fragment>{raw}</React.Fragment>
             ) : (
               <RawCell
                 id={id}
@@ -63,12 +55,8 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
                 className="nteract-raw-cell"
               />
             )}
-            {CodeCellOverride ? (
-              <CodeCellOverride
-                id={id}
-                contentRef={contentRef}
-                className="nteract-code-cell"
-              />
+            {code ? (
+              <React.Fragment>{raw}</React.Fragment>
             ) : (
               <CodeCell
                 id={id}
