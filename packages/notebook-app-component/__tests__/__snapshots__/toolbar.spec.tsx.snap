@@ -172,7 +172,9 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                   </Component>
                 </span>
               </button>
-              <DropdownMenu>
+              <DropdownMenu
+                onDisplayChanged={[Function]}
+              >
                 <DropdownDiv
                   onKeyUp={[Function]}
                 >
@@ -251,6 +253,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                               onClick={[Function]}
                             >
                               <button
+                                aria-expanded={false}
                                 title="show additional actions"
                               >
                                 <span
@@ -523,7 +526,9 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                   </Component>
                 </span>
               </button>
-              <DropdownMenu>
+              <DropdownMenu
+                onDisplayChanged={[Function]}
+              >
                 <DropdownDiv
                   onKeyUp={[Function]}
                 >
@@ -602,6 +607,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                               onClick={[Function]}
                             >
                               <button
+                                aria-expanded={true}
                                 title="show additional actions"
                               >
                                 <span
