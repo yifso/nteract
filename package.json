@@ -253,7 +253,9 @@
     "yargs": "^14.0.0"
   },
   "engines": {
-    "node": ">=8.12.0"
+    "node": ">=8.12.0",
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.17.0"
   },
   "workspaces": {
     "packages": [
