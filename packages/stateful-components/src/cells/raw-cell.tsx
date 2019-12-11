@@ -31,7 +31,10 @@ export class PureRawCell extends React.Component<
   render() {
     const { id, contentRef, children } = this.props;
 
-    const { editor } = children;
+    let editor;
+    if (children) {
+      editor = children.editor;
+    }
 
     return (
       <Source className="nteract-cell-source">

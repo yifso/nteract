@@ -26,7 +26,12 @@ interface StateProps {
 export class Cells extends React.Component<StateProps & ComponentProps> {
   render() {
     const { cellOrder, contentRef, children } = this.props;
-    const { code, raw, markdown } = children;
+    let code, raw, markdown;
+    if (children) {
+      code = children.code;
+      raw = children.raw;
+      markdown = children.markdown;
+    }
 
     return (
       <div className="nteract-cells">

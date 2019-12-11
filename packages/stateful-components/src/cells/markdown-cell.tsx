@@ -50,7 +50,10 @@ export class PureMarkdownCell extends React.Component<
     } = this.props;
 
     const { children } = this.props;
-    const { editor } = children;
+    let editor;
+    if (children) {
+      editor = children.editor;
+    }
 
     const source = cell.get("source", "");
 

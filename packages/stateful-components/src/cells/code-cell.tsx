@@ -50,7 +50,14 @@ export default class CodeCell extends React.Component<ComponentProps> {
 
   render() {
     const { id, contentRef, children } = this.props;
-    const { editor, prompt, pagers, inputPrompts, outputs } = children;
+    let editor, prompt, pagers, inputPrompts, outputs;
+    if (children) {
+      editor = children.editor;
+      prompt = children.prompt;
+      pagers = children.pagers;
+      inputPrompts = children.inputPrompts;
+      outputs = children.outputs;
+    }
 
     return (
       <div>
