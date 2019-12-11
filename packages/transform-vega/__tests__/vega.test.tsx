@@ -154,7 +154,7 @@ const makeTestBody = (
 
 describe("VegaLite1", makeTestBody(
   VegaLite1, "application/vnd.vegalite.v1+json", vlSpec,
-  {canRender: false},   // use canvas to measure text even in SVG mode
+  {canRender: false},   // uses canvas to measure text even in SVG mode
 ));
 
 describe("VegaLite2", makeTestBody(
@@ -171,7 +171,7 @@ describe("VegaLite4", makeTestBody(
 
 describe("Vega2", makeTestBody(
   Vega2, "application/vnd.vega.v2+json", vgSpec,
-  {canRender: false},   // use canvas to measure text even in SVG mode
+  {canRender: false},   // uses canvas to measure text even in SVG mode
 ));
 
 describe("Vega3", makeTestBody(
