@@ -92,4 +92,22 @@ describe("DropdownMenu", () => {
     expect(wrapper.find(".alsoClickMe").length).toEqual(0);
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
+  test("clicking dropdown trigger onDisplayChanged", () => {
+    const expandedChanged = jest.fn();
+    const exampleDropdown = (
+      <DropdownMenu onDisplayChanged={expandedChanged}>
+        <DropdownTrigger>
+          <div className="clickMe">Click me</div>
+        </DropdownTrigger>
+        <DropdownContent>
+          <li>1</li>
+        </DropdownContent>
+      </DropdownMenu>
+    );
+    const wrapper = mount(exampleDropdown);
+    wrapper.find(".clickMe").simulate("click");
+    setTimeout(() => {
+      expect(expandedChanged.mock.calls.length).toBe(1);
+    }, 1000);
+  });
 });
