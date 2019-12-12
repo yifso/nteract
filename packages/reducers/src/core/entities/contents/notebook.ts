@@ -651,29 +651,55 @@ function toggleCellOutputVisibility(
     return state;
   }
 
-  return state.setIn(
-    ["notebook", "cellMap", id, "metadata", "outputHidden"],
-    !state.getIn(["notebook", "cellMap", id, "metadata", "outputHidden"])
-  );
+  return state
+    .setIn(
+      ["notebook", "cellMap", id, "metadata", "outputHidden"],
+      !state.getIn(["notebook", "cellMap", id, "metadata", "outputHidden"])
+    )
+    .setIn(
+      ["notebook", "cellMap", id, "metadata", "jupyter", "outputs_hidden"],
+      !state.getIn([
+        "notebook",
+        "cellMap",
+        id,
+        "metadata",
+        "jupyter",
+        "outputs_hidden"
+      ])
+    );
 }
 
 interface ICellVisibilityMetadata {
   inputHidden?: boolean;
   outputHidden?: boolean;
+  jupyter?: {
+    source_hidden?: boolean;
+    outputs_hidden?: boolean;
+  };
 }
 
 function unhideAll(
   state: NotebookModel,
   action: actionTypes.UnhideAll
 ): RecordOf<DocumentRecordProps> {
-  const metadataMixin: ICellVisibilityMetadata = {};
+  let metadataMixin: ICellVisibilityMetadata = {};
   if (action.payload.outputHidden !== undefined) {
-    // TODO: Verify that we convert to one namespace
-    // for hidden input/output
-    metadataMixin.outputHidden = action.payload.outputHidden;
+    metadataMixin = {
+      ...metadataMixin,
+      outputHidden: action.payload.outputHidden,
+      jupyter: {
+        outputs_hidden: action.payload.outputHidden
+      }
+    };
   }
   if (action.payload.inputHidden !== undefined) {
-    metadataMixin.inputHidden = action.payload.inputHidden;
+    metadataMixin = {
+      ...metadataMixin,
+      inputHidden: action.payload.inputHidden,
+      jupyter: {
+        source_hidden: action.payload.inputHidden
+      }
+    };
   }
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
@@ -694,10 +720,22 @@ function toggleCellInputVisibility(
     return state;
   }
 
-  return state.setIn(
-    ["notebook", "cellMap", id, "metadata", "inputHidden"],
-    !state.getIn(["notebook", "cellMap", id, "metadata", "inputHidden"])
-  );
+  return state
+    .setIn(
+      ["notebook", "cellMap", id, "metadata", "inputHidden"],
+      !state.getIn(["notebook", "cellMap", id, "metadata", "inputHidden"])
+    )
+    .setIn(
+      ["notebook", "cellMap", id, "metadata", "jupyter", "source_hidden"],
+      !state.getIn([
+        "notebook",
+        "cellMap",
+        id,
+        "metadata",
+        "jupyter",
+        "source_hidden"
+      ])
+    );
 }
 
 function updateCellStatus(

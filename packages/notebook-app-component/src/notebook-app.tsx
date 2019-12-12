@@ -138,12 +138,15 @@ const makeMapStateToCellProps = (
     const sourceHidden =
       (cellType === "code" &&
         (cell.getIn(["metadata", "inputHidden"]) ||
+          cell.getIn(["metadata", "jupyter", "source_hidden"]) ||
           cell.getIn(["metadata", "hide_input"]))) ||
       false;
 
     const outputHidden =
       cellType === "code" &&
-      (outputs.size === 0 || cell.getIn(["metadata", "outputHidden"]));
+      (outputs.size === 0 ||
+        cell.getIn(["metadata", "outputHidden"]) ||
+        cell.getIn(["metadata", "jupyter", "source_hidden"]));
 
     const outputExpanded =
       cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);

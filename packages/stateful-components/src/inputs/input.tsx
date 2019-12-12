@@ -36,7 +36,7 @@ const makeMapStateToProps = (
     if (model && model.type == "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
       if (cell) {
-        hidden = cell.getIn(["metadata", "inputHidden"]);
+        hidden = cell.getIn(["metadata", "jupyter", "source_hidden"]);
       }
     }
 
