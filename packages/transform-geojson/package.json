@@ -17,5 +17,9 @@
     "access": "public"
   },
   "author": "",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.set": "^4.3.2"
+  }
 }

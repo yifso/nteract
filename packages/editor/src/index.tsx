@@ -10,7 +10,7 @@ import CodeMirror, {
 
 import { FullEditorConfiguration, isConfigurable } from "./configurable";
 
-import { debounce } from "lodash";
+import debounce from "lodash.debounce";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { empty, merge, Observable, Subject, Subscription } from "rxjs";

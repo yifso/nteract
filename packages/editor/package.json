@@ -20,7 +20,7 @@
     "@nteract/messaging": "^6.1.7",
     "@nteract/outputs": "^2.6.0",
     "codemirror": "5.49.2",
-    "lodash": "^4.17.4",
+    "lodash.debounce": "^4.0.8",
     "rxjs": "^6.3.3",
     "styled-components": "^4.1.3"
   },

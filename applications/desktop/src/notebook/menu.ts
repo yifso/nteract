@@ -3,7 +3,7 @@ import * as path from "path";
 
 import { actions, ContentRef, createKernelRef, selectors } from "@nteract/core";
 import { ipcRenderer as ipc, remote, shell, webFrame } from "electron";
-import { throttle } from "lodash";
+import throttle from "lodash.throttle";
 import { DesktopStore } from "./store";
 
 type NotificationSystemRef = any;

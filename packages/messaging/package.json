@@ -10,6 +10,7 @@
   "dependencies": {
     "@nteract/types": "^4.4.1",
     "@types/uuid": "^3.4.4",
+    "lodash.clonedeep": "^4.5.0",
     "rxjs": "^6.3.3",
     "uuid": "^3.1.0"
   },
