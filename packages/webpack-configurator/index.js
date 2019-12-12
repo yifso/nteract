@@ -36,7 +36,12 @@ const tsLoaderConfig = {
 // https://zeit.co/blog/next5#universal-webpack-and-next-plugins
 
 function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
-  config.externals = ["canvas", ...config.externals];
+  if (config.externals) {
+    config.externals = ["canvas", ...config.externals];
+  } else {
+    config.externals = ["canvas"];
+  }
+
   config.module.rules = config.module.rules.map(rule => {
     if (
       rule.test.source.includes("js") &&
@@ -46,10 +51,6 @@ function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
     }
 
     return rule;
-  });
-
-  config.module.rules.push({
-    tsLoaderConfig
   });
 
   config.resolve = Object.assign({}, config.resolve, {

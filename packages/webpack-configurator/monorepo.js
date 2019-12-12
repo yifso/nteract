@@ -182,6 +182,11 @@ module.exports = {
       name: "@nteract/stateful-components",
       version: "1.0.0",
       private: false
+    },
+    {
+      name: "@nteract/web-app",
+      version: "1.0.0",
+      private: false
     }
   ]
 };

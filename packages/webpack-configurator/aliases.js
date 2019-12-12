@@ -12,7 +12,9 @@ const ignored = new Set([
   // The jupyter extension will rely on this package
   "nteract-on-jupyter",
   // The nbextension is the metapackage (python bits) and isn't used by anything
-  "@nteract/nbextension"
+  "@nteract/nbextension",
+  // The nteract web app (not shipped as a Jupyter server extension)
+  "@nteract/web-app"
 ]);
 
 const aliases = lernaModules
