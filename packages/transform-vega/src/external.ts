@@ -10,7 +10,7 @@ export interface VegaOptions {
 export async function embed(
   anchor: HTMLElement,
   mediaType: VegaMediaType,
-  spec: Readonly<{}>,
+  spec: string,
   options: Partial<VegaOptions> = {},
 ): Promise<Result | void> {
   const version = MEDIA_TYPES[mediaType];
@@ -23,24 +23,20 @@ export async function embed(
     case 2:
       return await import("@nteract/vega-embed-v2").then(
         ({ default: vegaEmbed }) =>
-          promisify(vegaEmbed)(anchor, {...defaults, ...options, spec})
+          promisify(vegaEmbed)(anchor, {...defaults, ...options, spec: JSON.parse(spec)})
       );
 
     case 3:
       return await import("@nteract/vega-embed-v3").then(
         ({ default: vegaEmbed }) =>
-          vegaEmbed(anchor, deepThaw(spec), {...defaults, ...options})
+          vegaEmbed(anchor, JSON.parse(spec), {...defaults, ...options})
       );
 
     case 4:
     case 5:
       return await import("vega-embed").then(
         ({ default: vegaEmbed }) =>
-          vegaEmbed(anchor, deepThaw(spec), {...defaults, ...options})
+          vegaEmbed(anchor, JSON.parse(spec), {...defaults, ...options})
       );
   }
-}
-
-function deepThaw(spec: Readonly<{}>): {} {
-  return JSON.parse(JSON.stringify(spec));
 }

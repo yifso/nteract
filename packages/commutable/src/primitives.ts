@@ -68,6 +68,7 @@ export interface OnDiskMediaBundle {
   "application/vnd.vegalite.v1+json"?: {};
   "application/vnd.vegalite.v2+json"?: {};
   "application/vnd.vegalite.v3+json"?: {};
+  "application/vnd.vegalite.v4+json"?: {};
 
   [key: string]: string | string[] | {} | undefined;
 }
@@ -98,6 +99,7 @@ export interface MediaBundle {
   "application/vnd.vegalite.v1+json"?: { [key: string]: any };
   "application/vnd.vegalite.v2+json"?: { [key: string]: any };
   "application/vnd.vegalite.v3+json"?: { [key: string]: any };
+  "application/vnd.vegalite.v4+json"?: { [key: string]: any };
   // Other media types can also come in that we don't recognize
   [key: string]: string | string[] | {} | undefined;
 }
@@ -181,7 +183,9 @@ export function createFrozenMediaBundle(
   const bundle: MediaBundle = {};
 
   for (const key in mediaBundle) {
-    if (typeof mediaBundle[key] === "string") {
+    if (/^application\/vnd.vega(.*\+)json$/.test(key)) {
+      bundle[key] = JSON.stringify(mediaBundle[key]);
+    } else if (typeof mediaBundle[key] === "string") {
       // Strings are immutable and can be just taken as-is.
       //
       // N.B.: This is even true of strings sent directly as the JSON root
@@ -210,7 +214,9 @@ export function createOnDiskMediaBundle(
 
   const freshBundle: OnDiskMediaBundle = {};
   for (const key in mediaBundle) {
-    if (
+    if (/^application\/vnd.vega(.*\+)json$/.test(key)) {
+      freshBundle[key] = JSON.parse(mediaBundle[key] as string);
+    } else if (
       !isJSONKey(key) &&
       (typeof mediaBundle[key] === "string" || Array.isArray(mediaBundle[key]))
     ) {

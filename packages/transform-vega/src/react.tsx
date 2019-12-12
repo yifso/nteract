@@ -5,7 +5,7 @@ import { VegaMediaType } from "./mime";
 
 /** Props needed for embedding a certain Vega (Lite) media type. */
 export interface VegaEmbedProps<T extends VegaMediaType> {
-  spec: Readonly<{}>;
+  spec: string;
   mediaType: T;
   options?: Partial<VegaOptions>,
   resultHandler?: (result: any) => void;

@@ -6,7 +6,7 @@ import { VegaEmbed } from "./react";
 export { VegaOptions, VegaMediaType };
 
 export interface VegaProps  {
-  data: Readonly<{}>;
+  data: string;
   options?: Partial<VegaOptions>;
   onResult?: (result: any) => void;
   onError?: (error: Error) => void;
