@@ -114,7 +114,6 @@ const makeMapStateToProps = (
       const kernelspec = selectors.kernelspecByName(state, {
         name: kernel.kernelSpecName
       });
-      console.log(kernelspec);
       kernelSpecDisplayName = kernelspec
         ? kernelspec.displayName
         : kernel.kernelSpecName;
