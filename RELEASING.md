@@ -110,4 +110,4 @@ To release the nteract Jupyter Extension, you will need to complete the followin
 1. Navigate to the `applications/jupyter-extension` directory within the nteract repo.
 2. Ensure that you are signed into PyPi on your machine and have permissions to publish the `nteract_on_jupyter` package.
 3. Run the `yarn build:python` command.
-4. Run the `yarn upload:pyp` command.
+4. Run the `yarn upload:pypi` command.
