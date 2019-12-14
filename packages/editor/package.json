@@ -31,5 +31,8 @@
   },
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
   "license": "BSD-3-Clause",
-  "gitHead": "bee6f44ab6d411d20864ff7f7b1a056cba74754b"
+  "gitHead": "bee6f44ab6d411d20864ff7f7b1a056cba74754b",
+  "devDependencies": {
+    "@types/lodash.debounce": "^4.0.6"
+  }
 }

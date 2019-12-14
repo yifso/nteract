@@ -123,6 +123,9 @@
     "nteract-assets": "^4.0.0"
   },
   "devDependencies": {
+    "@types/lodash.sample": "^4.2.6",
+    "@types/lodash.sortby": "^4.7.6",
+    "@types/lodash.throttle": "^4.1.6",
     "electron": "5.0.12",
     "file-loader": "^5.0.0"
   }

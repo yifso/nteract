@@ -18,7 +18,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.117"
+    "@types/lodash": "^4.14.117",
+    "@types/lodash.debounce": "^4.0.6"
   },
   "dependencies": {
     "lodash.debounce": "^4.0.8",
