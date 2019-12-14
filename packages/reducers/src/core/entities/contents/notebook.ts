@@ -206,7 +206,7 @@ function clearAllOutputs(
   return state
     .setIn(["notebook", "cellMap"], cellMap)
     .set("transient", transient)
-    .setIn("cellPrompts", Map());
+    .set("cellPrompts", Map());
 }
 
 type UpdatableOutputContent =
