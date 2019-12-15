@@ -145,7 +145,7 @@ const makeTestBody = (component, mimetype, spec) => () => {
   });
 };
 
-describe("VegaLite1", makeTestBody(
+describe.skip("VegaLite1", makeTestBody(
   VegaLite1, "application/vnd.vegalite.v1+json", vlSpec
 ));
 
@@ -161,7 +161,7 @@ describe("VegaLite4", makeTestBody(
   VegaLite4, "application/vnd.vegalite.v4+json", vlSpec,
 ));
 
-describe("Vega2", makeTestBody(
+describe.skip("Vega2", makeTestBody(
   Vega2, "application/vnd.vega.v2+json", vgSpec
 ));
 
