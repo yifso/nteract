@@ -59,7 +59,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
-                  "isStatic": true,
+                  "isStatic": false,
                   "lastClassName": "grkuc",
                   "rules": Array [
                     "
@@ -183,7 +183,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
                           "componentId": "sc-bdVaJa",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "igpjjl",
                           "rules": Array [
                             "
@@ -223,7 +223,7 @@ exports[`Toolbar View should be able to render a toolbar 1`] = `
                                 "attrs": Array [],
                                 "componentStyle": ComponentStyle {
                                   "componentId": "sc-bwzfXH",
-                                  "isStatic": true,
+                                  "isStatic": false,
                                   "lastClassName": "iaRngl",
                                   "rules": Array [
                                     "
@@ -410,7 +410,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                 "attrs": Array [],
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-bxivhb",
-                  "isStatic": true,
+                  "isStatic": false,
                   "lastClassName": "grkuc",
                   "rules": Array [
                     "
@@ -534,7 +534,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
                           "componentId": "sc-bdVaJa",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "igpjjl",
                           "rules": Array [
                             "
@@ -574,7 +574,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                 "attrs": Array [],
                                 "componentStyle": ComponentStyle {
                                   "componentId": "sc-bwzfXH",
-                                  "isStatic": true,
+                                  "isStatic": false,
                                   "lastClassName": "iaRngl",
                                   "rules": Array [
                                     "
@@ -725,7 +725,7 @@ exports[`Toolbar View should be able to render a toolbar 2`] = `
                                 "attrs": Array [],
                                 "componentStyle": ComponentStyle {
                                   "componentId": "sc-htpNat",
-                                  "isStatic": true,
+                                  "isStatic": false,
                                   "lastClassName": "juMQnP",
                                   "rules": Array [
                                     "
