@@ -126,35 +126,27 @@ const vgSpec = {
   ]
 };
 
-const makeTestBody = (
-  component,
-  mimetype,
-  spec,
-  {canRender} = {canRender: true}
-) => () => {
+const makeTestBody = (component, mimetype, spec) => () => {
   it("has the correct media type", () => {
     expect(component.MIMETYPE).toBe(mimetype);
   });
 
-  if (canRender) {
-    it("renders the spec as SVG properly", done => {
-      const wrapper = mount(component({
-        data: spec,
-        options: {renderer: "svg"},
-        onError: error => { throw error },
-        onResult: () => {
-          expect(wrapper.render()).toMatchSnapshot();
-          wrapper.unmount();   // must not throw
-          done();
-        },
-      }));
-    });
-  }
+  it("renders the spec as SVG properly", done => {
+    const wrapper = mount(component({
+      data: JSON.stringify(spec),
+      options: {renderer: "svg"},
+      onError: error => { throw error },
+      onResult: () => {
+        expect(wrapper.render()).toMatchSnapshot();
+        wrapper.unmount();   // must not throw
+        done();
+      },
+    }));
+  });
 };
 
 describe("VegaLite1", makeTestBody(
-  VegaLite1, "application/vnd.vegalite.v1+json", vlSpec,
-  {canRender: false},   // uses canvas to measure text even in SVG mode
+  VegaLite1, "application/vnd.vegalite.v1+json", vlSpec
 ));
 
 describe("VegaLite2", makeTestBody(
@@ -170,8 +162,7 @@ describe("VegaLite4", makeTestBody(
 ));
 
 describe("Vega2", makeTestBody(
-  Vega2, "application/vnd.vega.v2+json", vgSpec,
-  {canRender: false},   // uses canvas to measure text even in SVG mode
+  Vega2, "application/vnd.vega.v2+json", vgSpec
 ));
 
 describe("Vega3", makeTestBody(

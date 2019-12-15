@@ -1,5 +1,5 @@
-import { promisify } from "util";
-import { Result } from "vega-embed";
+import { vega, vegaLite } from "any-vega";
+
 import { MEDIA_TYPES, VegaMediaType } from "./mime";
 
 export interface VegaOptions {
@@ -12,31 +12,34 @@ export async function embed(
   mediaType: VegaMediaType,
   spec: string,
   options: Partial<VegaOptions> = {},
-): Promise<Result | void> {
+): Promise<any> {
   const version = MEDIA_TYPES[mediaType];
   const defaults = {
     actions: false,
     mode: version.kind,
   };
+  let vegaEmbed: any;
 
-  switch (version.vegaLevel) {
-    case 2:
-      return await import("@nteract/vega-embed-v2").then(
-        ({ default: vegaEmbed }) =>
-          promisify(vegaEmbed)(anchor, {...defaults, ...options, spec: JSON.parse(spec)})
-      );
-
-    case 3:
-      return await import("@nteract/vega-embed-v3").then(
-        ({ default: vegaEmbed }) =>
-          vegaEmbed(anchor, JSON.parse(spec), {...defaults, ...options})
-      );
-
-    case 4:
-    case 5:
-      return await import("vega-embed").then(
-        ({ default: vegaEmbed }) =>
-          vegaEmbed(anchor, JSON.parse(spec), {...defaults, ...options})
-      );
+  switch (version.kind) {
+    case "vega":
+      switch (version.version) {
+        case "2": vegaEmbed = vega.v2; break;
+        case "3": vegaEmbed = vega.v3; break;
+        case "4": vegaEmbed = vega.v4; break;
+        case "5": vegaEmbed = vega.v5; break;
+        default: vegaEmbed = vega.v5;
+      }
+      break;
+    case "vega-lite":
+      switch (version.version) {
+        case "1": vegaEmbed = vegaLite.v1; break;
+        case "2": vegaEmbed = vegaLite.v2; break;
+        case "3": vegaEmbed = vegaLite.v3; break;
+        case "4": vegaEmbed = vegaLite.v4; break;
+        default: vegaEmbed = vegaLite.v4;
+      }
+      break;
   }
+
+  return vegaEmbed(anchor, JSON.parse(spec), {...options, ...defaults});
 }
