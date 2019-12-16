@@ -25,7 +25,7 @@ export type ClearOutputs                    = Action<typeof CLEAR_OUTPUTS,      
 export type UpdateOutputMetadata            = Action<typeof UPDATE_OUTPUT_METADATA,         HasCell & { metadata: JSONObject; index: number; mediaType: string }>;
 export type AppendOutput                    = Action<typeof APPEND_OUTPUT,                  HasCell &  { output: OnDiskOutput }>;
 export type AcceptPayloadMessage            = Action<typeof ACCEPT_PAYLOAD_MESSAGE,         HasCell &  { payload: PayloadMessage }>;
-export type ToggleCellExpansion             = Action<typeof TOGGLE_OUTPUT_EXPANSION,        HasCell>;
+export type ToggleCellExpansion             = Action<typeof TOGGLE_OUTPUT_EXPANSION,        HasCell>; // FIXME: Name inconsistent
 
 export const promptInputRequest             = makeActionFunction<PromptInputRequest>        (PROMPT_INPUT_REQUEST);
 export const sendInputReply                 = makeActionFunction<SendInputReply>            (SEND_INPUT_REPLY);
