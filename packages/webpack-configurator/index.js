@@ -42,24 +42,40 @@ function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
     config.externals = ["canvas"];
   }
 
-  config.module.rules = config.module.rules.map(rule => {
-    if (
-      rule.test.source.includes("js") &&
-      typeof rule.exclude !== "undefined"
-    ) {
-      rule.exclude = exclude;
-    }
+  // config.module.rules = config.module.rules.map(rule => {
+  //   if (
+  //     rule.test.source.includes("js") &&
+  //     typeof rule.exclude !== "undefined"
+  //   ) {
+  //     rule.exclude = exclude;
+  //   }
 
-    return rule;
-  });
+  //   return rule;
+  // });
 
-  config.resolve = Object.assign({}, config.resolve, {
-    mainFields: ["nteractDesktop", "jsnext:main", "module", "main"],
+  // config.module.rules.push(tsLoaderConfig);
+
+  config.resolve = {
+    ...config.resolve,
+    mainFields:
+      config.resolve && config.resolve.mainFields
+        ? [
+            ...config.resolve.mainFields,
+            "nteractDesktop",
+            "jsnext:main",
+            "module",
+            "main"
+          ]
+        : ["nteractDesktop", "jsnext:main", "module", "main"],
     alias: mergeDefaultAliases(
       config.resolve ? config.resolve.alias : undefined
     ),
-    extensions: [".js", ".jsx", ".ts", ".tsx"]
-  });
+    extensions:
+      config.resolve && config.resolve.extensions
+        ? [...config.resolve.extensions, ".js", ".jsx", ".ts", ".tsx"]
+        : [".js", ".jsx", ".ts", ".tsx"]
+  };
+
   return config;
 }
 
