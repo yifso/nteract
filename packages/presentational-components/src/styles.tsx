@@ -80,8 +80,8 @@ const DarkTheme = createGlobalStyle`
   --theme-cell-creator-fg-hover: var(--theme-secondary-fg-hover);
   --theme-cell-creator-fg-focus: var(--theme-secondary-fg-focus);
   
-  --theme-error-fg: hsl(0, 90%, 80%);
-  --theme-error-bg: hsl(0, 80%, 40%);
+  --theme-error-fg: hsl(0, 100%, 95%);
+  --theme-error-bg: hsl(0, 100%, 30%);
 
   --theme-pager-bg: #111;
 
@@ -193,8 +193,8 @@ const LightTheme = createGlobalStyle`
   --theme-cell-creator-fg-hover: var(--theme-secondary-fg-hover);
   --theme-cell-creator-fg-focus: var(--theme-secondary-fg-focus);
 
-  --theme-error-fg: hsl(0, 80%, 40%);
-  --theme-error-bg: hsl(0, 90%, 80%);
+  --theme-error-fg: hsl(0, 100%, 30%);
+  --theme-error-bg: hsl(0, 100%, 95%);
   
   --theme-pager-bg: #fafafa;
 

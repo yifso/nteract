@@ -1467,22 +1467,27 @@ exports[`Markdown Should render markdown 1`] = `
       transformLinkUri={[Function]}
     >
       <Root
+        className="markdown-body "
         key="root-1-1-0"
       >
-        <Heading
-          key="heading-1-1-0"
-          level={1}
+        <div
+          className="markdown-body "
         >
-          <h1>
-            <TextRenderer
-              key="text-1-3-0"
-              nodeKey="text-1-3-0"
-              value="Header"
-            >
-              Header
-            </TextRenderer>
-          </h1>
-        </Heading>
+          <Heading
+            key="heading-1-1-0"
+            level={1}
+          >
+            <h1>
+              <TextRenderer
+                key="text-1-3-0"
+                nodeKey="text-1-3-0"
+                value="Header"
+              >
+                Header
+              </TextRenderer>
+            </h1>
+          </Heading>
+        </div>
       </Root>
     </ReactMarkdown>
   </MarkdownRender>
