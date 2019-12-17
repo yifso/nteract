@@ -32,7 +32,7 @@ import {
 } from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
-import { has } from "lodash";
+import has from "lodash.has";
 import uuid from "uuid/v4";
 
 type KeyPath = List<string | number>;
@@ -206,7 +206,7 @@ function clearAllOutputs(
   return state
     .setIn(["notebook", "cellMap"], cellMap)
     .set("transient", transient)
-    .setIn("cellPrompts", Map());
+    .set("cellPrompts", Map());
 }
 
 type UpdatableOutputContent =

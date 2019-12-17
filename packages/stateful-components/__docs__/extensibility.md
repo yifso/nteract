@@ -43,72 +43,74 @@ The @nteract/stateful-components package ships with a default set of implementat
 
 You can override the children of the `Cells` component and render your own custom `Cell` components for each cell_type. For example, to override the default `MarkdownCell`, you can do the following.
 
-```
-import { Cells, CodeCell, RawCell } from "@nteract/stateful-components"
+```js
+import { Cells, CodeCell, RawCell } from "@nteract/stateful-components";
 
 class MarkdownCell extends React.Component {
-    static defaultProps = {
-        cell_type: "markdown"
-    }
+  static defaultProps = {
+    cell_type: "markdown"
+  };
 
-    render() {
-        return <p>{this.props.value}</p>;
-    }
+  render() {
+    return <p>{this.props.value}</p>;
+  }
 }
 
 class MyCells extends React.Component {
-    render() {
-        return <Cells>
-            <MarkdownCell id={cellId} contentRef={contentRef}/>
-            <CodeCell id={cellId} contentRef={contentRef}/>
-            <RawCell id={cellId} contentRef={contentRef}/>
-        </Cells>;
-    }
+  render() {
+    return (
+      <Cells>
+        {{
+          markdown: <MarkdownCell id={cellId} contentRef={contentRef} />,
+          code: <CodeCell id={cellId} contentRef={contentRef} />,
+          raw: <RawCell id={cellId} contentRef={contentRef} />
+        }}
+      </Cells>
+    );
+  }
 }
 ```
 
 Similar to the pattern for creating configurable editors, configurable cells require that a `cell_type` prop exist on the child component that matches the `cell_type` the component is intended to render.
 
-## Display Name-based Component Overrides
+## Name-slot based child composition patterns
 
 We've all been in that situation where we were generally happy with something but wanted one small thing changed. The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract, but what if we wanted to override only particular components.
 
-The @nteract/stateful-components package has support for display name-based component overrides. For example, let's say you want to override just the `Prompt` component within a CodeCell. You can do this by defining your own `Prompt` component and setting the display name to `Prompt`.
+The @nteract/stateful-components package has support for name slot-based component overrides. For example, let's say you want to override just the `Prompt` component within a CodeCell. You can do this by defining your own `Prompt` component.
 
-```
+```js
 class MyPrompt extends React.Component {
-    static displayName = "Prompt";
+  static displayName = "Prompt";
 
-    render() {
-        return <p>Your custom prompt here</p>;
-    }
+  render() {
+    return <p>Your custom prompt here</p>;
+  }
 }
 ```
 
-Then passing that `Prompt` component as a child to the `CodeCell` component exported by nteract.
+Then passing that `Prompt` component as a named child to the `CodeCell` component exported by nteract.
 
-```
+```js
 import { CodeCell } from "@nteract/stateful-components";
 
 class MyCodeCell extends React.Component {
     render() {
         return <CodeCell>
-            <Prompt>
+            {{ prompt: <Prompt> }}
         </CodeCell>;
     }
 }
 ```
 
-Display name-based overrides are currently enabled for the following parent and child components.
+Overrides are currently enabled for the following parent and child components.
 
 | Parent Component | Child Component |
 | ---------------- | --------------- |
-| CodeCell         | Pagers          |
-| CodeCell         | Prompt          |
-| CodeCell         | Outputs         |
-| CodeCell         | Editor          |
-| CodeCell         | InputPrompts    |
-| MarkdownCell     | Editor          |
-| RawCell          | Editor          |
-
-Since this override interface depends on having the display name on the React component set to the name of the child component, be sure that the display names for your overrides are set correctly.
+| CodeCell         | pagers          |
+| CodeCell         | prompt          |
+| CodeCell         | outputs         |
+| CodeCell         | editor          |
+| CodeCell         | inputPrompts    |
+| MarkdownCell     | editor          |
+| RawCell          | editor          |

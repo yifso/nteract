@@ -1445,6 +1445,7 @@ exports[`Markdown Should render markdown 1`] = `
   >
     <ReactMarkdown
       astPlugins={Array []}
+      className="markdown-body "
       escapeHtml={false}
       parserOptions={Object {}}
       plugins={

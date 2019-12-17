@@ -9,6 +9,7 @@ import { areComponentsEqual } from "react-hot-loader";
 import styled from "styled-components";
 
 interface DropdownMenuProps {
+  onDisplayChanged?: (isExpanded: boolean) => void;
   children: React.ReactNode;
 }
 
@@ -35,6 +36,19 @@ export class DropdownMenu extends React.PureComponent<
       menuHidden: true
     };
   }
+
+  componentDidUpdate(
+    prevProps: DropdownMenuProps,
+    prevState: DropdownMenuState
+  ) {
+    if (
+      prevState.menuHidden !== this.state.menuHidden &&
+      this.props.onDisplayChanged
+    ) {
+      this.props.onDisplayChanged(!this.state.menuHidden);
+    }
+  }
+
   handleKeyUp = (ev: React.KeyboardEvent<HTMLElement>) => {
     if (!this.state.menuHidden) {
       if (ev.key === "Escape") {

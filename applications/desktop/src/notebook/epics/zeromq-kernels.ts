@@ -15,7 +15,7 @@ import {
   JupyterConnectionInfo
 } from "enchannel-zmq-backend";
 import * as jmp from "jmp";
-import { sample } from "lodash";
+import sample from "lodash.sample";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { empty, merge, Observable, of, Subscriber } from "rxjs";
 import {

@@ -21,6 +21,7 @@ height between texels.
 >
   <ReactMarkdown
     astPlugins={Array []}
+    className="markdown-body "
     escapeHtml={false}
     parserOptions={Object {}}
     plugins={
@@ -91,7 +92,7 @@ height between texels.
             nodeKey="text-4-17-0"
             value="color"
           >
-            color
+            The composited 
           </TextRenderer>
         </em>
         <TextRenderer
@@ -109,7 +110,7 @@ height between texels.
             nodeKey="text-4-33-0"
             value="paint"
           >
-            paint
+             of the 
           </TextRenderer>
         </strong>
         <TextRenderer
@@ -118,24 +119,25 @@ height between texels.
           value=" must not change during drying. The
 optical blending function is used with this constraint to compensate for the new
 dry layer "
-        >
-           must not change during drying. The
+          >
+             must not change during drying. The
 optical blending function is used with this constraint to compensate for the new
 dry layer 
-        </TextRenderer>
-        <inlineMath
-          data={
-            Object {
-              "hChildren": Array [
-                Object {
-                  "type": "text",
-                  "value": "C_{d}^{prime}",
+          </TextRenderer>
+          <inlineMath
+            data={
+              Object {
+                "hChildren": Array [
+                  Object {
+                    "type": "text",
+                    "value": "C_{d}^{prime}",
+                  },
+                ],
+                "hName": "span",
+                "hProperties": Object {
+                  "className": "inlineMath",
                 },
-              ],
-              "hName": "span",
-              "hProperties": Object {
-                "className": "inlineMath",
-              },
+              }
             }
           }
           key="inlineMath-6-11-5"
@@ -145,16 +147,9 @@ dry layer
             inline={true}
             onRender={null}
           >
-            <Provider
-              delay={0}
-              didFinishTypeset={null}
-              input="tex"
-              loading={null}
-              noGate={false}
-              onError={[Function]}
-              onLoad={null}
-              options={Object {}}
-              src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"
+            <MathJaxNode
+              inline={true}
+              onRender={null}
             >
               <MathJaxNode
                 inline={true}
@@ -176,12 +171,12 @@ dry layer
               "hChildren": Array [
                 Object {
                   "type": "text",
-                  "value": "delta_{alpha}",
+                  "value": "C_{d}^{prime} = \\\\frac{alpha}{}",
                 },
               ],
-              "hName": "span",
+              "hName": "div",
               "hProperties": Object {
-                "className": "inlineMath",
+                "className": "math",
               },
             }
           }
@@ -189,7 +184,7 @@ dry layer
           value="delta_{alpha}"
         >
           <MathJaxNode
-            inline={true}
+            inline={false}
             onRender={null}
           >
             <Provider
@@ -204,7 +199,7 @@ dry layer
               src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"
             >
               <MathJaxNode
-                inline={true}
+                inline={false}
                 onRender={null}
               />
             </Provider>
@@ -269,12 +264,13 @@ the wet layer.
           value="The dry layer of the canvas uses a relative height field to allow for unlimited
 volume of paint to be added, with a constraint only on the relative change in
 height between texels."
-        >
-          The dry layer of the canvas uses a relative height field to allow for unlimited
+          >
+            The dry layer of the canvas uses a relative height field to allow for unlimited
 volume of paint to be added, with a constraint only on the relative change in
 height between texels.
-        </TextRenderer>
-      </p>
+          </TextRenderer>
+        </p>
+      </div>
     </Root>
   </ReactMarkdown>
 </MarkdownRender>
