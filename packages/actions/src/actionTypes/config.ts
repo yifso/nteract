@@ -1,6 +1,7 @@
 // tslint:disable:max-line-length
 import { Action, makeActionFunction } from "../utils";
 
+// FIXME: probably belongs somewhere else
 interface ConfigPayload {
   config: {
     [key: string]: string;
