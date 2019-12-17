@@ -37,7 +37,7 @@ BareUndoableCellDelete.displayName = "BareUndoableCellDelete";
 const UnstyledUndoableCellDelete = connect(
   (state: AppState, props: InitialProps) => ({
     isDeleting: !!cell.cellFromState(state, cell.cellAddress(props))
-      .getIn(["transient", "deleting"]),
+      .getIn(["metadata", "nteract", "transient", "deleting"]),
   }),
   (dispatch: Dispatch, props: InitialProps) => ({
     doDelete:

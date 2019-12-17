@@ -9,21 +9,9 @@ import {
   RecordOf
 } from "immutable";
 
-export interface TransientCellParam {
-  deleting: boolean;
-}
-
-export interface TransientCellParams {
-  transient: RecordOf<TransientCellParam>;
-}
-
-const makeCellTransientParam = Record<TransientCellParam>({
-  deleting: false,
-});
-
 /* CodeCell Record Boilerplate */
 
-export interface CodeCellParams extends TransientCellParams {
+export interface CodeCellParams {
   cell_type: "code";
   // Sadly untyped and widely unspecced
   metadata: ImmutableMap<string, any>;
@@ -38,9 +26,13 @@ export const makeCodeCell = Record<CodeCellParams>({
   metadata: ImmutableMap({
     collapsed: false,
     outputHidden: false,
-    inputHidden: false
+    inputHidden: false,
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
   }),
-  transient: makeCellTransientParam(),
   source: "",
   outputs: ImmutableList()
 });
@@ -49,7 +41,7 @@ export type ImmutableCodeCell = RecordOf<CodeCellParams>;
 
 /* MarkdownCell Record Boilerplate */
 
-export interface MarkdownCellParams extends TransientCellParams {
+export interface MarkdownCellParams {
   cell_type: "markdown";
   source: string;
   metadata: ImmutableMap<string, any>;
@@ -57,8 +49,13 @@ export interface MarkdownCellParams extends TransientCellParams {
 
 export const makeMarkdownCell = Record<MarkdownCellParams>({
   cell_type: "markdown",
-  metadata: ImmutableMap(),
-  transient: makeCellTransientParam(),
+  metadata: ImmutableMap({
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
+  }),
   source: ""
 });
 
@@ -66,7 +63,7 @@ export type ImmutableMarkdownCell = RecordOf<MarkdownCellParams>;
 
 /* RawCell Record Boilerplate */
 
-export interface RawCellParams extends TransientCellParams {
+export interface RawCellParams {
   cell_type: "raw";
   source: string;
   metadata: ImmutableMap<string, any>;
@@ -74,8 +71,13 @@ export interface RawCellParams extends TransientCellParams {
 
 export const makeRawCell = Record<RawCellParams>({
   cell_type: "raw",
-  metadata: ImmutableMap(),
-  transient: makeCellTransientParam(),
+  metadata: ImmutableMap({
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
+  }),
   source: ""
 });
 

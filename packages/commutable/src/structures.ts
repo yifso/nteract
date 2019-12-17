@@ -172,7 +172,7 @@ export function markCellDeleting(
       ["cellMap", cellId],
       nb
         .getIn(["cellMap", cellId])
-        .setIn(["transient", "deleting"], true)
+        .setIn(["metadata", "nteract", "transient", "deleting"], true)
     )
   );
 }
@@ -194,7 +194,7 @@ export function markCellNotDeleting(
       ["cellMap", cellId],
       nb
         .getIn(["cellMap", cellId])
-        .setIn(["transient", "deleting"], false)
+        .setIn(["metadata", "nteract", "transient", "deleting"], false)
     )
   );
 }
