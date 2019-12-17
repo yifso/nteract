@@ -301,7 +301,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
           })
         );
       })
-    );
+    ) as Observable<() => void>;
 
     this.completionEventsSubscriber = completionResults.subscribe(callback =>
       callback()

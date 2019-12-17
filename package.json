@@ -101,8 +101,7 @@
       "./scripts/test-setup.ts"
     ],
     "moduleNameMapper": {
-      "^@nteract/vega-embed-v2": "@nteract/vega-embed-v2",
-      "^@nteract/vega-embed-v3": "@nteract/vega-embed-v3",
+      "^@nteract/any-vega": "@nteract/any-vega",
       "^@nteract/([^/]*)$": "<rootDir>/packages/$1/src",
       "^(ansi-to-react|enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
       "\\.css$": "<rootDir>/scripts/noop-module.ts"

@@ -12,7 +12,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -52,7 +52,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
@@ -106,7 +106,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -146,7 +146,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
@@ -200,7 +200,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -240,7 +240,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
@@ -302,7 +302,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-htpNat",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "juMQnP",
                     "rules": Array [
                       "
@@ -393,7 +393,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -433,7 +433,7 @@ exports[`DropdownMenu clicking dropdown content triggers the items callback and 
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
@@ -487,7 +487,7 @@ exports[`DropdownMenu pressing escape on dropdown closes the menu 1`] = `
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -527,7 +527,7 @@ exports[`DropdownMenu pressing escape on dropdown closes the menu 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
@@ -589,7 +589,7 @@ exports[`DropdownMenu pressing escape on dropdown closes the menu 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-htpNat",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "juMQnP",
                     "rules": Array [
                       "
@@ -680,7 +680,7 @@ exports[`DropdownMenu pressing escape on dropdown closes the menu 2`] = `
           "attrs": Array [],
           "componentStyle": ComponentStyle {
             "componentId": "sc-bdVaJa",
-            "isStatic": true,
+            "isStatic": false,
             "lastClassName": "igpjjl",
             "rules": Array [
               "
@@ -720,7 +720,7 @@ exports[`DropdownMenu pressing escape on dropdown closes the menu 2`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-bwzfXH",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "iaRngl",
                     "rules": Array [
                       "
