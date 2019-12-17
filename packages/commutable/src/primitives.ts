@@ -153,6 +153,8 @@ export function deepFreeze<T>(object: T): DeepReadonly<T> {
   return (Object.freeze(object) as unknown) as DeepReadonly<T>;
 }
 
+const IS_VEGA = /^application\/vnd.vega(.*\+)json$/;
+
 export function createFrozenMediaBundle(
   mediaBundle: OnDiskMediaBundle
 ): Readonly<MediaBundle> {
@@ -183,7 +185,7 @@ export function createFrozenMediaBundle(
   const bundle: MediaBundle = {};
 
   for (const key in mediaBundle) {
-    if (/^application\/vnd.vega(.*\+)json$/.test(key)) {
+    if (IS_VEGA.test(key)) {
       bundle[key] = JSON.stringify(mediaBundle[key]);
     } else if (typeof mediaBundle[key] === "string") {
       // Strings are immutable and can be just taken as-is.
@@ -214,7 +216,7 @@ export function createOnDiskMediaBundle(
 
   const freshBundle: OnDiskMediaBundle = {};
   for (const key in mediaBundle) {
-    if (/^application\/vnd.vega(.*\+)json$/.test(key)) {
+    if (IS_VEGA.test(key)) {
       freshBundle[key] = JSON.parse(mediaBundle[key] as string);
     } else if (
       !isJSONKey(key) &&

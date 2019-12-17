@@ -3,7 +3,7 @@ import * as React from "react";
 import { embed, VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 
-/** Props needed for embedding a certain Vega (Lite) media type. */
+/** Props needed for embedding a certain Vega(-Lite) media type. */
 export interface VegaEmbedProps<T extends VegaMediaType> {
   spec: string;
   mediaType: T;
@@ -12,7 +12,7 @@ export interface VegaEmbedProps<T extends VegaMediaType> {
   errorHandler?: (error: Error) => void;
 }
 
-/** React component embedding a certain Vega (Lite) media type. */
+/** React component embedding a certain Vega(-Lite) media type. */
 export class VegaEmbed<T extends VegaMediaType>
   extends React.Component<VegaEmbedProps<T>> {
 

@@ -16,8 +16,8 @@ export const Error = (props: ErrorProps) =>
     : null;
 
 const StyledError = styled(Error)`
-  background: var(--jp-error-color3);
-  color: var(--jp-error-color0);
+  background: var(--theme-error-bg);
+  color: var(--theme-error-fg);
   border: 1px solid;
   padding: 0.5ex;
 `;
