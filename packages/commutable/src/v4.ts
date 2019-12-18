@@ -95,9 +95,21 @@ export interface NotebookV4 {
  *
  * @returns ImmutableMetadata An immutable representation of the metadata.
  */
-function createImmutableMetadata(metadata: JSONObject): ImmutableMap<any, any> {
+export function createImmutableMetadata(
+  metadata: JSONObject
+): ImmutableMap<any, any> {
   return ImmutableMap(metadata).map((v, k: string) => {
     if (k !== "tags") {
+      /**
+       * For backwards compatability, map the hidden states that were previously
+       * used by nteract to the convention that is now part of the standard.
+       */
+      if (k === "inputHidden") {
+        return ImmutableMap({ jupyter: ImmutableMap({ source_hidden: v }) });
+      }
+      if (k === "outputHidden") {
+        return ImmutableMap({ jupyter: ImmutableMap({ outputs_hidden: v }) });
+      }
       return v;
     }
 
