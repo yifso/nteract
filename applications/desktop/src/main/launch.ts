@@ -33,6 +33,7 @@ export function launch(filename?: string) {
     show: false,
     webPreferences: { nodeIntegration: true }
   });
+  win.webContents.openDevTools();
 
   win.once("ready-to-show", () => {
     win.show();

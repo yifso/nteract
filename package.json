@@ -224,6 +224,7 @@
     "regenerator-runtime": "^0.13.0",
     "remark-parse": "^7.0.0",
     "remark-stringify": "^7.0.0",
+    "remote-redux-devtools": "^0.5.16",
     "rimraf": "^3.0.0",
     "rxjs": "^6.3.3",
     "shell-env": "^3.0.0",

@@ -1,5 +1,6 @@
 import { middlewares as coreMiddlewares } from "@nteract/core";
 import { applyMiddleware, compose, createStore, Middleware } from "redux";
+import { composeWithDevTools } from 'remote-redux-devtools';
 
 import reducers from "./reducers";
 
@@ -11,5 +12,5 @@ if (process.env.DEBUG === "true") {
 }
 
 export default function configureStore() {
-  return createStore(reducers, compose(applyMiddleware(...middlewares)));
+  return createStore(reducers, composeWithDevTools({realtime: true, name:"main"})(applyMiddleware(...middlewares)));
 }

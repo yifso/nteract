@@ -87,6 +87,12 @@ ipc.on("show-message-box", (event: Event, arg: any) => {
 
 app.on("ready", initAutoUpdater);
 
+
+app.on("ready", () => {
+  BrowserWindow.addDevToolsExtension("C:\\Users\\Wade\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.2.1_0");
+  BrowserWindow.addDevToolsExtension("C:\\Users\\Wade\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\2.17.0_0");
+});
+
 const electronReady$ = new Observable(observer => {
   app.on("ready", (event: Event) => observer.next(event));
 });
