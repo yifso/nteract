@@ -439,13 +439,7 @@ export const restartWebSocketKernelEpic = (
       const id = kernel.id;
 
       return kernels.restart(serverConfig, id).pipe(
-        mergeMap<
-          AjaxResponse,
-          | actions.RestartKernelFailed
-          | actions.RestartKernelSuccessful
-          | actions.ExecuteAllCells
-          | actions.ClearAllOutputs
-        >((response: AjaxResponse) => {
+        mergeMap((response: AjaxResponse) => {
           if (response.status !== 200) {
             return of(
               actions.restartKernelFailed({

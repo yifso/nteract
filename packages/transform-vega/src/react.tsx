@@ -1,32 +1,37 @@
+import { Error } from "@nteract/presentational-components";
 import * as React from "react";
-import { Result } from "vega-embed";
 import { embed, VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 
-/** Props needed for embedding a certain Vega (Lite) media type. */
+/** Props needed for embedding a certain Vega(-Lite) media type. */
 export interface VegaEmbedProps<T extends VegaMediaType> {
-  spec: Readonly<{}>;
+  spec: string;
   mediaType: T;
   options?: Partial<VegaOptions>,
   resultHandler?: (result: any) => void;
   errorHandler?: (error: Error) => void;
 }
 
-/** React component embedding a certain Vega (Lite) media type. */
+/** React component embedding a certain Vega(-Lite) media type. */
 export class VegaEmbed<T extends VegaMediaType>
   extends React.Component<VegaEmbedProps<T>> {
 
-  private anchorRef: React.RefObject<HTMLDivElement>;
-  private embedResult: Result | void;
+  private readonly anchorRef: React.RefObject<HTMLDivElement>;
+  private embedResult?: any;
+  private embedError?: Error;
 
   constructor(props: VegaEmbedProps<T>) {
     super(props);
     this.anchorRef = React.createRef<HTMLDivElement>();
-    this.embedResult = undefined;
   }
 
   render(): JSX.Element {
-    return <div ref={this.anchorRef} />;
+    return (
+      <div>
+        <Error error={this.embedError}/>
+        <div ref={this.anchorRef}/>
+      </div>
+    );
   }
 
   async callEmbedder(): Promise<void> {
@@ -40,17 +45,23 @@ export class VegaEmbed<T extends VegaMediaType>
         this.props.options,
       );
 
-      if (this.props.resultHandler) {
-        this.props.resultHandler(this.embedResult);
-      }
+      this.props.resultHandler?.(this.embedResult);
     }
     catch (error) {
-      (this.props.errorHandler || console.error)(error);
+      this.props.errorHandler?.(error);
+      this.embedError = error;
+      this.forceUpdate();
     }
   }
 
   shouldComponentUpdate(nextProps: VegaEmbedProps<T>): boolean {
-    return this.props.spec !== nextProps.spec;
+    if (this.props.spec !== nextProps.spec) {
+      this.embedError = undefined;
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   componentDidMount(): void {
@@ -58,18 +69,21 @@ export class VegaEmbed<T extends VegaMediaType>
   }
 
   componentDidUpdate(): void {
-    this.callEmbedder().then();
+    if (!this.embedError) {
+      this.callEmbedder().then();
+    }
   }
 
   componentWillUnmount(): void {
-    if (
-      this.embedResult &&
-      this.embedResult.view &&
-      this.embedResult.view.finalize
-    ) {
-      this.embedResult.view.finalize();
-    }
+    if (this.embedResult) {
+      if (this.embedResult.finalize) {
+        this.embedResult.finalize();
+      }
+      else if (this.embedResult.view?.finalize) {
+        this.embedResult.view.finalize();
+      }
 
-    this.embedResult = undefined;
+      this.embedResult = undefined;
+    }
   }
 }

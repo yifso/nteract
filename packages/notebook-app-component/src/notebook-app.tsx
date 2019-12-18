@@ -7,6 +7,7 @@ import {
   JSONObject
 } from "@nteract/commutable";
 import { actions, selectors } from "@nteract/core";
+import { MarkdownPreviewer } from "@nteract/markdown";
 import {
   KernelOutputError,
   Media,
@@ -25,7 +26,6 @@ import {
   Prompt,
   Source
 } from "@nteract/presentational-components";
-import { MarkdownPreviewer } from "@nteract/markdown";
 import { AppState, ContentRef, InputRequestMessage } from "@nteract/types";
 import * as Immutable from "immutable";
 import * as React from "react";
@@ -35,7 +35,9 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Subject } from "rxjs";
 
+import styled from "styled-components";
 import CellCreator from "./cell-creator";
+import UndoableCellDelete from "./decorators/undoable-cell-delete";
 import DraggableCell from "./draggable-cell";
 import Editor from "./editor";
 import { HijackScroll } from "./hijack-scroll";
@@ -43,8 +45,6 @@ import NotebookHelmet from "./notebook-helmet";
 import StatusBar from "./status-bar";
 import Toolbar, { CellToolbarMask } from "./toolbar";
 import TransformMedia from "./transform-media";
-
-import styled from "styled-components";
 
 function getTheme(theme: string) {
   switch (theme) {
@@ -214,7 +214,7 @@ const makeMapDispatchToCellProps = (
         })
       ),
     clearOutputs: () => dispatch(actions.clearOutputs({ id, contentRef })),
-    deleteCell: () => dispatch(actions.deleteCell({ id, contentRef })),
+    deleteCell: () => dispatch(actions.markCellAsDeleting({ id, contentRef })),
     executeCell: () => dispatch(actions.executeCell({ id, contentRef })),
     toggleCellInputVisibility: () =>
       dispatch(actions.toggleCellInputVisibility({ id, contentRef })),
@@ -273,7 +273,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       toggleCellInputVisibility,
       toggleCellOutputVisibility,
       toggleOutputExpansion,
-      changeCellType,
       cellFocused,
       cellStatus,
       cellType,
@@ -283,7 +282,6 @@ class AnyCell extends React.PureComponent<AnyCellProps> {
       focusEditor,
       id,
       tags,
-      theme,
       selectCell,
       unfocusEditor,
       contentRef,
@@ -439,6 +437,7 @@ type NotebookProps = NotebookStateProps & NotebookDispatchProps;
 interface NotebookStateProps {
   cellOrder: Immutable.List<any>;
   theme: string;
+  deleteDelay: number;
   contentRef: ContentRef;
   focusedCell: CellId | null | undefined;
   cellMap: Immutable.Map<CellId, any>;
@@ -490,12 +489,14 @@ const makeMapStateToProps = (
       );
     }
     const theme = selectors.userTheme(state);
+    const deleteDelay = selectors.deleteDelay(state) / 1000;
 
     if (model.type !== "notebook") {
       return {
         cellOrder: Immutable.List(),
         contentRef,
         theme,
+        deleteDelay,
         focusedCell: null,
         cellMap: Immutable.Map()
       };
@@ -514,6 +515,7 @@ const makeMapStateToProps = (
       cellOrder: model.notebook.cellOrder,
       contentRef,
       theme,
+      deleteDelay,
       focusedCell,
       cellMap
     };
@@ -637,14 +639,20 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
           />
           {this.props.cellOrder.map(cellID => (
             <div className="cell-container" key={`cell-container-${cellID}`}>
-              <DraggableCell
-                moveCell={this.props.moveCell}
+              <UndoableCellDelete
                 id={cellID}
-                focusCell={this.props.focusCell}
                 contentRef={this.props.contentRef}
+                secondsDelay={this.props.deleteDelay}
               >
-                <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
-              </DraggableCell>
+                <DraggableCell
+                  moveCell={this.props.moveCell}
+                  id={cellID}
+                  focusCell={this.props.focusCell}
+                  contentRef={this.props.contentRef}
+                >
+                  <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
+                </DraggableCell>
+              </UndoableCellDelete>
               <CellCreator
                 key={`creator-${cellID}`}
                 id={cellID}

@@ -3,8 +3,7 @@ import * as React from "react";
 
 import {
   Vega2, Vega3, Vega4, Vega5,
-  VegaLite1, VegaLite2, VegaLite3,
-  VegaOptions,
+  VegaLite1, VegaLite2, VegaLite3, VegaLite4
 } from "../src/";
 
 const vlSpec = {
@@ -127,35 +126,27 @@ const vgSpec = {
   ]
 };
 
-const makeTestBody = (
-  component,
-  mimetype,
-  spec,
-  {canRender} = {canRender: true}
-) => () => {
+const makeTestBody = (component, mimetype, spec) => () => {
   it("has the correct media type", () => {
     expect(component.MIMETYPE).toBe(mimetype);
   });
 
-  if (canRender) {
-    it("renders the spec as SVG properly", done => {
-      const wrapper = mount(component({
-        data: spec,
-        options: {renderer: "svg"},
-        onError: error => { throw error },
-        onResult: () => {
-          expect(wrapper.render()).toMatchSnapshot();
-          wrapper.unmount();   // must not throw
-          done();
-        },
-      }));
-    });
-  }
+  it("renders the spec as SVG properly", done => {
+    const wrapper = mount(component({
+      data: JSON.stringify(spec),
+      options: {renderer: "svg"},
+      onError: error => { throw error },
+      onResult: () => {
+        expect(wrapper.render()).toMatchSnapshot();
+        wrapper.unmount();   // must not throw
+        done();
+      },
+    }));
+  });
 };
 
-describe("VegaLite1", makeTestBody(
-  VegaLite1, "application/vnd.vegalite.v1+json", vlSpec,
-  {canRender: false},   // use canvas to measure text even in SVG mode
+describe.skip("VegaLite1", makeTestBody(
+  VegaLite1, "application/vnd.vegalite.v1+json", vlSpec
 ));
 
 describe("VegaLite2", makeTestBody(
@@ -166,9 +157,12 @@ describe("VegaLite3", makeTestBody(
   VegaLite3, "application/vnd.vegalite.v3+json", vlSpec,
 ));
 
-describe("Vega2", makeTestBody(
-  Vega2, "application/vnd.vega.v2+json", vgSpec,
-  {canRender: false},   // use canvas to measure text even in SVG mode
+describe("VegaLite4", makeTestBody(
+  VegaLite4, "application/vnd.vegalite.v4+json", vlSpec,
+));
+
+describe.skip("Vega2", makeTestBody(
+  Vega2, "application/vnd.vega.v2+json", vgSpec
 ));
 
 describe("Vega3", makeTestBody(

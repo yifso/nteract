@@ -40,7 +40,7 @@ import { existsSync } from "fs";
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
   state$: StateObservable<AppState>
-): Observable<{}> {
+): Observable<unknown> {
   return action$.pipe(
     ofType(actions.CHANGE_CONTENT_NAME),
     switchMap(action => {
@@ -112,7 +112,7 @@ export function fetchContentEpic(
     | actions.FetchContentFulfilled
   >,
   state$: StateObservable<AppState>
-): Observable<{}> {
+): Observable<unknown> {
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
     switchMap(action => {

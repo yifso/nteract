@@ -17,7 +17,7 @@ import {
   insertCellAt,
   makeCodeCell,
   makeMarkdownCell,
-  makeRawCell,
+  makeRawCell, markCellDeleting, markCellNotDeleting,
   OnDiskDisplayData,
   OnDiskExecuteResult,
   OnDiskOutput,
@@ -32,7 +32,7 @@ import {
 } from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
-import { has } from "lodash";
+import has from "lodash.has";
 import uuid from "uuid/v4";
 
 type KeyPath = List<string | number>;
@@ -206,7 +206,7 @@ function clearAllOutputs(
   return state
     .setIn(["notebook", "cellMap"], cellMap)
     .set("transient", transient)
-    .setIn("cellPrompts", Map());
+    .set("cellPrompts", Map());
 }
 
 type UpdatableOutputContent =
@@ -444,6 +444,32 @@ function moveCell(
         .splice(oldIndex, 1)
         .splice(newIndex - (oldIndex < newIndex ? 1 : 0), 0, action.payload.id);
     }
+  );
+}
+
+function markCellAsDeleting(
+  state: NotebookModel,
+  action: actionTypes.MarkCellAsDeleting,
+): RecordOf<DocumentRecordProps> {
+  const id = action.payload.id ? action.payload.id : state.cellFocused;
+  if (!id) {
+    return state;
+  }
+  return state.update("notebook", (notebook: ImmutableNotebook) =>
+    markCellDeleting(notebook, id)
+  );
+}
+
+function unmarkCellAsDeleting(
+  state: NotebookModel,
+  action: actionTypes.UnmarkCellAsDeleting,
+): RecordOf<DocumentRecordProps> {
+  const id = action.payload.id ? action.payload.id : state.cellFocused;
+  if (!id) {
+    return state;
+  }
+  return state.update("notebook", (notebook: ImmutableNotebook) =>
+    markCellNotDeleting(notebook, id)
   );
 }
 
@@ -968,6 +994,8 @@ type DocumentAction =
   | actionTypes.AppendOutput
   | actionTypes.UpdateDisplay
   | actionTypes.MoveCell
+  | actionTypes.MarkCellAsDeleting
+  | actionTypes.UnmarkCellAsDeleting
   | actionTypes.DeleteCell
   | actionTypes.RemoveCell
   | actionTypes.CreateCellBelow
@@ -1037,6 +1065,10 @@ export function notebook(
       return setInCell(state, action);
     case actionTypes.MOVE_CELL:
       return moveCell(state, action);
+    case actionTypes.MARK_CELL_AS_DELETING:
+      return markCellAsDeleting(state, action);
+    case actionTypes.UNMARK_CELL_AS_DELETING:
+      return unmarkCellAsDeleting(state, action);
     case actionTypes.DELETE_CELL:
       return deleteCellFromState(state, action);
     case actionTypes.CREATE_CELL_BELOW:
