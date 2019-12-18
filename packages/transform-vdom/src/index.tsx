@@ -1,12 +1,36 @@
 import { cloneDeep } from "lodash";
 import * as React from "react";
 
-import {
-  Attributes,
-  objectToReactElement,
-  SerializedEvent,
-  VDOMEl
-} from "./object-to-react";
+import { objectToReactElement } from "./object-to-react";
+
+interface Attributes {
+  [key: string]: any;
+}
+export interface EventHandlers {
+  [key: string]: string;
+}
+
+export interface VDOMEl {
+  tagName: string; // Could be an enum honestly
+  children: React.ReactNode | VDOMEl | Array<React.ReactNode | VDOMEl>;
+  attributes: Attributes;
+  eventHandlers?: EventHandlers;
+  key: number | string | null;
+}
+
+type SerializedEvent<T> =
+  | Partial<React.ClipboardEvent<T>>
+  | Partial<React.CompositionEvent<T>>
+  | Partial<React.KeyboardEvent<T>>
+  | Partial<React.ChangeEvent<T>>
+  | Partial<React.MouseEvent<T>>
+  | Partial<React.PointerEvent<T>>
+  | Partial<React.TouchEvent<T>>
+  | Partial<React.UIEvent<T>>
+  | Partial<React.WheelEvent<T>>
+  | Partial<React.AnimationEvent<T>>
+  | Partial<React.TransitionEvent<T>>
+  | {};
 
 interface Props {
   mediaType: "application/vdom.v1+json";

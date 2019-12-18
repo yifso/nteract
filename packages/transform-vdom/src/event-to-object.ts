@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export type SerializedEvent<T> =
+type SerializedEvent<T> =
   | Partial<React.ClipboardEvent<T>>
   | Partial<React.CompositionEvent<T>>
   | Partial<React.KeyboardEvent<T>>
@@ -13,6 +13,8 @@ export type SerializedEvent<T> =
   | Partial<React.AnimationEvent<T>>
   | Partial<React.TransitionEvent<T>>
   | {};
+
+export { SerializedEvent };
 
 export function serializeEvent<T>(
   event: React.SyntheticEvent<T>

@@ -11,11 +11,7 @@ import {
   makeStateRecord,
   makeTransformsRecord
 } from "@nteract/core";
-import {
-  epics as coreEpics,
-  middlewares as coreMiddlewares,
-  reducers
-} from "@nteract/core";
+import { epics as coreEpics, reducers } from "@nteract/core";
 import { Media } from "@nteract/outputs";
 import TransformVDOM from "@nteract/transform-vdom";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
@@ -32,9 +28,6 @@ import { catchError } from "rxjs/operators";
 import Immutable from "immutable";
 
 const packageJson = require("../package.json");
-
-const composeEnhancers =
-  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   app: reducers.app,
@@ -138,12 +131,12 @@ export default function configureStore() {
       })
     );
   const epicMiddleware = createEpicMiddleware();
-  const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
+  const middlewares = [epicMiddleware];
 
   const store = createStore(
     rootReducer,
     (initialState as unknown) as any,
-    composeEnhancers(applyMiddleware(...middlewares))
+    applyMiddleware(...middlewares)
   );
 
   epicMiddleware.run(rootEpic);

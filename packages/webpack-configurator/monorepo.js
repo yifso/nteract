@@ -187,6 +187,21 @@ module.exports = {
       name: "@nteract/web-app",
       version: "1.0.0",
       private: false
+    },
+    {
+      name: "@nteract/reducers",
+      version: "1.0.0",
+      private: false
+    },
+    {
+      name: "@nteract/epics",
+      version: "1.0.0",
+      private: false
+    },
+    {
+      name: "@nteract/actions",
+      version: "1.0.0",
+      private: false
     }
   ]
 };

@@ -1,3 +1,5 @@
+import React from "react";
+
 class BinderLogo extends React.Component {
   render() {
     return (
@@ -155,7 +157,7 @@ class BinderLogs extends React.Component {
 }
 // TODO: Make a generic little console for some of the styled container pieces,
 //       then make this component inject the binder specific bits
-export class BinderConsole extends React.Component {
+export default class BinderConsole extends React.Component {
   render() {
     const {
       logs,

@@ -1,17 +1,16 @@
-import { NextPage } from "next";
-import Link from "next/link";
-import * as React from "react";
+import React from "react";
+
+import Notebook from "@nteract/notebook-app-component";
+import BinderConsole from "../components/binder-console";
+import BinderHeader from "../components/binder-header";
 
 const IndexPage: NextPage = () => {
   return (
-    <Layout title="Home | Next.js + TypeScript Example">
-      <h1>Hello Next.js 👋</h1>
-      <p>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-      </p>
-    </Layout>
+    <React.Fragment>
+      <BinderHeader />
+      <BinderConsole />
+      <Notebook contentRef={"tests"} />;
+    </React.Fragment>
   );
 };
 

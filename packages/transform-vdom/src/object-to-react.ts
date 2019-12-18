@@ -32,13 +32,13 @@
  */
 
 import * as React from "react";
-import { SerializedEvent, serializeEvent } from "./event-to-object";
+import { serializeEvent } from "./event-to-object";
 
-export { SerializedEvent } from "./event-to-object";
-
-export interface Attributes {
+interface Attributes {
   [key: string]: any;
 }
+
+export { Attributes };
 
 export interface EventHandlers {
   [key: string]: string;
@@ -127,10 +127,9 @@ export function objectToReactElement(
       if (args[1] === undefined) {
         args[1] = null;
       }
-      args = args.concat(arrayToReactChildren(
-        children as VDOMEl[],
-        onVDOMEvent
-      ) as any);
+      args = args.concat(
+        arrayToReactChildren(children as VDOMEl[], onVDOMEvent) as any
+      );
     } else if (typeof children === "string") {
       args[2] = children;
     } else if (typeof children === "object") {

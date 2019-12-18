@@ -32,9 +32,6 @@ const tsLoaderConfig = {
   }
 };
 
-// We will follow the next.js universal webpack configuration signature
-// https://zeit.co/blog/next5#universal-webpack-and-next-plugins
-
 function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
   if (config.externals) {
     config.externals = ["canvas", ...config.externals];
@@ -42,18 +39,10 @@ function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
     config.externals = ["canvas"];
   }
 
-  // config.module.rules = config.module.rules.map(rule => {
-  //   if (
-  //     rule.test.source.includes("js") &&
-  //     typeof rule.exclude !== "undefined"
-  //   ) {
-  //     rule.exclude = exclude;
-  //   }
-
-  //   return rule;
-  // });
-
-  // config.module.rules.push(tsLoaderConfig);
+  config.node = {
+    ...config.node,
+    fs: "empty"
+  };
 
   config.resolve = {
     ...config.resolve,
