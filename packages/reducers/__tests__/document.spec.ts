@@ -590,7 +590,9 @@ describe("toggleCellOutputVisibility", () => {
     const originalState = monocellDocument.updateIn(
       ["notebook", "cellMap"],
       cells =>
-        cells.map(value => value.setIn(["metadata", "outputHidden"], false))
+        cells.map(value =>
+          value.setIn(["metadata", "jupyter", "outputs_hidden"], false)
+        )
     );
 
     const id = originalState.getIn(["notebook", "cellOrder"]).first();
@@ -599,7 +601,14 @@ describe("toggleCellOutputVisibility", () => {
       actions.toggleCellOutputVisibility({ id })
     );
     expect(
-      state.getIn(["notebook", "cellMap", id, "metadata", "outputHidden"])
+      state.getIn([
+        "notebook",
+        "cellMap",
+        id,
+        "metadata",
+        "jupyter",
+        "outputs_hidden"
+      ])
     ).toBe(true);
   });
 });
@@ -609,7 +618,9 @@ describe("toggleCellInputVisibility", () => {
     const originalState = monocellDocument.updateIn(
       ["notebook", "cellMap"],
       cells =>
-        cells.map(value => value.setIn(["metadata", "inputHidden"], false))
+        cells.map(value =>
+          value.setIn(["metadata", "jupyter", "source_hidden"], false)
+        )
     );
     const id = originalState.getIn(["notebook", "cellOrder"]).first();
     const state = reducers(
@@ -619,7 +630,14 @@ describe("toggleCellInputVisibility", () => {
       })
     );
     expect(
-      state.getIn(["notebook", "cellMap", id, "metadata", "inputHidden"])
+      state.getIn([
+        "notebook",
+        "cellMap",
+        id,
+        "metadata",
+        "jupyter",
+        "source_hidden"
+      ])
     ).toBe(true);
   });
 });
@@ -1136,19 +1154,18 @@ describe("unhideAll", () => {
       Immutable.fromJS({
         cellOrder,
         cellMap: {
-          [cellOrder[0]]: emptyCodeCell.setIn(
-            ["metadata", "outputHidden"],
-            false
-          ),
-          [cellOrder[1]]: emptyCodeCell.setIn(
-            ["metadata", "outputHidden"],
-            true
-          ),
-          [cellOrder[2]]: emptyCodeCell.setIn(
-            ["metadata", "inputHidden"],
-            false
-          ),
-          [cellOrder[3]]: emptyCodeCell.setIn(["metadata", "inputHidden"], true)
+          [cellOrder[0]]: emptyCodeCell
+            .setIn(["metadata", "jupyter", "outputs_hidden"], false)
+            .setIn(["metadata", "jupyter", "source_hidden"], false),
+          [cellOrder[1]]: emptyCodeCell
+            .setIn(["metadata", "jupyter", "outputs_hidden"], true)
+            .setIn(["metadata", "jupyter", "source_hidden"], false),
+          [cellOrder[2]]: emptyCodeCell
+            .setIn(["metadata", "jupyter", "source_hidden"], false)
+            .setIn(["metadata", "jupyter", "outputs_hidden"], false),
+          [cellOrder[3]]: emptyCodeCell
+            .setIn(["metadata", "jupyter", "source_hidden"], true)
+            .setIn(["metadata", "jupyter", "outputs_hidden"], false)
         }
       })
     );
@@ -1168,7 +1185,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(true);
@@ -1176,7 +1193,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, true, false, false]);
@@ -1196,7 +1213,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(false);
@@ -1204,7 +1221,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, true, false, false]);
@@ -1224,7 +1241,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(true);
@@ -1232,7 +1249,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, false, false, true]);
@@ -1252,7 +1269,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(false);
@@ -1260,7 +1277,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, false, false, true]);
@@ -1281,7 +1298,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(true);
@@ -1289,7 +1306,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(true);
@@ -1310,7 +1327,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(false);
@@ -1318,7 +1335,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).not.toContain(false);
@@ -1337,7 +1354,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "inputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "source_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, false, false, true]);
@@ -1345,7 +1362,7 @@ describe("unhideAll", () => {
     expect(
       actualState
         .getIn(["notebook", "cellMap"])
-        .map(cell => cell.getIn(["metadata", "outputHidden"]))
+        .map(cell => cell.getIn(["metadata", "jupyter", "outputs_hidden"]))
         .toList()
         .toArray()
     ).toEqual([false, true, false, false]);

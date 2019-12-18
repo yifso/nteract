@@ -33,7 +33,7 @@ import {
   PayloadMessage
 } from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
-import { fromJS, List, Map, RecordOf, Set } from "immutable";
+import { fromJS, List, Map, RecordOf, Set, isImmutable } from "immutable";
 import has from "lodash.has";
 import uuid from "uuid/v4";
 
@@ -692,38 +692,24 @@ function toggleCellOutputVisibility(
   );
 }
 
-interface ICellVisibilityMetadata {
-  jupyter?: {
-    source_hidden?: boolean;
-    outputs_hidden?: boolean;
-  };
-}
-
 function unhideAll(
   state: NotebookModel,
   action: actionTypes.UnhideAll
 ): RecordOf<DocumentRecordProps> {
-  let metadataMixin: ICellVisibilityMetadata = {};
-  if (action.payload.outputHidden !== undefined) {
-    metadataMixin = {
-      ...metadataMixin,
-      jupyter: {
-        outputs_hidden: action.payload.outputHidden
-      }
-    };
+  const { outputHidden, inputHidden } = action.payload;
+  let metadataMixin = Map<string, boolean>();
+
+  if (outputHidden !== undefined) {
+    metadataMixin = metadataMixin.set("outputs_hidden", outputHidden);
   }
-  if (action.payload.inputHidden !== undefined) {
-    metadataMixin = {
-      ...metadataMixin,
-      jupyter: {
-        source_hidden: action.payload.inputHidden
-      }
-    };
+  if (inputHidden !== undefined) {
+    metadataMixin = metadataMixin.set("source_hidden", inputHidden);
   }
+
   return state.updateIn(["notebook", "cellMap"], cellMap =>
     cellMap.map((cell: ImmutableCell) => {
       if ((cell as any).get("cell_type") === "code") {
-        return cell.mergeIn(["metadata"], metadataMixin);
+        return cell.mergeIn(["metadata", "jupyter"], metadataMixin);
       }
       return cell;
     })
