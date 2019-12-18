@@ -12,7 +12,7 @@ interface Props {
 class TimedUndoableDelete
   extends React.PureComponent<Props> {
 
-  timer: NodeJS.Timeout | null = null;
+  timer: number | null = null;
 
   componentDidMount(): void {
     this.timer = setTimeout(
