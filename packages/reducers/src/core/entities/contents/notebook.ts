@@ -17,7 +17,9 @@ import {
   insertCellAt,
   makeCodeCell,
   makeMarkdownCell,
-  makeRawCell, markCellDeleting, markCellNotDeleting,
+  makeRawCell,
+  markCellDeleting,
+  markCellNotDeleting,
   OnDiskDisplayData,
   OnDiskExecuteResult,
   OnDiskOutput,
@@ -449,7 +451,7 @@ function moveCell(
 
 function markCellAsDeleting(
   state: NotebookModel,
-  action: actionTypes.MarkCellAsDeleting,
+  action: actionTypes.MarkCellAsDeleting
 ): RecordOf<DocumentRecordProps> {
   const id = action.payload.id ? action.payload.id : state.cellFocused;
   if (!id) {
@@ -462,7 +464,7 @@ function markCellAsDeleting(
 
 function unmarkCellAsDeleting(
   state: NotebookModel,
-  action: actionTypes.UnmarkCellAsDeleting,
+  action: actionTypes.UnmarkCellAsDeleting
 ): RecordOf<DocumentRecordProps> {
   const id = action.payload.id ? action.payload.id : state.cellFocused;
   if (!id) {
@@ -677,27 +679,20 @@ function toggleCellOutputVisibility(
     return state;
   }
 
-  return state
-    .setIn(
-      ["notebook", "cellMap", id, "metadata", "outputHidden"],
-      !state.getIn(["notebook", "cellMap", id, "metadata", "outputHidden"])
-    )
-    .setIn(
-      ["notebook", "cellMap", id, "metadata", "jupyter", "outputs_hidden"],
-      !state.getIn([
-        "notebook",
-        "cellMap",
-        id,
-        "metadata",
-        "jupyter",
-        "outputs_hidden"
-      ])
-    );
+  return state.setIn(
+    ["notebook", "cellMap", id, "metadata", "jupyter", "outputs_hidden"],
+    !state.getIn([
+      "notebook",
+      "cellMap",
+      id,
+      "metadata",
+      "jupyter",
+      "outputs_hidden"
+    ])
+  );
 }
 
 interface ICellVisibilityMetadata {
-  inputHidden?: boolean;
-  outputHidden?: boolean;
   jupyter?: {
     source_hidden?: boolean;
     outputs_hidden?: boolean;
@@ -712,7 +707,6 @@ function unhideAll(
   if (action.payload.outputHidden !== undefined) {
     metadataMixin = {
       ...metadataMixin,
-      outputHidden: action.payload.outputHidden,
       jupyter: {
         outputs_hidden: action.payload.outputHidden
       }
@@ -721,7 +715,6 @@ function unhideAll(
   if (action.payload.inputHidden !== undefined) {
     metadataMixin = {
       ...metadataMixin,
-      inputHidden: action.payload.inputHidden,
       jupyter: {
         source_hidden: action.payload.inputHidden
       }
@@ -746,22 +739,17 @@ function toggleCellInputVisibility(
     return state;
   }
 
-  return state
-    .setIn(
-      ["notebook", "cellMap", id, "metadata", "inputHidden"],
-      !state.getIn(["notebook", "cellMap", id, "metadata", "inputHidden"])
-    )
-    .setIn(
-      ["notebook", "cellMap", id, "metadata", "jupyter", "source_hidden"],
-      !state.getIn([
-        "notebook",
-        "cellMap",
-        id,
-        "metadata",
-        "jupyter",
-        "source_hidden"
-      ])
-    );
+  return state.setIn(
+    ["notebook", "cellMap", id, "metadata", "jupyter", "source_hidden"],
+    !state.getIn([
+      "notebook",
+      "cellMap",
+      id,
+      "metadata",
+      "jupyter",
+      "source_hidden"
+    ])
+  );
 }
 
 function updateCellStatus(

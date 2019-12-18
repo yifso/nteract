@@ -303,12 +303,16 @@ export function toJS(immnb: ImmutableNotebook): NotebookV4 {
   } = plainNotebook.cellMap.toObject();
 
   const cells = plainCellOrder
-    .filter((cellId: string) =>
-      !plainCellMap[cellId].getIn(["metadata", "nteract", "transient", "deleting"])
+    .filter(
+      (cellId: string) =>
+        !plainCellMap[cellId].getIn([
+          "metadata",
+          "nteract",
+          "transient",
+          "deleting"
+        ])
     )
-    .map((cellId: string) =>
-      cellToJS(plainCellMap[cellId])
-    );
+    .map((cellId: string) => cellToJS(plainCellMap[cellId]));
 
   return {
     cells,
