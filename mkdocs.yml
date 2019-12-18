@@ -1,0 +1,8 @@
+site_name: nteract
+
+nav:
+  - Packages:
+      - "@nteract/stateful-components": "!include ./packages/stateful-components/mkdocs.yml"
+
+plugins:
+  - monorepo

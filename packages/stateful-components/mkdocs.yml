@@ -1,0 +1,7 @@
+site_name: nteract/stateful-components
+
+nav:
+  - Overview: "docs/overview.md"
+  - Extensibility: "docs/extensibility.md"
+  - Styling: "docs/styling.md"
+  - Examples: "docs/examples.md"
