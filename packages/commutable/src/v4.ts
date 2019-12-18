@@ -95,21 +95,9 @@ export interface NotebookV4 {
  *
  * @returns ImmutableMetadata An immutable representation of the metadata.
  */
-export function createImmutableMetadata(
-  metadata: JSONObject
-): ImmutableMap<any, any> {
+function createImmutableMetadata(metadata: JSONObject): ImmutableMap<any, any> {
   return ImmutableMap(metadata).map((v, k: string) => {
     if (k !== "tags") {
-      /**
-       * For backwards compatability, map the hidden states that were previously
-       * used by nteract to the convention that is now part of the standard.
-       */
-      if (k === "inputHidden") {
-        return ImmutableMap({ jupyter: ImmutableMap({ source_hidden: v }) });
-      }
-      if (k === "outputHidden") {
-        return ImmutableMap({ jupyter: ImmutableMap({ outputs_hidden: v }) });
-      }
       return v;
     }
 
@@ -315,16 +303,12 @@ export function toJS(immnb: ImmutableNotebook): NotebookV4 {
   } = plainNotebook.cellMap.toObject();
 
   const cells = plainCellOrder
-    .filter(
-      (cellId: string) =>
-        !plainCellMap[cellId].getIn([
-          "metadata",
-          "nteract",
-          "transient",
-          "deleting"
-        ])
+    .filter((cellId: string) =>
+      !plainCellMap[cellId].getIn(["metadata", "nteract", "transient", "deleting"])
     )
-    .map((cellId: string) => cellToJS(plainCellMap[cellId]));
+    .map((cellId: string) =>
+      cellToJS(plainCellMap[cellId])
+    );
 
   return {
     cells,

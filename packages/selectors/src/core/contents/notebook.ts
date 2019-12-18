@@ -94,7 +94,7 @@ export const codeCellIdsBelow = (
  */
 export const hiddenCellIds = (model: NotebookModel) =>
   model.notebook.cellOrder.filter(id =>
-    model.notebook.cellMap.getIn([id, "metadata", "jupyter", "input_hidden"])
+    model.notebook.cellMap.getIn([id, "metadata", "jupyter", "source_hidden"])
   );
 
 /**
@@ -103,7 +103,7 @@ export const hiddenCellIds = (model: NotebookModel) =>
  */
 export const idsOfHiddenOutputs = (model: NotebookModel) =>
   model.notebook.cellOrder.filter(id =>
-    model.notebook.cellMap.getIn([id, "metadata", "outputHidden"])
+    model.notebook.cellMap.getIn([id, "metadata", "jupyter", "outputs_hidden"])
   );
 
 /**

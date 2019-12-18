@@ -33,7 +33,7 @@ import {
   PayloadMessage
 } from "@nteract/types";
 import { escapeCarriageReturnSafe } from "escape-carriage";
-import { fromJS, List, Map, RecordOf, Set, isImmutable } from "immutable";
+import { fromJS, List, Map, RecordOf, Set } from "immutable";
 import has from "lodash.has";
 import uuid from "uuid/v4";
 
