@@ -26,7 +26,12 @@ export const makeCodeCell = Record<CodeCellParams>({
   metadata: ImmutableMap({
     collapsed: false,
     outputHidden: false,
-    inputHidden: false
+    inputHidden: false,
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
   }),
   source: "",
   outputs: ImmutableList()
@@ -44,7 +49,13 @@ export interface MarkdownCellParams {
 
 export const makeMarkdownCell = Record<MarkdownCellParams>({
   cell_type: "markdown",
-  metadata: ImmutableMap(),
+  metadata: ImmutableMap({
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
+  }),
   source: ""
 });
 
@@ -60,7 +71,13 @@ export interface RawCellParams {
 
 export const makeRawCell = Record<RawCellParams>({
   cell_type: "raw",
-  metadata: ImmutableMap(),
+  metadata: ImmutableMap({
+    nteract: ImmutableMap({
+      transient: ImmutableMap({
+        deleting: false,
+      }),
+    }),
+  }),
   source: ""
 });
 
