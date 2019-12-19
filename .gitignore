@@ -60,3 +60,6 @@ applications/desktop/*.ipynb
 
 # Typescript incremental build data
 *.tsbuildinfo
+
+# Don't commit the built monorepo docs
+site/
