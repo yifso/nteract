@@ -1,8 +1,26 @@
+import React from "react";
+import { connect } from "react-redux";
+
+import { AppState } from "@nteract/core";
+import { Dispatch } from "redux";
+
 const NTERACT_LOGO_URL =
   "https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/svg/nteract_logo_wide_purple_inverted.svg";
 
-export default class BinderHeader extends React.PureComponent {
-  render() {
+interface StateProps {
+  showPanel: boolean;
+}
+
+interface DispatchProps {
+  toggleShowPanel: () => void;
+  launchServer: () => void;
+}
+
+export class BinderHeader extends React.PureComponent<
+  StateProps & DispatchProps
+> {
+  render(): JSX.Element {
+    const { launchServer, toggleShowPanel, showPanel } = this.props;
     return (
       <header>
         <div className="left">
@@ -13,31 +31,41 @@ export default class BinderHeader extends React.PureComponent {
           />
 
           <button
-            onClick={this.handleSourceSubmit}
+            onClick={launchServer}
             className="play"
-            disabled={!currentKernel}
-            title={`run cell (${platform === "macOS" ? "⌘-" : "Ctrl-"}⏎)`}
+            disabled={false}
+            title={"Launch Server"}
           >
-            ▶ Run
+            ▶ Launch Server
           </button>
-          <button onClick={() => setShowPanel(!showPanel)}>
+          <button onClick={() => toggleShowPanel()}>
             {showPanel ? "Hide" : "Show"} logs
           </button>
         </div>
-        {currentServer && currentKernel ? (
-          <KernelUI
-            status={currentKernel.status}
-            kernelspecs={
-              currentServer.kernelSpecs &&
-              currentServer.kernelSpecs.kernelSpecByKernelName
-                ? currentServer.kernelSpecs.kernelSpecByKernelName
-                : {}
-            }
-            currentKernel={currentKernelName}
-            onChange={this.handleKernelChange}
-          />
-        ) : null}
       </header>
     );
   }
 }
+
+const makeMapStateToProps = (initialState: AppState, ownProps: {}) => {
+  const mapStateToProps = (state: AppState) => {
+    return {
+      showPanel: false
+    };
+  };
+  return mapStateToProps;
+};
+
+const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
+  const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+      toggleShowPanel: () => dispatch({}),
+      launchServer: () => dispatch({})
+    };
+  };
+  return mapDispatchToProps;
+};
+
+export default connect<StateProps, DispatchProps, {}, AppState>(
+  makeMapStateToProps
+)(BinderHeader);

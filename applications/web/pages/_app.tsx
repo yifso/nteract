@@ -1,3 +1,4 @@
+import Immutable from "immutable";
 import withRedux from "next-redux-wrapper";
 import App from "next/app";
 import React from "react";

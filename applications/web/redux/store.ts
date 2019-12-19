@@ -1,19 +1,8 @@
 import {
-  AppState,
-  ContentRecord,
-  createKernelspecsRef,
-  HostRecord,
-  makeAppRecord,
-  makeCommsRecord,
-  makeContentsRecord,
-  makeEntitiesRecord,
-  makeHostsRecord,
-  makeStateRecord,
-  makeTransformsRecord
+  epics as coreEpics,
+  middlewares as coreMiddlewares,
+  reducers
 } from "@nteract/core";
-import { epics as coreEpics, reducers } from "@nteract/core";
-import { Media } from "@nteract/outputs";
-import TransformVDOM from "@nteract/transform-vdom";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import {
   ActionsObservable,
@@ -27,28 +16,34 @@ import { catchError } from "rxjs/operators";
 
 import Immutable from "immutable";
 
-const packageJson = require("../package.json");
-
-const rootReducer = combineReducers({
-  app: reducers.app,
-  comms: reducers.comms,
-  config: reducers.config,
-  core: reducers.core
-});
+// Vendor modules
+import {
+  AppState,
+  makeAppRecord,
+  makeCommsRecord,
+  makeContentsRecord,
+  makeDummyContentRecord,
+  makeEntitiesRecord,
+  makeHostsRecord,
+  makeJupyterHostRecord,
+  makeStateRecord,
+  makeTransformsRecord
+} from "@nteract/core";
+import { Media } from "@nteract/outputs";
+import TransformVDOM from "@nteract/transform-vdom";
+import { ContentRecord, HostRecord } from "@nteract/types";
 
 const NullTransform = () => null;
-const kernelspecsRef = createKernelspecsRef();
 
 const initialState: AppState = {
   app: makeAppRecord({
-    version: `nteract-on-web@${packageJson.version}`
+    version: "nteract-on-web"
   }),
   comms: makeCommsRecord(),
   config: Immutable.Map({
     theme: "light"
   }),
   core: makeStateRecord({
-    currentKernelspecsRef: kernelspecsRef,
     entities: makeEntitiesRecord({
       hosts: makeHostsRecord({
         byRef: Immutable.Map<string, HostRecord>()
@@ -114,6 +109,13 @@ const initialState: AppState = {
   })
 };
 
+const rootReducer = combineReducers({
+  app: reducers.app,
+  comms: reducers.comms,
+  config: reducers.config,
+  core: reducers.core
+});
+
 export default function configureStore() {
   const rootEpic = (
     action$: ActionsObservable<any>,
@@ -131,7 +133,7 @@ export default function configureStore() {
       })
     );
   const epicMiddleware = createEpicMiddleware();
-  const middlewares = [epicMiddleware];
+  const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
   const store = createStore(
     rootReducer,

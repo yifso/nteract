@@ -105,7 +105,7 @@ class BinderLogs extends React.Component {
     const { logs } = this.props;
     return (
       <div className="logs">
-        {logs.length > 0
+        {logs && logs.length > 0
           ? logs.map((log, index) => {
               return (
                 <span className="log" key={index}>
