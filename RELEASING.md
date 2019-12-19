@@ -41,7 +41,7 @@ You'll also need to publish the monorepo documentation. To do this, you'll need 
 
 1. Ensure that `mkdocs` is installed by running `pip install mkdocs`.
 2. Ensure that the [mkdocs-monorepo-plugin](https://spotify.github.io/mkdocs-monorepo-plugin/) is installed by running `pip install mkdocs-monorepo-plugin`.
-3.
+3. Finally, ensure that you have the `gitbook` theme for `mkdocs` installed. This is the theme that we use to style mkdocs. You can install it by running `pip install mkdocs-gitbook`.
 
 ## Release Process for Desktop App
 

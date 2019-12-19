@@ -1,8 +1,12 @@
 site_name: nteract
 
 nav:
+  - Home: "index.md"
   - Packages:
       - "@nteract/stateful-components": "!include ./packages/stateful-components/mkdocs.yml"
 
 plugins:
   - monorepo
+
+theme:
+  name: gitbook
