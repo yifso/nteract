@@ -1,4 +1,6 @@
 site_name: nteract
+repo_url: https://github.com/nteract/nteract
+repo_name: "GitHub"
 
 nav:
   - Packages:
