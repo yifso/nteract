@@ -1,6 +1,6 @@
 import { MediaBundle } from "@nteract/commutable";
 import { Channels } from "@nteract/messaging";
-import CodeMirror, {
+import {
   Doc,
   Editor,
   EditorChangeLinkedList,
@@ -34,6 +34,11 @@ import CodeMirrorCSS from "./vendored/codemirror";
 import ShowHintCSS from "./vendored/show-hint";
 
 export { CodeMirrorCSS, ShowHintCSS };
+
+let CodeMirror: any;
+if (typeof navigator !== "undefined") {
+  CodeMirror = require("codemirror");
+}
 
 function normalizeLineEndings(str: string): string {
   if (!str) {
