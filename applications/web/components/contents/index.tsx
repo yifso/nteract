@@ -20,7 +20,6 @@ import { Dispatch } from "redux";
 import urljoin from "url-join";
 
 // Local modules
-import { ConnectedDirectory } from "./directory";
 import { default as File } from "./file";
 import { ConnectedFileHeader as FileHeader, DirectoryHeader } from "./headers";
 
@@ -85,11 +84,8 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
       displayName,
       error,
       handlers,
-      headerData,
       loading,
-      onHeaderEditorChange,
-      saving,
-      showHeaderEditor
+      saving
     } = this.props;
 
     switch (contentType) {
@@ -109,28 +105,11 @@ class Contents extends React.PureComponent<ContentsProps, IContentsState> {
                 saving={saving}
               >
                 {contentType === "notebook" ? (
-                  <React.Fragment>
-                    <NotebookMenu contentRef={contentRef} />
-                    {showHeaderEditor ? (
-                      <HeaderEditor
-                        editable
-                        contentRef={contentRef}
-                        headerData={headerData}
-                        onChange={onHeaderEditorChange}
-                      />
-                    ) : null}
-                  </React.Fragment>
+                  <NotebookMenu contentRef={contentRef} />
                 ) : null}
               </FileHeader>
               <File contentRef={contentRef} appBase={appBase} />
             </HotKeys>
-          </React.Fragment>
-        );
-      case "directory":
-        return (
-          <React.Fragment>
-            <DirectoryHeader appBase={appBase} />
-            <ConnectedDirectory appBase={appBase} contentRef={contentRef} />
           </React.Fragment>
         );
       default:
@@ -148,20 +127,8 @@ const makeMapStateToProps: any = (
   initialState: AppState,
   initialProps: { appBase: string; contentRef: ContentRef }
 ) => {
-  const host: HostRecord = initialState.app.host;
-
-  if (host.type !== "jupyter") {
-    throw new Error("this component only works with jupyter apps");
-  }
-
-  const appBase: string = urljoin(host.basePath, "/nteract/edit");
-
   const mapStateToProps = (state: AppState): Partial<ContentsProps> => {
     const contentRef: ContentRef = initialProps.contentRef;
-
-    if (!contentRef) {
-      throw new Error("cant display without a contentRef");
-    }
 
     const content:
       | RecordOf<NotebookContentRecordProps>
@@ -170,53 +137,16 @@ const makeMapStateToProps: any = (
       | RecordOf<DirectoryContentRecordProps>
       | undefined = selectors.content(state, { contentRef });
 
-    if (!content) {
-      throw new Error("need content to view content, check your contentRefs");
-    }
-
-    let showHeaderEditor: boolean = false;
-    let headerData: HeaderDataProps = {
-      authors: [],
-      description: "",
-      tags: [],
-      title: ""
-    };
-
-    // If a notebook, we need to read in the headerData if available
-    if (content.type === "notebook") {
-      const notebook: ImmutableNotebook = content.model.get("notebook");
-      const metadata: object = notebook.metadata.toJS();
-      const {
-        authors = [],
-        description = "",
-        tags = [],
-        title = ""
-      } = metadata;
-
-      // Updates
-      showHeaderEditor = content.showHeaderEditor;
-      headerData = Object.assign({}, headerData, {
-        authors,
-        description,
-        tags,
-        title
-      });
-    }
-
     return {
-      appBase,
-      baseDir: dirname(content.filepath),
+      baseDir: content && dirname(content.filepath),
       contentRef,
-      contentType: content.type,
-      displayName: content.filepath.split("/").pop() || "",
-      error: content.error,
-      filepath: content.filepath,
-      headerData,
-      lastSavedStatement: "recently",
-      loading: content.loading,
-      mimetype: content.mimetype,
-      saving: content.saving,
-      showHeaderEditor
+      contentType: content && content.type,
+      displayName: (content && content.filepath.split("/").pop()) || "",
+      error: content && content.error,
+      filepath: content && content.filepath,
+      loading: content && content.loading,
+      mimetype: content && content.mimetype,
+      saving: content && content.saving
     };
   };
 

@@ -3,9 +3,10 @@ import { VegaOptions } from "./external";
 import { VegaMediaType } from "./mime";
 import { VegaEmbed } from "./react";
 
-export { VegaOptions, VegaMediaType };
+export * from "./mime";
+export * from "./external";
 
-export interface VegaProps  {
+export interface VegaProps {
   data: Readonly<{}>;
   options?: Partial<VegaOptions>;
   onResult?: (result: any) => void;
@@ -13,20 +14,21 @@ export interface VegaProps  {
 }
 
 export const Vega = (mediaType: VegaMediaType) => {
-  const embed = ({data, options, onResult, onError}: VegaProps)  =>
+  const embed = ({ data, options, onResult, onError }: VegaProps) => (
     <VegaEmbed
       mediaType={mediaType}
       spec={data}
       options={options}
       resultHandler={onResult}
       errorHandler={onError}
-    />;
+    />
+  );
 
   embed.defaultProps = {
     mediaType
   };
   embed.MIMETYPE = mediaType;
-  
+
   return embed;
 };
 

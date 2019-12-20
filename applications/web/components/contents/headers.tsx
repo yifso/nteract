@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import urljoin from "url-join";
 
-import { EditableTitleOverlay } from "../components/editable-title-overlay";
-import LastSaved from "../components/last-saved";
-import { Nav, NavSection } from "../components/nav";
-import { ThemedLogo } from "../components/themed-logo";
+import { EditableTitleOverlay } from "../layout/editable-title-overlay";
+import LastSaved from "../layout/last-saved";
+import { Nav, NavSection } from "../layout/nav";
+import { ThemedLogo } from "../layout/themed-logo";
 
 /* Returns a header for the Directory view, which only consists of the Nav. */
 export interface DirectoryHeaderProps {

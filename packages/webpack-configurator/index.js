@@ -32,6 +32,11 @@ const tsLoaderConfig = {
   }
 };
 
+const fileLoaderConfig = {
+  loader: "file-loader",
+  test: /\.(jpg|png|gif)$/
+};
+
 function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
   if (config.externals) {
     config.externals = ["canvas", ...config.externals];
@@ -43,6 +48,8 @@ function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
     ...config.node,
     fs: "empty"
   };
+
+  config.module.rules.push(fileLoaderConfig);
 
   config.resolve = {
     ...config.resolve,

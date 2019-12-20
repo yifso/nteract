@@ -7,8 +7,6 @@ import BinderHeader from "../components/binder-header";
 const IndexPage: NextPage = () => {
   return (
     <React.Fragment>
-      <BinderHeader />
-      <BinderConsole />
       <App />
     </React.Fragment>
   );

@@ -37,7 +37,8 @@ const NullTransform = () => null;
 
 const initialState: AppState = {
   app: makeAppRecord({
-    version: "nteract-on-web"
+    version: "nteract-on-web",
+    host: makeJupyterHostRecord({})
   }),
   comms: makeCommsRecord(),
   config: Immutable.Map({

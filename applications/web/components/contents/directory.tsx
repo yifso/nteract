@@ -47,61 +47,21 @@ interface DirectoryProps {
 }
 
 export class DirectoryApp extends React.PureComponent<DirectoryProps> {
-  openNotebook = (ks: KernelspecRecord | KernelspecProps) => {
-    openNotebook(this.props.host, ks, {
-      appBase: this.props.appBase,
-      appVersion: this.props.appVersion,
-      // Since we're looking at a directory, the base dir is the directory we are in
-      baseDir: this.props.content.filepath
-    });
-  };
-
   render() {
-    const atRoot = this.props.content.filepath === "/";
-    const dotdothref = urljoin(
-      this.props.appBase,
-      // Make sure leading / and .. don't navigate outside of the appBase
-      urljoin(this.props.content.filepath, "..")
-    );
-    const dotdotlink = (
-      <a href={dotdothref} title="Navigate down a directory" role="button">
-        {".."}
-      </a>
-    );
-
     return (
       <React.Fragment>
-        <NewNotebookNavigation onClick={this.openNotebook} />
         <ListingRoot>
           <Listing>
-            {atRoot ? null : (
-              // TODO: Create a contentRef for `..`, even though it's a placeholder
-              // When we're not at the root of the tree, show `..`
-              <Entry>
-                <Icon fileType={"directory"} />
-                <Name>{dotdotlink}</Name>
-                <LastSaved lastModified={null} />
-              </Entry>
-            )}
-            {this.props.contents.map((entry, index) => {
-              const link = (
-                <a
-                  href={urljoin(this.props.appBase, entry.path)}
-                  // When it's a notebook, we open a new tab
-                  target={entry.type === "notebook" ? "_blank" : undefined}
-                >
-                  {entry.name}
-                </a>
-              );
-
-              return (
-                <Entry key={index}>
-                  <Icon fileType={entry.type} />
-                  <Name>{link}</Name>
-                  <LastSaved lastModified={entry.last_modified} />
-                </Entry>
-              );
-            })}
+            {this.props.contents &&
+              this.props.contents.map((entry, index) => {
+                return (
+                  <Entry key={index}>
+                    <Icon fileType={entry.type} />
+                    <Name>{entry.name}</Name>
+                    <LastSaved lastModified={entry.last_modified} />
+                  </Entry>
+                );
+              })}
           </Listing>
         </ListingRoot>
       </React.Fragment>
@@ -129,9 +89,7 @@ const makeMapStateToDirectoryProps = (
     }
 
     if (!content || content.type !== "directory") {
-      throw new Error(
-        "The directory component should only be used with directory contents"
-      );
+      return {};
     }
 
     content.model.items.map((entryRef: ContentRef) => {
@@ -169,8 +127,4 @@ const makeMapStateToDirectoryProps = (
   return mapStateToDirectoryProps;
 };
 
-export const ConnectedDirectory = connect(makeMapStateToDirectoryProps)(
-  DirectoryApp
-);
-
-export default ConnectedDirectory;
+export default connect(makeMapStateToDirectoryProps)(DirectoryApp);
