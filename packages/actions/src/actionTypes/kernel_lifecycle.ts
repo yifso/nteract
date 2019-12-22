@@ -1,16 +1,7 @@
 // tslint:disable:max-line-length
-import { ExecuteRequest } from "@nteract/messaging";
-import { KernelInfo, KernelRef, KernelspecInfo, LanguageInfoMetadata, LocalKernelProps, RemoteKernelProps } from "@nteract/types";
-import { Action, ErrorAction, HasCell, HasContent, HasKernel, MaybeHasContent, MaybeHasKernel } from "../utils";
+import { KernelRef, KernelspecInfo, LocalKernelProps, RemoteKernelProps } from "@nteract/types";
+import { Action, ErrorAction, HasContent, HasKernel, MaybeHasContent, MaybeHasKernel } from "../utils";
 
-export const SEND_EXECUTE_REQUEST = "SEND_EXECUTE_REQUEST";
-export const EXECUTE_CELL = "EXECUTE_CELL";
-export const EXECUTE_ALL_CELLS = "EXECUTE_ALL_CELLS";
-export const EXECUTE_ALL_CELLS_BELOW = "EXECUTE_ALL_CELLS_BELOW";
-export const EXECUTE_FOCUSED_CELL = "EXECUTE_FOCUSED_CELL";
-export const EXECUTE_CANCELED = "EXECUTE_CANCELED";
-export const EXECUTE_FAILED = "EXECUTE_FAILED";
-export const SET_KERNEL_INFO = "CORE/SET_KERNEL_INFO";
 export const INTERRUPT_KERNEL = "INTERRUPT_KERNEL";
 export const INTERRUPT_KERNEL_SUCCESSFUL = "INTERRUPT_KERNEL_SUCCESSFUL";
 export const INTERRUPT_KERNEL_FAILED = "INTERRUPT_KERNEL_FAILED";
@@ -25,24 +16,10 @@ export const CHANGE_KERNEL_BY_NAME = "CHANGE_KERNEL_BY_NAME";
 export const LAUNCH_KERNEL_BY_NAME = "LAUNCH_KERNEL_BY_NAME";
 export const LAUNCH_KERNEL_SUCCESSFUL = "LAUNCH_KERNEL_SUCCESSFUL";
 export const LAUNCH_KERNEL_FAILED = "LAUNCH_KERNEL_FAILED";
-export const KERNEL_RAW_STDOUT = "KERNEL_RAW_STDOUT";
-export const KERNEL_RAW_STDERR = "KERNEL_RAW_STDERR";
-export const DELETE_CONNECTION_FILE_FAILED = "DELETE_CONNECTION_FILE_FAILED";
-export const DELETE_CONNECTION_FILE_SUCCESSFUL = "DELETE_CONNECTION_FILE_SUCCESSFUL";
 export const SHUTDOWN_REPLY_SUCCEEDED = "SHUTDOWN_REPLY_SUCCEEDED";
 export const SHUTDOWN_REPLY_TIMED_OUT = "SHUTDOWN_REPLY_TIMED_OUT";
 export const DISPOSE_KERNEL = "DISPOSE_KERNEL";
-export const SET_LANGUAGE_INFO = "SET_LANGUAGE_INFO";
-export const SET_EXECUTION_STATE = "SET_EXECUTION_STATE";
 
-export type SendExecuteRequest = Action<typeof SEND_EXECUTE_REQUEST, HasCell & { message: ExecuteRequest }>;
-export type ExecuteCell = Action<typeof EXECUTE_CELL, HasCell>;
-export type ExecuteAllCells = Action<typeof EXECUTE_ALL_CELLS, HasContent>;
-export type ExecuteAllCellsBelow = Action<typeof EXECUTE_ALL_CELLS_BELOW, HasContent>;
-export type ExecuteFocusedCell = Action<typeof EXECUTE_FOCUSED_CELL, HasContent>;
-export type ExecuteCanceled = Action<typeof EXECUTE_CANCELED, HasCell>;
-export type ExecuteFailed = ErrorAction<typeof EXECUTE_FAILED, HasContent>;
-export type SetKernelInfo = Action<typeof SET_KERNEL_INFO, HasKernel & { info: KernelInfo }>;
 export type InterruptKernel = Action<typeof INTERRUPT_KERNEL, MaybeHasContent & MaybeHasKernel>;
 export type InterruptKernelSuccessful = Action<typeof INTERRUPT_KERNEL_SUCCESSFUL, MaybeHasKernel>;
 export type InterruptKernelFailed = ErrorAction<typeof INTERRUPT_KERNEL_FAILED, MaybeHasKernel>;
@@ -58,12 +35,6 @@ export type ChangeKernelByName = Action<typeof CHANGE_KERNEL_BY_NAME, HasContent
 export type LaunchKernelByNameAction = Action<typeof LAUNCH_KERNEL_BY_NAME, HasContent & HasKernel & { kernelSpecName: string; cwd: string; selectNextKernel: boolean }>;
 export type NewKernelAction = Action<typeof LAUNCH_KERNEL_SUCCESSFUL, HasContent & HasKernel & { kernel: LocalKernelProps | RemoteKernelProps; selectNextKernel: boolean }>;
 export type LaunchKernelFailed = ErrorAction<typeof LAUNCH_KERNEL_FAILED, MaybeHasContent & MaybeHasKernel>;
-export type KernelRawStdout = Action<typeof KERNEL_RAW_STDOUT, HasKernel & { text: string }>;
-export type KernelRawStderr = Action<typeof KERNEL_RAW_STDERR, HasKernel & { text: string }>;
-export type DeleteConnectionFileFailedAction = ErrorAction<typeof DELETE_CONNECTION_FILE_FAILED, HasKernel>;
-export type DeleteConnectionFileSuccessfulAction = Action<typeof DELETE_CONNECTION_FILE_SUCCESSFUL, HasKernel>;
 export type ShutdownReplySucceeded = Action<typeof SHUTDOWN_REPLY_SUCCEEDED, HasKernel & { content: { restart: boolean } }>;
 export type ShutdownReplyTimedOut = ErrorAction<typeof SHUTDOWN_REPLY_TIMED_OUT, HasKernel>;
 export type DisposeKernel = Action<typeof DISPOSE_KERNEL, HasKernel>;
-export type SetLanguageInfo = Action<typeof SET_LANGUAGE_INFO, HasContent & HasKernel &  { langInfo: LanguageInfoMetadata }>;
-export type SetExecutionStateAction = Action<typeof SET_EXECUTION_STATE, HasKernel &  { kernelStatus: string }>;

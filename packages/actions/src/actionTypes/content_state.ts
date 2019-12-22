@@ -1,7 +1,7 @@
 // tslint:disable:max-line-length
 import { JSONObject, MediaBundle } from "@nteract/commutable";
 import { HeaderDataProps } from "@nteract/types";
-import { Action, ErrorAction, HasContent, MaybeHasContent } from "../utils";
+import { Action, ErrorAction, HasContent, makeActionFunction, makeErrorActionFunction, MaybeHasContent } from "../utils";
 
 export const TOGGLE_HEADER_EDITOR           = "CORE/TOGGLE_HEADER_EDITOR";
 export const UPDATE_FILE_TEXT               = "UPDATE_FILE_TEXT";
@@ -18,3 +18,11 @@ export type UpdateDisplayFailed             = ErrorAction<typeof UPDATE_DISPLAY_
 export type OverwriteMetadataFields         = Action     <typeof OVERWRITE_METADATA_FIELDS,     MaybeHasContent & Partial<HeaderDataProps>>;
 export type OverwriteMetadataField          = Action     <typeof OVERWRITE_METADATA_FIELD,      HasContent &  { field: string; value: any }>;
 export type DeleteMetadataField             = Action     <typeof DELETE_METADATA_FIELD,         HasContent &  { field: string }>;
+
+export const toggleHeaderEditor             = makeActionFunction      <ToggleHeaderEditor>      (TOGGLE_HEADER_EDITOR);
+export const updateFileText                 = makeActionFunction      <UpdateFileText>          (UPDATE_FILE_TEXT);
+export const updateDisplay                  = makeActionFunction      <UpdateDisplay>           (UPDATE_DISPLAY);
+export const updateDisplayFailed            = makeErrorActionFunction <UpdateDisplayFailed>     (UPDATE_DISPLAY_FAILED);
+export const overwriteMetadataFields        = makeActionFunction      <OverwriteMetadataFields> (OVERWRITE_METADATA_FIELDS);
+export const overwriteMetadataField         = makeActionFunction      <OverwriteMetadataField>  (OVERWRITE_METADATA_FIELD);
+export const deleteMetadataField            = makeActionFunction      <DeleteMetadataField>     (DELETE_METADATA_FIELD);
