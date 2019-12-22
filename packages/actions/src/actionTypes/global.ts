@@ -12,8 +12,8 @@ export const ERROR                        = "CORE/ERROR";
 
 export type OpenModal                     = Action     <typeof OPEN_MODAL,              { modalType: string }>;
 export type CloseModal                    = Action     <typeof CLOSE_MODAL>;
-export type SetNotificationSystemAction   = Action     <typeof SET_NOTIFICATION_SYSTEM, { notificationSystem: NotificationSystem }>;  // FIXME: Name inconsistent
-export type SetGithubTokenAction          = Action     <typeof SET_GITHUB_TOKEN,        { githubToken: string }>;                     // FIXME: Name inconsistent
+export type SetNotificationSystemAction   = Action     <typeof SET_NOTIFICATION_SYSTEM, { notificationSystem: NotificationSystem }>;
+export type SetGithubTokenAction          = Action     <typeof SET_GITHUB_TOKEN,        { githubToken: string }>;
 export type AddTransform                  = Action     <typeof ADD_TRANSFORM,           { mediaType: string; component: any }>;
 export type RemoveTransform               = Action     <typeof REMOVE_TRANSFORM,        { mediaType: string; component: any }>;
 export type CoreError                     = ErrorAction<typeof ERROR>;
