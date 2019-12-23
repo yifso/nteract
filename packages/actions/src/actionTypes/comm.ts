@@ -5,10 +5,10 @@ export const COMM_OPEN            = "COMM_OPEN";
 export const COMM_MESSAGE         = "COMM_MESSAGE";
 
 export interface RegisterCommTargetAction   { type: "REGISTER_COMM_TARGET"; name: string; handler: string }
-export interface CommOpenAction             { type: "COMM_OPEN"; target_name: string; target_module: string; data: any; metadata: any; comm_id: string; buffers: any }
-export interface CommMessageAction          { type: "COMM_MESSAGE"; data: any; comm_id: string; buffers: any }
+export interface CommOpenAction             { type: "COMM_OPEN"; target_name: string; target_module: string; data: any; metadata: any; comm_id: string; buffers?: any }
+export interface CommMessageAction          { type: "COMM_MESSAGE"; data: any; comm_id: string; buffers?: any }
 
-export const commOpenAction = (message: { content: CommOpenAction; blob: any; buffers: any }): CommOpenAction => ({
+export const commOpenAction = (message: { content: CommOpenAction; blob?: any; buffers?: any }): CommOpenAction => ({
   type: COMM_OPEN,
   comm_id: message.content.comm_id,
   data: message.content.data,
@@ -23,7 +23,7 @@ export const commOpenAction = (message: { content: CommOpenAction; blob: any; bu
 });
 
 
-export const commMessageAction = (message: { content: CommMessageAction; blob: any; buffers: any }): CommMessageAction => ({
+export const commMessageAction = (message: { content: CommMessageAction; blob?: any; buffers?: any }): CommMessageAction => ({
   type: COMM_MESSAGE,
   comm_id: message.content.comm_id,
   data: message.content.data,
