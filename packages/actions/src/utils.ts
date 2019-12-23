@@ -19,7 +19,11 @@ export const makeActionFunction =
 export const makeErrorActionFunction =
   <T extends ErrorAction<string, any>>
   (type: T["type"]) => (payload: T["payload"]) =>
-    ({ type, payload, error: true });
+    ({ type, payload, error: true }) as {
+      type: T["type"];
+      payload: T["payload"];
+      error: true;
+    };
 
 export const makeOneArgActionFunction =
   <T extends Action<string, any>>(type: T["type"]) =>
@@ -27,7 +31,7 @@ export const makeOneArgActionFunction =
       (payload: T["payload"][N]) => ({ type, payload: { [name]: payload } });
 
 export interface HasKernel { kernelRef: KernelRef }
-export interface MaybeHasKernel { kernelRef?: KernelRef }
+export interface MaybeHasKernel { kernelRef?: KernelRef | null }
 export interface HasContent { contentRef: ContentRef }
 export interface MaybeHasContent { contentRef?: ContentRef }
 export interface HasCell extends HasContent { id: CellId }
