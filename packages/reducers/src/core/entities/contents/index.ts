@@ -107,6 +107,14 @@ const byRef = (
           // TODO: we can set kernelRef when the content record uses it.
         })
       );
+    case actionTypes.FETCH_CONTENT_FAILED:
+      const fetchContentFailedAction = action as actionTypes.FetchContentFailed;
+      return state
+        .setIn([fetchContentFailedAction.payload.contentRef, "loading"], false)
+        .setIn(
+          [fetchContentFailedAction.payload.contentRef, "error"],
+          fetchContentFailedAction.payload.error
+        );
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
       // TODO: is this reasonable? We launched the kernel on behalf of this
       // content... so it makes sense to swap it, right?
