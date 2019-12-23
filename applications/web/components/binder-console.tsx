@@ -1,6 +1,13 @@
 import React from "react";
 
-class BinderLogo extends React.Component {
+import styled from "styled-components";
+
+const StyledImage = styled.img`
+  vertical-align: middle;
+  margin: 0 0 7px 0px;
+`;
+
+class BinderLogo extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
@@ -10,30 +17,36 @@ class BinderLogo extends React.Component {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img
+          <StyledImage
             src="https://mybinder.org/static/logo.svg?v=f9f0d927b67cc9dc99d788c822ca21c0"
             alt="binder logo"
             height="20px"
           />
         </a>
-        <style jsx>{`
-          img {
-            vertical-align: middle;
-            margin: 0 0 7px 0px;
-          }
-        `}</style>
       </React.Fragment>
     );
   }
 }
 
-class BinderTextInput extends React.Component {
+const StyledFieldset = styled.fieldset`
+  & input {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  & label span {
+    width: 12em;
+    display: inline-block;
+  }
+`;
+
+class BinderTextInput extends React.PureComponent {
   render() {
     const { onChange, value, id, labelText, name } = this.props;
 
     return (
       <React.Fragment>
-        <fieldset className="binder">
+        <StyledFieldset>
           <label htmlFor={id}>
             <span>{labelText}</span>
             <input
@@ -45,56 +58,47 @@ class BinderTextInput extends React.Component {
               size="80"
             />
           </label>
-        </fieldset>
-        <style jsx>{`
-          input {
-            font-family: inherit;
-            font-size: inherit;
-          }
-          label span {
-            width: 12em;
-            display: inline-block;
-          }
-        `}</style>
+        </StyledFieldset>
       </React.Fragment>
     );
   }
 }
 
-class BinderForm extends React.Component {
+const StyledForm = styled.form`
+  & button {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 5px 10px 5px 10px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+  }
+  & button:active {
+    background-color: #1a1a1a;
+    border: 1px solid #e7e7e7;
+  }
+  & button:hover {
+    background-color: #2a2a2a;
+    border: 1px solid #d7d7d7;
+  }
+  :global(fieldset.binder) {
+    border: none;
+    padding-left: 0px;
+    margin-left: 0px;
+  }
+`;
+
+class BinderForm extends React.PureComponent {
   render() {
     const { onSubmit } = this.props;
     return (
       <React.Fragment>
-        <form onSubmit={onSubmit} className="form">
+        <StyledForm onSubmit={onSubmit} className="form">
           {this.props.children}
           <fieldset className="binder">
             <button type="submit">Build and Connect</button>
           </fieldset>
-        </form>
-        <style jsx>{`
-          button {
-            font-family: inherit;
-            font-size: inherit;
-            padding: 5px 10px 5px 10px;
-            background-color: black;
-            color: white;
-            border: 1px solid white;
-          }
-          button:active {
-            background-color: #1a1a1a;
-            border: 1px solid #e7e7e7;
-          }
-          button:hover {
-            background-color: #2a2a2a;
-            border: 1px solid #d7d7d7;
-          }
-          :global(fieldset.binder) {
-            border: none;
-            padding-left: 0px;
-            margin-left: 0px;
-          }
-        `}</style>
+        </StyledForm>
       </React.Fragment>
     );
   }
@@ -155,8 +159,22 @@ class BinderLogs extends React.Component {
     );
   }
 }
-// TODO: Make a generic little console for some of the styled container pieces,
-//       then make this component inject the binder specific bits
+
+const StyledBinderConsole = styled.div`
+  clear: left;
+  min-height: 42px;
+  padding: 15px 0px 20px 25px;
+  color: #f1f1f1;
+  font-family: Monaco, monospace;
+  font-size: 12px;
+  line-height: 19px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: #1a1a1a;
+  counter-reset: line-numbering;
+  margin-top: 0;
+`;
+
 export default class BinderConsole extends React.Component {
   render() {
     const {
@@ -168,7 +186,7 @@ export default class BinderConsole extends React.Component {
       onFormSubmit
     } = this.props;
     return (
-      <div className="binder-console">
+      <StyledBinderConsole>
         <BinderLogo />
         <BinderForm onSubmit={onFormSubmit}>
           <BinderTextInput
@@ -187,23 +205,7 @@ export default class BinderConsole extends React.Component {
           />
         </BinderForm>
         <BinderLogs logs={logs} />
-        <style jsx>{`
-          .binder-console {
-            clear: left;
-            min-height: 42px;
-            padding: 15px 0px 20px 25px;
-            color: #f1f1f1;
-            font-family: Monaco, monospace;
-            font-size: 12px;
-            line-height: 19px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            background-color: #1a1a1a;
-            counter-reset: line-numbering;
-            margin-top: 0;
-          }
-        `}</style>
-      </div>
+      </StyledBinderConsole>
     );
   }
 }

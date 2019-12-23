@@ -1,8 +1,5 @@
 import { AppState, ContentRef } from "@nteract/core";
-import * as React from "react";
-import NotificationSystem, {
-  System as ReactNotificationSystem
-} from "react-notification-system";
+import React from "react";
 
 import { default as Contents } from "./contents";
 
@@ -12,10 +9,18 @@ import Directory from "./contents/directory";
 import BinderConsole from "./binder-console";
 import BinderHeader from "./binder-header";
 
+import { createGlobalStyle } from "styled-components";
+
 interface StateProps {
   directoryRef: string;
   contentRef: string;
 }
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0px;
+  }
+`;
 
 class App extends React.Component<StateProps> {
   notificationSystem!: ReactNotificationSystem;
@@ -31,11 +36,7 @@ class App extends React.Component<StateProps> {
         <BinderConsole />
         <Directory contentRef={this.props.directoryRef} appBase={""} />
         <Contents contentRef={this.props.contentRef} />
-        <NotificationSystem
-          ref={(notificationSystem: ReactNotificationSystem) => {
-            this.notificationSystem = notificationSystem;
-          }}
-        />
+        <GlobalStyle />
       </React.Fragment>
     );
   }

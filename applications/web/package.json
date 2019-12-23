@@ -12,7 +12,8 @@
     "next": "latest",
     "next-redux-wrapper": "^4.0.1",
     "react": "^16.10.1",
-    "react-dom": "^16.10.1"
+    "react-dom": "^16.10.1",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@types/node": "^12.7.8",
