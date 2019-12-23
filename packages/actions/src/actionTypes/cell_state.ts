@@ -1,7 +1,6 @@
 // tslint:disable:max-line-length
-import { CellId, CellType } from "@nteract/commutable";
+import { CellType } from "@nteract/commutable";
 import { Action, HasCell, makeActionFunction, MaybeHasCell } from "../utils";
-import { ContentRef } from "@nteract/types";
 
 export const TOGGLE_TAG_IN_CELL       = "CORE/TOGGLE_TAG_IN_CELL";
 export const CHANGE_CELL_TYPE         = "CHANGE_CELL_TYPE";
