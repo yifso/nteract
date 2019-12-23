@@ -14,6 +14,8 @@ import {
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 
+import webAppReducers from "./reducers";
+
 import Immutable from "immutable";
 
 // Vendor modules
@@ -32,6 +34,13 @@ import {
 import { Media } from "@nteract/outputs";
 import TransformVDOM from "@nteract/transform-vdom";
 import { ContentRecord, HostRecord } from "@nteract/types";
+
+import { launchServerEpic } from "./epics";
+
+const composeEnhancers =
+  typeof window !== "undefined"
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : compose;
 
 const NullTransform = () => null;
 
@@ -114,7 +123,8 @@ const rootReducer = combineReducers({
   app: reducers.app,
   comms: reducers.comms,
   config: reducers.config,
-  core: reducers.core
+  core: reducers.core,
+  webApp: webAppReducers
 });
 
 export default function configureStore() {
@@ -123,7 +133,7 @@ export default function configureStore() {
     store$: StateObservable<any>,
     dependencies: any
   ) =>
-    combineEpics<Epic>(...coreEpics.allEpics)(
+    combineEpics<Epic>(...coreEpics.allEpics, launchServerEpic)(
       action$,
       store$,
       dependencies
@@ -139,7 +149,7 @@ export default function configureStore() {
   const store = createStore(
     rootReducer,
     (initialState as unknown) as any,
-    applyMiddleware(...middlewares)
+    composeEnhancers(applyMiddleware(...middlewares))
   );
 
   epicMiddleware.run(rootEpic);

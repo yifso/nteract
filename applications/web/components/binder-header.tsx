@@ -95,13 +95,10 @@ export class BinderHeader extends React.PureComponent<
   }
 }
 
-const makeMapStateToProps = (initialState: AppState, ownProps: {}) => {
-  const mapStateToProps = (state: AppState) => {
-    return {
-      showPanel: state.config.showPanel
-    };
+const mapStateToProps = (state: AppState) => {
+  return {
+    showPanel: state.webApp.showPanel
   };
-  return mapStateToProps;
 };
 
 const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
@@ -109,12 +106,14 @@ const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
     return {
       toggleShowPanel: (showPanel: boolean) =>
         dispatch(actions.toggleShowPanel(showPanel)),
-      launchServer: () => dispatch({})
+      launchServer: (repo: string, gitRef: string) =>
+        dispatch(actions.launchServer(repo, gitRef))
     };
   };
   return mapDispatchToProps;
 };
 
 export default connect<StateProps, DispatchProps, {}, AppState>(
-  makeMapStateToProps
+  mapStateToProps,
+  makeMapDispatchToProps
 )(BinderHeader);

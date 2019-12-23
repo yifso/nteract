@@ -1,6 +1,10 @@
 import React from "react";
 
+import { Dispatch } from "redux";
 import styled from "styled-components";
+
+import { connect } from "react-redux";
+import * as actions from "../redux/actions";
 
 const StyledImage = styled.img`
   vertical-align: middle;
@@ -88,22 +92,6 @@ const StyledForm = styled.form`
   }
 `;
 
-class BinderForm extends React.PureComponent {
-  render() {
-    const { onSubmit } = this.props;
-    return (
-      <React.Fragment>
-        <StyledForm onSubmit={onSubmit} className="form">
-          {this.props.children}
-          <fieldset className="binder">
-            <button type="submit">Build and Connect</button>
-          </fieldset>
-        </StyledForm>
-      </React.Fragment>
-    );
-  }
-}
-
 class BinderLogs extends React.Component {
   render() {
     const { logs } = this.props;
@@ -175,37 +163,64 @@ const StyledBinderConsole = styled.div`
   margin-top: 0;
 `;
 
-export default class BinderConsole extends React.Component {
+export class BinderConsole extends React.Component {
   render() {
     const {
       logs,
       onRepoChange,
-      onGitrefChange,
+      onGitRefChange,
       repo,
       gitref,
-      onFormSubmit
+      showPanel
     } = this.props;
-    return (
-      <StyledBinderConsole>
-        <BinderLogo />
-        <BinderForm onSubmit={onFormSubmit}>
-          <BinderTextInput
-            onChange={onRepoChange}
-            id="repoInput"
-            value={repo}
-            labelText="Github Repo:"
-            name="repo"
-          />
-          <BinderTextInput
-            onChange={onGitrefChange}
-            id="gitrefInput"
-            name="gitref"
-            value={gitref}
-            labelText="Branch/commit/tag:"
-          />
-        </BinderForm>
-        <BinderLogs logs={logs} />
-      </StyledBinderConsole>
-    );
+    if (showPanel) {
+      return (
+        <StyledBinderConsole>
+          <BinderLogo />
+          <StyledForm>
+            <BinderTextInput
+              onChange={onRepoChange}
+              id="repoInput"
+              value={repo}
+              labelText="Github Repo:"
+              name="repo"
+            />
+            <BinderTextInput
+              onChange={onGitRefChange}
+              id="gitrefInput"
+              name="gitref"
+              value={gitref}
+              labelText="Branch/commit/tag:"
+            />
+          </StyledForm>
+          <BinderLogs logs={logs} />
+        </StyledBinderConsole>
+      );
+    }
+    return null;
   }
 }
+
+const makeMapStateToProps = (initialState: AppState, ownProps: {}) => {
+  const mapStateToProps = (state: AppState) => {
+    return {
+      showPanel: state.webApp.get("showPanel", false)
+    };
+  };
+  return mapStateToProps;
+};
+
+const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
+  const mapDispatchToProps = (dispatch: Dispatch) => ({
+    onGitRefChange: (event: any) =>
+      dispatch(actions.changeGitRef(event.target.value)),
+    onRepoChange: (event: any) =>
+      dispatch(actions.changeRepo(event.target.value))
+  });
+  return mapDispatchToProps;
+};
+
+export default connect(
+  makeMapStateToProps,
+  makeMapDispatchToProps
+)(BinderConsole);
