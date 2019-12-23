@@ -17,7 +17,7 @@ export type ExecuteAllCells           = Action     <typeof EXECUTE_ALL_CELLS,   
 export type ExecuteAllCellsBelow      = Action     <typeof EXECUTE_ALL_CELLS_BELOW, HasContent>;
 export type ExecuteFocusedCell        = Action     <typeof EXECUTE_FOCUSED_CELL,    HasContent>;
 export type ExecuteCanceled           = Action     <typeof EXECUTE_CANCELED,        HasCell>;
-export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED>;
+export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED,          HasContent>;
 export type SetExecutionStateAction   = Action     <typeof SET_EXECUTION_STATE,     HasKernel &  { kernelStatus: string }>;
 
 export const sendExecuteRequest       = makeActionFunction      <SendExecuteRequest>        (SEND_EXECUTE_REQUEST);

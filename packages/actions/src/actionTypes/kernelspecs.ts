@@ -10,7 +10,7 @@ export const SET_KERNELSPEC_INFO          = "SET_KERNELSPEC_INFO";
 export type FetchKernelspecs              = Action     <typeof FETCH_KERNELSPECS,           HasKernelspecs & HasHost>;
 export type FetchKernelspecsFulfilled     = Action     <typeof FETCH_KERNELSPECS_FULFILLED, HasKernelspecs & HasHost & { defaultKernelName: string; kernelspecs: { [kernelspec: string]: KernelspecProps } }>;
 export type FetchKernelspecsFailed        = ErrorAction<typeof FETCH_KERNELSPECS_FAILED,    HasKernelspecs>;
-export type SetKernelspecInfo             = Action     <typeof SET_KERNELSPEC_INFO,         HasContent & { kernelInfo?: KernelspecInfo | null }>; // "legacy" action that pushes kernelspec info back up for the notebook document
+export type SetKernelspecInfo             = Action     <typeof SET_KERNELSPEC_INFO,         HasContent & { kernelInfo: KernelspecInfo }>; // "legacy" action that pushes kernelspec info back up for the notebook document
 
 export const fetchKernelspecs             = makeActionFunction     <FetchKernelspecs>         (FETCH_KERNELSPECS);
 export const fetchKernelspecsFulfilled    = makeActionFunction     <FetchKernelspecsFulfilled>(FETCH_KERNELSPECS_FULFILLED);

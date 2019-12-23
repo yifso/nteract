@@ -31,7 +31,7 @@ export const makeOneArgActionFunction =
       (payload: T["payload"][N]) => ({ type, payload: { [name]: payload } });
 
 export interface HasKernel { kernelRef: KernelRef }
-export interface MaybeHasKernel { kernelRef?: KernelRef | null }
+export interface MaybeHasKernel { kernelRef?: KernelRef }
 export interface HasContent { contentRef: ContentRef }
 export interface MaybeHasContent { contentRef?: ContentRef }
 export interface HasCell extends HasContent { id: CellId }
