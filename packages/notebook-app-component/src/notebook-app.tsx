@@ -137,13 +137,13 @@ const makeMapStateToCellProps = (
 
     const sourceHidden =
       (cellType === "code" &&
-        (cell.getIn(["metadata", "inputHidden"]) ||
-          cell.getIn(["metadata", "hide_input"]))) ||
+        cell.getIn(["metadata", "jupyter", "source_hidden"])) ||
       false;
 
     const outputHidden =
       cellType === "code" &&
-      (outputs.size === 0 || cell.getIn(["metadata", "outputHidden"]));
+      (outputs.size === 0 ||
+        cell.getIn(["metadata", "jupyter", "outputs_hidden"]));
 
     const outputExpanded =
       cellType === "code" && cell.getIn(["metadata", "outputExpanded"]);
@@ -647,7 +647,10 @@ export class NotebookApp extends React.PureComponent<NotebookProps> {
                   focusCell={this.props.focusCell}
                   contentRef={this.props.contentRef}
                 >
-                  <ConnectedCell id={cellID} contentRef={this.props.contentRef} />
+                  <ConnectedCell
+                    id={cellID}
+                    contentRef={this.props.contentRef}
+                  />
                 </DraggableCell>
               </UndoableCellDelete>
               <CellCreator
