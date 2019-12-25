@@ -37,13 +37,8 @@ export const launchServerEpic = (
 
       return binder({ repo, gitref }, EventSource).pipe(
         mergeMap(message => {
-          console.log(message);
-          const actionsArray = [
-            {
-              type: "ADD_SERVER_MESSAGE",
-              payload: { message }
-            }
-          ];
+          const actionsArray = [];
+          actionsArray.push(actions.addServerMsg({ message }));
           if (message.phase === "ready") {
             const hostRef = createHostRef();
             const config = {

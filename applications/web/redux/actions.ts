@@ -30,3 +30,11 @@ export const changeRepo = (repo: string) => ({
     repo
   }
 });
+
+export const ADD_SERVER_MSG = "ADD_SERVER_MSG";
+export const addServerMsg = (message: any) => ({
+  type: ADD_SERVER_MSG,
+  payload: {
+    message
+  }
+});

@@ -1,3 +1,4 @@
+import Immutable from "immutable";
 import React from "react";
 
 import { Dispatch } from "redux";
@@ -5,6 +6,8 @@ import styled from "styled-components";
 
 import { connect } from "react-redux";
 import * as actions from "../redux/actions";
+
+import { AppState } from "@nteract/core";
 
 const StyledImage = styled.img`
   vertical-align: middle;
@@ -92,58 +95,62 @@ const StyledForm = styled.form`
   }
 `;
 
+const StyledLogs = styled.div`
+  margin: 5px 0px 5px 0px;
+
+  & .log {
+    padding: 0 15px 0 0px;
+    margin: 0;
+    min-height: 16px;
+    display: block;
+  }
+
+  & .phase {
+    display: inline-block;
+    min-width: 80px;
+    padding-right: 10px;
+    text-decoration: none;
+    color: #888;
+  }
+
+  & .sidebar::before {
+    content: counter(line-numbering);
+    counter-increment: line-numbering;
+    padding-right: 1em;
+  }
+
+  & .sidebar {
+    display: inline-block;
+    text-align: left;
+    min-width: 20px;
+    text-decoration: none;
+    color: #666;
+  }
+
+  & .log:last-child {
+    background-color: #292929;
+  }
+`;
+
 class BinderLogs extends React.Component {
   render() {
     const { logs } = this.props;
     return (
-      <div className="logs">
-        {logs && logs.length > 0
+      <StyledLogs>
+        {logs && logs.size > 0
           ? logs.map((log, index) => {
               return (
                 <span className="log" key={index}>
                   <span className="sidebar" />
-                  <span className="phase">{log.phase}</span>
+                  <span className="phase">{log.message.phase}</span>
                   <span className="content">
-                    <span className="message">{log.message}</span>
+                    <span className="message">{log.message.message}</span>
                   </span>
                 </span>
               );
             })
           : null}
-        <style jsx>{`
-          .log {
-            padding: 0 15px 0 0px;
-            margin: 0;
-            min-height: 16px;
-            display: block;
-          }
-          .logs {
-            margin: 5px 0px 5px 0px;
-          }
-          .phase {
-            display: inline-block;
-            min-width: 80px;
-            padding-right: 10px;
-            text-decoration: none;
-            color: #888;
-          }
-          .sidebar::before {
-            content: counter(line-numbering);
-            counter-increment: line-numbering;
-            padding-right: 1em;
-          }
-          .sidebar {
-            display: inline-block;
-            text-align: left;
-            min-width: 20px;
-            text-decoration: none;
-            color: #666;
-          }
-          .log:last-child {
-            background-color: #292929;
-          }
-        `}</style>
-      </div>
+      </StyledLogs>
     );
   }
 }
@@ -204,7 +211,8 @@ export class BinderConsole extends React.Component {
 const makeMapStateToProps = (initialState: AppState, ownProps: {}) => {
   const mapStateToProps = (state: AppState) => {
     return {
-      showPanel: state.webApp.get("showPanel", false)
+      showPanel: state.webApp.get("showPanel", false),
+      logs: state.webApp.get("logs", Immutable.List([]))
     };
   };
   return mapStateToProps;
