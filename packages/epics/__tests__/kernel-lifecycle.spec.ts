@@ -182,10 +182,7 @@ describe("acquireKernelInfo", () => {
       {
         payload: {
           contentRef: "fakeContentRef",
-          kernelInfo: {
-            name: "python",
-            spec: null
-          }
+          kernelInfo: null
         },
         type: "SET_KERNELSPEC_INFO"
       }

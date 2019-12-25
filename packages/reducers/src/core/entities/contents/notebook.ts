@@ -778,14 +778,14 @@ function setKernelspecInfo(
   action: actionTypes.SetKernelspecInfo
 ): RecordOf<DocumentRecordProps> {
   const { kernelInfo } = action.payload;
-  if (kernelInfo.spec) {
+  if (kernelInfo) {
     return state
       .setIn(
         ["notebook", "metadata", "kernelspec"],
         fromJS({
           name: kernelInfo.name,
-          language: kernelInfo.spec.language,
-          display_name: kernelInfo.spec.display_name
+          language: kernelInfo.language,
+          display_name: kernelInfo.displayName
         })
       )
       .setIn(["notebook", "metadata", "kernel_info", "name"], kernelInfo.name);

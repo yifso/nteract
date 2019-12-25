@@ -23,7 +23,7 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { ContentRef, KernelRef, AppState, KernelInfo } from "@nteract/types";
+import { AppState, ContentRef, KernelInfo, KernelRef } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 
 const path = require("path");
@@ -116,7 +116,6 @@ export function acquireKernelInfo(
         ];
       } else {
         const kernelspec = selectors.kernelspecByName(state, { name: l.name });
-        const kernelInfo = { name: l.name, spec: kernelspec };
         result = [
           // The original action we were using
           actions.setLanguageInfo({
@@ -130,7 +129,7 @@ export function acquireKernelInfo(
           }),
           actions.setKernelspecInfo({
             contentRef,
-            kernelInfo
+            kernelInfo: kernelspec
           })
         ];
       }
