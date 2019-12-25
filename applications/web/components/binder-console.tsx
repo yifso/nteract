@@ -36,6 +36,8 @@ class BinderLogo extends React.PureComponent {
 }
 
 const StyledFieldset = styled.fieldset`
+  border: 0;
+
   & input {
     font-family: inherit;
     font-size: inherit;

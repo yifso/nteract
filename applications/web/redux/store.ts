@@ -35,7 +35,7 @@ import { Media } from "@nteract/outputs";
 import TransformVDOM from "@nteract/transform-vdom";
 import { ContentRecord, HostRecord } from "@nteract/types";
 
-import { launchServerEpic } from "./epics";
+import epics from "./epics";
 
 const composeEnhancers =
   typeof window !== "undefined"
@@ -133,7 +133,7 @@ export default function configureStore() {
     store$: StateObservable<any>,
     dependencies: any
   ) =>
-    combineEpics<Epic>(...coreEpics.allEpics, launchServerEpic)(
+    combineEpics<Epic>(...coreEpics.allEpics, ...epics)(
       action$,
       store$,
       dependencies

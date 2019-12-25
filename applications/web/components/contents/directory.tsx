@@ -15,12 +15,16 @@ import {
 } from "@nteract/directory-listing";
 import * as React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import styled from "styled-components";
+
+import * as actions from "../../redux/actions";
 
 const ListingRoot = styled.div`
   margin-top: 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
+  background-color: pink;
 `;
 
 interface LightDirectoryEntry {
@@ -40,6 +44,7 @@ interface DirectoryProps {
 
 export class DirectoryApp extends React.Component<DirectoryProps> {
   render() {
+    console.log(this.props);
     return (
       <React.Fragment>
         <ListingRoot>
@@ -47,9 +52,17 @@ export class DirectoryApp extends React.Component<DirectoryProps> {
             {this.props.contents &&
               this.props.contents.map((entry, index) => {
                 return (
-                  <Entry key={index}>
-                    <Icon fileType={entry.type} />
-                    <Name>{entry.name}</Name>
+                  <Entry
+                    key={index}
+                    onClick={() => this.props.setFile(entry.path)}
+                  >
+                    <Icon
+                      fileType={entry.type}
+                      onClick={() => this.props.setFile(entry.path)}
+                    />
+                    <Name onClick={() => this.props.setFile(entry.path)}>
+                      {entry.name}
+                    </Name>
                     <LastSaved lastModified={entry.last_modified} />
                   </Entry>
                 );
@@ -63,52 +76,52 @@ export class DirectoryApp extends React.Component<DirectoryProps> {
 
 interface InitialProps {
   contentRef: ContentRef;
-  appBase: string;
 }
 
-const makeMapStateToDirectoryProps = (
-  initialState: AppState,
-  initialProps: InitialProps
-): ((state: AppState) => DirectoryProps) => {
+const mapStateToProps = (state: AppState, initialProps: InitialProps) => {
   const { contentRef } = initialProps;
-  const mapStateToDirectoryProps = (state: AppState) => {
-    const content = selectors.content(state, initialProps);
-    const contents: LightDirectoryEntry[] = [];
+  const content = selectors.content(state, { contentRef });
+  const contents: LightDirectoryEntry[] = [];
 
-    if (!content || content.type !== "directory") {
-      return {};
+  if (!content || content.type !== "directory") {
+    return {};
+  }
+
+  content.model.items.map((entryRef: ContentRef) => {
+    const row = selectors.content(state, { contentRef: entryRef });
+    if (!row) {
+      return {
+        last_modified: new Date(),
+        name: "",
+        path: "",
+        type: ""
+      };
     }
 
-    content.model.items.map((entryRef: ContentRef) => {
-      const row = selectors.content(state, { contentRef: entryRef });
-      if (!row) {
-        return {
-          last_modified: new Date(),
-          name: "",
-          path: "",
-          type: ""
-        };
-      }
+    if (row.type !== "dummy") {
+      return null;
+    }
 
-      if (row.type !== "dummy") {
-        return null;
-      }
-
-      contents.push({
-        last_modified: row.lastSaved,
-        name: row.filepath,
-        path: row.filepath,
-        type: row.assumedType
-      });
+    contents.push({
+      last_modified: row.lastSaved,
+      name: row.filepath,
+      path: row.filepath,
+      type: row.assumedType
     });
+  });
 
-    return {
-      content,
-      contentRef,
-      contents
-    };
+  return {
+    content,
+    contentRef,
+    contents
   };
-  return mapStateToDirectoryProps;
 };
 
-export default connect(makeMapStateToDirectoryProps)(DirectoryApp);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setFile: (contentRef: string) => {
+    console.log(contentRef);
+    dispatch(actions.setFile(contentRef));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DirectoryApp);

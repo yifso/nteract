@@ -20,6 +20,8 @@ export default function webApp(
       } else {
         return state.set("logs", logs.push(action.payload.message));
       }
+    case actions.SET_FILE:
+      return state.set("activeFile", action.payload.contentRef);
     default:
       return state;
   }

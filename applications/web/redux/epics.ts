@@ -8,11 +8,13 @@ import {
   AppState,
   createContentRef,
   createHostRef,
+  createKernelRef,
   createKernelspecsRef,
-  makeJupyterHostRecord
+  makeJupyterHostRecord,
+  selectors
 } from "@nteract/core";
 
-import { of } from "rxjs";
+import { empty, of } from "rxjs";
 
 import {
   catchError,
@@ -69,3 +71,31 @@ export const launchServerEpic = (
       );
     })
   );
+
+export const loadActiveFile = (
+  action$: ActionsObservable<AnyAction>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.SET_FILE),
+    filter(() => typeof window !== "undefined"),
+    withLatestFrom(state$),
+    switchMap(([action, state]) => {
+      const contentRef = selectors.contentRefByFilepath(state, {
+        filepath: action.payload.contentRef
+      });
+      const content = selectors.content(state, { contentRef });
+      if (!contentRef || content.type === "dummy") {
+        return of(
+          nteractActions.fetchContent({
+            filepath: action.payload.contentRef,
+            contentRef: contentRef ? contentRef : createContentRef(),
+            kernelRef: createKernelRef()
+          })
+        );
+      }
+      return empty();
+    })
+  );
+
+export default [loadActiveFile, launchServerEpic];

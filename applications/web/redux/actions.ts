@@ -38,3 +38,11 @@ export const addServerMsg = (message: any) => ({
     message
   }
 });
+
+export const SET_FILE = "SET_FILE";
+export const setFile = (contentRef: string) => ({
+  type: SET_FILE,
+  payload: {
+    contentRef
+  }
+});

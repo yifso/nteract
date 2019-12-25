@@ -1,7 +1,7 @@
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import React from "react";
 
-import { default as Contents } from "./contents";
+import File from "./contents/file";
 
 import { connect } from "react-redux";
 import Directory from "./contents/directory";
@@ -35,26 +35,27 @@ class App extends React.Component<StateProps> {
       <React.Fragment>
         <BinderHeader />
         <BinderConsole />
-        <Directory contentRef={this.props.directoryRef} appBase={""} />
-        <Contents contentRef={this.props.contentRef} />
+        <Directory contentRef={this.props.directoryRef} />
+        <File contentRef={this.props.contentRef} />
         <GlobalStyle />
       </React.Fragment>
     );
   }
 }
 
-const makeMapStateToProps = (initialState: AppState, ownProps: any) => {
-  const mapStateToProps = (state: AppState) => {
-    const directoryRef = selectors.contentRefByFilepath(state, {
-      filepath: "/"
-    });
+const mapStateToProps = (state: AppState) => {
+  const directoryRef = selectors.contentRefByFilepath(state, {
+    filepath: "/"
+  });
 
-    return {
-      directoryRef,
-      contentRef: null
-    };
+  const contentRef = selectors.contentRefByFilepath(state, {
+    filepath: state.webApp.get("activeFile")
+  });
+
+  return {
+    directoryRef,
+    contentRef
   };
-  return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps)(App);
+export default connect(mapStateToProps)(App);

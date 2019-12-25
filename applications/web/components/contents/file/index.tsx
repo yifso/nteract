@@ -13,14 +13,14 @@ const PaddedContainer = styled.div`
   padding-right: var(--nt-spacing-m, 10px);
 `;
 
-const JupyterExtensionContainer = styled.div`
+const ContentContainer = styled.div`
   display: flex;
   flex-flow: column;
   align-items: stretch;
   height: -webkit-fill-available;
 `;
 
-const JupyterExtensionChoiceContainer = styled.div`
+const ContentChoiceContainer = styled.div`
   flex: 1 1 auto;
   overflow: auto;
 `;
@@ -29,10 +29,8 @@ interface FileProps {
   type: "notebook" | "file" | "dummy";
   contentRef: ContentRef;
   baseDir: string;
-  appBase: string;
   displayName?: string;
   mimetype?: string | null;
-  lastSavedStatement: string;
 }
 
 export class File extends React.PureComponent<FileProps> {
@@ -48,8 +46,6 @@ export class File extends React.PureComponent<FileProps> {
       this.props.mimetype == null ||
       !TextFile.handles(this.props.mimetype)
     ) {
-      // TODO: Redirect to /files/ endpoint for them to download the file or view
-      //       as is
       choice = (
         <PaddedContainer>
           <pre>Can not render this file type</pre>
@@ -65,15 +61,11 @@ export class File extends React.PureComponent<FileProps> {
   render(): JSX.Element {
     const choice = this.getChoice();
 
-    // Right now we only handle one kind of editor
-    // If/when we support more modes, we would case them off here
     return (
       <React.Fragment>
-        <JupyterExtensionContainer>
-          <JupyterExtensionChoiceContainer>
-            {choice}
-          </JupyterExtensionChoiceContainer>
-        </JupyterExtensionContainer>
+        <ContentContainer>
+          <ContentChoiceContainer>{choice}</ContentChoiceContainer>
+        </ContentContainer>
       </React.Fragment>
     );
   }
@@ -84,37 +76,30 @@ interface InitialProps {
   appBase: string;
 }
 
-// Since the contentRef stays unique for the duration of this file,
-// we use the makeMapStateToProps pattern to optimize re-render
-const makeMapStateToProps = (
-  initialState: AppState,
-  initialProps: InitialProps
-) => {
-  const { contentRef, appBase } = initialProps;
+const mapStateToProps = (state: AppState, initialProps: InitialProps) => {
+  const { contentRef } = initialProps;
 
-  const mapStateToProps = (state: AppState) => {
-    const content = selectors.content(state, initialProps);
+  let baseDir = "";
+  let displayName = "";
+  let mimetype = "";
+  let type = "dummy";
 
-    if (!content || content.type === "directory") {
-      throw new Error(
-        "The file component should only be used with files and notebooks"
-      );
-    }
+  const content = selectors.content(state, initialProps);
 
-    return {
-      appBase,
-      contentRef,
-      baseDir: dirname(content.filepath),
-      displayName: content.filepath.split("/").pop(),
-      lastSavedStatement: "recently",
-      mimetype: content.mimetype,
-      type: content.type
-    };
+  if (content) {
+    baseDir = dirname(content.filepath);
+    displayName = content.filepath.split("/").pop();
+    mimetype = content.mimetype;
+    type = content.type;
+  }
+
+  return {
+    contentRef,
+    baseDir,
+    displayName,
+    mimetype,
+    type
   };
-
-  return mapStateToProps;
 };
 
-export const ConnectedFile = connect(makeMapStateToProps)(File);
-
-export default ConnectedFile;
+export default connect(mapStateToProps)(File);
