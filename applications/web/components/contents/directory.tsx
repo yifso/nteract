@@ -4,8 +4,6 @@ import {
   ContentRef,
   DirectoryContentRecord,
   JupyterHostRecord,
-  KernelspecProps,
-  KernelspecRecord,
   selectors
 } from "@nteract/core";
 import {
@@ -18,9 +16,6 @@ import {
 import * as React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import urljoin from "url-join";
-
-import { openNotebook } from "../triggers/open-notebook";
 
 const ListingRoot = styled.div`
   margin-top: 2rem;
@@ -38,15 +33,12 @@ interface LightDirectoryEntry {
 type LightDirectoryEntries = LightDirectoryEntry[];
 
 interface DirectoryProps {
-  appBase: string;
   content: DirectoryContentRecord;
-  host: JupyterHostRecord;
-  appVersion: string;
   contentRef: ContentRef;
   contents: LightDirectoryEntries;
 }
 
-export class DirectoryApp extends React.PureComponent<DirectoryProps> {
+export class DirectoryApp extends React.Component<DirectoryProps> {
   render() {
     return (
       <React.Fragment>
@@ -78,15 +70,10 @@ const makeMapStateToDirectoryProps = (
   initialState: AppState,
   initialProps: InitialProps
 ): ((state: AppState) => DirectoryProps) => {
-  const { contentRef, appBase } = initialProps;
+  const { contentRef } = initialProps;
   const mapStateToDirectoryProps = (state: AppState) => {
     const content = selectors.content(state, initialProps);
     const contents: LightDirectoryEntry[] = [];
-    const host = selectors.currentHost(state);
-
-    if (host.type !== "jupyter") {
-      throw new Error("This component only works with jupyter servers");
-    }
 
     if (!content || content.type !== "directory") {
       return {};
@@ -116,12 +103,9 @@ const makeMapStateToDirectoryProps = (
     });
 
     return {
-      appBase,
-      appVersion: selectors.appVersion(state),
       content,
       contentRef,
-      contents,
-      host
+      contents
     };
   };
   return mapStateToDirectoryProps;

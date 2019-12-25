@@ -1,4 +1,4 @@
-import { AppState, ContentRef } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import React from "react";
 
 import { default as Contents } from "./contents";
@@ -23,10 +23,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 class App extends React.Component<StateProps> {
-  notificationSystem!: ReactNotificationSystem;
-
   shouldComponentUpdate(nextProps: StateProps): boolean {
-    return nextProps.contentRef !== this.props.contentRef;
+    return (
+      nextProps.contentRef !== this.props.contentRef ||
+      nextProps.directoryRef !== this.props.directoryRef
+    );
   }
 
   render(): JSX.Element {
@@ -44,9 +45,9 @@ class App extends React.Component<StateProps> {
 
 const makeMapStateToProps = (initialState: AppState, ownProps: any) => {
   const mapStateToProps = (state: AppState) => {
-    const directoryRef = state.core.entities.contents.byRef.find(
-      value => value.filepath === "/"
-    );
+    const directoryRef = selectors.contentRefByFilepath(state, {
+      filepath: "/"
+    });
 
     return {
       directoryRef,

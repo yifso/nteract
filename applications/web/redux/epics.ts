@@ -6,6 +6,7 @@ import * as actions from "./actions";
 import {
   actions as nteractActions,
   AppState,
+  createContentRef,
   createHostRef,
   createKernelspecsRef,
   makeJupyterHostRecord
@@ -58,6 +59,13 @@ export const launchServerEpic = (
             const kernelspecsRef = createKernelspecsRef();
             actionsArray.push(
               nteractActions.fetchKernelspecs({ hostRef, kernelspecsRef })
+            );
+            const contentRef = createContentRef();
+            actionsArray.push(
+              nteractActions.fetchContent({
+                contentRef,
+                filepath: "/"
+              })
             );
           }
           return of(...actionsArray);
