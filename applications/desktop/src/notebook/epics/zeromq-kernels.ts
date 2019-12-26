@@ -52,7 +52,8 @@ export function launchKernelObservable(
   kernelSpec: KernelspecInfo,
   cwd: string,
   kernelRef: KernelRef,
-  contentRef: ContentRef
+  contentRef: ContentRef,
+  state: AppState
 ): Observable<Actions> {
   const spec = kernelSpec.spec;
 
@@ -112,12 +113,17 @@ export function launchKernelObservable(
             undefined,
             jmp
           );
-          observer.next(
-            actions.setKernelspecInfo({
-              contentRef,
-              kernelInfo: kernelSpec
-            })
-          );
+          const kernelInfo = selectors.kernelspecByName(state, {
+            name: kernelSpec.name
+          });
+          if (kernelInfo) {
+            observer.next(
+              actions.setKernelMetadata({
+                contentRef,
+                kernelInfo
+              })
+            );
+          }
 
           const kernel: LocalKernelProps = {
             info: null,
@@ -257,7 +263,8 @@ export const launchKernelEpic = (
           action.payload.kernelSpec,
           action.payload.cwd,
           action.payload.kernelRef,
-          action.payload.contentRef
+          action.payload.contentRef,
+          state$.value
         ),
         // Was there a kernel before (?) -- kill it if so, otherwise nothing else
         cleanupOldKernel$

@@ -773,9 +773,9 @@ function setLanguageInfo(
   return state.setIn(["notebook", "metadata", "language_info"], langInfo);
 }
 
-function setKernelspecInfo(
+function setKernelMetadata(
   state: NotebookModel,
-  action: actionTypes.SetKernelspecInfo
+  action: actionTypes.SetKernelMetadata
 ): RecordOf<DocumentRecordProps> {
   const { kernelInfo } = action.payload;
   if (kernelInfo) {
@@ -982,7 +982,7 @@ type DocumentAction =
   | actionTypes.UpdateCellStatus
   | actionTypes.UpdateOutputMetadata
   | actionTypes.SetLanguageInfo
-  | actionTypes.SetKernelspecInfo
+  | actionTypes.SetKernelMetadata
   | actionTypes.OverwriteMetadataField
   | actionTypes.DeleteMetadataField
   | actionTypes.CopyCell
@@ -1078,8 +1078,8 @@ export function notebook(
       return updateOutputMetadata(state, action);
     case actionTypes.SET_LANGUAGE_INFO:
       return setLanguageInfo(state, action);
-    case actionTypes.SET_KERNELSPEC_INFO:
-      return setKernelspecInfo(state, action);
+    case actionTypes.SET_KERNEL_METADATA:
+      return setKernelMetadata(state, action);
     case actionTypes.OVERWRITE_METADATA_FIELD:
       return overwriteMetadataField(state, action);
     case actionTypes.DELETE_METADATA_FIELD:

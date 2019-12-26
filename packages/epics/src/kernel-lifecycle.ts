@@ -127,11 +127,13 @@ export function acquireKernelInfo(
             kernelRef,
             info
           }),
-          actions.setKernelspecInfo({
-            contentRef,
-            kernelInfo: kernelspec
-          })
-        ];
+          kernelspec
+            ? actions.setKernelMetadata({
+                contentRef,
+                kernelInfo: kernelspec
+              })
+            : undefined
+        ].filter(Boolean);
       }
 
       return of(...result);
