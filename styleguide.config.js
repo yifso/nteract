@@ -13,7 +13,16 @@ module.exports = {
   defaultExample: false,
   propsParser: typescriptPropsParser,
   resolver: require("react-docgen").resolver.findAllComponentDefinitions,
-  getComponentPathLine: componentPath => componentPath.replace(/^packages\//, "@nteract/").replace(/\.tsx?$/, ""),
+  getComponentPathLine: componentPath => {
+    const toPascalCase = string =>
+      string
+        .match(/[a-z]+/gi)
+        .map(word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+        .join("");
+    const name = path.basename(componentPath, ".tsx");
+    const from = componentPath.replace(/^packages\//, "@nteract/").replace(/\.tsx?$/, "");
+    return `import ${toPascalCase(name)} from '${from}';`;
+  },
   sections: [
     {
       name: "Introduction",
