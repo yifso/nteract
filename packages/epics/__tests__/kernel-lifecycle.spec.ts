@@ -96,6 +96,13 @@ describe("acquireKernelInfo", () => {
                 })
               })
             })
+          }),
+          kernelspecs: stateModule.makeKernelspecsRecord({
+            byRef: Immutable.Map({
+              currentKernelspecsRef: stateModule.makeKernelspecsByRefRecord({
+                byName: Immutable.Map({ python: stateModule.makeKernelspec() })
+              })
+            })
           })
         })
       }),
@@ -182,12 +189,9 @@ describe("acquireKernelInfo", () => {
       {
         payload: {
           contentRef: "fakeContentRef",
-          kernelInfo: {
-            name: "python",
-            spec: null
-          }
+          kernelInfo: stateModule.makeKernelspec()
         },
-        type: "SET_KERNELSPEC_INFO"
+        type: "SET_KERNEL_METADATA"
       }
     ]);
 

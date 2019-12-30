@@ -1,8 +1,8 @@
 import {
   ContentRef,
   HostRef,
-  KernelspecInfo,
   KernelspecProps,
+  KernelspecRecord,
   KernelspecsRef
 } from "@nteract/types";
 
@@ -35,13 +35,11 @@ export interface FetchKernelspecsFailed {
   };
 }
 
-// "legacy" action that pushes kernelspec info back up
-// for the notebook document
-export const SET_KERNELSPEC_INFO = "SET_KERNELSPEC_INFO";
-export interface SetKernelspecInfo {
-  type: "SET_KERNELSPEC_INFO";
+export const SET_KERNEL_METADATA = "SET_KERNEL_METADATA";
+export interface SetKernelMetadata {
+  type: "SET_KERNEL_METADATA";
   payload: {
-    kernelInfo: KernelspecInfo;
+    kernelInfo: KernelspecRecord;
     contentRef: ContentRef;
   };
 }

@@ -35,12 +35,12 @@ export const fetchKernelspecsFailed = (payload: {
 
 // "legacy" action that pushes kernelspec info back up
 // for the notebook document
-export function setKernelspecInfo(payload: {
+export function setKernelMetadata(payload: {
   kernelInfo: any;
   contentRef: ContentRef;
-}): actionTypes.SetKernelspecInfo {
+}): actionTypes.SetKernelMetadata {
   return {
-    type: actionTypes.SET_KERNELSPEC_INFO,
+    type: actionTypes.SET_KERNEL_METADATA,
     payload
   };
 }

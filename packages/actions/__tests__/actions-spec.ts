@@ -86,9 +86,7 @@ describe("unhideAll", () => {
       }
     });
 
-    expect(
-      actions.unhideAll({ outputHidden: false, contentRef })
-    ).toEqual({
+    expect(actions.unhideAll({ outputHidden: false, contentRef })).toEqual({
       type: actionTypes.UNHIDE_ALL,
       payload: {
         outputHidden: false,
@@ -97,9 +95,7 @@ describe("unhideAll", () => {
       }
     });
 
-    expect(
-      actions.unhideAll({ inputHidden: false, contentRef })
-    ).toEqual({
+    expect(actions.unhideAll({ inputHidden: false, contentRef })).toEqual({
       type: actionTypes.UNHIDE_ALL,
       payload: {
         outputHidden: undefined,
@@ -108,9 +104,7 @@ describe("unhideAll", () => {
       }
     });
 
-    expect(
-      actions.unhideAll({ contentRef })
-    ).toEqual({
+    expect(actions.unhideAll({ contentRef })).toEqual({
       type: actionTypes.UNHIDE_ALL,
       payload: {
         outputHidden: undefined,
@@ -250,12 +244,12 @@ describe("launchKernelByName", () => {
   });
 });
 
-describe("setKernelspecInfo", () => {
-  test("creates a SET_KERNELSPEC_INFO action", () => {
+describe("setKernelMetadata", () => {
+  test("creates a SET_KERNEL_METADATA action", () => {
     const kernelInfo = { name: "japanese" };
     const contentRef = createContentRef();
-    expect(actions.setKernelspecInfo({ kernelInfo, contentRef })).toEqual({
-      type: actionTypes.SET_KERNELSPEC_INFO,
+    expect(actions.setKernelMetadata({ kernelInfo, contentRef })).toEqual({
+      type: actionTypes.SET_KERNEL_METADATA,
       payload: {
         contentRef,
         kernelInfo: {

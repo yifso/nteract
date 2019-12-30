@@ -314,7 +314,7 @@ const byRef = (
     case actionTypes.ACCEPT_PAYLOAD_MESSAGE:
     case actionTypes.UPDATE_CELL_STATUS:
     case actionTypes.SET_LANGUAGE_INFO:
-    case actionTypes.SET_KERNELSPEC_INFO:
+    case actionTypes.SET_KERNEL_METADATA:
     case actionTypes.OVERWRITE_METADATA_FIELD:
     case actionTypes.DELETE_METADATA_FIELD:
     case actionTypes.COPY_CELL:

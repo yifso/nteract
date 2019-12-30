@@ -180,11 +180,12 @@ describe("setLanguageInfo", () => {
   test("adds the metadata fields for the kernelspec and kernel_info", () => {
     const kernelInfo = {
       name: "french",
-      spec: { language: "french", display_name: "français" }
+      language: "french",
+      displayName: "français"
     };
     const state = reducers(
       initialDocument,
-      actions.setKernelspecInfo({ kernelInfo })
+      actions.setKernelMetadata({ kernelInfo })
     );
     const metadata = state.getIn(["notebook", "metadata"]);
     expect(metadata.getIn(["kernel_info", "name"])).toBe("french");
