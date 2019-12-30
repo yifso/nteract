@@ -6,6 +6,7 @@ import {
   JupyterMessage,
   ofMessageType
 } from "@nteract/messaging";
+import { AnyAction } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { empty, merge, Observable, Observer, of } from "rxjs";
 import {
@@ -103,7 +104,7 @@ export function acquireKernelInfo(
         nbconvertExporter: l.nbconvert_exporter
       };
 
-      let result;
+      let result: AnyAction[];
       if (!c.protocol_version.startsWith("5")) {
         result = [
           actions.launchKernelFailed({
@@ -115,7 +116,6 @@ export function acquireKernelInfo(
           })
         ];
       } else {
-        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
         result = [
           // The original action we were using
           actions.setLanguageInfo({
@@ -126,14 +126,16 @@ export function acquireKernelInfo(
           actions.setKernelInfo({
             kernelRef,
             info
-          }),
-          kernelspec
-            ? actions.setKernelMetadata({
+          })
+        ];
+
+        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
+        if (kernelspec) {
+            result.push(actions.setKernelMetadata({
                 contentRef,
                 kernelInfo: kernelspec
-              })
-            : undefined
-        ].filter(Boolean);
+            }));
+        }
       }
 
       return of(...result);
