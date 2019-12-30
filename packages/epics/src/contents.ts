@@ -4,7 +4,6 @@ import FileSaver from "file-saver";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { contents } from "rx-jupyter";
 import { empty, from, interval, Observable, of } from "rxjs";
 import {
   catchError,
@@ -28,6 +27,8 @@ import {
   FileContentRecordProps,
   NotebookContentRecordProps,
   ServerConfig,
+  IContentProvider,
+  IContent,
   JupyterHostRecord
 } from "@nteract/types";
 import { AjaxResponse } from "rxjs/ajax";
@@ -39,7 +40,8 @@ import { existsSync } from "fs";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<AppState>,
+  dependencies: { contentProvider: IContentProvider }
 ): Observable<unknown> {
   return action$.pipe(
     ofType(actions.CHANGE_CONTENT_NAME),
@@ -56,18 +58,13 @@ export function updateContentEpic(
         );
       }
 
-      const state: any = state$.value;
-      const host: any = selectors.currentHost(state);
-
-      // Dismiss any usage that isn't targeting a jupyter server
-      if (host.type !== "jupyter") {
-        return empty();
-      }
-
+      const state = state$.value;
       const { contentRef, filepath, prevFilePath } = action.payload;
+      
+      const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      return contents
+      return dependencies.contentProvider
         .update(serverConfig, prevFilePath, { path: filepath.slice(1) })
         .pipe(
           tap(xhr => {
@@ -96,7 +93,7 @@ export function updateContentEpic(
           catchError((xhrError: any) =>
             of(
               actions.changeContentNameFailed({
-                basepath: host.basepath,
+                basepath: host.basePath,
                 filepath: action.payload.filepath,
                 prevFilePath,
                 error: xhrError,
@@ -115,7 +112,8 @@ export function fetchContentEpic(
     | actions.FetchContentFailed
     | actions.FetchContentFulfilled
   >,
-  state$: StateObservable<AppState>
+  state$: StateObservable<AppState>,
+  dependencies: { contentProvider: IContentProvider }
 ): Observable<unknown> {
   return action$.pipe(
     ofType(actions.FETCH_CONTENT),
@@ -131,17 +129,11 @@ export function fetchContentEpic(
         );
       }
 
-      const state: any = state$.value;
-      const host: any = selectors.currentHost(state);
-
-      // Dismiss any usage that isn't targeting a jupyter server
-      if (host.type !== "jupyter") {
-        return empty();
-      }
-
+      const state = state$.value;
+      const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
-      return contents
+      return dependencies.contentProvider
         .get(
           serverConfig,
           (action as actions.FetchContent).payload.filepath,
@@ -248,7 +240,7 @@ function serializeContent(
 ) {
   // This could be object for notebook, or string for files
   let serializedData: Notebook | string;
-  let saveModel: Partial<contents.IContent<"file" | "notebook">> = {};
+  let saveModel: Partial<IContent<"file" | "notebook">> = {};
   if (content.type === "notebook") {
     const appVersion = selectors.appVersion(state);
 
@@ -280,7 +272,8 @@ function serializeContent(
 
 export function saveContentEpic(
   action$: ActionsObservable<actions.Save | actions.DownloadContent>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<AppState>,
+  dependencies: { contentProvider: IContentProvider }
 ): Observable<
   | actions.DownloadContentFailed
   | actions.DownloadContentFulfilled
@@ -298,16 +291,6 @@ export function saveContentEpic(
         >
       | Observable<never> => {
       const state = state$.value;
-
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        return of(
-          actions.saveFailed({
-            error: new Error("Cannot save content if no host is set."),
-            contentRef: action.payload.contentRef
-          })
-        );
-      }
       const contentRef = action.payload.contentRef;
       const content = selectors.content(state, { contentRef });
 
@@ -381,42 +364,47 @@ export function saveContentEpic(
           );
         }
         case actions.SAVE: {
+          const host = selectors.currentHost(state) as JupyterHostRecord;
           const serverConfig: ServerConfig = selectors.serverConfig(host);
 
           // Check to see if the file was modified since the last time
           // we saved.
-          return contents.get(serverConfig, filepath, { content: 0 }).pipe(
+          return dependencies.contentProvider.get(serverConfig, filepath, { content: 0 }).pipe(
             // Make sure that the modified time is within some delta
             mergeMap((xhr: AjaxResponse) => {
-              if (xhr.status !== 200) {
-                throw new Error(xhr.response.toString());
+              // Ignore if the file wasn't found. Since this is a save epic
+              // we don't expect file to be present yet.
+              if (xhr.status != 404) {
+                if (xhr.status !== 200) {
+                  throw new Error(xhr.response.toString());
+                }
+                if (typeof xhr.response === "string") {
+                  throw new Error(
+                    `jupyter server response invalid: ${xhr.response}`
+                  );
+                }
+
+                const model = xhr.response;
+
+                const diskDate = new Date(model.last_modified);
+                const inMemoryDate = content.lastSaved
+                  ? new Date(content.lastSaved)
+                  : // FIXME: I'm unsure if we don't have a date if we should
+                    // default to the disk date
+                    diskDate;
+                const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+
+                if (Math.abs(diffDate) > 600) {
+                  return of(
+                    actions.saveFailed({
+                      error: new Error("open in another tab possibly..."),
+                      contentRef: action.payload.contentRef
+                    })
+                  );
+                }
               }
-              if (typeof xhr.response === "string") {
-                throw new Error(
-                  `jupyter server response invalid: ${xhr.response}`
-                );
-              }
 
-              const model = xhr.response;
-
-              const diskDate = new Date(model.last_modified);
-              const inMemoryDate = content.lastSaved
-                ? new Date(content.lastSaved)
-                : // FIXME: I'm unsure if we don't have a date if we should
-                  // default to the disk date
-                  diskDate;
-              const diffDate = diskDate.getTime() - inMemoryDate.getTime();
-
-              if (Math.abs(diffDate) > 600) {
-                return of(
-                  actions.saveFailed({
-                    error: new Error("open in another tab possibly..."),
-                    contentRef: action.payload.contentRef
-                  })
-                );
-              }
-
-              return contents.save(serverConfig, filepath, saveModel).pipe(
+              return dependencies.contentProvider.save(serverConfig, filepath, saveModel).pipe(
                 mergeMap((saveXhr: AjaxResponse) => {
                   const pollIntervalMs = 500;
                   const maxPollNb = 4;
@@ -427,7 +415,7 @@ export function saveContentEpic(
                     .pipe(take(maxPollNb))
                     .pipe(
                       mergeMap(x =>
-                        contents
+                        dependencies.contentProvider
                           .get(serverConfig, filepath, { content: 0 })
                           .pipe(
                             map((xhr: AjaxResponse) => {
@@ -492,7 +480,8 @@ export function saveContentEpic(
 
 export function saveAsContentEpic(
   action$: ActionsObservable<actions.SaveAs>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<AppState>,
+  dependencies: { contentProvider: IContentProvider }
 ): Observable<actions.SaveAsFailed | actions.SaveAsFulfilled> {
   return action$.pipe(
     ofType(actions.SAVE_AS),
@@ -500,16 +489,6 @@ export function saveAsContentEpic(
       | Observable<actions.SaveAsFailed | actions.SaveAsFulfilled>
       | Observable<never> => {
       const state = state$.value;
-
-      const host = selectors.currentHost(state);
-      if (host.type !== "jupyter") {
-        return of(
-          actions.saveAsFailed({
-            error: new Error("Cannot save content if no host is set."),
-            contentRef: action.payload.contentRef
-          })
-        );
-      }
       const contentRef = action.payload.contentRef;
       const content = selectors.content(state, { contentRef });
 
@@ -543,9 +522,10 @@ export function saveAsContentEpic(
         );
       }
 
-      const serverConfig: ServerConfig = selectors.serverConfig(host);
+      const host = selectors.currentHost(state) as JupyterHostRecord;
+      const serverConfig = selectors.serverConfig(host);
 
-      return contents.save(serverConfig, filepath, saveModel).pipe(
+      return dependencies.contentProvider.save(serverConfig, filepath, saveModel).pipe(
         map((xhr: AjaxResponse) => {
           return actions.saveAsFulfilled({
             contentRef: action.payload.contentRef,

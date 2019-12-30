@@ -6,9 +6,7 @@ import { Subject } from "rxjs";
 import { toArray } from "rxjs/operators";
 
 import {
-  createContentsResponse,
   extractNewKernel,
-  fetchContentEpic,
   launchKernelWhenNotebookSetEpic,
   newNotebookEpic
 } from "../../../src/notebook/epics/loading";
@@ -21,47 +19,6 @@ describe("extractNewKernel", () => {
       kernelSpecName: "python3",
       cwd: path.resolve("/tmp")
     });
-  });
-});
-
-describe("loadingEpic", () => {
-  test("errors without a filename", done => {
-    const action$ = ActionsObservable.of({
-      type: "CORE/FETCH_CONTENT",
-      payload: {}
-    });
-    const responseActions = fetchContentEpic(action$);
-    responseActions.subscribe(
-      _ => _,
-      err => {
-        expect(err.message).toBe("fetch content needs a path");
-        done();
-      },
-      () => {
-        done.fail();
-      }
-    );
-  });
-  test("errors when file cant be read", async () => {
-    const action$ = ActionsObservable.of({
-      type: "CORE/FETCH_CONTENT",
-      payload: { filepath: "file" }
-    });
-
-    const responseActions = await fetchContentEpic(action$)
-      .pipe(toArray())
-      .toPromise();
-
-    expect(responseActions).toEqual([
-      {
-        payload: {
-          error: expect.anything(),
-          filepath: "file"
-        },
-        error: true,
-        type: "CORE/FETCH_CONTENT_FAILED"
-      }
-    ]);
   });
 });
 
@@ -162,49 +119,6 @@ describe("newNotebookEpicNamed", () => {
         }
       }
     ]);
-  });
-});
-
-describe("createContentsResponse", () => {
-  it("throws an error if content is directory", () => {
-    const filePath = "/test-directory";
-    const stats = {
-      isDirectory: () => true,
-      birthtime: new Date(),
-      mtime: new Date()
-    };
-    const content = new Buffer("test");
-    const invocation = () => createContentsResponse(filePath, stats, content);
-    expect(invocation).toThrowError(
-      "Attempted to open a directory instead of a notebook"
-    );
-  });
-  it("throws an error for non-ipynb files", () => {
-    const filePath = "/test-directory/test.txt";
-    const stats = {
-      isDirectory: () => false,
-      isFile: () => true,
-      birthtime: new Date(),
-      mtime: new Date()
-    };
-    const content = new Buffer("test");
-    const invocation = () => createContentsResponse(filePath, stats, content);
-    expect(invocation).toThrowError(
-      "File does not end in ipynb and will not be opened"
-    );
-  });
-  it("handles ipynb files", () => {
-    const filePath = "/test-directory/test.ipynb";
-    const stats = {
-      isDirectory: () => false,
-      isFile: () => true,
-      birthtime: new Date(),
-      mtime: new Date()
-    };
-    const content = new Buffer("{  }");
-    const result = createContentsResponse(filePath, stats, content);
-    expect(result).toBeDefined();
-    expect(result.writable).toBe(false);
   });
 });
 

@@ -13,6 +13,7 @@ import epics from "./epics";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
 import { Observable } from "rxjs";
+import { LocalContentProvider } from "./local-content-provider";
 
 const rootEpic = (
   action$: ActionsObservable<any>,
@@ -26,12 +27,15 @@ const rootEpic = (
     })
   );
 
+const localContentProvider = new LocalContentProvider();
 const epicMiddleware = createEpicMiddleware<
   Actions,
   Actions,
   DesktopNotebookAppState,
   any
->();
+>({ 
+  dependencies: { contentProvider: localContentProvider } 
+});
 const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
 export type DesktopStore = Store<DesktopNotebookAppState, Actions>;
@@ -57,5 +61,8 @@ export default function configureStore(
     applyMiddleware(...middlewares)
   );
   epicMiddleware.run(rootEpic);
-  return store as DesktopStore;
+
+  const desktopStore = store as DesktopStore;
+  localContentProvider.setAppState(desktopStore.getState());
+  return desktopStore;
 }

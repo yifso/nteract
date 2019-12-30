@@ -10,6 +10,7 @@ import {
 import { HostRecord } from "./entities/hosts";
 import { KernelRef, KernelspecsRef } from "./refs";
 
+export * from "./content-provider";
 export * from "./entities";
 export * from "./ids";
 export * from "./refs";
