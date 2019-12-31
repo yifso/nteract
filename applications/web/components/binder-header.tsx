@@ -25,10 +25,10 @@ const Header = styled.header`
   background-color: black;
 
   & img {
-    height: calc(var(--header-height) - 16px);
+    height: 42px;
     width: 80px;
     margin-left: 10px;
-    padding: 0px 20px 0px 10px;
+    padding: 0px 16px;
   }
 
   & img,
@@ -62,6 +62,10 @@ const Header = styled.header`
     background-color: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.1);
   }
+
+  & .right {
+    float: right;
+  }
 `;
 
 export class BinderHeader extends React.PureComponent<
@@ -77,6 +81,11 @@ export class BinderHeader extends React.PureComponent<
             alt="nteract logo"
             className="nteract-logo"
           />
+        </div>
+        <div className="right">
+          <button onClick={() => toggleShowPanel(!showPanel)}>
+            {showPanel ? "Hide" : "Show"} config panel
+          </button>
 
           <button
             onClick={launchServer}
@@ -86,9 +95,6 @@ export class BinderHeader extends React.PureComponent<
           >
             ▶ Launch Server
           </button>
-          <button onClick={() => toggleShowPanel(!showPanel)}>
-            {showPanel ? "Hide" : "Show"} logs
-          </button>
         </div>
       </Header>
     );
@@ -97,7 +103,7 @@ export class BinderHeader extends React.PureComponent<
 
 const mapStateToProps = (state: AppState) => {
   return {
-    showPanel: state.webApp.showPanel
+    showPanel: state.webApp.get("showPanel")
   };
 };
 

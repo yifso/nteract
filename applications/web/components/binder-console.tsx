@@ -51,7 +51,7 @@ const StyledFieldset = styled.fieldset`
 
 class BinderTextInput extends React.PureComponent {
   render() {
-    const { onChange, value, id, labelText, name } = this.props;
+    const { onChange, value, id, labelText, name, placeholder } = this.props;
 
     return (
       <React.Fragment>
@@ -65,6 +65,7 @@ class BinderTextInput extends React.PureComponent {
               name={name}
               value={value}
               size="80"
+              placeholder={placeholder}
             />
           </label>
         </StyledFieldset>
@@ -193,6 +194,7 @@ export class BinderConsole extends React.Component {
               value={repo}
               labelText="Github Repo:"
               name="repo"
+              placeholder="nteract/examples"
             />
             <BinderTextInput
               onChange={onGitRefChange}
@@ -200,6 +202,7 @@ export class BinderConsole extends React.Component {
               name="gitref"
               value={gitref}
               labelText="Branch/commit/tag:"
+              placeholder="master"
             />
           </StyledForm>
           <BinderLogs logs={logs} />

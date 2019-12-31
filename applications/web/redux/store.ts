@@ -44,7 +44,11 @@ const composeEnhancers =
 
 const NullTransform = () => null;
 
-const initialState: AppState = {
+interface WebAppState {
+  webApp: Immutable.Map<string, any>;
+}
+
+const initialState: AppState & WebAppState = {
   app: makeAppRecord({
     version: "nteract-on-web",
     host: makeJupyterHostRecord({})
@@ -116,6 +120,9 @@ const initialState: AppState = {
         })
       })
     })
+  }),
+  webApp: Immutable.Map({
+    showPanel: true
   })
 };
 
