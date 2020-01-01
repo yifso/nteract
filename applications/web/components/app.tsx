@@ -9,7 +9,7 @@ import Directory from "./contents/directory";
 import BinderConsole from "./binder-console";
 import BinderHeader from "./binder-header";
 
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 interface StateProps {
   directoryRef: string;
@@ -22,6 +22,22 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+
+  & .file .directory {
+    min-width: 0;
+  }
+
+  & .directory {
+    flex: 0 25%;
+  }
+
+  & .file {
+    flex: 1 1 75%;
+  }
+`;
+
 class App extends React.Component<StateProps> {
   shouldComponentUpdate(nextProps: StateProps): boolean {
     return (
@@ -31,12 +47,15 @@ class App extends React.Component<StateProps> {
   }
 
   render(): JSX.Element {
+    const { directoryRef, contentRef } = this.props;
     return (
       <React.Fragment>
         <BinderHeader />
         <BinderConsole />
-        <Directory contentRef={this.props.directoryRef} />
-        <File contentRef={this.props.contentRef} />
+        <Container>
+          <Directory contentRef={directoryRef} className="directory" />
+          <File contentRef={contentRef} className="file" />
+        </Container>
         <GlobalStyle />
       </React.Fragment>
     );
