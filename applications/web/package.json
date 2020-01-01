@@ -8,11 +8,23 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@nteract/core": "^10.11.0",
+    "@nteract/data-explorer": "^7.2.1",
+    "@nteract/directory-listing": "^2.0.6",
+    "@nteract/jupyter-widgets": "^4.4.1",
+    "@nteract/mathjax": "^4.0.1",
+    "@nteract/monaco-editor": "^3.0.5",
+    "@nteract/notebook-app-component": "^6.0.1-alpha.0",
+    "@nteract/outputs": "^3.0.0",
+    "@nteract/styles": "^2.1.0",
+    "@nteract/transform-vdom": "^4.0.5",
+    "@nteract/webpack-configurator": "^3.1.1",
     "isomorphic-unfetch": "3.0.0",
     "next": "latest",
     "next-redux-wrapper": "^4.0.1",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "rx-binder": "^4.0.2",
     "styled-components": "^4.4.1"
   },
   "devDependencies": {

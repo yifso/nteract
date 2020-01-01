@@ -21,8 +21,8 @@ import styled from "styled-components";
 import * as actions from "../../redux/actions";
 
 const ListingRoot = styled.div`
-  padding-left: 2rem;
-  padding-right: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
 `;
 
 interface LightDirectoryEntry {

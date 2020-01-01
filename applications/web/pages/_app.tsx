@@ -3,9 +3,14 @@ import withRedux from "next-redux-wrapper";
 import App from "next/app";
 import React from "react";
 import { Provider } from "react-redux";
+import { Store } from "redux";
 import configureStore from "../redux/store";
 
-class NteractApp extends App {
+interface StoreProps {
+  store: Store;
+}
+
+class NteractApp extends App<StoreProps> {
   static async getInitialProps({ Component, ctx }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
