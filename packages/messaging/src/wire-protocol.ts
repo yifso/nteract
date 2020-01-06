@@ -18,11 +18,7 @@ export interface RawJupyterMessage<
   C = any
 > {
   header: JupyterMessageHeader<MT>;
-  parent_header:
-    | JupyterMessageHeader<any>
-    | {
-        msg_id?: string;
-      };
+  parent_header: JupyterMessageHeader<any>;
   metadata: object;
   content: C;
   buffers: Array<Buffer>;
