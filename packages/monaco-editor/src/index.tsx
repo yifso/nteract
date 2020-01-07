@@ -20,14 +20,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
   monaco?: editor.IStandaloneCodeEditor;
   monacoContainerRef = React.createRef<HTMLDivElement>();
 
-  constructor(props: MonacoEditorProps) {
-    super(props);
-    this.componentWillReceiveProps = debounce(
-      this.componentWillReceiveProps,
-      0
-    );
-  }
-
   onDidChangeModelContent() {
     if (this.monaco && this.props.onChange) {
       this.props.onChange(this.monaco.getValue());
@@ -71,13 +63,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
 
     if (this.props.theme) {
       editor.setTheme(this.props.theme);
-    }
-  }
-
-  componentWillReceiveProps(nextProps: MonacoEditorProps) {
-    if (this.monaco && this.monaco.getValue() !== nextProps.value) {
-      // FIXME: calling setValue resets cursor position in monaco. It shouldn't!
-      this.monaco.setValue(nextProps.value);
     }
   }
 

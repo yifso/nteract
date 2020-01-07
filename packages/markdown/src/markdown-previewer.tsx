@@ -63,10 +63,10 @@ export class MarkdownPreviewer extends React.Component<Props, State> {
     this.updateFocus();
   }
 
-  componentWillReceiveProps(nextProps: Props): void {
-    this.setState({
+  getDerivedStateFromProps(nextProps: Props): void {
+    return {
       view: !nextProps.editorFocused
-    });
+    };
   }
 
   componentDidUpdate(): void {

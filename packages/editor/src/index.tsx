@@ -160,11 +160,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
       theme: "composition",
       lineWrapping: true
     });
-
-    this.componentWillReceiveProps = debounce(
-      this.componentWillReceiveProps,
-      0
-    );
   }
 
   fullOptions(defaults: FullEditorConfiguration = {}) {
@@ -335,30 +330,28 @@ export default class CodeMirrorEditor extends React.PureComponent<
     if (prevProps.mode !== this.props.mode) {
       this.cm.setOption("mode", this.cleanMode());
     }
-  }
 
-  componentWillReceiveProps(nextProps: CodeMirrorEditorProps): void {
     if (
       this.cm &&
-      nextProps.value !== undefined &&
+      this.props.value !== undefined &&
       normalizeLineEndings(this.cm.getValue()) !==
-        normalizeLineEndings(nextProps.value)
+        normalizeLineEndings(this.props.value)
     ) {
       if (this.props.preserveScrollPosition) {
         const prevScrollPosition = this.cm.getScrollInfo();
-        this.cm.setValue(nextProps.value);
+        this.cm.setValue(this.props.value);
         this.cm.scrollTo(prevScrollPosition.left, prevScrollPosition.top);
       } else {
-        this.cm.setValue(nextProps.value);
+        this.cm.setValue(this.props.value);
       }
     }
 
-    for (const optionName in nextProps) {
+    for (const optionName in this.props) {
       if (!isConfigurable(optionName)) {
         continue;
       }
-      if (nextProps[optionName] !== this.props[optionName]) {
-        this.cm.setOption(optionName, nextProps[optionName]);
+      if (this.props[optionName] !== this.props[optionName]) {
+        this.cm.setOption(optionName, this.props[optionName]);
       }
     }
   }
