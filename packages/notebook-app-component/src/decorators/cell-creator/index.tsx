@@ -14,7 +14,7 @@ interface ComponentProps {
 }
 
 interface StateProps {
-  first: boolean;
+  isFirstCell: boolean;
 }
 
 interface DispatchProps {
@@ -42,6 +42,11 @@ export const CellCreatorMenu = styled.div`
   pointer-events: all;
   position: relative;
   top: -5px;
+  /**
+   * Now that the cell-creator is added as a decorator we need
+   * this x-index to ensure that it is always shown on the top
+   * of other cells.
+   */
   z-index: 50;
 
   button {
@@ -166,7 +171,7 @@ class CellCreator extends React.PureComponent<
   render() {
     return (
       <React.Fragment>
-        {this.props.first && (
+        {this.props.isFirstCell && (
           <PureCellCreator above={true} createCell={this.createCell} />
         )}
         {this.props.children}
@@ -179,16 +184,16 @@ class CellCreator extends React.PureComponent<
 const mapStateToProps = (state: AppState, ownProps: ComponentProps) => {
   const { id, contentRef } = ownProps;
   const model = selectors.model(state, { contentRef });
-  let first = false;
+  let isFirstCell = false;
 
   if (model && model.type === "notebook") {
     const cellOrder = selectors.notebook.cellOrder(model);
     const cellIndex = cellOrder.findIndex(cellId => cellId === id);
-    first = cellIndex === 0;
+    isFirstCell = cellIndex === 0;
   }
 
   return {
-    first
+    isFirstCell
   };
 };
 
