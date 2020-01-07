@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
-import CodeMirrorEditor from "@nteract/editor";
 import { MarkdownPreviewer } from "@nteract/markdown";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
+import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
+
 import { ImmutableCell } from "@nteract/commutable/src";
 
 interface NamedMDCellSlots {
@@ -51,7 +52,13 @@ export class PureMarkdownCell extends React.Component<
     } = this.props;
 
     const defaults = {
-      editor: () => <CodeMirrorEditor />
+      editor: (props: { id: string; contentRef: string }) => (
+        <CodeMirrorEditor
+          id={props.id}
+          contentRef={props.contentRef}
+          editorType="codemirror"
+        />
+      )
     };
 
     const editor = children?.editor || defaults.editor;
@@ -73,8 +80,7 @@ export class PureMarkdownCell extends React.Component<
         >
           <Source className="nteract-cell-source">
             <Editor id={id} contentRef={contentRef}>
-              {editor()}
-              {toolbar && toolbar()}
+              {editor({ id, contentRef })}
             </Editor>
           </Source>
         </MarkdownPreviewer>

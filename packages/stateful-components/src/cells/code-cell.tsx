@@ -2,11 +2,11 @@ import React from "react";
 
 import { ImmutableCell } from "@nteract/commutable";
 import { ContentRef } from "@nteract/core";
-import CodeMirrorEditor from "@nteract/editor";
 import { KernelOutputError, Media, StreamText } from "@nteract/outputs";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
+import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 import Input from "../inputs/input";
 import Prompt from "../inputs/prompt";
 import Outputs from "../outputs";
@@ -58,7 +58,13 @@ export default class CodeCell extends React.Component<ComponentProps> {
           <PromptText />
         </Prompt>
       ),
-      editor: () => <CodeMirrorEditor />,
+      editor: (props: { id: string; contentRef: string }) => (
+        <CodeMirrorEditor
+          id={props.id}
+          contentRef={props.contentRef}
+          editorType="codemirror"
+        />
+      ),
       pagers: (props: any) => (
         <Pagers id={id} contentRef={contentRef}>
           <Media.Json />
@@ -106,7 +112,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
           {prompt({ id, contentRef })}
           <Source className="nteract-cell-source">
             <Editor id={id} contentRef={contentRef}>
-              {editor()}
+              {editor({ id, contentRef })}
             </Editor>
           </Source>
         </Input>

@@ -4,10 +4,10 @@ import { Dispatch } from "redux";
 
 import { ImmutableCell } from "@nteract/commutable";
 import { actions, AppState, ContentRef } from "@nteract/core";
-import CodeMirrorEditor from "@nteract/editor";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
+import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 
 interface NamedRawCellSlots {
   editor?: () => JSX.Element;
@@ -34,7 +34,13 @@ export class PureRawCell extends React.Component<
     const { id, contentRef, children } = this.props;
 
     const defaults = {
-      editor: () => <CodeMirrorEditor />
+      editor: (props: { id: string; contentRef: string }) => (
+        <CodeMirrorEditor
+          id={props.id}
+          contentRef={props.contentRef}
+          editorType="codemirror"
+        />
+      )
     };
 
     const editor = children?.editor || defaults.editor;
@@ -45,11 +51,7 @@ export class PureRawCell extends React.Component<
         {toolbar && toolbar()}
         <Source className="nteract-cell-source">
           <Editor id={id} contentRef={contentRef}>
-            {editor ? (
-              <React.Fragment>{editor}</React.Fragment>
-            ) : (
-              <CodeMirrorEditor />
-            )}
+            {editor({ id, contentRef })}
           </Editor>
         </Source>
       </div>

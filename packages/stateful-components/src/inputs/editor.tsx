@@ -16,6 +16,7 @@ interface StateProps {
   value: string;
   channels: any;
   kernelStatus: string;
+  theme: string;
 }
 
 export class Editor extends React.Component<ComponentProps & StateProps> {
@@ -63,11 +64,7 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
 
     // Render the output component that handles this output type
     return React.cloneElement(chosenOne, {
-      editorFocused: this.props.editorFocused,
-      value: this.props.value,
-      channels: this.props.channels,
-      kernelStatus: this.props.kernelStatus,
-      editorType: this.props.editorType,
+      ...this.props,
       className: "nteract-cell-editor"
     });
   }
@@ -86,6 +83,7 @@ export const makeMapStateToProps = (
     let kernelStatus = "not connected";
     let value = "";
     let editorType = "codemirror";
+    let theme = selectors.userTheme(state);
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
@@ -107,7 +105,8 @@ export const makeMapStateToProps = (
       value,
       channels,
       kernelStatus,
-      editorType
+      editorType,
+      theme
     };
   };
 

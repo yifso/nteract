@@ -1,3 +1,3 @@
-import { NotebookApp as DefaultNotebookApp } from "./notebook-apps/draggable-with-cell-creator";
+import NotebookApp from "./notebook-apps/draggable-with-cell-creator";
 
-export default DefaultNotebookApp;
+export default NotebookApp;
