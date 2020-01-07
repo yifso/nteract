@@ -160,6 +160,11 @@ export default class CodeMirrorEditor extends React.PureComponent<
       theme: "composition",
       lineWrapping: true
     });
+
+    this.componentWillReceiveProps = debounce(
+      this.componentWillReceiveProps,
+      0
+    );
   }
 
   fullOptions(defaults: FullEditorConfiguration = {}) {
@@ -184,13 +189,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
       return this.props.mode.toJS();
     }
     return this.props.mode;
-  }
-
-  componentWillMount(): void {
-    this.componentWillReceiveProps = debounce(
-      this.componentWillReceiveProps,
-      0
-    );
   }
 
   componentDidMount(): void {

@@ -20,7 +20,8 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
   monaco?: editor.IStandaloneCodeEditor;
   monacoContainerRef = React.createRef<HTMLDivElement>();
 
-  componentWillMount() {
+  constructor(props: MonacoEditorProps) {
+    super(props);
     this.componentWillReceiveProps = debounce(
       this.componentWillReceiveProps,
       0
