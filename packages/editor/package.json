@@ -20,7 +20,6 @@
     "@nteract/messaging": "^6.2.2-alpha.0",
     "@nteract/outputs": "^3.0.1-alpha.0",
     "codemirror": "5.50.2",
-    "lodash.debounce": "^4.0.8",
     "rxjs": "^6.3.3"
   },
   "peerDependencies": {
