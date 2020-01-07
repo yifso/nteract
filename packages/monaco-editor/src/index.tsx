@@ -1,4 +1,3 @@
-import debounce from "lodash.debounce";
 import { editor } from "monaco-editor";
 import * as React from "react";
 
@@ -19,13 +18,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
 
   monaco?: editor.IStandaloneCodeEditor;
   monacoContainerRef = React.createRef<HTMLDivElement>();
-
-  componentWillMount() {
-    this.componentWillReceiveProps = debounce(
-      this.componentWillReceiveProps,
-      0
-    );
-  }
 
   onDidChangeModelContent() {
     if (this.monaco && this.props.onChange) {
@@ -70,13 +62,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
 
     if (this.props.theme) {
       editor.setTheme(this.props.theme);
-    }
-  }
-
-  componentWillReceiveProps(nextProps: MonacoEditorProps) {
-    if (this.monaco && this.monaco.getValue() !== nextProps.value) {
-      // FIXME: calling setValue resets cursor position in monaco. It shouldn't!
-      this.monaco.setValue(nextProps.value);
     }
   }
 
