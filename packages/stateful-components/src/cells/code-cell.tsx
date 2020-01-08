@@ -1,12 +1,12 @@
-import Immutable from "immutable";
 import React from "react";
 
+import { ImmutableCell } from "@nteract/commutable";
 import { ContentRef } from "@nteract/core";
-import CodeMirrorEditor from "@nteract/editor";
 import { KernelOutputError, Media, StreamText } from "@nteract/outputs";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
+import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 import Input from "../inputs/input";
 import Prompt from "../inputs/prompt";
 import Outputs from "../outputs";
@@ -15,18 +15,19 @@ import Pagers from "../outputs/pagers";
 import TransformMedia from "../outputs/transform-media";
 
 interface NamedCodeCellSlots {
-  editor?: React.ReactChild;
-  prompt?: React.ReactChild;
-  pagers?: React.ReactChild;
-  inputPrompts?: React.ReactChild;
-  outputs?: React.ReactChild;
+  editor?: () => JSX.Element;
+  prompt?: (props: { id: string; contentRef: string }) => JSX.Element;
+  pagers?: (props: any) => JSX.Element;
+  inputPrompts?: (props: any) => JSX.Element;
+  outputs?: (props: any) => JSX.Element;
+  toolbar?: () => JSX.Element;
 }
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  cell: Immutable.Map<string, any>;
-  cell_type: "code";
+  cell?: ImmutableCell;
+  cell_type?: "code";
   children?: NamedCodeCellSlots;
 }
 
@@ -50,88 +51,74 @@ export default class CodeCell extends React.Component<ComponentProps> {
 
   render() {
     const { id, contentRef, children } = this.props;
-    let editor, prompt, pagers, inputPrompts, outputs;
-    if (children) {
-      editor = children.editor;
-      prompt = children.prompt;
-      pagers = children.pagers;
-      inputPrompts = children.inputPrompts;
-      outputs = children.outputs;
-    }
+
+    const defaults = {
+      prompt: (props: { id: string; contentRef: string }) => (
+        <Prompt id={props.id} contentRef={props.contentRef}>
+          <PromptText />
+        </Prompt>
+      ),
+      editor: (props: { id: string; contentRef: string }) => (
+        <CodeMirrorEditor
+          id={props.id}
+          contentRef={props.contentRef}
+          editorType="codemirror"
+        />
+      ),
+      pagers: (props: any) => (
+        <Pagers id={id} contentRef={contentRef}>
+          <Media.Json />
+          <Media.JavaScript />
+          <Media.HTML />
+          <Media.Markdown />
+          <Media.LaTeX />
+          <Media.SVG />
+          <Media.Image />
+          <Media.Plain />
+        </Pagers>
+      ),
+      inputPrompts: (props: any) => (
+        <InputPrompts id={props.id} contentRef={props.contentRef} />
+      ),
+      outputs: (props: any) => (
+        <Outputs id={id} contentRef={contentRef}>
+          <TransformMedia
+            output_type={"display_data"}
+            id={id}
+            contentRef={contentRef}
+          />
+          <TransformMedia
+            output_type={"execute_result"}
+            id={id}
+            contentRef={contentRef}
+          />
+          <KernelOutputError />
+          <StreamText />
+        </Outputs>
+      )
+    };
+
+    const prompt = children?.prompt || defaults.prompt;
+    const editor = children?.editor || defaults.editor;
+    const pagers = children?.pagers || defaults.pagers;
+    const inputPrompts = children?.pagers || defaults.inputPrompts;
+    const outputs = children?.outputs || defaults.outputs;
+    const toolbar = children?.toolbar;
 
     return (
-      <div>
-        <Input id={id} contentRef={contentRef} className="nteract-cell-input">
-          {prompt ? (
-            <React.Fragment>{prompt}</React.Fragment>
-          ) : (
-            <Prompt id={id} contentRef={contentRef}>
-              <PromptText />
-            </Prompt>
-          )}
+      <div className="nteract-code-cell nteract-cell">
+        {toolbar && toolbar()}
+        <Input id={id} contentRef={contentRef}>
+          {prompt({ id, contentRef })}
           <Source className="nteract-cell-source">
-            <Editor
-              id={id}
-              contentRef={contentRef}
-              className="nteract-cell-editor"
-            >
-              {editor ? (
-                <React.Fragment>{editor}</React.Fragment>
-              ) : (
-                <CodeMirrorEditor />
-              )}
+            <Editor id={id} contentRef={contentRef}>
+              {editor({ id, contentRef })}
             </Editor>
           </Source>
         </Input>
-        {pagers ? (
-          <React.Fragment>{pagers}</React.Fragment>
-        ) : (
-          <Pagers
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-pagers"
-          >
-            <Media.Json />
-            <Media.JavaScript />
-            <Media.HTML />
-            <Media.Markdown />
-            <Media.LaTeX />
-            <Media.SVG />
-            <Media.Image />
-            <Media.Plain />
-          </Pagers>
-        )}
-        {outputs ? (
-          <React.Fragment>{outputs}</React.Fragment>
-        ) : (
-          <Outputs
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-outputs"
-          >
-            <TransformMedia
-              output_type={"display_data"}
-              id={id}
-              contentRef={contentRef}
-            />
-            <TransformMedia
-              output_type={"execute_result"}
-              id={id}
-              contentRef={contentRef}
-            />
-            <KernelOutputError />
-            <StreamText />
-          </Outputs>
-        )}
-        {inputPrompts ? (
-          <React.Fragment>{inputPrompts}</React.Fragment>
-        ) : (
-          <InputPrompts
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-input-prompts"
-          />
-        )}
+        {pagers({ id, contentRef })}
+        {outputs({ id, contentRef })}
+        {inputPrompts({ id, contentRef })}
       </div>
     );
   }

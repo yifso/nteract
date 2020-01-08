@@ -55,9 +55,11 @@ export type CodeMirrorEditorProps = {
   // _Our_ theme, not the codemirror one we use
   theme: string;
   channels?: Channels | null;
-  // TODO: We only check if this is idle, so the completion provider should only
-  //       care about this when kernelStatus === idle _and_ we're the active cell
-  //       could instead call it `canTriggerCompletion` and reduce our current re-renders
+  /**
+   * We use the kernelStatus to check to see if the kernel is currently
+   * idle. If the kernel is idle, then we can send over a completion_request
+   * to the kernel.
+   */
   kernelStatus: string;
   onChange?: (value: string, change: EditorChangeLinkedList) => void;
   onFocusChange?: (focused: boolean) => void;

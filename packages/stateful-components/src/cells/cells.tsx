@@ -10,9 +10,9 @@ import MarkdownCell from "./markdown-cell";
 import RawCell from "./raw-cell";
 
 interface NamedCellSlots {
-  code?: React.ReactChild;
-  markdown?: React.ReactChild;
-  raw?: React.ReactChild;
+  code?: (props: { id: string; contentRef: string }) => JSX.Element;
+  markdown?: (props: { id: string; contentRef: string }) => JSX.Element;
+  raw?: (props: { id: string; contentRef: string }) => JSX.Element;
 }
 interface ComponentProps {
   contentRef: ContentRef;
@@ -23,52 +23,46 @@ interface StateProps {
   cellOrder: Immutable.List<string>;
 }
 
+interface CellProps {
+  id: string;
+  contentRef: ContentRef;
+}
+
 export class Cells extends React.Component<StateProps & ComponentProps> {
   render() {
     const { cellOrder, contentRef, children } = this.props;
-    let code, raw, markdown;
-    if (children) {
-      code = children.code;
-      raw = children.raw;
-      markdown = children.markdown;
-    }
+
+    const defaults = {
+      markdown: (props: CellProps) => (
+        <MarkdownCell
+          id={props.id}
+          contentRef={props.contentRef}
+          cell_type="markdown"
+        />
+      ),
+      code: (props: CellProps) => (
+        <CodeCell
+          id={props.id}
+          contentRef={props.contentRef}
+          cell_type="code"
+        />
+      ),
+      raw: (props: CellProps) => (
+        <RawCell id={props.id} contentRef={props.contentRef} cell_type="raw" />
+      )
+    };
+
+    const code = children?.code || defaults.code;
+    const markdown = children?.markdown || defaults.markdown;
+    const raw = children?.raw || defaults.raw;
 
     return (
       <div className="nteract-cells">
         {cellOrder.map((id: string) => (
-          <Cell
-            id={id}
-            contentRef={contentRef}
-            key={id}
-            className="nteract-cell"
-          >
-            {markdown ? (
-              <React.Fragment>{markdown}</React.Fragment>
-            ) : (
-              <MarkdownCell
-                id={id}
-                contentRef={contentRef}
-                className="nteract-md-cell"
-              />
-            )}
-            {raw ? (
-              <React.Fragment>{raw}</React.Fragment>
-            ) : (
-              <RawCell
-                id={id}
-                contentRef={contentRef}
-                className="nteract-raw-cell"
-              />
-            )}
-            {code ? (
-              <React.Fragment>{raw}</React.Fragment>
-            ) : (
-              <CodeCell
-                id={id}
-                contentRef={contentRef}
-                className="nteract-code-cell"
-              />
-            )}
+          <Cell id={id} contentRef={contentRef} key={id}>
+            {markdown({ id, contentRef })}
+            {raw({ id, contentRef })}
+            {code({ id, contentRef })}
           </Cell>
         ))}
       </div>

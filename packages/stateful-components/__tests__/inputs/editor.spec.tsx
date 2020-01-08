@@ -16,6 +16,7 @@ describe("makeMapStateToProps", () => {
       editorType: "codemirror",
       editorFocused: false,
       channels: null,
+      theme: "light",
       kernelStatus: "not connected",
       value: ""
     });

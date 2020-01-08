@@ -1,30 +1,32 @@
-import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
-import CodeMirrorEditor from "@nteract/editor";
 import { MarkdownPreviewer } from "@nteract/markdown";
 import { Source } from "@nteract/presentational-components";
 
 import Editor from "../inputs/editor";
+import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
+
+import { ImmutableCell } from "@nteract/commutable/src";
 
 interface NamedMDCellSlots {
-  editor?: React.ReactNode;
+  editor?: () => JSX.Element;
+  toolbar?: () => JSX.Element;
 }
 
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  cell: Immutable.Map<string, any>;
-  cell_type: "markdown";
+  cell_type?: "markdown";
   children?: NamedMDCellSlots;
 }
 
 interface StateProps {
   isCellFocused: boolean;
   isEditorFocused: boolean;
+  cell?: ImmutableCell;
 }
 
 interface DispatchProps {
@@ -38,7 +40,7 @@ export class PureMarkdownCell extends React.Component<
   ComponentProps & DispatchProps & StateProps
 > {
   render() {
-    const { contentRef, id, cell } = this.props;
+    const { contentRef, id, cell, children } = this.props;
 
     const { isEditorFocused, isCellFocused } = this.props;
 
@@ -49,39 +51,40 @@ export class PureMarkdownCell extends React.Component<
       unfocusEditor
     } = this.props;
 
-    const { children } = this.props;
-    let editor;
-    if (children) {
-      editor = children.editor;
-    }
+    const defaults = {
+      editor: (props: { id: string; contentRef: string }) => (
+        <CodeMirrorEditor
+          id={props.id}
+          contentRef={props.contentRef}
+          editorType="codemirror"
+        />
+      )
+    };
 
-    const source = cell.get("source", "");
+    const editor = children?.editor || defaults.editor;
+    const toolbar = children?.toolbar;
+
+    const source = cell ? cell.get("source", "") : "";
 
     return (
-      <MarkdownPreviewer
-        focusAbove={focusAboveCell}
-        focusBelow={focusBelowCell}
-        focusEditor={focusEditor}
-        cellFocused={isCellFocused}
-        editorFocused={isEditorFocused}
-        unfocusEditor={unfocusEditor}
-        source={source}
-        className="nteract-cell-md-previewer"
-      >
-        <Source className="nteract-cell-source">
-          <Editor
-            id={id}
-            contentRef={contentRef}
-            className="nteract-cell-editor"
-          >
-            {editor ? (
-              <React.Fragment>{editor}</React.Fragment>
-            ) : (
-              <CodeMirrorEditor />
-            )}
-          </Editor>
-        </Source>
-      </MarkdownPreviewer>
+      <div className="nteract-md-cell nteract-cell">
+        {toolbar && toolbar()}
+        <MarkdownPreviewer
+          focusAbove={focusAboveCell}
+          focusBelow={focusBelowCell}
+          focusEditor={focusEditor}
+          cellFocused={isCellFocused}
+          editorFocused={isEditorFocused}
+          unfocusEditor={unfocusEditor}
+          source={source}
+        >
+          <Source className="nteract-cell-source">
+            <Editor id={id} contentRef={contentRef}>
+              {editor({ id, contentRef })}
+            </Editor>
+          </Source>
+        </MarkdownPreviewer>
+      </div>
     );
   }
 }
@@ -95,13 +98,16 @@ export const makeMapStateToProps = (
     const model = selectors.model(state, { contentRef });
     let isCellFocused = false;
     let isEditorFocused = false;
+    let cell;
 
     if (model && model.type === "notebook") {
+      cell = selectors.notebook.cellById(model, { id });
       isCellFocused = model.cellFocused === id;
       isEditorFocused = model.editorFocused === id;
     }
 
     return {
+      cell,
       isCellFocused,
       isEditorFocused
     };
@@ -139,9 +145,5 @@ const MarkdownCell = connect(
   makeMapStateToProps,
   makeMapDispatchToProps
 )(PureMarkdownCell);
-
-MarkdownCell.defaultProps = {
-  cell_type: "markdown"
-};
 
 export default MarkdownCell;

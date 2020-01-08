@@ -8,6 +8,7 @@ import { Output } from "@nteract/outputs";
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
+  children: React.ReactNode;
 }
 
 interface StateProps {
@@ -25,7 +26,7 @@ export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
           "expanded"}`}
       >
         {outputs.map((output, index) => (
-          <Output output={output} index={index}>
+          <Output output={output} key={index}>
             {children}
           </Output>
         ))}
@@ -63,4 +64,6 @@ export const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps, null)(Outputs);
+export default connect<StateProps, void, ComponentProps, AppState>(
+  makeMapStateToProps
+)(Outputs);

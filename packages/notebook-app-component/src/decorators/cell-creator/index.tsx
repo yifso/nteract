@@ -1,40 +1,38 @@
-import * as actions from "@nteract/actions";
+import { actions, selectors, ContentRef, AppState } from "@nteract/core";
 import { CellType } from "@nteract/commutable";
 import { CodeOcticon, MarkdownOcticon } from "@nteract/octicons";
-import { ContentRef } from "@nteract/types";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import styled from "styled-components";
 
-interface Props {
-  above: boolean;
-  createCell: (type: "code" | "markdown") => void;
+interface ComponentProps {
+  id: string;
+  contentRef: ContentRef;
+  children: React.ReactNode;
 }
 
-interface ConnectedProps {
-  above: boolean;
-  createCellAppend: (
-    payload: { cellType: CellType; contentRef: ContentRef }
-  ) => void;
-  createCellAbove: (
-    payload: {
-      cellType: CellType;
-      id?: string;
-      contentRef: ContentRef;
-    }
-  ) => void;
-  createCellBelow: (
-    payload: {
-      cellType: CellType;
-      id?: string;
-      source: string;
-      contentRef: ContentRef;
-    }
-  ) => void;
-  id?: string;
-  contentRef: ContentRef;
+interface StateProps {
+  isFirstCell: boolean;
+}
+
+interface DispatchProps {
+  createCellAppend: (payload: {
+    cellType: CellType;
+    contentRef: ContentRef;
+  }) => void;
+  createCellAbove: (payload: {
+    cellType: CellType;
+    id?: string;
+    contentRef: ContentRef;
+  }) => void;
+  createCellBelow: (payload: {
+    cellType: CellType;
+    id?: string;
+    source: string;
+    contentRef: ContentRef;
+  }) => void;
 }
 
 export const CellCreatorMenu = styled.div`
@@ -44,6 +42,12 @@ export const CellCreatorMenu = styled.div`
   pointer-events: all;
   position: relative;
   top: -5px;
+  /**
+   * Now that the cell-creator is added as a decorator we need
+   * this x-index to ensure that it is always shown on the top
+   * of other cells.
+   */
+  z-index: 50;
 
   button {
     display: inline-block;
@@ -81,7 +85,7 @@ const CreatorHoverMask = styled.div`
   overflow: visible;
   height: 0px;
 
-  @media print{
+  @media print {
     display: none;
   }
 `;
@@ -97,13 +101,18 @@ const CreatorHoverRegion = styled.div`
   }
 `;
 
-export class PureCellCreator extends React.PureComponent<Props> {
+interface CellCreatorProps {
+  above: boolean;
+  createCell: (type: "markdown" | "code", above: boolean) => void;
+}
+
+export class PureCellCreator extends React.PureComponent<CellCreatorProps> {
   createMarkdownCell = () => {
-    this.props.createCell("markdown");
+    this.props.createCell("markdown", this.props.above);
   };
 
   createCodeCell = () => {
-    this.props.createCell("code");
+    this.props.createCell("code", this.props.above);
   };
 
   render() {
@@ -137,10 +146,11 @@ export class PureCellCreator extends React.PureComponent<Props> {
 }
 
 // tslint:disable max-classes-per-file
-class CellCreator extends React.PureComponent<ConnectedProps> {
-  createCell = (type: "code" | "markdown"): void => {
+class CellCreator extends React.PureComponent<
+  ComponentProps & DispatchProps & StateProps
+> {
+  createCell = (type: "code" | "markdown", above: boolean): void => {
     const {
-      above,
       createCellBelow,
       createCellAppend,
       createCellAbove,
@@ -160,10 +170,32 @@ class CellCreator extends React.PureComponent<ConnectedProps> {
 
   render() {
     return (
-      <PureCellCreator above={this.props.above} createCell={this.createCell} />
+      <React.Fragment>
+        {this.props.isFirstCell && (
+          <PureCellCreator above={true} createCell={this.createCell} />
+        )}
+        {this.props.children}
+        <PureCellCreator above={false} createCell={this.createCell} />
+      </React.Fragment>
     );
   }
 }
+
+const mapStateToProps = (state: AppState, ownProps: ComponentProps) => {
+  const { id, contentRef } = ownProps;
+  const model = selectors.model(state, { contentRef });
+  let isFirstCell = false;
+
+  if (model && model.type === "notebook") {
+    const cellOrder = selectors.notebook.cellOrder(model);
+    const cellIndex = cellOrder.findIndex(cellId => cellId === id);
+    isFirstCell = cellIndex === 0;
+  }
+
+  return {
+    isFirstCell
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   createCellAbove: (payload: {
@@ -181,7 +213,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }) => dispatch(actions.createCellBelow(payload))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CellCreator);
+export default connect(mapStateToProps, mapDispatchToProps)(CellCreator);

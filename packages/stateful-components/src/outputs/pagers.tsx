@@ -17,12 +17,24 @@ interface StateProps {
 
 export class Pagers extends React.PureComponent<ComponentProps & StateProps> {
   render() {
-    const { pagers, children } = this.props;
+    const { pagers } = this.props;
     return (
       <div className="nteract-cell-pagers">
         {pagers.map(pager => (
           <RichMedia data={pager.data} metadata={pager.metadata}>
-            {children}
+            {React.Children.map(this.props.children, child => {
+              if (
+                typeof child === "string" ||
+                typeof child === "number" ||
+                typeof child === "boolean"
+              ) {
+                return;
+              }
+              if (!child || typeof child !== "object" || !("props" in child)) {
+                return;
+              }
+              return React.cloneElement(child, this.props);
+            })}
           </RichMedia>
         ))}
       </div>

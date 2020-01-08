@@ -1,6 +1,4 @@
-import { actions } from "@nteract/core";
-import { cell } from "@nteract/selectors";
-import { AppState } from "@nteract/types";
+import { actions, selectors, AppState } from "@nteract/core";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -8,19 +6,19 @@ import styled from "styled-components";
 
 import UndoableDelete from "./undoable-delete";
 
-interface InitialProps extends cell.CellAddress {
-  secondsDelay: number;
+interface InitialProps extends selectors.cell.CellAddress {
   children: React.ReactNode;
 }
 
 interface InnerProps extends InitialProps {
   className?: string;
+  secondsDelay: number;
   isDeleting: boolean;
   doDelete: () => void;
   doUndo: () => void;
 }
 
-const BareUndoableCellDelete = (props: InnerProps) =>
+const BareUndoableCellDelete = (props: InnerProps) => (
   <div className={props.className}>
     <UndoableDelete
       secondsDelay={props.secondsDelay}
@@ -31,19 +29,22 @@ const BareUndoableCellDelete = (props: InnerProps) =>
     >
       {props.children}
     </UndoableDelete>
-  </div>;
+  </div>
+);
 BareUndoableCellDelete.displayName = "BareUndoableCellDelete";
 
 const UnstyledUndoableCellDelete = connect(
   (state: AppState, props: InitialProps) => ({
-    isDeleting: !!cell.cellFromState(state, cell.cellAddress(props))
+    isDeleting: !!selectors.cell
+      .cellFromState(state, selectors.cell.cellAddress(props))
       .getIn(["metadata", "nteract", "transient", "deleting"]),
+    secondsDelay: selectors.deleteDelay(state) / 1000
   }),
   (dispatch: Dispatch, props: InitialProps) => ({
-    doDelete:
-      () => dispatch(actions.deleteCell(cell.cellAddress(props))),
-    doUndo:
-      () => dispatch(actions.unmarkCellAsDeleting(cell.cellAddress(props))),
+    doDelete: () =>
+      dispatch(actions.deleteCell(selectors.cell.cellAddress(props))),
+    doUndo: () =>
+      dispatch(actions.unmarkCellAsDeleting(selectors.cell.cellAddress(props)))
   })
 )(BareUndoableCellDelete);
 UnstyledUndoableCellDelete.displayName = "UnstyledUndoableCellDelete";
@@ -53,7 +54,7 @@ const UndoableCellDelete = styled(UnstyledUndoableCellDelete)`
     background-color: var(--theme-cell-input-bg);
     color: var(--theme-cell-input-fg);
     padding: 1rem 10rem 1rem 1rem;
-    
+
     & > button {
       position: absolute;
       right: 1.25rem;

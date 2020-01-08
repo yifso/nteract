@@ -6,7 +6,7 @@ import { ContentRef, AppState, selectors } from "@nteract/core";
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 interface StateProps {
@@ -16,10 +16,26 @@ interface StateProps {
 
 export class Prompt extends React.Component<ComponentProps, StateProps> {
   render() {
-    const { children } = this.props;
     return (
       <div className="nteract-cell-prompt">
-        {React.cloneElement(children, this.props)}
+        {React.Children.map(this.props.children, child => {
+          if (!child) {
+            return;
+          }
+          if (
+            typeof child === "string" ||
+            typeof child === "number" ||
+            typeof child === "boolean"
+          ) {
+            return;
+          }
+
+          if (typeof child !== "object" || !("props" in child)) {
+            return;
+          }
+
+          return React.cloneElement(child, this.props);
+        })}
       </div>
     );
   }

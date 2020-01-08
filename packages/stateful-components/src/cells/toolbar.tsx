@@ -2,16 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { ContentRef, actions } from "@nteract/core";
+import { ContentRef, actions, AppState, selectors } from "@nteract/core";
 import { CellType } from "@nteract/commutable";
 
-interface ComponentProps {
+export interface ComponentProps {
   id: string;
   contentRef: ContentRef;
   children: React.ReactNode;
 }
 
-interface DispatchProps {
+export interface StateProps {
+  type?: CellType;
+}
+
+export interface DispatchProps {
   executeCell: () => void;
   deleteCell: () => void;
   clearOutputs: () => void;
@@ -27,16 +31,46 @@ interface DispatchProps {
   focusAboveCell: () => void;
   focusBelowCell: () => void;
   unfocusEditor: () => void;
+  markCellAsDeleting: () => void;
 }
 
-export class CellToolbar extends React.Component {
+export const CellToolbarContext = React.createContext({});
+
+export type CellToolbarProps = DispatchProps & StateProps;
+
+class CellToolbar extends React.Component<
+  ComponentProps & StateProps & DispatchProps
+> {
   render() {
-    return React.cloneElement(this.props.children, {
-      ...this.props,
-      className: "nteract-cell-toolbar"
-    });
+    return (
+      <div className="nteract-cell-toolbar">
+        <CellToolbarContext.Provider value={this.props}>
+          {this.props.children}
+        </CellToolbarContext.Provider>
+      </div>
+    );
   }
 }
+
+const makeMapStateToProps = (
+  state: AppState,
+  ownProps: ComponentProps
+): ((state: AppState) => StateProps) => {
+  const mapStateToProps = (state: AppState): StateProps => {
+    const { id, contentRef } = ownProps;
+    const model = selectors.model(state, { contentRef });
+    let type: CellType = "code";
+
+    if (model && model.type === "notebook") {
+      const cell = selectors.notebook.cellById(model, { id });
+      if (cell) {
+        type = cell.get<CellType>("cell_type", "code");
+      }
+    }
+    return { type };
+  };
+  return mapStateToProps;
+};
 
 const mapDispatchToProps = (
   dispatch: Dispatch,
@@ -74,8 +108,13 @@ const mapDispatchToProps = (
       dispatch(actions.focusNextCellEditor({ id, contentRef }));
     },
     unfocusEditor: () =>
-      dispatch(actions.focusCellEditor({ id: undefined, contentRef }))
+      dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
+    markCellAsDeleting: () =>
+      dispatch(actions.markCellAsDeleting({ id, contentRef }))
   };
 };
 
-export default connect(null, mapDispatchToProps)(CellToolbar);
+export default connect<StateProps, DispatchProps, ComponentProps, AppState>(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(CellToolbar);
