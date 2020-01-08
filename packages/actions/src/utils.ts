@@ -1,7 +1,7 @@
 import { CellId } from "@nteract/commutable";
 import { ContentRef, HostRef, KernelRef, KernelspecsRef } from "@nteract/types";
 
-export interface Action<T extends string, P = undefined> {
+export interface Action<T extends string, P = void> {
   type: T;
   payload: P;
 }
@@ -22,9 +22,9 @@ export const makeErrorActionFunction =
     ({ type, payload, error: true });
 
 export interface HasKernel { kernelRef: KernelRef }
-export interface MaybeHasKernel { kernelRef?: KernelRef }
+export interface MaybeHasKernel { kernelRef?: KernelRef | null }
 export interface HasContent { contentRef: ContentRef }
-export interface MaybeHasContent { contentRef?: ContentRef }
+export interface MaybeHasContent { contentRef?: ContentRef | null }
 export interface HasCell extends HasContent { id: CellId }
 export interface MaybeHasCell extends HasContent { id?: CellId }
 export interface HasFilepath { filepath: string; }

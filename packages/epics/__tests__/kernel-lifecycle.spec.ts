@@ -288,7 +288,7 @@ describe("restartKernelEpic", () => {
           kernelRef: "oldKernelRef"
         }),
         d: actionsModule.launchKernelByName({
-          kernelSpecName: null,
+          kernelSpecName: undefined,
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,
@@ -367,7 +367,7 @@ describe("restartKernelEpic", () => {
           kernelRef: "oldKernelRef"
         }),
         d: actionsModule.launchKernelByName({
-          kernelSpecName: null,
+          kernelSpecName: undefined,
           cwd: ".",
           kernelRef: newKernelRef,
           selectNextKernel: true,

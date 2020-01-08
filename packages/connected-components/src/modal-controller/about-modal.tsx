@@ -14,7 +14,7 @@ import styled from "styled-components";
 export interface Props {
   appVersion?: string;
   hostType: "local" | "empty" | "jupyter" | null;
-  closeModal?: () => void;
+  closeModal?: typeof actions.closeModal;
 }
 
 // We need to do this so that you can immediately `Escape` out of the dialog.
