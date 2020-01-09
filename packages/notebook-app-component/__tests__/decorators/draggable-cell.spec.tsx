@@ -2,7 +2,7 @@ import { emptyMarkdownCell } from "@nteract/commutable";
 import { shallow } from "enzyme";
 import React from "react";
 
-import DraggableCell from "../src/decorators/draggable";
+import DraggableCell from "../../src/decorators/draggable";
 
 // Spoof DND manager for tests.
 const dragDropManager = {

@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import CellCreator, {
   CellCreatorMenu,
   PureCellCreator
-} from "../src/decorators/cell-creator";
+} from "../../src/decorators/cell-creator";
 
 describe("CellCreatorView", () => {
   const createCell = jest.fn();
