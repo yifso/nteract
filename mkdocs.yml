@@ -4,7 +4,10 @@ repo_name: "GitHub"
 
 nav:
   - Home: "index.md"
-  - Packages:
+  - User Guides for Apps:
+      - "Getting Started with nteract": "getting-started-with-nteract.md"
+      - "Creating data visualizations in nteract": "creating-data-visualizations-in-nteract.md"
+  - User Guides for Core SDK:
       - "@nteract/actions": "!include ./packages/actions/mkdocs.yml"
       - "@nteract/stateful-components": "!include ./packages/stateful-components/mkdocs.yml"
 
