@@ -63,3 +63,6 @@ applications/desktop/*.ipynb
 
 # Don't commit the built monorepo docs
 site/
+
+# Ignore pip install data for the Jupyter extensions
+applications/jupyter-extension/pip-wheel-metadata/

@@ -9,7 +9,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-class TimedUndoableDelete extends React.PureComponent<Props> {
+export class TimedUndoableDelete extends React.PureComponent<Props> {
   timer: number | null = null;
 
   componentDidMount(): void {

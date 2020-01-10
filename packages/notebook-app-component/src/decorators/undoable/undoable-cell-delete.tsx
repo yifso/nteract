@@ -65,4 +65,8 @@ const UndoableCellDelete = styled(UnstyledUndoableCellDelete)`
 UndoableCellDelete.displayName = "UndoableCellDelete";
 
 export default UndoableCellDelete;
-export { UndoableCellDelete, UnstyledUndoableCellDelete };
+export {
+  BareUndoableCellDelete,
+  UndoableCellDelete,
+  UnstyledUndoableCellDelete
+};
