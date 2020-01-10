@@ -5,6 +5,7 @@ repo_name: "GitHub"
 nav:
   - Home: "index.md"
   - Packages:
+      - "@nteract/actions": "!include ./packages/actions/mkdocs.yml"
       - "@nteract/stateful-components": "!include ./packages/stateful-components/mkdocs.yml"
 
 plugins:
