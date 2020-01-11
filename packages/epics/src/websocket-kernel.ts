@@ -86,7 +86,8 @@ export const launchWebSocketKernelEpic = (
               sessionId
             ),
             kernelSpecName,
-            hostRef
+            hostRef,
+            status: session.kernel.execution_state
           });
 
           kernel.channels.next(kernelInfoRequest());

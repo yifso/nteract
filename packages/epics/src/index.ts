@@ -8,7 +8,10 @@ import {
 } from "./contents";
 import {
   executeAllCellsEpic,
+  executeCellAfterKernelLaunchEpic,
   executeCellEpic,
+  executeFocusedCellEpic,
+  sendExecuteRequestEpic,
   sendInputReplyEpic,
   updateDisplayEpic
 } from "./execute";
@@ -32,9 +35,12 @@ import {
 // rely on `import { epics } from ""@nteract/core"`
 // as it would collide the array with the named exports
 const allEpics = [
+  executeCellAfterKernelLaunchEpic,
   executeCellEpic,
+  sendExecuteRequestEpic,
   updateDisplayEpic,
   executeAllCellsEpic,
+  executeFocusedCellEpic,
   commListenEpic,
   launchWebSocketKernelEpic,
   changeWebSocketKernelEpic,
@@ -42,7 +48,6 @@ const allEpics = [
   killKernelEpic,
   acquireKernelInfoEpic,
   watchExecutionStateEpic,
-  launchKernelWhenNotebookSetEpic,
   restartKernelEpic,
   fetchKernelspecsEpic,
   fetchContentEpic,
@@ -58,9 +63,12 @@ const allEpics = [
 
 export {
   allEpics,
+  executeCellAfterKernelLaunchEpic,
   executeCellEpic,
+  sendExecuteRequestEpic,
   updateDisplayEpic,
   executeAllCellsEpic,
+  executeFocusedCellEpic,
   commListenEpic,
   launchWebSocketKernelEpic,
   changeWebSocketKernelEpic,

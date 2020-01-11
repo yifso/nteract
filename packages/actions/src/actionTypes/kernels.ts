@@ -1,5 +1,4 @@
 import { CellId } from "@nteract/commutable";
-import { ExecuteRequest } from "@nteract/messaging";
 import {
   ContentRef,
   KernelInfo,
@@ -14,7 +13,6 @@ export interface SendExecuteRequest {
   type: "SEND_EXECUTE_REQUEST";
   payload: {
     id: CellId;
-    message: ExecuteRequest;
     contentRef: ContentRef;
   };
 }

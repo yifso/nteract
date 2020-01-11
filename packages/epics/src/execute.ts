@@ -13,6 +13,7 @@ import {
   outputs,
   payloads
 } from "@nteract/messaging";
+import { AnyAction } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { empty, merge, Observable, Observer, of, throwError } from "rxjs";
@@ -28,8 +29,10 @@ import {
   share,
   switchMap,
   takeUntil,
-  tap
+  tap,
+  withLatestFrom
 } from "rxjs/operators";
+import { extractNewKernel } from "./kernel-lifecycle";
 
 import * as actions from "@nteract/actions";
 import { CellId, OnDiskOutput } from "@nteract/commutable";
@@ -40,8 +43,7 @@ import {
   InputRequestMessage,
   PayloadMessage
 } from "@nteract/types";
-
-const Immutable = require("immutable");
+import { List } from "immutable";
 
 /**
  * Observe all the reactions to running code for cell with id.
@@ -134,15 +136,7 @@ export function executeCellStream(
 }
 
 export function createExecuteCellStream(
-  action$: ActionsObservable<
-    | actions.ExecuteCanceled
-    | actions.DeleteCell
-    | actions.LaunchKernelAction
-    | actions.LaunchKernelByNameAction
-    | actions.KillKernelAction
-    | actions.ExecuteCell
-    | actions.ExecuteFocusedCell
-  >,
+  action$: ActionsObservable<actions.SendExecuteRequest>,
   state: any,
   message: ExecuteRequest,
   id: string,
@@ -168,51 +162,10 @@ export function createExecuteCellStream(
     );
   }
 
-  const cellStream = executeCellStream(channels, id, message, contentRef).pipe(
-    takeUntil(
-      merge(
-        action$.pipe(
-          ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
-          filter(
-            (
-              action:
-                | actions.ExecuteCanceled
-                | actions.DeleteCell
-                | actions.LaunchKernelAction
-                | actions.LaunchKernelByNameAction
-                | actions.KillKernelAction
-                | actions.ExecuteCell
-                | actions.ExecuteFocusedCell
-            ) => (action as actions.ExecuteCanceled).payload.id === id
-          )
-        ),
-        action$.pipe(
-          ofType(
-            actions.LAUNCH_KERNEL,
-            actions.LAUNCH_KERNEL_BY_NAME,
-            actions.KILL_KERNEL
-          ),
-          filter(
-            (
-              action:
-                | actions.ExecuteCanceled
-                | actions.DeleteCell
-                | actions.LaunchKernelAction
-                | actions.LaunchKernelByNameAction
-                | actions.KillKernelAction
-                | actions.ExecuteCell
-                | actions.ExecuteFocusedCell
-            ) => action.payload.contentRef === contentRef
-          )
-        )
-      )
-    )
-  );
+  const cellStream = executeCellStream(channels, id, message, contentRef);
 
   return merge(
-    // We make sure to propagate back to "ourselves" the actual message
-    // that we sent to the kernel with the sendExecuteRequest action
-    of(actions.sendExecuteRequest({ id, message, contentRef })),
+    of(actions.clearOutputs({ id, contentRef })),
     // Merging it in with the actual stream
     cellStream
   );
@@ -237,7 +190,7 @@ export function executeAllCellsEpic(
           return empty();
         }
 
-        let codeCellIds = Immutable.List();
+        let codeCellIds = List();
 
         if (action.type === actions.EXECUTE_ALL_CELLS) {
           codeCellIds = selectors.notebook.codeCellIds(model);
@@ -254,18 +207,13 @@ export function executeAllCellsEpic(
   );
 }
 
-/**
- * the execute cell epic processes execute requests for all cells, creating
- * inner observable streams of the running execution responses
- */
-export function executeCellEpic(
-  action$: ActionsObservable<actions.ExecuteCell | actions.ExecuteFocusedCell>,
-  state$: any
+export function executeFocusedCellEpic(
+  action$: ActionsObservable<actions.ExecuteFocusedCell>,
+  state$: StateObservable<AppState>
 ) {
   return action$.pipe(
-    ofType(actions.EXECUTE_CELL, actions.EXECUTE_FOCUSED_CELL),
-    mergeMap((action: actions.ExecuteCell | actions.ExecuteFocusedCell) => {
-      if (action.type === actions.EXECUTE_FOCUSED_CELL) {
+    ofType(actions.EXECUTE_FOCUSED_CELL),
+    mergeMap((action: actions.ExecuteFocusedCell) => {
         const contentRef = action.payload.contentRef;
         const state = state$.value;
         const model = selectors.model(state, { contentRef });
@@ -282,22 +230,115 @@ export function executeCellEpic(
         return of(
           actions.executeCell({ id, contentRef: action.payload.contentRef })
         );
-      }
-      return of(action);
-    }),
+    })
+  );
+}
+
+export function executeCellEpic(
+  action$: ActionsObservable<actions.ExecuteCell>,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.EXECUTE_CELL),
     tap((action: actions.ExecuteCell) => {
       if (!action.payload.id) {
         throw new Error("execute cell needs an id");
       }
     }),
+    withLatestFrom(state$),
+    mergeMap(([action, state]) => {
+      const contentRef = action.payload.contentRef;
+      const kernel = selectors.kernelByContentRef(state, { contentRef });
+      
+      if (!kernel) {
+        const content = selectors.content(state, { contentRef });
+        const kernelRef = selectors.kernelRefByContentRef(state, {
+          contentRef
+        });
+
+        if (
+          !kernelRef || !content ||
+          content.type !== "notebook" ||
+          content.model.type !== "notebook"
+        ) {
+          return empty();
+        }
+
+        const filepath = content.filepath;
+        const notebook = content.model.notebook;
+        const { cwd, kernelSpecName } = extractNewKernel(filepath, notebook);
+
+        return of(
+          actions.launchKernelByName({
+            kernelSpecName,
+            cwd,
+            kernelRef,
+            selectNextKernel: true,
+            contentRef
+          }),
+          actions.enqueueAction(action.payload)
+        );
+      }
+      
+      if (kernel.channels && (kernel.status === "idle" || kernel.status === "busy")) {
+        return of(actions.sendExecuteRequest(action.payload));
+      }
+
+      return of(actions.enqueueAction(action.payload));
+    })
+  )
+}
+
+export function executeCellAfterKernelLaunchEpic(
+  action$: ActionsObservable<actions.NewKernelAction>,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    withLatestFrom(state$),
+    filter(([action, state]) => {
+      if (selectors.messageQueue(state).size === 0) {
+        return false;
+      }
+
+      const contentRef = action.payload.contentRef;
+      const kernel = selectors.kernelByContentRef(state, { contentRef });
+      return !!(kernel && kernel.channels &&
+        (kernel.status === "idle" || kernel.status === "busy"));
+    }),
+    concatMap(([, state]) => {
+      return merge(
+        of(
+          ...(selectors.messageQueue(state).map(
+            (queuedAction: AnyAction) =>
+              actions.executeCell(queuedAction.payload)
+          ))
+        ),
+        of(actions.clearMessageQueue())
+      );
+    })
+  )
+}
+
+
+/**
+ * the execute cell epic processes execute requests for all cells, creating
+ * inner observable streams of the running execution responses
+ */
+export function sendExecuteRequestEpic(
+  action$: ActionsObservable<actions.SendExecuteRequest>,
+  state$: any
+) {
+  return action$.pipe(
+    ofType(actions.SEND_EXECUTE_REQUEST),
     // Split stream by cell IDs
-    groupBy((action: actions.ExecuteCell) => action.payload.id),
+    groupBy((action: actions.SendExecuteRequest) => action.payload.id),
     // Work on each cell's stream
     map(cellAction$ =>
       cellAction$.pipe(
         // When a new EXECUTE_CELL comes in with the current ID, we create a
         // a new stream and unsubscribe from the old one.
-        switchMap((action: actions.ExecuteCell) => {
+        switchMap((action: actions.SendExecuteRequest) => {
           const { id } = action.payload;
 
           const state = state$.value;

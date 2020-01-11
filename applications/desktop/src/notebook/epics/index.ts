@@ -48,6 +48,7 @@ const epics = [
   coreEpics.updateDisplayEpic,
   coreEpics.commListenEpic,
   coreEpics.executeAllCellsEpic,
+  coreEpics.executeFocusedCellEpic,
   coreEpics.updateContentEpic,
   coreEpics.autoSaveCurrentContentEpic,
   coreEpics.sendInputReplyEpic,

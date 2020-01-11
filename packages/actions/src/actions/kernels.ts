@@ -6,7 +6,6 @@ import {
   RemoteKernelProps
 } from "@nteract/types";
 
-import { ExecuteRequest } from "@nteract/messaging";
 import * as actionTypes from "../actionTypes";
 
 export function launchKernelFailed(payload: {
@@ -179,7 +178,6 @@ export function restartKernelSuccessful(payload: {
 
 export function sendExecuteRequest(payload: {
   id: string;
-  message: ExecuteRequest;
   contentRef: ContentRef;
 }): actionTypes.SendExecuteRequest {
   return {
@@ -187,6 +185,7 @@ export function sendExecuteRequest(payload: {
     payload
   };
 }
+
 export function executeCell(payload: {
   id: string;
   contentRef: ContentRef;
