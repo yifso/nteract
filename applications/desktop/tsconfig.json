@@ -12,7 +12,6 @@
     { "path": "../../packages/presentational-components" },
     { "path": "../../packages/fs-observable" },
     { "path": "../../packages/jupyter-widgets" },
-    { "path": "../../packages/data-explorer" },
     { "path": "../../packages/styles" },
     { "path": "../../packages/transform-geojson" },
     { "path": "../../packages/transform-model-debug" },
