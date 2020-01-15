@@ -9,6 +9,7 @@ nav:
       - "Creating data visualizations in nteract": "creating-data-visualizations-in-nteract.md"
   - User Guides for Core SDK:
       - "@nteract/actions": "!include ./packages/actions/mkdocs.yml"
+      - "@nteract/commutable": "!include ./packages/commutable/mkdocs.yml"
       - "@nteract/stateful-components": "!include ./packages/stateful-components/mkdocs.yml"
 
 plugins:
