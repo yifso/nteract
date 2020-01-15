@@ -15,35 +15,9 @@ import { RecordOf } from "immutable";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { bookstore, contents } from "rx-jupyter";
-import { IContent } from "rx-jupyter/lib/contents";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
-
-/**
- * Converts a `Notebook` content to the Jupyter `Content`
- * type expected in Bookstore.
- *
- * @param content {NotebookContentRecordProps}  Notebook
- */
-function convertNotebookToContent(
-  content: NotebookContentRecordProps
-): Partial<IContent<"notebook">> & { type: "notebook" } {
-  const { filepath, lastSaved, mimetype, model, type } = content;
-  const notebook: any = model.toJS().savedNotebook;
-
-  return {
-    name: filepath.split("/").pop() || "",
-    path: filepath,
-    type,
-    created: "",
-    last_modified:
-      lastSaved && lastSaved.toString() ? lastSaved.toString() : "",
-    content: notebook,
-    mimetype: mimetype || "",
-    format: "json"
-  };
-}
 
 /**
  * First step in publishing notebooks to bookstore.
@@ -169,7 +143,6 @@ export function publishToBookstoreAfterSave(
           if (xhr.status !== 200) {
             throw new Error(xhr.response);
           }
-          console.log("XHR: ", xhr);
         }),
         map(() => {
           actions.publishToBookstoreSucceeded({
