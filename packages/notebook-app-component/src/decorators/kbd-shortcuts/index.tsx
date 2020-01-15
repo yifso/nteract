@@ -100,7 +100,7 @@ export class KeyboardShortcuts extends React.PureComponent<Props> {
           nextCell === undefined ||
           (nextCell && nextCell.get("cell_type") === "code")
         ) {
-          focusNextCellEditor({ id: focusedCell || undefined, contentRef });
+          focusNextCellEditor({ id: focusedCell, contentRef });
         }
       }
     }
