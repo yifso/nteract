@@ -41,9 +41,11 @@ jobs:
           name: Run tests
           command: yarn run test:coverage --maxWorkers 1
 
+      # Store coverage details
       - store_artifacts:
           path: coverage
 
+      # Update coverage details
       - codecov/upload:
           file: ./coverage/lcov.info
           conf: ./.codecov.yml
