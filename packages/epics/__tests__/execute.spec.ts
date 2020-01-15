@@ -26,7 +26,7 @@ describe("executeCell", () => {
 });
 
 describe("executeCellStream", () => {
-  test.only("outright rejects a lack of channels.shell and iopub", done => {
+  test("outright rejects a lack of channels.shell and iopub", done => {
     const obs = executeCellStream(
       null,
       "0",
@@ -106,7 +106,16 @@ describe("createExecuteCellStream", () => {
               byRef: Immutable.Map({
                 fake: stateModule.makeRemoteKernelRecord({
                   channels,
-                  status: "connected"
+                  status: "busy"
+                })
+              })
+            }),
+            contents: stateModule.makeContentsRecord({
+              byRef: Immutable.Map({
+                fakeContentRef: stateModule.makeNotebookContentRecord({
+                  model: stateModule.makeDocumentRecord({
+                    kernelRef: "fake"
+                  })
                 })
               })
             })
@@ -128,7 +137,10 @@ describe("createExecuteCellStream", () => {
       "fakeContentRef"
     );
     const actionBuffer = [];
-    observable.subscribe(x => actionBuffer.push(x), err => done.fail(err));
+    observable.subscribe(
+      x => actionBuffer.push(x),
+      err => done.fail(err)
+    );
     expect(actionBuffer).toEqual([
       actions.sendExecuteRequest({
         id: "id",
