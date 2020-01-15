@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { ExecuteRequest } from "@nteract/messaging";
-import { Action, ErrorAction, HasCell, HasContent, HasKernel, makeActionFunction, makeErrorActionFunction } from "../utils";
+import { Action, ErrorAction, HasCell, HasContent, HasKernel, makeActionFunction, makeErrorActionFunction, MaybeHasContent } from "../utils";
 
 export const SEND_EXECUTE_REQUEST     = "SEND_EXECUTE_REQUEST";
 export const EXECUTE_CELL             = "EXECUTE_CELL";
@@ -17,7 +17,7 @@ export type ExecuteAllCells           = Action     <typeof EXECUTE_ALL_CELLS,   
 export type ExecuteAllCellsBelow      = Action     <typeof EXECUTE_ALL_CELLS_BELOW, HasContent>;
 export type ExecuteFocusedCell        = Action     <typeof EXECUTE_FOCUSED_CELL,    HasContent>;
 export type ExecuteCanceled           = Action     <typeof EXECUTE_CANCELED,        HasCell>;
-export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED,          HasContent>;
+export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED,          MaybeHasContent>;
 export type SetExecutionStateAction   = Action     <typeof SET_EXECUTION_STATE,     HasKernel &  { kernelStatus: string }>;
 
 export const sendExecuteRequest       = makeActionFunction      <SendExecuteRequest>        (SEND_EXECUTE_REQUEST);

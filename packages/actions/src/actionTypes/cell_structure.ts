@@ -28,5 +28,3 @@ export const deleteCell           = makeActionFunction<DeleteCell>        (DELET
 export const cutCell              = makeActionFunction<CutCell>           (CUT_CELL);
 export const copyCell             = makeActionFunction<CopyCell>          (COPY_CELL);
 export const pasteCell            = makeActionFunction<PasteCell>         (PASTE_CELL);
-
-
