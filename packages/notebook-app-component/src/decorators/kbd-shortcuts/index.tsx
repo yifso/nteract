@@ -30,10 +30,10 @@ interface DispatchProps {
   }) => void;
 }
 
-export class KeyboardShortcuts extends React.Component<
-  ComponentProps & StateProps & DispatchProps
-> {
-  constructor(props: ComponentProps & StateProps & DispatchProps) {
+type Props = ComponentProps & StateProps & DispatchProps;
+
+export class KeyboardShortcuts extends React.PureComponent<Props> {
+  constructor(props: Props) {
     super(props);
     this.keyDown = this.keyDown.bind(this);
   }
