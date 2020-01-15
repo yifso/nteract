@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { KernelInfo, KernelspecProps, KernelspecRecord, LanguageInfoMetadata } from "@nteract/types";
+import { KernelInfo, KernelspecRecord, LanguageInfoMetadata } from "@nteract/types";
 import { Action, ErrorAction, HasContent, HasKernel, makeActionFunction, makeErrorActionFunction } from "../utils";
 
 export const SET_KERNEL_INFO                      = "CORE/SET_KERNEL_INFO";
