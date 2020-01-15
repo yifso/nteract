@@ -79,7 +79,7 @@ describe("KeyboardShortcuts", () => {
     expect(component).not.toBeNull();
     map.keydown({
       keyCode: 13,
-      ctrlKey: true,
+      ctrlKey: false,
       metaKey: true,
       shiftKey: true,
       preventDefault: () => {}
@@ -115,7 +115,7 @@ describe("KeyboardShortcuts", () => {
     expect(component).not.toBeNull();
     map.keydown({
       keyCode: 13,
-      ctrlKey: true,
+      ctrlKey: false,
       metaKey: true,
       shiftKey: true,
       preventDefault: () => {}
