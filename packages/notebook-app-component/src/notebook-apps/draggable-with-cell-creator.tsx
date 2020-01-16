@@ -1,22 +1,23 @@
-import React from "react";
+import { CellType } from "@nteract/commutable";
+import { ContentRef } from "@nteract/core";
 import {
   Cells,
   CodeCell,
   MarkdownCell,
   RawCell
 } from "@nteract/stateful-components";
-import { ContentRef } from "@nteract/core";
-import { CellType } from "@nteract/commutable";
+import React from "react";
 
-import CellToolbar from "../derived-components/toolbar";
 import StatusBar from "../derived-components/status-bar";
+import CellToolbar from "../derived-components/toolbar";
 
 import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
+import CellCreator from "../decorators/cell-creator";
 import DraggableCell from "../decorators/draggable";
 import HijackScroll from "../decorators/hijack-scroll";
-import CellCreator from "../decorators/cell-creator";
+import KeyboardShortcuts from "../decorators/kbd-shortcuts";
 import Themer from "../decorators/themer";
 import UndoableCellDelete from "../decorators/undoable/undoable-cell-delete";
 
@@ -51,71 +52,73 @@ export class NotebookApp extends React.Component<ComponentProps> {
     return (
       <React.Fragment>
         <Themer>
-          <Cells contentRef={this.props.contentRef}>
-            {{
-              code: (props: { id: string; contentRef: ContentRef }) =>
-                decorate(
-                  props.id,
-                  props.contentRef,
-                  "code",
-                  <CodeCell
-                    id={props.id}
-                    contentRef={props.contentRef}
-                    cell_type="code"
-                  >
-                    {{
-                      toolbar: () => (
-                        <CellToolbar
-                          id={props.id}
-                          contentRef={props.contentRef}
-                        />
-                      )
-                    }}
-                  </CodeCell>
-                ),
-              markdown: (props: { id: string; contentRef: ContentRef }) =>
-                decorate(
-                  props.id,
-                  props.contentRef,
-                  "markdown",
-                  <MarkdownCell
-                    id={props.id}
-                    contentRef={props.contentRef}
-                    cell_type="markdown"
-                  >
-                    {{
-                      toolbar: () => (
-                        <CellToolbar
-                          id={props.id}
-                          contentRef={props.contentRef}
-                        />
-                      )
-                    }}
-                  </MarkdownCell>
-                ),
-              raw: (props: { id: string; contentRef: ContentRef }) =>
-                decorate(
-                  props.id,
-                  props.contentRef,
-                  "raw",
-                  <RawCell
-                    id={props.id}
-                    contentRef={props.contentRef}
-                    cell_type="raw"
-                  >
-                    {{
-                      toolbar: () => (
-                        <CellToolbar
-                          id={props.id}
-                          contentRef={props.contentRef}
-                        />
-                      )
-                    }}
-                  </RawCell>
-                )
-            }}
-          </Cells>
-          <StatusBar contentRef={this.props.contentRef} />
+          <KeyboardShortcuts contentRef={this.props.contentRef}>
+            <Cells contentRef={this.props.contentRef}>
+              {{
+                code: (props: { id: string; contentRef: ContentRef }) =>
+                  decorate(
+                    props.id,
+                    props.contentRef,
+                    "code",
+                    <CodeCell
+                      id={props.id}
+                      contentRef={props.contentRef}
+                      cell_type="code"
+                    >
+                      {{
+                        toolbar: () => (
+                          <CellToolbar
+                            id={props.id}
+                            contentRef={props.contentRef}
+                          />
+                        )
+                      }}
+                    </CodeCell>
+                  ),
+                markdown: (props: { id: string; contentRef: ContentRef }) =>
+                  decorate(
+                    props.id,
+                    props.contentRef,
+                    "markdown",
+                    <MarkdownCell
+                      id={props.id}
+                      contentRef={props.contentRef}
+                      cell_type="markdown"
+                    >
+                      {{
+                        toolbar: () => (
+                          <CellToolbar
+                            id={props.id}
+                            contentRef={props.contentRef}
+                          />
+                        )
+                      }}
+                    </MarkdownCell>
+                  ),
+                raw: (props: { id: string; contentRef: ContentRef }) =>
+                  decorate(
+                    props.id,
+                    props.contentRef,
+                    "raw",
+                    <RawCell
+                      id={props.id}
+                      contentRef={props.contentRef}
+                      cell_type="raw"
+                    >
+                      {{
+                        toolbar: () => (
+                          <CellToolbar
+                            id={props.id}
+                            contentRef={props.contentRef}
+                          />
+                        )
+                      }}
+                    </RawCell>
+                  )
+              }}
+            </Cells>
+            <StatusBar contentRef={this.props.contentRef} />
+          </KeyboardShortcuts>
         </Themer>
       </React.Fragment>
     );
