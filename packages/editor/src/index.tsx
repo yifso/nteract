@@ -434,9 +434,14 @@ export default class CodeMirrorEditor extends React.PureComponent<
   }
 
   executeTab(editor: Editor & Doc): void {
-    editor.somethingSelected()
-      ? editor.execCommand("indentMore")
-      : editor.execCommand("insertSoftTab");
+    const { line, ch } = editor.getCursor();
+    if (editor.somethingSelected()) {
+      editor.execCommand("indentMore");
+    } else if (line && ch !== 0) {
+      editor.execCommand("autocomplete");
+    } else {
+      editor.execCommand("insertSoftTab");
+    }
   }
 
   codemirrorValueChanged(doc: Editor, change: EditorChangeLinkedList): void {
