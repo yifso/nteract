@@ -12,7 +12,6 @@
     { "path": "enchannel-zmq-backend" },
     { "path": "epics" },
     { "path": "fixtures" },
-    { "path": "fs-kernels" },
     { "path": "fs-observable" },
     { "path": "host-cache" },
     { "path": "iron-icons" },
