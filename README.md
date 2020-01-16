@@ -10,7 +10,7 @@
 ## Basics
 
 **nteract** is first and foremost a dynamic ecosystem to give you flexibility when
-writing code, [exploring data](https://github.com/nteract/nteract/tree/master/packages/data-explorer), and authoring text to share insights about the
+writing code, [exploring data](https://github.com/nteract/data-explorer), and authoring text to share insights about the
 data.
 
 **Build your own interactive computing experiences with nteract's core SDK.**

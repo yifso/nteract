@@ -25,7 +25,6 @@
     { "path": "../../../packages/notebook-app-component" },
     { "path": "../../../packages/octicons" },
     { "path": "../../../packages/presentational-components" },
-    { "path": "../../../packages/data-explorer" },
     { "path": "../../../packages/styles" },
     { "path": "../../../packages/transform-geojson" },
     { "path": "../../../packages/transform-model-debug" },

@@ -31,7 +31,6 @@
     { "path": "rx-jupyter" },
     { "path": "selectors" },
     { "path": "styled-blueprintjsx" },
-    { "path": "data-explorer" },
     { "path": "transform-geojson" },
     { "path": "transform-model-debug" },
     { "path": "transform-plotly" },
