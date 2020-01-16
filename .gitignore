@@ -37,6 +37,7 @@ dist/
 test/*.ipynb
 
 applications/desktop/bin/nteract-env
+applications/jupyter-extension/pip-wheel-metadata/*
 
 # Ignore lerna lock
 packages/*/yarn.lock
