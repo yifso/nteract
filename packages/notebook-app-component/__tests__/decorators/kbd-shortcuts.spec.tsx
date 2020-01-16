@@ -37,7 +37,7 @@ describe("KeyboardShortcuts", () => {
       </KeyboardShortcuts>
     );
     expect(component).not.toBeNull();
-    map.keydown({ keyCode: 14 });
+    map.keydown({ key: "Not Enter" });
 
     expect(executeFocusedCell).not.toBeCalled();
   });
@@ -52,7 +52,7 @@ describe("KeyboardShortcuts", () => {
       </KeyboardShortcuts>
     );
     expect(component).not.toBeNull();
-    map.keydown({ keyCode: 13, ctrlKey: false });
+    map.keydown({ key: "Enter", ctrlKey: false });
     expect(executeFocusedCell).not.toBeCalled();
   });
   it("executes focused cell if the correct key combination is pressed", () => {
@@ -78,7 +78,7 @@ describe("KeyboardShortcuts", () => {
     );
     expect(component).not.toBeNull();
     map.keydown({
-      keyCode: 13,
+      key: "Enter",
       ctrlKey: false,
       metaKey: true,
       shiftKey: true,
@@ -114,7 +114,7 @@ describe("KeyboardShortcuts", () => {
     );
     expect(component).not.toBeNull();
     map.keydown({
-      keyCode: 13,
+      key: "Enter",
       ctrlKey: false,
       metaKey: true,
       shiftKey: true,

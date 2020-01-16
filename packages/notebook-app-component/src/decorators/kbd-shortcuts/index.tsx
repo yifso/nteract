@@ -48,7 +48,7 @@ export class KeyboardShortcuts extends React.PureComponent<Props> {
 
   keyDown(e: KeyboardEvent): void {
     // If enter is not pressed, do nothing
-    if (e.keyCode !== 13) {
+    if (e.key !== "Enter") {
       return;
     }
 
