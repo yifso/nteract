@@ -1,14 +1,17 @@
 import * as actions from "@nteract/actions";
 import { createExecuteRequest, createMessage } from "@nteract/messaging";
 import * as stateModule from "@nteract/types";
-import { ActionsObservable } from "redux-observable";
+import { ActionsObservable, StateObservable } from "redux-observable";
 import { empty, from, Subject } from "rxjs";
 import { catchError, share, toArray } from "rxjs/operators";
 
 import {
   createExecuteCellStream,
+  executeCellAfterKernelLaunchEpic,
   executeCellEpic,
   executeCellStream,
+  lazyLaunchKernelEpic,
+  sendExecuteRequestEpic,
   updateDisplayEpic
 } from "../src/execute";
 
@@ -142,9 +145,13 @@ describe("createExecuteCellStream", () => {
       err => done.fail(err)
     );
     expect(actionBuffer).toEqual([
-      actions.sendExecuteRequest({
+      actions.clearOutputs({
         id: "id",
-        message,
+        contentRef: "fakeContentRef"
+      }),
+      actions.updateCellStatus({
+        id: "id",
+        status: "queued",
         contentRef: "fakeContentRef"
       })
     ]);
@@ -153,24 +160,99 @@ describe("createExecuteCellStream", () => {
 });
 
 describe("executeCellEpic", () => {
-  const state$ = {
-    value: {
-      app: {
-        kernel: {
-          channels: "errorInExecuteCellObservable",
-          status: "idle"
-        },
-        notificationSystem: { addNotification: jest.fn() },
-        githubToken: "blah"
-      }
+  test("Map to SendExecuteRequest action when kernel launched", async () => {
+    const fakeKernel = stateModule.makeRemoteKernelRecord({ status: "idle" });
+    const fakeContent = stateModule
+      .makeNotebookContentRecord()
+      .setIn(["model", "kernelRef"], "fakeKernelRef");
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContentRef: fakeContent
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fakeKernelRef: fakeKernel
+            })
+          }),
+          messages: stateModule.makeMessagesRecord({
+            messageQueue: Immutable.List([
+              {
+                type: "ENQUEUE_ACTION",
+                payload: {
+                  contentRef: "fakeContentRef",
+                  id: "0"
+                }
+              }
+            ])
+          })
+        }),
+        kernelRef: "fake"
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.executeCell({ id: "0", contentRef: "fakeContentRef" })
+    );
+    const responses = await executeCellEpic(action$, state$)
+      .pipe(toArray())
+      .toPromise();
+    expect(responses).toEqual([
+      actions.sendExecuteRequest({ id: "0", contentRef: "fakeContentRef" })
+    ]);
+  });
+
+  test("Adds action to message queue if kernel is not launched", async () => {
+    const fakeContent = stateModule.makeNotebookContentRecord();
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContentRef: fakeContent
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord(),
+          messages: stateModule.makeMessagesRecord()
+        }),
+        kernelRef: "fake"
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.executeCell({ id: "0", contentRef: "fakeContentRef" })
+    );
+    const responses = await executeCellEpic(action$, state$)
+      .pipe(toArray())
+      .toPromise();
+    expect(responses).toEqual([
+      actions.enqueueAction({ id: "0", contentRef: "fakeContentRef" })
+    ]);
+  });
+});
+
+describe("sendExecuteRequestEpic", () => {
+  const state = {
+    app: {
+      kernel: {
+        channels: "errorInExecuteCellObservable",
+        status: "idle"
+      },
+      notificationSystem: { addNotification: jest.fn() },
+      githubToken: "blah"
     }
   };
+  const state$ = new StateObservable(new Subject(), state);
+
   test("Errors on a bad action", done => {
     // Make one hot action
     const badAction$ = ActionsObservable.of(
-      actions.executeCell({ id: "id", contentRef: "fakeContentRef" })
+      actions.sendExecuteRequest({ id: "id", contentRef: "fakeContentRef" })
     ).pipe(share()) as ActionsObservable<any>;
-    const responseActions = executeCellEpic(badAction$, state$).pipe(
+    const responseActions = sendExecuteRequestEpic(badAction$, state$).pipe(
       catchError(error => {
         expect(error.message).toEqual("execute cell needs an id");
         return empty();
@@ -185,11 +267,12 @@ describe("executeCellEpic", () => {
       err => done.fail(err)
     );
   });
+
   test("Errors on an action where source not a string", done => {
     const badAction$ = ActionsObservable.of(
-      actions.executeCell({ id: "id", contentRef: "fakeContentRef" })
+      actions.sendExecuteRequest({ id: "id", contentRef: "fakeContentRef" })
     ).pipe(share()) as ActionsObservable<any>;
-    const responseActions = executeCellEpic(badAction$, state$).pipe(
+    const responseActions = sendExecuteRequestEpic(badAction$, state$).pipe(
       catchError(error => {
         expect(error.message).toEqual("execute cell needs source string");
         return empty();
@@ -204,39 +287,204 @@ describe("executeCellEpic", () => {
       err => done.fail(err)
     );
   });
+
   test("Informs about disconnected kernels, allows reconnection", async () => {
-    const state$ = {
-      value: {
-        core: stateModule.makeStateRecord({
-          kernelRef: "fake",
-          entities: stateModule.makeEntitiesRecord({
-            contents: stateModule.makeContentsRecord({
-              byRef: Immutable.Map({
-                fakeContent: stateModule.makeNotebookContentRecord()
-              })
-            }),
-            kernels: stateModule.makeKernelsRecord({
-              byRef: Immutable.Map({
-                fake: stateModule.makeRemoteKernelRecord({
-                  channels: null,
-                  status: "not connected"
-                })
+    const disconnectedState = {
+      app: {
+        notificationSystem: { addNotification: jest.fn() }
+      },
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord()
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
               })
             })
           })
-        }),
-        app: {
-          notificationSystem: { addNotification: jest.fn() }
-        }
-      }
+        })
+      })
     };
-    const action$ = ActionsObservable.of(
-      actions.executeCell({ id: "first", contentRef: "fakeContentRef" })
+    const disconnectedState$ = new StateObservable(
+      new Subject(),
+      disconnectedState
     );
-    const responses = await executeCellEpic(action$, state$)
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: "first", contentRef: "fakeContentRef" })
+    );
+    const responses = await sendExecuteRequestEpic(action$, disconnectedState$)
       .pipe(toArray())
       .toPromise();
     expect(responses).toEqual([]);
+  });
+});
+
+describe("executeCellAfterKernelLaunchEpic", () => {
+  test("executes cell and clears message queue if kernel is ready", done => {
+    const fakeKernel = stateModule.makeRemoteKernelRecord({ status: "idle" });
+    const fakeContent = stateModule
+      .makeNotebookContentRecord()
+      .setIn(["model", "kernelRef"], "fakeKernelRef");
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContentRef: fakeContent
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fakeKernelRef: fakeKernel
+            })
+          }),
+          messages: stateModule.makeMessagesRecord({
+            messageQueue: Immutable.List([
+              {
+                type: "ENQUEUE_ACTION",
+                payload: {
+                  contentRef: "fakeContentRef",
+                  id: "0"
+                }
+              }
+            ])
+          })
+        }),
+        kernelRef: "fake"
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.launchKernelSuccessful({
+        contentRef: "fakeContentRef",
+        kernel: fakeKernel,
+        kernelRef: "fakeKernelRef",
+        selectNextKernel: false
+      })
+    );
+
+    const responseActions = [];
+    executeCellAfterKernelLaunchEpic(action$, state$).subscribe(
+      action => responseActions.push(action),
+      err => {
+        throw err;
+      },
+      () => {
+        expect(responseActions).toEqual([
+          actions.executeCell({
+            id: "0",
+            contentRef: "fakeContentRef"
+          }),
+          actions.clearMessageQueue()
+        ]);
+        done();
+      }
+    );
+  });
+
+  test("do nothing if kernel is still starting", done => {
+    const fakeKernel = stateModule.makeRemoteKernelRecord({
+      status: "starting"
+    });
+    const fakeContent = stateModule
+      .makeNotebookContentRecord()
+      .setIn(["model", "kernelRef"], "fakeKernelRef");
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContentRef: fakeContent
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fakeKernelRef: fakeKernel
+            })
+          }),
+          messages: stateModule.makeMessagesRecord({
+            messageQueue: Immutable.List([
+              {
+                type: "ENQUEUE_ACTION",
+                payload: {
+                  contentRef: "fakeContentRef",
+                  id: "0"
+                }
+              }
+            ])
+          })
+        }),
+        kernelRef: "fake"
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.launchKernelSuccessful({
+        contentRef: "fakeContentRef",
+        kernel: fakeKernel,
+        kernelRef: "fakeKernelRef",
+        selectNextKernel: false
+      })
+    );
+
+    const responseActions = [];
+    executeCellAfterKernelLaunchEpic(action$, state$).subscribe(
+      action => responseActions.push(action),
+      err => {
+        throw err;
+      },
+      () => {
+        expect(responseActions).toEqual([]);
+        done();
+      }
+    );
+  });
+});
+
+describe("lazyLaunchKernelEpic", () => {
+  test("emits one launch kernel action for multiple execute cell", async () => {
+    const fakeContent = stateModule
+      .makeNotebookContentRecord()
+      .setIn(["model", "kernelRef"], "fakeKernelRef");
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContentRef: fakeContent
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord(),
+          messages: stateModule.makeMessagesRecord()
+        }),
+        kernelRef: "fake"
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.executeCell({ id: "0", contentRef: "fakeContentRef" }),
+      actions.executeCell({ id: "1", contentRef: "fakeContentRef" }),
+      actions.executeCell({ id: "2", contentRef: "fakeContentRef" })
+    );
+    const responses = await lazyLaunchKernelEpic(action$, state$)
+      .pipe(toArray())
+      .toPromise();
+    expect(responses).toEqual([
+      actions.launchKernelByName({
+        contentRef: "fakeContentRef",
+        cwd: "/",
+        kernelRef: "fakeKernelRef",
+        kernelSpecName: "python3",
+        selectNextKernel: true
+      })
+    ]);
   });
 });
 

@@ -233,7 +233,8 @@ const byRef = (
                   keyPathsForDisplays: Map(),
                   cellMap: Map()
                 }),
-                cellFocused: immutableNotebook.getIn(["cellOrder", 0])
+                cellFocused: immutableNotebook.getIn(["cellOrder", 0]),
+                kernelRef: fetchContentFulfilledAction.payload.kernelRef
               }),
               loading: false,
               saving: false,

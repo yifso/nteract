@@ -7,6 +7,7 @@ import { contents } from "./contents";
 import { hosts } from "./hosts";
 import { kernels } from "./kernels";
 import { kernelspecs } from "./kernelspecs";
+import { messages } from "./messages";
 import { modals } from "./modals";
 import { transforms } from "./transforms";
 
@@ -16,6 +17,7 @@ export const entities = combineReducers(
     hosts,
     kernels,
     kernelspecs,
+    messages,
     modals,
     transforms
   },

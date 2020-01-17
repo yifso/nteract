@@ -22,3 +22,10 @@ export * from "./config";
  */
 export const modalType = (state: AppState) =>
   state.core.entities.modals.modalType;
+
+/**
+ * Returns the list of ENQUEUE_ACTION actions that are waiting for the
+ * kernel to successfully launch before executing.
+ */
+export const messageQueue = (state: AppState) =>
+  state.core.entities.messages.messageQueue;
