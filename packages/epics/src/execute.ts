@@ -286,6 +286,11 @@ export function executeFocusedCellEpic(
   );
 }
 
+/**
+ * Launches the kernel when user tries to execute a cell.
+ * The first operator ensures that the LaunchKernelByName action is
+ * only emitted once even when there are multiple execute requests.
+ */
 export function lazyLaunchKernelEpic(
   action$: ActionsObservable<actions.ExecuteCell>,
   state$: StateObservable<AppState>
@@ -309,7 +314,13 @@ export function lazyLaunchKernelEpic(
         content.type !== "notebook" ||
         content.model.type !== "notebook"
       ) {
-        return empty();
+        return actions.launchKernelFailed({
+          contentRef,
+          error: new Error(
+            "Launch kernel failed because the source content is not a notebook"
+          ),
+          kernelRef
+        });
       }
 
       const filepath = content.filepath;
@@ -329,6 +340,12 @@ export function lazyLaunchKernelEpic(
   )
 }
 
+/**
+ * Checks if the kernel is ready to excute:
+ * - if it is, execute the cell by emitting the SendExecuteRequest action
+ * - if it's not, push the execute request to the message queue by emitting
+ *    the EnqueueAction action
+ */
 export function executeCellEpic(
   action$: ActionsObservable<actions.ExecuteCell>,
   state$: StateObservable<AppState>
@@ -350,6 +367,10 @@ export function executeCellEpic(
   );
 }
 
+/**
+ * Executes all requests in the message queue then clears the queue after
+ * the kernel is launched successfully and is ready to execute.
+ */
 export function executeCellAfterKernelLaunchEpic(
   action$: ActionsObservable<actions.NewKernelAction>,
   state$: StateObservable<AppState>
@@ -382,8 +403,8 @@ export function executeCellAfterKernelLaunchEpic(
 
 
 /**
- * the execute cell epic processes execute requests for all cells, creating
- * inner observable streams of the running execution responses
+ * the send execute request epic processes execute requests for all cells,
+ * creating inner observable streams of the running execution responses
  */
 export function sendExecuteRequestEpic(
   action$: ActionsObservable<actions.SendExecuteRequest>,
