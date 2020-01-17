@@ -314,13 +314,14 @@ export function lazyLaunchKernelEpic(
         content.type !== "notebook" ||
         content.model.type !== "notebook"
       ) {
-        return actions.launchKernelFailed({
-          contentRef,
-          error: new Error(
-            "Launch kernel failed because the source content is not a notebook"
-          ),
-          kernelRef
-        });
+        return of(
+          actions.launchKernelFailed({
+            error: new Error(
+              "Launch kernel failed because the source content is not a notebook"
+            ),
+            contentRef
+          })
+        );
       }
 
       const filepath = content.filepath;
