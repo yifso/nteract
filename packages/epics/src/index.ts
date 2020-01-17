@@ -11,6 +11,7 @@ import {
   executeCellAfterKernelLaunchEpic,
   executeCellEpic,
   executeFocusedCellEpic,
+  lazyLaunchKernelEpic,
   sendExecuteRequestEpic,
   sendInputReplyEpic,
   updateDisplayEpic
@@ -37,6 +38,7 @@ import {
 const allEpics = [
   executeCellAfterKernelLaunchEpic,
   executeCellEpic,
+  lazyLaunchKernelEpic,
   sendExecuteRequestEpic,
   updateDisplayEpic,
   executeAllCellsEpic,
@@ -65,6 +67,7 @@ export {
   allEpics,
   executeCellAfterKernelLaunchEpic,
   executeCellEpic,
+  lazyLaunchKernelEpic,
   sendExecuteRequestEpic,
   updateDisplayEpic,
   executeAllCellsEpic,

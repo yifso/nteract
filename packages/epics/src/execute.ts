@@ -21,6 +21,7 @@ import {
   catchError,
   concatMap,
   filter,
+  first,
   groupBy,
   map,
   mapTo,
@@ -136,7 +137,14 @@ export function executeCellStream(
 }
 
 export function createExecuteCellStream(
-  action$: ActionsObservable<actions.SendExecuteRequest>,
+  action$: ActionsObservable<
+    | actions.ExecuteCanceled
+    | actions.DeleteCell
+    | actions.LaunchKernelAction
+    | actions.LaunchKernelByNameAction
+    | actions.KillKernelAction
+    | actions.SendExecuteRequest
+  >,
   state: any,
   message: ExecuteRequest,
   id: string,
@@ -162,10 +170,54 @@ export function createExecuteCellStream(
     );
   }
 
-  const cellStream = executeCellStream(channels, id, message, contentRef);
+  const cellStream = executeCellStream(channels, id, message, contentRef).pipe(
+    takeUntil(
+      merge(
+        action$.pipe(
+          ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
+          filter(
+            (
+              action:
+                | actions.ExecuteCanceled
+                | actions.DeleteCell
+                | actions.LaunchKernelAction
+                | actions.LaunchKernelByNameAction
+                | actions.KillKernelAction
+                | actions.SendExecuteRequest
+            ) => (action as actions.ExecuteCanceled).payload.id === id
+          )
+        ),
+        action$.pipe(
+          ofType(
+            actions.LAUNCH_KERNEL,
+            actions.LAUNCH_KERNEL_BY_NAME,
+            actions.KILL_KERNEL
+          ),
+          filter(
+            (
+              action:
+                | actions.ExecuteCanceled
+                | actions.DeleteCell
+                | actions.LaunchKernelAction
+                | actions.LaunchKernelByNameAction
+                | actions.KillKernelAction
+                | actions.SendExecuteRequest
+            ) => action.payload.contentRef === contentRef
+          )
+        )
+      )
+    )
+  );
 
   return merge(
+    /**
+     * Clear the existing contents of the cell if it is being re-run
+     */
     of(actions.clearOutputs({ id, contentRef })),
+    /**
+     * Update the cell-status to queued when it is about to be run
+     */
+    of(actions.updateCellStatus({ id, status: "queued", contentRef })),
     // Merging it in with the actual stream
     cellStream
   );
@@ -234,59 +286,68 @@ export function executeFocusedCellEpic(
   );
 }
 
+export function lazyLaunchKernelEpic(
+  action$: ActionsObservable<actions.ExecuteCell>,
+  state$: StateObservable<AppState>
+) {
+  return action$.pipe(
+    ofType(actions.EXECUTE_CELL),
+    withLatestFrom(state$),
+    first(([action, state]) => {
+      const contentRef = action.payload.contentRef;
+      return !selectors.kernelByContentRef(state, { contentRef });
+    }),
+    mergeMap(([action, state]) => {
+      const contentRef = action.payload.contentRef;
+      const content = selectors.content(state, { contentRef });
+      const kernelRef = selectors.kernelRefByContentRef(state, {
+        contentRef
+      });
+
+      if (
+        !kernelRef || !content ||
+        content.type !== "notebook" ||
+        content.model.type !== "notebook"
+      ) {
+        return empty();
+      }
+
+      const filepath = content.filepath;
+      const notebook = content.model.notebook;
+      const { cwd, kernelSpecName } = extractNewKernel(filepath, notebook);
+
+      return of(
+        actions.launchKernelByName({
+          kernelSpecName,
+          cwd,
+          kernelRef,
+          selectNextKernel: true,
+          contentRef
+        })
+      );
+    })
+  )
+}
+
 export function executeCellEpic(
   action$: ActionsObservable<actions.ExecuteCell>,
   state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.EXECUTE_CELL),
-    tap((action: actions.ExecuteCell) => {
-      if (!action.payload.id) {
-        throw new Error("execute cell needs an id");
-      }
-    }),
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const contentRef = action.payload.contentRef;
       const kernel = selectors.kernelByContentRef(state, { contentRef });
       
-      if (!kernel) {
-        const content = selectors.content(state, { contentRef });
-        const kernelRef = selectors.kernelRefByContentRef(state, {
-          contentRef
-        });
-
-        if (
-          !kernelRef || !content ||
-          content.type !== "notebook" ||
-          content.model.type !== "notebook"
-        ) {
-          return empty();
-        }
-
-        const filepath = content.filepath;
-        const notebook = content.model.notebook;
-        const { cwd, kernelSpecName } = extractNewKernel(filepath, notebook);
-
-        return of(
-          actions.launchKernelByName({
-            kernelSpecName,
-            cwd,
-            kernelRef,
-            selectNextKernel: true,
-            contentRef
-          }),
-          actions.enqueueAction(action.payload)
-        );
-      }
-      
-      if (kernel.channels && (kernel.status === "idle" || kernel.status === "busy")) {
+      if (kernel && kernel.channels &&
+        (kernel.status === "idle" || kernel.status === "busy")) {
         return of(actions.sendExecuteRequest(action.payload));
+      } else {
+        return of(actions.enqueueAction(action.payload));
       }
-
-      return of(actions.enqueueAction(action.payload));
     })
-  )
+  );
 }
 
 export function executeCellAfterKernelLaunchEpic(
@@ -309,8 +370,7 @@ export function executeCellAfterKernelLaunchEpic(
     concatMap(([, state]) => {
       return merge(
         of(
-          ...(selectors.messageQueue(state).map(
-            (queuedAction: AnyAction) =>
+          ...(selectors.messageQueue(state).map((queuedAction: AnyAction) =>
               actions.executeCell(queuedAction.payload)
           ))
         ),
@@ -327,10 +387,15 @@ export function executeCellAfterKernelLaunchEpic(
  */
 export function sendExecuteRequestEpic(
   action$: ActionsObservable<actions.SendExecuteRequest>,
-  state$: any
+  state$: StateObservable<AppState>
 ) {
   return action$.pipe(
     ofType(actions.SEND_EXECUTE_REQUEST),
+    tap((action: actions.SendExecuteRequest) => {
+      if (!action.payload.id) {
+        throw new Error("execute cell needs an id");
+      }
+    }),
     // Split stream by cell IDs
     groupBy((action: actions.SendExecuteRequest) => action.payload.id),
     // Work on each cell's stream

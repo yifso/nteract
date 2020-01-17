@@ -88,7 +88,8 @@ describe("launchWebSocketKernelEpic", () => {
             channels: expect.any(Subject),
             kernelSpecName: "fancy",
             cwd: "/",
-            id: "0"
+            id: "0",
+            status: undefined
           }
         }
       }

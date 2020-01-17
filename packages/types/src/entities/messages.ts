@@ -8,5 +8,5 @@ export interface MessagesRecordProps {
 export type MessagesRecord = Immutable.RecordOf<MessagesRecordProps>;
 
 export const makeMessagesRecord = Immutable.Record<MessagesRecordProps>({
-    messageQueue: Immutable.List<AnyAction>()
+  messageQueue: Immutable.List<AnyAction>()
 });
