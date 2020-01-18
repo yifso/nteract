@@ -1,17 +1,17 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import { WidgetModel } from "@jupyter-widgets/base";
+import { CellId } from "@nteract/commutable";
 import {
-  selectors,
   AppState,
   ContentRef,
   KernelNotStartedProps,
   LocalKernelProps,
-  RemoteKernelProps
+  RemoteKernelProps,
+  selectors
 } from "@nteract/core";
 import { fromJS, RecordOf } from "immutable";
+import * as React from "react";
+import { connect } from "react-redux";
 import Manager from "./manager";
-import { WidgetModel } from "@jupyter-widgets/base";
-import { CellId } from "@nteract/commutable";
 import { request_state } from "./manager/widget-comms";
 
 interface JupyterWidgetData {
@@ -81,13 +81,15 @@ export class WidgetDisplay extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props) => {
-  let currentKernel = selectors.currentKernel(state);
+  const currentKernel = selectors.kernelByContentRef(state, {
+    contentRef: props.contentRef
+  });
   return {
     modelById: async (model_id: string) => {
       let model = selectors.modelById(state, { commId: model_id });
-      //if we can't find the model, request the state from the kernel
+      // if we can't find the model, request the state from the kernel
       if (!model && currentKernel) {
-        let request_state_response = await request_state(
+        const request_state_response = await request_state(
           currentKernel,
           model_id
         );

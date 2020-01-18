@@ -8,7 +8,7 @@ import {
   makeEntitiesRecord
 } from "./entities";
 import { HostRecord } from "./entities/hosts";
-import { KernelRef, KernelspecsRef } from "./refs";
+import { KernelspecsRef } from "./refs";
 
 export * from "./entities";
 export * from "./ids";
