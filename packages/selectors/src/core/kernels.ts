@@ -1,6 +1,4 @@
-import { AppState, KernelRef } from "@nteract/types";
-
-import { createSelector } from "reselect";
+import { AppState, KernelRef, KernelStatus } from "@nteract/types";
 
 /**
  * Returns a map of the available kernels keyed by the
@@ -29,48 +27,23 @@ export const kernel = (
 };
 
 /**
- * Returns the KernelRef for the kernel the nteract application is currently
- * connected to.
- *
- * @param   state   The state of the nteract application
- *
- * @returns         The KernelRef for the kernel
+ * Returns the type of a kernel given the kernelRef.
  */
-export const currentKernelRef = (state: AppState) => state.core.kernelRef;
+export const kernelType = (
+  state: AppState,
+  { kernelRef }: { kernelRef: KernelRef }
+) => {
+  const targetKernel = kernel(state, { kernelRef });
+  return targetKernel?.type;
+};
 
 /**
- * Returns the kernelspec of the kernel that we are currently connected to.
- * Returns null if there is no kernel.
+ * Returns the status of a kernel given its kernelRef.
  */
-export const currentKernel = createSelector(
-  [currentKernelRef, kernelsByRef],
-  (kernelRef, byRef) => (kernelRef ? byRef.get(kernelRef) : null)
-);
-
-/**
- * Returns the type of the kernel the nteract application is currently
- * connected to. Returns `null` if there is no kernel.
- */
-export const currentKernelType = createSelector(
-  currentKernel,
-  kernel => {
-    if (kernel && kernel.type) {
-      return kernel.type;
-    }
-    return null;
-  }
-);
-
-/**
- * Returns the state of the kernel the nteract application is currently
- * connected to. Returns "not connected" if there is no kernel.
- */
-export const currentKernelStatus = createSelector(
-  [currentKernel],
-  kernel => {
-    if (kernel && kernel.status) {
-      return kernel.status;
-    }
-    return "not connected";
-  }
-);
+export const kernelStatus = (
+  state: AppState,
+  { kernelRef }: { kernelRef: KernelRef }
+) => {
+  const targetKernel = kernel(state, { kernelRef });
+  return targetKernel?.status || KernelStatus.NotConnected;
+};

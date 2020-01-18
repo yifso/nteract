@@ -20,7 +20,7 @@ import {
   cleanCellTransient,
   notebook as reducers,
   reduceOutputs
-} from "../src/core/entities/contents/notebook";
+} from "../../../../src/core/entities/contents/notebook";
 
 const initialDocument = Immutable.Map();
 const monocellDocument = initialDocument

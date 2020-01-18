@@ -114,13 +114,11 @@ const version: string = require("../package.json").version;
 export type ConfigState = Immutable.Map<string, any>;
 
 export interface StateRecordProps {
-  kernelRef: KernelRef | null;
   currentKernelspecsRef?: KernelspecsRef | null;
   entities: Immutable.RecordOf<EntitiesRecordProps>;
 }
 
 export const makeStateRecord = Immutable.Record<StateRecordProps>({
-  kernelRef: null,
   currentKernelspecsRef: null,
   entities: makeEntitiesRecord()
 });

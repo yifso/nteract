@@ -7,27 +7,6 @@ import { combineReducers } from "redux-immutable";
 // Local modules
 import { entities } from "./entities";
 
-// TODO: This can be removed once the work to rely on deriving KernelRefs
-// ContentRefs is complete.
-const kernelRef = (state = "", action: Action) => {
-  let typedAction;
-  switch (action.type) {
-    case actions.LAUNCH_KERNEL:
-    case actions.LAUNCH_KERNEL_BY_NAME:
-      typedAction = action as actions.LaunchKernelAction;
-      return typedAction.payload.selectNextKernel
-        ? typedAction.payload.kernelRef
-        : state;
-    case actions.LAUNCH_KERNEL_SUCCESSFUL:
-      typedAction = action as actions.NewKernelAction;
-      return typedAction.payload.selectNextKernel
-        ? typedAction.payload.kernelRef
-        : state;
-    default:
-      return state;
-  }
-};
-
 const currentKernelspecsRef = (state = "", action: Action) => {
   switch (action.type) {
     case actions.FETCH_KERNELSPECS:
@@ -41,8 +20,7 @@ const currentKernelspecsRef = (state = "", action: Action) => {
 const core = combineReducers(
   {
     currentKernelspecsRef,
-    entities,
-    kernelRef
+    entities
   },
   makeStateRecord as any
 );

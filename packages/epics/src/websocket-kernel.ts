@@ -14,14 +14,10 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { castToSessionId } from "@nteract/types";
+import { castToSessionId, KernelRef } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import {
-  KernelRecord,
-  RemoteKernelProps,
-  ServerConfig,
-} from "@nteract/types";
+import { KernelRecord, RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";
@@ -228,19 +224,21 @@ export const interruptKernelEpic = (
       const { contentRef } = action.payload;
 
       let kernel: KernelRecord | null | undefined;
+      let kernelRef: KernelRef | null | undefined;
       if (contentRef) {
         kernel = selectors.kernelByContentRef(state$.value, {
           contentRef
         });
-      } else {
-        kernel = selectors.currentKernel(state$.value);
+        kernelRef = selectors.kernelRefByContentRef(state$.value, {
+          contentRef
+        });
       }
 
       if (!kernel) {
         return of(
           actions.interruptKernelFailed({
             error: new Error("Can't interrupt a kernel we don't have"),
-            kernelRef: action.payload.kernelRef
+            kernelRef
           })
         );
       }
@@ -249,7 +247,7 @@ export const interruptKernelEpic = (
         return of(
           actions.interruptKernelFailed({
             error: new Error("Invalid kernel type for interrupting"),
-            kernelRef: action.payload.kernelRef
+            kernelRef
           })
         );
       }
@@ -258,7 +256,7 @@ export const interruptKernelEpic = (
         return of(
           actions.interruptKernelFailed({
             error: new Error("Kernel does not have ID set"),
-            kernelRef: action.payload.kernelRef
+            kernelRef
           })
         );
       }
@@ -268,14 +266,14 @@ export const interruptKernelEpic = (
       return kernels.interrupt(serverConfig, id).pipe(
         map(() =>
           actions.interruptKernelSuccessful({
-            kernelRef: action.payload.kernelRef
+            kernelRef
           })
         ),
         catchError(err =>
           of(
             actions.interruptKernelFailed({
               error: err,
-              kernelRef: action.payload.kernelRef
+              kernelRef
             })
           )
         )
@@ -311,8 +309,6 @@ export const killKernelEpic = (
         kernel = selectors.kernelByContentRef(state, { contentRef });
       } else if (kernelRef) {
         kernel = selectors.kernel(state, { kernelRef });
-      } else {
-        kernel = selectors.currentKernel(state);
       }
 
       if (!kernel) {

@@ -204,7 +204,7 @@ export function autoSaveCurrentContentEpic(
             content =>
               (content.type === "file" || content.type === "notebook") &&
               content.filepath !== "" &&
-              selectors.isCurrentKernelZeroMQ(state)
+              selectors.isCurrentHostLocal(state)
                 ? existsSync(content.filepath)
                 : true
           )

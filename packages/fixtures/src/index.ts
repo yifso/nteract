@@ -102,7 +102,6 @@ export const mockAppState = (config: JSONObject): AppState => {
 
   return {
     core: makeStateRecord({
-      kernelRef,
       entities: makeEntitiesRecord({
         contents: makeContentsRecord({
           byRef: Immutable.Map({

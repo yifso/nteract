@@ -1,13 +1,14 @@
 import {
   AppState,
+  HostRef,
   JupyterHostRecord,
-  ServerConfig,
-  HostRef
+  KernelRef,
+  ServerConfig
 } from "@nteract/types";
 
 import { createSelector } from "reselect";
 
-import { currentKernelType } from "./kernels";
+import { kernelType } from "./kernels";
 
 /**
  * Creates a server configuration from details about a given Jupyter host.
@@ -35,15 +36,12 @@ export const currentHost = (state: AppState) => state.app.host;
  * Returns the type of host the nteract application is currently connected
  * to. This is set to "jupyter" by default.
  */
-export const currentHostType = createSelector(
-  [currentHost],
-  host => {
-    if (host && host.type) {
-      return host.type;
-    }
-    return null;
+export const currentHostType = createSelector([currentHost], host => {
+  if (host && host.type) {
+    return host.type;
   }
-);
+  return null;
+});
 
 /**
  * Returns true if the host we are currently connected to is a Jupyter
@@ -56,25 +54,27 @@ export const isCurrentHostJupyter = createSelector(
 
 /**
  * Returns whether or not we are currently connected to the kernel through
- * a websocket connection.
- */
-export const isCurrentKernelJupyterWebsocket = createSelector(
-  [currentHostType, currentKernelType],
-  (hostType, kernelType) => {
-    return hostType === "jupyter" && kernelType === "websocket";
-  }
-);
-
-/**
- * Returns whether or not we are currently connected to the kernel through
  * a ZeroMQ connection.
  */
-export const isCurrentKernelZeroMQ = createSelector(
-  [currentHostType, currentKernelType],
-  (hostType, kernelType) => {
-    return hostType === "local" && kernelType === "zeromq";
-  }
-);
+export const isCurrentKernelZeroMQ = (
+  state: AppState,
+  { kernelRef }: { kernelRef: KernelRef }
+) => {
+  const hostType = currentHostType(state);
+  const kernel = kernelType(state, { kernelRef });
+  return hostType === "local" && kernel === "zeromq";
+};
+
+/**
+ * Returns true if the current host is a local Jupyter kernel,
+ * not a Jupyter API server.
+ *
+ * @param state   The current application state
+ */
+export const isCurrentHostLocal = (state: AppState) => {
+  const hostType = currentHostType(state);
+  return hostType === "local";
+};
 
 /**
  * Returns the hosts currently registered on the application by their refs.

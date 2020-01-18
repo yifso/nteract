@@ -300,7 +300,14 @@ export const interruptKernelEpic = (
   action$.pipe(
     ofType(actions.INTERRUPT_KERNEL),
     // This epic can only interrupt direct zeromq connected kernels
-    filter(() => selectors.isCurrentKernelZeroMQ(state$.value)),
+    filter(
+      (action: actions.InterruptKernel) =>
+        action.payload.kernelRef !== undefined &&
+        action.payload.kernelRef !== null &&
+        selectors.isCurrentKernelZeroMQ(state$.value, {
+          kernelRef: action.payload.kernelRef
+        })
+    ),
     // If the user fires off _more_ interrupts, we shouldn't interrupt the in-flight
     // interrupt, instead doing it after the last one happens
     concatMap(
@@ -312,8 +319,6 @@ export const interruptKernelEpic = (
           kernel = selectors.kernelByContentRef(state$.value, {
             contentRef
           });
-        } else {
-          kernel = selectors.currentKernel(state$.value);
         }
 
         if (!kernel) {
