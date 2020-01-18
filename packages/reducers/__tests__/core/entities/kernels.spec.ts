@@ -1,12 +1,10 @@
 import * as actions from "@nteract/actions";
 import {
+  createContentRef,
+  createKernelRef,
   KernelsRecordProps,
   makeKernelsRecord,
-  createKernelRef,
-  KernelRecord,
-  makeRemoteKernelRecord,
-  createContentRef,
-  makeKernelInfoRecord
+  makeRemoteKernelRecord
 } from "@nteract/types";
 import Immutable from "immutable";
 
