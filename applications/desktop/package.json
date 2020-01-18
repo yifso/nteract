@@ -90,7 +90,6 @@
         "Icon": "nteract",
         "MimeType": "application/x-ipynb+json;",
         "Name": "nteract",
-        "Path": "/opt/nteract/",
         "StartupNotify": "true",
         "Terminal": "false",
         "Type": "Application",
