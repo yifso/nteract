@@ -8,7 +8,8 @@
   "files": [
     "app.css",
     "editor-overrides.css",
-    "global-variables.css"
+    "global-variables.css",
+    "themes"
   ],
   "scripts": {},
   "publishConfig": {

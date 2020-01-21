@@ -12,7 +12,7 @@ import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 import { ImmutableCell } from "@nteract/commutable/src";
 
 interface NamedMDCellSlots {
-  editor?: () => JSX.Element;
+  editor?: (props: { id: string; contentRef: string }) => JSX.Element;
   toolbar?: () => JSX.Element;
 }
 

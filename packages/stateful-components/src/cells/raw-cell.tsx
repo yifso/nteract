@@ -10,7 +10,7 @@ import Editor from "../inputs/editor";
 import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 
 interface NamedRawCellSlots {
-  editor?: () => JSX.Element;
+  editor?: (props: { id: string; contentRef: string }) => JSX.Element;
   toolbar?: () => JSX.Element;
 }
 

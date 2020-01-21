@@ -15,11 +15,11 @@ import Pagers from "../outputs/pagers";
 import TransformMedia from "../outputs/transform-media";
 
 interface NamedCodeCellSlots {
-  editor?: () => JSX.Element;
+  editor?: (props: { id: string; contentRef: string }) => JSX.Element;
   prompt?: (props: { id: string; contentRef: string }) => JSX.Element;
-  pagers?: (props: any) => JSX.Element;
-  inputPrompts?: (props: any) => JSX.Element;
-  outputs?: (props: any) => JSX.Element;
+  pagers?: (props: { id: string; contentRef: string }) => JSX.Element;
+  inputPrompts?: (props: { id: string; contentRef: string }) => JSX.Element;
+  outputs?: (props: { id: string; contentRef: string }) => JSX.Element;
   toolbar?: () => JSX.Element;
 }
 
