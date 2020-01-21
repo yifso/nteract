@@ -117,11 +117,14 @@ export function fetchContentEpic(
     ofType(actions.FETCH_CONTENT),
     switchMap(action => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: { error: new Error("fetching content needs a payload") }
-        }) as any;
+        return of(
+          actions.fetchContentFailed({
+            filepath: action.payload.filepath,
+            error: new Error("fetching content needs a payload"),
+            kernelRef: action.payload.kernelRef,
+            contentRef: action.payload.contentRef
+          })
+        );
       }
 
       const state: any = state$.value;
@@ -420,36 +423,45 @@ export function saveContentEpic(
                     .pipe(take(maxPollNb))
                     .pipe(
                       mergeMap(x =>
-                        contents.get(serverConfig, filepath, { content: 0 }).pipe(
-                          map((xhr: AjaxResponse) => {
-                            if (xhr.status !== 200 || typeof xhr.response === "string") {
-                              return undefined;
-                            }
-                            const model = xhr.response;
-                            const lastModified = model.last_modified;
-                            // Return last modified
-                            return lastModified;
-                          })
-                        )
+                        contents
+                          .get(serverConfig, filepath, { content: 0 })
+                          .pipe(
+                            map((xhr: AjaxResponse) => {
+                              if (
+                                xhr.status !== 200 ||
+                                typeof xhr.response === "string"
+                              ) {
+                                return undefined;
+                              }
+                              const model = xhr.response;
+                              const lastModified = model.last_modified;
+                              // Return last modified
+                              return lastModified;
+                            })
+                          )
                       ),
                       distinctUntilChanged(),
                       mergeMap(lastModified => {
                         if (!lastModified) {
                           // Don't do anything special
-                          return of(actions.saveFulfilled({
-                            contentRef: action.payload.contentRef,
-                            model: saveXhr.response
-                          }));
+                          return of(
+                            actions.saveFulfilled({
+                              contentRef: action.payload.contentRef,
+                              model: saveXhr.response
+                            })
+                          );
                         }
 
                         // Update lastModified with the correct value
-                        return of(actions.saveFulfilled({
-                          contentRef: action.payload.contentRef,
-                          model: {
-                            ...saveXhr.response,
-                            last_modified: lastModified
-                          }
-                        }));
+                        return of(
+                          actions.saveFulfilled({
+                            contentRef: action.payload.contentRef,
+                            model: {
+                              ...saveXhr.response,
+                              last_modified: lastModified
+                            }
+                          })
+                        );
                       })
                     );
                 }),
@@ -555,12 +567,20 @@ export function closeNotebookEpic(
 ): Observable<actions.DisposeContent | actions.KillKernelAction> {
   return action$.pipe(
     ofType(actions.CLOSE_NOTEBOOK),
-    mergeMap((action: actions.CloseNotebook):
-      Observable<actions.DisposeContent | actions.KillKernelAction> => {
-      const state = state$.value;
-      const contentRef = (action as actions.CloseNotebook).payload.contentRef;
-      const kernelRef = selectors.kernelRefByContentRef(state, { contentRef });
-      return of(actions.disposeContent({ contentRef }), actions.killKernel({ kernelRef, restarting: false, dispose: true }));
-    })
+    mergeMap(
+      (
+        action: actions.CloseNotebook
+      ): Observable<actions.DisposeContent | actions.KillKernelAction> => {
+        const state = state$.value;
+        const contentRef = (action as actions.CloseNotebook).payload.contentRef;
+        const kernelRef = selectors.kernelRefByContentRef(state, {
+          contentRef
+        });
+        return of(
+          actions.disposeContent({ contentRef }),
+          actions.killKernel({ kernelRef, restarting: false, dispose: true })
+        );
+      }
+    )
   );
 }

@@ -19,14 +19,17 @@ import {
   makeJupyterHostRecord,
   makeNotebookContentRecord,
   makeStateRecord,
-  makeTransformsRecord
+  makeTransformsRecord,
+  AppState
 } from "@nteract/core";
 
-import { fixtureJSON } from "@nteract/fixtures";
+import { fixtureJSON, mockAppState } from "@nteract/fixtures";
 import {
   downloadString,
   saveAsContentEpic,
-  saveContentEpic
+  saveContentEpic,
+  closeNotebookEpic,
+  fetchContentEpic
 } from "../src/contents";
 
 jest.mock("rx-jupyter", () => ({
@@ -267,5 +270,107 @@ describe("save", () => {
         model: { last_modified: "some_stable_value" }
       })
     ]);
+  });
+});
+
+describe("closeNotebookEpic", () => {
+  it("can dispatch correct closing actions", done => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.closeNotebook({
+        contentRef
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = closeNotebookEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.DISPOSE_CONTENT, actions.KILL_KERNEL]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+});
+
+describe("fetchContentEpic", () => {
+  it("returns an error if no filepath is provided", done => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.fetchContent({
+        contentRef
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = fetchContentEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        expect(action).toEqual([
+          actions.fetchContentFailed({
+            error: new Error("fetching content needs a payload"),
+            filepath: undefined,
+            contentRef,
+            kernelRef: undefined
+          })
+        ]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("does nothing if target host is not a Jupyter server", done => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.fetchContent({
+        contentRef,
+        filepath: "my-file.ipynb"
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = fetchContentEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        expect(action).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("emits FETCH_CONTENT_FULFILLED action on successful completion", done => {
+    const state = {
+      ...mockAppState({}),
+      app: makeAppRecord({
+        host: makeJupyterHostRecord({})
+      })
+    };
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.fetchContent({
+        contentRef,
+        filepath: "my-file.ipynb"
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = fetchContentEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.FETCH_CONTENT_FULFILLED]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
   });
 });
