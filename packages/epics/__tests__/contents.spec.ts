@@ -29,7 +29,8 @@ import {
   saveAsContentEpic,
   saveContentEpic,
   closeNotebookEpic,
-  fetchContentEpic
+  fetchContentEpic,
+  updateContentEpic
 } from "../src/contents";
 
 jest.mock("rx-jupyter", () => ({
@@ -368,6 +369,30 @@ describe("fetchContentEpic", () => {
       action => {
         const types = action.map(({ type }) => type);
         expect(types).toEqual([actions.FETCH_CONTENT_FULFILLED]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+});
+
+describe("updateContentEpic", () => {
+  it("throws an error if there is no filepath provided", done => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.changeContentName({
+        contentRef
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = updateContentEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.CHANGE_CONTENT_NAME_FAILED]);
       },
       err => done.fail(err), // It should not error in the stream
       () => done()

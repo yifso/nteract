@@ -36,6 +36,7 @@ import urljoin from "url-join";
 
 import { RecordOf } from "immutable";
 import { existsSync } from "fs";
+import { basename } from "path";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -45,11 +46,15 @@ export function updateContentEpic(
     ofType(actions.CHANGE_CONTENT_NAME),
     switchMap(action => {
       if (!action.payload || typeof action.payload.filepath !== "string") {
-        return of({
-          type: "ERROR",
-          error: true,
-          payload: { error: new Error("updating content needs a payload") }
-        }) as any;
+        return of(
+          actions.changeContentNameFailed({
+            contentRef: action.payload?.contentRef,
+            error: new Error("updating content needs a payload"),
+            filepath: "",
+            prevFilePath: action.payload.prevFilePath,
+            basepath: ""
+          })
+        );
       }
 
       const state: any = state$.value;
