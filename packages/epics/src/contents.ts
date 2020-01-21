@@ -36,7 +36,6 @@ import urljoin from "url-join";
 
 import { RecordOf } from "immutable";
 import { existsSync } from "fs";
-import { basename } from "path";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
