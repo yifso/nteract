@@ -1,4 +1,5 @@
 import { actions as actionsModule, state as stateModule } from "@nteract/core";
+import { mockAppState } from "@nteract/fixtures";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
 import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
@@ -9,7 +10,8 @@ import { TestScheduler } from "rxjs/testing";
 import {
   acquireKernelInfo,
   restartKernelEpic,
-  watchExecutionStateEpic
+  watchExecutionStateEpic,
+  launchKernelWhenNotebookSetEpic
 } from "../src/kernel-lifecycle";
 
 const buildScheduler = () =>
@@ -437,5 +439,54 @@ describe("restartKernelEpic", () => {
       .toPromise();
 
     expect(responses).toEqual([]);
+  });
+});
+
+describe("launchKernelWhenNotebookSet", () => {
+  it("does nothing if content is not a notebook", done => {
+    const contentRef = stateModule.createContentRef();
+    const kernelRef = stateModule.createKernelRef();
+    const action$ = ActionsObservable.of(
+      actionsModule.fetchContentFulfilled({
+        contentRef,
+        filepath: "my-file.txt",
+        model: {},
+        kernelRef
+      })
+    );
+    const state$ = new StateObservable(new Subject(), mockAppState({}));
+    const obs = launchKernelWhenNotebookSetEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      actions => {
+        expect(actions).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("emits a LAUNCH_KERNEL_BY_NAME action for valid notebook", done => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const kernelRef = stateModule.createKernelRef();
+    const action$ = ActionsObservable.of(
+      actionsModule.fetchContentFulfilled({
+        contentRef,
+        filepath: "my-file.txt",
+        model: {},
+        kernelRef
+      })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = launchKernelWhenNotebookSetEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      actions => {
+        const types = actions.map(({ type }) => type);
+        expect(types).toEqual([actionsModule.LAUNCH_KERNEL_BY_NAME]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
   });
 });
