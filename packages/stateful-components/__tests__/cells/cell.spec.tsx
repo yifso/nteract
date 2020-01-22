@@ -24,7 +24,9 @@ describe("Cell", () => {
         <NotTheOneCell />
       </Cell>
     );
-    expect(component.html()).toBe("<p>ChosenOneCell</p>");
+    expect(component.html()).toBe(
+      '<div class="nteract-cell-container "><p>ChosenOneCell</p></div>'
+    );
   });
   it("returns null when no valid child component exists", () => {
     function ChosenOneCell(props) {
