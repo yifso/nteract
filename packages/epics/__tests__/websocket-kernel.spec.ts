@@ -190,7 +190,7 @@ describe("interruptKernelEpic", () => {
     expect(responseActions).toEqual([
       {
         type: "INTERRUPT_KERNEL_SUCCESSFUL",
-        payload: { kernelRef: undefined }
+        payload: { kernelRef: undefined, contentRef: "contentRef" }
       }
     ]);
   });

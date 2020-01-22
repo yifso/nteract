@@ -1110,6 +1110,65 @@ describe("updateOutputMetadata", () => {
   });
 });
 
+describe("interruptKernelSuccessful", () => {
+  test("should do nothing for cells that are not queued or running", () => {
+    let originalState = Immutable.fromJS({
+      cellMap: { cell1: {}, cell2: {}, cell3: {} },
+      transient: {
+        cellMap: {
+          cell1: { status: "" },
+          cell2: { status: "" },
+          cell3: { status: "" }
+        }
+      }
+    });
+    const state = reducers(
+      originalState,
+      actions.interruptKernelSuccessful({
+        kernelRef: "testKernelRef",
+        contentRef: "testContentRef"
+      })
+    );
+    expect(state.getIn(["transient", "cellMap", "cell1", "status"])).toEqual(
+      ""
+    );
+    expect(state.getIn(["transient", "cellMap", "cell2", "status"])).toEqual(
+      ""
+    );
+    expect(state.getIn(["transient", "cellMap", "cell3", "status"])).toEqual(
+      ""
+    );
+  });
+  test("should reset status for cells that are queued or running", () => {
+    let originalState = Immutable.fromJS({
+      cellMap: { cell1: {}, cell2: {}, cell3: {} },
+      transient: {
+        cellMap: {
+          cell1: { status: "queued" },
+          cell2: { status: "running" },
+          cell3: { status: "" }
+        }
+      }
+    });
+    const state = reducers(
+      originalState,
+      actions.interruptKernelSuccessful({
+        kernelRef: "testKernelRef",
+        contentRef: "testContentRef"
+      })
+    );
+    expect(state.getIn(["transient", "cellMap", "cell1", "status"])).toEqual(
+      ""
+    );
+    expect(state.getIn(["transient", "cellMap", "cell2", "status"])).toEqual(
+      ""
+    );
+    expect(state.getIn(["transient", "cellMap", "cell3", "status"])).toEqual(
+      ""
+    );
+  });
+});
+
 describe("unhideAll", () => {
   const cellOrder = [uuid(), uuid(), uuid(), uuid()];
   let initialState = Immutable.Map();
