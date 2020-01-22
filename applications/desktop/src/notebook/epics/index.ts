@@ -56,7 +56,6 @@ const epics = [
   coreEpics.sendExecuteRequestEpic,
   coreEpics.lazyLaunchKernelEpic,
 
-  launchKernelWhenNotebookSetEpic,
   watchSpawn,
   publishEpic,
   saveEpic,
