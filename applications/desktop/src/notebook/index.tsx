@@ -18,8 +18,6 @@ import "@nteract/styles/themes/default.css";
 
 import "@nteract/styles/editor-overrides.css";
 
-import { CodeMirrorCSS, ShowHintCSS } from "@nteract/editor";
-
 import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import GeoJSONTransform from "@nteract/transform-geojson";
@@ -39,7 +37,7 @@ import {
 
 import { ipcRenderer as ipc, remote } from "electron";
 import { mathJaxPath } from "mathjax-electron";
-import * as React from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import NotificationSystem, {
   System as ReactNotificationSystem
@@ -169,10 +167,17 @@ initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
 export default class App extends React.PureComponent {
-  notificationSystem!: ReactNotificationSystem;
+  notificationSystem: any;
+
+  constructor(props) {
+    super(props);
+    this.notificationSystem = React.createRef();
+  }
 
   componentDidMount(): void {
-    store.dispatch(actions.setNotificationSystem(this.notificationSystem));
+    store.dispatch(
+      actions.setNotificationSystem(this.notificationSystem.current)
+    );
     ipc.send("react-ready");
   }
 
@@ -188,11 +193,7 @@ export default class App extends React.PureComponent {
             />
           </Provider>
         </MathJax.Provider>
-        <NotificationSystem
-          ref={(notificationSystem: ReactNotificationSystem) => {
-            this.notificationSystem = notificationSystem;
-          }}
-        />
+        <NotificationSystem ref={e => (this.notificationSystem = e)}} />
       </React.Fragment>
     );
   }

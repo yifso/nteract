@@ -474,6 +474,8 @@ export default class CodeMirrorEditor extends React.PureComponent<
               tooltipNode
             )
           : null}
+        <CodeMirrorCSS />
+        <ShowHintCSS />
       </React.Fragment>
     );
   }
