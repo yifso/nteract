@@ -11,11 +11,7 @@ import {
   saveConfigOnChangeEpic
 } from "./config";
 import { publishEpic } from "./github-publish";
-import {
-  fetchContentEpic,
-  launchKernelWhenNotebookSetEpic,
-  newNotebookEpic
-} from "./loading";
+import { fetchContentEpic, newNotebookEpic } from "./loading";
 import { saveAsEpic, saveEpic } from "./saving";
 import {
   interruptKernelEpic,

@@ -169,7 +169,7 @@ initGlobalHandlers(contentRef, store);
 export default class App extends React.PureComponent {
   notificationSystem: any;
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
     this.notificationSystem = React.createRef();
   }
@@ -193,7 +193,9 @@ export default class App extends React.PureComponent {
             />
           </Provider>
         </MathJax.Provider>
-        <NotificationSystem ref={e => (this.notificationSystem = e)}} />
+        <NotificationSystem
+          ref={(e: ReactNotificationSystem) => (this.notificationSystem = e)}
+        />
       </React.Fragment>
     );
   }
