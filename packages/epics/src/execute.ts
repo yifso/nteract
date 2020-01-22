@@ -369,7 +369,10 @@ export function executeCellEpic(
       ) {
         return of(actions.sendExecuteRequest(action.payload));
       } else {
-        return of(actions.enqueueAction(action.payload));
+        return of(
+          actions.updateCellStatus({ ...action.payload, status: "queued" }),
+          actions.enqueueAction(action.payload)
+        );
       }
     })
   );

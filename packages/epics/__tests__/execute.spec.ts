@@ -229,6 +229,11 @@ describe("executeCellEpic", () => {
       .pipe(toArray())
       .toPromise();
     expect(responses).toEqual([
+      actions.updateCellStatus({
+        id: "0",
+        contentRef: "fakeContentRef",
+        status: "queued"
+      }),
       actions.enqueueAction({ id: "0", contentRef: "fakeContentRef" })
     ]);
   });
