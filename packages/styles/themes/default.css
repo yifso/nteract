@@ -79,6 +79,20 @@
   background-color: var(--theme-cell-prompt-bg-hover, hsl(0, 0%, 94%));
   color: var(--theme-cell-prompt-fg-hover, hsl(0, 0%, 15%));
 }
+
+.nteract-cell-outputs {
+  background-color: var(--theme-cell-output-bg);
+}
+
+.nteract-cell-container.selected .nteract-cell-outputs {
+  background-color: var(--theme-cell-output-bg-focus);
+}
+
+.nteract-cell-container:hover:not(.selected) .nteract-cell-outputs,
+.nteract-cell-container:active:not(.selected) .nteract-cell-outputs {
+  background-color: var(--theme-cell-output-bg-hover);
+}
+
 .nteract-cell:focus .nteract-cell-prompt {
   background-color: var(--theme-cell-prompt-bg-focus, hsl(0, 0%, 90%));
   color: var(--theme-cell-prompt-fg-focus, hsl(0, 0%, 51%));
