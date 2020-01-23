@@ -56,6 +56,8 @@ Like any written document, the organization of the content matters. nteract allo
 
 As you use notebooks more and more, you'll probably want to start taking advantage of some of the keyboard shortcuts that are provided within nteract. You can view [a full list of these keyboard shortcuts](https://docs.nteract.io/#/desktop/shortcut-keys), and how they compare to those provided within the JupyterLab and classic Jupyter front ends to get started with these keyboard shortcuts.
 
+We also have a list specific for [cell keyboard shortcuts](https://github.com/nteract/nteract/blob/master/USER_GUIDE.md#cell-shortcuts).
+
 ### Rendering rich media in interactive notebooks
 
 One of the most powerful features of notebooks is the ability to render rich media, like images and maps, within the notebook. Let's try this out by exploring one of the example notebooks bundled with nteract. First, we'll need to install a dependency Navigate to File > Open Example Notebook > python > Gallery of Plotly Plots.
