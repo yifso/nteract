@@ -15,6 +15,9 @@ jest.mock("rx-jupyter", () => ({
     },
     create: (serverConfig, sessionPayload) => {
       return of({ response: { id: "test", kernel: { id: "test" } } });
+    },
+    destroy: (serverConfig, sessionId) => {
+      return of({ response: {} });
     }
   },
   kernels: {
@@ -607,6 +610,115 @@ describe("changeWebSocketKernelEpic", () => {
         expect(types).toEqual([actions.LAUNCH_KERNEL_SUCCESSFUL]);
       },
       err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+});
+
+describe("killKernelEpic", () => {
+  it("it does nothing if the target host is not a Jupyter server", done => {
+    const state = {
+      ...mockAppState({}),
+      app: stateModule.makeAppRecord({
+        host: stateModule.makeLocalHostRecord({})
+      })
+    };
+    const kernelRef: string = state.core.entities.kernels.byRef
+      .keySeq()
+      .first();
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.killKernel({
+        contentRef,
+        kernelRef
+      })
+    );
+    const state$ = new StateObservable<stateModule.AppState>(
+      new Subject(),
+      state
+    );
+    const obs = coreEpics.killKernelEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err),
+      () => done()
+    );
+  });
+  it("raises an error if there is no kernel for the content ref", done => {
+    const state = {
+      ...mockAppState({}),
+      app: stateModule.makeAppRecord({
+        host: stateModule.makeJupyterHostRecord({})
+      })
+    };
+    const action$ = ActionsObservable.of(
+      actions.killKernel({
+        contentRef: "none",
+        kernelRef: "none"
+      })
+    );
+    const state$ = new StateObservable<stateModule.AppState>(
+      new Subject(),
+      state
+    );
+    const obs = coreEpics.killKernelEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.KILL_KERNEL_FAILED]);
+      },
+      err => done.fail(err),
+      () => done()
+    );
+  });
+  it("successfully kills a websocket kernel with valid details", done => {
+    const state = {
+      app: stateModule.makeAppRecord({
+        host: stateModule.makeJupyterHostRecord({})
+      }),
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              aKernel: stateModule.makeRemoteKernelRecord({
+                id: "test",
+                sessionId: "test"
+              })
+            })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              aContent: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({ kernelRef: "aKernel" })
+              })
+            })
+          })
+        })
+      })
+    };
+    const action$ = ActionsObservable.of(
+      actions.killKernel({
+        contentRef: "aContent",
+        kernelRef: "aKernel"
+      })
+    );
+    const state$ = new StateObservable<stateModule.AppState>(
+      new Subject(),
+      state
+    );
+    const obs = coreEpics.killKernelEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        console.log(action);
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.KILL_KERNEL_SUCCESSFUL]);
+      },
+      err => done.fail(err),
       () => done()
     );
   });
