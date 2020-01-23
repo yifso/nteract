@@ -1,7 +1,10 @@
+import React from "react";
+import { mount } from "enzyme";
+
 import { selectors } from "@nteract/core";
 import { mockAppState } from "@nteract/fixtures";
 
-import { makeMapStateToProps } from "../../src/inputs/editor";
+import { makeMapStateToProps, Editor } from "../../src/inputs/editor";
 
 describe("makeMapStateToProps", () => {
   it("returns default values if input document is not a notebook", () => {
@@ -34,4 +37,12 @@ describe("makeMapStateToProps", () => {
     const mapStateToProps = makeMapStateToProps(state, ownProps);
     expect(mapStateToProps(state).channels).not.toBeNull();
   });
+});
+
+describe("<Editor/>", () => {
+  it("returns nothing if it has no children", () => {
+    const component = mount(<Editor editorType="monaco" />);
+    expect(component).toBeNull();
+  });
+  it("renders the matching child");
 });
