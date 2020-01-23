@@ -42,6 +42,7 @@ import {
   AppState,
   ContentRef,
   InputRequestMessage,
+  KernelStatus,
   PayloadMessage
 } from "@nteract/types";
 import { List } from "immutable";
@@ -151,7 +152,7 @@ export function createExecuteCellStream(
   contentRef: ContentRef
 ): Observable<any> {
   const kernel = selectors.kernelByContentRef(state, {
-    contentRef: contentRef
+    contentRef
   });
 
   const channels = kernel ? kernel.channels : null;
@@ -266,22 +267,22 @@ export function executeFocusedCellEpic(
   return action$.pipe(
     ofType(actions.EXECUTE_FOCUSED_CELL),
     mergeMap((action: actions.ExecuteFocusedCell) => {
-        const contentRef = action.payload.contentRef;
-        const state = state$.value;
-        const model = selectors.model(state, { contentRef });
-        // If it's not a notebook, we shouldn't be here
-        if (!model || model.type !== "notebook") {
-          return empty();
-        }
+      const contentRef = action.payload.contentRef;
+      const state = state$.value;
+      const model = selectors.model(state, { contentRef });
+      // If it's not a notebook, we shouldn't be here
+      if (!model || model.type !== "notebook") {
+        return empty();
+      }
 
-        const id = model.cellFocused;
+      const id = model.cellFocused;
 
-        if (!id) {
-          throw new Error("attempted to execute without an id");
-        }
-        return of(
-          actions.executeCell({ id, contentRef: action.payload.contentRef })
-        );
+      if (!id) {
+        throw new Error("attempted to execute without an id");
+      }
+      return of(
+        actions.executeCell({ id, contentRef: action.payload.contentRef })
+      );
     })
   );
 }
@@ -310,7 +311,8 @@ export function lazyLaunchKernelEpic(
       });
 
       if (
-        !kernelRef || !content ||
+        !kernelRef ||
+        !content ||
         content.type !== "notebook" ||
         content.model.type !== "notebook"
       ) {
@@ -338,7 +340,7 @@ export function lazyLaunchKernelEpic(
         })
       );
     })
-  )
+  );
 }
 
 /**
@@ -357,12 +359,20 @@ export function executeCellEpic(
     mergeMap(([action, state]) => {
       const contentRef = action.payload.contentRef;
       const kernel = selectors.kernelByContentRef(state, { contentRef });
-      
-      if (kernel && kernel.channels &&
-        (kernel.status === "idle" || kernel.status === "busy")) {
+
+      if (
+        kernel &&
+        kernel.channels &&
+        (kernel.status === KernelStatus.Idle ||
+          kernel.status === KernelStatus.Busy ||
+          kernel.status === KernelStatus.Launched)
+      ) {
         return of(actions.sendExecuteRequest(action.payload));
       } else {
-        return of(actions.enqueueAction(action.payload));
+        return of(
+          actions.updateCellStatus({ ...action.payload, status: "queued" }),
+          actions.enqueueAction(action.payload)
+        );
       }
     })
   );
@@ -386,22 +396,28 @@ export function executeCellAfterKernelLaunchEpic(
 
       const contentRef = action.payload.contentRef;
       const kernel = selectors.kernelByContentRef(state, { contentRef });
-      return !!(kernel && kernel.channels &&
-        (kernel.status === "idle" || kernel.status === "busy"));
+      return !!(
+        kernel &&
+        kernel.channels &&
+        (kernel.status === KernelStatus.Idle ||
+          kernel.status === KernelStatus.Busy ||
+          kernel.status === KernelStatus.Launched)
+      );
     }),
     concatMap(([, state]) => {
       return merge(
         of(
-          ...(selectors.messageQueue(state).map((queuedAction: AnyAction) =>
+          ...selectors
+            .messageQueue(state)
+            .map((queuedAction: AnyAction) =>
               actions.executeCell(queuedAction.payload)
-          ))
+            )
         ),
         of(actions.clearMessageQueue())
       );
     })
-  )
+  );
 }
-
 
 /**
  * the send execute request epic processes execute requests for all cells,

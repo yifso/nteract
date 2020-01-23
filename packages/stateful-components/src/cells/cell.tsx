@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { selectors, AppState } from "@nteract/core";
 import { ImmutableCell } from "@nteract/commutable/src";
+import { AppState, selectors } from "@nteract/core";
 
 interface ComponentProps {
   id: string;
@@ -15,8 +15,8 @@ interface StateProps {
   selected: boolean;
 }
 
-export class Cell extends React.Component<ComponentProps & StateProps> {
-  render() {
+export class Cell extends React.PureComponent<ComponentProps & StateProps> {
+  render(): JSX.Element | null {
     // We must pick only one child to render
     let chosenOne: React.ReactNode | null = null;
 
@@ -63,14 +63,19 @@ export class Cell extends React.Component<ComponentProps & StateProps> {
     }
 
     // Render the output component that handles this output type
-    return React.cloneElement(chosenOne, {
-      cell: this.props.cell,
-      id: this.props.id,
-      contentRef: this.props.contentRef,
-      className: `nteract-cell-container ${
-        this.props.selected ? "selected" : ""
-      }`
-    });
+    return (
+      <div
+        className={`nteract-cell-container ${
+          this.props.selected ? "selected" : ""
+        }`}
+      >
+        {React.cloneElement(chosenOne, {
+          cell: this.props.cell,
+          id: this.props.id,
+          contentRef: this.props.contentRef
+        })}
+      </div>
+    );
   }
 }
 
@@ -81,7 +86,7 @@ export const makeMapStateToProps = (
   const mapStateToProps = (state: AppState): StateProps => {
     const { id, contentRef } = ownProps;
     const model = selectors.model(state, { contentRef });
-    let cell = undefined;
+    let cell;
     let selected = false;
 
     if (model && model.type === "notebook") {

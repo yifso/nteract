@@ -17,11 +17,7 @@ import * as selectors from "@nteract/selectors";
 import { castToSessionId } from "@nteract/types";
 import { createKernelRef } from "@nteract/types";
 import { AppState } from "@nteract/types";
-import {
-  KernelRecord,
-  RemoteKernelProps,
-  ServerConfig,
-} from "@nteract/types";
+import { KernelRecord, RemoteKernelProps, ServerConfig } from "@nteract/types";
 
 import { AjaxResponse } from "rxjs/ajax";
 import { extractNewKernel } from "./kernel-lifecycle";
@@ -268,7 +264,8 @@ export const interruptKernelEpic = (
       return kernels.interrupt(serverConfig, id).pipe(
         map(() =>
           actions.interruptKernelSuccessful({
-            kernelRef: action.payload.kernelRef
+            kernelRef: action.payload.kernelRef,
+            contentRef
           })
         ),
         catchError(err =>

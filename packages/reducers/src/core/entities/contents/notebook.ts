@@ -929,6 +929,20 @@ function promptInputRequest(
   );
 }
 
+function interruptKernelSuccessful(
+  state: NotebookModel,
+  action: actionTypes.InterruptKernelSuccessful
+): RecordOf<DocumentRecordProps> {
+  return state.updateIn(["transient", "cellMap"], cells =>
+    cells.map((cell: Map<string, string>) => {
+      if (cell.get("status") === "queued" || cell.get("status") === "running") {
+        return cell.set("status", "");
+      }
+      return cell;
+    })
+  );
+}
+
 // DEPRECATION WARNING: Below, the following action types are being deprecated: RemoveCell, CreateCellAfter and CreateCellBefore
 type DocumentAction =
   | actionTypes.ToggleTagInCell
@@ -971,7 +985,8 @@ type DocumentAction =
   | actionTypes.ClearAllOutputs
   | actionTypes.SetInCell<any>
   | actionTypes.UnhideAll
-  | actionTypes.PromptInputRequest;
+  | actionTypes.PromptInputRequest
+  | actionTypes.InterruptKernelSuccessful;
 
 const defaultDocument: NotebookModel = makeDocumentRecord({
   notebook: emptyNotebook
@@ -1070,6 +1085,8 @@ export function notebook(
       return unhideAll(state, action);
     case actionTypes.PROMPT_INPUT_REQUEST:
       return promptInputRequest(state, action);
+    case actionTypes.INTERRUPT_KERNEL_SUCCESSFUL:
+      return interruptKernelSuccessful(state, action);
     default:
       return state;
   }

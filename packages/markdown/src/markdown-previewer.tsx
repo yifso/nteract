@@ -35,7 +35,7 @@ const noop = () => {};
 //       only I (@rgbkrk) understand, I'll wait for others to reflect on this
 //       within the code base (or leave it alone, which is totally cool too). :)
 
-export class MarkdownPreviewer extends React.Component<Props, State> {
+export class MarkdownPreviewer extends React.PureComponent<Props, State> {
   static defaultProps = {
     cellFocused: false,
     editorFocused: false,
@@ -51,7 +51,7 @@ export class MarkdownPreviewer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      view: true
+      view: !props.editorFocused
     };
     this.openEditor = this.openEditor.bind(this);
     this.editorKeyDown = this.editorKeyDown.bind(this);
@@ -61,12 +61,6 @@ export class MarkdownPreviewer extends React.Component<Props, State> {
 
   componentDidMount(): void {
     this.updateFocus();
-  }
-
-  getDerivedStateFromProps(nextProps: Props): State {
-    return {
-      view: !nextProps.editorFocused
-    };
   }
 
   componentDidUpdate(): void {

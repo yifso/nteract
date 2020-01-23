@@ -127,9 +127,9 @@ export function interruptKernel(
   };
 }
 
-export function interruptKernelSuccessful(payload: {
-  kernelRef?: KernelRef | null;
-}): actionTypes.InterruptKernelSuccessful {
+export function interruptKernelSuccessful(
+  payload: actionTypes.InterruptKernelSuccessful["payload"]
+): actionTypes.InterruptKernelSuccessful {
   return {
     type: actionTypes.INTERRUPT_KERNEL_SUCCESSFUL,
     payload
@@ -147,7 +147,9 @@ export function interruptKernelFailed(payload: {
   };
 }
 
-export function restartKernel(payload: actionTypes.RestartKernel["payload"]): actionTypes.RestartKernel {
+export function restartKernel(
+  payload: actionTypes.RestartKernel["payload"]
+): actionTypes.RestartKernel {
   return {
     type: actionTypes.RESTART_KERNEL,
     payload

@@ -92,6 +92,7 @@ export interface InterruptKernelSuccessful {
   type: "INTERRUPT_KERNEL_SUCCESSFUL";
   payload: {
     kernelRef?: KernelRef | null;
+    contentRef?: ContentRef | null;
   };
 }
 

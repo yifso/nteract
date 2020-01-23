@@ -346,7 +346,8 @@ export const interruptKernelEpic = (
 
         return of(
           actions.interruptKernelSuccessful({
-            kernelRef: action.payload.kernelRef
+            kernelRef: action.payload.kernelRef,
+            contentRef
           })
         );
       }
