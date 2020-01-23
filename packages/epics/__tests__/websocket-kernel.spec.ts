@@ -1,12 +1,37 @@
 import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { Subject } from "rxjs";
+import { Subject, of } from "rxjs";
 import { toArray } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as stateModule from "@nteract/types";
-
+import { mockAppState } from "@nteract/fixtures";
 import * as coreEpics from "../src";
+
+jest.mock("rx-jupyter", () => ({
+  sessions: {
+    update: (severConfig, sessionid, sessionPayload) => {
+      return of({ response: { kernel: { id: "test" } } });
+    },
+    create: (serverConfig, sessionPayload) => {
+      return of({ response: { id: "test", kernel: { id: "test" } } });
+    }
+  },
+  kernels: {
+    start: (serverConfig, kernelSpecName, cwd) => {
+      return of({ response: { id: "test", kernel: { id: "test" } } });
+    },
+    restart: (serverConfig, id) => {
+      return of({ status: 200, response: {} });
+    },
+    interrupt: (serverConfig, id) => {
+      return of({ response: {} });
+    },
+    connect: (serverConfig, kernelId, sessionId) => {
+      return new Subject();
+    }
+  }
+}));
 
 describe("launchWebSocketKernelEpic", () => {
   test("launches remote kernels", async () => {
@@ -82,13 +107,13 @@ describe("launchWebSocketKernelEpic", () => {
           selectNextKernel: true,
           kernel: {
             info: null,
-            sessionId: "1",
+            sessionId: "test",
             hostRef,
             type: "websocket",
             channels: expect.any(Subject),
             kernelSpecName: "fancy",
             cwd: "/",
-            id: "0",
+            id: "test",
             status: undefined
           }
         }
@@ -518,5 +543,71 @@ describe("restartKernelEpic", () => {
         }
       }
     ]);
+  });
+});
+
+describe("changeWebSocketKernelEpic", () => {
+  it("does nothing if the current host is not a Jupyter server", done => {
+    const state = mockAppState({});
+    const kernelRef: string = state.core.entities.kernels.byRef
+      .keySeq()
+      .first();
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.changeKernelByName({
+        kernelSpecName: "julia",
+        contentRef,
+        oldKernelRef: kernelRef
+      })
+    );
+    const state$ = new StateObservable<stateModule.AppState>(
+      new Subject(),
+      state
+    );
+    const obs = coreEpics.changeWebSocketKernelEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      actions => {
+        const types = actions.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("launches a new kernel when given valid details", done => {
+    const state = {
+      ...mockAppState({}),
+      app: stateModule.makeAppRecord({
+        host: stateModule.makeJupyterHostRecord({})
+      })
+    };
+    const kernelRef: string = state.core.entities.kernels.byRef
+      .keySeq()
+      .first();
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.changeKernelByName({
+        kernelSpecName: "julia",
+        contentRef,
+        oldKernelRef: kernelRef
+      })
+    );
+    const state$ = new StateObservable<stateModule.AppState>(
+      new Subject(),
+      state
+    );
+    const obs = coreEpics.changeWebSocketKernelEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.LAUNCH_KERNEL_SUCCESSFUL]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
   });
 });

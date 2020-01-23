@@ -1,6 +1,7 @@
 import * as actions from "@nteract/actions";
 import { createExecuteRequest, createMessage } from "@nteract/messaging";
 import * as stateModule from "@nteract/types";
+import { mockAppState } from "@nteract/fixtures";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { empty, from, Subject } from "rxjs";
 import { catchError, share, toArray } from "rxjs/operators";
@@ -12,8 +13,11 @@ import {
   executeCellStream,
   lazyLaunchKernelEpic,
   sendExecuteRequestEpic,
-  updateDisplayEpic
+  updateDisplayEpic,
+  sendInputReplyEpic,
+  executeAllCellsEpic
 } from "../src/execute";
+import { Action } from "rxjs/internal/scheduler/Action";
 
 const Immutable = require("immutable");
 
@@ -567,6 +571,101 @@ describe("updateDisplayEpic", () => {
         ]);
         done();
       }
+    );
+  });
+});
+
+describe("sendInputReplyEpic", () => {
+  it("does nothing if there is no active kernel", done => {
+    const state = mockAppState({});
+    const action$ = ActionsObservable.of(
+      actions.sendInputReply({ contentRef: "noKernelForMe" })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = sendInputReplyEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("sends an input request to an active kernel", done => {
+    const next = jest.fn();
+    const state = {
+      core: {
+        entities: {
+          contents: {
+            byRef: Immutable.Map({
+              testContentRef: stateModule
+                .makeNotebookContentRecord()
+                .setIn(["model", "kernelRef"], "fakeKernelRef")
+            })
+          },
+          kernels: {
+            byRef: Immutable.Map({
+              fakeKernelRef: {
+                channels: {
+                  next
+                }
+              }
+            })
+          }
+        }
+      }
+    };
+    const contentRef = state.core.entities.contents.byRef.keySeq().first();
+    const action$ = ActionsObservable.of(
+      actions.sendInputReply({ contentRef })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = sendInputReplyEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+    expect(next).toBeCalled();
+  });
+});
+
+describe("executeAllCellsEpic", () => {
+  test("does nothing if the model is not a notebook", done => {
+    const state = mockAppState({});
+    const action$ = ActionsObservable.of(
+      actions.executeAllCells({ contentRef: "noContentForMe" })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = executeAllCellsEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  test("does nothing if the model is not a notebook", done => {
+    const state = mockAppState({ codeCellCount: 2 });
+    const contentRef = state.core.entities.contents.byRef.keySeq().first();
+    const action$ = ActionsObservable.of(
+      actions.executeAllCells({ contentRef })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = executeAllCellsEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.EXECUTE_CELL, actions.EXECUTE_CELL]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
     );
   });
 });
