@@ -147,7 +147,8 @@ export const connect = (
 ): Subject<any> => {
   const wsSubject = webSocket<JupyterMessage>({
     url: formWebSocketURL(serverConfig, kernelID, sessionID),
-    protocol: serverConfig.wsProtocol
+    protocol: serverConfig.wsProtocol,
+    closeObserver: serverConfig.closeObserver
   });
 
   // Create a subject that does some of the handling inline for the session
