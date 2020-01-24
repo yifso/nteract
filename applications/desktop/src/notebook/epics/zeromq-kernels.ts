@@ -299,10 +299,6 @@ export const interruptKernelEpic = (
 ): Observable<InterruptActions> =>
   action$.pipe(
     ofType(actions.INTERRUPT_KERNEL),
-    // This epic can only interrupt direct zeromq connected kernels
-    filter(() => selectors.isCurrentKernelZeroMQ(state$.value)),
-    // If the user fires off _more_ interrupts, we shouldn't interrupt the in-flight
-    // interrupt, instead doing it after the last one happens
     concatMap(
       (action: actions.InterruptKernel): Observable<InterruptActions> => {
         const { contentRef } = action.payload;

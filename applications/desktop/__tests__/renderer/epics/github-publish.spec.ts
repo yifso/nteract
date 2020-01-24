@@ -54,30 +54,4 @@ describe("publishEpic", () => {
       () => done()
     );
   });
-  it.skip("successfully", done => {
-    const state = {
-      ...mockAppState({}),
-      app: makeAppRecord({
-        githubToken: "test"
-      })
-    };
-    const contentRef: string = state.core.entities.contents.byRef
-      .keySeq()
-      .first();
-    const action$ = ActionsObservable.of(actions.publishGist({ contentRef }));
-    const state$ = new StateObservable(new Subject(), state);
-    const obs = publishEpic(action$, state$);
-    obs.pipe(toArray()).subscribe(
-      action => {
-        const types = action.map(({ type }) => type);
-        console.log(action);
-        expect(types).toEqual([
-          "OVERWRITE_METADATA_FIELD",
-          "OVERWRITE_METADATA_FIELD"
-        ]);
-      },
-      err => done.fail(err),
-      () => done()
-    );
-  });
 });
