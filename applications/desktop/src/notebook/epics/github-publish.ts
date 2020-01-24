@@ -67,7 +67,6 @@ export const publishEpic = (
         return empty();
       }
 
-      // TODO: Switch GitHub publishing actions to content refs
       const content = selectors.content(state, { contentRef });
       // NOTE: This could save by having selectors for each model type
       //       have toDisk() selectors
