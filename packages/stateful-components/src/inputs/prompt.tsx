@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { ContentRef, AppState, selectors } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 
 interface ComponentProps {
   id: string;
@@ -52,7 +52,7 @@ const makeMapStateToProps = (
     let status;
     let executionCount;
 
-    if (model && model.type == "notebook") {
+    if (model && model.type === "notebook") {
       status = model.transient.getIn(["cellMap", id, "status"]);
       const cell = selectors.notebook.cellById(model, { id });
       if (cell) {
