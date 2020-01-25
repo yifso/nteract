@@ -1993,6 +1993,15 @@
   resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.1.1.tgz#da23cc6d2532936fef853f4e29f2318e8e023f7e"
   integrity sha512-ks50jIeKIoZ0+XX3C8TsF4vfOnlw++PgFkLNOK15a3EKJQBKM8/MOQY2Hndyz2ptZAIDKyU+YBYQFNnMXvmi/w==
 
+"@nteract/fixtures@^2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@nteract/fixtures/-/fixtures-2.2.8.tgz#521d4c33122845dbdef70ca4286def15001ae807"
+  integrity sha512-bN4XMFNJB9DX951dxTWf7XBy2tEEWUWShSQK+WIgN0kpLjx+p9IIGULzkKOdCVJ+qLAJw80psZry6VYruKwcFA==
+  dependencies:
+    "@nteract/commutable" "^7.2.0"
+    "@nteract/reducers" "^2.10.0"
+    "@nteract/types" "^4.4.3"
+
 "@nteract/markdown@^4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.3.1.tgz#b25433d88039f11efeeefb9b106105b6794c94c6"
