@@ -14,5 +14,8 @@
     "mathjax"
   ],
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "load-script": "^1.0.0"
+  }
 }
