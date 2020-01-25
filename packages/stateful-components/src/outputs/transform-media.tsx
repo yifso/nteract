@@ -8,7 +8,7 @@ import {
   ImmutableExecuteResult,
   JSONObject
 } from "@nteract/commutable";
-import { actions, selectors, AppState, ContentRef } from "@nteract/core";
+import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 
 import memoizeOne from "memoize-one";
 
@@ -84,7 +84,7 @@ export const richestMediaType = (
   return mediaType;
 };
 
-const makeMapStateToProps = (
+export const makeMapStateToProps = (
   initialState: AppState,
   ownProps: ComponentProps
 ) => {
