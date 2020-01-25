@@ -36,7 +36,7 @@ If you are a developer who wants to build an nteract-based notebook application,
 
 | Link                                                    | What's in it?                                                                                                                                                           |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [docs.nteract.io](https://docs.nteract.io/)             | This page contains our how-to and tutorial style documentation. This is a great place to get started if you're not sure how to go about building your nteract-based UI. |
+| [docs.nteract.io](https://docs.nteract.io/)             | This page contains our how-to and tutorial style documentation. Get started learning about the nteract core SDK here. |
 | [packages.nteract.io](https://packages.nteract.io/)     | This page contains the API documentation for packages in our core SDK. Bookmark this and use it as a reference when building your nteract-based UI.                     |
 | [components.nteract.io](https://components.nteract.io/) | This page contains the documentation for our suite of composable React components. It contains code samples that you can reference when building your nteract-based UI. |
 
