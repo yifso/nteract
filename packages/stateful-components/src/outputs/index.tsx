@@ -52,7 +52,8 @@ export const makeMapStateToProps = (
       if (cell) {
         outputs = cell.get("outputs", Immutable.List());
         hidden =
-          cell.cell_type === "code" && cell.getIn(["metadata", "outputHidden"]);
+          cell.cell_type === "code" &&
+          cell.getIn(["metadata", "jupyter", "output_hidden"]);
         expanded =
           cell.cell_type === "code" &&
           (cell.getIn(["metadata", "outputExpanded"]) ||
