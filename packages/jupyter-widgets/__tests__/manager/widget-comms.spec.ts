@@ -47,6 +47,32 @@ describe("WidgetComm", () => {
   });
 });
 
+describe("flattenBufferArrays", () => {
+  it("can handle undefined buffers", () => {
+    const comm_id = "aCommId";
+    const target_name = "target_name";
+    const target_module = "target_module";
+    const kernel = { channels: new Subject() };
+    const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    expect(comm.flattenBufferArrays()).toBeUndefined();
+  });
+  it("can handle valid buffers", () => {
+    const comm_id = "aCommId";
+    const target_name = "target_name";
+    const target_module = "target_module";
+    const kernel = { channels: new Subject() };
+    const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    const result = comm.flattenBufferArrays([
+      new ArrayBuffer(8),
+      new ArrayBuffer(4)
+    ]);
+    expect(result).toBeDefined();
+    expect(result.length).toEqual(
+      new ArrayBuffer(8).byteLength + new ArrayBuffer(4).byteLength
+    );
+  });
+});
+
 describe("request_state", () => {
   it("sends request_state message and processes responses", done => {
     const kernel = {
