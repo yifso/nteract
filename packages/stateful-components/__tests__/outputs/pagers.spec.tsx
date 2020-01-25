@@ -1,9 +1,12 @@
+import { mount } from "enzyme";
 import Immutable from "immutable";
+import React from "react";
 
-import { mockAppState } from "@nteract/fixtures";
 import { selectors } from "@nteract/core";
+import { mockAppState } from "@nteract/fixtures";
+import { RichMedia } from "@nteract/outputs";
 
-import { makeMapStateToProps } from "../../src/outputs/pagers";
+import { makeMapStateToProps, Pagers } from "../../src/outputs/pagers";
 
 describe("makeMapStateToProps", () => {
   it("returns an empty set of pagers for non-notebook files", () => {
@@ -42,5 +45,27 @@ describe("makeMapStateToProps", () => {
     const ownProps = { contentRef, id, children: [] };
     const mapStateToProps = makeMapStateToProps(state, ownProps);
     expect(mapStateToProps(state)).toEqual({ pagers });
+  });
+});
+
+describe("Pagers", () => {
+  it("renders nothing for empty list of pagers", () => {
+    const component = mount(
+      <Pagers contentRef={"contentRef"} id={"id"} pagers={Immutable.List()} />
+    );
+    expect(component.find(RichMedia)).toHaveLength(0);
+  });
+  it("renders RichMedia for each pager", () => {
+    const component = mount(
+      <Pagers
+        contentRef={"contentRef"}
+        id={"id"}
+        pagers={Immutable.List([
+          { data: { key: "value" } },
+          { data: { key: "value" } }
+        ])}
+      />
+    );
+    expect(component.find(RichMedia)).toHaveLength(2);
   });
 });

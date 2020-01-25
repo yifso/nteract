@@ -2,7 +2,7 @@ import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
 
-import { selectors, AppState, ContentRef } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import { RichMedia } from "@nteract/outputs";
 
 interface ComponentProps {
@@ -52,7 +52,7 @@ export const makeMapStateToProps = (
     const { contentRef, id } = ownProps;
     const model = selectors.model(state, { contentRef });
 
-    if (model && model.type == "notebook") {
+    if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
       if (cell) {
         pagers = model.getIn(["cellPagers", id]) || Immutable.List();
