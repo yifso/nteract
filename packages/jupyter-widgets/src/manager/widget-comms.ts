@@ -133,7 +133,9 @@ export class WidgetComm implements IClassicComm {
   flattenBufferArrays(
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ): Uint8Array | undefined {
-    if (buffers === undefined) { return undefined; }
+    if (buffers === undefined) {
+      return undefined;
+    }
     // determining size and creating array
     let byteLength = 0;
     for (const b of buffers) {

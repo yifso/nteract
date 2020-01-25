@@ -54,7 +54,7 @@ describe("BackboneWrapper", () => {
         widgetContainerRef={React.createRef()}
       />
     );
-    component.update();
+    component.setProps({ model_id: "new_id" });
     expect(createWidgetIfNotCreated).toBeCalledTimes(2);
   });
 });

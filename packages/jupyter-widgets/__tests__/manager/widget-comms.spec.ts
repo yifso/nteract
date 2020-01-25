@@ -1,5 +1,7 @@
 import { Subject } from "rxjs";
-import { WidgetComm } from "../../src/manager/widget-comms";
+
+import { DescriptionStyleModel } from "@jupyter-widgets/controls";
+import { request_state, WidgetComm } from "../../src/manager/widget-comms";
 
 describe("WidgetComm", () => {
   it("cam be instantied", () => {
@@ -28,7 +30,7 @@ describe("WidgetComm", () => {
     expect(kernel.channels.next).toBeCalled();
     expect(kernel.channels.pipe).toBeCalled();
   });
-  it("can process close messages", () => {
+  it("can send messages", () => {
     const comm_id = "aCommId";
     const target_name = "target_name";
     const target_module = "target_module";
@@ -39,5 +41,33 @@ describe("WidgetComm", () => {
       }
     };
     const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    comm.send({ target_name: "target_name" }, {});
+    expect(kernel.channels.next).toBeCalled();
+    expect(kernel.channels.pipe).toBeCalled();
+  });
+});
+
+describe("request_state", () => {
+  it("sends request_state message and processes responses", done => {
+    const kernel = {
+      channels: {
+        next: jest.fn(),
+        pipe: jest.fn(() => ({
+          subscribe: jest.fn()
+        }))
+      }
+    };
+    const comm_id = "test_comm_id";
+    request_state(kernel, comm_id).then(() => {
+      expect(kernel.channels.next).toBeCalledWith(
+        expect.objectContaining({
+          header: {
+            msg_type: "comm_msg"
+          }
+        })
+      );
+      done();
+    });
+    done();
   });
 });
