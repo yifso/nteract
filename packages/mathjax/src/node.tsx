@@ -14,7 +14,7 @@ interface Props {
   onRender?: () => void;
 }
 
-class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
+export class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
   script?: HTMLScriptElement;
   nodeRef: React.RefObject<HTMLSpanElement>;
 
@@ -22,6 +22,9 @@ class MathJaxNode_ extends React.Component<Props & MathJaxContextValue> {
     super(props);
 
     this.nodeRef = React.createRef();
+
+    this.typeset = this.typeset.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   /**
