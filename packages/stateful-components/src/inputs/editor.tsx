@@ -25,7 +25,6 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
 
     let chosenOne: React.ReactChild | null = null;
 
-    // Find the first child element that matches something in this.props.data
     React.Children.forEach(this.props.children, child => {
       if (!child) {
         return;

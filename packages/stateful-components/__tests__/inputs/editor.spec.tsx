@@ -40,9 +40,30 @@ describe("makeMapStateToProps", () => {
 });
 
 describe("<Editor/>", () => {
+  const SubEditor = ({ editorType = "monaco " }) => (
+    <div className={editorType} />
+  );
   it("returns nothing if it has no children", () => {
     const component = mount(<Editor editorType="monaco" />);
-    expect(component).toBeNull();
+    expect(component.isEmptyRender()).toBe(true);
   });
-  it("renders the matching child");
+  it("renders the matching child", () => {
+    const component = mount(
+      <Editor editorType="monaco">
+        <SubEditor editorType="monaco" />
+        <SubEditor editorType="codemirror" />
+      </Editor>
+    );
+    expect(component.find(".monaco")).toHaveLength(1);
+    expect(component.find(".codemirror")).toHaveLength(0);
+  });
+  it("renders nothing if no matching child is found", () => {
+    const component = mount(
+      <Editor editorType="textarea">
+        <SubEditor editorType="monaco" />
+        <SubEditor editorType="codemirror" />
+      </Editor>
+    );
+    expect(component.isEmptyRender()).toBe(true);
+  });
 });
