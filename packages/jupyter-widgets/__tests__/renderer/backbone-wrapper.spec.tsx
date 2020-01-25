@@ -30,6 +30,7 @@ const model = {
 
 describe("BackboneWrapper", () => {
   it("can render an IntSlider", () => {
+    const modelById = (id: string) => undefined;
     expect(
       <BackboneWrapper
         model={model}
