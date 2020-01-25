@@ -5,10 +5,10 @@ import { Dispatch } from "redux";
 
 import {
   actions,
-  selectors,
-  ContentRef,
   AppState,
-  InputRequestMessage
+  ContentRef,
+  InputRequestMessage,
+  selectors
 } from "@nteract/core";
 
 interface ComponentProps {
@@ -74,7 +74,7 @@ const makeMapStateToProps = (
   const mapStateToProps = (state: AppState) => {
     const { contentRef, id } = ownProps;
     const model = selectors.model(state, { contentRef });
-    if (model && model.type == "notebook") {
+    if (model && model.type === "notebook") {
       const prompts = selectors.notebook.cellPromptsById(model, { id });
       return { prompts };
     }
