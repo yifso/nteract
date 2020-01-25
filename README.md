@@ -1,9 +1,13 @@
-# nteract/nteract <img src="https://cloud.githubusercontent.com/assets/836375/15271096/98e4c102-19fe-11e6-999a-a74ffe6e2000.gif" alt="nteract animated logo" height="80px" align="right" />
+<img src="https://cloud.githubusercontent.com/assets/836375/15271096/98e4c102-19fe-11e6-999a-a74ffe6e2000.gif" alt="nteract animated logo" style="text-align:center"/>
 
-[![codecov.io](https://codecov.io/github/nteract/nteract/coverage.svg?branch=master)](https://codecov.io/github/nteract/nteract?branch=master)
-[![slack in](https://slack.nteract.io/badge.svg)](https://slack.nteract.io)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![Circle CI status](https://circleci.com/gh/nteract/nteract/tree/master.svg?style=shield)](https://circleci.com/gh/nteract/nteract/tree/master)
+<h1 align="center">the interactive computing suite for you</h1>
+
+<p align="center">
+<a href="https://codecov.io/github/nteract/nteract?branch=master"><img src="https://codecov.io/github/nteract/nteract/coverage.svg?branch=master"/></a>
+<a href="https://slack.nteract.io"><img src="https://slack.nteract.io/badge.svg"/></a>
+<a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"/></a>
+<a href="https://circleci.com/gh/nteract/nteract/tree/master"><img src="https://circleci.com/gh/nteract/nteract/tree/master.svg?style=shield"/></a>
+</p>
 
 nteract is an open-source organization committed to creating fantastic interactive computing experiences that allow people to collaborate with ease.
 
@@ -17,14 +21,14 @@ This repo is a monorepo. It contains the code for the nteract core SDK and ntera
 
 | Folder                         | Description                                                                                                                                                                                          |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| applications/desktop           | This folder contains the source code for the nteract desktop application. The desktop application is a cross-platform app built using [Electron](https://electronjs.org/)                            |
+| applications/desktop           | This folder contains the source code for the nteract desktop application. The desktop application is a cross-platform app built using [Electron](https://electronjs.org/).                           |
 | applications/jupyter-extension | This folder contains the source code the nteract Jupyter extension. This extension can be installed alongside Jupyter classic and JupyterLab in your Jupyter deployments or personal Jupyter server. |
 | changelogs                     | This folder contains the changelogs for each release of the nteract core SDK and applications.                                                                                                       |
 | packages                       | This folder contains the JavaScript packages that are part of the nteract core SDK.                                                                                                                  |
 
 ## How do I contribute to this repo?
 
-If you are interested in contributing to nteract, please read the [contribution](./CONTRIBUTING.md) guidelines for information on how to set up your nteract repo for development, how to write tests and validate changes, how to update documentation, and how to submit your code changes for review on GitHub.
+If you are interested in contributing to nteract, please read the [contribution guidelines](./CONTRIBUTING.md) for information on how to set up your nteract repo for development, how to write tests and validate changes, how to update documentation, and how to submit your code changes for review on GitHub.
 
 ## How do I use the nteract core SDK?
 
@@ -46,9 +50,7 @@ Once you've download the app, head over to our [documentation page](https://docs
 
 ## Supporting nteract
 
-nteract is a non-profit open-source organization fisically sponsored by [NumFOCUS](https://numfocus.org/).
-
-If you are interested in supporting development on nteract, please consider [making a recurring donation](https://numfocus.salsalabs.org/donate-to-nteract/index.html).
+nteract is a non-profit open-source organization fisically sponsored by [NumFOCUS](https://numfocus.org/). **If you are interested in supporting development on nteract, please consider [making a recurring donation](https://numfocus.salsalabs.org/donate-to-nteract/index.html).**
 
 Development on nteract is also supported by the following organizations.
 

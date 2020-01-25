@@ -92,7 +92,7 @@ $ git push origin branch-name-here
 
 ### Validating in the nteract desktop app
 
-In addition to write tests, you will want to validate your changes by testing them in the nteract desktop and web applications. These applications are a great test harness for manual tests and QA. To set up the nteract desktop application for development, follow the steps below.
+In addition to writing tests, you will want to validate your changes by testing them in the nteract desktop and web applications. These applications are a great test harness for manual tests and QA. To set up the nteract desktop application for development, follow the steps below.
 
 1. Ensure that you have installed the monorepo dependencies by running `yarn` in the root directory.
 2. Open a terminal window and run the following command. This will start a progressive build of the nteract desktop app. Whenever you make a code change, the build will automagically update.
