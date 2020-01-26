@@ -3,6 +3,7 @@ import {
   createContentRef,
   createKernelRef,
   KernelsRecordProps,
+  KernelStatus,
   makeKernelsRecord,
   makeRemoteKernelRecord
 } from "@nteract/types";
@@ -104,5 +105,72 @@ describe("kernels reducers", () => {
     expect(
       state.byRef.getIn([kernelRef, "info", "codemirrorMode"])
     ).toStrictEqual(Immutable.Map(info.codemirrorMode));
+  });
+  test("KILL_KERNEL_SUCCESSFUL sets kernel state", () => {
+    const kernelRef = createKernelRef();
+    const originalState = makeKernelsRecord({
+      byRef: Immutable.Map({
+        [kernelRef]: makeRemoteKernelRecord()
+      })
+    });
+    const action = actions.killKernelSuccessful({ kernelRef });
+    const state = kernels(originalState, action) as KernelsRecordProps;
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Killed);
+  });
+  test("KILL_KERNEL_FAILED sets kernel state", () => {
+    const kernelRef = createKernelRef();
+    const originalState = makeKernelsRecord({
+      byRef: Immutable.Map({
+        [kernelRef]: makeRemoteKernelRecord()
+      })
+    });
+    const action = actions.killKernelFailed({
+      kernelRef,
+      error: new Error("test")
+    });
+    const state = kernels(originalState, action) as KernelsRecordProps;
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe("failed to kill");
+  });
+  test("SET_EXECUTION_STATE sets kernel status", () => {
+    const kernelRef = createKernelRef();
+    const originalState = makeKernelsRecord({
+      byRef: Immutable.Map({
+        [kernelRef]: makeRemoteKernelRecord()
+      })
+    });
+    const action = actions.setExecutionState({
+      kernelRef,
+      kernelStatus: KernelStatus.Idle
+    });
+    const state = kernels(originalState, action) as KernelsRecordProps;
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Idle);
+  });
+  test("LAUNCH_KERNEL_BY_NAME sets kernel status", () => {
+    const kernelRef = createKernelRef();
+    const originalState = makeKernelsRecord({
+      byRef: Immutable.Map({
+        [kernelRef]: makeRemoteKernelRecord()
+      })
+    });
+    const action = actions.launchKernelByName({
+      kernelRef,
+      kernelSpecName: "python2"
+    });
+    const state = kernels(originalState, action) as KernelsRecordProps;
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe("launching");
+  });
+  test("LAUNCH_KERNEL_BY_NAME sets kernel status", () => {
+    const kernelRef = createKernelRef();
+    const originalState = makeKernelsRecord({
+      byRef: Immutable.Map({
+        [kernelRef]: makeRemoteKernelRecord()
+      })
+    });
+    const action = actions.launchKernelByName({
+      kernelRef,
+      kernelSpecName: "python2"
+    });
+    const state = kernels(originalState, action) as KernelsRecordProps;
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe("launching");
   });
 });
