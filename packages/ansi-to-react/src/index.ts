@@ -2,16 +2,21 @@ import Anser, { AnserJsonEntry } from "anser";
 import { escapeCarriageReturn } from "escape-carriage";
 import * as React from "react";
 
-const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
 
 /**
  * Converts ANSI strings into JSON output.
  * @name ansiToJSON
  * @function
  * @param {String} input The input string.
+ * @param {boolean} use_classes If `true`, HTML classes will be appended
+ *                              to the HTML output.
  * @return {Array} The parsed input.
  */
-function ansiToJSON(input: string, use_classes = false) {
+function ansiToJSON(
+  input: string,
+  use_classes: boolean = false,
+): AnserJsonEntry[] {
   input = escapeCarriageReturn(input);
   return Anser.ansiToJson(input, {
     json: true,
@@ -24,35 +29,40 @@ function ansiToJSON(input: string, use_classes = false) {
  * Create a class string.
  * @name createClass
  * @function
- * @param {AnserJsonEntry}.
+ * @param {AnserJsonEntry} bundle
  * @return {String} class name(s)
  */
-function createClass(bundle: AnserJsonEntry) {
+function createClass(bundle: AnserJsonEntry): string | null {
   let classNames: string = "";
 
   if (!bundle.bg && !bundle.fg) {
     return null;
   }
   if (bundle.bg) {
-    classNames += bundle.bg + " ";
+    classNames += `${bundle.bg}-bg `;
   }
   if (bundle.fg) {
-    classNames += bundle.fg + " ";
+    classNames += `${bundle.fg}-fg `;
   }
 
   classNames = classNames.substring(0, classNames.length - 1);
   return classNames;
 }
 
+interface Colors {
+  color?: string;
+  backgroundColor?: string;
+}
+
 /**
  * Create the style attribute.
  * @name createStyle
  * @function
- * @param {AnserJsonEntry}.
+ * @param {AnserJsonEntry} bundle
  * @return {Object} returns the style object
  */
-function createStyle(bundle: AnserJsonEntry) {
-  const style: { backgroundColor?: string; color?: string } = {};
+function createStyle(bundle: AnserJsonEntry): Colors {
+  const style: Colors = {};
   if (bundle.bg) {
     style.backgroundColor = `rgb(${bundle.bg})`;
   }
@@ -68,14 +78,15 @@ function createStyle(bundle: AnserJsonEntry) {
  * @param linkify whether links should be converting into clickable anchor tags.
  * @param useClasses should render the span with a class instead of style.
  * @param bundle Anser output.
+ * @param key
  */
 
 function convertBundleIntoReact(
   linkify: boolean,
   useClasses: boolean,
   bundle: AnserJsonEntry,
-  key: number
-) {
+  key: number,
+): JSX.Element {
   const style = useClasses ? null : createStyle(bundle);
   const className = useClasses ? createClass(bundle) : null;
 
@@ -87,7 +98,7 @@ function convertBundleIntoReact(
     );
   }
 
-  const words = bundle.content.split(/(\s+)/).reduce(
+  const content = bundle.content.split(/(\s+)/).reduce(
     (words: React.ReactNode[], word: string, index: number) => {
       // If this is a separator, re-add the space removed from split.
       if (index % 2 === 1) {
@@ -116,23 +127,23 @@ function convertBundleIntoReact(
     },
     [] as React.ReactNode[]
   );
-  return React.createElement("span", { style, key, className }, words);
+  return React.createElement("span", { style, key, className }, content);
 }
 
 declare interface Props {
-  children: string;
-  linkify: boolean;
+  children?: string;
+  linkify?: boolean;
   className?: string;
   useClasses?: boolean;
 }
 
-export default function Ansi(props: Props) {
+export default function Ansi(props: Props): JSX.Element {
   const { className, useClasses, children, linkify } = props;
   return React.createElement(
     "code",
     { className },
-    ansiToJSON(children, !!useClasses).map(
-      convertBundleIntoReact.bind(null, linkify, !!useClasses)
+    ansiToJSON(children ?? "", useClasses ?? false).map(
+      convertBundleIntoReact.bind(null, linkify ?? false, useClasses ?? false)
     )
   );
 }
