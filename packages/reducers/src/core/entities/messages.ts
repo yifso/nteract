@@ -4,7 +4,7 @@ import { List } from "immutable";
 import { Action, AnyAction, Reducer } from "redux";
 import { combineReducers } from "redux-immutable";
 
-const messageQueue = (
+export const messageQueue = (
   state: List<AnyAction> = List<AnyAction>(),
   action: actions.EnqueueAction | actions.ClearMessageQueue
 ): List<AnyAction> => {
