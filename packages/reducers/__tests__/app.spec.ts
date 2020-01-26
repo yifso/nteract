@@ -116,3 +116,11 @@ describe("setAppHost", () => {
     expect(state.host.get("id")).toBe("anotherid");
   });
 });
+
+describe("it does not change state for out-of-scope actions", () => {
+  const originalState = stateModule.makeAppRecord({});
+  const action = actions.killKernel({ restarting: false, kernelRef: "test" });
+
+  const state = reducers.app(originalState, action);
+  expect(state).toEqual(originalState);
+});
