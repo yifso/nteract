@@ -1,11 +1,11 @@
 import { IClassicComm } from "@jupyter-widgets/base";
 import {
   childOf,
-  ofMessageType,
-  withCommId,
-  JupyterMessage,
   createCommMessage,
-  createCommOpenMessage
+  createCommOpenMessage,
+  JupyterMessage,
+  ofMessageType,
+  withCommId
 } from "@nteract/messaging";
 
 /**
@@ -97,7 +97,7 @@ export class WidgetComm implements IClassicComm {
     metadata?: any,
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ): string {
-    throw "close not yet implemented!";
+    throw new Error("close not yet implemented!");
   }
 
   /**
@@ -106,10 +106,7 @@ export class WidgetComm implements IClassicComm {
    */
   on_msg(callback: (x: any) => void): void {
     this.kernel.channels
-      .pipe(
-        ofMessageType("comm_msg"),
-        withCommId(this.comm_id)
-      )
+      .pipe(ofMessageType("comm_msg"), withCommId(this.comm_id))
       .subscribe((msg: any) => {
         callback(msg);
       });
@@ -121,10 +118,7 @@ export class WidgetComm implements IClassicComm {
    */
   on_close(callback: (x: any) => void): void {
     this.kernel.channels
-      .pipe(
-        ofMessageType("comm_close"),
-        withCommId(this.comm_id)
-      )
+      .pipe(ofMessageType("comm_close"), withCommId(this.comm_id))
       .subscribe((msg: any) => {
         callback(msg);
       });
@@ -139,16 +133,18 @@ export class WidgetComm implements IClassicComm {
   flattenBufferArrays(
     buffers?: ArrayBuffer[] | ArrayBufferView[]
   ): Uint8Array | undefined {
-    if (buffers === undefined) return undefined;
+    if (buffers === undefined) {
+      return undefined;
+    }
     // determining size and creating array
     let byteLength = 0;
-    for (let b of buffers) {
+    for (const b of buffers) {
       byteLength += b.byteLength;
     }
-    let flattened = new Uint8Array(byteLength);
+    const flattened = new Uint8Array(byteLength);
     // copying buffers over
-    for (let b of buffers) {
-      let arr =
+    for (const b of buffers) {
+      const arr =
         b instanceof ArrayBuffer ? new Uint8Array(b) : (b as Uint8Array);
       flattened.set(arr);
     }
@@ -164,14 +160,14 @@ export class WidgetComm implements IClassicComm {
   hookupReplyCallbacks(message: JupyterMessage<any, any>, callbacks: any) {
     this.kernel.channels.pipe(childOf(message)).subscribe((reply: any) => {
       if (
-        reply.channel == "shell" &&
+        reply.channel === "shell" &&
         callbacks.shell &&
         callbacks.shell.reply
       ) {
         callbacks.shell.reply(reply);
-      } else if (reply.channel == "stdin" && callbacks.input) {
+      } else if (reply.channel === "stdin" && callbacks.input) {
         callbacks.input(reply);
-      } else if (reply.channel == "iopub" && callbacks.iopub) {
+      } else if (reply.channel === "iopub" && callbacks.iopub) {
         if (callbacks.iopub.status && reply.header.msg_type === "status") {
           callbacks.iopub.status(reply);
         } else if (
@@ -205,10 +201,10 @@ export class WidgetComm implements IClassicComm {
 export function request_state(kernel: any, comm_id: string): Promise<any> {
   return new Promise((resolve, reject) => {
     const message = createCommMessage(comm_id, { method: "request_state" });
-    let replySubscription = kernel.channels
+    const replySubscription = kernel.channels
       .pipe(childOf(message))
       .subscribe((reply: any) => {
-        //if we get a comm message back, it is the state we requested
+        // if we get a comm message back, it is the state we requested
         if (reply.msg_type === "comm_msg") {
           replySubscription.unsubscribe();
           return resolve(reply);

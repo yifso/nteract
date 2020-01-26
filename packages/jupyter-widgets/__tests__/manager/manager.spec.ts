@@ -1,6 +1,7 @@
 import { IntSliderView } from "@jupyter-widgets/controls";
-import { WidgetManager } from "../../src/manager/widget-manager";
 import { Map } from "immutable";
+
+import { WidgetManager } from "../../src/manager/widget-manager";
 
 describe("WidgetManager", () => {
   describe("loadClass", () => {
@@ -95,7 +96,7 @@ describe("WidgetManager", () => {
         _view_name: "StyleView"
       };
       const modelById = (id: string) => {
-        const model = id == "layout_id" ? layoutModel : styleModel;
+        const model = id === "layout_id" ? layoutModel : styleModel;
         return Promise.resolve(Map({ state: Map(model) }));
       };
       const manager = new WidgetManager(null, modelById);
@@ -116,5 +117,13 @@ describe("WidgetManager", () => {
         expect(layoutView).toBeTruthy();
       }, 1000);
     });
+  });
+  it("can update class properties via method", () => {
+    const modelById = (id: string) => undefined;
+    const manager = new WidgetManager(null, modelById);
+    expect(manager.kernel).toBeNull();
+    const newKernel = { channels: { next: jest.fn() } };
+    manager.update(newKernel, modelById, {});
+    expect(manager.kernel).toBe(newKernel);
   });
 });

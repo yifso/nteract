@@ -1,5 +1,5 @@
-import * as React from "react";
 import Immutable from "immutable";
+import * as React from "react";
 import { WidgetManager } from "../manager/widget-manager";
 
 /**
@@ -32,6 +32,11 @@ interface Props {
 export default class BackboneWrapper extends React.Component<Props> {
   created = false;
 
+  constructor(props: Props) {
+    super(props);
+    this.createWidgetIfNotCreated = this.createWidgetIfNotCreated.bind(this);
+  }
+
   async componentDidMount() {
     return this.createWidgetIfNotCreated();
   }
@@ -50,7 +55,7 @@ export default class BackboneWrapper extends React.Component<Props> {
         );
         const view = await manager.create_view(
           widget,
-          undefined //no options
+          undefined // no options
         );
         if (widgetContainerRef.current) {
           manager.render_view(view, widgetContainerRef.current);
