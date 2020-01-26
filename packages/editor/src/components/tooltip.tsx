@@ -11,13 +11,17 @@ const TipButton: StyledComponent<"button", never> = styled.button`
   top: 0px;
 `;
 
-interface CursorCoords { top: number; left: number; bottom?: number }
+interface CursorCoords {
+  top: number;
+  left: number;
+  bottom?: number;
+}
 
 interface TipProps {
   cursorCoords: CursorCoords;
 }
 
-const Tip: StyledComponent<"div", {}, TipProps> = styled.div`
+export const Tip: StyledComponent<"div", {}, TipProps> = styled.div`
   background-color: var(--theme-app-bg, #2b2b2b);
   box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
   float: right;

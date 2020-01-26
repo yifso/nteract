@@ -2,7 +2,7 @@ import { Channels, createMessage } from "@nteract/messaging";
 import { Doc } from "codemirror";
 import { Subject } from "rxjs";
 
-import * as complete from "../src/jupyter/complete";
+import * as complete from "../../src/jupyter/complete";
 
 describe("completionRequest", () => {
   it("creates a valid v5 message for complete_request", () => {
