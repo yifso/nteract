@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { from, Subject } from "rxjs";
 
 import { DescriptionStyleModel } from "@jupyter-widgets/controls";
 import { request_state, WidgetComm } from "../../src/manager/widget-comms";
@@ -95,5 +95,101 @@ describe("request_state", () => {
       done();
     });
     done();
+  });
+});
+
+describe("hookupReplyCallbacks", () => {
+  const callbacks = {
+    shell: {
+      reply: jest.fn()
+    },
+    input: jest.fn(),
+    iopub: {
+      status: jest.fn(),
+      clear_output: jest.fn(),
+      output: jest.fn()
+    }
+  };
+  it("can process shell channels reply messages", () => {
+    const comm_id = "aCommId";
+    const target_name = "target_name";
+    const target_module = "target_module";
+    const parentMessage = {
+      header: {
+        msg_id: "parent_message_id"
+      }
+    };
+    const kernel = {
+      channels: from([
+        {
+          channel: "shell",
+          parent_header: parentMessage.header
+        }
+      ])
+    };
+    const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    comm.hookupReplyCallbacks(parentMessage, callbacks);
+    expect(callbacks.shell.reply).toBeCalled();
+  });
+  it("can process input requests", () => {
+    const comm_id = "aCommId";
+    const target_name = "target_name";
+    const target_module = "target_module";
+    const parentMessage = {
+      header: {
+        msg_id: "parent_message_id"
+      }
+    };
+    const kernel = {
+      channels: from([
+        {
+          channel: "stdin",
+          parent_header: parentMessage.header
+        }
+      ])
+    };
+    const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    comm.hookupReplyCallbacks(parentMessage, callbacks);
+    expect(callbacks.input).toBeCalled();
+  });
+  it("can process ioupub status messages", () => {
+    const comm_id = "aCommId";
+    const target_name = "target_name";
+    const target_module = "target_module";
+    const parentMessage = {
+      header: {
+        msg_id: "parent_message_id"
+      }
+    };
+    const kernel = {
+      channels: from([
+        {
+          channel: "iopub",
+          parent_header: parentMessage.header,
+          header: {
+            msg_type: "status"
+          }
+        },
+        {
+          channel: "iopub",
+          parent_header: parentMessage.header,
+          header: {
+            msg_type: "clear_output"
+          }
+        },
+        {
+          channel: "iopub",
+          parent_header: parentMessage.header,
+          header: {
+            msg_type: "display_data"
+          }
+        }
+      ])
+    };
+    const comm = new WidgetComm(comm_id, target_name, target_module, kernel);
+    comm.hookupReplyCallbacks(parentMessage, callbacks);
+    expect(callbacks.iopub.status).toBeCalled();
+    expect(callbacks.iopub.clear_output).toBeCalled();
+    expect(callbacks.iopub.output).toBeCalled();
   });
 });
