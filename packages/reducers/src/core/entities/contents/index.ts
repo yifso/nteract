@@ -26,7 +26,7 @@ import { Action } from "redux";
 import { file } from "./file";
 import { notebook } from "./notebook";
 
-const byRef = (
+export const byRef = (
   state: Map<ContentRef, ContentRecord>,
   action: Action
 ): Map<ContentRef, ContentRecord> => {
@@ -116,8 +116,6 @@ const byRef = (
           fetchContentFailedAction.payload.error
         );
     case actionTypes.LAUNCH_KERNEL_SUCCESSFUL:
-      // TODO: is this reasonable? We launched the kernel on behalf of this
-      // content... so it makes sense to swap it, right?
       const launchKernelAction = action as actionTypes.NewKernelAction;
       return state.setIn(
         [launchKernelAction.payload.contentRef, "model", "kernelRef"],

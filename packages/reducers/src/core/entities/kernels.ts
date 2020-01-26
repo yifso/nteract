@@ -3,6 +3,7 @@ import * as actionTypes from "@nteract/actions";
 import { JSONObject } from "@nteract/commutable";
 import {
   HelpLink,
+  KernelStatus,
   makeHelpLinkRecord,
   makeKernelInfoRecord,
   makeKernelNotStartedRecord,
@@ -14,9 +15,6 @@ import { List, Map } from "immutable";
 import { Action, Reducer } from "redux";
 import { combineReducers } from "redux-immutable";
 
-// TODO: we need to clean up references to old kernels at some point. Listening
-// for KILL_KERNEL_SUCCESSFUL seems like a good candidate, but I think you can
-// also end up with a dead kernel if that fails and you hit KILL_KERNEL_FAILED.
 const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
   let typedAction;
   switch (action.type) {
@@ -25,7 +23,10 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       return state;
     case actionTypes.KILL_KERNEL_SUCCESSFUL:
       typedAction = action as actionTypes.KillKernelSuccessful;
-      return state.setIn([typedAction.payload.kernelRef, "status"], "killed");
+      return state.setIn(
+        [typedAction.payload.kernelRef, "status"],
+        KernelStatus.Killed
+      );
     case actionTypes.KILL_KERNEL_FAILED:
       typedAction = action as actionTypes.KillKernelFailed;
       return state.setIn(

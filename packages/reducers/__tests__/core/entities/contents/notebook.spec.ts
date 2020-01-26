@@ -20,7 +20,7 @@ import {
   cleanCellTransient,
   notebook as reducers,
   reduceOutputs
-} from "../src/core/entities/contents/notebook";
+} from "../../../../src/core/entities/contents/notebook";
 
 const initialDocument = Immutable.Map();
 const monocellDocument = initialDocument
@@ -1112,7 +1112,7 @@ describe("updateOutputMetadata", () => {
 
 describe("interruptKernelSuccessful", () => {
   test("should do nothing for cells that are not queued or running", () => {
-    let originalState = Immutable.fromJS({
+    const originalState = Immutable.fromJS({
       cellMap: { cell1: {}, cell2: {}, cell3: {} },
       transient: {
         cellMap: {
@@ -1140,7 +1140,7 @@ describe("interruptKernelSuccessful", () => {
     );
   });
   test("should reset status for cells that are queued or running", () => {
-    let originalState = Immutable.fromJS({
+    const originalState = Immutable.fromJS({
       cellMap: { cell1: {}, cell2: {}, cell3: {} },
       transient: {
         cellMap: {

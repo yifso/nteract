@@ -259,7 +259,7 @@ export interface RemoveTransform {
   type: "REMOVE_TRANSFORM";
   payload: {
     mediaType: string;
-    component: any;
+    component?: any;
   };
 }
 

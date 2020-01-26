@@ -53,7 +53,9 @@ export enum KernelStatus {
   /** Kernel is not connected to current notebook. */
   NotConnected = "not connected",
   /** 0mq-based kernel is launched. */
-  Launched = "launched"
+  Launched = "launched",
+  /** 0mq-based kernel is killed. */
+  Killed = "killed"
 }
 
 export interface LocalKernelProps {
