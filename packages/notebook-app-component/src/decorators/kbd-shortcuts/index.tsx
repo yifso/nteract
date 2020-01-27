@@ -111,7 +111,10 @@ export class KeyboardShortcuts extends React.PureComponent<Props> {
   }
 }
 
-const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
+export const makeMapStateToProps = (
+  state: AppState,
+  ownProps: ComponentProps
+) => {
   const { contentRef } = ownProps;
   const mapStateToProps = (state: AppState) => {
     const model = selectors.model(state, { contentRef });
@@ -135,7 +138,7 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
   return mapStateToProps;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   executeFocusedCell: (payload: { contentRef: ContentRef }) =>
     dispatch(actions.executeFocusedCell(payload)),
   focusNextCell: (payload: {

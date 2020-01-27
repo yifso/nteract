@@ -1,8 +1,16 @@
+import { actions } from "@nteract/core";
 import { mount, shallow } from "enzyme";
 import Immutable from "immutable";
 import React from "react";
 
-import { KeyboardShortcuts } from "../../src/decorators/kbd-shortcuts";
+import { mockAppState } from "@nteract/fixtures";
+
+import { focusNextCell } from "@nteract/actions";
+import {
+  KeyboardShortcuts,
+  makeMapStateToProps,
+  mapDispatchToProps
+} from "../../src/decorators/kbd-shortcuts";
 
 describe("KeyboardShortcuts", () => {
   const map = {};
@@ -17,6 +25,7 @@ describe("KeyboardShortcuts", () => {
     document.addEventListener = jest.fn((event, cb) => {
       map[event] = cb;
     });
+    document.removeEventListener = jest.fn();
   });
   it("renders without crashing", () => {
     const component = shallow(
@@ -126,5 +135,60 @@ describe("KeyboardShortcuts", () => {
     expect(focusNextCell).toBeCalled();
     // Should focus the next cell editor since it is a code cell
     expect(focusNextCellEditor).not.toBeCalled();
+  });
+  it("removes event listeners when unmounted", () => {
+    const component = shallow(
+      <KeyboardShortcuts contentRef={"test"}>
+        <p>test</p>
+      </KeyboardShortcuts>
+    );
+    component.unmount();
+    expect(document.removeEventListener).toBeCalledWith(
+      "keydown",
+      expect.any(Function)
+    );
+  });
+});
+
+describe("makeMapStateToProps", () => {
+  it("returns default values for non-notebook content", () => {
+    const state = mockAppState({});
+    const ownProps = { contentRef: "contentRef", id: "cellId" };
+    const result = makeMapStateToProps(state, ownProps)(state);
+    expect(result.cellOrder.size).toBe(0);
+    expect(result.cellMap.size).toBe(0);
+    expect(result.focusedCell).toBeUndefined();
+  });
+  it("returns correct values for notebook content", () => {
+    const state = mockAppState({ codeCellCount: 2 });
+    const contentRef = state.core.entities.contents.byRef.keySeq().first();
+    const ownProps = { contentRef };
+    const result = makeMapStateToProps(state, ownProps)(state);
+    expect(result.cellOrder.size).toBe(2);
+    expect(result.cellMap.size).toBe(2);
+    expect(result.focusedCell).toBeDefined();
+  });
+});
+
+describe("mapDispatchToProps", () => {
+  it("registers actions to dispatch", () => {
+    const dispatch = jest.fn();
+    const result = mapDispatchToProps(dispatch);
+    const executedFocusedCellPayload = {
+      contentRef: "contentRef"
+    };
+    result.executeFocusedCell(executedFocusedCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.executeFocusedCell(executedFocusedCellPayload)
+    );
+    const focusNextCellPayload = { id: "cellId", contentRef: "contentRef" };
+    result.focusNextCell(focusNextCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.focusNextCell(focusNextCellPayload)
+    );
+    result.focusNextCellEditor(focusNextCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.focusNextCellEditor(focusNextCellPayload)
+    );
   });
 });
