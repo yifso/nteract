@@ -237,7 +237,7 @@ const target = DropTarget<Props, DnDTargetProps>(
   collectTarget
 );
 
-const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
+export const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
   const mapDispatchToProps = (dispatch: Dispatch) => ({
     moveCell: (payload: actions.MoveCell["payload"]) =>
       dispatch(actions.moveCell(payload)),

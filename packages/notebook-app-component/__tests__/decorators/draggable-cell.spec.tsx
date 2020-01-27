@@ -1,10 +1,12 @@
 import { emptyMarkdownCell } from "@nteract/commutable";
+import { actions } from "@nteract/core";
 import { mount, shallow } from "enzyme";
 import React from "react";
 
 import DraggableCell, {
   DraggableCellView,
-  isDragUpper
+  isDragUpper,
+  makeMapDispatchToProps
 } from "../../src/decorators/draggable";
 
 // Spoof DND manager for tests.
@@ -87,5 +89,28 @@ describe("isDragUpper", () => {
     };
     const result = isDragUpper({}, monitor, el);
     expect(result).toBe(false);
+  });
+});
+
+describe("makeMapDispatchToProps", () => {
+  it("registers actions to dispatch", () => {
+    const dispatch = jest.fn();
+    const result = makeMapDispatchToProps(dispatch)(dispatch);
+    const payload = {
+      id: "test",
+      destinationId: "test1",
+      above: false,
+      contentRef: "contentRef"
+    };
+    result.moveCell({
+      id: "test",
+      destinationId: "test1",
+      above: false,
+      contentRef: "contentRef"
+    });
+    expect(dispatch).toBeCalledWith(actions.moveCell(payload));
+    const focusPayload = { id: "cellId", contentRef: "contentRef" };
+    result.focusCell(focusPayload);
+    expect(dispatch).toBeCalledWith(actions.focusCell(focusPayload));
   });
 });
