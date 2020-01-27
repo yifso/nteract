@@ -1,4 +1,4 @@
-import { ContentRef, actions } from "@nteract/core";
+import { actions, ContentRef } from "@nteract/core";
 import React from "react";
 import {
   ConnectDragPreview,
@@ -12,9 +12,9 @@ import {
   DropTargetMonitor
 } from "react-dnd";
 
-import styled, { StyledComponent } from "styled-components";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import styled, { StyledComponent } from "styled-components";
 
 /**
   The cell drag preview image is just a little stylized version of
@@ -110,7 +110,7 @@ const DragArea = styled.div.attrs<DragAreaProps>(props => ({
   padding: 10px;
 ` as StyledComponent<"div", any, DragAreaProps, never>; // Somehow setting the type on `attrs` isn't propagating properly;
 
-function isDragUpper(
+export function isDragUpper(
   props: Props,
   monitor: DropTargetMonitor,
   el: HTMLElement
@@ -175,7 +175,7 @@ function collectTarget(
   };
 }
 
-class DraggableCellView extends React.Component<
+export class DraggableCellView extends React.Component<
   Props & DnDSourceProps & DnDTargetProps,
   State
 > {
