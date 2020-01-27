@@ -111,7 +111,10 @@ export class KeyboardShortcuts extends React.PureComponent<Props> {
   }
 }
 
-const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
+export const makeMapStateToProps = (
+  state: AppState,
+  ownProps: ComponentProps
+) => {
   const { contentRef } = ownProps;
   const mapStateToProps = (state: AppState) => {
     const model = selectors.model(state, { contentRef });

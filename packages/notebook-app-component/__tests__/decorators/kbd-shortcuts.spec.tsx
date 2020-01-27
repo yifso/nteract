@@ -2,7 +2,12 @@ import { mount, shallow } from "enzyme";
 import Immutable from "immutable";
 import React from "react";
 
-import { KeyboardShortcuts } from "../../src/decorators/kbd-shortcuts";
+import { mockAppState } from "@nteract/fixtures";
+
+import {
+  KeyboardShortcuts,
+  makeMapStateToProps
+} from "../../src/decorators/kbd-shortcuts";
 
 describe("KeyboardShortcuts", () => {
   const map = {};
@@ -126,5 +131,25 @@ describe("KeyboardShortcuts", () => {
     expect(focusNextCell).toBeCalled();
     // Should focus the next cell editor since it is a code cell
     expect(focusNextCellEditor).not.toBeCalled();
+  });
+});
+
+describe("makeMapStateToProps", () => {
+  it("returns default values for non-notebook content", () => {
+    const state = mockAppState({});
+    const ownProps = { contentRef: "contentRef", id: "cellId" };
+    const result = makeMapStateToProps(state, ownProps)(state);
+    expect(result.cellOrder.size).toBe(0);
+    expect(result.cellMap.size).toBe(0);
+    expect(result.focusedCell).toBeUndefined();
+  });
+  it("returns correct values for notebook content", () => {
+    const state = mockAppState({ codeCellCount: 2 });
+    const contentRef = state.core.entities.contents.byRef.keySeq().first();
+    const ownProps = { contentRef };
+    const result = makeMapStateToProps(state, ownProps)(state);
+    expect(result.cellOrder.size).toBe(2);
+    expect(result.cellMap.size).toBe(2);
+    expect(result.focusedCell).toBeDefined();
   });
 });
