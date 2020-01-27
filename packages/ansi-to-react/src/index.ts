@@ -44,6 +44,9 @@ function createClass(bundle: AnserJsonEntry): string | null {
   if (bundle.fg) {
     classNames += `${bundle.fg}-fg `;
   }
+  if (bundle.decoration) {
+    classNames += `ansi-${bundle.decoration} `;
+  }
 
   classNames = classNames.substring(0, classNames.length - 1);
   return classNames;
