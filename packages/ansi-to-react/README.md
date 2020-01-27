@@ -42,21 +42,29 @@ Style with classes instead of `style` attribute.
 Will render
 ```javascript
 <code>
-    <span class="ansi-blue">hello world</span>
+    <span class="ansi-blue-fg">hello world</span>
 </code>
 ```
 
 #### Class Names
 |Font color| Background Color
 |---|---|
-|ansi-black|ansi-bright-black
-|ansi-red|ansi-bright-red
-ansi-green|ansi-bright-green
-ansi-yellow|ansi-bright-yellow
-ansi-blue|ansi-bright-blue
-ansi-magenta|ansi-bright-magenta
-ansi-cyan|ansi-bright-cyan
-ansi-white|ansi-bright-white
+|ansi-black-fg|ansi-black-bg
+|ansi-red-fg|ansi-red-bg
+|ansi-green-fg|ansi-green-bg
+|ansi-yellow-fg|ansi-yellow-bg
+|ansi-blue-fg|ansi-blue-bg
+|ansi-magenta-fg|ansi-magenta-bg
+|ansi-cyan-fg|ansi-cyan-bg
+|ansi-white-fg|ansi-white-bg
+|ansi-bright-black-fg|
+|ansi-bright-red-fg|
+|ansi-bright-green-fg|
+|ansi-bright-yellow-fg|
+|ansi-bright-blue-fg|
+|ansi-bright-magenta-fg|
+|ansi-bright-cyan-fg|
+|ansi-bright-white-fg|
 
 ## Documentation
 
