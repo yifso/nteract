@@ -13,8 +13,7 @@ function isWriteable(pathToCheck: string): boolean {
   try {
     fs.accessSync(pathToCheck, fs.constants.W_OK);
     return true;
-  }
-  catch (err) {
+  } catch (err) {
     return false;
   }
 }
@@ -23,15 +22,13 @@ function getDocumentDirectory(): string {
   const cwd = path.normalize(process.cwd());
   const cwdIsProperDocumentDirectory =
     // launchctl on macOS might set the path to "/"
-    (cwd !== "/") &&
+    cwd !== "/" &&
     // cwd was likely set from nteract executable
-    (cwd !== path.normalize(path.dirname(process.execPath))) &&
+    cwd !== path.normalize(path.dirname(process.execPath)) &&
     // document dir needs to be writeable
     isWriteable(cwd);
 
-  return cwdIsProperDocumentDirectory
-    ? cwd
-    : remote.app.getPath("documents");
+  return cwdIsProperDocumentDirectory ? cwd : remote.app.getPath("documents");
 }
 
 export function dispatchSaveAs(
@@ -71,8 +68,8 @@ export function showSaveAsDialog(): Promise<string> {
       // append `.ipynb`
       resolve(
         filepath && path.extname(filepath) === ""
-        ? `${filepath}.ipynb`
-        : filepath
+          ? `${filepath}.ipynb`
+          : filepath
       );
     });
   });
@@ -216,7 +213,7 @@ export function dispatchNewKernel(
       cwd,
       kernelRef,
       selectNextKernel: true,
-      contentRef: ownProps.contentRef,
+      contentRef: ownProps.contentRef
     })
   );
 }
@@ -254,7 +251,7 @@ export function dispatchPublishGist(
       // Extract the text content
       win.webContents.executeJavaScript(
         "require('electron').ipcRenderer.send('auth', " +
-        "document.body.textContent);"
+          "document.body.textContent);"
       );
       electronRemote.ipcMain.on("auth", (_authEvent: Event, auth: string) => {
         try {
@@ -393,7 +390,7 @@ export function dispatchSetConfigAtKey(
   store: DesktopStore,
   key: string,
   evt: Event,
-  value: string,
+  value: string
 ): void {
   store.dispatch(actions.setConfigAtKey(key, value));
 }
@@ -481,7 +478,7 @@ export function dispatchCreateCellBefore(
 ): void {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use " +
-    "createCellAbove() instead"
+      "createCellAbove() instead"
   );
   store.dispatch(
     actions.createCellBefore({
@@ -497,7 +494,7 @@ export function dispatchCreateCellAfter(
 ): void {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use " +
-    "createCellBelow() instead"
+      "createCellBelow() instead"
   );
   store.dispatch(
     actions.createCellAfter({
@@ -514,7 +511,7 @@ export function dispatchCreateTextCellAfter(
 ): void {
   console.log(
     "DEPRECATION WARNING: This function is being deprecated. Please use " +
-    "createTextCellBelow() instead"
+      "createTextCellBelow() instead"
   );
   store.dispatch(
     actions.createCellAfter({
@@ -577,7 +574,7 @@ export function dispatchNewNotebook(
   store: DesktopStore,
   event: Event,
   filepath: string | null,
-  kernelSpec: KernelSpec,
+  kernelSpec: KernelSpec
 ): void {
   // It's a brand new notebook so we create a kernelRef for it
   const kernelRef = createKernelRef();
@@ -622,7 +619,7 @@ export function exportPDF(
   if (!model || model.type !== "notebook") {
     throw new Error(
       "Massive strangeness in the desktop app if someone is exporting a " +
-      "non-notebook to PDF"
+        "non-notebook to PDF"
     );
   }
 
@@ -673,7 +670,7 @@ export function exportPDF(
             callback(): void {
               shell.openItem(pdfPath);
             }
-          },
+          }
         });
       });
     }
@@ -715,7 +712,7 @@ export function storeToPDF(
         callback(): void {
           triggerSaveAsPDF(ownProps, store);
         }
-      },
+      }
     });
   } else {
     const basename = path.basename(notebookName, ".ipynb");
@@ -733,7 +730,7 @@ export function dispatchLoadConfig(
 
 export function initMenuHandlers(
   contentRef: ContentRef,
-  store: DesktopStore,
+  store: DesktopStore
 ): void {
   const opts = {
     contentRef
@@ -796,7 +793,7 @@ export function initMenuHandlers(
   ipc.on("menu:set-blink-rate", dispatchSetCursorBlink.bind(null, opts, store));
   ipc.on(
     "menu:set-default-kernel",
-    dispatchSetConfigAtKey.bind(null, opts, store, "defaultKernel"),
+    dispatchSetConfigAtKey.bind(null, opts, store, "defaultKernel")
   );
   ipc.on("menu:publish:gist", dispatchPublishGist.bind(null, opts, store));
   ipc.on("menu:exportPDF", storeToPDF.bind(null, opts, store));

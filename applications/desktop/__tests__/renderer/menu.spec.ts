@@ -1,9 +1,11 @@
 jest.mock("fs");
-import { actions } from "@nteract/core";
-import { ipcRenderer as ipc, webFrame } from "electron";
+import { actions, makeAppRecord, selectors } from "@nteract/core";
+import { ipcRenderer as ipc, remote, webFrame } from "electron";
 import * as Immutable from "immutable";
 
 import * as menu from "../../src/notebook/menu";
+
+import { mockAppState } from "@nteract/fixtures";
 
 describe("dispatchCreateCellAbove", () => {
   test("dispatches a CREATE_CELL_ABOVE with code action", () => {
@@ -811,19 +813,34 @@ describe("triggerWindowRefresh", () => {
 });
 
 describe("exportPDF", () => {
-  test.skip("it notifies a user upon successful write", () => {
-    const store = {
-      dispatch: jest.fn()
+  test("it notifies a user upon successful write", () => {
+    const state = {
+      ...mockAppState({}),
+      app: makeAppRecord({
+        notificationSystem: {
+          addNotification: jest.fn()
+        }
+      })
     };
-    const notificationSystem = { addNotification: jest.fn() };
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const store = {
+      dispatch: jest.fn(),
+      getState: jest.fn(() => state)
+    };
     const filepath = "thisisafilename.ipynb";
-    menu.exportPDF(store, filepath, notificationSystem);
-    expect(notificationSystem.addNotification).toHaveBeenCalledWith({
+    menu.exportPDF({ contentRef }, store, filepath);
+    expect(state.app.notificationSystem.addNotification).toHaveBeenCalledWith({
       title: "PDF exported",
       message: `Notebook ${filepath} has been exported as a pdf.`,
       dismissible: true,
       position: "tr",
-      level: "success"
+      level: "success",
+      action: {
+        label: "Open PDF",
+        callback: expect.any(Function)
+      }
     });
   });
 });
@@ -867,5 +884,134 @@ describe("storeToPDF", () => {
       position: "tr",
       level: "warning"
     });
+  });
+});
+
+describe("dispatchInterruptKernel", () => {
+  test("dispatches an INTERRUPT_KERNEL action", () => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const kernelRef = selectors.kernelRefByContentRef(state, { contentRef });
+    const store = {
+      dispatch: jest.fn(),
+      getState: jest.fn(() => state)
+    };
+    const props = {
+      contentRef
+    };
+
+    menu.dispatchInterruptKernel(props, store);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      actions.interruptKernel({
+        contentRef,
+        kernelRef
+      })
+    );
+  });
+});
+
+describe("exportPDF", () => {
+  it("throws an error if provided value is not a notebook", () => {
+    const notificationSystem = jest.fn();
+    const store = {
+      dispatch: jest.fn(),
+      getState: () => ({
+        core: {
+          entities: {
+            contents: {
+              byRef: Immutable.Map({
+                "123": {
+                  filepath: null
+                }
+              })
+            }
+          }
+        },
+        app: Immutable.Map({
+          notificationSystem
+        })
+      })
+    };
+
+    const invocation = () =>
+      menu.exportPDF(
+        { contentRef: "abc" },
+        store,
+        "my-notebook.pdf",
+        notificationSystem
+      );
+    expect(invocation).toThrow();
+  });
+  it("unhides hidden cells before exporting to PDF", () => {
+    const notificationSystem = jest.fn();
+    const state = mockAppState({ hideAll: true });
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const store = {
+      dispatch: jest.fn(),
+      getState: jest.fn(() => state)
+    };
+    const props = { contentRef };
+
+    menu.exportPDF(props, store, "my-notebook", notificationSystem);
+    expect(store.dispatch).toBeCalledWith({
+      type: actions.TOGGLE_OUTPUT_EXPANSION,
+      payload: {
+        id: expect.any(String),
+        contentRef
+      }
+    });
+  });
+});
+
+describe("dispatchSetConfigAtKey", () => {
+  test("dispatches a setConfigAtKey action", () => {
+    const store = {
+      dispatch: jest.fn()
+    };
+    const props = {
+      contentRef: "123"
+    };
+    const key = "key";
+    const value = "value";
+    menu.dispatchSetConfigAtKey(
+      props,
+      store,
+      key,
+      new Event("testEvet"),
+      value
+    );
+    expect(store.dispatch).toHaveBeenCalledWith(
+      actions.setConfigAtKey(key, value)
+    );
+  });
+});
+
+describe("showSaveAsDialog", () => {
+  it("shows the saveAs dialog", () => {
+    menu.showSaveAsDialog().then(filepath => {
+      expect(remote.dialog.showSaveAsDialog).toBeCalled();
+    });
+  });
+});
+
+describe("promptUserAboutNewKernel", () => {
+  it("shows a message box for restarting a new kernel", () => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const store = {
+      dispatch: jest.fn(),
+      getState: jest.fn(() => state)
+    };
+    menu
+      .promptUserAboutNewKernel({ contentRef }, store, "file.ipynb")
+      .then(filepath => {
+        expect(remote.dialog.showMessageBox).toBeCalled();
+      });
   });
 });
