@@ -3,7 +3,9 @@ import { actions } from "@nteract/core";
 import { mount, shallow } from "enzyme";
 import React from "react";
 
+import { cell } from "@nteract/selectors";
 import DraggableCell, {
+  cellTarget,
   DraggableCellView,
   isDragUpper,
   makeMapDispatchToProps
@@ -112,5 +114,56 @@ describe("makeMapDispatchToProps", () => {
     const focusPayload = { id: "cellId", contentRef: "contentRef" };
     result.focusCell(focusPayload);
     expect(dispatch).toBeCalledWith(actions.focusCell(focusPayload));
+  });
+});
+
+describe("cellTarget", () => {
+  it("move cell when dropped", () => {
+    const props = {
+      contentRef: "contentRef",
+      id: "cellId",
+      moveCell: jest.fn()
+    };
+    const monitor = {
+      getItem: jest.fn(() => ({ id: "cellId " })),
+      getClientOffset: jest.fn(() => ({
+        top: 1,
+        y: 2
+      }))
+    };
+    const component = {
+      el: {
+        getBoundingClientRect: jest.fn(() => ({
+          bottom: 20,
+          top: 2
+        }))
+      }
+    };
+    cellTarget.drop(props, monitor, component);
+    expect(props.moveCell).toBeCalled();
+  });
+  it("hover sets component state", () => {
+    const component = {
+      setState: jest.fn(),
+      el: {
+        getBoundingClientRect: jest.fn(() => ({
+          bottom: 20,
+          top: 2
+        }))
+      }
+    };
+    const monitor = {
+      getItem: jest.fn(() => ({ id: "cellId " })),
+      getClientOffset: jest.fn(() => ({
+        top: 1,
+        y: 2
+      }))
+    };
+    const props = {
+      contentRef: "contentRef",
+      id: "cellId",
+      moveCell: jest.fn()
+    };
+    cellTarget.hover(props, monitor, component);
   });
 });

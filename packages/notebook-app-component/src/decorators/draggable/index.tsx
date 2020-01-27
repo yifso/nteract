@@ -124,7 +124,7 @@ export function isDragUpper(
   return hoverClientY < hoverMiddleY;
 }
 
-const cellTarget = {
+export const cellTarget = {
   drop(props: Props, monitor: DropTargetMonitor, component: any): void {
     if (monitor) {
       const hoverUpperHalf = isDragUpper(props, monitor, component.el);
