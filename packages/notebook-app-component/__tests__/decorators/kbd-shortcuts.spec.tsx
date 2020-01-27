@@ -1,12 +1,15 @@
+import { actions } from "@nteract/core";
 import { mount, shallow } from "enzyme";
 import Immutable from "immutable";
 import React from "react";
 
 import { mockAppState } from "@nteract/fixtures";
 
+import { focusNextCell } from "@nteract/actions";
 import {
   KeyboardShortcuts,
-  makeMapStateToProps
+  makeMapStateToProps,
+  mapDispatchToProps
 } from "../../src/decorators/kbd-shortcuts";
 
 describe("KeyboardShortcuts", () => {
@@ -22,6 +25,7 @@ describe("KeyboardShortcuts", () => {
     document.addEventListener = jest.fn((event, cb) => {
       map[event] = cb;
     });
+    document.removeEventListener = jest.fn();
   });
   it("renders without crashing", () => {
     const component = shallow(
@@ -132,6 +136,18 @@ describe("KeyboardShortcuts", () => {
     // Should focus the next cell editor since it is a code cell
     expect(focusNextCellEditor).not.toBeCalled();
   });
+  it("removes event listeners when unmounted", () => {
+    const component = shallow(
+      <KeyboardShortcuts contentRef={"test"}>
+        <p>test</p>
+      </KeyboardShortcuts>
+    );
+    component.unmount();
+    expect(document.removeEventListener).toBeCalledWith(
+      "keydown",
+      expect.any(Function)
+    );
+  });
 });
 
 describe("makeMapStateToProps", () => {
@@ -151,5 +167,28 @@ describe("makeMapStateToProps", () => {
     expect(result.cellOrder.size).toBe(2);
     expect(result.cellMap.size).toBe(2);
     expect(result.focusedCell).toBeDefined();
+  });
+});
+
+describe("mapDispatchToProps", () => {
+  it("registers actions to dispatch", () => {
+    const dispatch = jest.fn();
+    const result = mapDispatchToProps(dispatch);
+    const executedFocusedCellPayload = {
+      contentRef: "contentRef"
+    };
+    result.executeFocusedCell(executedFocusedCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.executeFocusedCell(executedFocusedCellPayload)
+    );
+    const focusNextCellPayload = { id: "cellId", contentRef: "contentRef" };
+    result.focusNextCell(focusNextCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.focusNextCell(focusNextCellPayload)
+    );
+    result.focusNextCellEditor(focusNextCellPayload);
+    expect(dispatch).toBeCalledWith(
+      actions.focusNextCellEditor(focusNextCellPayload)
+    );
   });
 });

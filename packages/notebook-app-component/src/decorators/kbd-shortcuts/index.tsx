@@ -138,7 +138,7 @@ export const makeMapStateToProps = (
   return mapStateToProps;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   executeFocusedCell: (payload: { contentRef: ContentRef }) =>
     dispatch(actions.executeFocusedCell(payload)),
   focusNextCell: (payload: {
