@@ -35,9 +35,6 @@ function ansiToJSON(
 function createClass(bundle: AnserJsonEntry): string | null {
   let classNames: string = "";
 
-  if (!bundle.bg && !bundle.fg) {
-    return null;
-  }
   if (bundle.bg) {
     classNames += `${bundle.bg}-bg `;
   }
@@ -46,6 +43,10 @@ function createClass(bundle: AnserJsonEntry): string | null {
   }
   if (bundle.decoration) {
     classNames += `ansi-${bundle.decoration} `;
+  }
+
+  if (classNames === "") {
+    return null;
   }
 
   classNames = classNames.substring(0, classNames.length - 1);
