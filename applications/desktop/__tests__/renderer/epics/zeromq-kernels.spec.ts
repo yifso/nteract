@@ -1,22 +1,28 @@
 import {
   actions,
+  createContentRef,
+  createKernelRef,
   makeContentsRecord,
   makeDocumentRecord,
   makeEntitiesRecord,
   makeKernelsRecord,
   makeLocalKernelRecord,
   makeNotebookContentRecord,
+  makeRemoteKernelRecord,
   makeStateRecord
 } from "@nteract/core";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { toArray } from "rxjs/operators";
 
+import { doneSavingConfig } from "@nteract/actions";
 import { mockAppState } from "@nteract/fixtures";
+import { displayName } from "@nteract/selectors/lib/core/contents/notebook";
 import Immutable from "immutable";
 import { Subject } from "rxjs";
 import {
   interruptKernelEpic,
-  killKernelEpic
+  killKernelEpic,
+  watchSpawn
 } from "../../../src/notebook/epics/zeromq-kernels";
 
 describe("killKernelEpic", () => {
@@ -137,6 +143,47 @@ describe("interruptKernel", () => {
         expect(kill).toBeCalled();
       },
       err => done.fail(err),
+      () => done()
+    );
+  });
+});
+
+describe("watchSpawn", () => {
+  it("throws error if kernel type is not zeromq", done => {
+    const action$ = ActionsObservable.of(
+      actions.launchKernelSuccessful({
+        kernelRef: createKernelRef(),
+        contentRef: createContentRef(),
+        selectNextKernel: true,
+        kernel: makeRemoteKernelRecord()
+      })
+    );
+    const obs = watchSpawn(action$);
+    obs.pipe(toArray()).subscribe(
+      action => {},
+      err => {
+        expect(err.message).toContain("kernel.type is not zeromq");
+        done();
+      },
+      () => done()
+    );
+  });
+  it("throws error if no spawn object is not available to watch", done => {
+    const action$ = ActionsObservable.of(
+      actions.launchKernelSuccessful({
+        kernelRef: createKernelRef(),
+        contentRef: createContentRef(),
+        selectNextKernel: true,
+        kernel: makeLocalKernelRecord({ spawn: null })
+      })
+    );
+    const obs = watchSpawn(action$);
+    obs.pipe(toArray()).subscribe(
+      action => {},
+      err => {
+        expect(err.message).toContain("kernel.spawn is not provided");
+        done();
+      },
       () => done()
     );
   });
