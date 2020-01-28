@@ -1,5 +1,6 @@
 import { Map } from "immutable";
 
+import * as actions from "../../src/main/actions";
 import reducers from "../../src/main/reducers";
 
 describe("setKernelspecs", () => {
@@ -40,5 +41,23 @@ describe("setKernelspecs", () => {
       }
     });
     expect(state.get("kernelSpecs")).not.toBeNull();
+  });
+});
+
+describe("setQuittingState", () => {
+  it("updates quitting state for app", () => {
+    const originalState = Map({});
+    const action = actions.setQuittingState(actions.QUITTING_STATE_QUITTING);
+    const state = reducers(originalState, action);
+    expect(state.get("quittingState")).toBe(actions.QUITTING_STATE_QUITTING);
+  });
+});
+
+describe("reducer", () => {
+  it("does not modify state on out-of-scope action", () => {
+    const originalState = Map({});
+    const action = { type: "A_DIFFERENT_ONE" };
+    const state = reducers(originalState, action);
+    expect(state).toEqual(originalState);
   });
 });

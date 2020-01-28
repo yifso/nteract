@@ -43,7 +43,8 @@ function hideCells(notebook: ImmutableNotebook) {
     notebook
       .get("cellOrder", Immutable.List())
       .reduce(
-        (acc, id) => acc.setIn([id, "metadata", "inputHidden"], true),
+        (acc, id) =>
+          acc.setIn([id, "metadata", "jupyter", "source_hidden"], true),
         cells
       )
   );
