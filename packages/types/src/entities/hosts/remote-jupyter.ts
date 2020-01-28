@@ -39,7 +39,8 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   ajaxOptions: undefined,
   wsProtocol: undefined,
   bookstoreEnabled: false,
-  showHeaderEditor: false
+  showHeaderEditor: false,
+  closeObserver: undefined
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
