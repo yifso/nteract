@@ -52,3 +52,12 @@ describe("setQuittingState", () => {
     expect(state.get("quittingState")).toBe(actions.QUITTING_STATE_QUITTING);
   });
 });
+
+describe("reducer", () => {
+  it("does not modify state on out-of-scope action", () => {
+    const originalState = Map({});
+    const action = { type: "A_DIFFERENT_ONE" };
+    const state = reducers(originalState, action);
+    expect(state).toEqual(originalState);
+  });
+});
