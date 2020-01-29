@@ -472,55 +472,6 @@ export function dispatchCreateRawCellBelow(
     })
   );
 }
-export function dispatchCreateCellBefore(
-  ownProps: { contentRef: ContentRef },
-  store: DesktopStore
-): void {
-  console.log(
-    "DEPRECATION WARNING: This function is being deprecated. Please use " +
-      "createCellAbove() instead"
-  );
-  store.dispatch(
-    actions.createCellBefore({
-      cellType: "code",
-      contentRef: ownProps.contentRef
-    })
-  );
-}
-
-export function dispatchCreateCellAfter(
-  ownProps: { contentRef: ContentRef },
-  store: DesktopStore
-): void {
-  console.log(
-    "DEPRECATION WARNING: This function is being deprecated. Please use " +
-      "createCellBelow() instead"
-  );
-  store.dispatch(
-    actions.createCellAfter({
-      cellType: "code",
-      source: "",
-      contentRef: ownProps.contentRef
-    })
-  );
-}
-
-export function dispatchCreateTextCellAfter(
-  ownProps: { contentRef: ContentRef },
-  store: DesktopStore
-): void {
-  console.log(
-    "DEPRECATION WARNING: This function is being deprecated. Please use " +
-      "createTextCellBelow() instead"
-  );
-  store.dispatch(
-    actions.createCellAfter({
-      cellType: "markdown",
-      source: "",
-      contentRef: ownProps.contentRef
-    })
-  );
-}
 
 export function dispatchChangeCellToCode(
   ownProps: { contentRef: ContentRef },

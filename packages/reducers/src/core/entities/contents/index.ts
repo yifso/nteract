@@ -302,11 +302,8 @@ export const byRef = (
     case actionTypes.MARK_CELL_AS_DELETING:
     case actionTypes.UNMARK_CELL_AS_DELETING:
     case actionTypes.DELETE_CELL:
-    case actionTypes.REMOVE_CELL: // DEPRECATION WARNING: This action type is being deprecated. Please use DELETE_CELL instead
     case actionTypes.CREATE_CELL_BELOW:
     case actionTypes.CREATE_CELL_ABOVE:
-    case actionTypes.CREATE_CELL_AFTER: // DEPRECATION WARNING: This action type is being deprecated. Please use CREATE_CELL_BELOW instead
-    case actionTypes.CREATE_CELL_BEFORE: // DEPRECATION WARNING: This action type is being deprecated. Please use CREATE_CELL_ABOVE instead
     case actionTypes.CREATE_CELL_APPEND:
     case actionTypes.TOGGLE_CELL_OUTPUT_VISIBILITY:
     case actionTypes.TOGGLE_CELL_INPUT_VISIBILITY:

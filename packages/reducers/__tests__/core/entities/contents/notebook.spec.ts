@@ -400,15 +400,6 @@ describe("moveCell", () => {
   });
 });
 
-describe("removeCell", () => {
-  test("DEPRECATION WARNING: removeCell() will be deprecated soon, please use deleteCell() instead. should remove a cell given an ID", () => {
-    const originalState = monocellDocument;
-    const id = originalState.getIn(["notebook", "cellOrder"]).first();
-    const state = reducers(originalState, actions.removeCell({ id }));
-    expect(state.getIn(["notebook", "cellOrder"]).size).toBe(2);
-  });
-});
-
 describe("deleteCell", () => {
   test("should delete a cell given an ID", () => {
     const originalState = monocellDocument;
@@ -498,34 +489,6 @@ describe("createCellAbove", () => {
     const state = reducers(
       originalState,
       actions.createCellAbove({ cellType: "markdown", id })
-    );
-    expect(state.getIn(["notebook", "cellOrder"]).size).toBe(3);
-    expect(state.getIn(["notebook", "cellOrder"]).last()).toBe(id);
-  });
-});
-
-describe("createCellAfter", () => {
-  test("WARNING:DEPRECATED. Use createCellBelow() instead. Creates a brand new cell after the given id", () => {
-    const originalState = monocellDocument;
-    const id = originalState.getIn(["notebook", "cellOrder"]).last();
-    const state = reducers(
-      originalState,
-      actions.createCellAfter({ cellType: "markdown", id })
-    );
-    expect(state.getIn(["notebook", "cellOrder"]).size).toBe(4);
-    const cellId = state.getIn(["notebook", "cellOrder"]).last();
-    const cell = state.getIn(["notebook", "cellMap", cellId]);
-    expect(cell.get("cell_type")).toBe("markdown");
-  });
-});
-
-describe("createCellBefore", () => {
-  test("WARNING:DEPRECATED. sue createCellAbove() instead. Creates a new cell before the given id", () => {
-    const originalState = initialDocument.set("notebook", fixtureCommutable);
-    const id = originalState.getIn(["notebook", "cellOrder"]).last();
-    const state = reducers(
-      originalState,
-      actions.createCellBefore({ cellType: "markdown", id })
     );
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(3);
     expect(state.getIn(["notebook", "cellOrder"]).last()).toBe(id);

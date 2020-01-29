@@ -93,7 +93,7 @@ describe("setAppHost", () => {
 
     const action: SetAppHostAction = {
       type: actions.SET_APP_HOST,
-      payload: makeLocalHostRecord({ id: "anid" })
+      payload: { host: makeLocalHostRecord({ id: "anid" }) }
     };
 
     const state = reducers.app(originalState, action);
@@ -108,7 +108,7 @@ describe("setAppHost", () => {
 
     const action: SetAppHostAction = {
       type: actions.SET_APP_HOST,
-      payload: makeJupyterHostRecord({ id: "anotherid" })
+      payload: { host: makeJupyterHostRecord({ id: "anotherid" }) }
     };
 
     const state = reducers.app(originalState, action);
