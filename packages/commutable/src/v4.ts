@@ -34,11 +34,7 @@ import {
   makeMarkdownCell,
   makeRawCell
 } from "./cells";
-import {
-  ImmutableNotebook,
-  makeNotebookRecord,
-  NotebookRecordParams
-} from "./notebook";
+import { ImmutableNotebook } from "./notebook";
 import {
   createImmutableOutput,
   ImmutableOutput,
@@ -53,7 +49,12 @@ import {
   MultiLineString,
   remultiline
 } from "./primitives";
-import { appendCell, CellStructure } from "./structures";
+import {
+  appendCell,
+  CellStructure,
+  makeNotebookRecord,
+  NotebookRecordParams
+} from "./structures";
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                              Cell Types
