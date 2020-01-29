@@ -7,13 +7,10 @@
 import * as v3 from "./v3";
 import * as v4 from "./v4";
 
-import { List as ImmutableList, Map as ImmutableMap, Record } from "immutable";
+import { JSONType } from "./primitives";
+import { ImmutableNotebook } from "./structures";
 
-import { ImmutableCell } from "./cells";
-import { CellId, JSONType } from "./primitives";
-
-export type ImmutableNotebook = Record<NotebookRecordParams> &
-  Readonly<NotebookRecordParams>;
+import { Record } from "immutable";
 
 function freezeReviver<T extends JSONType>(_k: string, v: T): Readonly<T> {
   return Object.freeze(v);

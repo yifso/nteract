@@ -30,6 +30,9 @@ export interface NotebookRecordParams {
   metadata: ImmutableMap<string, any>;
 }
 
+export type ImmutableNotebook = ImmutableRecord<NotebookRecordParams> &
+  Readonly<NotebookRecordParams>;
+
 export const makeNotebookRecord = ImmutableRecord<NotebookRecordParams>({
   cellOrder: ImmutableList(),
   cellMap: ImmutableMap(),

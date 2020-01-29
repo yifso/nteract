@@ -34,7 +34,6 @@ import {
   makeMarkdownCell,
   makeRawCell
 } from "./cells";
-import { ImmutableNotebook } from "./notebook";
 import {
   createImmutableOutput,
   ImmutableOutput,
@@ -52,6 +51,7 @@ import {
 import {
   appendCell,
   CellStructure,
+  ImmutableNotebook,
   makeNotebookRecord,
   NotebookRecordParams
 } from "./structures";
