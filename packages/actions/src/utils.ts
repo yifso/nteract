@@ -30,6 +30,10 @@ export const makeOneArgActionFunction =
     <N extends string>(name: N) =>
       (payload: T["payload"][N]) => ({ type, payload: { [name]: payload } });
 
+export const makeZeroArgActionFunction =
+  <T extends Action<string, any>>
+  (type: T["type"]) => () =>
+    ({ type });
 
 export interface HasKernel { kernelRef: KernelRef }
 export interface MaybeHasKernel { kernelRef?: KernelRef | null }

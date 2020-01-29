@@ -32,7 +32,7 @@ export const SHUTDOWN_REPLY_TIMED_OUT     = "SHUTDOWN_REPLY_TIMED_OUT";
 export const DISPOSE_KERNEL               = "DISPOSE_KERNEL";
 
 export type InterruptKernel               = Action     <typeof INTERRUPT_KERNEL,            MaybeHasContent & MaybeHasKernel>;
-export type InterruptKernelSuccessful     = Action     <typeof INTERRUPT_KERNEL_SUCCESSFUL, MaybeHasKernel>;
+export type InterruptKernelSuccessful     = Action     <typeof INTERRUPT_KERNEL_SUCCESSFUL, MaybeHasContent & MaybeHasKernel>;
 export type InterruptKernelFailed         = ErrorAction<typeof INTERRUPT_KERNEL_FAILED,     MaybeHasKernel>;
 export type KillKernelAction              = Action     <typeof KILL_KERNEL,                 MaybeHasContent & MaybeHasKernel & { restarting: boolean; dispose?: boolean }>;
 export type KillKernelSuccessful          = Action     <typeof KILL_KERNEL_SUCCESSFUL,      MaybeHasKernel>;
