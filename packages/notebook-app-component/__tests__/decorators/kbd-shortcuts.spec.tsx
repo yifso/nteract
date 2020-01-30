@@ -5,7 +5,6 @@ import React from "react";
 
 import { mockAppState } from "@nteract/fixtures";
 
-import { focusNextCell } from "@nteract/actions";
 import {
   KeyboardShortcuts,
   makeMapStateToProps,
@@ -147,6 +146,48 @@ describe("KeyboardShortcuts", () => {
       "keydown",
       expect.any(Function)
     );
+  });
+  it("does not update component when props don't change", () => {
+    const component = shallow(
+      <KeyboardShortcuts
+        contentRef={"test"}
+        focusedCell={"cellId"}
+        cellOrder={Immutable.List(["cellId", "cellId2"])}
+      >
+        <p>test</p>
+      </KeyboardShortcuts>
+    );
+    expect(
+      component.instance().shouldComponentUpdate(
+        {
+          contentRef: "test",
+          focusedCell: "cellId",
+          cellOrder: Immutable.List(["cellId", "cellId2"])
+        },
+        {}
+      )
+    ).toBe(false);
+  });
+  it("updates component when props change", () => {
+    const component = shallow(
+      <KeyboardShortcuts
+        contentRef={"test"}
+        focusedCell={"cellId"}
+        cellOrder={Immutable.List(["cellId", "cellId2"])}
+      >
+        <p>test</p>
+      </KeyboardShortcuts>
+    );
+    expect(
+      component.instance().shouldComponentUpdate(
+        {
+          contentRef: "test",
+          focusedCell: "cellId",
+          cellOrder: Immutable.List(["cellId", "cellId2", "cellId3"])
+        },
+        {}
+      )
+    ).toBe(true);
   });
 });
 
