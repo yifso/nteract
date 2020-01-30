@@ -32,15 +32,15 @@ const decorate = (
   children: React.ReactNode
 ) => {
   const Cell = () => (
-    <DraggableCell id={id} contentRef={contentRef}>
-      <HijackScroll id={id} contentRef={contentRef}>
-        <CellCreator id={id} contentRef={contentRef}>
-          <UndoableCellDelete id={id} contentRef={contentRef}>
-            {children}
-          </UndoableCellDelete>
-        </CellCreator>
-      </HijackScroll>
-    </DraggableCell>
+    // <DraggableCell id={id} contentRef={contentRef}>
+    <HijackScroll id={id} contentRef={contentRef}>
+      <CellCreator id={id} contentRef={contentRef}>
+        <UndoableCellDelete id={id} contentRef={contentRef}>
+          {children}
+        </UndoableCellDelete>
+      </CellCreator>
+    </HijackScroll>
+    // </DraggableCell>
   );
 
   Cell.defaultProps = { cell_type };
@@ -125,5 +125,5 @@ export class NotebookApp extends React.Component<ComponentProps> {
   }
 }
 
-const DraggableNotebookApp = dragDropContext(HTML5Backend)(NotebookApp);
-export default DraggableNotebookApp;
+// const DraggableNotebookApp = dragDropContext(HTML5Backend)(NotebookApp);
+export default NotebookApp;
