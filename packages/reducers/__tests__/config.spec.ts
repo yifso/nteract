@@ -29,4 +29,12 @@ describe("mergeConfig", () => {
     });
     expect(state.get("theme")).toBe("dark");
   });
+  test("sets the config on config loaded action", () => {
+    const initialState = Map({ autoSaveInterval: 20000 });
+    const action = actionTypes.configLoaded({
+      config: { autoSaveInterval: 0 }
+    });
+    const state = reducers(initialState, action);
+    expect(state.get("autoSaveInterval")).toBe(0);
+  });
 });

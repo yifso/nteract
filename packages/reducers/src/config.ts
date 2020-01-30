@@ -1,13 +1,16 @@
 // Vendor modules
-import { MergeConfigAction, SetConfigAction } from "@nteract/actions";
+import * as actions from "@nteract/actions";
 import { ConfigState } from "@nteract/types";
 import { Map } from "immutable";
 
-type ConfigAction = SetConfigAction<any> | MergeConfigAction;
+type ConfigAction =
+  | actions.SetConfigAction<any>
+  | actions.MergeConfigAction
+  | actions.ConfigLoadedAction;
 
 export function setConfigAtKey(
   state: ConfigState,
-  action: SetConfigAction<any>
+  action: actions.SetConfigAction<any>
 ): Map<string, any> {
   const { key, value } = action.payload;
   return state.set(key, value);
@@ -15,7 +18,7 @@ export function setConfigAtKey(
 
 export function mergeConfig(
   state: ConfigState,
-  action: MergeConfigAction
+  action: actions.MergeConfigAction | actions.ConfigLoadedAction
 ): Map<string, any> {
   const { config } = action.payload;
   return state.merge(config);
@@ -26,9 +29,10 @@ export default function handleConfig(
   action: ConfigAction
 ): Map<string, any> {
   switch (action.type) {
-    case "SET_CONFIG_AT_KEY":
+    case actions.SET_CONFIG_AT_KEY:
       return setConfigAtKey(state, action);
-    case "MERGE_CONFIG":
+    case actions.MERGE_CONFIG:
+    case actions.CONFIG_LOADED:
       return mergeConfig(state, action);
     default:
       return state;
