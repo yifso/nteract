@@ -17,7 +17,7 @@ import { Dispatch } from "redux";
 import { MODAL_TYPES } from "../modal-controller";
 import PureNotebookMenu from "./PureNotebookMenu";
 
-function makeMapStateToProps(
+export function makeMapStateToProps(
   initialState: AppState,
   initialProps: { contentRef: ContentRef }
 ) {
@@ -65,7 +65,7 @@ function makeMapStateToProps(
   return mapStateToProps;
 }
 
-function makeMapDispatchToProps(
+export function makeMapDispatchToProps(
   initialDispatch: Dispatch,
   initialProps: { contentRef: ContentRef }
 ) {
