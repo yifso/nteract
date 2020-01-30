@@ -44,7 +44,7 @@ function setAppHost(
   state: AppRecord,
   action: SetAppHostAction
 ): RecordOf<AppRecordProps> {
-  return state.set("host", action.payload);
+  return state.set("host", action.payload.host);
 }
 
 export default function handleApp(

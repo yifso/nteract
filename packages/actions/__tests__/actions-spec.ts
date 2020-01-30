@@ -1,10 +1,7 @@
-import {
-  createContentRef,
-  createKernelRef,
-  LanguageInfoMetadata
-} from "@nteract/types";
-import * as actions from "../src/actions";
-import * as actionTypes from "../src/actionTypes";
+import { createContentRef, createKernelRef } from "@nteract/types";
+import * as actionTypes from "../src";
+
+const actions = actionTypes;
 
 describe("setLanguageInfo", () => {
   test("creates a SET_LANGUAGE_INFO action", () => {
@@ -352,16 +349,6 @@ describe("deleteCell", () => {
   });
 });
 
-describe("removeCell", () => {
-  test("DEPRECATION WARNING:DEPRECATED. Use deleteCell() instead. creates a REMOVE_CELL action", () => {
-    const contentRef = createContentRef();
-    expect(actions.removeCell({ id: "1234", contentRef })).toEqual({
-      type: actionTypes.REMOVE_CELL,
-      payload: { id: "1234", contentRef }
-    });
-  });
-});
-
 describe("focusCell", () => {
   test("creates a FOCUS_CELL action", () => {
     const contentRef = createContentRef();
@@ -473,37 +460,6 @@ describe("createCellAbove", () => {
       actions.createCellAbove({ cellType: "markdown", id: "1234", contentRef })
     ).toEqual({
       type: actionTypes.CREATE_CELL_ABOVE,
-      payload: {
-        cellType: "markdown",
-        contentRef,
-        id: "1234"
-      }
-    });
-  });
-});
-
-describe("createCellAfter", () => {
-  test("DEPRECATION WARNING:DEPRECATED. Use createCellBelow() instead. creates a CREATE_CELL_AFTER action with provided source string", () => {
-    const contentRef = createContentRef();
-    const cellType = "code";
-    const id = "1234";
-    const source = 'print("woo")';
-    expect(
-      actions.createCellAfter({ cellType, id, source, contentRef })
-    ).toEqual({
-      type: actionTypes.CREATE_CELL_AFTER,
-      payload: { source, cellType, id, contentRef }
-    });
-  });
-});
-
-describe("createCellBefore", () => {
-  test("DEPRECATION WARNING:DEPRECATED. USE createCellAbove() instead. creates a CREATE_CELL_BEFORE action", () => {
-    const contentRef = createContentRef();
-    expect(
-      actions.createCellBefore({ cellType: "markdown", id: "1234", contentRef })
-    ).toEqual({
-      type: actionTypes.CREATE_CELL_BEFORE,
       payload: {
         cellType: "markdown",
         contentRef,

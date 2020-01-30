@@ -185,7 +185,7 @@ export const launchKernelByNameEpic = (
     mergeMap((action: actions.LaunchKernelByNameAction) =>
       kernelSpecsObservable.pipe(
         map(specs => {
-          const kernelSpec = specs[action.payload.kernelSpecName];
+          const kernelSpec = specs[action.payload.kernelSpecName!];
           if (kernelSpec) {
             // Defer to a launchKernel action to _actually_ launch
             return actions.launchKernel({
