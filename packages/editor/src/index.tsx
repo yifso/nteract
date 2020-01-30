@@ -199,6 +199,7 @@ export default class CodeMirrorEditor extends React.PureComponent<
     require("codemirror/mode/python/python");
     require("codemirror/mode/ruby/ruby");
     require("codemirror/mode/javascript/javascript");
+    require("codemirror/mode/elm/elm");
     require("codemirror/mode/css/css");
     require("codemirror/mode/julia/julia");
     require("codemirror/mode/r/r");
