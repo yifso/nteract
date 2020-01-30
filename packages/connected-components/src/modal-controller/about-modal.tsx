@@ -152,10 +152,7 @@ const mapDispatchToProps = {
   closeModal: actions.closeModal
 };
 
-const AboutModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PureAboutModal);
+const AboutModal = connect(mapStateToProps, mapDispatchToProps)(PureAboutModal);
 
 // We export this for testing purposes.
 export { PureAboutModal };

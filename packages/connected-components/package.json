@@ -26,6 +26,7 @@
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@nteract/fixtures": "^2.2.11",
     "styled-components": "^4.4.1"
   }
 }
