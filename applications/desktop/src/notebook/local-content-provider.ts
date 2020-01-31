@@ -16,15 +16,15 @@ export class LocalContentProvider implements IContentProvider {
 
   constructor() {}
 
-  setAppState(state: AppState) {
+  public setAppState(state: AppState) {
     this.state = state;
   }
 
-  remove(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
+  public remove(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
   
-  get(serverConfig: ServerConfig, filePath: string, params: Partial<IGetParams>): Observable<AjaxResponse> {
+  public get(serverConfig: ServerConfig, filePath: string, params: Partial<IGetParams>): Observable<AjaxResponse> {
     return statObservable(filePath).pipe(
       mergeMap((stat: fs.Stats) => {
         if (!stat.isFile()) {
@@ -48,15 +48,15 @@ export class LocalContentProvider implements IContentProvider {
     );
   }
 
-  update<FT extends FileType>(serverConfig: ServerConfig, path: string, model: Partial<IContent<FT>>): Observable<AjaxResponse> {
+  public update<FT extends FileType>(serverConfig: ServerConfig, path: string, model: Partial<IContent<FT>>): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
-  create<FT extends FileType>(serverConfig: ServerConfig, path: string, model: Partial<IContent<FT>> & { type: FT }): Observable<AjaxResponse> {
+  public create<FT extends FileType>(serverConfig: ServerConfig, path: string, model: Partial<IContent<FT>> & { type: FT }): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
-  save<FT extends FileType>(serverConfig: ServerConfig, filePath: string, model: Partial<IContent<FT>>): Observable<AjaxResponse> {
+  public save<FT extends FileType>(serverConfig: ServerConfig, filePath: string, model: Partial<IContent<FT>>): Observable<AjaxResponse> {
     const notebook: Notebook = model.content as Notebook;
     if (!notebook || model.type != "notebook") {
       return of(this.createErrorAjaxResponse(400, new Error("No notebook found to save")));
@@ -88,19 +88,19 @@ export class LocalContentProvider implements IContentProvider {
     );
   }
 
-  listCheckpoints(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
+  public listCheckpoints(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
-  createCheckpoint(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
+  public createCheckpoint(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
-  deleteCheckpoint(serverConfig: ServerConfig, path: string, checkpointID: string): Observable<AjaxResponse> {
+  public deleteCheckpoint(serverConfig: ServerConfig, path: string, checkpointID: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
-  restoreFromCheckpoint(serverConfig: ServerConfig, path: string, checkpointID: string): Observable<AjaxResponse> {
+  public restoreFromCheckpoint(serverConfig: ServerConfig, path: string, checkpointID: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
 
