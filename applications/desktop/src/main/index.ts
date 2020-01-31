@@ -28,7 +28,8 @@ import {
   first,
   mergeMap,
   skipUntil,
-  takeUntil, tap
+  takeUntil,
+  tap
 } from "rxjs/operators";
 
 import {
@@ -98,7 +99,7 @@ const jupyterConfigDir = join(app.getPath("home"), ".jupyter");
 const nteractConfigFilename = join(jupyterConfigDir, "nteract.json");
 
 const CONFIG = {
-  defaultKernel: "python3",
+  defaultKernel: "python3"
 };
 
 const prepJupyterObservable = prepareEnv.pipe(
@@ -128,10 +129,10 @@ const prepJupyterObservable = prepareEnv.pipe(
     )
   ),
   tap(file => {
-    if(file) {
+    if (file) {
       Object.assign(CONFIG, JSON.parse(file.toString("utf8")));
     }
-  }),
+  })
 );
 
 const kernelSpecsPromise = prepJupyterObservable
@@ -270,10 +271,7 @@ function openFileFromEvent({
 // and macOS will send the open-file events early,
 // buffer those that come early.
 openFile$
-  .pipe(
-    buffer(fullAppReady$),
-    first()
-  )
+  .pipe(buffer(fullAppReady$), first())
   .subscribe((buffer: Array<{ filename: string; event: Event }>) => {
     // Form an array of open-file events from before app-ready // Should only be the first
     // Now we can choose whether to open the default notebook
@@ -330,54 +328,16 @@ fullAppReady$.subscribe(() => {
     .then(kernelSpecs => {
       if (Object.keys(kernelSpecs).length !== 0) {
         store.dispatch(setKernelSpecs(kernelSpecs));
-        const menu = loadFullMenu();
-        Menu.setApplicationMenu(menu);
-        const logo =
-          process.platform === "win32" ? "logoWhite" : "logoTemplate";
-        const trayImage = join(__dirname, "..", "static", `${logo}.png`);
-        tray = new Tray(trayImage);
-        const trayMenu = loadTrayMenu();
-        tray.setContextMenu(trayMenu);
-      } else {
-        dialog.showMessageBox(
-          {
-            type: "warning",
-            title: "No Kernels Installed",
-            buttons: [],
-            message: "No kernels are installed on your system.",
-            detail:
-              "No kernels are installed on your system so you will not be " +
-              "able to execute code cells in any language. You can read about " +
-              "installing kernels at " +
-              "https://ipython.readthedocs.io/en/latest/install/kernel_install.html"
-          },
-          index => {
-            if (index === 0) {
-              app.quit();
-            }
-          }
-        );
       }
+      const menu = loadFullMenu();
+      Menu.setApplicationMenu(menu);
+      const logo = process.platform === "win32" ? "logoWhite" : "logoTemplate";
+      const trayImage = join(__dirname, "..", "static", `${logo}.png`);
+      tray = new Tray(trayImage);
+      const trayMenu = loadTrayMenu();
+      tray.setContextMenu(trayMenu);
     })
     .catch(err => {
-      dialog.showMessageBox(
-        {
-          type: "error",
-          title: "No Kernels Installed",
-          buttons: [],
-          message: "No kernels are installed on your system.",
-          detail:
-            "No kernels are installed on your system so you will not be " +
-            "able to execute code cells in any language. You can read about " +
-            "installing kernels at " +
-            "https://ipython.readthedocs.io/en/latest/install/kernel_install.html" +
-            `\nFull error: ${err.message}`
-        },
-        index => {
-          if (index === 0) {
-            app.quit();
-          }
-        }
-      );
+      console.error("Unexpected error when fetching kernelspecs: ", err);
     });
 });
