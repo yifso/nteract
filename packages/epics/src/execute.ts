@@ -85,6 +85,54 @@ export function executeCellStream(
       )
     ),
 
+    /**
+     * Set the ISO datetime when the execute_input message
+     * was broadcast from the kernel, per nbformat.
+     */
+    cellMessages.pipe(
+      ofMessageType("execute_input"),
+      map(() =>
+        actions.setInCell({
+          id,
+          contentRef,
+          path: ["metadata", "execution", "iopub", "execute_input"],
+          value: new Date().toISOString()
+        })
+      )
+    ),
+
+    /**
+     * Set the ISO datetime when the execute_reply message
+     * was broadcast from the kernel, per nbformat.
+     */
+    cellMessages.pipe(
+      ofMessageType("execute_reply"),
+      map(() =>
+        actions.setInCell({
+          id,
+          contentRef,
+          path: ["metadata", "execution", "shell", "execute_reply"],
+          value: new Date().toISOString()
+        })
+      )
+    ),
+
+    /**
+     * Set the ISO datetime when the status associated with the
+     * cell execution was sent from the kernel, per nbformat.
+     */
+    cellMessages.pipe(
+      kernelStatuses(),
+      map((status: string) =>
+        actions.setInCell({
+          id,
+          contentRef,
+          path: ["metadata", "execution", "iopub", "status", status],
+          value: new Date().toISOString()
+        })
+      )
+    ),
+
     // All actions for updating cell status
     cellMessages.pipe(
       kernelStatuses() as any,
