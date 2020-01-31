@@ -1,6 +1,8 @@
 import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { DynamicSizeList as List } from "react-window";
 
 import { AppState, ContentRef, selectors } from "@nteract/core";
 
@@ -28,8 +30,10 @@ interface CellProps {
   contentRef: ContentRef;
 }
 
-export class Cells extends React.Component<StateProps & ComponentProps> {
-  render() {
+type Props = StateProps & ComponentProps;
+
+export class Cells extends React.PureComponent<Props> {
+  render(): JSX.Element {
     const { cellOrder, contentRef, children } = this.props;
 
     const defaults = {
@@ -56,15 +60,35 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
     const markdown = children?.markdown || defaults.markdown;
     const raw = children?.raw || defaults.raw;
 
-    return (
-      <div className="nteract-cells">
-        {cellOrder.map((id: string) => (
-          <Cell id={id} contentRef={contentRef} key={id}>
+    const CellContainer = React.forwardRef(({ index, key, style }, ref) => {
+      const id = cellOrder.get(index);
+      if (id) {
+        return (
+          <Cell
+            id={id}
+            contentRef={contentRef}
+            key={key}
+            style={style}
+            ref={ref}
+          >
             {markdown({ id, contentRef })}
             {raw({ id, contentRef })}
             {code({ id, contentRef })}
           </Cell>
-        ))}
+        );
+      }
+      return null;
+    });
+
+    return (
+      <div className="nteract-cells">
+        <AutoSizer>
+          {({ height, width }: { height: number; width: number }) => (
+            <List height={height} itemCount={cellOrder.size} width={width}>
+              {CellContainer}
+            </List>
+          )}
+        </AutoSizer>
       </div>
     );
   }
