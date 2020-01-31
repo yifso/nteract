@@ -95,7 +95,7 @@ export function executeCellStream(
         actions.setInCell({
           id,
           contentRef,
-          path: ["metadata", "execution", "iopub", "execute_input"],
+          path: ["metadata", "execution", "iopub.execute_input"],
           value: new Date().toISOString()
         })
       )
@@ -111,7 +111,7 @@ export function executeCellStream(
         actions.setInCell({
           id,
           contentRef,
-          path: ["metadata", "execution", "shell", "execute_reply"],
+          path: ["metadata", "execution", "shell.execute_reply"],
           value: new Date().toISOString()
         })
       )
@@ -127,7 +127,7 @@ export function executeCellStream(
         actions.setInCell({
           id,
           contentRef,
-          path: ["metadata", "execution", "iopub", "status", status],
+          path: ["metadata", "execution", `iopub.status.${status}`],
           value: new Date().toISOString()
         })
       )

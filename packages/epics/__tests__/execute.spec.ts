@@ -114,7 +114,7 @@ describe("executeCellStream", () => {
         actions.setInCell({
           id: "0",
           contentRef: "fakeContentRef",
-          path: ["metadata", "execution", "iopub", "execute_input"],
+          path: ["metadata", "execution", "iopub.execute_input"],
           value: expect.any(String)
         })
       )
@@ -125,7 +125,7 @@ describe("executeCellStream", () => {
         actions.setInCell({
           id: "0",
           contentRef: "fakeContentRef",
-          path: ["metadata", "execution", "shell", "execute_reply"],
+          path: ["metadata", "execution", "shell.execute_reply"],
           value: expect.any(String)
         })
       )
@@ -136,7 +136,7 @@ describe("executeCellStream", () => {
         actions.setInCell({
           id: "0",
           contentRef: "fakeContentRef",
-          path: ["metadata", "execution", "iopub", "status", "idle"],
+          path: ["metadata", "execution", "iopub.status.idle"],
           value: expect.any(String)
         })
       )
@@ -147,7 +147,7 @@ describe("executeCellStream", () => {
         actions.setInCell({
           id: "0",
           contentRef: "fakeContentRef",
-          path: ["metadata", "execution", "iopub", "status", "busy"],
+          path: ["metadata", "execution", "iopub.status.busy"],
           value: expect.any(String)
         })
       )
