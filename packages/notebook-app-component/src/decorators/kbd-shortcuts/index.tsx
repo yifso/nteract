@@ -32,10 +32,19 @@ interface DispatchProps {
 
 type Props = ComponentProps & StateProps & DispatchProps;
 
-export class KeyboardShortcuts extends React.PureComponent<Props> {
+export class KeyboardShortcuts extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.keyDown = this.keyDown.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    const newContentRef = this.props.contentRef !== nextProps.contentRef;
+    const newFocusedCell = this.props.focusedCell !== nextProps.focusedCell;
+    const newCellOrder =
+      this.props.cellOrder &&
+      this.props.cellOrder.size !== nextProps.cellOrder.size;
+    return newContentRef || newFocusedCell || newCellOrder;
   }
 
   componentDidMount(): void {
