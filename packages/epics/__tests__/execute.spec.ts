@@ -1,23 +1,22 @@
 import * as actions from "@nteract/actions";
+import { mockAppState } from "@nteract/fixtures";
 import { createExecuteRequest, createMessage } from "@nteract/messaging";
 import * as stateModule from "@nteract/types";
-import { mockAppState } from "@nteract/fixtures";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { empty, from, Subject } from "rxjs";
+import { empty, from, of, Subject } from "rxjs";
 import { catchError, share, toArray } from "rxjs/operators";
 
 import {
   createExecuteCellStream,
+  executeAllCellsEpic,
   executeCellAfterKernelLaunchEpic,
   executeCellEpic,
   executeCellStream,
   lazyLaunchKernelEpic,
   sendExecuteRequestEpic,
-  updateDisplayEpic,
   sendInputReplyEpic,
-  executeAllCellsEpic
+  updateDisplayEpic
 } from "../src/execute";
-import { Action } from "rxjs/internal/scheduler/Action";
 
 const Immutable = require("immutable");
 
@@ -44,6 +43,117 @@ describe("executeCellStream", () => {
       expect(err.message).toEqual("kernel not connected");
       done();
     });
+  });
+  test("dispatches actions for updating execution metadata", done => {
+    const message = createMessage("execute_request");
+    const msg_id = message.header.msg_id;
+    const kernelMsgs = [
+      {
+        parent_header: {
+          msg_id
+        },
+        header: {
+          msg_type: "execute_input"
+        },
+        content: {
+          execution_count: 0
+        }
+      },
+      {
+        parent_header: {
+          msg_id
+        },
+        header: {
+          msg_type: "status"
+        },
+        content: {
+          execution_state: "busy"
+        }
+      },
+      {
+        parent_header: {
+          msg_id
+        },
+        header: {
+          msg_type: "status"
+        },
+        content: {
+          execution_state: "idle"
+        }
+      },
+      {
+        parent_header: {
+          msg_id
+        },
+        header: {
+          msg_type: "execute_reply"
+        },
+        content: {
+          execution_count: 0
+        }
+      }
+    ];
+    const sent = new Subject();
+    const received = new Subject();
+
+    const channels = Subject.create(sent, received);
+
+    sent.subscribe(() => {
+      kernelMsgs.map(msg => received.next(msg));
+    });
+
+    const obs = executeCellStream(channels, "0", message, "fakeContentRef");
+
+    const emittedActions = [];
+    obs.subscribe(action => {
+      emittedActions.push(action);
+    });
+
+    expect(emittedActions).toContainEqual(
+      expect.objectContaining(
+        actions.setInCell({
+          id: "0",
+          contentRef: "fakeContentRef",
+          path: ["metadata", "execution", "iopub", "execute_input"],
+          value: expect.any(String)
+        })
+      )
+    );
+
+    expect(emittedActions).toContainEqual(
+      expect.objectContaining(
+        actions.setInCell({
+          id: "0",
+          contentRef: "fakeContentRef",
+          path: ["metadata", "execution", "shell", "execute_reply"],
+          value: expect.any(String)
+        })
+      )
+    );
+
+    expect(emittedActions).toContainEqual(
+      expect.objectContaining(
+        actions.setInCell({
+          id: "0",
+          contentRef: "fakeContentRef",
+          path: ["metadata", "execution", "iopub", "status", "idle"],
+          value: expect.any(String)
+        })
+      )
+    );
+
+    expect(emittedActions).toContainEqual(
+      expect.objectContaining(
+        actions.setInCell({
+          id: "0",
+          contentRef: "fakeContentRef",
+          path: ["metadata", "execution", "iopub", "status", "busy"],
+          value: expect.any(String)
+        })
+      )
+    );
+
+    done();
   });
 });
 
