@@ -11,8 +11,7 @@ import {
   saveConfigOnChangeEpic
 } from "./config";
 import { publishEpic } from "./github-publish";
-import { fetchContentEpic, newNotebookEpic } from "./loading";
-import { saveAsEpic, saveEpic } from "./saving";
+import { newNotebookEpic } from "./loading";
 import {
   interruptKernelEpic,
   killKernelEpic,
@@ -46,6 +45,9 @@ const epics = [
   coreEpics.executeAllCellsEpic,
   coreEpics.executeFocusedCellEpic,
   coreEpics.updateContentEpic,
+  coreEpics.saveContentEpic,
+  coreEpics.saveAsContentEpic,
+  coreEpics.fetchContentEpic,
   coreEpics.autoSaveCurrentContentEpic,
   coreEpics.sendInputReplyEpic,
   coreEpics.executeCellAfterKernelLaunchEpic,
@@ -54,9 +56,6 @@ const epics = [
 
   watchSpawn,
   publishEpic,
-  saveEpic,
-  saveAsEpic,
-  fetchContentEpic,
   newNotebookEpic,
   launchKernelEpic,
   launchKernelByNameEpic,

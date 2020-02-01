@@ -1,28 +1,19 @@
-import * as fs from "fs";
 import * as path from "path";
 
 import {
   ImmutableNotebook,
   monocellNotebook,
-  Notebook,
   toJS
 } from "@nteract/commutable";
 import { actions, AppState, selectors } from "@nteract/core";
-import { readFileObservable, statObservable } from "fs-observable";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
-import { empty, forkJoin, of } from "rxjs";
+import { empty, of } from "rxjs";
 import {
-  catchError,
   map,
-  mergeMap,
-  switchMap,
-  tap,
-  timeout
+  mergeMap
 } from "rxjs/operators";
 
 const notebookMediaType = "application/x-ipynb+json";
-
-import { contents } from "rx-jupyter";
 
 /**
  * Determines the right kernel to launch based on a notebook
@@ -45,102 +36,6 @@ export const extractNewKernel = (
     kernelSpecName
   };
 };
-
-export function createContentsResponse(
-  filePath: string,
-  stat: fs.Stats,
-  content: Buffer
-): contents.IContent<"notebook"> {
-  const parsedFilePath = path.parse(filePath);
-
-  const name = parsedFilePath.base;
-  // tslint:disable-next-line no-bitwise
-  const writable = Boolean(fs.constants.W_OK & stat.mode);
-  const created = stat.birthtime.toString();
-  // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
-  const last_modified = stat.mtime.toString();
-
-  if (stat.isDirectory()) {
-    throw new Error("Attempted to open a directory instead of a notebook");
-  } else if (stat.isFile()) {
-    if (parsedFilePath.ext === ".ipynb") {
-      return {
-        type: "notebook",
-        mimetype: notebookMediaType,
-        format: "json",
-        content: content ? JSON.parse(content.toString()) : null,
-        writable,
-        name,
-        path: filePath,
-        created,
-        last_modified
-      };
-    }
-    throw new Error("File does not end in ipynb and will not be opened");
-  }
-
-  throw new Error(`Unsupported filetype at ${filePath}`);
-}
-
-/**
- * Loads a notebook and launches its kernel.
- *
- * @param  {ActionObservable}  A LOAD action with the notebook filename
- */
-export const fetchContentEpic = (
-  action$: ActionsObservable<actions.FetchContent>
-) =>
-  action$.pipe(
-    ofType(actions.FETCH_CONTENT),
-    tap((action: actions.FetchContent) => {
-      // If there isn't a filepath, save-as it instead
-      if (!action.payload.filepath) {
-        throw new Error("fetch content needs a path");
-      }
-    }),
-    // Switch map since we want the last load request to be the lead
-    switchMap(action => {
-      const filepath = action.payload.filepath;
-
-      return forkJoin(
-        readFileObservable(filepath),
-        statObservable(filepath),
-        // Project onto the Contents API response
-        (content: Buffer, stat: fs.Stats): contents.IContent =>
-          createContentsResponse(filepath, stat, content)
-      ).pipe(
-        // Timeout after one minute
-        timeout(60 * 1000),
-        map((model: contents.IContent<"notebook">) => {
-          if (model.type !== "notebook") {
-            throw new Error(
-              "Attempted to load a non-notebook type from desktop"
-            );
-          }
-          if (model.content === null) {
-            throw new Error("No content loaded for notebook");
-          }
-
-          return actions.fetchContentFulfilled({
-            filepath: model.path,
-            model,
-            kernelRef: action.payload.kernelRef,
-            contentRef: action.payload.contentRef
-          });
-        }),
-        catchError((err: Error) =>
-          of(
-            actions.fetchContentFailed({
-              filepath,
-              error: err,
-              kernelRef: action.payload.kernelRef,
-              contentRef: action.payload.contentRef
-            })
-          )
-        )
-      );
-    })
-  );
 
 export const launchKernelWhenNotebookSetEpic = (
   action$: ActionsObservable<actions.FetchContentFulfilled>,

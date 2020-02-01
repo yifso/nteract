@@ -9,12 +9,13 @@ import {
   DummyContentRecordProps,
   FileContentRecordProps,
   NotebookContentRecordProps,
-  ServerConfig
+  ServerConfig,
+  IContentProvider
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { bookstore, contents } from "rx-jupyter";
+import { bookstore } from "rx-jupyter";
 import { empty, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
@@ -30,7 +31,8 @@ import { catchError, map, switchMap, tap } from "rxjs/operators";
  */
 export function publishToBookstore(
   action$: ActionsObservable<actions.PublishToBookstore>,
-  state$: StateObservable<AppState>
+  state$: StateObservable<AppState>,
+  dependencies: { contentProvider: IContentProvider }
 ): Observable<unknown> {
   return action$.pipe(
     ofType(actions.PUBLISH_TO_BOOKSTORE),
@@ -76,7 +78,7 @@ export function publishToBookstore(
       const notebook: NotebookV4 = toJS(content.model.notebook);
 
       // Save notebook first before sending to Bookstore
-      return contents
+      return dependencies.contentProvider
         .save(serverConfig, content.filepath, {
           content: notebook,
           type: "notebook"

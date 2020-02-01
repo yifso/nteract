@@ -14,6 +14,7 @@ import {
 } from "redux-observable";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
+import { contents } from "rx-jupyter";
 
 const composeEnhancers =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -41,7 +42,7 @@ export default function configureStore(initialState: Partial<AppState>) {
         return source;
       })
     );
-  const epicMiddleware = createEpicMiddleware();
+  const epicMiddleware = createEpicMiddleware({ dependencies: { contentProvider: contents.JupyterContentProvider } });
   const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
 
   const store = createStore(

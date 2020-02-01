@@ -3,6 +3,7 @@ import {
   autoSaveCurrentContentEpic,
   fetchContentEpic,
   saveContentEpic,
+  saveAsContentEpic,
   updateContentEpic,
   closeNotebookEpic
 } from "./contents";
@@ -55,6 +56,7 @@ const allEpics = [
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
+  saveAsContentEpic,
   autoSaveCurrentContentEpic,
   publishToBookstore,
   publishToBookstoreAfterSave,
@@ -85,6 +87,7 @@ export {
   fetchContentEpic,
   updateContentEpic,
   saveContentEpic,
+  saveAsContentEpic,
   autoSaveCurrentContentEpic,
   publishToBookstore,
   publishToBookstoreAfterSave,

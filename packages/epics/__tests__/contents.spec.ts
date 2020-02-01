@@ -33,35 +33,38 @@ import {
   fetchContentEpic,
   updateContentEpic
 } from "../src/contents";
+import { contents } from "rx-jupyter";
 
 jest.mock("rx-jupyter", () => ({
   contents: {
-    save: (severConfig, filepath, model) => {
-      return of({ response: {} });
-    },
-    update: (serverConfig, prevFilePath, object) => {
-      return of({ status: 200, response: {} });
-    },
-    get: jest
-      .fn()
-      .mockReturnValue(
-        of({
-          status: 200,
-          response: { last_modified: "some_stable_value" }
-        })
-      )
-      .mockReturnValueOnce(
-        of({
-          status: 200,
-          response: { last_modified: "one_value" }
-        })
-      )
-      .mockReturnValueOnce(
-        of({
-          status: 200,
-          response: { last_modified: "one_value" }
-        })
-      )
+    JupyterContentProvider: {
+      save: (severConfig, filepath, model) => {
+        return of({ response: {} });
+      },
+      update: (serverConfig, prevFilePath, object) => {
+        return of({ status: 200, response: {} });
+      },
+      get: jest
+        .fn()
+        .mockReturnValue(
+          of({
+            status: 200,
+            response: { last_modified: "some_stable_value" }
+          })
+        )
+        .mockReturnValueOnce(
+          of({
+            status: 200,
+            response: { last_modified: "one_value" }
+          })
+        )
+        .mockReturnValueOnce(
+          of({
+            status: 200,
+            response: { last_modified: "one_value" }
+          })
+        )
+    }
   }
 }));
 
@@ -91,51 +94,6 @@ describe("downloadString", () => {
 describe("saveAs", () => {
   const contentRef = createContentRef();
   const kernelspecsRef = createKernelspecsRef();
-  it("does not save if no host is set", async () => {
-    const state = {
-      app: makeAppRecord({
-        version: "test"
-      }),
-      comms: makeCommsRecord(),
-      config: Immutable.Map({
-        theme: "light"
-      }),
-      core: makeStateRecord({
-        currentKernelspecsRef: kernelspecsRef,
-        entities: makeEntitiesRecord({
-          hosts: makeHostsRecord({}),
-          contents: makeContentsRecord({
-            byRef: Immutable.Map<string, ContentRecord>().set(
-              contentRef,
-              makeDummyContentRecord({
-                filepath: "test.ipynb"
-              })
-            )
-          }),
-          transforms: makeTransformsRecord({
-            displayOrder: Immutable.List([]),
-            byId: Immutable.Map({})
-          })
-        })
-      })
-    };
-
-    const responses = await saveAsContentEpic(
-      ActionsObservable.of(
-        actions.saveAs({ filepath: "test.ipynb", contentRef })
-      ),
-      new StateObservable(new Subject(), state)
-    )
-      .pipe(toArray())
-      .toPromise();
-
-    expect(responses).toEqual([
-      actions.saveAsFailed({
-        contentRef,
-        error: new Error("Cannot save content if no host is set.")
-      })
-    ]);
-  });
   it("does not save if there is no content", async () => {
     const state = {
       app: makeAppRecord({
@@ -163,7 +121,8 @@ describe("saveAs", () => {
       ActionsObservable.of(
         actions.saveAs({ filepath: "test.ipynb", contentRef })
       ),
-      new StateObservable(new Subject(), state)
+      new StateObservable(new Subject(), state),
+      { contentProvider: contents.JupyterContentProvider }
     )
       .pipe(toArray())
       .toPromise();
@@ -209,7 +168,8 @@ describe("saveAs", () => {
       ActionsObservable.of(
         actions.saveAs({ filepath: "test.ipynb", contentRef })
       ),
-      new StateObservable(new Subject(), state)
+      new StateObservable(new Subject(), state),
+      { contentProvider: contents.JupyterContentProvider }
     )
       .pipe(toArray())
       .toPromise();
@@ -260,7 +220,8 @@ describe("save", () => {
       ActionsObservable.of(
         actions.save({ filepath: "test.ipynb", contentRef })
       ),
-      new StateObservable(new Subject(), state)
+      new StateObservable(new Subject(), state),
+      { contentProvider: contents.JupyterContentProvider }
     )
       .pipe(toArray())
       .toPromise();
@@ -308,7 +269,8 @@ describe("save", () => {
 
     const responses = await saveContentEpic(
       ActionsObservable.of(actions.downloadContent({ contentRef })),
-      new StateObservable(new Subject(), state)
+      new StateObservable(new Subject(), state),
+      { contentProvider: contents.JupyterContentProvider }
     )
       .pipe(toArray())
       .toPromise();
@@ -351,7 +313,8 @@ describe("save", () => {
 
     const responses = await saveContentEpic(
       ActionsObservable.of(actions.downloadContent({ contentRef })),
-      new StateObservable(new Subject(), state)
+      new StateObservable(new Subject(), state),
+      { contentProvider: contents.JupyterContentProvider }
     )
       .pipe(
         map(action => action.type),
@@ -399,7 +362,7 @@ describe("fetchContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = fetchContentEpic(action$, state$);
+    const obs = fetchContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
     obs.pipe(toArray()).subscribe(
       action => {
         expect(action).toEqual([
@@ -410,27 +373,6 @@ describe("fetchContentEpic", () => {
             kernelRef: undefined
           })
         ]);
-      },
-      err => done.fail(err), // It should not error in the stream
-      () => done()
-    );
-  });
-  it("does nothing if target host is not a Jupyter server", done => {
-    const state = mockAppState({});
-    const contentRef: string = state.core.entities.contents.byRef
-      .keySeq()
-      .first();
-    const action$ = ActionsObservable.of(
-      actions.fetchContent({
-        contentRef,
-        filepath: "my-file.ipynb"
-      })
-    );
-    const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = fetchContentEpic(action$, state$);
-    obs.pipe(toArray()).subscribe(
-      action => {
-        expect(action).toEqual([]);
       },
       err => done.fail(err), // It should not error in the stream
       () => done()
@@ -453,7 +395,7 @@ describe("fetchContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = fetchContentEpic(action$, state$);
+    const obs = fetchContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
@@ -477,38 +419,11 @@ describe("updateContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = updateContentEpic(action$, state$);
+    const obs = updateContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
         expect(types).toEqual([actions.CHANGE_CONTENT_NAME_FAILED]);
-      },
-      err => done.fail(err), // It should not error in the stream
-      () => done()
-    );
-  });
-  it("does nothing if the host is not a Jupyter server", done => {
-    const state = {
-      app: makeAppRecord({
-        host: makeLocalHostRecord()
-      }),
-      ...mockAppState({})
-    };
-    const contentRef: string = state.core.entities.contents.byRef
-      .keySeq()
-      .first();
-    const action$ = ActionsObservable.of(
-      actions.changeContentName({
-        contentRef,
-        filepath: "test.ipynb"
-      })
-    );
-    const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = updateContentEpic(action$, state$);
-    obs.pipe(toArray()).subscribe(
-      action => {
-        const types = action.map(({ type }) => type);
-        expect(types).toEqual([]);
       },
       err => done.fail(err), // It should not error in the stream
       () => done()
@@ -531,7 +446,7 @@ describe("updateContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = updateContentEpic(action$, state$);
+    const obs = updateContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
