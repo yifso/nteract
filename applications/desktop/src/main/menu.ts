@@ -610,6 +610,14 @@ export function loadFullMenu(store = global.store) {
       {
         type: "separator"
       },
+      {
+        label: "&Install Runtimes",
+        enabled: true,
+        click: () => shell.openExternal("https://nteract.io/kernels")
+      },
+      {
+        type: "separator"
+      },
       // All the available kernels
       ...kernelMenuItems
     ]
