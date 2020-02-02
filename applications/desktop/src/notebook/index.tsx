@@ -2,18 +2,17 @@
  * Main entry point for the desktop notebook UI
  */
 
-import { Intent, Toaster } from "@blueprintjs/core";
-
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 
-import { actions, ContentRecord, ContentRef, createContentRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeEntitiesRecord, makeLocalHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
+import { ContentRecord, ContentRef, createContentRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeEntitiesRecord, makeLocalHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
 
 import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
+import { CreateNotificationSystem } from "@nteract/stateful-components";
 
 import "@nteract/styles/app.css";
 
@@ -31,11 +30,11 @@ import { Vega2, Vega3, Vega4, Vega5, VegaLite1, VegaLite2, VegaLite3, VegaLite4 
 import "codemirror/addon/hint/show-hint.css";
 import "codemirror/lib/codemirror.css";
 
-import { ipcRenderer as ipc, remote } from "electron";
+import { remote } from "electron";
 
 import * as Immutable from "immutable";
 import { mathJaxPath } from "mathjax-electron";
-import React, { RefObject } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
@@ -145,52 +144,21 @@ initNativeHandlers(contentRef, store);
 initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
-export default class App extends React.PureComponent {
-  toaster: RefObject<Toaster>;
-
-  constructor(props: {}) {
-    super(props);
-    this.toaster = React.createRef();
-  }
-
-  componentDidMount(): void {
-    const thisToaster = this.toaster.current;
-
-    store.dispatch(
-      actions.setNotificationSystem({
-        addNotification: (msg: any) => {
-          thisToaster?.show({
-            message: `${msg.title ?? ""} ${msg.message ?? ""}`,
-            intent: ({
-              warning: Intent.WARNING,
-              error: Intent.DANGER,
-            } as any)[msg.level] ?? Intent.PRIMARY,
-          });
-        }
-      })
-    );
-    ipc.send("react-ready");
-  }
-
-  render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <MathJax.Provider src={mathJaxPath} input="tex">
-          <Provider store={store}>
-            <NotebookApp
-              // The desktop app always keeps the same contentRef in a
-              // browser window
-              contentRef={contentRef}
-            />
-          </Provider>
-        </MathJax.Provider>
-        <Toaster ref={this.toaster} />
-      </React.Fragment>
-    );
-  }
-}
+export const App = () => (
+  <Provider store={store}>
+    <MathJax.Provider src={mathJaxPath} input="tex">
+      <NotebookApp
+        // The desktop app always keeps the same contentRef in a
+        // browser window
+        contentRef={contentRef}
+      />
+    </MathJax.Provider>
+    <CreateNotificationSystem/>
+  </Provider>
+);
 
 const app = document.querySelector("#app");
+
 if (app) {
   ReactDOM.render(<App />, app);
 } else {

@@ -1,12 +1,7 @@
-import * as Immutable from "immutable";
-
 import { MediaBundle } from "@nteract/commutable";
-import { Notification } from "react-notification-system";
-import {
-  EntitiesRecordProps,
-  makeEmptyHostRecord,
-  makeEntitiesRecord
-} from "./entities";
+import * as Immutable from "immutable";
+import React from "react";
+import { EntitiesRecordProps, makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
 import { HostRecord } from "./entities/hosts";
 import { KernelRef, KernelspecsRef } from "./refs";
 
@@ -14,6 +9,27 @@ export * from "./content-provider";
 export * from "./entities";
 export * from "./ids";
 export * from "./refs";
+
+export interface Notification {
+  title?: string | JSX.Element;
+  message?: string | JSX.Element;
+  level?: "error" | "warning" | "info" | "success";
+  position?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
+  autoDismiss?: number;
+  dismissible?: boolean;
+  action?: {
+    label: string;
+    callback?: () => void;
+  };
+  children?: React.ReactNode;
+  onAdd?: (notification: Notification) => void;
+  onRemove?: (notification: Notification) => void;
+  uid?: number | string;
+}
+
+export interface NotificationSystem {
+  addNotification(notification: Notification): Notification;
+}
 
 export interface KernelspecMetadata {
   display_name: string;

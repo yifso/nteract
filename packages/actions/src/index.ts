@@ -14,5 +14,6 @@ export * from "./actionTypes/kernel_execution";
 export * from "./actionTypes/kernel_lifecycle";
 export * from "./actionTypes/kernel_misc";
 export * from "./actionTypes/kernelspecs";
+export * from "./actionTypes/notification-system";
 
 export { Action, ErrorAction } from "./utils";
