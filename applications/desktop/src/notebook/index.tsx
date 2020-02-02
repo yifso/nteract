@@ -30,7 +30,7 @@ import { Vega2, Vega3, Vega4, Vega5, VegaLite1, VegaLite2, VegaLite3, VegaLite4 
 import "codemirror/addon/hint/show-hint.css";
 import "codemirror/lib/codemirror.css";
 
-import { remote } from "electron";
+import { ipcRenderer as ipc, remote } from "electron";
 
 import * as Immutable from "immutable";
 import { mathJaxPath } from "mathjax-electron";
@@ -144,18 +144,26 @@ initNativeHandlers(contentRef, store);
 initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
-export const App = () => (
-  <Provider store={store}>
-    <MathJax.Provider src={mathJaxPath} input="tex">
-      <NotebookApp
-        // The desktop app always keeps the same contentRef in a
-        // browser window
-        contentRef={contentRef}
-      />
-    </MathJax.Provider>
-    <CreateNotificationSystem/>
-  </Provider>
-);
+export default class App extends React.PureComponent {
+  componentDidMount(): void {
+    ipc.send("react-ready");
+  }
+
+  render(): JSX.Element {
+    return (
+      <Provider store={store}>
+        <MathJax.Provider src={mathJaxPath} input="tex">
+          <NotebookApp
+            // The desktop app always keeps the same contentRef in a
+            // browser window
+            contentRef={contentRef}
+          />
+        </MathJax.Provider>
+        <CreateNotificationSystem/>
+      </Provider>
+    );
+  }
+}
 
 const app = document.querySelector("#app");
 
