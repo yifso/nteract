@@ -1,4 +1,5 @@
 import * as Immutable from "immutable";
+import { NextObserver } from "rxjs";
 import { AjaxRequest } from "rxjs/ajax";
 
 import { BaseHostProps } from "./base";
@@ -11,6 +12,7 @@ export interface ServerConfig {
   xsrfToken?: string;
   ajaxOptions?: Partial<AjaxRequest>;
   wsProtocol?: string | string[];
+  closeObserver?: NextObserver<CloseEvent>;
 }
 
 export type JupyterHostRecordProps = BaseHostProps & {
@@ -23,6 +25,7 @@ export type JupyterHostRecordProps = BaseHostProps & {
   crossDomain?: boolean | null;
   ajaxOptions?: Partial<AjaxRequest>;
   wsProtocol?: string | string[];
+  closeObserver?: NextObserver<CloseEvent>;
 };
 
 export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
@@ -36,7 +39,8 @@ export const makeJupyterHostRecord = Immutable.Record<JupyterHostRecordProps>({
   ajaxOptions: undefined,
   wsProtocol: undefined,
   bookstoreEnabled: false,
-  showHeaderEditor: false
+  showHeaderEditor: false,
+  closeObserver: undefined
 });
 
 export type JupyterHostRecord = Immutable.RecordOf<JupyterHostRecordProps>;
