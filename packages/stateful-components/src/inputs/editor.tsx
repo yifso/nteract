@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { AppState, ContentRef, actions, selectors } from "@nteract/core";
+import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 
 interface ComponentProps {
   id: string;
@@ -19,8 +19,15 @@ interface StateProps {
   theme: string;
 }
 
-export class Editor extends React.Component<ComponentProps & StateProps> {
-  render() {
+interface DispatchProps {
+  onChange: (text: string) => void;
+  onFocusChange: (focused: boolean) => void;
+}
+
+type Props = ComponentProps & StateProps & DispatchProps;
+
+export class Editor extends React.PureComponent<Props> {
+  render(): JSX.Element | null {
     const { editorType } = this.props;
 
     let chosenOne: React.ReactChild | null = null;
@@ -63,7 +70,14 @@ export class Editor extends React.Component<ComponentProps & StateProps> {
 
     // Render the output component that handles this output type
     return React.cloneElement(chosenOne, {
-      ...this.props,
+      editorType: this.props.editorType,
+      value: this.props.value,
+      editorFocused: this.props.editorFocused,
+      channels: this.props.channels,
+      kernelStatus: this.props.kernelStatus,
+      theme: this.props.theme,
+      onChange: this.props.onChange,
+      onFocusChange: this.props.onFocusChange,
       className: "nteract-cell-editor"
     });
   }
@@ -81,8 +95,8 @@ export const makeMapStateToProps = (
     let channels = null;
     let kernelStatus = "not connected";
     let value = "";
-    let editorType = "codemirror";
-    let theme = selectors.userTheme(state);
+    const editorType = "codemirror";
+    const theme = selectors.userTheme(state);
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
