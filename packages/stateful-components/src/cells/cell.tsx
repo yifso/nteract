@@ -17,7 +17,7 @@ interface StateProps {
 
 type Props = ComponentProps & StateProps;
 
-export class Cell extends React.Component<ComponentProps & StateProps> {
+export class Cell extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return nextProps.selected !== this.props.selected;
   }
