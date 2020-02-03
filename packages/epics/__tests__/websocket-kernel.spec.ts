@@ -41,12 +41,14 @@ describe("launchWebSocketKernelEpic", () => {
     const contentRef = "fakeContentRef";
     const kernelRef = "fake";
     const hostRef = "fakeHostRef";
+    const closeObserver = { next: () => {} }
     const value = {
       app: stateModule.makeAppRecord({
         host: stateModule.makeJupyterHostRecord({
           type: "jupyter",
           token: "eh",
-          basePath: "http://localhost:8888/"
+          basePath: "http://localhost:8888/",
+          closeObserver
         }),
         notificationSystem: { addNotification: jest.fn() }
       }),
@@ -75,7 +77,8 @@ describe("launchWebSocketKernelEpic", () => {
               [hostRef]: stateModule.makeJupyterHostRecord({
                 type: "jupyter",
                 token: "eh",
-                basePath: "http://localhost:8888/"
+                basePath: "http://localhost:8888/",
+                closeObserver
               })
             })
           })
