@@ -18,18 +18,28 @@ describe("MarkdownPreviewer ", () => {
         id="1234"
         cell={emptyMarkdownCell}
         focusEditor={focusEditor}
+        editorFocused={false}
+        cellFocused
       />
     );
 
     // Starts in view mode
     expect(cell.state("view")).toBe(true);
-
     cell.simulate("keydown", { key: "Enter" });
+    /** This is here to simulate the effect of the focusedEditor state
+     * being update.
+     */
+    cell.setProps({ editorFocused: true });
+    expect(focusEditor).toBeCalled();
     expect(cell.state("view")).toBe(false);
     expect(focusEditor).toHaveBeenCalled();
 
     cell.simulate("keydown", { key: "Enter", shiftKey: true });
     // Stays in view mode on shift enter
+    /** This is here to simulate the effect of the focusedEditor state
+     * being update.
+     */
+    cell.setProps({ editorFocused: false });
     expect(cell.state("view")).toBe(true);
     // Enter key enters edit mode
     // Back to view mode
