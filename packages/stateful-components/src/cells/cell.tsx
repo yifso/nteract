@@ -15,7 +15,13 @@ interface StateProps {
   selected: boolean;
 }
 
-export class Cell extends React.PureComponent<ComponentProps & StateProps> {
+type Props = ComponentProps & StateProps;
+
+export class Cell extends React.Component<Props> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    return nextProps.selected !== this.props.selected;
+  }
+
   render(): JSX.Element | null {
     // We must pick only one child to render
     let chosenOne: React.ReactNode | null = null;

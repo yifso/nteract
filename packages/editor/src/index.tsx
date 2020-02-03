@@ -78,7 +78,7 @@ interface CodeCompletionEvent {
   debounce: boolean;
 }
 
-export default class CodeMirrorEditor extends React.PureComponent<
+export default class CodeMirrorEditor extends React.Component<
   CodeMirrorEditorProps,
   CodeMirrorEditorState
 > {
@@ -303,6 +303,20 @@ export default class CodeMirrorEditor extends React.PureComponent<
     );
   }
 
+  /**
+   * Only update the component if certain values change to avoid
+   * re-renders triggered by the `Editor` parent component in the
+   * @nteract/stateful-components package.
+   */
+  shouldComponentUpdate(nextProps: CodeMirrorEditorProps): boolean {
+    const valueChanged = this.props.value !== nextProps.value;
+    const editorFocusedChanged =
+      this.props.editorFocused !== nextProps.editorFocused;
+    const cursorBlinkRateChanged =
+      this.props.cursorBlinkRate !== nextProps.cursorBlinkRate;
+    return valueChanged || editorFocusedChanged || cursorBlinkRateChanged;
+  }
+
   componentDidUpdate(prevProps: CodeMirrorEditorProps): void {
     if (!this.cm) {
       return;
@@ -475,8 +489,6 @@ export default class CodeMirrorEditor extends React.PureComponent<
               tooltipNode
             )
           : null}
-        <CodeMirrorCSS />
-        <ShowHintCSS />
       </React.Fragment>
     );
   }
