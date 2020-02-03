@@ -312,7 +312,9 @@ export default class CodeMirrorEditor extends React.Component<
     const valueChanged = this.props.value !== nextProps.value;
     const editorFocusedChanged =
       this.props.editorFocused !== nextProps.editorFocused;
-    return valueChanged || editorFocusedChanged;
+    const cursorBlinkRateChanged =
+      this.props.cursorBlinkRate !== nextProps.cursorBlinkRate;
+    return valueChanged || editorFocusedChanged || cursorBlinkRateChanged;
   }
 
   componentDidUpdate(prevProps: CodeMirrorEditorProps): void {
