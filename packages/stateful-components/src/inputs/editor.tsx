@@ -95,7 +95,7 @@ export const makeMapStateToProps = (
     let channels = null;
     let kernelStatus = "not connected";
     let value = "";
-    const editorType = "codemirror";
+    const editorType = selectors.editorType(state);
     const theme = selectors.userTheme(state);
 
     if (model && model.type === "notebook") {

@@ -11,6 +11,16 @@ export const userTheme = (state: AppState): string =>
   state.config.get("theme", "light");
 
 /**
+ * Returns the configured editor type or "codemirror" by default.
+ *
+ * @param   state   The state of the nteract application
+ *
+ * @returns         The currently configured editorType
+ */
+export const editorType = (state: AppState): string =>
+  state.config.get("editorType", "codemirror");
+
+/**
  * Returns the theme of the notebook. Returns "light" if no theme is defined.
  * This is an alias for the `userTheme` selector.
  *
