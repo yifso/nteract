@@ -20,8 +20,8 @@ import { empty, merge, Observable, Observer, of, throwError } from "rxjs";
 import {
   catchError,
   concatMap,
+  distinct,
   filter,
-  first,
   groupBy,
   map,
   mapTo,
@@ -337,8 +337,8 @@ export function executeFocusedCellEpic(
 
 /**
  * Launches the kernel when user tries to execute a cell.
- * The first operator ensures that the LaunchKernelByName action is
- * only emitted once even when there are multiple execute requests.
+ * The distinct operator prevents the LaunchKernelByName action from
+ * being emitted more than once within the same notebook.
  */
 export function lazyLaunchKernelEpic(
   action$: ActionsObservable<actions.ExecuteCell>,
@@ -347,7 +347,7 @@ export function lazyLaunchKernelEpic(
   return action$.pipe(
     ofType(actions.EXECUTE_CELL),
     withLatestFrom(state$),
-    first(([action, state]) => {
+    filter(([action, state]) => {
       const contentRef = action.payload.contentRef;
       return !selectors.kernelByContentRef(state, { contentRef });
     }),
@@ -387,7 +387,8 @@ export function lazyLaunchKernelEpic(
           contentRef
         })
       );
-    })
+    }),
+    distinct(action => action.payload.contentRef)
   );
 }
 
@@ -411,9 +412,8 @@ export function executeCellEpic(
       if (
         kernel &&
         kernel.channels &&
-        (kernel.status === KernelStatus.Idle ||
-          kernel.status === KernelStatus.Busy ||
-          kernel.status === KernelStatus.Launched)
+        (kernel.status !== KernelStatus.NotConnected &&
+          kernel.status !== KernelStatus.ShuttingDown)
       ) {
         return of(actions.sendExecuteRequest(action.payload));
       } else {
@@ -447,9 +447,8 @@ export function executeCellAfterKernelLaunchEpic(
       return !!(
         kernel &&
         kernel.channels &&
-        (kernel.status === KernelStatus.Idle ||
-          kernel.status === KernelStatus.Busy ||
-          kernel.status === KernelStatus.Launched)
+        (kernel.status !== KernelStatus.NotConnected &&
+          kernel.status !== KernelStatus.ShuttingDown)
       );
     }),
     concatMap(([, state]) => {
