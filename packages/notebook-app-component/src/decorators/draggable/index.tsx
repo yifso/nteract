@@ -247,6 +247,7 @@ export const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
   return mapDispatchToProps;
 };
 
-export default source(
-  target(connect(null, makeMapDispatchToProps)(DraggableCellView))
-);
+export default connect(
+  null,
+  makeMapDispatchToProps
+)(source(target(DraggableCellView)));
