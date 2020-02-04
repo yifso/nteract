@@ -508,9 +508,9 @@ describe("executeCellAfterKernelLaunchEpic", () => {
     );
   });
 
-  test("do nothing if kernel is still starting", done => {
+  test("do nothing if kernel is shutting down", done => {
     const fakeKernel = stateModule.makeRemoteKernelRecord({
-      status: "starting"
+      status: "shutting down"
     });
     const fakeContent = stateModule
       .makeNotebookContentRecord()
