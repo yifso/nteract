@@ -1,5 +1,4 @@
 import { MediaBundle } from "@nteract/commutable";
-import { makeNotificationsRecord, NotificationsProps } from "@nteract/mythic-notifications";
 import * as Immutable from "immutable";
 import { EntitiesRecordProps, makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
 import { HostRecord } from "./entities/hosts";
@@ -147,21 +146,9 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 
-// Private state for each mythic package
-export interface MythicProps {
-  notifications: NotificationsProps;
-}
-
-export const makeMythicRecord = Immutable.Record<MythicProps>({
-  notifications: makeNotificationsRecord(),
-});
-
-export type MythicRecord = Immutable.RecordOf<MythicProps>;
-
 export interface AppState {
   app: AppRecord;
   comms: CommsRecord;
   config: ConfigState;
   core: CoreRecord;
-  mythic: MythicRecord;
 }

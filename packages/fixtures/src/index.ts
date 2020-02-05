@@ -1,33 +1,12 @@
 /* eslint-disable no-plusplus */
 
-import {
-  appendCellToNotebook,
-  emptyCodeCell,
-  emptyMarkdownCell,
-  emptyNotebook,
-  ImmutableNotebook,
-  JSONObject,
-  monocellNotebook
-} from "@nteract/commutable";
+import { appendCellToNotebook, emptyCodeCell, emptyMarkdownCell, emptyNotebook, ImmutableNotebook, JSONObject, monocellNotebook } from "@nteract/commutable";
+
+import { comms, config, core } from "@nteract/reducers";
+import { AppState, createContentRef, createKernelRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDocumentRecord, makeEntitiesRecord, makeKernelsRecord, makeNotebookContentRecord, makeRemoteKernelRecord, makeStateRecord } from "@nteract/types";
 import * as Immutable from "immutable";
 import { combineReducers, createStore, Store } from "redux";
 import { Subject } from "rxjs";
-
-import { comms, config, core } from "@nteract/reducers";
-import {
-  AppState,
-  createContentRef,
-  createKernelRef,
-  makeAppRecord,
-  makeCommsRecord,
-  makeContentsRecord,
-  makeDocumentRecord,
-  makeEntitiesRecord,
-  makeKernelsRecord, makeMythicRecord,
-  makeNotebookContentRecord,
-  makeRemoteKernelRecord,
-  makeStateRecord
-} from "@nteract/types";
 
 export { fixtureCommutable, fixture, fixtureJSON } from "./fixture-nb";
 
@@ -144,7 +123,6 @@ export const mockAppState = (config: JSONObject): AppState => {
       theme: "light",
     }),
     comms: makeCommsRecord(),
-    mythic: makeMythicRecord(),
   };
 };
 

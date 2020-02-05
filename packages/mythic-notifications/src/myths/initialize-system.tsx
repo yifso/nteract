@@ -1,19 +1,14 @@
 import { Toaster } from "@blueprintjs/core";
 import React, { RefObject } from "react";
-
 import { blueprintjsNotificationSystem } from "../backends/blueprintjs";
-import { createMyth, createMythicConnectedComponent, MythicComponent } from "../external/myths";
-import { NotificationsProps } from "../types";
+import { createMythicConnectedComponent, MythicComponent } from "../external/myths";
+import { notifications } from "../package";
 
-
-export const initializeSystem = createMyth(
-  "notifications",
-  "initializeSystem",
-  "NOTIFICATIONS/INITIALIZE_SYSTEM",
-)<NotificationsProps>({
-  reduce: (state, action) =>
-    state.set("current", action.payload.current),
-});
+const initializeSystem =
+  notifications.createMyth("initializeSystem")({
+    reduce: (state, action) =>
+      state.set("current", action.payload.current),
+  });
 
 export const NotificationRoot = createMythicConnectedComponent(
   "NotificationRoot",

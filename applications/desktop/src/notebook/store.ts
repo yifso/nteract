@@ -1,5 +1,5 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
-import { initializeSystem, sendNotification } from "@nteract/mythic-notifications";
+import { notifications } from "@nteract/mythic-notifications";
 import { applyMiddleware, combineReducers, createStore, Middleware, Store } from "redux";
 import { ActionsObservable, combineEpics, createEpicMiddleware, StateObservable } from "redux-observable";
 import { Observable } from "rxjs";
@@ -16,7 +16,7 @@ const rootEpic = (
   store$: StateObservable<any>,
   dependencies: any
 ) =>
-  combineEpics(...epics, ...sendNotification.epics)(action$, store$, dependencies).pipe(
+  combineEpics(...epics, notifications.makeRootEpic())(action$, store$, dependencies).pipe(
     catchError((error: any, source: Observable<any>) => {
       console.error(error);
       return source;
@@ -45,8 +45,8 @@ const rootReducer = combineReducers({
   comms: reducers.comms,
   config: reducers.config,
   core: reducers.core,
-  mythic: reducers.mythic,
   desktopNotebook: handleDesktopNotebook,
+  notifications: notifications.rootReducer,
 });
 
 export default function configureStore(

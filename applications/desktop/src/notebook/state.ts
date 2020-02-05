@@ -1,6 +1,7 @@
 import { AppState } from "@nteract/core";
-import { NotificationsProps } from "@nteract/mythic-notifications";
+import { notifications } from "@nteract/mythic-notifications";
 import * as Immutable from "immutable";
+import { RecordOf } from "immutable";
 
 export type DesktopNotebookClosingState =
   | "Not Started" // Attempts to close BrowserWindow will initiate closeNotebookEpic and the window will be left open
@@ -28,4 +29,5 @@ export const makeDesktopNotebookRecord = Immutable.Record<DesktopNotebookProps>(
 
 export type DesktopNotebookAppState = AppState & {
   desktopNotebook: DesktopNotebookRecord;
+  notifications: RecordOf<typeof notifications.state>;
 };

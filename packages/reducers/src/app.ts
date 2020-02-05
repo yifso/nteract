@@ -1,7 +1,6 @@
 // Vendor modules
 import * as actions from "@nteract/actions";
 import { Save, SaveFailed, SaveFulfilled, SetAppHostAction, SetGithubTokenAction } from "@nteract/actions";
-import { initializeSystem } from "@nteract/mythic-notifications";
 import { AppRecord, AppRecordProps, makeAppRecord } from "@nteract/types";
 import { RecordOf } from "immutable";
 
@@ -39,7 +38,6 @@ export default function handleApp(
     | SaveFulfilled
     | SaveFailed
     | SetAppHostAction
-    | typeof initializeSystem.action
 ): RecordOf<AppRecordProps> {
   switch (action.type) {
     case actions.SAVE:

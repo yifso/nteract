@@ -1,85 +1,134 @@
-import { Toaster } from "@blueprintjs/core";
-import { Record, RecordOf } from "immutable";
-import React, { RefObject } from "react";
+import { default as Immutable, RecordOf } from "immutable";
+import React from "react";
 import { connect } from "react-redux";
 import { Action } from "redux";
-import { ActionsObservable, Epic } from "redux-observable";
+import { ActionsObservable, combineEpics, Epic } from "redux-observable";
 import { EMPTY, Observable, of } from "rxjs";
-import { map, mergeMap } from "rxjs/operators";
-import { initializeSystem, NotificationRoot } from "../..";
-import { blueprintjsNotificationSystem } from "../../backends/blueprintjs";
+import { mergeMap } from "rxjs/operators";
+import { NotificationRoot } from "../..";
 
-export interface MythicAction<T extends string, P = void> {
-  type: T;
-  payload: P;
+export interface MythicAction<
+  PKG extends string,
+  NAME extends string,
+  PROPS = void,
+> extends Action {
+  type: string;
+  payload: PROPS;
+  error?: boolean;
 }
 
-export const createMythicActionFunction =
-  <T extends MythicAction<string, any>>
-  (type: T["type"]) => (payload: T["payload"]) =>
-    ({ type, payload });
-
 export interface Myth<
-  PACKAGE extends string = any,
-  NAME extends string = any,
-  TYPE extends string = any,
+  PKG extends string = string,
+  NAME extends string = string,
   PROPS = any,
-  RECORD extends Record<any> = any,
+  STATE = any,
 > {
-  pkg: PACKAGE,
+  pkg: PKG,
   name: NAME,
-  type: TYPE,
+  type: string,
   props: PROPS,
-  action: MythicAction<TYPE, PROPS>,
-  state: RECORD,
-  create: (payload: PROPS) => MythicAction<TYPE, PROPS>,
+  state: STATE,
+  action: MythicAction<PKG, NAME, PROPS>,
+  create: (payload: PROPS) => MythicAction<PKG, NAME, PROPS>,
   appliesTo: (action: Action) => boolean,
-  reduce?: (state: RECORD, action: Action) => RECORD,
+  reduce?: (state: RecordOf<STATE>, action: Action) => RecordOf<STATE>,
   epics: Epic[],
 }
 
-export const createMyth =
-  <PACKAGE extends string, NAME extends string, TYPE extends string>(pkg: PACKAGE, name: NAME, type: TYPE) =>
-    <PROPS, RECORD extends Record<any> = RecordOf<PROPS>>(definition: {
-      reduce?: (
-        state: RECORD,
-        action: MythicAction<TYPE, PROPS>,
-      ) => RECORD | void,
-      createOn?: (
-        action$: ActionsObservable<Action>,
-      ) => Observable<PROPS | void>,
-    }): Myth<PACKAGE, NAME, TYPE, PROPS, RECORD> => {
-      const create = createMythicActionFunction<MythicAction<TYPE, PROPS>>(type);
+export const createMythicPackage =
+  <PKG extends string>(pkg: PKG) =>
+    <STATE>(packageDefinition: {
+      initialState: STATE,
+    }) => {
+      const myths: { [key: string]: Myth<PKG, string, any, STATE> } = {};
 
       return {
-        pkg,
-        name,
-        type,
-        props: undefined as unknown as PROPS,
-        action: undefined as unknown as MythicAction<TYPE, PROPS>,
-        state: undefined as unknown as RECORD,
-        create,
-        appliesTo: (action: Action) => action.type === type,
-        reduce: definition.reduce && (
-          (state: RECORD, action: Action) => {
-            if (action.type === type) {
-              return (definition.reduce!(
-                state,
-                action as MythicAction<TYPE, PROPS>,
-              ) ?? state) as RECORD;
-            } else {
+        name: pkg,
+        myths,
+        state: undefined as unknown as STATE,
+        makeRootEpic: () =>
+          combineEpics(
+            ...Object.values(myths).map(myth => combineEpics(...myth.epics))
+          ),
+        rootReducer:
+          (
+            state: RecordOf<STATE> = Immutable.Record<STATE>(
+              packageDefinition.initialState
+            )(),
+            action: Action,
+          ) => {
+            const applicableMyths = Object
+              .values(myths)
+              .filter(myth => myth.appliesTo(action));
+
+            if (applicableMyths.length === 0) {
               return state;
             }
-          }
-        ),
-        epics: [
-          definition.createOn !== undefined
-            ? (action$: ActionsObservable<Action>) =>
-              definition.createOn!(action$).pipe(
-                mergeMap(props => props ? of(create(props)) : EMPTY),
-              )
-            : null,
-        ].filter(epic => epic !== null) as Epic[]
+            else if (applicableMyths[0].reduce === undefined) {
+              return state;
+            }
+            else {
+              return applicableMyths[0].reduce(state, action);
+            }
+          },
+
+        createMyth:
+          <NAME extends string>(name: NAME) =>
+            <PROPS = STATE>(definition: {
+              reduce?: (
+                state: RecordOf<STATE>,
+                action: MythicAction<string, string, PROPS>,
+              ) => RecordOf<STATE> | void,
+              createOn?: (
+                action$: ActionsObservable<Action>,
+              ) => Observable<PROPS | void>,
+            }): Myth<PKG, NAME, PROPS, STATE> => {
+              const type = `${pkg}/${name}`;
+              const create = (payload: PROPS) => ({ type, payload });
+              const appliesTo = (action: Action) => action.type === type;
+              const myth = {
+                pkg,
+                name,
+                type,
+
+                props: undefined as unknown as PROPS,
+                state: undefined as unknown as STATE,
+                action: undefined as unknown as MythicAction<PKG, NAME, PROPS>,
+
+                create,
+                appliesTo,
+
+                reduce: definition.reduce && (
+                  (state: RecordOf<STATE>, action: Action) => {
+                    if (appliesTo(action)) {
+                      return (definition.reduce!(
+                        state,
+                        action as MythicAction<PKG, NAME, PROPS>,
+                      ) || state);
+                    } else {
+                      return state;
+                    }
+                  }
+                ),
+
+                epics: [
+                  definition.createOn !== undefined
+                    ? (action$: ActionsObservable<Action>) =>
+                      definition.createOn!(action$).pipe(
+                        mergeMap(props => props ? of(create(props)) : EMPTY),
+                      )
+                    : null,
+                ].filter(epic => epic !== null) as Epic[]
+              };
+
+              if (myths.hasOwnProperty(name)) {
+                throw new Error(`Package "${pkg}" cannot have two myths with the same name ("${name}")`);
+              }
+
+              myths[name] = myth;
+
+              return myth;
+            },
       };
     };
 

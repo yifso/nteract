@@ -1,6 +1,4 @@
-import { default as Immutable } from "immutable";
 import React from "react";
-import { consoleNotificationSystem } from "./backends/console";
 
 export interface NotificationMessage {
   title?: string | JSX.Element;
@@ -22,12 +20,3 @@ export interface NotificationMessage {
 export interface NotificationSystem {
   addNotification(notification: NotificationMessage): void;
 }
-
-export interface NotificationsProps {
-  current: NotificationSystem;
-}
-
-export const makeNotificationsRecord =
-  Immutable.Record<NotificationsProps>({
-    current: consoleNotificationSystem,
-  });
