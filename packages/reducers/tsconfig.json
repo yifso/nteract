@@ -8,7 +8,6 @@
   "references": [
     { "path": "../actions" },
     { "path": "../commutable" },
-    { "path": "../mythic-notifications" },
     { "path": "../types" }
   ]
 }
