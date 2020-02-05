@@ -1,4 +1,5 @@
 import { AppState } from "@nteract/core";
+import { NotificationsProps } from "@nteract/mythic-notifications";
 import * as Immutable from "immutable";
 
 export type DesktopNotebookClosingState =

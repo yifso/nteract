@@ -10,9 +10,9 @@ import { ContentRecord, ContentRef, createContentRef, makeAppRecord, makeCommsRe
 import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
+import { NotificationRoot } from "@nteract/mythic-notifications";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
-import { CreateNotificationSystem } from "@nteract/stateful-components";
 
 import "@nteract/styles/app.css";
 
@@ -159,7 +159,7 @@ export default class App extends React.PureComponent {
             contentRef={contentRef}
           />
         </MathJax.Provider>
-        <CreateNotificationSystem/>
+        <NotificationRoot/>
       </Provider>
     );
   }

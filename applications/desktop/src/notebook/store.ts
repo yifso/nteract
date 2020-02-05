@@ -1,19 +1,14 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
-import { applyMiddleware, combineReducers, createStore, Store } from "redux";
-import {
-  combineEpics,
-  createEpicMiddleware,
-  ActionsObservable,
-  StateObservable
-} from "redux-observable";
+import { applyMiddleware, combineReducers, createStore, Middleware, Store } from "redux";
+import { ActionsObservable, combineEpics, createEpicMiddleware, StateObservable } from "redux-observable";
+import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 
 import { Actions } from "./actions";
 import epics from "./epics";
+import { LocalContentProvider } from "./local-content-provider";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
-import { Observable } from "rxjs";
-import { LocalContentProvider } from "./local-content-provider";
 
 const rootEpic = (
   action$: ActionsObservable<any>,
@@ -36,7 +31,7 @@ const epicMiddleware = createEpicMiddleware<
 >({ 
   dependencies: { contentProvider: localContentProvider } 
 });
-const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
+const middlewares: Middleware[] = [epicMiddleware];
 
 export type DesktopStore = Store<DesktopNotebookAppState, Actions>;
 
@@ -49,7 +44,8 @@ const rootReducer = combineReducers({
   comms: reducers.comms,
   config: reducers.config,
   core: reducers.core,
-  desktopNotebook: handleDesktopNotebook
+  mythic: reducers.mythic,
+  desktopNotebook: handleDesktopNotebook,
 });
 
 export default function configureStore(
@@ -62,7 +58,5 @@ export default function configureStore(
   );
   epicMiddleware.run(rootEpic);
 
-  const desktopStore = store as DesktopStore;
-  localContentProvider.setAppState(desktopStore.getState());
-  return desktopStore;
+  return store as DesktopStore;
 }

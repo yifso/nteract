@@ -21,6 +21,7 @@
     { "path": "mathjax" },
     { "path": "messaging" },
     { "path": "monaco-editor" },
+    { "path": "mythic-notifications" },
     { "path": "notebook-app-component" },
     { "path": "octicons" },
     { "path": "outputs" },

@@ -19,8 +19,6 @@ export {
   StatusBarContext
 };
 
-export { CreateNotificationSystem } from "./notebook/notification-system";
-
 interface ComponentProps {
   contentRef: ContentRef;
 }

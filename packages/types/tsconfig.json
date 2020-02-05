@@ -5,5 +5,8 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../commutable" }]
+  "references": [
+    { "path": "../commutable" },
+    { "path": "../mythic-notifications" }
+  ]
 }

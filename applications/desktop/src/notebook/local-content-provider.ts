@@ -1,24 +1,16 @@
-import { ServerConfig, IContentProvider, IGetParams, FileType, IContent, AppState } from "@nteract/types";
+import { Notebook, stringifyNotebook } from "@nteract/commutable";
+import { FileType, IContent, IContentProvider, IGetParams, ServerConfig } from "@nteract/types";
 import * as fs from "fs";
-import * as path from "path";
 import { readFileObservable, statObservable, writeFileObservable } from "fs-observable";
+import * as path from "path";
 import { Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
-import { map, mergeMap, catchError } from "rxjs/operators";
-import { stringifyNotebook, Notebook } from "@nteract/commutable";
-import { selectors } from "@nteract/core";
+import { catchError, map, mergeMap } from "rxjs/operators";
 
 // A Content provider which reads/writes to local disk
 export class LocalContentProvider implements IContentProvider {
 
-  // Needed to get to notificationSystem
-  private state?: AppState;
-
   constructor() {}
-
-  public setAppState(state: AppState) {
-    this.state = state;
-  }
 
   public remove(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
@@ -31,7 +23,7 @@ export class LocalContentProvider implements IContentProvider {
           return of(this.createErrorAjaxResponse(400, new Error("Attempted to open something which is not a file")));
         }
 
-        if (params.content == 0) {
+        if (params.content === 0) {
           const notebook = this.createNotebookModel(filePath, stat);
           return of(this.createSuccessAjaxResponse(notebook));
         }
@@ -58,24 +50,13 @@ export class LocalContentProvider implements IContentProvider {
 
   public save<FT extends FileType>(serverConfig: ServerConfig, filePath: string, model: Partial<IContent<FT>>): Observable<AjaxResponse> {
     const notebook: Notebook = model.content as Notebook;
-    if (!notebook || model.type != "notebook") {
+    if (!notebook || model.type !== "notebook") {
       return of(this.createErrorAjaxResponse(400, new Error("No notebook found to save")));
     }
     
     const serializedNotebook = stringifyNotebook(notebook);
     return writeFileObservable(filePath, serializedNotebook).pipe(
       mergeMap(() => {
-        if (process.platform !== "darwin") {
-          if (this.state) {
-            const notificationSystem = selectors.notificationSystem(this.state);
-            notificationSystem.addNotification({
-              autoDismiss: 2,
-              level: "success",
-              title: "Save successful!"
-            });
-          }
-        }
-
         return statObservable(filePath).pipe(
           map((stat: fs.Stats) => {
             const notebook = this.createNotebookModel(filePath, stat, serializedNotebook);

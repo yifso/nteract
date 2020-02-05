@@ -10,7 +10,7 @@ import {
   monocellNotebook
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, Store } from "redux";
 import { Subject } from "rxjs";
 
 import { comms, config, core } from "@nteract/reducers";
@@ -23,7 +23,7 @@ import {
   makeContentsRecord,
   makeDocumentRecord,
   makeEntitiesRecord,
-  makeKernelsRecord,
+  makeKernelsRecord, makeMythicRecord,
   makeNotebookContentRecord,
   makeRemoteKernelRecord,
   makeStateRecord
@@ -138,19 +138,17 @@ export const mockAppState = (config: JSONObject): AppState => {
       })
     }),
     app: makeAppRecord({
-      notificationSystem: {
-        addNotification: () => {} // most of the time you'll want to mock this
-      },
-      githubToken: "TOKEN"
+      githubToken: "TOKEN",
     }),
     config: Immutable.Map({
-      theme: "light"
+      theme: "light",
     }),
-    comms: makeCommsRecord()
+    comms: makeCommsRecord(),
+    mythic: makeMythicRecord(),
   };
 };
 
-export function fixtureStore(config: JSONObject) {
+export function fixtureStore(config: JSONObject): Store {
   const initialAppState = mockAppState(config);
 
   return createStore(rootReducer, initialAppState as any);

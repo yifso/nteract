@@ -1,3 +1,4 @@
+import { sendNotification } from "@nteract/mythic-notifications";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -257,15 +258,11 @@ export function dispatchPublishGist(
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
-
-          const notificationSystem = selectors.notificationSystem(state);
-
-          notificationSystem.addNotification({
+          store.dispatch(sendNotification.create({
             title: "Authenticated",
             message: "🔒",
-            level: "info"
-          });
-
+            level: "info",
+          }));
           // We are now authenticated and can finally publish
           store.dispatch(actions.publishGist(ownProps));
         } catch (e) {
@@ -335,13 +332,12 @@ export function dispatchInterruptKernel(
 ): void {
   const state = store.getState();
 
-  const notificationSystem = selectors.notificationSystem(state);
   if (process.platform === "win32") {
-    notificationSystem.addNotification({
+    store.dispatch(sendNotification.create({
       title: "Not supported in Windows",
       message: "Kernel interruption is not supported in Windows.",
-      level: "error"
-    });
+      level: "error",
+    }));
   } else {
     const kernelRef = selectors.kernelRefByContentRef(state, ownProps);
     if (!kernelRef) {
@@ -554,13 +550,11 @@ export function dispatchNewNotebook(
  * @param {object} ownProps - An object containing a contentRef
  * @param {object} store - The Redux store
  * @param {string} basepath - basepath of the PDF to be saved.
- * @param {any} notificationSystem - reference to global notification system
  */
 export function exportPDF(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
   basepath: string,
-  notificationSystem: NotificationSystemRef
 ): void {
   const state = store.getState();
 
@@ -607,10 +601,8 @@ export function exportPDF(
         )
       );
 
-      const appNotificationSystem = state.app.get("notificationSystem");
-
       fs.writeFile(pdfPath, data, _error_fs => {
-        appNotificationSystem.addNotification({
+        store.dispatch(sendNotification.create({
           title: "PDF exported",
           message: `Notebook ${basepath} has been exported as a pdf.`,
           level: "success",
@@ -622,7 +614,7 @@ export function exportPDF(
               shell.openItem(pdfPath);
             }
           }
-        });
+        }));
       });
     }
   );
@@ -649,9 +641,8 @@ export function storeToPDF(
 ): void {
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
-  const notificationSystem = state.app.get("notificationSystem");
   if (notebookName === null) {
-    notificationSystem.addNotification({
+    store.dispatch(sendNotification.create({
       title: "File has not been saved!",
       message: `Click the button below to save the notebook so that it can be
        exported as a PDF.`,
@@ -664,11 +655,11 @@ export function storeToPDF(
           triggerSaveAsPDF(ownProps, store);
         }
       }
-    });
+    }));
   } else {
     const basename = path.basename(notebookName, ".ipynb");
     const basepath = path.join(path.dirname(notebookName), basename);
-    exportPDF(ownProps, store, basepath, notificationSystem);
+    exportPDF(ownProps, store, basepath);
   }
 }
 

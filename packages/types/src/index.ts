@@ -1,6 +1,6 @@
 import { MediaBundle } from "@nteract/commutable";
+import { makeNotificationsRecord, NotificationsProps } from "@nteract/mythic-notifications";
 import * as Immutable from "immutable";
-import React from "react";
 import { EntitiesRecordProps, makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
 import { HostRecord } from "./entities/hosts";
 import { KernelRef, KernelspecsRef } from "./refs";
@@ -9,27 +9,6 @@ export * from "./content-provider";
 export * from "./entities";
 export * from "./ids";
 export * from "./refs";
-
-export interface Notification {
-  title?: string | JSX.Element;
-  message?: string | JSX.Element;
-  level?: "error" | "warning" | "info" | "success";
-  position?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
-  autoDismiss?: number;
-  dismissible?: boolean;
-  action?: {
-    label: string;
-    callback?: () => void;
-  };
-  children?: React.ReactNode;
-  onAdd?: (notification: Notification) => void;
-  onRemove?: (notification: Notification) => void;
-  uid?: number | string;
-}
-
-export interface NotificationSystem {
-  addNotification(notification: Notification): Notification;
-}
 
 export interface KernelspecMetadata {
   display_name: string;
@@ -147,9 +126,6 @@ export type CoreRecord = Immutable.RecordOf<StateRecordProps>;
 export interface AppRecordProps {
   host: HostRecord;
   githubToken?: string | null;
-  notificationSystem: {
-    addNotification: (msg: Notification) => void;
-  };
   isSaving: boolean;
   lastSaved?: Date | null;
   configLastSaved?: Date | null;
@@ -161,20 +137,6 @@ export interface AppRecordProps {
 export const makeAppRecord = Immutable.Record<AppRecordProps>({
   host: makeEmptyHostRecord(),
   githubToken: null,
-  notificationSystem: {
-    addNotification: (msg: Notification) => {
-      let logger = console.log.bind(console);
-      switch (msg.level) {
-        case "error":
-          logger = console.error.bind(console);
-          break;
-        case "warning":
-          logger = console.warn.bind(console);
-          break;
-      }
-      logger(msg);
-    }
-  },
   isSaving: false,
   lastSaved: null,
   configLastSaved: null,
@@ -185,18 +147,21 @@ export const makeAppRecord = Immutable.Record<AppRecordProps>({
 
 export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 
+// Private state for each mythic package
+export interface MythicProps {
+  notifications: NotificationsProps;
+}
+
+export const makeMythicRecord = Immutable.Record<MythicProps>({
+  notifications: makeNotificationsRecord(),
+});
+
+export type MythicRecord = Immutable.RecordOf<MythicProps>;
+
 export interface AppState {
   app: AppRecord;
   comms: CommsRecord;
   config: ConfigState;
   core: CoreRecord;
+  mythic: MythicRecord;
 }
-
-export type AppStateRecord = Immutable.RecordOf<AppState>;
-
-export const makeAppStateRecord = Immutable.Record<AppState>({
-  app: makeAppRecord(),
-  comms: makeCommsRecord(),
-  config: Immutable.Map<string, any>(),
-  core: makeStateRecord()
-});

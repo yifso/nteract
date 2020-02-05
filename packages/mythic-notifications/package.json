@@ -1,0 +1,28 @@
+{
+  "name": "@nteract/mythic-notifications",
+  "version": "0.1.0",
+  "description": "A notification system based on blueprintjs toasters and the myths redux framework",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "nteractDesktop": "src/index.ts",
+  "scripts": {},
+  "repository": "https://github.com/nteract/nteract/tree/master/packages/mythic-notifications",
+  "keywords": [
+    "nteract"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@blueprintjs/core": "^3.7.0",
+    "immutable": "^4.0.0-rc.12",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "author": "Magdalena Kiesel <magda.kiesel@gmx.net>",
+  "license": "BSD-3-Clause"
+}
