@@ -1,4 +1,5 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
+import { initializeSystem, sendNotification } from "@nteract/mythic-notifications";
 import { applyMiddleware, combineReducers, createStore, Middleware, Store } from "redux";
 import { ActionsObservable, combineEpics, createEpicMiddleware, StateObservable } from "redux-observable";
 import { Observable } from "rxjs";
@@ -15,7 +16,7 @@ const rootEpic = (
   store$: StateObservable<any>,
   dependencies: any
 ) =>
-  combineEpics(...epics)(action$, store$, dependencies).pipe(
+  combineEpics(...epics, ...sendNotification.epics)(action$, store$, dependencies).pipe(
     catchError((error: any, source: Observable<any>) => {
       console.error(error);
       return source;

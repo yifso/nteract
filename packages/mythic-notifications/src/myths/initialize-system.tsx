@@ -1,50 +1,38 @@
 import { Toaster } from "@blueprintjs/core";
 import React, { RefObject } from "react";
-import { connect } from "react-redux";
 
 import { blueprintjsNotificationSystem } from "../backends/blueprintjs";
-import { createMyth } from "../external/myths";
+import { createMyth, createMythicConnectedComponent, MythicComponent } from "../external/myths";
 import { NotificationsProps } from "../types";
 
 
 export const initializeSystem = createMyth(
   "notifications",
+  "initializeSystem",
   "NOTIFICATIONS/INITIALIZE_SYSTEM",
 )<NotificationsProps>({
   reduce: (state, action) =>
-    state.set("current", action.payload.current)
+    state.set("current", action.payload.current),
 });
 
-interface BlueprintNotificationsProps {
-  initializeSystem: (payload: NotificationsProps) => void;
-}
+export const NotificationRoot = createMythicConnectedComponent(
+  "NotificationRoot",
+  initializeSystem,
+  class extends MythicComponent<typeof initializeSystem> {
+    toaster?: RefObject<Toaster>;
 
-class UnconnectedBlueprintNotifications
-  extends React.PureComponent<BlueprintNotificationsProps> {
+    postConstructor(): void {
+      this.toaster = React.createRef();
+    }
 
-  toaster: RefObject<Toaster>;
+    componentDidMount(): void {
+      this.props.initializeSystem({
+        current: blueprintjsNotificationSystem(this.toaster!.current!),
+      });
+    }
 
-  constructor(props: BlueprintNotificationsProps) {
-    super(props);
-    this.toaster = React.createRef();
-  }
-
-  componentDidMount(): void {
-    this.props.initializeSystem({
-      current: blueprintjsNotificationSystem(this.toaster.current!),
-    });
-  }
-
-  render(): JSX.Element {
-    return (
-      <Toaster ref={this.toaster}/>
-    );
-  }
-}
-
-export const NotificationRoot = connect(
-  null,
-  { initializeSystem: initializeSystem.create },
-)(UnconnectedBlueprintNotifications);
-
-NotificationRoot.displayName = "BlueprintNotifications";
+    render(): JSX.Element {
+      return <Toaster ref={this.toaster}/>;
+    }
+  },
+);

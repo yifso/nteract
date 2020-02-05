@@ -1,6 +1,5 @@
 import { commListenEpic } from "./comm";
 import { autoSaveCurrentContentEpic, closeNotebookEpic, fetchContentEpic, saveAsContentEpic, saveContentEpic, updateContentEpic } from "./contents";
-import { errorNotificationEpic } from "./errors";
 import { executeAllCellsEpic, executeCellAfterKernelLaunchEpic, executeCellEpic, executeFocusedCellEpic, lazyLaunchKernelEpic, sendExecuteRequestEpic, sendInputReplyEpic, updateDisplayEpic } from "./execute";
 import { publishToBookstore, publishToBookstoreAfterSave } from "./hosts";
 import { acquireKernelInfoEpic, launchKernelWhenNotebookSetEpic, restartKernelEpic, watchExecutionStateEpic } from "./kernel-lifecycle";
@@ -37,7 +36,6 @@ const allEpics = [
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
   closeNotebookEpic,
-  errorNotificationEpic,
 ];
 
 export {
@@ -69,5 +67,4 @@ export {
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
   closeNotebookEpic,
-  errorNotificationEpic,
 };
