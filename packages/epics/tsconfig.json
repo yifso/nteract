@@ -9,7 +9,6 @@
     { "path": "../actions" },
     { "path": "../commutable" },
     { "path": "../messaging" },
-    { "path": "../mythic-notifications" },
     { "path": "../selectors" },
     { "path": "../types" },
     { "path": "../rx-jupyter" }
