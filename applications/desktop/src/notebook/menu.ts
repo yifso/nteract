@@ -257,8 +257,15 @@ export function dispatchPublishGist(
       electronRemote.ipcMain.on("auth", (_authEvent: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
+          store.dispatch(sendNotification.create({
+            key: "github-publish",
+            title: "Authenticating",
+            message: "...",
+            level: "info",
+          }));
           store.dispatch(actions.setGithubToken(accessToken));
           store.dispatch(sendNotification.create({
+            key: "github-publish",
             title: "Authenticated",
             message: "🔒",
             level: "info",
@@ -606,8 +613,6 @@ export function exportPDF(
           title: "PDF exported",
           message: `Notebook ${basepath} has been exported as a pdf.`,
           level: "success",
-          position: "tr",
-          dismissible: true,
           action: {
             label: "Open PDF",
             callback(): void {
@@ -647,8 +652,6 @@ export function storeToPDF(
       message: `Click the button below to save the notebook so that it can be
        exported as a PDF.`,
       level: "warning",
-      position: "tr",
-      dismissible: true,
       action: {
         label: "Save As",
         callback(): void {

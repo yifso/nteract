@@ -259,8 +259,6 @@ export const restartKernelEpic = (
           sendNotification.create({
             title: "Failure to Restart",
             message: "Unable to restart kernel, please select a new kernel.",
-            dismissible: true,
-            position: "tr",
             level: "error"
           }),
         );
@@ -277,8 +275,6 @@ export const restartKernelEpic = (
           sendNotification.create({
             title: "Failure to Restart",
             message: "Unable to restart kernel, please select a new kernel.",
-            dismissible: true,
-            position: "tr",
             level: "error"
           })
         );
@@ -290,8 +286,6 @@ export const restartKernelEpic = (
         title: "Kernel Restarting...",
         message: `Kernel ${oldKernel.kernelSpecName ||
           "unknown"} is restarting.`,
-        dismissible: true,
-        position: "tr",
         level: "success"
       });
 

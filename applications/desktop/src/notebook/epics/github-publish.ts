@@ -6,7 +6,7 @@ import * as path from "path";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { concat, EMPTY, Observable, of } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
-import { catchError, merge, mergeMap, tap } from "rxjs/operators";
+import { catchError, mergeMap } from "rxjs/operators";
 import { DesktopNotebookAppState } from "../state";
 
 interface GithubFiles {
@@ -108,14 +108,13 @@ export const publishEpic = (
       return concat(
         of(
           sendNotification.create({
+            key: "github-publish",
             title: gistId
               ? "Updating Gist..."
               : "Publishing a New Gist...",
             message: gistId
               ? "💖📓💖"
               : "✨📓✨",
-            dismissible: true,
-            position: "tr",
             level: "success",
           })
         ),
@@ -137,10 +136,9 @@ export const publishEpic = (
                 contentRef,
               }),
               sendNotification.create({
+                key: "github-publish",
                 title: "Gist uploaded",
                 message: "📓 📢",
-                dismissible: true,
-                position: "tr",
                 level: "success",
                 action: {
                   label: "Open Gist",

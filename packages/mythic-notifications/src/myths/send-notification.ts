@@ -15,8 +15,6 @@ export const sendNotification =
           message:
             (action as any)?.payload?.error?.message
             ?? JSON.stringify((action as any)?.payload ?? action, null, 2),
-          dismissible: true,
-          position: "tr",
           level: "error",
         })),
       ),

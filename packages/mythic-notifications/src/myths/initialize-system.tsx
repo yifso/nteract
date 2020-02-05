@@ -27,7 +27,7 @@ export const NotificationRoot = createMythicConnectedComponent(
     }
 
     render(): JSX.Element {
-      return <Toaster ref={this.toaster}/>;
+      return <Toaster ref={this.toaster} position={"top-right"}/>;
     }
   },
 );

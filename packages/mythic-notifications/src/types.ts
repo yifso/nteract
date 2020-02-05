@@ -1,20 +1,12 @@
-import React from "react";
-
 export interface NotificationMessage {
-  title?: string | JSX.Element;
-  message?: string | JSX.Element;
-  level?: "error" | "warning" | "info" | "success";
-  position?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
-  autoDismiss?: number;
-  dismissible?: boolean;
+  key?: string;
+  title?: string;
+  message: string | JSX.Element;
+  level: "error" | "warning" | "info" | "success";
   action?: {
     label: string;
-    callback?: () => void;
+    callback: () => void;
   };
-  children?: React.ReactNode;
-  onAdd?: (notification: NotificationMessage) => void;
-  onRemove?: (notification: NotificationMessage) => void;
-  uid?: number | string;
 }
 
 export interface NotificationSystem {
