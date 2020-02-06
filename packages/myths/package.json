@@ -1,12 +1,12 @@
 {
-  "name": "@nteract/mythic-notifications",
+  "name": "@nteract/myths",
   "version": "0.1.0",
-  "description": "A notification system based on blueprintjs toasters and the myths redux framework",
+  "description": "A redux-observable framework for better locality of dependencies",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.ts",
   "scripts": {},
-  "repository": "https://github.com/nteract/nteract/tree/master/packages/mythic-notifications",
+  "repository": "https://github.com/nteract/nteract/tree/master/packages/myths",
   "keywords": [
     "nteract"
   ],
@@ -16,13 +16,13 @@
   "devDependencies": {
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.7.0",
-    "@nteract/myths": "^0.1.0",
-    "@nteract/types": "^5.0.0",
     "immutable": "^4.0.0-rc.12",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "styled-components": "^4.4.1"
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.0",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3"
   },
   "peerDependencies": {
   },
