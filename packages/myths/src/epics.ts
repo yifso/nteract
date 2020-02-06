@@ -1,8 +1,7 @@
-import { Action } from "redux";
 import { ActionsObservable, combineEpics, Epic } from "redux-observable";
 import { EMPTY, of } from "rxjs";
-import { mergeMap } from "rxjs/operators";
-import { MythDefinition, MythicAction, Myths } from "./types";
+import { filter, map, mergeMap } from "rxjs/operators";
+import { CreateEpicDefinition, EpicDefinition, MythicAction, Myths } from "./types";
 
 export const makeEpics = <
   PKG extends string,
@@ -11,17 +10,23 @@ export const makeEpics = <
   PROPS,
 >(
   create: (payload: PROPS) => MythicAction<PKG, NAME, PROPS>,
-  definition: MythDefinition<STATE, PROPS>,
+  definitions: Array<EpicDefinition<PROPS>>,
 ) => {
   const epics: Epic[] = [];
 
-  if (definition.createOn) {
-    epics.push(
-      (action$: ActionsObservable<Action>) =>
-        definition.createOn!(action$).pipe(
-          mergeMap(props => props ? of(create(props)) : EMPTY),
-        )
-    );
+  for (const definition of definitions ?? []) {
+    if ("create" in definition) {
+      const def: CreateEpicDefinition<PROPS> = definition;
+
+      epics.push(
+        (action$: ActionsObservable<MythicAction>) =>
+          action$.pipe(
+            filter(def.on),
+            map(def.create),
+            mergeMap(props => props ? of(create(props)) : EMPTY),
+          )
+      );
+    }
   }
 
   return epics;

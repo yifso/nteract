@@ -31,7 +31,7 @@ export const makeCreateMyth =
           (payload: PROPS) => ({ type: mythWIP.type!, payload });
 
         mythWIP.epics =
-          makeEpics(mythWIP.create, definition);
+          makeEpics(mythWIP.create, definition.epics);
 
         mythWIP.appliesTo =
           (action: Action) => action.type === mythWIP.type;

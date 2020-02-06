@@ -1,10 +1,13 @@
-import { sendNotification } from "@nteract/mythic-notifications";
-import * as fs from "fs";
-import * as path from "path";
+import { Breadcrumbs } from "@blueprintjs/core";
 
 import { actions, ContentRef, createKernelRef, selectors } from "@nteract/core";
+import { sendNotification } from "@nteract/mythic-notifications";
 import { ipcRenderer as ipc, remote, shell, webFrame } from "electron";
+import * as fs from "fs";
 import throttle from "lodash.throttle";
+import * as path from "path";
+import React from "react";
+import styled from "styled-components";
 import { DesktopStore } from "./store";
 
 type NotificationSystemRef = any;
@@ -611,16 +614,45 @@ export function exportPDF(
       );
 
       fs.writeFile(pdfPath, data, _error_fs => {
+        const path = pdfPath.split("/");
+        const Spacer = styled.div`
+          height: 30px;
+        `;
+        const NoWrap = styled.div`
+          white-space: nowrap;
+          position: absolute;
+          width: 250px;
+          
+          * { 
+            font-size: 14px !important;
+            background: transparent !important;
+          }
+          
+          li::after { margin: 0 3px !important; }
+        `;
+
         store.dispatch(sendNotification.create({
           title: "PDF exported",
-          message: `Notebook ${basepath} has been exported as a pdf.`,
+          message:
+            <>
+              <NoWrap>
+                <Breadcrumbs items={path.map((each, i) => ({
+                  text: each,
+                  icon: i === path.length - 1
+                    ? "document"
+                    : "folder-close",
+                  onClick: i === path.length - 1
+                    ? () => shell.openItem(pdfPath)
+                    : undefined,
+                }))}/>
+              </NoWrap>
+              <Spacer/>
+            </>,
           level: "success",
           action: {
-            label: "Open PDF",
-            callback(): void {
-              shell.openItem(pdfPath);
-            }
-          }
+            label: "Open",
+            callback: () => shell.openItem(pdfPath),
+          },
         }));
       });
     }

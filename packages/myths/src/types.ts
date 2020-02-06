@@ -8,8 +8,8 @@ export interface Myths<PKG extends string, STATE> {
 }
 
 export interface MythicAction<
-  PKG extends string,
-  NAME extends string,
+  PKG extends string = string,
+  NAME extends string = string,
   PROPS = void,
 > extends Action {
   type: string;
@@ -56,11 +56,18 @@ export type ReducerDefinition<STATE, PROPS> = (
 ) => RecordOf<STATE> | void;
 
 export interface MythDefinition<STATE, PROPS> {
-  reduce?: ReducerDefinition<STATE, PROPS>,
-  createOn?: (
-    action$: ActionsObservable<Action>,
-  ) => Observable<PROPS | void>
+  reduce?: ReducerDefinition<STATE, PROPS>;
+  epics: Array<EpicDefinition<PROPS>>;
 }
+
+export interface CreateEpicDefinition<PROPS> {
+  on: (action: MythicAction) => boolean;
+  create: (action: MythicAction) => PROPS | void;
+}
+
+export type EpicDefinition<PROPS> =
+  | CreateEpicDefinition<PROPS>
+  ;
 
 export interface PackageDefinition<STATE> {
   initialState: STATE;
