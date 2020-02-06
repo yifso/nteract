@@ -21,7 +21,7 @@
     "@nteract/commutable": "^7.2.4-alpha.0",
     "@nteract/connected-components": "^6.7.6-alpha.0",
     "@nteract/core": "^12.0.0-alpha.0",
-    "@nteract/data-explorer": "^7.2.3-alpha.0",
+    "@nteract/data-explorer": "^8.0.0",
     "@nteract/directory-listing": "^2.0.10-alpha.0",
     "@nteract/editor": "^9.6.0-alpha.0",
     "@nteract/iron-icons": "^1.0.0",
