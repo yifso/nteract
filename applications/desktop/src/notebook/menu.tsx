@@ -614,7 +614,7 @@ export function exportPDF(
       );
 
       fs.writeFile(pdfPath, data, _error_fs => {
-        const path = pdfPath.split("/");
+        const pdfPathParts = pdfPath.split("/");
         const Spacer = styled.div`
           height: 30px;
         `;
@@ -636,12 +636,12 @@ export function exportPDF(
           message:
             <>
               <NoWrap>
-                <Breadcrumbs items={path.map((each, i) => ({
+                <Breadcrumbs items={pdfPathParts.map((each, i) => ({
                   text: each,
-                  icon: i === path.length - 1
+                  icon: i === pdfPathParts.length - 1
                     ? "document"
                     : "folder-close",
-                  onClick: i === path.length - 1
+                  onClick: i === pdfPathParts.length - 1
                     ? () => shell.openItem(pdfPath)
                     : undefined,
                 }))}/>

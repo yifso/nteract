@@ -147,7 +147,7 @@ export function createTitleFeed(
 
 export function initNativeHandlers(
   contentRef: ContentRef,
-  store: Store<AppState, Actions>
+  store: Store<AppState, any>
 ) {
   const state$ = new Observable<AppState>(observer => {
     const unsubscribe = store.subscribe(() => {

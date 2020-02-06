@@ -1,13 +1,13 @@
 import { makeMakeRootEpic } from "./epics";
 import { makeCreateMyth } from "./myth";
 import { makeRootReducer } from "./reducer";
-import { Myths, PackageDefinition } from "./types";
+import { MythicPackage, Myths, PackageDefinition } from "./types";
 
 export const createMythicPackage =
   <PKG extends string>(pkg: PKG) =>
     <STATE>(
       packageDefinition: PackageDefinition<STATE>,
-    ) => {
+    ): MythicPackage<PKG, STATE> => {
       const myths: Myths<PKG, STATE> = {};
 
       return {

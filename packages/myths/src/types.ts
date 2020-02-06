@@ -1,7 +1,6 @@
 import { RecordOf } from "immutable";
-import { Action } from "redux";
-import { ActionsObservable, Epic } from "redux-observable";
-import { Observable } from "rxjs";
+import { Action, Reducer } from "redux";
+import { Epic } from "redux-observable";
 
 export interface Myths<PKG extends string, STATE> {
   [key: string]: Myth<PKG, string, any, STATE>
@@ -50,6 +49,23 @@ export interface Myth<
   ) => any;
 }
 
+export interface MythicPackage<
+  PKG extends string = string,
+  STATE = any
+> {
+  name: PKG;
+  myths: Myths<PKG, STATE>;
+
+  // The following is undefined, but can be used in typeof expressions
+  state: STATE;
+
+  makeRootEpic: () => Epic;
+  rootReducer: Reducer<RecordOf<STATE>, MythicAction>;
+  createMyth: <NAME extends string>(name: NAME) =>
+    <PROPS>(definition: MythDefinition<STATE, PROPS>) =>
+      Myth<PKG, NAME, PROPS, STATE>;
+}
+
 export type ReducerDefinition<STATE, PROPS> = (
   state: RecordOf<STATE>,
   action: MythicAction<string, string, PROPS>,
@@ -57,7 +73,7 @@ export type ReducerDefinition<STATE, PROPS> = (
 
 export interface MythDefinition<STATE, PROPS> {
   reduce?: ReducerDefinition<STATE, PROPS>;
-  epics: Array<EpicDefinition<PROPS>>;
+  epics?: Array<EpicDefinition<PROPS>>;
 }
 
 export interface CreateEpicDefinition<PROPS> {
