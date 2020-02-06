@@ -234,6 +234,13 @@ export function dispatchPublishGist(
   }
 
   // If the Github Token isn't set, use our oauth server to acquire a token
+  store.dispatch(sendNotification.create({
+    key: "github-publish",
+    icon: "book",
+    title: "Publishing Gist",
+    message: "Authenticating...",
+    level: "in-progress",
+  }));
 
   // Because the remote object from Electron main <--> renderer can be
   // "cleaned up"
@@ -257,18 +264,13 @@ export function dispatchPublishGist(
       electronRemote.ipcMain.on("auth", (_authEvent: Event, auth: string) => {
         try {
           const accessToken = JSON.parse(auth).access_token;
-          store.dispatch(sendNotification.create({
-            key: "github-publish",
-            title: "Authenticating",
-            message: "...",
-            level: "info",
-          }));
           store.dispatch(actions.setGithubToken(accessToken));
           store.dispatch(sendNotification.create({
             key: "github-publish",
-            title: "Authenticated",
-            message: "🔒",
-            level: "info",
+            icon: "book",
+            title: "Publishing Gist",
+            message: "Authenticated 🔒",
+            level: "in-progress",
           }));
           // We are now authenticated and can finally publish
           store.dispatch(actions.publishGist(ownProps));

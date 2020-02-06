@@ -1,7 +1,9 @@
-import { Toaster } from "@blueprintjs/core";
+import { Classes, Toaster } from "@blueprintjs/core";
+import { selectors } from "@nteract/core";
 import React, { RefObject } from "react";
+import styled from "styled-components";
 import { blueprintjsNotificationSystem } from "../backends/blueprintjs";
-import { createMythicConnectedComponent, MythicComponent } from "../external/myths";
+import { MythicComponent } from "../external/myths";
 import { notifications } from "../package";
 
 const initializeSystem =
@@ -10,10 +12,15 @@ const initializeSystem =
       state.set("current", action.payload.current),
   });
 
-export const NotificationRoot = createMythicConnectedComponent(
+const DoNotPrint = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
+export const NotificationRoot = initializeSystem.createConnectedComponent(
   "NotificationRoot",
-  initializeSystem,
-  class extends MythicComponent<typeof initializeSystem> {
+  class extends MythicComponent<typeof initializeSystem, { theme: string }> {
     toaster?: RefObject<Toaster>;
 
     postConstructor(): void {
@@ -27,7 +34,17 @@ export const NotificationRoot = createMythicConnectedComponent(
     }
 
     render(): JSX.Element {
-      return <Toaster ref={this.toaster} position={"top-right"}/>;
+      return (
+        <DoNotPrint>
+          <Toaster
+            ref={this.toaster}
+            usePortal={false}
+            position={"top-right"}
+            className={this.props.theme === "dark" ? Classes.DARK : undefined}
+          />
+        </DoNotPrint>
+      );
     }
   },
+  (state) => ({theme: selectors.currentTheme(state)}),
 );

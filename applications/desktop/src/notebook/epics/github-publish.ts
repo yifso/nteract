@@ -109,13 +109,12 @@ export const publishEpic = (
         of(
           sendNotification.create({
             key: "github-publish",
-            title: gistId
-              ? "Updating Gist..."
-              : "Publishing a New Gist...",
+            icon: "book",
+            title: "Publishing Gist",
             message: gistId
-              ? "💖📓💖"
-              : "✨📓✨",
-            level: "success",
+              ? "Updating Gist... 💖📓💖"
+              : "Publishing a new Gist... ✨📓✨",
+            level: "in-progress",
           })
         ),
         publishGist(
@@ -137,11 +136,11 @@ export const publishEpic = (
               }),
               sendNotification.create({
                 key: "github-publish",
-                title: "Gist uploaded",
-                message: "📓 📢",
+                title: "Publishing Gist",
+                message: "Gist uploaded 📓📢",
                 level: "success",
                 action: {
-                  label: "Open Gist",
+                  label: "Open",
                   callback: () =>
                     shell.openExternal(`https://nbviewer.jupyter.org/${xhr.response.id}`),
                 },

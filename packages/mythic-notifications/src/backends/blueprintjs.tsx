@@ -1,26 +1,53 @@
-import { Callout, Intent, Toaster } from "@blueprintjs/core";
+import { Callout, Intent, Spinner, Toaster } from "@blueprintjs/core";
 import React from "react";
 import { NotificationMessage, NotificationSystem } from "../types";
 
+const spinnerStyle = {
+  float: "right" as "right", // lol tsc shut up :P
+};
+
+const calloutStyle = {
+  margin: "-11px 0 -11px -11px",
+  background: "transparent",
+};
 
 export const blueprintjsNotificationSystem =
   (toaster: Toaster): NotificationSystem => ({
     addNotification: (msg: NotificationMessage) => {
-      const intent = ({
+      const intent = {
+        "in-progress": Intent.PRIMARY,
+        info: Intent.PRIMARY,
+        success: Intent.SUCCESS,
         warning: Intent.WARNING,
-        error: Intent.DANGER
-      } as any)[msg.level ?? "info"] ?? Intent.PRIMARY;
+        error: Intent.DANGER,
+      }[msg.level ?? "info"];
 
       toaster.show({
         message: (
-          <Callout title={msg.title} intent={intent}>
-            {msg.message}
-          </Callout>
+          <>
+            {msg.level === "in-progress"
+              ? <div style={spinnerStyle}>
+                  <Spinner size={20} intent={intent}/>
+                </div>
+              : null}
+            <Callout
+              icon={msg.icon}
+              title={msg.title}
+              intent={intent}
+              style={calloutStyle}
+            >
+              {msg.message}
+            </Callout>
+          </>
         ),
         action: msg.action
-          ? { text: msg.action.label, onClick: msg.action.callback }
+          ? {
+              icon: msg.action.icon ?? "arrow-right",
+              text: msg.action.label,
+              onClick: msg.action.callback,
+            }
           : undefined,
-        timeout: msg.action
+        timeout: msg.action || msg.level === "in-progress"
           ? 0
           : 10_000,
       }, msg.key);

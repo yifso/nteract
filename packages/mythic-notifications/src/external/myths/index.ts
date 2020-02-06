@@ -1,3 +1,4 @@
+import { AppState } from "@nteract/types";
 import { default as Immutable, RecordOf } from "immutable";
 import React from "react";
 import { connect } from "react-redux";
@@ -5,7 +6,6 @@ import { Action } from "redux";
 import { ActionsObservable, combineEpics, Epic } from "redux-observable";
 import { EMPTY, Observable, of } from "rxjs";
 import { mergeMap } from "rxjs/operators";
-import { NotificationRoot } from "../..";
 
 export interface MythicAction<
   PKG extends string,
@@ -33,6 +33,11 @@ export interface Myth<
   appliesTo: (action: Action) => boolean,
   reduce?: (state: RecordOf<STATE>, action: Action) => RecordOf<STATE>,
   epics: Epic[],
+  createConnectedComponent: <COMPONENT_NAME extends string>(
+    componentName: COMPONENT_NAME,
+    cls: any,
+    makeState: ((state: AppState) => any) | null,
+  ) => any;
 }
 
 export const createMythicPackage =
@@ -118,7 +123,22 @@ export const createMythicPackage =
                         mergeMap(props => props ? of(create(props)) : EMPTY),
                       )
                     : null,
-                ].filter(epic => epic !== null) as Epic[]
+                ].filter(epic => epic !== null) as Epic[],
+
+                createConnectedComponent: <
+                  COMPONENT_NAME extends string,
+                >(
+                  componentName: COMPONENT_NAME,
+                  cls: any,
+                  makeState: ((state: AppState) => any) | null = null,
+                ) => {
+                  const component = connect(
+                    makeState,
+                    { [myth.name]: myth.create },
+                  )(cls);
+                  component.displayName = componentName;
+                  return component;
+                },
               };
 
               if (myths.hasOwnProperty(name)) {
@@ -132,11 +152,11 @@ export const createMythicPackage =
       };
     };
 
-export class MythicComponent<MYTH extends Myth>
+export class MythicComponent<MYTH extends Myth, PROPS = {}>
   extends React.PureComponent<{
   [key in MYTH["name"]]: (payload: MYTH["props"]) => void;
-}> {
-  constructor(props: any) {
+} & PROPS> {
+  constructor(props: MYTH["props"] & PROPS) {
     super(props);
     this.postConstructor();
   }
@@ -145,20 +165,3 @@ export class MythicComponent<MYTH extends Myth>
     // Override in subclasses
   };
 }
-
-export const createMythicConnectedComponent = <
-  NAME extends string,
-  MYTH extends Myth,
->(
-  name: NAME,
-  myth: MYTH,
-  cls: any,
-) => {
-  const component = connect(
-    null,
-    { [myth.name]: myth.create },
-  )(cls);
-
-  component.displayName = "NotificationRoot";
-  return component;
-};
