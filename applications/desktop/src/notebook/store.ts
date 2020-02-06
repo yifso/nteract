@@ -1,8 +1,8 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
-import { allEpics } from "@nteract/epics";
 import { notifications } from "@nteract/mythic-notifications";
 import { makeConfigureStore } from "@nteract/myths";
 import { Store } from "redux";
+import epics from "./epics";
 import { LocalContentProvider } from "./local-content-provider";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
@@ -19,7 +19,7 @@ export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
     core: reducers.core as any,
     desktopNotebook: handleDesktopNotebook,
   },
-  epics: allEpics,
+  epics,
   epicMiddleware:
     process.env.DEBUG === "true"
       ? [coreMiddlewares.logger()]

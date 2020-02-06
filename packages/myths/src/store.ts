@@ -26,9 +26,9 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
     ),
   );
 
-  const epicMiddleware = createEpicMiddleware<any, any, STATE, any>(
-    definition.epicDependencies ?? {}
-  );
+  const epicMiddleware = createEpicMiddleware<any, any, STATE, any>({
+    dependencies: definition.epicDependencies ?? {},
+  });
 
   const rootEpic = (
     action$: ActionsObservable<any>,
