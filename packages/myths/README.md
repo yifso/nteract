@@ -1,33 +1,61 @@
-# @nteract/mythic-notifications
+# myths (currently: @nteract/myths, TBC)
 
-This package implements a React component with a Monaco-based code editor. To see this package in action, you can view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
+**This is a pre-alpha level package; interfaces are not stable yet!**
+
+This framework allows for integrating sets of closely related actions, reducers and epics while mainting high DRY and minimizing dependencies. It provides for a structured way to avoid boilerplate. 
 
 ## Installation
 
 ```
-$ yarn add @nteract/monaco-editor
+$ yarn add myths
 ```
 
 ```
-$ npm install --save @nteract/monaco-editor
+$ npm install --save myths
 ```
 
 ## Usage
 
-The example below shows how we can use this package to render an editor for plain-text content.
+First, create a `MythicPackage` with a name, a type for its private state, and the initial state:
 
-```javascript
-import MonacoEditor from "@nteract/monaco-editor";
+```typescript
+export const iCanAdd = createMythicPackage("iCanAdd")<
+  {
+    sum: number;
+  }
+>({
+  initialState: {
+    sum: 0,
+  },
+});
+```
 
-export default () => {
-  return (
-    <MonacoEditor
-      theme="vscode"
-      mode="text/plain"
-      value={"These are some words in an editor."}
-    />
-  );
-};
+You can the use the package to create a `Myth`, again with a name, a type for its payload and optionally a reducer operating on its package's private state:
+
+```typescript
+export const addToSum =
+  iCanAdd.createMyth("addToSum")<number>({
+    reduce: (state, action) =>
+      state.set("sum", state.get("sum") + action.payload),
+  });
+```
+
+A package can have any number of myths. To create an action based on a myth, use its create function. You can then dispatch this action normally:
+
+```typescript
+store.dispatch(addToSum.create(8));
+```
+
+You get a store from a set of mythic packages, which has all the appropriate reducers and epics already in place:
+
+```typescript
+type NonPrivateState = { foo: string };
+const configureStore = makeConfigureStore<NonPrivateState>()({
+  packages: [
+    iCanAdd,
+  ],
+});
+export const store = configureStore({ foo: "bar" });
 ```
 
 ## Documentation
@@ -36,7 +64,7 @@ We're working on adding more documentation for this component. Stay tuned by wat
 
 ## Support
 
-If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:monaco-editor` label.
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:myths` label.
 
 ## License
 

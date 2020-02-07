@@ -481,15 +481,6 @@ describe("createCellAppend", () => {
   });
 });
 
-describe("setNotificationSystem", () => {
-  test("creates a SET_NOTIFICATION_SYSTEM action", () => {
-    expect(actions.setNotificationSystem(null)).toEqual({
-      type: actionTypes.SET_NOTIFICATION_SYSTEM,
-      payload: { notificationSystem: null }
-    });
-  });
-});
-
 describe("overwriteMetadataField", () => {
   test("creates an OVERWRITE_METADATA_FIELD", () => {
     const contentRef = createContentRef();

@@ -48,7 +48,7 @@ describe("publishEpic", () => {
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
-        expect(types).toEqual(["CORE/ERROR"]);
+        expect(types).toEqual(["notifications/sendNotification", "CORE/ERROR"]);
       },
       err => done.fail(err),
       () => done()

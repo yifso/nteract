@@ -1,42 +1,72 @@
 # @nteract/mythic-notifications
 
-This package implements a React component with a Monaco-based code editor. To see this package in action, you can view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
+*N.B.: I don't really like the `mythic-` part of this name, but I like this and future `myths`-based packages to sort together...*
+
+This package implements a notification system based on `blueprintjs`.
 
 ## Installation
 
 ```
-$ yarn add @nteract/monaco-editor
+$ yarn add @nteract/mythic-notifications
 ```
 
 ```
-$ npm install --save @nteract/monaco-editor
+$ npm install --save @nteract/mythic-notifications
 ```
 
 ## Usage
 
-The example below shows how we can use this package to render an editor for plain-text content.
+Initialize the package by including the `notifications` package in your store and rendering the `<NotificationsRoot/>`:
 
 ```javascript
-import MonacoEditor from "@nteract/monaco-editor";
+import { notifications, NotificationRoot } from "@nteract/mythic-notifications";
+import { makeConfigureStore } from "@nteract/myths";
 
-export default () => {
-  return (
-    <MonacoEditor
-      theme="vscode"
-      mode="text/plain"
-      value={"These are some words in an editor."}
-    />
-  );
-};
+export const configureStore = makeConfigureStore({
+  packages: [notifications],
+});
+
+export const App = () =>
+    <>
+      {/* ... */}
+      <NotificationRoot darkTheme={false} />
+    </>
 ```
 
-## Documentation
+Then dispatch actions made by `sendNotification.create`:
 
-We're working on adding more documentation for this component. Stay tuned by watching this repository!
+```javascript
+import { sendNotification } from "@nteract/mythic-notifications";
+
+store.dispatch(sendNotification.create({
+  title: "Hello World!",
+  message: <em>Hi out there!</em>,
+  level: "info",
+}));
+```
+
+## API
+
+```typescript
+import { IconName } from "@blueprintjs/core";
+
+export interface NotificationMessage {
+  key?: string;
+  icon?: IconName;
+  title?: string;
+  message: string | JSX.Element;
+  level: "error" | "warning" | "info" | "success" | "in-progress";
+  action?: {
+    icon?: IconName;
+    label: string;
+    callback: () => void;
+  };
+}
+```
 
 ## Support
 
-If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:monaco-editor` label.
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:mythic-notifications` label.
 
 ## License
 
