@@ -1,6 +1,5 @@
 import { Classes, Toaster } from "@blueprintjs/core";
 import { MythicComponent } from "@nteract/myths";
-import { AppState } from "@nteract/types";
 import React, { RefObject } from "react";
 import styled from "styled-components";
 import { blueprintjsNotificationSystem } from "../backends/blueprintjs";
@@ -23,7 +22,10 @@ const DoNotPrint =
 export const NotificationRoot =
   initializeSystem.createConnectedComponent(
     "NotificationRoot",
-    class extends MythicComponent<typeof initializeSystem, { theme: string }> {
+    class extends MythicComponent<
+      typeof initializeSystem,
+      { darkTheme?: boolean }
+    > {
       toaster?: RefObject<Toaster>;
 
       postConstructor(): void {
@@ -42,14 +44,11 @@ export const NotificationRoot =
             <Toaster
               ref={this.toaster}
               position={"top-right"}
-              className={this.props.theme === "dark" ? Classes.DARK : undefined}
+              className={this.props.darkTheme ? Classes.DARK : undefined}
               usePortal={false}   // needed for the theme class to bubble down
             />
           </DoNotPrint>
         );
       }
     },
-    (state: AppState) => ({
-      theme: state.config.get("theme"),
-    }),
   );

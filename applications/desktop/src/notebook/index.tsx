@@ -10,7 +10,6 @@ import { ContentRecord, ContentRef, createContentRef, makeAppRecord, makeCommsRe
 import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
-import { NotificationRoot } from "@nteract/mythic-notifications";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
 
@@ -46,7 +45,6 @@ import configureStore, { DesktopStore } from "./store";
 
 // Load the nteract fonts
 import("./fonts");
-
 // Needs to be last
 import "@nteract/styles/editor-overrides.css";
 
@@ -159,7 +157,6 @@ export default class App extends React.PureComponent {
             contentRef={contentRef}
           />
         </MathJax.Provider>
-        <NotificationRoot/>
       </Provider>
     );
   }

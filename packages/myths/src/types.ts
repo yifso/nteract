@@ -1,6 +1,9 @@
 import { RecordOf } from "immutable";
+import { ComponentClass } from "react";
+import { ConnectedComponent } from "react-redux";
 import { Action, Reducer } from "redux";
 import { Epic } from "redux-observable";
+import { MythicComponent } from "./react";
 
 export interface Myths<PKG extends string, STATE> {
   [key: string]: Myth<PKG, string, any, STATE>
@@ -15,6 +18,14 @@ export interface MythicAction<
   payload: PROPS;
   error?: boolean;
 }
+
+export type ConnectedComponentProps<
+  MYTH_NAME extends string,
+  MYTH_PROPS,
+  ADDITIONAL_PROPS,
+> = {
+  [key in MYTH_NAME]: (payload: MYTH_PROPS) => void;
+} & ADDITIONAL_PROPS;
 
 export interface Myth<
   PKG extends string = string,
@@ -42,11 +53,11 @@ export interface Myth<
   reduce?: (state: RecordOf<STATE>, action: Action) => RecordOf<STATE>,
 
   // Build a component that can emit actions of this Myth
-  createConnectedComponent: <COMPONENT_NAME extends string>(
+  createConnectedComponent: <COMPONENT_NAME extends string, COMPONENT_PROPS>(
     componentName: COMPONENT_NAME,
-    cls: any,
-    makeState: ((state: any) => any) | null,
-  ) => any;
+    cls: ComponentClass<ConnectedComponentProps<NAME, PROPS, COMPONENT_PROPS>>,
+    makeState?: (state: any) => Partial<COMPONENT_PROPS>,
+  ) => ConnectedComponent<ComponentClass<COMPONENT_PROPS>, COMPONENT_PROPS>;
 }
 
 export interface MythicPackage<

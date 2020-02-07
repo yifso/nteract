@@ -1,10 +1,11 @@
 import { Callout, Intent, Spinner, Toaster } from "@blueprintjs/core";
 import React from "react";
+import styled from "styled-components";
 import { NotificationMessage, NotificationSystem } from "../types";
 
-const spinnerStyle = {
-  float: "right" as "right", // lol tsc shut up :P
-};
+const FloatRight = styled.div`
+  float: right;
+`;
 
 const calloutStyle = {
   margin: "-11px 0 -11px -11px",
@@ -26,9 +27,9 @@ export const blueprintjsNotificationSystem =
         message: (
           <>
             {msg.level === "in-progress"
-              ? <div style={spinnerStyle}>
+              ? <FloatRight>
                   <Spinner size={20} intent={intent}/>
-                </div>
+                </FloatRight>
               : null}
             <Callout
               icon={msg.icon}

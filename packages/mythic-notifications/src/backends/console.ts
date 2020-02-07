@@ -2,15 +2,10 @@ import { NotificationMessage, NotificationSystem } from "../types";
 
 export const consoleNotificationSystem: NotificationSystem = {
   addNotification: (msg: NotificationMessage) => {
-    let logger = console.log.bind(console);
     switch (msg.level) {
-      case "error":
-        logger = console.error.bind(console);
-        break;
-      case "warning":
-        logger = console.warn.bind(console);
-        break;
+      case "error":     console.error (msg.title, msg); break;
+      case "warning":   console.warn  (msg.title, msg); break;
+      default:          console.log   (msg.title, msg); break;
     }
-    logger(msg);
   }
 };

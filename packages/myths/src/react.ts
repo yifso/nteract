@@ -1,12 +1,18 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Myth } from "./types";
+import React, { ComponentClass } from "react";
+import { connect, ConnectedComponent } from "react-redux";
+import { ConnectedComponentProps, Myth } from "./types";
 
 export class MythicComponent<MYTH extends Myth, PROPS = {}>
-  extends React.PureComponent<{
-    [key in MYTH["name"]]: (payload: MYTH["props"]) => void;
-  } & PROPS> {
-  constructor(props: MYTH["props"] & PROPS) {
+  extends React.PureComponent<ConnectedComponentProps<
+    MYTH["name"],
+    MYTH["props"],
+    PROPS
+  >> {
+  constructor(props: ConnectedComponentProps<
+    MYTH["name"],
+    MYTH["props"],
+    PROPS
+  >) {
     super(props);
     this.postConstructor();
   }
@@ -17,17 +23,13 @@ export class MythicComponent<MYTH extends Myth, PROPS = {}>
 }
 
 export const makeCreateConnectedComponent =
-  <MYTH extends Myth>(myth: MYTH) => {
+  <MYTH extends Myth>(myth: MYTH): typeof myth.createConnectedComponent => {
     return (
-      <COMPONENT_NAME extends string>(
-        componentName: COMPONENT_NAME,
-        cls: any,
-        makeState: ((state: any) => any) | null = null,
-      ) => {
+      (componentName, cls, makeState) => {
         const component = connect(
-          makeState,
+          makeState ?? null,
           { [myth.name]: myth.create },
-        )(cls);
+        )(cls as any);
         component.displayName = componentName;
         return component;
       }
