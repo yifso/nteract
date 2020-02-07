@@ -177,6 +177,16 @@ module.exports = {
       name: "@nteract/stateful-components",
       version: "1.0.0",
       private: false
+    },
+    {
+      name: "@nteract/mythic-notifications",
+      version: "0.1.0",
+      private: false
+    },
+    {
+      name: "@nteract/myths",
+      version: "0.1.0",
+      private: false
     }
   ]
 };

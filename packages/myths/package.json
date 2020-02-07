@@ -16,15 +16,15 @@
   "devDependencies": {
   },
   "dependencies": {
-    "immutable": "^4.0.0-rc.12",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
     "react-redux": "^6.0.0",
     "redux": "^4.0.0",
     "redux-observable": "^1.0.0",
     "rxjs": "^6.3.3"
   },
   "peerDependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
   },
   "author": "Magdalena Kiesel <magda.kiesel@gmx.net>",
   "license": "BSD-3-Clause"
