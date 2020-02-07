@@ -1,5 +1,5 @@
-import React, { ComponentClass } from "react";
-import { connect, ConnectedComponent } from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 import { ConnectedComponentProps, Myth } from "./types";
 
 export class MythicComponent<MYTH extends Myth, PROPS = {}>

@@ -3,7 +3,6 @@ import { ComponentClass } from "react";
 import { ConnectedComponent } from "react-redux";
 import { Action, Reducer } from "redux";
 import { Epic } from "redux-observable";
-import { MythicComponent } from "./react";
 
 export interface Myths<PKG extends string, STATE> {
   [key: string]: Myth<PKG, string, any, STATE>
