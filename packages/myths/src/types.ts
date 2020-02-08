@@ -1,4 +1,4 @@
-import { default as Immutable, RecordOf } from "immutable";
+import { RecordOf } from "immutable";
 import { ComponentClass } from "react";
 import { ConnectedComponent } from "react-redux";
 import { Action, Reducer } from "redux";
