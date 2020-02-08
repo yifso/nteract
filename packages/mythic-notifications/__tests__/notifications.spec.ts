@@ -10,7 +10,7 @@ describe("notifications", () => {
     const originalState = notifications.makeStateRecord({
       current: {
         addNotification: jest.fn(),
-      }
+      },
     });
 
     const state = notifications.rootReducer(originalState,
@@ -18,7 +18,7 @@ describe("notifications", () => {
         title: "add me add me add me",
         message: "you just gotta addNotification() me",
         level: "info",
-      }
+      },
     ));
 
     expect(state).toEqual(originalState);

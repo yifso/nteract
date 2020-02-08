@@ -1,5 +1,6 @@
 jest.mock("fs");
 import { actions, makeAppRecord, selectors } from "@nteract/core";
+import { sendNotification } from "@nteract/mythic-notifications";
 import { ipcRenderer as ipc, remote, webFrame } from "electron";
 import * as Immutable from "immutable";
 
@@ -746,6 +747,69 @@ describe("triggerWindowRefresh", () => {
         filepath,
         contentRef: "123"
       })
+    );
+  });
+});
+
+describe("exportPDF", () => {
+  test("it notifies a user upon successful write", () => {
+    const state = mockAppState({});
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const store = {
+      dispatch: jest.fn(),
+      getState: jest.fn(() => state),
+    };
+    const filepath = "thisisafilename.ipynb";
+    menu.exportPDF({ contentRef }, store, filepath);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      sendNotification.create({
+        title: "PDF exported",
+        message: expect.anything(),
+        level: "success",
+        action: {
+          label: "Open",
+          callback: expect.any(Function),
+        },
+      }),
+    );
+  });
+});
+
+describe("storeToPDF", () => {
+  test("triggers notification when not saved", () => {
+    const props = {
+      contentRef: "123"
+    };
+
+    const store = {
+      dispatch: jest.fn(),
+      getState: () => ({
+        core: {
+          entities: {
+            contents: {
+              byRef: Immutable.Map({
+                "123": {
+                  filepath: null
+                }
+              })
+            }
+          }
+        },
+      })
+    };
+
+    menu.storeToPDF(props, store);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      sendNotification.create({
+        action: { callback: expect.any(Function), label: "Save As" },
+        title: "File has not been saved!",
+        message: expect.stringContaining(
+          "Click the button below to save the notebook"
+        ),
+        level: "warning"
+      }),
     );
   });
 });
