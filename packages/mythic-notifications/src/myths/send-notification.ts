@@ -6,7 +6,7 @@ const titleFromAction = (action: MythicAction) => {
   const text = action.type
     .replace(/.*\//, "")
     .replace(/([a-z])([A-Z])/g, (...x: string[]) => `${x[1]} ${x[2]}`)
-    .replace("_", " ");
+    .replace(/_/g, " ");
   return (
     text.charAt(0).toUpperCase() +
     text.substr(1).toLowerCase()

@@ -11,6 +11,7 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
     epics: Epic[],
     epicMiddleware?: Middleware[],
     epicDependencies?: DEPS,
+    enhancer?: (enhancer: any) => any,
   }
 ) => {
   const rootReducer = combineReducers(
@@ -33,7 +34,7 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
   const rootEpic = (
     action$: ActionsObservable<any>,
     store$: StateObservable<any>,
-    dependencies: any
+    dependencies: any,
   ) =>
     combineEpics(
       ...definition.epics,
@@ -47,10 +48,16 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
     );
 
   return (initialState: Partial<STATE>): Store<STATE, MythicAction> => {
+    const baseEnhancer = applyMiddleware(
+      epicMiddleware,
+      ...(definition.epicMiddleware ?? []),
+    );
     const store = createStore(
       rootReducer,
       (initialState as unknown) as any,
-      applyMiddleware(epicMiddleware, ...(definition.epicMiddleware ?? []))
+      definition.enhancer
+        ? definition.enhancer(baseEnhancer)
+        : baseEnhancer,
     );
     epicMiddleware.run(rootEpic);
 
