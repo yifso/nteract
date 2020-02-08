@@ -7,8 +7,8 @@ import { MythicAction, MythicPackage } from "./types";
 export const makeConfigureStore = <STATE>() => <DEPS>(
   definition: {
     packages: MythicPackage[],
-    reducers: ReducersMapObject<STATE, any>
-    epics: Epic[],
+    reducers?: ReducersMapObject<STATE, any>
+    epics?: Epic[],
     epicMiddleware?: Middleware[],
     epicDependencies?: DEPS,
     enhancer?: (enhancer: any) => any,
@@ -16,7 +16,7 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
 ) => {
   const rootReducer = combineReducers(
     Object.assign(
-      definition.reducers,
+      definition.reducers ?? {},
       {
         __private__: combineReducers(
           definition.packages
@@ -37,7 +37,7 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
     dependencies: any,
   ) =>
     combineEpics(
-      ...definition.epics,
+      ...(definition.epics ?? []),
       ...definition.packages
         .map(pkg => pkg.makeRootEpic()),
     )(action$, store$, dependencies).pipe(
