@@ -15,6 +15,7 @@ const titleFromAction = (action: MythicAction) => {
 
 const messageFromAction = (action: MythicAction) =>
   (action as any)?.payload?.error?.message
+  ?? (action as any)?.payload?.message
   ?? JSON.stringify((action as any)?.payload ?? action, null, 2);
 
 export const sendNotification =

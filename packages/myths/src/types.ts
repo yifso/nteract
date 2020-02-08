@@ -1,4 +1,4 @@
-import { RecordOf } from "immutable";
+import { default as Immutable, RecordOf } from "immutable";
 import { ComponentClass } from "react";
 import { ConnectedComponent } from "react-redux";
 import { Action, Reducer } from "redux";
@@ -11,7 +11,7 @@ export interface Myths<PKG extends string, STATE> {
 export interface MythicAction<
   PKG extends string = string,
   NAME extends string = string,
-  PROPS = void,
+  PROPS = any,
 > extends Action {
   type: string;
   payload: PROPS;
@@ -69,6 +69,7 @@ export interface MythicPackage<
   // The following is undefined, but can be used in typeof expressions
   state: STATE;
 
+  makeStateRecord: (state: STATE) => RecordOf<STATE>,
   makeRootEpic: () => Epic;
   rootReducer: Reducer<RecordOf<STATE>, MythicAction>;
   createMyth: <NAME extends string>(name: NAME) =>

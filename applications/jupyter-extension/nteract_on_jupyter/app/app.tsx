@@ -10,10 +10,7 @@ class App extends React.Component<{ contentRef: ContentRef }> {
 
   render(): JSX.Element {
     return (
-      <React.Fragment>
-        <Contents contentRef={this.props.contentRef} />
-
-      </React.Fragment>
+      <Contents contentRef={this.props.contentRef} />
     );
   }
 }

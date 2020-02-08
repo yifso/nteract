@@ -30,7 +30,7 @@ export const makeRootReducer = <PKG extends string, STATE>(
 ) =>
   (
     state: RecordOf<STATE> = Immutable.Record<STATE>(initialState)(),
-    action: Action,
+    action: MythicAction,
   ) => {
     const applicableMyths = Object
       .values(myths)

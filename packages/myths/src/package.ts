@@ -1,3 +1,4 @@
+import * as Immutable from "immutable";
 import { makeMakeRootEpic } from "./epics";
 import { makeCreateMyth } from "./myth";
 import { makeRootReducer } from "./reducer";
@@ -16,6 +17,10 @@ export const createMythicPackage =
 
         // for use in typeof expressions:
         state: undefined as unknown as STATE,
+
+        makeStateRecord: Immutable.Record<STATE>(
+          packageDefinition.initialState,
+        ),
 
         makeRootEpic:
           makeMakeRootEpic(myths),
