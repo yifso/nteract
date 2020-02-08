@@ -322,11 +322,10 @@ describe("dispatchRestartKernel", () => {
 
 describe("dispatchInterruptKernel", () => {
   test("dispatches INTERRUPT_KERNEL actions", () => {
-    const notificationSystem = { addNotification: jest.fn() };
     const store = {
       dispatch: jest.fn(),
       getState: () => ({
-        app: Immutable.Map({ notificationSystem }),
+        app: Immutable.Map({}),
         core: {
           entities: {
             contents: {
@@ -363,8 +362,6 @@ describe("dispatchInterruptKernel", () => {
           contentRef: "123"
         }
       });
-    } else {
-      expect(notificationSystem.addNotification).toHaveBeenCalled();
     }
   });
 });
@@ -780,7 +777,6 @@ describe("dispatchInterruptKernel", () => {
 
 describe("exportPDF", () => {
   it("throws an error if provided value is not a notebook", () => {
-    const notificationSystem = jest.fn();
     const store = {
       dispatch: jest.fn(),
       getState: () => ({
@@ -796,7 +792,6 @@ describe("exportPDF", () => {
           }
         },
         app: Immutable.Map({
-          notificationSystem
         })
       })
     };
@@ -806,12 +801,10 @@ describe("exportPDF", () => {
         { contentRef: "abc" },
         store,
         "my-notebook.pdf",
-        notificationSystem
       );
     expect(invocation).toThrow();
   });
   it("unhides hidden cells before exporting to PDF", () => {
-    const notificationSystem = jest.fn();
     const state = mockAppState({ hideAll: true });
     const contentRef: string = state.core.entities.contents.byRef
       .keySeq()
@@ -822,7 +815,7 @@ describe("exportPDF", () => {
     };
     const props = { contentRef };
 
-    menu.exportPDF(props, store, "my-notebook", notificationSystem);
+    menu.exportPDF(props, store, "my-notebook");
     expect(store.dispatch).toBeCalledWith({
       type: actions.TOGGLE_OUTPUT_EXPANSION,
       payload: {

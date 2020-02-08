@@ -179,7 +179,6 @@ describe("createExecuteCellStream", () => {
           })
         }),
         app: {
-          notificationSystem: { addNotification: jest.fn() }
         }
       }
     };
@@ -239,7 +238,6 @@ describe("createExecuteCellStream", () => {
           })
         }),
         app: {
-          notificationSystem: { addNotification: jest.fn() }
         }
       }
     };
@@ -360,7 +358,6 @@ describe("sendExecuteRequestEpic", () => {
         channels: "errorInExecuteCellObservable",
         status: "idle"
       },
-      notificationSystem: { addNotification: jest.fn() },
       githubToken: "blah"
     }
   };
@@ -410,7 +407,6 @@ describe("sendExecuteRequestEpic", () => {
   test("Informs about disconnected kernels, allows reconnection", async () => {
     const disconnectedState = {
       app: {
-        notificationSystem: { addNotification: jest.fn() }
       },
       core: stateModule.makeStateRecord({
         kernelRef: "fake",

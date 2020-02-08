@@ -110,7 +110,6 @@ describe("acquireKernelInfo", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -261,7 +260,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 
@@ -345,7 +343,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 
@@ -432,7 +429,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 

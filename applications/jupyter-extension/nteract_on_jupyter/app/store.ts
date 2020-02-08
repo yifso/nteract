@@ -43,7 +43,7 @@ export default function configureStore(initialState: Partial<AppState>) {
       })
     );
   const epicMiddleware = createEpicMiddleware({ dependencies: { contentProvider: contents.JupyterContentProvider } });
-  const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
+  const middlewares = [epicMiddleware];
 
   const store = createStore(
     rootReducer,
