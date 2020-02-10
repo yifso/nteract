@@ -4,10 +4,28 @@ import { Dispatch } from "redux";
 
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 
+export interface PassedEditorProps {
+  id: string;
+  contentRef: ContentRef;
+  editorType: string;
+  editorFocused: boolean;
+  value: string;
+  channels: any;
+  kernelStatus: string;
+  theme: string;
+  onChange: (text: string) => void;
+  onFocusChange: (focused: boolean) => void;
+  className: string;
+}
+
+interface EditorSlots {
+  [key: string]: (props: PassedEditorProps) => React.ReactNode;
+}
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  children: React.ReactNode;
+  children: EditorSlots;
 }
 
 interface StateProps {
@@ -27,59 +45,27 @@ interface DispatchProps {
 type Props = ComponentProps & StateProps & DispatchProps;
 
 export class Editor extends React.PureComponent<Props> {
-  render(): JSX.Element | null {
-    const { editorType } = this.props;
+  render(): React.ReactNode {
+    const { editorType, children } = this.props;
 
-    let chosenOne: React.ReactChild | null = null;
+    const chosenEditor = children ? children[editorType] : undefined;
 
-    React.Children.forEach(this.props.children, child => {
-      if (!child) {
-        return;
-      }
-
-      if (typeof child === "string" || typeof child === "number") {
-        return;
-      }
-
-      const childElement = child;
-      if (chosenOne) {
-        // Already have a selection
-        return;
-      }
-
-      if (
-        !childElement ||
-        typeof childElement !== "object" ||
-        !("props" in childElement)
-      ) {
-        return;
-      }
-
-      if (childElement.props && childElement.props.editorType) {
-        const child_editor_type = childElement.props.editorType;
-
-        chosenOne = child_editor_type === editorType ? childElement : null;
-        return;
-      }
-    });
-
-    // If we didn't find a match, render nothing
-    if (chosenOne === null) {
-      return null;
+    if (chosenEditor) {
+      return chosenEditor({
+        id: this.props.id,
+        contentRef: this.props.contentRef,
+        editorType: this.props.editorType,
+        value: this.props.value,
+        editorFocused: this.props.editorFocused,
+        channels: this.props.channels,
+        kernelStatus: this.props.kernelStatus,
+        theme: this.props.theme,
+        onChange: this.props.onChange,
+        onFocusChange: this.props.onFocusChange,
+        className: "nteract-cell-editor"
+      });
     }
-
-    // Render the output component that handles this output type
-    return React.cloneElement(chosenOne, {
-      editorType: this.props.editorType,
-      value: this.props.value,
-      editorFocused: this.props.editorFocused,
-      channels: this.props.channels,
-      kernelStatus: this.props.kernelStatus,
-      theme: this.props.theme,
-      onChange: this.props.onChange,
-      onFocusChange: this.props.onFocusChange,
-      className: "nteract-cell-editor"
-    });
+    return null;
   }
 }
 

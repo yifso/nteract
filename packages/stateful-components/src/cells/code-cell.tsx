@@ -5,10 +5,10 @@ import { ContentRef } from "@nteract/core";
 import { KernelOutputError, Media, StreamText } from "@nteract/outputs";
 import { Source } from "@nteract/presentational-components";
 
-import Editor from "../inputs/editor";
+import Editor, { PassedEditorProps } from "../inputs/editor";
 import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 import Input from "../inputs/input";
-import Prompt from "../inputs/prompt";
+import Prompt, { PassedPromptProps } from "../inputs/prompt";
 import Outputs from "../outputs";
 import InputPrompts from "../outputs/input-prompts";
 import Pagers from "../outputs/pagers";
@@ -31,19 +31,6 @@ interface ComponentProps {
   children?: NamedCodeCellSlots;
 }
 
-const PromptText = (props: any) => {
-  if (props.status === "busy") {
-    return <React.Fragment>{"[*]"}</React.Fragment>;
-  }
-  if (props.status === "queued") {
-    return <React.Fragment>{"[…]"}</React.Fragment>;
-  }
-  if (typeof props.executionCount === "number") {
-    return <React.Fragment>{`[${props.executionCount}]`}</React.Fragment>;
-  }
-  return <React.Fragment>{"[ ]"}</React.Fragment>;
-};
-
 export default class CodeCell extends React.Component<ComponentProps> {
   static defaultProps = {
     cell_type: "code"
@@ -55,16 +42,27 @@ export default class CodeCell extends React.Component<ComponentProps> {
     const defaults = {
       prompt: (props: { id: string; contentRef: string }) => (
         <Prompt id={props.id} contentRef={props.contentRef}>
-          <PromptText />
+          {(props: PassedPromptProps) => {
+            if (props.status === "busy") {
+              return <React.Fragment>{"[*]"}</React.Fragment>;
+            }
+            if (props.status === "queued") {
+              return <React.Fragment>{"[…]"}</React.Fragment>;
+            }
+            if (typeof props.executionCount === "number") {
+              return (
+                <React.Fragment>{`[${props.executionCount}]`}</React.Fragment>
+              );
+            }
+            return <React.Fragment>{"[ ]"}</React.Fragment>;
+          }}
         </Prompt>
       ),
-      editor: (props: { id: string; contentRef: string }) => (
-        <CodeMirrorEditor
-          id={props.id}
-          contentRef={props.contentRef}
-          editorType="codemirror"
-        />
-      ),
+      editor: (props: { id: string; contentRef: string }) => ({
+        codemirror: (props: PassedEditorProps) => (
+          <CodeMirrorEditor {...props} editorType={"codemirror"} />
+        )
+      }),
       pagers: (props: any) => (
         <Pagers id={id} contentRef={contentRef}>
           <Media.Json />
