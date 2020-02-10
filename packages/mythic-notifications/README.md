@@ -1,8 +1,6 @@
 # @nteract/mythic-notifications
 
-*N.B.: I don't really like the `mythic-` part of this name, but I like this and future `myths`-based packages to sort together...*
-
-This package implements a notification system based on `blueprintjs`.
+This package implements a notification system based on `blueprintjs`, using the `myths` framework.
 
 ## Installation
 

@@ -2,11 +2,15 @@ import { MythicAction } from "@nteract/myths";
 import { notifications } from "../package";
 import { NotificationMessage } from "../types";
 
+const prefixSlash = /.*\//;
+const camelCase = /([a-z])([A-Z])/g;
+const underscores = /_/g;
+
 const titleFromAction = (action: MythicAction) => {
   const text = action.type
-    .replace(/.*\//, "")
-    .replace(/([a-z])([A-Z])/g, (...x: string[]) => `${x[1]} ${x[2]}`)
-    .replace(/_/g, " ");
+    .replace(prefixSlash, "")
+    .replace(camelCase, (...x: string[]) => `${x[1]} ${x[2]}`)
+    .replace(underscores, " ");
   return (
     text.charAt(0).toUpperCase() +
     text.substr(1).toLowerCase()

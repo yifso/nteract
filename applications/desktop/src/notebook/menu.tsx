@@ -614,6 +614,8 @@ export function exportPDF(
       );
 
       fs.writeFile(pdfPath, data, _error_fs => {
+        // Show the user the most important parts of the PDF path, as much as
+        // they have space in the message.
         const pdfPathParts = pdfPath.split("/");
         const Spacer = styled.div`
           height: 30px;

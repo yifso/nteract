@@ -17,6 +17,7 @@ export const makeCreateMyth =
         }
 
         const mythWIP: Partial<OurMyth> = {
+          // Strings identifying this myth
           pkg,
           name,
           type: `${pkg}/${name}`,
@@ -27,18 +28,23 @@ export const makeCreateMyth =
           action: undefined as unknown as MythicAction<PKG, NAME, PROPS>,
         };
 
+        // Function to create actions
         mythWIP.create =
           (payload: PROPS) => ({ type: mythWIP.type!, payload });
 
+        // Epics to include into our rootEpic
         mythWIP.epics =
           makeEpics(mythWIP.create, definition.epics ?? []);
 
+        // Is this action one of ours?
         mythWIP.appliesTo =
           (action: Action) => action.type === mythWIP.type;
 
+        // Reducer for our action
         mythWIP.reduce =
           makeReducer(definition.reduce, mythWIP.appliesTo);
 
+        // Make a component that has access to our action
         mythWIP.createConnectedComponent =
           makeCreateConnectedComponent(mythWIP as OurMyth);
 
