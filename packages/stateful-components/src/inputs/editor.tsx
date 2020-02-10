@@ -18,7 +18,7 @@ export interface PassedEditorProps {
   className: string;
 }
 
-interface EditorSlots {
+export interface EditorSlots {
   [key: string]: (props: PassedEditorProps) => React.ReactNode;
 }
 

@@ -5,7 +5,7 @@ import { ContentRef } from "@nteract/core";
 import { KernelOutputError, Media, StreamText } from "@nteract/outputs";
 import { Source } from "@nteract/presentational-components";
 
-import Editor, { PassedEditorProps } from "../inputs/editor";
+import Editor, { PassedEditorProps, EditorSlots } from "../inputs/editor";
 import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 import Input from "../inputs/input";
 import Prompt, { PassedPromptProps } from "../inputs/prompt";
@@ -15,7 +15,7 @@ import Pagers from "../outputs/pagers";
 import TransformMedia from "../outputs/transform-media";
 
 interface NamedCodeCellSlots {
-  editor?: (props: { id: string; contentRef: string }) => JSX.Element;
+  editor?: EditorSlots;
   prompt?: (props: { id: string; contentRef: string }) => JSX.Element;
   pagers?: (props: { id: string; contentRef: string }) => JSX.Element;
   inputPrompts?: (props: { id: string; contentRef: string }) => JSX.Element;
@@ -58,11 +58,11 @@ export default class CodeCell extends React.Component<ComponentProps> {
           }}
         </Prompt>
       ),
-      editor: (props: { id: string; contentRef: string }) => ({
+      editor: {
         codemirror: (props: PassedEditorProps) => (
           <CodeMirrorEditor {...props} editorType={"codemirror"} />
         )
-      }),
+      },
       pagers: (props: any) => (
         <Pagers id={id} contentRef={contentRef}>
           <Media.Json />
@@ -110,7 +110,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
           {prompt({ id, contentRef })}
           <Source className="nteract-cell-source">
             <Editor id={id} contentRef={contentRef}>
-              {editor({ id, contentRef })}
+              {editor}
             </Editor>
           </Source>
         </Input>

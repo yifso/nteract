@@ -6,11 +6,11 @@ import { ImmutableCell } from "@nteract/commutable";
 import { actions, AppState, ContentRef } from "@nteract/core";
 import { Source } from "@nteract/presentational-components";
 
-import Editor from "../inputs/editor";
+import Editor, { PassedEditorProps, EditorSlots } from "../inputs/editor";
 import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 
 interface NamedRawCellSlots {
-  editor?: (props: { id: string; contentRef: string }) => JSX.Element;
+  editor?: EditorSlots;
   toolbar?: () => JSX.Element;
 }
 
@@ -34,13 +34,11 @@ export class PureRawCell extends React.Component<
     const { id, contentRef, children } = this.props;
 
     const defaults = {
-      editor: (props: { id: string; contentRef: string }) => (
-        <CodeMirrorEditor
-          id={props.id}
-          contentRef={props.contentRef}
-          editorType="codemirror"
-        />
-      )
+      editor: {
+        codemirror: (props: PassedEditorProps) => (
+          <CodeMirrorEditor {...props} editorType={"codemirror"} />
+        )
+      }
     };
 
     const editor = children?.editor || defaults.editor;
@@ -51,7 +49,7 @@ export class PureRawCell extends React.Component<
         {toolbar && toolbar()}
         <Source className="nteract-cell-source">
           <Editor id={id} contentRef={contentRef}>
-            {editor({ id, contentRef })}
+            {editor}
           </Editor>
         </Source>
       </div>
