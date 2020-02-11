@@ -1,39 +1,13 @@
+import { stringifyNotebook } from "@nteract/commutable";
+import { actions, AppState, ContentRecord, createContentRef, createKernelspecsRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDummyContentRecord, makeEntitiesRecord, makeHostsRecord, makeJupyterHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
+import { fixtureJSON, mockAppState } from "@nteract/fixtures";
 import FileSaver from "file-saver";
 import Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { of, Subject } from "rxjs";
-import { toArray, map } from "rxjs/operators";
-
-import { stringifyNotebook } from "@nteract/commutable";
-import {
-  actions,
-  ContentRecord,
-  createContentRef,
-  createKernelspecsRef,
-  makeAppRecord,
-  makeCommsRecord,
-  makeContentsRecord,
-  makeDummyContentRecord,
-  makeEntitiesRecord,
-  makeHostsRecord,
-  makeJupyterHostRecord,
-  makeNotebookContentRecord,
-  makeStateRecord,
-  makeTransformsRecord,
-  makeLocalHostRecord,
-  AppState
-} from "@nteract/core";
-
-import { fixtureJSON, mockAppState } from "@nteract/fixtures";
-import {
-  downloadString,
-  saveAsContentEpic,
-  saveContentEpic,
-  closeNotebookEpic,
-  fetchContentEpic,
-  updateContentEpic
-} from "../src/contents";
 import { contents } from "rx-jupyter";
+import { of, Subject } from "rxjs";
+import { map, toArray } from "rxjs/operators";
+import { closeNotebookEpic, downloadString, fetchContentEpic, saveAsContentEpic, saveContentEpic, updateContentEpic } from "../src/contents";
 
 jest.mock("rx-jupyter", () => ({
   contents: {
@@ -351,33 +325,6 @@ describe("closeNotebookEpic", () => {
 });
 
 describe("fetchContentEpic", () => {
-  it("returns an error if no filepath is provided", done => {
-    const state = mockAppState({});
-    const contentRef: string = state.core.entities.contents.byRef
-      .keySeq()
-      .first();
-    const action$ = ActionsObservable.of(
-      actions.fetchContent({
-        contentRef
-      })
-    );
-    const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = fetchContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
-    obs.pipe(toArray()).subscribe(
-      action => {
-        expect(action).toEqual([
-          actions.fetchContentFailed({
-            error: new Error("fetching content needs a payload"),
-            filepath: undefined,
-            contentRef,
-            kernelRef: undefined
-          })
-        ]);
-      },
-      err => done.fail(err), // It should not error in the stream
-      () => done()
-    );
-  });
   it("emits FETCH_CONTENT_FULFILLED action on successful completion", done => {
     const state = {
       ...mockAppState({}),
@@ -408,27 +355,6 @@ describe("fetchContentEpic", () => {
 });
 
 describe("updateContentEpic", () => {
-  it("throws an error if there is no filepath provided", done => {
-    const state = mockAppState({});
-    const contentRef: string = state.core.entities.contents.byRef
-      .keySeq()
-      .first();
-    const action$ = ActionsObservable.of(
-      actions.changeContentName({
-        contentRef
-      })
-    );
-    const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = updateContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
-    obs.pipe(toArray()).subscribe(
-      action => {
-        const types = action.map(({ type }) => type);
-        expect(types).toEqual([actions.CHANGE_CONTENT_NAME_FAILED]);
-      },
-      err => done.fail(err), // It should not error in the stream
-      () => done()
-    );
-  });
   it("changes the content name on valid details", done => {
     const state = {
       ...mockAppState({}),
