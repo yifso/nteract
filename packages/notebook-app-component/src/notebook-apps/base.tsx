@@ -6,6 +6,7 @@ import {
   RawCell
 } from "@nteract/stateful-components";
 import { ContentRef } from "@nteract/core";
+import { ThemableNotifications } from "../derived-components/themable-notifications";
 
 import CellToolbar from "../derived-components/toolbar";
 import StatusBar from "../derived-components/status-bar";
@@ -62,6 +63,7 @@ export default class NotebookApp extends React.Component<ComponentProps> {
           }}
         </Cells>
         <StatusBar contentRef={this.props.contentRef} />
+        <ThemableNotifications/>
       </React.Fragment>
     );
   }

@@ -9,6 +9,7 @@ import {
 import React from "react";
 
 import StatusBar from "../derived-components/status-bar";
+import { ThemableNotifications } from "../derived-components/themable-notifications";
 import CellToolbar from "../derived-components/toolbar";
 
 import { DragDropContext as dragDropContext } from "react-dnd";
@@ -118,6 +119,7 @@ export class NotebookApp extends React.Component<ComponentProps> {
               }}
             </Cells>
             <StatusBar contentRef={this.props.contentRef} />
+            <ThemableNotifications/>
           </KeyboardShortcuts>
         </Themer>
       </React.Fragment>

@@ -19,6 +19,7 @@
     "@nteract/editor": "^9.6.1-alpha.0",
     "@nteract/jupyter-widgets": "^4.4.6-alpha.0",
     "@nteract/markdown": "^4.3.6-alpha.0",
+    "@nteract/mythic-notifications": "^0.1.0",
     "@nteract/octicons": "^2.0.0",
     "@nteract/outputs": "^3.0.5-alpha.0",
     "@nteract/presentational-components": "^3.3.6-alpha.0",

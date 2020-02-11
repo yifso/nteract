@@ -1,5 +1,5 @@
-import React from "react";
 import { ContentRef } from "@nteract/core";
+import React from "react";
 
 import Cells from "./cells/cells";
 import CodeCell from "./cells/code-cell";
@@ -23,8 +23,8 @@ interface ComponentProps {
   contentRef: ContentRef;
 }
 
-export default class Notebook extends React.Component<ComponentProps> {
-  render() {
+export default class Notebook extends React.PureComponent<ComponentProps> {
+  render(): JSX.Element {
     return <Cells contentRef={this.props.contentRef} />;
   }
 }

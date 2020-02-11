@@ -2,66 +2,40 @@
  * Main entry point for the desktop notebook UI
  */
 
-import * as MathJax from "@nteract/mathjax";
-
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 
-import "codemirror/addon/hint/show-hint.css";
-import "codemirror/lib/codemirror.css";
+import { ContentRecord, ContentRef, createContentRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeEntitiesRecord, makeLocalHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
+
+import DataExplorer from "@nteract/data-explorer";
+import WidgetDisplay from "@nteract/jupyter-widgets";
+import * as MathJax from "@nteract/mathjax";
+import NotebookApp from "@nteract/notebook-app-component";
+import { Media } from "@nteract/outputs";
 
 import "@nteract/styles/app.css";
+
 import "@nteract/styles/global-variables.css";
 
 import "@nteract/styles/themes/base.css";
 import "@nteract/styles/themes/default.css";
 
-import "@nteract/styles/editor-overrides.css";
-
-import DataExplorer from "@nteract/data-explorer";
-import WidgetDisplay from "@nteract/jupyter-widgets";
 import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform from "@nteract/transform-plotly";
 import VDOMDisplay from "@nteract/transform-vdom";
-import {
-  Vega2,
-  Vega3,
-  Vega4,
-  Vega5,
-  VegaLite1,
-  VegaLite2,
-  VegaLite3,
-  VegaLite4
-} from "@nteract/transform-vega";
+import { Vega2, Vega3, Vega4, Vega5, VegaLite1, VegaLite2, VegaLite3, VegaLite4 } from "@nteract/transform-vega";
+
+import "codemirror/addon/hint/show-hint.css";
+import "codemirror/lib/codemirror.css";
 
 import { ipcRenderer as ipc, remote } from "electron";
+
+import * as Immutable from "immutable";
 import { mathJaxPath } from "mathjax-electron";
 import React from "react";
 import ReactDOM from "react-dom";
-import NotificationSystem, {
-  System as ReactNotificationSystem
-} from "react-notification-system";
 import { Provider } from "react-redux";
-
-import {
-  actions,
-  ContentRecord,
-  ContentRef,
-  createContentRef,
-  makeAppRecord,
-  makeCommsRecord,
-  makeContentsRecord,
-  makeEntitiesRecord,
-  makeLocalHostRecord,
-  makeNotebookContentRecord,
-  makeStateRecord,
-  makeTransformsRecord
-} from "@nteract/core";
-import NotebookApp from "@nteract/notebook-app-component";
-import { Media } from "@nteract/outputs";
-
-import * as Immutable from "immutable";
 
 import { initGlobalHandlers } from "./global-events";
 import { initMenuHandlers } from "./menu";
@@ -71,6 +45,8 @@ import configureStore, { DesktopStore } from "./store";
 
 // Load the nteract fonts
 import("./fonts");
+// Needs to be last
+import "@nteract/styles/editor-overrides.css";
 
 const contentRef = createContentRef();
 
@@ -167,41 +143,27 @@ initMenuHandlers(contentRef, store);
 initGlobalHandlers(contentRef, store);
 
 export default class App extends React.PureComponent {
-  notificationSystem: any;
-
-  constructor(props: {}) {
-    super(props);
-    this.notificationSystem = React.createRef();
-  }
-
   componentDidMount(): void {
-    store.dispatch(
-      actions.setNotificationSystem(this.notificationSystem.current)
-    );
     ipc.send("react-ready");
   }
 
-  render() {
+  render(): JSX.Element {
     return (
-      <React.Fragment>
+      <Provider store={store}>
         <MathJax.Provider src={mathJaxPath} input="tex">
-          <Provider store={store}>
-            <NotebookApp
-              // The desktop app always keeps the same contentRef in a
-              // browser window
-              contentRef={contentRef}
-            />
-          </Provider>
+          <NotebookApp
+            // The desktop app always keeps the same contentRef in a
+            // browser window
+            contentRef={contentRef}
+          />
         </MathJax.Provider>
-        <NotificationSystem
-          ref={(e: ReactNotificationSystem) => (this.notificationSystem = e)}
-        />
-      </React.Fragment>
+      </Provider>
     );
   }
 }
 
 const app = document.querySelector("#app");
+
 if (app) {
   ReactDOM.render(<App />, app);
 } else {

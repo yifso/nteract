@@ -40,10 +40,7 @@
     "no-var-requires": {
       "severity": "warn"
     },
-    "object-literal-sort-keys": {
-      "options": "match-declaration-order",
-      "severity": "warn"
-    },
+    "object-literal-sort-keys": false,
     "only-arrow-functions": [true, "allow-declarations"],
     "ordered-imports": true,
     "prefer-template": true,

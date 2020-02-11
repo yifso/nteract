@@ -1,6 +1,7 @@
 import { actions as actionsModule, state as stateModule } from "@nteract/core";
 import { mockAppState } from "@nteract/fixtures";
 import { createMessage, JupyterMessage, MessageType } from "@nteract/messaging";
+import { sendNotification } from "@nteract/mythic-notifications";
 import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { of, Subject } from "rxjs";
@@ -109,7 +110,6 @@ describe("acquireKernelInfo", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -260,7 +260,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 
@@ -297,11 +296,16 @@ describe("restartKernelEpic", () => {
         e: actionsModule.restartKernelSuccessful({
           kernelRef: newKernelRef,
           contentRef
+        }),
+        n: sendNotification.create({
+          title: "Kernel Restarting...",
+          message: "Kernel unknown is restarting.",
+          level: "success",
         })
       };
 
-      const inputMarbles = "a---b|";
-      const outputMarbles = "(cd)e|";
+      const inputMarbles  = "a----b|";
+      const outputMarbles = "(cdn)e|";
 
       const inputAction$ = hot(inputMarbles, inputActions);
       const outputAction$ = restartKernelEpic(
@@ -339,7 +343,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 
@@ -377,11 +380,16 @@ describe("restartKernelEpic", () => {
           kernelRef: newKernelRef,
           contentRef: "contentRef"
         }),
-        f: actionsModule.executeAllCells({ contentRef: "contentRef" })
+        f: actionsModule.executeAllCells({ contentRef: "contentRef" }),
+        n: sendNotification.create({
+          title: "Kernel Restarting...",
+          message: "Kernel unknown is restarting.",
+          level: "success",
+        })
       };
 
-      const inputMarbles = "a---b---|";
-      const outputMarbles = "(cd)(ef)|";
+      const inputMarbles  = "a----b---|";
+      const outputMarbles = "(cdn)(ef)|";
 
       const inputAction$ = hot(inputMarbles, inputActions);
       const outputAction$ = restartKernelEpic(
@@ -421,7 +429,6 @@ describe("restartKernelEpic", () => {
         })
       }),
       app: stateModule.makeAppRecord({
-        notificationSystem: { addNotification: () => {} }
       })
     };
 

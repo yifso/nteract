@@ -41,34 +41,6 @@ describe("saveFulfilled", () => {
   });
 });
 
-describe("setNotificationSystem", () => {
-  test("returns the same originalState if notificationSystem is undefined", () => {
-    const originalState = stateModule.makeAppRecord();
-
-    const action = {
-      type: actions.SET_NOTIFICATION_SYSTEM,
-      payload: {}
-      // Override action type to test reducer handling old behavior
-    } as actions.SetNotificationSystemAction;
-
-    const state = reducers.app(originalState, action);
-    expect(state.notificationSystem).toEqual(originalState.notificationSystem);
-  });
-  test("sets the notificationSystem if given", () => {
-    const originalState = stateModule.makeAppRecord();
-
-    const action = {
-      type: actions.SET_NOTIFICATION_SYSTEM,
-      payload: {
-        notificationSystem: { test: true }
-      }
-    };
-
-    const state = reducers.app(originalState, (action as unknown) as any);
-    expect(state.notificationSystem).toBe(action.payload.notificationSystem);
-  });
-});
-
 describe("setGithubToken", () => {
   test("calls setGithubToken", () => {
     const originalState = stateModule.makeAppRecord({

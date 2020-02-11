@@ -50,7 +50,6 @@ describe("launchWebSocketKernelEpic", () => {
           basePath: "http://localhost:8888/",
           closeObserver
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({}),
@@ -152,7 +151,6 @@ describe("interruptKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -204,7 +202,6 @@ describe("interruptKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -251,7 +248,6 @@ describe("restartKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -302,7 +298,6 @@ describe("restartKernelEpic", () => {
         host: stateModule.makeLocalHostRecord({
           type: "local"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -355,7 +350,6 @@ describe("restartKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -408,7 +402,6 @@ describe("restartKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -459,7 +452,6 @@ describe("restartKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
@@ -516,7 +508,6 @@ describe("restartKernelEpic", () => {
           token: "eh",
           basePath: "http://localhost:8888/"
         }),
-        notificationSystem: { addNotification: jest.fn() }
       }),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})

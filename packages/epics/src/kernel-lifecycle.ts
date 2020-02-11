@@ -6,9 +6,10 @@ import {
   JupyterMessage,
   ofMessageType
 } from "@nteract/messaging";
+import { sendNotification } from "@nteract/mythic-notifications";
 import { AnyAction } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
-import { empty, merge, Observable, Observer, of } from "rxjs";
+import { EMPTY, empty, merge, Observable, Observer, of } from "rxjs";
 import {
   catchError,
   concatMap,
@@ -253,51 +254,38 @@ export const restartKernelEpic = (
         contentRef: action.payload.contentRef
       });
 
-      const notificationSystem = selectors.notificationSystem(state);
-
       if (!oldKernelRef) {
-        notificationSystem.addNotification({
-          title: "Failure to Restart",
-          message: "Unable to restart kernel, please select a new kernel.",
-          dismissible: true,
-          position: "tr",
-          level: "error"
-        });
-        return empty();
+        return of(
+          sendNotification.create({
+            title: "Failure to Restart",
+            message: "Unable to restart kernel, please select a new kernel.",
+            level: "error"
+          }),
+        );
       }
 
       const oldKernel = selectors.kernel(state, { kernelRef: oldKernelRef });
 
       if (oldKernel && oldKernel.type === "websocket") {
-        return empty();
+        return EMPTY;
       }
 
       if (!oldKernelRef || !oldKernel) {
-        notificationSystem.addNotification({
-          title: "Failure to Restart",
-          message: "Unable to restart kernel, please select a new kernel.",
-          dismissible: true,
-          position: "tr",
-          level: "error"
-        });
-
-        // TODO: Wow do we need to send notifications through our store for
-        // consistency
-        return empty();
+        return of(
+          sendNotification.create({
+            title: "Failure to Restart",
+            message: "Unable to restart kernel, please select a new kernel.",
+            level: "error"
+          })
+        );
       }
 
       const newKernelRef = kernelRefGenerator();
       const initiatingContentRef = action.payload.contentRef;
-
-      // TODO: Incorporate this into each of the launchKernelByName
-      //       actions...
-      //       This only mirrors the old behavior of restart kernel (for now)
-      notificationSystem.addNotification({
+      const successNotification = sendNotification.create({
         title: "Kernel Restarting...",
         message: `Kernel ${oldKernel.kernelSpecName ||
           "unknown"} is restarting.`,
-        dismissible: true,
-        position: "tr",
         level: "success"
       });
 
@@ -351,6 +339,6 @@ export const restartKernelEpic = (
         })
       );
 
-      return merge(of(kill, relaunch), awaitKernelReady);
+      return merge(of(kill, relaunch, successNotification), awaitKernelReady);
     })
   );

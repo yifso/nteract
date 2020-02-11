@@ -1,68 +1,29 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
-import { applyMiddleware, combineReducers, createStore, Store } from "redux";
-import {
-  combineEpics,
-  createEpicMiddleware,
-  ActionsObservable,
-  StateObservable
-} from "redux-observable";
-import { catchError } from "rxjs/operators";
-
-import { Actions } from "./actions";
+import { notifications } from "@nteract/mythic-notifications";
+import { makeConfigureStore } from "@nteract/myths";
+import { Store } from "redux";
 import epics from "./epics";
+import { LocalContentProvider } from "./local-content-provider";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
-import { Observable } from "rxjs";
-import { LocalContentProvider } from "./local-content-provider";
 
-const rootEpic = (
-  action$: ActionsObservable<any>,
-  store$: StateObservable<any>,
-  dependencies: any
-) =>
-  combineEpics(...epics)(action$, store$, dependencies).pipe(
-    catchError((error: any, source: Observable<any>) => {
-      console.error(error);
-      return source;
-    })
-  );
-
-const localContentProvider = new LocalContentProvider();
-const epicMiddleware = createEpicMiddleware<
-  Actions,
-  Actions,
-  DesktopNotebookAppState,
-  any
->({ 
-  dependencies: { contentProvider: localContentProvider } 
+export type DesktopStore = Store<DesktopNotebookAppState, any>;
+export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
+  packages: [
+    notifications,
+  ],
+  reducers: {
+    app: reducers.app,
+    comms: reducers.comms,
+    config: reducers.config,
+    core: reducers.core as any,
+    desktopNotebook: handleDesktopNotebook,
+  },
+  epics,
+  epicMiddleware:
+    process.env.DEBUG === "true"
+      ? [coreMiddlewares.logger()]
+      : [],
+  epicDependencies: { contentProvider: new LocalContentProvider() },
 });
-const middlewares = [epicMiddleware, coreMiddlewares.errorMiddleware];
-
-export type DesktopStore = Store<DesktopNotebookAppState, Actions>;
-
-if (process.env.DEBUG === "true") {
-  middlewares.push(coreMiddlewares.logger());
-}
-
-const rootReducer = combineReducers({
-  app: reducers.app,
-  comms: reducers.comms,
-  config: reducers.config,
-  core: reducers.core,
-  desktopNotebook: handleDesktopNotebook
-});
-
-export default function configureStore(
-  initialState: Partial<DesktopNotebookAppState>
-): DesktopStore {
-  const store = createStore(
-    rootReducer,
-    (initialState as unknown) as any,
-    applyMiddleware(...middlewares)
-  );
-  epicMiddleware.run(rootEpic);
-
-  const desktopStore = store as DesktopStore;
-  localContentProvider.setAppState(desktopStore.getState());
-  return desktopStore;
-}
+export default configureStore;

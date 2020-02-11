@@ -1,5 +1,6 @@
 jest.mock("fs");
 import { actions, makeAppRecord, selectors } from "@nteract/core";
+import { sendNotification } from "@nteract/mythic-notifications";
 import { ipcRenderer as ipc, remote, webFrame } from "electron";
 import * as Immutable from "immutable";
 
@@ -322,11 +323,10 @@ describe("dispatchRestartKernel", () => {
 
 describe("dispatchInterruptKernel", () => {
   test("dispatches INTERRUPT_KERNEL actions", () => {
-    const notificationSystem = { addNotification: jest.fn() };
     const store = {
       dispatch: jest.fn(),
       getState: () => ({
-        app: Immutable.Map({ notificationSystem }),
+        app: Immutable.Map({}),
         core: {
           entities: {
             contents: {
@@ -363,8 +363,6 @@ describe("dispatchInterruptKernel", () => {
           contentRef: "123"
         }
       });
-    } else {
-      expect(notificationSystem.addNotification).toHaveBeenCalled();
     }
   });
 });
@@ -755,34 +753,27 @@ describe("triggerWindowRefresh", () => {
 
 describe("exportPDF", () => {
   test("it notifies a user upon successful write", () => {
-    const state = {
-      ...mockAppState({}),
-      app: makeAppRecord({
-        notificationSystem: {
-          addNotification: jest.fn()
-        }
-      })
-    };
+    const state = mockAppState({});
     const contentRef: string = state.core.entities.contents.byRef
       .keySeq()
       .first();
     const store = {
       dispatch: jest.fn(),
-      getState: jest.fn(() => state)
+      getState: jest.fn(() => state),
     };
     const filepath = "thisisafilename.ipynb";
     menu.exportPDF({ contentRef }, store, filepath);
-    expect(state.app.notificationSystem.addNotification).toHaveBeenCalledWith({
-      title: "PDF exported",
-      message: `Notebook ${filepath} has been exported as a pdf.`,
-      dismissible: true,
-      position: "tr",
-      level: "success",
-      action: {
-        label: "Open PDF",
-        callback: expect.any(Function)
-      }
-    });
+    expect(store.dispatch).toHaveBeenCalledWith(
+      sendNotification.create({
+        title: "PDF exported",
+        message: expect.anything(),
+        level: "success",
+        action: {
+          label: "Open",
+          callback: expect.any(Function),
+        },
+      }),
+    );
   });
 });
 
@@ -791,8 +782,6 @@ describe("storeToPDF", () => {
     const props = {
       contentRef: "123"
     };
-
-    const notificationSystem = { addNotification: jest.fn() };
 
     const store = {
       dispatch: jest.fn(),
@@ -808,23 +797,20 @@ describe("storeToPDF", () => {
             }
           }
         },
-        app: Immutable.Map({
-          notificationSystem
-        })
       })
     };
 
     menu.storeToPDF(props, store);
-    expect(notificationSystem.addNotification).toHaveBeenCalledWith({
-      action: { callback: expect.any(Function), label: "Save As" },
-      title: "File has not been saved!",
-      message: expect.stringContaining(
-        "Click the button below to save the notebook"
-      ),
-      dismissible: true,
-      position: "tr",
-      level: "warning"
-    });
+    expect(store.dispatch).toHaveBeenCalledWith(
+      sendNotification.create({
+        action: { callback: expect.any(Function), label: "Save As" },
+        title: "File has not been saved!",
+        message: expect.stringContaining(
+          "Click the button below to save the notebook"
+        ),
+        level: "warning"
+      }),
+    );
   });
 });
 
@@ -855,7 +841,6 @@ describe("dispatchInterruptKernel", () => {
 
 describe("exportPDF", () => {
   it("throws an error if provided value is not a notebook", () => {
-    const notificationSystem = jest.fn();
     const store = {
       dispatch: jest.fn(),
       getState: () => ({
@@ -871,7 +856,6 @@ describe("exportPDF", () => {
           }
         },
         app: Immutable.Map({
-          notificationSystem
         })
       })
     };
@@ -881,12 +865,10 @@ describe("exportPDF", () => {
         { contentRef: "abc" },
         store,
         "my-notebook.pdf",
-        notificationSystem
       );
     expect(invocation).toThrow();
   });
   it("unhides hidden cells before exporting to PDF", () => {
-    const notificationSystem = jest.fn();
     const state = mockAppState({ hideAll: true });
     const contentRef: string = state.core.entities.contents.byRef
       .keySeq()
@@ -897,7 +879,7 @@ describe("exportPDF", () => {
     };
     const props = { contentRef };
 
-    menu.exportPDF(props, store, "my-notebook", notificationSystem);
+    menu.exportPDF(props, store, "my-notebook");
     expect(store.dispatch).toBeCalledWith({
       type: actions.TOGGLE_OUTPUT_EXPANSION,
       payload: {

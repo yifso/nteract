@@ -53,7 +53,6 @@ describe("publishToBookstore", () => {
           })
         }),
         app: {
-          notificationSystem: { addNotification: jest.fn() }
         }
       }
     };
@@ -101,7 +100,6 @@ describe("publishToBookstore", () => {
           })
         }),
         app: {
-          notificationSystem: { addNotification: jest.fn() }
         }
       }
     };

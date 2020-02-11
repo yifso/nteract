@@ -1,9 +1,13 @@
-import * as fs from "fs";
-import * as path from "path";
+import { Breadcrumbs } from "@blueprintjs/core";
 
 import { actions, ContentRef, createKernelRef, selectors } from "@nteract/core";
+import { sendNotification } from "@nteract/mythic-notifications";
 import { ipcRenderer as ipc, remote, shell, webFrame } from "electron";
+import * as fs from "fs";
 import throttle from "lodash.throttle";
+import * as path from "path";
+import React from "react";
+import styled from "styled-components";
 import { DesktopStore } from "./store";
 
 type NotificationSystemRef = any;
@@ -233,6 +237,13 @@ export function dispatchPublishGist(
   }
 
   // If the Github Token isn't set, use our oauth server to acquire a token
+  store.dispatch(sendNotification.create({
+    key: "github-publish",
+    icon: "book",
+    title: "Publishing Gist",
+    message: "Authenticating...",
+    level: "in-progress",
+  }));
 
   // Because the remote object from Electron main <--> renderer can be
   // "cleaned up"
@@ -257,15 +268,13 @@ export function dispatchPublishGist(
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
-
-          const notificationSystem = selectors.notificationSystem(state);
-
-          notificationSystem.addNotification({
-            title: "Authenticated",
-            message: "🔒",
-            level: "info"
-          });
-
+          store.dispatch(sendNotification.create({
+            key: "github-publish",
+            icon: "book",
+            title: "Publishing Gist",
+            message: "Authenticated 🔒",
+            level: "in-progress",
+          }));
           // We are now authenticated and can finally publish
           store.dispatch(actions.publishGist(ownProps));
         } catch (e) {
@@ -335,13 +344,12 @@ export function dispatchInterruptKernel(
 ): void {
   const state = store.getState();
 
-  const notificationSystem = selectors.notificationSystem(state);
   if (process.platform === "win32") {
-    notificationSystem.addNotification({
+    store.dispatch(sendNotification.create({
       title: "Not supported in Windows",
       message: "Kernel interruption is not supported in Windows.",
-      level: "error"
-    });
+      level: "error",
+    }));
   } else {
     const kernelRef = selectors.kernelRefByContentRef(state, ownProps);
     if (!kernelRef) {
@@ -554,13 +562,11 @@ export function dispatchNewNotebook(
  * @param {object} ownProps - An object containing a contentRef
  * @param {object} store - The Redux store
  * @param {string} basepath - basepath of the PDF to be saved.
- * @param {any} notificationSystem - reference to global notification system
  */
 export function exportPDF(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
   basepath: string,
-  notificationSystem: NotificationSystemRef
 ): void {
   const state = store.getState();
 
@@ -607,22 +613,49 @@ export function exportPDF(
         )
       );
 
-      const appNotificationSystem = state.app.get("notificationSystem");
-
       fs.writeFile(pdfPath, data, _error_fs => {
-        appNotificationSystem.addNotification({
-          title: "PDF exported",
-          message: `Notebook ${basepath} has been exported as a pdf.`,
-          level: "success",
-          position: "tr",
-          dismissible: true,
-          action: {
-            label: "Open PDF",
-            callback(): void {
-              shell.openItem(pdfPath);
-            }
+        // Show the user the most important parts of the PDF path, as much as
+        // they have space in the message.
+        const pdfPathParts = pdfPath.split("/");
+        const Spacer = styled.div`
+          height: 30px;
+        `;
+        const NoWrap = styled.div`
+          white-space: nowrap;
+          position: absolute;
+          width: 250px;
+          
+          * { 
+            font-size: 14px !important;
+            background: transparent !important;
           }
-        });
+          
+          li::after { margin: 0 3px !important; }
+        `;
+
+        store.dispatch(sendNotification.create({
+          title: "PDF exported",
+          message:
+            <>
+              <NoWrap>
+                <Breadcrumbs items={pdfPathParts.map((each, i) => ({
+                  text: each,
+                  icon: i === pdfPathParts.length - 1
+                    ? "document"
+                    : "folder-close",
+                  onClick: i === pdfPathParts.length - 1
+                    ? () => shell.openItem(pdfPath)
+                    : undefined,
+                }))}/>
+              </NoWrap>
+              <Spacer/>
+            </>,
+          level: "success",
+          action: {
+            label: "Open",
+            callback: () => shell.openItem(pdfPath),
+          },
+        }));
       });
     }
   );
@@ -649,26 +682,23 @@ export function storeToPDF(
 ): void {
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
-  const notificationSystem = state.app.get("notificationSystem");
   if (notebookName === null) {
-    notificationSystem.addNotification({
+    store.dispatch(sendNotification.create({
       title: "File has not been saved!",
       message: `Click the button below to save the notebook so that it can be
        exported as a PDF.`,
       level: "warning",
-      position: "tr",
-      dismissible: true,
       action: {
         label: "Save As",
         callback(): void {
           triggerSaveAsPDF(ownProps, store);
         }
       }
-    });
+    }));
   } else {
     const basename = path.basename(notebookName, ".ipynb");
     const basepath = path.join(path.dirname(notebookName), basename);
-    exportPDF(ownProps, store, basepath, notificationSystem);
+    exportPDF(ownProps, store, basepath);
   }
 }
 
