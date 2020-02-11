@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "monaco-editor": "^0.20.0",
-    "monaco-editor-webpack-plugin": "^1.5.1"
+    "monaco-editor-webpack-plugin": "^1.8.0"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12",
