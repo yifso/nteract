@@ -1,15 +1,15 @@
 {
   "name": "@nteract/outputs",
-  "version": "3.0.4-alpha.0",
+  "version": "3.0.5-alpha.0",
   "description": "components for rendering outputs",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.ts",
   "scripts": {},
   "dependencies": {
-    "@nteract/markdown": "^4.3.5-alpha.0",
-    "@nteract/mathjax": "^4.0.3-alpha.0",
-    "ansi-to-react": "^6.0.1-alpha.0",
+    "@nteract/markdown": "^4.3.6-alpha.0",
+    "@nteract/mathjax": "^4.0.4-alpha.0",
+    "ansi-to-react": "^6.0.2-alpha.0",
     "react-json-tree": "^0.11.0"
   },
   "note:devDeps": [
@@ -17,7 +17,7 @@
     "we only use it for type checking within the monorepo"
   ],
   "devDependencies": {
-    "@nteract/commutable": "^7.2.4-alpha.0",
+    "@nteract/commutable": "^7.2.5-alpha.0",
     "styled-components": "^4.4.1"
   },
   "peerDependencies": {
