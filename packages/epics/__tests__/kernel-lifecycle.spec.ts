@@ -14,7 +14,6 @@ import {
   watchExecutionStateEpic,
   launchKernelWhenNotebookSetEpic
 } from "../src/kernel-lifecycle";
-import { makeNotebookRecord } from "@nteract/commutable";
 
 const buildScheduler = () =>
   new TestScheduler((actual, expected) => expect(actual).toEqual(expected));

@@ -9,7 +9,7 @@ import {
 import { sendNotification } from "@nteract/mythic-notifications";
 import { AnyAction } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
-import { EMPTY, empty, merge, Observable, Observer, of } from "rxjs";
+import { EMPTY, merge, Observable, Observer, of } from "rxjs";
 import {
   catchError,
   concatMap,
@@ -218,7 +218,7 @@ export const launchKernelWhenNotebookSetEpic = (
         content.model.type !== "notebook"
       ) {
         // This epic only handles notebook content
-        return empty();
+        return EMPTY;
       }
 
       /**
@@ -230,7 +230,7 @@ export const launchKernelWhenNotebookSetEpic = (
           kernelRef: content.model.kernelRef
         });
         if (kernel && kernel.channels) {
-          return empty();
+          return EMPTY;
         }
       }
       const filepath = content.filepath;
