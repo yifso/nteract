@@ -33,7 +33,7 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
       minimap: {
         enabled: false
       },
-      autoIndent: true
+      autoIndent: "full"
     });
 
     if (this.props.editorFocused) {
