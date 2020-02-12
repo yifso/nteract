@@ -14,6 +14,7 @@ import {
   watchExecutionStateEpic,
   launchKernelWhenNotebookSetEpic
 } from "../src/kernel-lifecycle";
+import { makeNotebookRecord } from "@nteract/commutable";
 
 const buildScheduler = () =>
   new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
@@ -109,8 +110,7 @@ describe("acquireKernelInfo", () => {
           })
         })
       }),
-      app: stateModule.makeAppRecord({
-      }),
+      app: stateModule.makeAppRecord({}),
       comms: stateModule.makeCommsRecord(),
       config: Immutable.Map({})
     };
@@ -259,8 +259,7 @@ describe("restartKernelEpic", () => {
           })
         })
       }),
-      app: stateModule.makeAppRecord({
-      })
+      app: stateModule.makeAppRecord({})
     };
 
     const testScheduler = buildScheduler();
@@ -300,11 +299,11 @@ describe("restartKernelEpic", () => {
         n: sendNotification.create({
           title: "Kernel Restarting...",
           message: "Kernel unknown is restarting.",
-          level: "success",
+          level: "success"
         })
       };
 
-      const inputMarbles  = "a----b|";
+      const inputMarbles = "a----b|";
       const outputMarbles = "(cdn)e|";
 
       const inputAction$ = hot(inputMarbles, inputActions);
@@ -342,8 +341,7 @@ describe("restartKernelEpic", () => {
           })
         })
       }),
-      app: stateModule.makeAppRecord({
-      })
+      app: stateModule.makeAppRecord({})
     };
 
     const testScheduler = buildScheduler();
@@ -384,11 +382,11 @@ describe("restartKernelEpic", () => {
         n: sendNotification.create({
           title: "Kernel Restarting...",
           message: "Kernel unknown is restarting.",
-          level: "success",
+          level: "success"
         })
       };
 
-      const inputMarbles  = "a----b---|";
+      const inputMarbles = "a----b---|";
       const outputMarbles = "(cdn)(ef)|";
 
       const inputAction$ = hot(inputMarbles, inputActions);
@@ -428,8 +426,7 @@ describe("restartKernelEpic", () => {
           })
         })
       }),
-      app: stateModule.makeAppRecord({
-      })
+      app: stateModule.makeAppRecord({})
     };
 
     const responses = await restartKernelEpic(
@@ -471,8 +468,8 @@ describe("launchKernelWhenNotebookSet", () => {
       () => done()
     );
   });
-  it("emits a LAUNCH_KERNEL_BY_NAME action for valid notebook", done => {
-    const state = mockAppState({});
+  it("does nothing if content already has a kernel", done => {
+    let state = mockAppState({});
     const contentRef: string = state.core.entities.contents.byRef
       .keySeq()
       .first();
@@ -480,9 +477,44 @@ describe("launchKernelWhenNotebookSet", () => {
     const action$ = ActionsObservable.of(
       actionsModule.fetchContentFulfilled({
         contentRef,
-        filepath: "my-file.txt",
+        filepath: "my-notebook",
         model: {},
         kernelRef
+      })
+    );
+    const state$ = new StateObservable(new Subject(), state);
+    const obs = launchKernelWhenNotebookSetEpic(action$, state$);
+    obs.pipe(toArray()).subscribe(
+      actions => {
+        const types = actions.map(({ type }) => type);
+        expect(types).toEqual([]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
+  it("emits a LAUNCH_KERNEL_BY_NAME action for valid notebook and unlaunched kernel", done => {
+    const contentRef = stateModule.createContentRef();
+    const state = {
+      core: {
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              [contentRef]: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: null
+                })
+              })
+            })
+          })
+        })
+      }
+    };
+    const action$ = ActionsObservable.of(
+      actionsModule.fetchContentFulfilled({
+        contentRef,
+        filepath: "my-file.txt",
+        model: {}
       })
     );
     const state$ = new StateObservable(new Subject(), state);

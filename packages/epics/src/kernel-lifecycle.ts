@@ -132,10 +132,12 @@ export function acquireKernelInfo(
 
         const kernelspec = selectors.kernelspecByName(state, { name: l.name });
         if (kernelspec) {
-            result.push(actions.setKernelMetadata({
-                contentRef,
-                kernelInfo: kernelspec
-            }));
+          result.push(
+            actions.setKernelMetadata({
+              contentRef,
+              kernelInfo: kernelspec
+            })
+          );
         }
       }
 
@@ -219,6 +221,18 @@ export const launchKernelWhenNotebookSetEpic = (
         return empty();
       }
 
+      /**
+       * Avoid relaunching kernels for notebooks that have already
+       * launched their content.
+       */
+      if (content.model.kernelRef) {
+        const kernel = selectors.kernel(state, {
+          kernelRef: content.model.kernelRef
+        });
+        if (kernel && kernel.channels) {
+          return empty();
+        }
+      }
       const filepath = content.filepath;
       const notebook = content.model.notebook;
 
@@ -260,7 +274,7 @@ export const restartKernelEpic = (
             title: "Failure to Restart",
             message: "Unable to restart kernel, please select a new kernel.",
             level: "error"
-          }),
+          })
         );
       }
 
