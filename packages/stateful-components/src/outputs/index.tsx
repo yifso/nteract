@@ -22,8 +22,9 @@ export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
     const { outputs, children, hidden, expanded } = this.props;
     return (
       <div
-        className={`nteract-cell-outputs ${hidden && "hidden"} ${expanded &&
-          "expanded"}`}
+        className={`nteract-cell-outputs ${hidden ? "hidden" : ""} ${
+          expanded ? "expanded" : ""
+        }`}
       >
         {outputs.map((output, index) => (
           <Output output={output} key={index}>
@@ -53,7 +54,7 @@ export const makeMapStateToProps = (
         outputs = cell.get("outputs", Immutable.List());
         hidden =
           cell.cell_type === "code" &&
-          cell.getIn(["metadata", "jupyter", "output_hidden"]);
+          cell.getIn(["metadata", "jupyter", "outputs_hidden"]);
         expanded =
           cell.cell_type === "code" &&
           (cell.getIn(["metadata", "outputExpanded"]) ||

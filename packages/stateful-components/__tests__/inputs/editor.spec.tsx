@@ -50,8 +50,10 @@ describe("<Editor/>", () => {
   it("renders the matching child", () => {
     const component = mount(
       <Editor editorType="monaco">
-        <SubEditor editorType="monaco" />
-        <SubEditor editorType="codemirror" />
+        {{
+          monaco: () => <SubEditor editorType="monaco" />,
+          codemirror: () => <SubEditor editorType="codemirror" />
+        }}
       </Editor>
     );
     expect(component.find(".monaco")).toHaveLength(1);
@@ -60,8 +62,10 @@ describe("<Editor/>", () => {
   it("renders nothing if no matching child is found", () => {
     const component = mount(
       <Editor editorType="textarea">
-        <SubEditor editorType="monaco" />
-        <SubEditor editorType="codemirror" />
+        {{
+          monaco: () => <SubEditor editorType="monaco" />,
+          codemirror: () => <SubEditor editorType="codemirror" />
+        }}
       </Editor>
     );
     expect(component.isEmptyRender()).toBe(true);
