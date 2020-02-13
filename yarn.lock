@@ -2043,10 +2043,10 @@
     semiotic "^1.20.5"
     ts-jest "^24.3.0"
 
-"@nteract/examples@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.1.1.tgz#da23cc6d2532936fef853f4e29f2318e8e023f7e"
-  integrity sha512-ks50jIeKIoZ0+XX3C8TsF4vfOnlw++PgFkLNOK15a3EKJQBKM8/MOQY2Hndyz2ptZAIDKyU+YBYQFNnMXvmi/w==
+"@nteract/examples@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.2.0.tgz#7cf20e3ea54ea87fa6cff0c135c45b023975ea38"
+  integrity sha512-g/NXjsVHeGMq4EA8uZhMixrgH8cFg0d6Wa113fd//lRxvv673Hxf916s4BTcMf/eJySNRmk+70qQowt7kO8Jtw==
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
