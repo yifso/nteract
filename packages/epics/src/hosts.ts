@@ -1,22 +1,12 @@
-// Vendor modules
 import * as actions from "@nteract/actions";
 import { toJS } from "@nteract/commutable";
 import { NotebookV4 } from "@nteract/commutable/lib/v4";
 import * as selectors from "@nteract/selectors";
-import {
-  AppState,
-  DirectoryContentRecordProps,
-  DummyContentRecordProps,
-  FileContentRecordProps,
-  NotebookContentRecordProps,
-  ServerConfig,
-  IContentProvider
-} from "@nteract/types";
+import { AppState, DirectoryContentRecordProps, DummyContentRecordProps, FileContentRecordProps, IContentProvider, NotebookContentRecordProps, ServerConfig } from "@nteract/types";
 import { RecordOf } from "immutable";
-import { ofType } from "redux-observable";
-import { ActionsObservable, StateObservable } from "redux-observable";
+import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { bookstore } from "rx-jupyter";
-import { empty, Observable, of } from "rxjs";
+import { EMPTY, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import { catchError, map, switchMap, tap } from "rxjs/operators";
 
@@ -53,7 +43,7 @@ export function publishToBookstore(
 
       // Dismiss any usage that isn't targeting a jupyter server
       if (host.type !== "jupyter") {
-        return empty();
+        return EMPTY;
       }
 
       const content:

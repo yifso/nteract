@@ -2,45 +2,49 @@ import { stringifyNotebook } from "@nteract/commutable";
 import { actions, AppState, ContentRecord, createContentRef, createKernelspecsRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDummyContentRecord, makeEntitiesRecord, makeHostsRecord, makeJupyterHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
 import { fixtureJSON, mockAppState } from "@nteract/fixtures";
 import FileSaver from "file-saver";
-import Immutable from "immutable";
+import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents } from "rx-jupyter";
 import { of, Subject } from "rxjs";
 import { map, toArray } from "rxjs/operators";
 import { closeNotebookEpic, downloadString, fetchContentEpic, saveAsContentEpic, saveContentEpic, updateContentEpic } from "../src/contents";
 
-jest.mock("rx-jupyter", () => ({
-  contents: {
-    JupyterContentProvider: {
-      save: (severConfig, filepath, model) => {
-        return of({ response: {} });
-      },
-      update: (serverConfig, prevFilePath, object) => {
-        return of({ status: 200, response: {} });
-      },
-      get: jest
-        .fn()
-        .mockReturnValue(
-          of({
-            status: 200,
-            response: { last_modified: "some_stable_value" }
-          })
-        )
-        .mockReturnValueOnce(
-          of({
-            status: 200,
-            response: { last_modified: "one_value" }
-          })
-        )
-        .mockReturnValueOnce(
-          of({
-            status: 200,
-            response: { last_modified: "one_value" }
-          })
-        )
+jest.mock("rx-jupyter", () => {
+  const { of } = require("rxjs");
+
+  return {
+    contents: {
+      JupyterContentProvider: {
+        save: (severConfig, filepath, model) => {
+          return of({ response: {} });
+        },
+        update: (serverConfig, prevFilePath, object) => {
+          return of({ status: 200, response: {} });
+        },
+        get: jest
+          .fn()
+          .mockReturnValue(
+            of({
+              status: 200,
+              response: { last_modified: "some_stable_value" }
+            })
+          )
+          .mockReturnValueOnce(
+            of({
+              status: 200,
+              response: { last_modified: "one_value" }
+            })
+          )
+          .mockReturnValueOnce(
+            of({
+              status: 200,
+              response: { last_modified: "one_value" }
+            })
+          )
+      }
     }
   }
-}));
+});
 
 describe("downloadString", () => {
   it("calls FileSaver.saveAs with notebook and filename", () => {
