@@ -9,7 +9,7 @@ import {
 import { sendNotification } from "@nteract/mythic-notifications";
 import { AnyAction } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
-import { EMPTY, empty, merge, Observable, Observer, of } from "rxjs";
+import { EMPTY, merge, Observable, Observer, of } from "rxjs";
 import {
   catchError,
   concatMap,
@@ -132,10 +132,12 @@ export function acquireKernelInfo(
 
         const kernelspec = selectors.kernelspecByName(state, { name: l.name });
         if (kernelspec) {
-            result.push(actions.setKernelMetadata({
-                contentRef,
-                kernelInfo: kernelspec
-            }));
+          result.push(
+            actions.setKernelMetadata({
+              contentRef,
+              kernelInfo: kernelspec
+            })
+          );
         }
       }
 
@@ -216,9 +218,21 @@ export const launchKernelWhenNotebookSetEpic = (
         content.model.type !== "notebook"
       ) {
         // This epic only handles notebook content
-        return empty();
+        return EMPTY;
       }
 
+      /**
+       * Avoid relaunching kernels for notebooks that have already
+       * launched their content.
+       */
+      if (content.model.kernelRef) {
+        const kernel = selectors.kernel(state, {
+          kernelRef: content.model.kernelRef
+        });
+        if (kernel && kernel.channels) {
+          return EMPTY;
+        }
+      }
       const filepath = content.filepath;
       const notebook = content.model.notebook;
 
@@ -260,7 +274,7 @@ export const restartKernelEpic = (
             title: "Failure to Restart",
             message: "Unable to restart kernel, please select a new kernel.",
             level: "error"
-          }),
+          })
         );
       }
 
