@@ -521,15 +521,14 @@ export function sendExecuteRequestEpic(
               id,
               action.payload.contentRef
             ).pipe(
-              catchError((error, source) =>
+              catchError((error) =>
                 merge(
                   of(
                     actions.executeFailed({
                       error,
                       contentRef: action.payload.contentRef
                     })
-                  ),
-                  source
+                  )
                 )
               )
             );
