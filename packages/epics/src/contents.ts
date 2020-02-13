@@ -36,7 +36,6 @@ import { AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 
 import { RecordOf } from "immutable";
-import { existsSync } from "fs";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -60,7 +59,7 @@ export function updateContentEpic(
 
       const state = state$.value;
       const { contentRef, filepath, prevFilePath } = action.payload;
-      
+
       const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
@@ -202,10 +201,7 @@ export function autoSaveCurrentContentEpic(
              */
             content =>
               (content.type === "file" || content.type === "notebook") &&
-              content.filepath !== "" &&
-              selectors.isCurrentKernelZeroMQ(state)
-                ? existsSync(content.filepath)
-                : true
+              content.filepath !== ""
           )
           .keys()
       );
@@ -369,105 +365,109 @@ export function saveContentEpic(
 
           // Check to see if the file was modified since the last time
           // we saved.
-          return dependencies.contentProvider.get(serverConfig, filepath, { content: 0 }).pipe(
-            // Make sure that the modified time is within some delta
-            mergeMap((xhr: AjaxResponse) => {
-              // Ignore if the file wasn't found. Since this is a save epic
-              // we don't expect file to be present yet.
-              if (xhr.status != 404) {
-                if (xhr.status !== 200) {
-                  throw new Error(xhr.response.toString());
-                }
-                if (typeof xhr.response === "string") {
-                  throw new Error(
-                    `jupyter server response invalid: ${xhr.response}`
-                  );
-                }
+          return dependencies.contentProvider
+            .get(serverConfig, filepath, { content: 0 })
+            .pipe(
+              // Make sure that the modified time is within some delta
+              mergeMap((xhr: AjaxResponse) => {
+                // Ignore if the file wasn't found. Since this is a save epic
+                // we don't expect file to be present yet.
+                if (xhr.status != 404) {
+                  if (xhr.status !== 200) {
+                    throw new Error(xhr.response.toString());
+                  }
+                  if (typeof xhr.response === "string") {
+                    throw new Error(
+                      `jupyter server response invalid: ${xhr.response}`
+                    );
+                  }
 
-                const model = xhr.response;
+                  const model = xhr.response;
 
-                const diskDate = new Date(model.last_modified);
-                const inMemoryDate = content.lastSaved
-                  ? new Date(content.lastSaved)
-                  : // FIXME: I'm unsure if we don't have a date if we should
-                    // default to the disk date
-                    diskDate;
-                const diffDate = diskDate.getTime() - inMemoryDate.getTime();
+                  const diskDate = new Date(model.last_modified);
+                  const inMemoryDate = content.lastSaved
+                    ? new Date(content.lastSaved)
+                    : // FIXME: I'm unsure if we don't have a date if we should
+                      // default to the disk date
+                      diskDate;
+                  const diffDate = diskDate.getTime() - inMemoryDate.getTime();
 
-                if (Math.abs(diffDate) > 600) {
-                  return of(
-                    actions.saveFailed({
-                      error: new Error("open in another tab possibly..."),
-                      contentRef: action.payload.contentRef
-                    })
-                  );
-                }
-              }
-
-              return dependencies.contentProvider.save(serverConfig, filepath, saveModel).pipe(
-                mergeMap((saveXhr: AjaxResponse) => {
-                  const pollIntervalMs = 500;
-                  const maxPollNb = 4;
-
-                  // Last_modified value from jupyter server is unreliable: https://github.com/nteract/nteract/issues/4583
-                  // Check last-modified until value is stable.
-                  return interval(pollIntervalMs)
-                    .pipe(take(maxPollNb))
-                    .pipe(
-                      mergeMap(x =>
-                        dependencies.contentProvider
-                          .get(serverConfig, filepath, { content: 0 })
-                          .pipe(
-                            map((xhr: AjaxResponse) => {
-                              if (
-                                xhr.status !== 200 ||
-                                typeof xhr.response === "string"
-                              ) {
-                                return undefined;
-                              }
-                              const model = xhr.response;
-                              const lastModified = model.last_modified;
-                              // Return last modified
-                              return lastModified;
-                            })
-                          )
-                      ),
-                      distinctUntilChanged(),
-                      mergeMap(lastModified => {
-                        if (!lastModified) {
-                          // Don't do anything special
-                          return of(
-                            actions.saveFulfilled({
-                              contentRef: action.payload.contentRef,
-                              model: saveXhr.response
-                            })
-                          );
-                        }
-
-                        // Update lastModified with the correct value
-                        return of(
-                          actions.saveFulfilled({
-                            contentRef: action.payload.contentRef,
-                            model: {
-                              ...saveXhr.response,
-                              last_modified: lastModified
-                            }
-                          })
-                        );
+                  if (Math.abs(diffDate) > 600) {
+                    return of(
+                      actions.saveFailed({
+                        error: new Error("open in another tab possibly..."),
+                        contentRef: action.payload.contentRef
                       })
                     );
-                }),
-                catchError((error: Error) =>
-                  of(
-                    actions.saveFailed({
-                      error,
-                      contentRef: action.payload.contentRef
-                    })
-                  )
-                )
-              );
-            })
-          );
+                  }
+                }
+
+                return dependencies.contentProvider
+                  .save(serverConfig, filepath, saveModel)
+                  .pipe(
+                    mergeMap((saveXhr: AjaxResponse) => {
+                      const pollIntervalMs = 500;
+                      const maxPollNb = 4;
+
+                      // Last_modified value from jupyter server is unreliable: https://github.com/nteract/nteract/issues/4583
+                      // Check last-modified until value is stable.
+                      return interval(pollIntervalMs)
+                        .pipe(take(maxPollNb))
+                        .pipe(
+                          mergeMap(x =>
+                            dependencies.contentProvider
+                              .get(serverConfig, filepath, { content: 0 })
+                              .pipe(
+                                map((xhr: AjaxResponse) => {
+                                  if (
+                                    xhr.status !== 200 ||
+                                    typeof xhr.response === "string"
+                                  ) {
+                                    return undefined;
+                                  }
+                                  const model = xhr.response;
+                                  const lastModified = model.last_modified;
+                                  // Return last modified
+                                  return lastModified;
+                                })
+                              )
+                          ),
+                          distinctUntilChanged(),
+                          mergeMap(lastModified => {
+                            if (!lastModified) {
+                              // Don't do anything special
+                              return of(
+                                actions.saveFulfilled({
+                                  contentRef: action.payload.contentRef,
+                                  model: saveXhr.response
+                                })
+                              );
+                            }
+
+                            // Update lastModified with the correct value
+                            return of(
+                              actions.saveFulfilled({
+                                contentRef: action.payload.contentRef,
+                                model: {
+                                  ...saveXhr.response,
+                                  last_modified: lastModified
+                                }
+                              })
+                            );
+                          })
+                        );
+                    }),
+                    catchError((error: Error) =>
+                      of(
+                        actions.saveFailed({
+                          error,
+                          contentRef: action.payload.contentRef
+                        })
+                      )
+                    )
+                  );
+              })
+            );
         }
         default:
           // NOTE: Our ofType should prevent reaching here, this
@@ -525,22 +525,24 @@ export function saveAsContentEpic(
       const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig = selectors.serverConfig(host);
 
-      return dependencies.contentProvider.save(serverConfig, filepath, saveModel).pipe(
-        map((xhr: AjaxResponse) => {
-          return actions.saveAsFulfilled({
-            contentRef: action.payload.contentRef,
-            model: xhr.response
-          });
-        }),
-        catchError((error: Error) =>
-          of(
-            actions.saveAsFailed({
-              error,
-              contentRef: action.payload.contentRef
-            })
+      return dependencies.contentProvider
+        .save(serverConfig, filepath, saveModel)
+        .pipe(
+          map((xhr: AjaxResponse) => {
+            return actions.saveAsFulfilled({
+              contentRef: action.payload.contentRef,
+              model: xhr.response
+            });
+          }),
+          catchError((error: Error) =>
+            of(
+              actions.saveAsFailed({
+                error,
+                contentRef: action.payload.contentRef
+              })
+            )
           )
-        )
-      );
+        );
     })
   );
 }
