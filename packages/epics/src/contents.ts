@@ -139,10 +139,10 @@ export function autoSaveCurrentContentEpic(
   action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ): Observable<actions.Save> {
-  const state = state$.value;
-  const duration = selectors.autoSaveInterval(state);
+  const duration = selectors.autoSaveInterval(state$.value);
   return interval(duration).pipe(
     mergeMap(() => {
+      const state = state$.value;
       return from(
         selectors
           .contentByRef(state)
