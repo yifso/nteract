@@ -11,11 +11,10 @@
  */
 import { AnyAction } from "redux";
 import { ActionsObservable, StateObservable, ofType } from "redux-observable";
-import { Observable, of } from "rxjs";
+import { Observable, of, merge } from "rxjs";
 import {
   concatMap,
   mergeMap,
-  merge,
   filter,
   distinct,
   withLatestFrom
@@ -52,8 +51,8 @@ export const executeCellAfterKernelLaunchEpic = (
         kernel.status !== KernelStatus.ShuttingDown
       );
     }),
-    concatMap(([, state]) => {
-      return merge(
+    concatMap(([, state]) =>
+      merge(
         of(
           ...selectors
             .messageQueue(state)
@@ -62,8 +61,8 @@ export const executeCellAfterKernelLaunchEpic = (
             )
         ),
         of(actions.clearMessageQueue())
-      );
-    })
+      )
+    )
   );
 
 /**
