@@ -1,7 +1,18 @@
 import * as actions from "@nteract/actions";
 import { Notebook, stringifyNotebook, toJS } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
-import { AppState, ContentRef, DirectoryContentRecordProps, DummyContentRecordProps, FileContentRecordProps, IContent, IContentProvider, JupyterHostRecord, NotebookContentRecordProps, ServerConfig } from "@nteract/types";
+import {
+  AppState,
+  ContentRef,
+  DirectoryContentRecordProps,
+  DummyContentRecordProps,
+  FileContentRecordProps,
+  IContent,
+  IContentProvider,
+  JupyterHostRecord,
+  NotebookContentRecordProps,
+  ServerConfig
+} from "@nteract/types";
 import FileSaver from "file-saver";
 import { existsSync } from "fs";
 import { RecordOf } from "immutable";
@@ -9,7 +20,17 @@ import { Action } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
 import { EMPTY, from, interval, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
-import { catchError, concatMap, distinctUntilChanged, map, mergeMap, pluck, switchMap, take, tap } from "rxjs/operators";
+import {
+  catchError,
+  concatMap,
+  distinctUntilChanged,
+  map,
+  mergeMap,
+  pluck,
+  switchMap,
+  take,
+  tap
+} from "rxjs/operators";
 import urljoin from "url-join";
 
 export function updateContentEpic(
@@ -22,7 +43,7 @@ export function updateContentEpic(
     switchMap(action => {
       const state = state$.value;
       const { filepath, prevFilePath } = action.payload;
-      
+
       const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig: ServerConfig = selectors.serverConfig(host);
 
@@ -173,7 +194,7 @@ export function autoSaveCurrentContentEpic(
           "notebook"
         ),
         distinctUntilChanged(),
-        concatMap(() => of(actions.save({ contentRef })))
+        map(() => actions.save({ contentRef }))
       )
     )
   );
@@ -187,8 +208,8 @@ function serializeContent(
     | RecordOf<FileContentRecordProps>
     | RecordOf<DirectoryContentRecordProps>
 ): {
-  saveModel: Partial<IContent<"file" | "notebook">> | null,
-  serializedData: Notebook | string | null,
+  saveModel: Partial<IContent<"file" | "notebook">> | null;
+  serializedData: Notebook | string | null;
 } {
   // This could be object for notebook, or string for files
   let serializedData: Notebook | string;
@@ -327,9 +348,9 @@ export function saveContentEpic(
                   return of(
                     actions.saveFailed({
                       contentRef: action.payload.contentRef,
-                      error: saveXhr.response,
+                      error: saveXhr.response
                     })
-                  )
+                  );
                 }
 
                 const pollIntervalMs = 500;
@@ -450,21 +471,21 @@ export function saveAsContentEpic(
       return dependencies.contentProvider
         .save(serverConfig, filepath, saveModel)
         .pipe(
-        map((xhr: AjaxResponse) => {
-          return actions.saveAsFulfilled({
-            contentRef: action.payload.contentRef,
-            model: xhr.response
-          });
-        }),
-        catchError((error: Error) =>
-          of(
-            actions.saveAsFailed({
-              error,
-              contentRef: action.payload.contentRef
-            })
+          map((xhr: AjaxResponse) => {
+            return actions.saveAsFulfilled({
+              contentRef: action.payload.contentRef,
+              model: xhr.response
+            });
+          }),
+          catchError((error: Error) =>
+            of(
+              actions.saveAsFailed({
+                error,
+                contentRef: action.payload.contentRef
+              })
+            )
           )
-        )
-      );
+        );
     })
   );
 }

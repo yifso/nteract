@@ -231,6 +231,7 @@ export const updatedOutputs = () => (source: Observable<JupyterMessage>) =>
  *     payloads()
  *   )
  */
+// This is weird.
 export const payloads = () => (
   source: Observable<JupyterMessage>
 ): Observable<PayloadMessage> =>
@@ -238,7 +239,7 @@ export const payloads = () => (
     ofMessageType("execute_reply"),
     map(entry => entry.content.payload),
     filter(p => !!p),
-    mergeMap((p: Observable<PayloadMessage>) => from(p))
+    mergeMap((p: PayloadMessage) => from(p))
   );
 
 /**

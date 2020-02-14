@@ -16,7 +16,15 @@ import {
 import { AnyAction } from "redux";
 import { ofType } from "redux-observable";
 import { ActionsObservable, StateObservable } from "redux-observable";
-import { empty, merge, Observable, Observer, of, throwError } from "rxjs";
+import {
+  empty,
+  merge,
+  Observable,
+  Observer,
+  of,
+  throwError,
+  defer
+} from "rxjs";
 import {
   catchError,
   concatMap,
@@ -24,7 +32,6 @@ import {
   filter,
   groupBy,
   map,
-  mapTo,
   mergeAll,
   mergeMap,
   share,
@@ -64,6 +71,7 @@ export function executeCellStream(
   contentRef: ContentRef
 ) {
   if (!channels || !channels.pipe) {
+    // Suspect for infinite EXECUTE_FAILED issue
     return throwError(new Error("kernel not connected"));
   }
 
@@ -76,6 +84,7 @@ export function executeCellStream(
   >> = channels.pipe(childOf(executeRequest), share());
 
   // All the payload streams, intended for one user
+  // Be consistent about using $ at the end of an Obsevable
   const payloadStream = cellMessages.pipe(payloads());
 
   const cellAction$ = merge(
@@ -122,6 +131,7 @@ export function executeCellStream(
      * cell execution was sent from the kernel, per nbformat.
      */
     cellMessages.pipe(
+      // Start naming these operators better: pluck, filter, pull
       kernelStatuses(),
       map((status: string) =>
         actions.setInCell({
@@ -135,7 +145,7 @@ export function executeCellStream(
 
     // All actions for updating cell status
     cellMessages.pipe(
-      kernelStatuses() as any,
+      kernelStatuses(),
       map((status: string) =>
         actions.updateCellStatus({ id, status, contentRef })
       )
@@ -143,7 +153,7 @@ export function executeCellStream(
 
     // Update the input numbering: `[ ]`
     cellMessages.pipe(
-      executionCounts() as any,
+      executionCounts(),
       map((ct: number) =>
         actions.updateCellExecutionCount({ id, value: ct, contentRef })
       )
@@ -151,7 +161,7 @@ export function executeCellStream(
 
     // All actions for new outputs
     cellMessages.pipe(
-      outputs() as any,
+      outputs(),
       map((output: OnDiskOutput) =>
         actions.appendOutput({ id, output, contentRef })
       )
@@ -159,13 +169,13 @@ export function executeCellStream(
 
     // clear_output display message
     cellMessages.pipe(
-      ofMessageType("clear_output") as any,
-      mapTo(actions.clearOutputs({ id, contentRef }))
+      ofMessageType("clear_output"),
+      map(() => actions.clearOutputs({ id, contentRef }))
     ),
 
     // Prompt the user for input
     cellMessages.pipe(
-      inputRequests() as any,
+      inputRequests(),
       map((inputRequest: InputRequestMessage) => {
         return actions.promptInputRequest({
           id,
@@ -177,16 +187,19 @@ export function executeCellStream(
     )
   );
 
-  // On subscription, send the message
-  return Observable.create((observer: Observer<any>) => {
-    const subscription = cellAction$.subscribe(observer);
+  /**
+   * When someone subscribes, dispatch the messge to the kernel
+   * by calling `channels.next` then process the responses by proxying
+   * to the inner Observable (cellAction$).
+   */
+  return defer(() => {
     channels.next(executeRequest);
-    return subscription;
+    return cellAction$;
   });
 }
 
 export function createExecuteCellStream(
-  action$: ActionsObservable<
+  action$: Observable<
     | actions.ExecuteCanceled
     | actions.DeleteCell
     | actions.LaunchKernelAction
@@ -199,6 +212,7 @@ export function createExecuteCellStream(
   id: string,
   contentRef: ContentRef
 ): Observable<any> {
+  // Move these guards to the top-level epic
   const kernel = selectors.kernelByContentRef(state, {
     contentRef
   });
@@ -224,17 +238,7 @@ export function createExecuteCellStream(
       merge(
         action$.pipe(
           ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
-          filter(
-            (
-              action:
-                | actions.ExecuteCanceled
-                | actions.DeleteCell
-                | actions.LaunchKernelAction
-                | actions.LaunchKernelByNameAction
-                | actions.KillKernelAction
-                | actions.SendExecuteRequest
-            ) => (action as actions.ExecuteCanceled).payload.id === id
-          )
+          filter(action => action.payload.id === id)
         ),
         action$.pipe(
           ofType(
@@ -258,17 +262,17 @@ export function createExecuteCellStream(
     )
   );
 
-  return merge(
-    /**
-     * Clear the existing contents of the cell if it is being re-run
-     */
-    of(actions.clearOutputs({ id, contentRef })),
-    /**
-     * Update the cell-status to queued when it is about to be run
-     */
-    of(actions.updateCellStatus({ id, status: "queued", contentRef })),
-    // Merging it in with the actual stream
-    cellStream
+  return cellStream.pipe(
+    startWith(
+      /**
+       * Clear the existing outputs of the cell to make room for new ones.
+       */
+      actions.clearOutputs({ id, contentRef }),
+      /**
+       * Update the cell-status to queued when it is about to be run
+       */
+      actions.updateCellStatus({ id, status: "queued", contentRef })
+    )
   );
 }
 
@@ -346,6 +350,7 @@ export function lazyLaunchKernelEpic(
 ) {
   return action$.pipe(
     ofType(actions.EXECUTE_CELL),
+    // Be consistent about using state$.value
     withLatestFrom(state$),
     filter(([action, state]) => {
       const contentRef = action.payload.contentRef;
@@ -412,8 +417,8 @@ export function executeCellEpic(
       if (
         kernel &&
         kernel.channels &&
-        (kernel.status !== KernelStatus.NotConnected &&
-          kernel.status !== KernelStatus.ShuttingDown)
+        kernel.status !== KernelStatus.NotConnected &&
+        kernel.status !== KernelStatus.ShuttingDown
       ) {
         return of(actions.sendExecuteRequest(action.payload));
       } else {
@@ -447,8 +452,8 @@ export function executeCellAfterKernelLaunchEpic(
       return !!(
         kernel &&
         kernel.channels &&
-        (kernel.status !== KernelStatus.NotConnected &&
-          kernel.status !== KernelStatus.ShuttingDown)
+        kernel.status !== KernelStatus.NotConnected &&
+        kernel.status !== KernelStatus.ShuttingDown
       );
     }),
     concatMap(([, state]) => {
@@ -478,15 +483,23 @@ export function sendExecuteRequestEpic(
     ofType(actions.SEND_EXECUTE_REQUEST),
     tap((action: actions.SendExecuteRequest) => {
       if (!action.payload.id) {
+        // Thought: Can create an Error subclass for each error type.
         throw new Error("execute cell needs an id");
       }
     }),
-    // Split stream by cell IDs
+    /**
+     * Split the stream by cell IDs create a separate stream for the
+     * execution flow of each cell.
+     *
+     * Note that this can be a memory leak because a new Observable
+     * is created for each new cell.
+     */
     groupBy((action: actions.SendExecuteRequest) => action.payload.id),
-    // Work on each cell's stream
-    map(cellAction$ =>
+    // Avoid creating a second higher-order Observable by using a mergeMap
+    // instead of a map then mergeAll.
+    mergeMap(cellAction$ =>
       cellAction$.pipe(
-        // When a new EXECUTE_CELL comes in with the current ID, we create a
+        // When a new SEND_EXECUTE_REQUEST comes in with the current ID, we create a
         // a new stream and unsubscribe from the old one.
         switchMap((action: actions.SendExecuteRequest) => {
           const { id } = action.payload;
@@ -498,19 +511,24 @@ export function sendExecuteRequestEpic(
 
           // If it's not a notebook, we shouldn't be here
           if (!model || model.type !== "notebook") {
-            return empty();
+            // TODO: throw an error
+            return;
           }
 
           const cell = selectors.notebook.cellById(model, {
             id
           });
           if (!cell) {
-            return empty();
+            // TODO: throw an error
+            return;
           }
+
+          // Move check for code/markdown cell as guard
 
           // We only execute code cells
           if ((cell as any).get("cell_type") === "code") {
-            const source = cell.get("source", "");
+            // Default to null and add a guard check
+            const source = cell.get("source", null);
 
             const message = createExecuteRequest(source);
 
@@ -522,6 +540,8 @@ export function sendExecuteRequestEpic(
               action.payload.contentRef
             ).pipe(
               catchError((error, source) =>
+                // TODO: Check if this is a fatal error and decide
+                // Investigate startWith for readability
                 merge(
                   of(
                     actions.executeFailed({
@@ -538,8 +558,7 @@ export function sendExecuteRequestEpic(
         })
       )
     ),
-    // Bring back all the inner Observables into one stream
-    mergeAll(),
+    // this doesn't recover individual cell streams, just the entire epic
     catchError((error: Error, source) => {
       // Either we ensure that all errors are caught when the action.payload.contentRef
       // is in scope or we make this be a generic ERROR
