@@ -1,5 +1,6 @@
 // tslint:disable:max-line-length
 import { Action, ErrorAction, HasCell, HasContent, HasKernel, makeActionFunction, makeErrorActionFunction, makeZeroArgActionFunction, MaybeHasContent } from "../utils";
+import { CellId } from "@nteract/commutable";
 
 export const SEND_EXECUTE_REQUEST     = "SEND_EXECUTE_REQUEST";
 export const EXECUTE_CELL             = "EXECUTE_CELL";
@@ -18,7 +19,7 @@ export type ExecuteAllCells           = Action     <typeof EXECUTE_ALL_CELLS,   
 export type ExecuteAllCellsBelow      = Action     <typeof EXECUTE_ALL_CELLS_BELOW, HasContent>;
 export type ExecuteFocusedCell        = Action     <typeof EXECUTE_FOCUSED_CELL,    HasContent>;
 export type ExecuteCanceled           = Action     <typeof EXECUTE_CANCELED,        HasCell>;
-export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED,          MaybeHasContent>;
+export type ExecuteFailed             = ErrorAction<typeof EXECUTE_FAILED,          MaybeHasContent & { id?: CellId }>;
 export type SetExecutionStateAction   = Action     <typeof SET_EXECUTION_STATE,     HasKernel &  { kernelStatus: string }>;
 export type EnqueueAction             = Action     <typeof ENQUEUE_ACTION,          HasCell>;
 export type ClearMessageQueue         = Action     <typeof CLEAR_MESSAGE_QUEUE,     undefined>;
