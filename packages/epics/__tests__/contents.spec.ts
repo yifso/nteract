@@ -1,13 +1,37 @@
 import { stringifyNotebook } from "@nteract/commutable";
-import { actions, AppState, ContentRecord, createContentRef, createKernelspecsRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDummyContentRecord, makeEntitiesRecord, makeHostsRecord, makeJupyterHostRecord, makeNotebookContentRecord, makeStateRecord, makeTransformsRecord } from "@nteract/core";
+import {
+  actions,
+  AppState,
+  ContentRecord,
+  createContentRef,
+  createKernelspecsRef,
+  makeAppRecord,
+  makeCommsRecord,
+  makeContentsRecord,
+  makeDummyContentRecord,
+  makeEntitiesRecord,
+  makeHostsRecord,
+  makeJupyterHostRecord,
+  makeNotebookContentRecord,
+  makeStateRecord,
+  makeTransformsRecord
+} from "@nteract/core";
 import { fixtureJSON, mockAppState } from "@nteract/fixtures";
 import FileSaver from "file-saver";
 import * as Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { contents } from "rx-jupyter";
 import { of, Subject } from "rxjs";
-import { map, toArray } from "rxjs/operators";
-import { closeNotebookEpic, downloadString, fetchContentEpic, saveAsContentEpic, saveContentEpic, updateContentEpic } from "../src/contents";
+import { map, take, toArray } from "rxjs/operators";
+import {
+  autoSaveCurrentContentEpic,
+  closeNotebookEpic,
+  downloadString,
+  fetchContentEpic,
+  saveAsContentEpic,
+  saveContentEpic,
+  updateContentEpic
+} from "../src/contents";
 
 jest.mock("rx-jupyter", () => {
   const { of } = require("rxjs");
@@ -43,7 +67,7 @@ jest.mock("rx-jupyter", () => {
           )
       }
     }
-  }
+  };
 });
 
 describe("downloadString", () => {
@@ -346,7 +370,9 @@ describe("fetchContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = fetchContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
+    const obs = fetchContentEpic(action$, state$, {
+      contentProvider: contents.JupyterContentProvider
+    });
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
@@ -376,7 +402,9 @@ describe("updateContentEpic", () => {
       })
     );
     const state$ = new StateObservable<AppState>(new Subject(), state);
-    const obs = updateContentEpic(action$, state$, { contentProvider: contents.JupyterContentProvider });
+    const obs = updateContentEpic(action$, state$, {
+      contentProvider: contents.JupyterContentProvider
+    });
     obs.pipe(toArray()).subscribe(
       action => {
         const types = action.map(({ type }) => type);
@@ -388,5 +416,99 @@ describe("updateContentEpic", () => {
       }, // It should not error in the stream
       () => done()
     );
+  });
+});
+
+describe("autoSaveContentEpic", () => {
+  it("returns a valid Observable", () => {
+    const action$ = ActionsObservable.from([]);
+    const state$ = new StateObservable(new Subject(), mockAppState({}));
+    expect(autoSaveCurrentContentEpic(action$, state$)).not.toBeNull();
+  });
+  it("dispatches a save action on content change", async () => {
+    const action$ = ActionsObservable.from([]);
+    const stateSubject$ = new Subject();
+    const state = {
+      app: {},
+      config: Immutable.Map({
+        autoSaveInterval: 100
+      }),
+      core: {
+        entities: {
+          kernels: {},
+          contents: {
+            byRef: Immutable.Map({
+              aContentRef: {
+                type: "notebook",
+                filepath: "test.ipynb",
+                model: {
+                  notebook: { key: "to be cleared" }
+                }
+              }
+            })
+          }
+        }
+      }
+    };
+    const state$ = new StateObservable(stateSubject$, state);
+    const newState = {
+      app: {},
+      config: Immutable.Map({
+        autoSaveInterval: 100
+      }),
+      core: {
+        entities: {
+          kernels: {},
+          contents: {
+            byRef: Immutable.Map({
+              aContentRef: {
+                type: "notebook",
+                filepath: "test.ipynb",
+                model: {
+                  notebook: { key: Math.random().toString() }
+                }
+              }
+            })
+          }
+        }
+      }
+    };
+    stateSubject$.next(newState);
+    const results = await autoSaveCurrentContentEpic(action$, state$)
+      .pipe(take(2), toArray())
+      .toPromise();
+    expect(results.map(a => a.type)).toContain(actions.SAVE);
+  });
+  it("dispatches nothing on no content change", async () => {
+    const action$ = ActionsObservable.from([]);
+    const stateSubject$ = new Subject();
+    const state = {
+      app: {},
+      config: Immutable.Map({
+        autoSaveInterval: 0
+      }),
+      core: {
+        entities: {
+          contents: makeContentsRecord({
+            byRef: Immutable.Map({
+              aContentRef: {
+                type: "notebook",
+                filepath: "test.ipynb",
+                model: {
+                  notebook: { key: "to be cleared" }
+                }
+              }
+            })
+          }),
+          kernels: {}
+        }
+      }
+    };
+    const state$ = new StateObservable(stateSubject$, state);
+    stateSubject$.next(state);
+    const results = await autoSaveCurrentContentEpic(action$, state$)
+      .pipe(take(2), toArray())
+      .toPromise();
+    expect(results.map(a => a.type)).toContain(actions.SAVE);
   });
 });
