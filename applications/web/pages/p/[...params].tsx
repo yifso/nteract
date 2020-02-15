@@ -1,7 +1,7 @@
-import React from "react";
-import { withRouter } from "next/router";
 import { WithRouterProps } from "next/dist/client/with-router";
 import dynamic from "next/dynamic";
+import { withRouter } from "next/router";
+import React from "react";
 
 import { Host } from "@mybinder/host-cache";
 
@@ -11,7 +11,7 @@ const Notebook = dynamic(() => import("../../components/notebook"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-export class Main extends React.Component<WithRouterProps> {
+export class Main extends React.PureComponent<WithRouterProps> {
   render() {
     const { params } = this.props.router.query;
 

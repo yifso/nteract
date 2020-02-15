@@ -1,30 +1,18 @@
 import React from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 import {
   actions,
   ContentRef,
-  KernelRef,
   createContentRef,
   createKernelRef,
   HostRecord,
+  KernelRef,
   makeJupyterHostRecord,
   ServerConfig
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
-
-import "@nteract/styles/app.css";
-
-import "@nteract/styles/global-variables.css";
-
-import "@nteract/styles/themes/base.css";
-import "@nteract/styles/themes/default.css";
-
-import "codemirror/addon/hint/show-hint.css";
-import "codemirror/lib/codemirror.css";
-
-import "@nteract/styles/editor-overrides.css";
 
 interface ComponentProps {
   host: ServerConfig;
