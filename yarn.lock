@@ -2829,10 +2829,10 @@
     semiotic "^1.20.5"
     ts-jest "^24.3.0"
 
-"@nteract/examples@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.1.1.tgz#da23cc6d2532936fef853f4e29f2318e8e023f7e"
-  integrity sha512-ks50jIeKIoZ0+XX3C8TsF4vfOnlw++PgFkLNOK15a3EKJQBKM8/MOQY2Hndyz2ptZAIDKyU+YBYQFNnMXvmi/w==
+"@nteract/examples@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.2.0.tgz#7cf20e3ea54ea87fa6cff0c135c45b023975ea38"
+  integrity sha512-g/NXjsVHeGMq4EA8uZhMixrgH8cFg0d6Wa113fd//lRxvv673Hxf916s4BTcMf/eJySNRmk+70qQowt7kO8Jtw==
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
@@ -3077,10 +3077,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/codemirror@^0.0.84":
-  version "0.0.84"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.84.tgz#b0cfca79ccdfd45ffe1f737668276a31b3149ebd"
-  integrity sha512-W78ZhfHPGYoYGCpAcEa268QUU3CVMA8BwcybxUMhEs2v5Rj58/7lGeRh3P7tauWRnSg3Pyn5ymw2lt65AyrVUw==
+"@types/codemirror@^0.0.85":
+  version "0.0.85"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.85.tgz#6fc36a0e8b76d58365c4b8a496873f9ed559039c"
+  integrity sha512-ZAVyNzXAHu/mkvvZlq2IYPBjm4X3mEno27epXpBRXwWbX75zAAeGZfubXxft1kWNqBSI2f50kvuJTG+fRwHaNg==
   dependencies:
     "@types/tern" "*"
 

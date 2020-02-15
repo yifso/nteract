@@ -3,10 +3,17 @@ import { connect } from "react-redux";
 
 import { AppState, ContentRef, selectors } from "@nteract/core";
 
+export interface PassedPromptProps {
+  id: string;
+  contentRef: ContentRef;
+  status?: string;
+  executionCount?: number;
+}
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  children: React.ReactElement;
+  children: (props: PassedPromptProps) => React.ReactNode;
 }
 
 interface StateProps {
@@ -14,27 +21,17 @@ interface StateProps {
   executionCount?: number;
 }
 
-export class Prompt extends React.Component<ComponentProps, StateProps> {
+type Props = StateProps & ComponentProps;
+
+export class Prompt extends React.Component<Props> {
   render() {
     return (
       <div className="nteract-cell-prompt">
-        {React.Children.map(this.props.children, child => {
-          if (!child) {
-            return;
-          }
-          if (
-            typeof child === "string" ||
-            typeof child === "number" ||
-            typeof child === "boolean"
-          ) {
-            return;
-          }
-
-          if (typeof child !== "object" || !("props" in child)) {
-            return;
-          }
-
-          return React.cloneElement(child, this.props);
+        {this.props.children({
+          id: this.props.id,
+          contentRef: this.props.contentRef,
+          status: this.props.status,
+          executionCount: this.props.executionCount
         })}
       </div>
     );

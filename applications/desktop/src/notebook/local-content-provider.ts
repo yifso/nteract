@@ -9,9 +9,6 @@ import { catchError, map, mergeMap } from "rxjs/operators";
 
 // A Content provider which reads/writes to local disk
 export class LocalContentProvider implements IContentProvider {
-
-  constructor() {}
-
   public remove(serverConfig: ServerConfig, path: string): Observable<AjaxResponse> {
     throw new Error("Not implemented");
   }
