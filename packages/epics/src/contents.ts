@@ -14,7 +14,6 @@ import {
   ServerConfig
 } from "@nteract/types";
 import FileSaver from "file-saver";
-import { existsSync } from "fs";
 import { RecordOf } from "immutable";
 import { Action } from "redux";
 import { ActionsObservable, ofType, StateObservable } from "redux-observable";
@@ -158,8 +157,9 @@ export function autoSaveCurrentContentEpic(
   action$: ActionsObservable<Action>,
   state$: StateObservable<AppState>
 ): Observable<actions.Save> {
-  const duration = selectors.autoSaveInterval(state$.value);
-  return interval(duration).pipe(
+  return state$.pipe(
+    map(state => selectors.autoSaveInterval(state)),
+    switchMap(time => interval(time)),
     mergeMap(() => {
       const state = state$.value;
       return from(
