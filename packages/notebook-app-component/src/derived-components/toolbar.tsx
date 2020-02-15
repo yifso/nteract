@@ -71,16 +71,17 @@ export default class Toolbar extends React.PureComponent<
                 </DropdownTrigger>
                 {context.type === "code" ? (
                   <DropdownContent>
-                    <li
+                    <div className="nteract-cell-toolbar-role">
+                    <button 
                       onClick={context.clearOutputs}
                       className="clearOutput"
                       role="option"
-                      aria-selected="false"
-                      tabIndex={0}
+                      //aria-selected="false"
+                      //tabIndex={0}
                     >
                       <a>Clear Cell Output</a>
-                    </li>
-                    <li
+                    </button>
+                    <button
                       onClick={context.toggleCellInputVisibility}
                       className="inputVisibility"
                       role="option"
@@ -88,8 +89,8 @@ export default class Toolbar extends React.PureComponent<
                       tabIndex={0}
                     >
                       <a>Toggle Input Visibility</a>
-                    </li>
-                    <li
+                    </button>
+                    <button
                       onClick={context.toggleCellOutputVisibility}
                       className="outputVisibility"
                       role="option"
@@ -97,8 +98,8 @@ export default class Toolbar extends React.PureComponent<
                       tabIndex={0}
                     >
                       <a>Toggle Output Visibility</a>
-                    </li>
-                    <li
+                    </button>
+                    <button
                       onClick={context.toggleOutputExpansion}
                       className="outputExpanded"
                       role="option"
@@ -106,17 +107,17 @@ export default class Toolbar extends React.PureComponent<
                       tabIndex={0}
                     >
                       <a>Toggle Expanded Output</a>
-                    </li>
-                    <li
+                    </button>
+                    <button
                       onClick={context.toggleParameterCell}
                       role="option"
                       aria-selected="false"
                       tabIndex={0}
                     >
                       <a>Toggle Parameter Cell</a>
-                    </li>
+                    </button>
 
-                    <li
+                    <button
                       onClick={context.changeToMarkdownCell}
                       className="changeType"
                       role="option"
@@ -124,11 +125,13 @@ export default class Toolbar extends React.PureComponent<
                       tabIndex={0}
                     >
                       <a>Convert to Markdown Cell</a>
-                    </li>
+                    </button>
+                    </div>
                   </DropdownContent>
                 ) : (
                   <DropdownContent>
-                    <li
+                    <div className="nteract-cell-toolbar-role">
+                    <button
                       onClick={context.changeToCodeCell}
                       className="changeType"
                       role="option"
@@ -136,7 +139,8 @@ export default class Toolbar extends React.PureComponent<
                       tabIndex={0}
                     >
                       <a>Convert to Code Cell</a>
-                    </li>
+                    </button>
+                    </div>
                   </DropdownContent>
                 )}
               </DropdownMenu>
