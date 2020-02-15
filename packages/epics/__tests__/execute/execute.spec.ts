@@ -11,6 +11,8 @@ import {
   executeCellStream,
   sendExecuteRequestEpic
 } from "../../src/execute";
+import { monocellNotebook } from "@nteract/commutable";
+import { makeDocumentRecord } from "@nteract/types";
 
 const Immutable = require("immutable");
 
@@ -192,86 +194,6 @@ describe("createExecuteCellStream", () => {
   });
 });
 
-describe("executeCellEpic", () => {
-  test("Map to SendExecuteRequest action when kernel launched", async () => {
-    const fakeKernel = stateModule.makeRemoteKernelRecord({ status: "idle" });
-    const fakeContent = stateModule
-      .makeNotebookContentRecord()
-      .setIn(["model", "kernelRef"], "fakeKernelRef");
-    const state = {
-      core: stateModule.makeStateRecord({
-        entities: stateModule.makeEntitiesRecord({
-          contents: stateModule.makeContentsRecord({
-            byRef: Immutable.Map({
-              fakeContentRef: fakeContent
-            })
-          }),
-          kernels: stateModule.makeKernelsRecord({
-            byRef: Immutable.Map({
-              fakeKernelRef: fakeKernel
-            })
-          }),
-          messages: stateModule.makeMessagesRecord({
-            messageQueue: Immutable.List([
-              {
-                type: "ENQUEUE_ACTION",
-                payload: {
-                  contentRef: "fakeContentRef",
-                  id: "0"
-                }
-              }
-            ])
-          })
-        }),
-        kernelRef: "fake"
-      })
-    };
-    const state$ = new StateObservable(new Subject(), state);
-    const action$ = ActionsObservable.of(
-      actions.executeCell({ id: "0", contentRef: "fakeContentRef" })
-    );
-    const responses = await executeCellEpic(action$, state$)
-      .pipe(toArray())
-      .toPromise();
-    expect(responses).toEqual([
-      actions.sendExecuteRequest({ id: "0", contentRef: "fakeContentRef" })
-    ]);
-  });
-
-  test("Adds action to message queue if kernel is not launched", async () => {
-    const fakeContent = stateModule.makeNotebookContentRecord();
-    const state = {
-      core: stateModule.makeStateRecord({
-        entities: stateModule.makeEntitiesRecord({
-          contents: stateModule.makeContentsRecord({
-            byRef: Immutable.Map({
-              fakeContentRef: fakeContent
-            })
-          }),
-          kernels: stateModule.makeKernelsRecord(),
-          messages: stateModule.makeMessagesRecord()
-        }),
-        kernelRef: "fake"
-      })
-    };
-    const state$ = new StateObservable(new Subject(), state);
-    const action$ = ActionsObservable.of(
-      actions.executeCell({ id: "0", contentRef: "fakeContentRef" })
-    );
-    const responses = await executeCellEpic(action$, state$)
-      .pipe(toArray())
-      .toPromise();
-    expect(responses).toEqual([
-      actions.updateCellStatus({
-        id: "0",
-        contentRef: "fakeContentRef",
-        status: "queued"
-      }),
-      actions.enqueueAction({ id: "0", contentRef: "fakeContentRef" })
-    ]);
-  });
-});
-
 describe("sendExecuteRequestEpic", () => {
   const state = {
     app: {
@@ -291,7 +213,9 @@ describe("sendExecuteRequestEpic", () => {
     ).pipe(share()) as ActionsObservable<any>;
     const responseActions = sendExecuteRequestEpic(badAction$, state$).pipe(
       catchError(error => {
-        expect(error.message).toEqual("execute cell needs an id");
+        expect(error.message).toEqual(
+          "No CellId provided in ExecuteCell action."
+        );
         return empty();
       })
     );
@@ -360,5 +284,264 @@ describe("sendExecuteRequestEpic", () => {
     expect(responses.map(response => response.type)).toEqual([
       actions.EXECUTE_FAILED
     ]);
+  });
+
+  test("throws an error when attempting to execute non-notebook types", done => {
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeDummyContentRecord()
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: "first", contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain(
+      "Cannot send execute requests from non-notebook files"
+    );
+  });
+
+  test("throws an error when cell is not found", done => {
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord()
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: "first", contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain("Could not find the cell with the given CellId");
+  });
+  test("throws an error when cell is not a code cell", done => {
+    let notebook = monocellNotebook;
+    let cellId: string = monocellNotebook.cellOrder.first();
+    notebook = notebook.setIn(["cellMap", cellId, "cell_type"], "markdown");
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord({
+                model: makeDocumentRecord({
+                  notebook
+                })
+              })
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: cellId, contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain("Can only execute code cells but recieved");
+  });
+
+  test("throws an error when cell is empty", done => {
+    const notebook = monocellNotebook;
+    let cellId: string = monocellNotebook.cellOrder.first();
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord({
+                model: makeDocumentRecord({
+                  notebook
+                })
+              })
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: cellId, contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain("Cannot execute cells with no source content");
+  });
+
+  test("throws an error when kernel is not connected", done => {
+    let notebook = monocellNotebook;
+    let cellId: string = monocellNotebook.cellOrder.first();
+    notebook = notebook.setIn(["cellMap", cellId, "source"], "print('test')");
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord({
+                model: makeDocumentRecord({
+                  notebook
+                })
+              })
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "not connected"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: cellId, contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain("There is no connected kernel for this content");
+  });
+
+  test("throws an error when kernel channels is malformed", done => {
+    let notebook = monocellNotebook;
+    let cellId: string = monocellNotebook.cellOrder.first();
+    notebook = notebook.setIn(["cellMap", cellId, "source"], "print('test')");
+    const state = {
+      app: {},
+      core: stateModule.makeStateRecord({
+        kernelRef: "fake",
+        entities: stateModule.makeEntitiesRecord({
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              fakeContent: stateModule.makeNotebookContentRecord({
+                model: makeDocumentRecord({
+                  notebook,
+                  kernelRef: "fake"
+                })
+              })
+            })
+          }),
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              fake: stateModule.makeRemoteKernelRecord({
+                channels: null,
+                status: "idle"
+              })
+            })
+          })
+        })
+      })
+    };
+    const state$ = new StateObservable(new Subject(), state);
+    const action$ = ActionsObservable.of(
+      actions.sendExecuteRequest({ id: cellId, contentRef: "fakeContent" })
+    );
+    let result = "";
+    sendExecuteRequestEpic(action$, state$).subscribe(
+      // Every action that goes through should get stuck on an array
+      (x: actions.ExecuteFailed) => {
+        result = x.payload.error.message;
+        done();
+      },
+      err => done.fail(err)
+    );
+    expect(result).toContain(
+      "The WebSocket associated with the target kernel is in a bad state"
+    );
   });
 });
