@@ -1,8 +1,8 @@
 import { PayloadMessage } from "@nteract/types";
 import { from, Observable, Subscriber } from "rxjs";
 import { filter, map, mergeMap } from "rxjs/operators";
-import { executeRequest, message } from "./messages";
-import { ExecuteRequest, JupyterMessage, MessageType } from "./types";
+import { message } from "./messages";
+import { JupyterMessage, MessageType } from "./types";
 
 export * from "./types";
 
