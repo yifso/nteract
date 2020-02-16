@@ -139,16 +139,21 @@
 
 .nteract-cell-toolbar button {
   display: inline-block;
-
   width: 22px;
   height: 20px;
   padding: 0px 4px;
-
   text-align: center;
-
   border: none;
   outline: none;
   background: none;
+}
+.nteract-cell-toolbar-role button {
+  display: block;
+  width: 22px;
+  height: 20px;
+  white-space: nowrap;
+  padding: 15px;
+  text-align: center;
 }
 
 .nteract-cell-toolbar span {
