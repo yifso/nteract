@@ -3,25 +3,24 @@ import { compose } from "redux";
 
 import {
   AppState,
+  ContentRecord,
+  createKernelspecsRef,
   epics as coreEpics,
-  reducers,
+  HostRecord,
   makeAppRecord,
   makeCommsRecord,
-  makeStateRecord,
+  makeContentsRecord,
   makeEntitiesRecord,
   makeHostsRecord,
+  makeStateRecord,
   makeTransformsRecord,
-  HostRecord,
-  ContentRecord,
-  makeContentsRecord,
-  createKernelspecsRef
+  reducers
 } from "@nteract/core";
 import { notifications } from "@nteract/mythic-notifications";
 import { makeConfigureStore } from "@nteract/myths";
 import { Media } from "@nteract/outputs";
 import { contents } from "rx-jupyter";
 
-const NullTransform = () => null;
 const kernelspecsRef = createKernelspecsRef();
 
 const composeEnhancers =
@@ -31,7 +30,7 @@ const composeEnhancers =
 
 export const initialState: AppState = {
   app: makeAppRecord({
-    version: `@nteract/web`
+    version: "@nteract/web"
   }),
   comms: makeCommsRecord(),
   config: Immutable.Map({
@@ -48,20 +47,6 @@ export const initialState: AppState = {
       }),
       transforms: makeTransformsRecord({
         displayOrder: Immutable.List([
-          "application/vnd.jupyter.widget-view+json",
-          "application/vnd.vega.v5+json",
-          "application/vnd.vega.v4+json",
-          "application/vnd.vega.v3+json",
-          "application/vnd.vega.v2+json",
-          "application/vnd.vegalite.v3+json",
-          "application/vnd.vegalite.v2+json",
-          "application/vnd.vegalite.v1+json",
-          "application/geo+json",
-          "application/vnd.plotly.v1+json",
-          "text/vnd.plotly.v1+html",
-          "application/x-nteract-model-debug+json",
-          "application/vnd.dataresource+json",
-          "application/vdom.v1+json",
           "application/json",
           "application/javascript",
           "text/html",
@@ -74,20 +59,6 @@ export const initialState: AppState = {
           "text/plain"
         ]),
         byId: Immutable.Map({
-          "text/vnd.plotly.v1+html": NullTransform,
-          "application/vnd.plotly.v1+json": NullTransform,
-          "application/geo+json": NullTransform,
-          "application/x-nteract-model-debug+json": NullTransform,
-          "application/vnd.dataresource+json": NullTransform,
-          "application/vnd.jupyter.widget-view+json": NullTransform,
-          "application/vnd.vegalite.v1+json": NullTransform,
-          "application/vnd.vegalite.v2+json": NullTransform,
-          "application/vnd.vegalite.v3+json": NullTransform,
-          "application/vnd.vega.v2+json": NullTransform,
-          "application/vnd.vega.v3+json": NullTransform,
-          "application/vnd.vega.v4+json": NullTransform,
-          "application/vnd.vega.v5+json": NullTransform,
-          "application/vdom.v1+json": NullTransform,
           "application/json": Media.Json,
           "application/javascript": Media.JavaScript,
           "text/html": Media.HTML,
