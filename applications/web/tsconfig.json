@@ -36,6 +36,9 @@
     },
     {
       "path": "../../packages/styles"
+    },
+    {
+      "path": "../../packages/notebook-app-component"
     }
   ],
   "exclude": ["node_modules"]
