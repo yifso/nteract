@@ -12,7 +12,7 @@ const Notebook = dynamic(() => import("../../components/notebook"), {
 const BINDER_URL = "https://mybinder.org";
 
 export class Main extends React.PureComponent<WithRouterProps> {
-  render() {
+  render(): JSX.Element {
     const { params } = this.props.router.query;
 
     /**
@@ -24,7 +24,7 @@ export class Main extends React.PureComponent<WithRouterProps> {
      * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
      */
     if (params) {
-      const provider = params[0];
+      const _provider = params[0];
       const org = params[1];
       const repo = params[2];
       const gitRef = params[3];
