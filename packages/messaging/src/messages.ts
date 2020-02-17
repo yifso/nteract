@@ -310,15 +310,23 @@ export function stream(content: { name: "stdout" | "stderr"; text: string }) {
  *
  * http://jupyter-client.readthedocs.io/en/stable/messaging.html#execution-results
  */
-export function executeReply(content: {
+
+
+interface executeReplyError {
   status: string;
-  execution_count: number;
+  execution_count : number;
+
+}
+interface executeReplyOk {
+  status: string;
+  execution_count : number;
   payload?: object[];
   user_expressions?: object;
-}) {
-  // TODO: This function could be better typed. It's a bit dual headed though since:
-  //         * `status: ok` carries payloads
-  //         * `status: error` carries error info that is also in error output
+
+}
+export function executeReply(
+  content: executeReplyOk | executeReplyError
+) {
   return message(
     {
       msg_type: "execute_reply"
