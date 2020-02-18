@@ -312,12 +312,14 @@ export function stream(content: { name: "stdout" | "stderr"; text: string }) {
  */
 
 
-interface executeReplyError {
+export interface ExecuteReplyError {
   status: string;
   execution_count : number;
-
+  ename : string;
+  evalue : string;
+  traceback : string[];
 }
-interface executeReplyOk {
+export interface ExecuteReplyOk {
   status: string;
   execution_count : number;
   payload?: object[];
@@ -325,7 +327,7 @@ interface executeReplyOk {
 
 }
 export function executeReply(
-  content: executeReplyOk | executeReplyError
+  content: ExecuteReplyOk | ExecuteReplyError
 ) {
   return message(
     {
