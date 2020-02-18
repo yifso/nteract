@@ -1,6 +1,6 @@
 {
   "name": "@nteract/myths",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.0",
   "description": "A redux-observable framework for better locality of dependencies",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,8 +12,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
   },
   "dependencies": {
     "react-redux": "^6.0.0",
