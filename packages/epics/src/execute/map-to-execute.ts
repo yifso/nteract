@@ -6,7 +6,7 @@
  */
 import Immutable from "immutable";
 import { ActionsObservable, StateObservable, ofType } from "redux-observable";
-import { EMPTY, of } from "rxjs";
+import { of } from "rxjs";
 import { concatMap, mergeMap } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
