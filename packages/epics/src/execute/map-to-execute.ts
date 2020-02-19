@@ -12,7 +12,7 @@ import { concatMap, mergeMap } from "rxjs/operators";
 import * as actions from "@nteract/actions";
 import { CellId } from "@nteract/commutable";
 import * as selectors from "@nteract/selectors";
-import { AppState, KernelStatus } from "@nteract/types";
+import { AppState, KernelStatus, errors } from "@nteract/types";
 
 /**
  * Maps ExecuteAllCells and ExecuteAllCellsBelow actions to
@@ -43,6 +43,7 @@ export function executeAllCellsEpic(
               error: new Error(
                 "Cannot send execute requests from non-notebook files."
               ),
+              code: errors.EXEC_NOT_A_NOTEBOOK,
               contentRef
             })
           );
@@ -84,7 +85,15 @@ export function executeFocusedCellEpic(
       const model = selectors.model(state, { contentRef });
       // If it's not a notebook, we shouldn't be here
       if (!model || model.type !== "notebook") {
-        return EMPTY;
+        return of(
+          actions.executeFailed({
+            error: new Error(
+              "Cannot send execute requests from non-notebook files."
+            ),
+            code: errors.EXEC_NOT_A_NOTEBOOK,
+            contentRef
+          })
+        );
       }
 
       const id = model.cellFocused;
@@ -93,6 +102,7 @@ export function executeFocusedCellEpic(
         return of(
           actions.executeFailed({
             error: new Error("There is currently no focused cell to execute."),
+            code: errors.EXEC_NO_CELL_WITH_ID,
             contentRef: action.payload.contentRef
           })
         );

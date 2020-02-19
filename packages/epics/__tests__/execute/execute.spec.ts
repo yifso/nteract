@@ -1,20 +1,18 @@
 import * as actions from "@nteract/actions";
+import { monocellNotebook } from "@nteract/commutable";
 import { executeRequest, createMessage } from "@nteract/messaging";
 import * as stateModule from "@nteract/types";
+
+import Immutable from "immutable";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { empty, Subject } from "rxjs";
 import { catchError, share, toArray } from "rxjs/operators";
 
 import {
   createExecuteCellStream,
-  executeCellEpic,
   executeCellStream,
   sendExecuteRequestEpic
 } from "../../src/execute";
-import { monocellNotebook } from "@nteract/commutable";
-import { makeDocumentRecord } from "@nteract/types";
-
-const Immutable = require("immutable");
 
 describe("executeCellStream", () => {
   test("dispatches actions for updating execution metadata", done => {
@@ -375,7 +373,7 @@ describe("sendExecuteRequestEpic", () => {
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
               fakeContent: stateModule.makeNotebookContentRecord({
-                model: makeDocumentRecord({
+                model: stateModule.makeDocumentRecord({
                   notebook
                 })
               })
@@ -419,7 +417,7 @@ describe("sendExecuteRequestEpic", () => {
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
               fakeContent: stateModule.makeNotebookContentRecord({
-                model: makeDocumentRecord({
+                model: stateModule.makeDocumentRecord({
                   notebook
                 })
               })
@@ -464,7 +462,7 @@ describe("sendExecuteRequestEpic", () => {
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
               fakeContent: stateModule.makeNotebookContentRecord({
-                model: makeDocumentRecord({
+                model: stateModule.makeDocumentRecord({
                   notebook
                 })
               })
@@ -509,7 +507,7 @@ describe("sendExecuteRequestEpic", () => {
           contents: stateModule.makeContentsRecord({
             byRef: Immutable.Map({
               fakeContent: stateModule.makeNotebookContentRecord({
-                model: makeDocumentRecord({
+                model: stateModule.makeDocumentRecord({
                   notebook,
                   kernelRef: "fake"
                 })

@@ -36,7 +36,8 @@ import {
   ContentRef,
   InputRequestMessage,
   KernelStatus,
-  PayloadMessage
+  PayloadMessage,
+  errors
 } from "@nteract/types";
 
 /**
@@ -270,11 +271,6 @@ export function sendExecuteRequestEpic(
 ) {
   return action$.pipe(
     ofType(actions.SEND_EXECUTE_REQUEST),
-    tap((action: actions.SendExecuteRequest) => {
-      if (!action.payload.id) {
-        throw new Error("No CellId provided in ExecuteCell action.");
-      }
-    }),
     /**
      * Split the stream of SendExecuteRequests that are being dispatched
      * globally on the Redux store to a seperate stream for each cell.
@@ -318,6 +314,7 @@ export function sendExecuteRequestEpic(
                   error: new Error(
                     "Cannot send execute requests from non-notebook files."
                   ),
+                  code: errors.EXEC_NOT_A_NOTEBOOK,
                   contentRef
                 })
               );
@@ -341,6 +338,7 @@ export function sendExecuteRequestEpic(
                   error: new Error(
                     "Could not find the cell with the given CellId."
                   ),
+                  code: errors.EXEC_NO_CELL_WITH_ID,
                   contentRef,
                   id
                 })
@@ -364,6 +362,7 @@ export function sendExecuteRequestEpic(
                       null
                     )} cell.`
                   ),
+                  code: errors.EXEC_INVALID_CELL_TYPE,
                   contentRef,
                   id
                 })
@@ -381,6 +380,7 @@ export function sendExecuteRequestEpic(
                   error: new Error(
                     "Cannot execute cells with no source content."
                   ),
+                  code: errors.EXEC_NO_SOURCE_ERROR,
                   contentRef,
                   id
                 })
@@ -417,6 +417,7 @@ export function sendExecuteRequestEpic(
                   error: new Error(
                     "There is no connected kernel for this content."
                   ),
+                  code: errors.EXEC_NO_KERNEL_ERROR,
                   contentRef
                 })
               );
@@ -432,6 +433,7 @@ export function sendExecuteRequestEpic(
                   error: new Error(
                     "The WebSocket associated with the target kernel is in a bad state."
                   ),
+                  code: errors.EXEC_WEBSOCKET_ERROR,
                   contentRef
                 })
               );
@@ -467,6 +469,7 @@ export function sendExecuteRequestEpic(
                   of(
                     actions.executeFailed({
                       error,
+                      code: errors.EXEC_ERROR_IN_CELL_STREAM,
                       contentRef: action.payload.contentRef
                     })
                   )
@@ -494,7 +497,8 @@ export function sendExecuteRequestEpic(
       return merge(
         of(
           actions.executeFailed({
-            error
+            error,
+            code: errors.EXEC_EPIC_ERROR
           })
         ),
         source

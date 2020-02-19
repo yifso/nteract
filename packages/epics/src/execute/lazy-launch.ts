@@ -11,18 +11,12 @@
  */
 import { AnyAction } from "redux";
 import { ActionsObservable, StateObservable, ofType } from "redux-observable";
-import { Observable, of, merge } from "rxjs";
-import {
-  concatMap,
-  mergeMap,
-  filter,
-  distinct,
-  withLatestFrom
-} from "rxjs/operators";
+import { of, merge } from "rxjs";
+import { switchMap, filter, distinct, withLatestFrom } from "rxjs/operators";
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState, KernelStatus } from "@nteract/types";
+import { AppState, KernelStatus, errors } from "@nteract/types";
 
 import { extractNewKernel } from "../kernel-lifecycle";
 
@@ -51,7 +45,7 @@ export const executeCellAfterKernelLaunchEpic = (
         kernel.status !== KernelStatus.ShuttingDown
       );
     }),
-    concatMap(([, state]) =>
+    switchMap(([_action, state]) =>
       merge(
         of(
           ...selectors
@@ -81,20 +75,14 @@ export function lazyLaunchKernelEpic(
       const contentRef = action.payload.contentRef;
       return !selectors.kernelByContentRef(state, { contentRef });
     }),
-    mergeMap<
-      actions.ExecuteCell,
-      Observable<
-        | actions.LaunchKernelByNameAction
-        | actions.LaunchKernelFailed
-        | actions.ExecuteCell
-      >
-    >((action: actions.ExecuteCell) => {
+    switchMap(action => {
       const state = state$.value;
       const contentRef = action.payload.contentRef;
       if (!contentRef) {
         return of(
           actions.launchKernelFailed({
             error: new Error("Launch kernel did not receive a ContentRef."),
+            code: errors.LAUNCH_NO_CONTENT_REF,
             contentRef
           })
         );
@@ -115,7 +103,7 @@ export function lazyLaunchKernelEpic(
             error: new Error(
               "Launch kernel failed because the source content is not a notebook"
             ),
-            contentRef
+            code: errors.LAUNCH_NOT_A_NOTEBOOK
           })
         );
       }
