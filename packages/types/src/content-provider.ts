@@ -31,7 +31,7 @@ export interface IContent<FT extends FileType = FileType>
     : FT extends "notebook"
     ? Notebook
     : FT extends "directory"
-    ? Array<IEmptyContent<FT>>
+    ? Array<IEmptyContent<FileType>>
     : null;
 }
 
