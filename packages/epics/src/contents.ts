@@ -26,7 +26,8 @@ import {
   mergeMap,
   switchMap,
   take,
-  tap
+  tap,
+  filter
 } from "rxjs/operators";
 import urljoin from "url-join";
 
@@ -177,13 +178,14 @@ export function autoSaveCurrentContentEpic(
           .keys()
       );
     }),
-    mergeMap((contentRef: ContentRef) =>
-      state$.pipe(
-        map(state => selectors.model(state, { contentRef })),
-        distinctUntilChanged(),
-        switchMap(() => of(actions.save({ contentRef })))
-      )
-    )
+    filter((contentRef: ContentRef) => {
+      const model = selectors.model(state$.value, { contentRef });
+      if (model && model.type === "notebook") {
+        return selectors.notebook.isDirty(model);
+      }
+      return false;
+    }),
+    map((contentRef: ContentRef) => actions.save({ contentRef }))
   );
 }
 
