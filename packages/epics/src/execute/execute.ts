@@ -1,7 +1,7 @@
 import {
   Channels,
   childOf,
-  createExecuteRequest,
+  executeRequest,
   ExecuteRequest,
   executionCounts,
   inputRequests,
@@ -437,7 +437,7 @@ export function sendExecuteRequestEpic(
               );
             }
 
-            const message = createExecuteRequest(source);
+            const message = executeRequest(source);
 
             return createExecuteCellStream(
               action$,
