@@ -1,6 +1,10 @@
 import { MediaBundle } from "@nteract/commutable";
 import * as Immutable from "immutable";
-import { EntitiesRecordProps, makeEmptyHostRecord, makeEntitiesRecord } from "./entities";
+import {
+  EntitiesRecordProps,
+  makeEmptyHostRecord,
+  makeEntitiesRecord
+} from "./entities";
 import { HostRecord } from "./entities/hosts";
 import { KernelRef, KernelspecsRef } from "./refs";
 
@@ -8,6 +12,9 @@ export * from "./content-provider";
 export * from "./entities";
 export * from "./ids";
 export * from "./refs";
+
+import * as errors from "./errors";
+export { errors };
 
 export interface KernelspecMetadata {
   display_name: string;
