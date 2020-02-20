@@ -32,33 +32,46 @@ const tsLoaderConfig = {
   }
 };
 
-// We will follow the next.js universal webpack configuration signature
-// https://zeit.co/blog/next5#universal-webpack-and-next-plugins
+const fileLoaderConfig = {
+  loader: "file-loader",
+  test: /\.(jpg|png|gif)$/
+};
 
 function nextWebpack(config /*: WebpackConfig */) /*: WebpackConfig */ {
-  config.externals = ["canvas", ...config.externals];
-  config.module.rules = config.module.rules.map(rule => {
-    if (
-      rule.test.source.includes("js") &&
-      typeof rule.exclude !== "undefined"
-    ) {
-      rule.exclude = exclude;
-    }
+  if (config.externals) {
+    config.externals = ["canvas", ...config.externals];
+  } else {
+    config.externals = ["canvas"];
+  }
 
-    return rule;
-  });
+  config.node = {
+    ...config.node,
+    fs: "empty"
+  };
 
-  config.module.rules.push({
-    tsLoaderConfig
-  });
+  config.module.rules.push(fileLoaderConfig);
 
-  config.resolve = Object.assign({}, config.resolve, {
-    mainFields: ["nteractDesktop", "jsnext:main", "module", "main"],
+  config.resolve = {
+    ...config.resolve,
+    mainFields:
+      config.resolve && config.resolve.mainFields
+        ? [
+            ...config.resolve.mainFields,
+            "nteractDesktop",
+            "jsnext:main",
+            "module",
+            "main"
+          ]
+        : ["nteractDesktop", "jsnext:main", "module", "main"],
     alias: mergeDefaultAliases(
       config.resolve ? config.resolve.alias : undefined
     ),
-    extensions: [".js", ".jsx", ".ts", ".tsx"]
-  });
+    extensions:
+      config.resolve && config.resolve.extensions
+        ? [...config.resolve.extensions, ".js", ".jsx", ".ts", ".tsx"]
+        : [".js", ".jsx", ".ts", ".tsx"]
+  };
+
   return config;
 }
 

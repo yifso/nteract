@@ -187,6 +187,11 @@ module.exports = {
       name: "@nteract/myths",
       version: "0.1.0",
       private: false
+    },
+    {
+      name: "@nteract/web",
+      version: "1.0.0",
+      private: false
     }
   ]
 };
