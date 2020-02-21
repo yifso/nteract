@@ -8,6 +8,7 @@ import {
   makeAppRecord,
   makeCommsRecord,
   makeContentsRecord,
+  makeDocumentRecord,
   makeDummyContentRecord,
   makeEntitiesRecord,
   makeHostsRecord,
@@ -32,6 +33,13 @@ import {
   saveContentEpic,
   updateContentEpic
 } from "../src/contents";
+
+/**
+ * Fake timers enables us to simulate the passing of time for
+ * epics that use Observable.interval or retry. Specifically,
+ * the saveContent and autoSaveContent epics.
+ */
+jest.useFakeTimers();
 
 jest.mock("rx-jupyter", () => {
   const { of } = require("rxjs");
@@ -188,7 +196,7 @@ describe("saveAs", () => {
 describe("save", () => {
   const contentRef = createContentRef();
   const kernelspecsRef = createKernelspecsRef();
-  it("updates last_modified date from server-side model on save", async () => {
+  it("updates last_modified date from server-side model on save", async done => {
     const state = {
       app: makeAppRecord({
         version: "test",
@@ -218,15 +226,19 @@ describe("save", () => {
       })
     };
 
-    const responses = await saveContentEpic(
+    const responses = [];
+    saveContentEpic(
       ActionsObservable.of(
         actions.save({ filepath: "test.ipynb", contentRef })
       ),
       new StateObservable(new Subject(), state),
       { contentProvider: contents.JupyterContentProvider }
-    )
-      .pipe(toArray())
-      .toPromise();
+    ).subscribe({
+      next: value => responses.push(value),
+      complete: done()
+    });
+
+    jest.runAllTimers();
 
     expect(responses).toEqual([
       actions.saveFulfilled({
@@ -425,7 +437,7 @@ describe("autoSaveContentEpic", () => {
     const state$ = new StateObservable(new Subject(), mockAppState({}));
     expect(autoSaveCurrentContentEpic(action$, state$)).not.toBeNull();
   });
-  it("dispatches a save action on content change", async () => {
+  it("dispatches a save action on content change", async done => {
     const action$ = ActionsObservable.from([]);
     const stateSubject$ = new Subject();
     const state = {
@@ -439,11 +451,13 @@ describe("autoSaveContentEpic", () => {
           contents: {
             byRef: Immutable.Map({
               aContentRef: {
-                type: "notebook",
                 filepath: "test.ipynb",
-                model: {
-                  notebook: { key: "to be cleared" }
-                }
+                type: "notebook",
+                model: makeDocumentRecord({
+                  type: "notebook",
+                  notebook: Immutable.Map({ key: "to be cleared" }),
+                  savedNotebook: Immutable.Map({ key: "to be cleared" })
+                })
               }
             })
           }
@@ -462,30 +476,41 @@ describe("autoSaveContentEpic", () => {
           contents: {
             byRef: Immutable.Map({
               aContentRef: {
-                type: "notebook",
                 filepath: "test.ipynb",
-                model: {
-                  notebook: { key: Math.random().toString() }
-                }
+                type: "notebook",
+                model: makeDocumentRecord({
+                  type: "notebook",
+                  notebook: Immutable.Map({ key: "to be cleared" }),
+                  savedNotebook: Immutable.Map({
+                    key: Math.random().toString()
+                  })
+                })
               }
             })
           }
         }
       }
     };
+
+    const results = [];
+    autoSaveCurrentContentEpic(action$, state$).subscribe({
+      next: value => {
+        results.push(value);
+      },
+      complete: () => done()
+    });
     stateSubject$.next(newState);
-    const results = await autoSaveCurrentContentEpic(action$, state$)
-      .pipe(take(2), toArray())
-      .toPromise();
-    expect(results.map(a => a.type)).toContain(actions.SAVE);
+    jest.runTimersToTime(200);
+    expect(results.map(a => a.type)).toEqual([actions.SAVE, actions.SAVE]);
+    done();
   });
-  it("dispatches nothing on no content change", async () => {
+  it("dispatches nothing on no content change", async done => {
     const action$ = ActionsObservable.from([]);
     const stateSubject$ = new Subject();
     const state = {
       app: {},
       config: Immutable.Map({
-        autoSaveInterval: 0
+        autoSaveInterval: 100
       }),
       core: {
         entities: {
@@ -494,9 +519,11 @@ describe("autoSaveContentEpic", () => {
               aContentRef: {
                 type: "notebook",
                 filepath: "test.ipynb",
-                model: {
-                  notebook: { key: "to be cleared" }
-                }
+                model: makeDocumentRecord({
+                  type: "notebook",
+                  notebook: Immutable.Map({ key: "to be cleared" }),
+                  savedNotebook: Immutable.Map({ key: "to be cleared" })
+                })
               }
             })
           }),
@@ -505,10 +532,17 @@ describe("autoSaveContentEpic", () => {
       }
     };
     const state$ = new StateObservable(stateSubject$, state);
+
+    const results = [];
+    autoSaveCurrentContentEpic(action$, state$).subscribe({
+      next: value => {
+        results.push(value);
+      },
+      complete: () => done()
+    });
     stateSubject$.next(state);
-    const results = await autoSaveCurrentContentEpic(action$, state$)
-      .pipe(take(2), toArray())
-      .toPromise();
-    expect(results.map(a => a.type)).toContain(actions.SAVE);
+    jest.runTimersToTime(200);
+    expect(results.map(a => a.type)).toEqual([]);
+    done();
   });
 });
