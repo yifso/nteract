@@ -22,12 +22,12 @@ import { AjaxResponse } from "rxjs/ajax";
 import {
   catchError,
   distinctUntilChanged,
+  filter,
   map,
   mergeMap,
   switchMap,
   take,
-  tap,
-  filter
+  tap
 } from "rxjs/operators";
 import urljoin from "url-join";
 
