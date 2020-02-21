@@ -394,6 +394,40 @@ describe("fetchContentEpic", () => {
       () => done()
     );
   });
+  it("emits FETCH_CONTENT_FAILED action on failed completion", done => {
+    const state = {
+      ...mockAppState({}),
+      app: makeAppRecord({
+        host: makeJupyterHostRecord({})
+      })
+    };
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.fetchContent({
+        contentRef,
+        filepath: "my-file.ipynb"
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = fetchContentEpic(action$, state$, {
+      contentProvider: {
+        ...contents.JupyterContentProvider,
+        get: (serverConfig, prevFilePath, object) => {
+          return of({ status: 500, response: {} });
+        }
+      }
+    });
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.FETCH_CONTENT_FAILED]);
+      },
+      err => done.fail(err), // It should not error in the stream
+      () => done()
+    );
+  });
 });
 
 describe("updateContentEpic", () => {
@@ -421,6 +455,43 @@ describe("updateContentEpic", () => {
       action => {
         const types = action.map(({ type }) => type);
         expect(types).toEqual([actions.CHANGE_CONTENT_NAME_FULFILLED]);
+      },
+      err => {
+        console.log(err);
+        done.fail(err);
+      }, // It should not error in the stream
+      () => done()
+    );
+  });
+  it("throws an error action on invalid response from server", done => {
+    const state = {
+      ...mockAppState({}),
+      app: makeAppRecord({
+        host: makeJupyterHostRecord()
+      })
+    };
+    const contentRef: string = state.core.entities.contents.byRef
+      .keySeq()
+      .first();
+    const action$ = ActionsObservable.of(
+      actions.changeContentName({
+        contentRef,
+        filepath: "test.ipynb"
+      })
+    );
+    const state$ = new StateObservable<AppState>(new Subject(), state);
+    const obs = updateContentEpic(action$, state$, {
+      contentProvider: {
+        ...contents.JupyterContentProvider,
+        update: (serverConfig, prevFilePath, object) => {
+          return of({ status: 500, response: {} });
+        }
+      }
+    });
+    obs.pipe(toArray()).subscribe(
+      action => {
+        const types = action.map(({ type }) => type);
+        expect(types).toEqual([actions.CHANGE_CONTENT_NAME_FAILED]);
       },
       err => {
         console.log(err);
