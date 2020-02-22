@@ -5,8 +5,6 @@ import ReactMarkdown from "react-markdown";
 
 import RemarkMathPlugin from "./remark-math";
 
-import "github-markdown-css/github-markdown.css";
-
 const math = (props: { value: string }): React.ReactElement<unknown> => (
   <MathJax.Node>{props.value}</MathJax.Node>
 );

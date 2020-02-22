@@ -9,7 +9,8 @@
     "app.css",
     "editor-overrides.css",
     "global-variables.css",
-    "themes"
+    "themes",
+    "markdown"
   ],
   "scripts": {},
   "publishConfig": {

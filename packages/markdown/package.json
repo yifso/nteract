@@ -19,7 +19,6 @@
   "dependencies": {
     "@nteract/mathjax": "^4.0.5-alpha.0",
     "@nteract/presentational-components": "^3.3.7-alpha.0",
-    "github-markdown-css": "^3.0.1",
     "react-markdown": "^4.0.0"
   },
   "peerDependencies": {

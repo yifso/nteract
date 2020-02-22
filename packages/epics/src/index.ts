@@ -1,10 +1,37 @@
 import { commListenEpic } from "./comm";
-import { autoSaveCurrentContentEpic, closeNotebookEpic, fetchContentEpic, saveAsContentEpic, saveContentEpic, updateContentEpic } from "./contents";
-import { executeAllCellsEpic, executeCellAfterKernelLaunchEpic, executeCellEpic, executeFocusedCellEpic, lazyLaunchKernelEpic, sendExecuteRequestEpic, sendInputReplyEpic, updateDisplayEpic } from "./execute";
+import {
+  autoSaveCurrentContentEpic,
+  closeNotebookEpic,
+  fetchContentEpic,
+  saveAsContentEpic,
+  saveContentEpic,
+  updateContentEpic
+} from "./contents";
+import {
+  executeAllCellsEpic,
+  executeCellAfterKernelLaunchEpic,
+  executeCellEpic,
+  executeFocusedCellEpic,
+  lazyLaunchKernelEpic,
+  sendExecuteRequestEpic,
+  sendInputReplyEpic,
+  updateDisplayEpic
+} from "./execute";
 import { publishToBookstore, publishToBookstoreAfterSave } from "./hosts";
-import { acquireKernelInfoEpic, launchKernelWhenNotebookSetEpic, restartKernelEpic, watchExecutionStateEpic } from "./kernel-lifecycle";
+import {
+  acquireKernelInfoEpic,
+  launchKernelWhenNotebookSetEpic,
+  restartKernelEpic,
+  watchExecutionStateEpic
+} from "./kernel-lifecycle";
 import { fetchKernelspecsEpic } from "./kernelspecs";
-import { changeWebSocketKernelEpic, interruptKernelEpic, killKernelEpic, launchWebSocketKernelEpic, restartWebSocketKernelEpic } from "./websocket-kernel";
+import {
+  changeWebSocketKernelEpic,
+  interruptKernelEpic,
+  killKernelEpic,
+  launchWebSocketKernelEpic,
+  restartWebSocketKernelEpic
+} from "./websocket-kernel";
 
 // Because `@nteract/core` ends up being a commonjs import, we can't currently
 // rely on `import { epics } from ""@nteract/core"`
@@ -35,7 +62,7 @@ const allEpics = [
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
-  closeNotebookEpic,
+  closeNotebookEpic
 ];
 
 export {
@@ -66,5 +93,5 @@ export {
   publishToBookstoreAfterSave,
   restartWebSocketKernelEpic,
   sendInputReplyEpic,
-  closeNotebookEpic,
+  closeNotebookEpic
 };

@@ -7,7 +7,7 @@ export interface Action<T extends string, P = void> {
 }
 
 export interface ErrorAction<T extends string, P extends {} | Error = Error>
-  extends Action<T, P extends Error ? P : P & { error: Error }> {
+  extends Action<T, P extends Error ? P : P & { error: Error, code?: string }> {
   error: true;
 }
 
