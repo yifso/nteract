@@ -38,8 +38,8 @@ const createContextualFragment = (html: string) => {
 Range.prototype.createContextualFragment = (html: string) =>
   createContextualFragment(html);
 
-  globalAny.window.URL.createObjectURL = function(): void {};
-  globalAny.window.focus = () => {};
+globalAny.window.URL.createObjectURL = function(): void {};
+globalAny.window.focus = () => {};
 
 // HACK: Polyfill that allows codemirror to render in a JSDOM env.
 globalAny.window.document.createRange = function createRange() {
@@ -56,7 +56,7 @@ globalAny.window.document.createRange = function createRange() {
 // HACK: To test index.js
 document.querySelector = () => document.createElement("div");
 
-process.on("unhandledRejection", (error:any, promise:Promise<any>):void => {
+process.on("unhandledRejection", (error:any, promise) => {
   console.error("Unhandled promise rejection somewhere in tests");
   console.error(error);
   console.error(error.stack);
