@@ -1,4 +1,5 @@
-const fs = jest.genMockFromModule("fs");
+const fs:any = jest.genMockFromModule("fs");
+
 
 fs.unlinkSync = jest.fn();
 fs.unlink = jest.fn();
