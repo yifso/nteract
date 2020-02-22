@@ -35,6 +35,7 @@
     "prebuild": "rimraf lib",
     "build": "webpack --config webpack.dev.js --progress --colors",
     "build:clean": "rimraf lib dist",
+    "build:lin": "electron-builder --linux snap",
     "build:watch": "npm run build -- --watch",
     "pack": "npm run clean && webpack --config webpack.prod.js && electron-builder --dir",
     "dist": "npm run clean && webpack --config webpack.prod.js && electron-builder -p never",
@@ -43,6 +44,18 @@
     "ship:one": "npm run clean && webpack --config webpack.prod.js && electron-builder -p always",
     "ship": "npm run ship:one -- -mlw",
     "ship:all": "npm run ship"
+  },
+  "snap": {
+    "confinement": "strict",
+    "summary": "The nteract desktop application allows you to quickly view, edit, and publish notebooks from your desktop. It  is a great tool for first-time and veteran notebook users, alike.",
+    "grade": "devel",
+    "plugs": [
+      "default"
+    ],
+    "stagePackages": [
+      "default",
+      "libsecret-1-0"
+    ]
   },
   "build": {
     "appId": "io.nteract.nteract",
@@ -80,10 +93,9 @@
     },
     "linux": {
       "maintainer": "nteract contributors <jupyter@googlegroups.com>",
+      "synopsis": "The nteract desktop application allows you to quickly view, edit, and publish notebooks from your desktop. It  is a great tool for first-time and veteran notebook users, alike.",
       "target": [
-        "deb",
-        "AppImage",
-        "tar.gz"
+        "snap"
       ],
       "executableName": "nteract",
       "desktop": {
