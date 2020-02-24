@@ -8,14 +8,12 @@
  * does not support them or has only a partial implementation.
  */
 
-const globalAny:any = global;
-
 // For some reason, this property does not get set above.
-globalAny.Image = globalAny.window.Image;
+global.Image = global.window.Image;
 
-globalAny.Range = function Range(): void {};
+global.Range = function Range(): void {};
 
-globalAny.Blob = function(content: any[], options: object): any {
+global.Blob = function(content: any[], options: object): any {
   return { content, options };
 };
 
@@ -23,7 +21,7 @@ globalAny.Blob = function(content: any[], options: object): any {
  * Mock jQuery to allow jupyter-widgets tests to run.
  */
 import $ from "jquery";
-globalAny.$ = globalAny.jQuery = $;
+global.$ = global.jQuery = $;
 require("jquery-ui");
 require("jquery-ui/ui/widget");
 require("jquery-ui/ui/widgets/mouse");
@@ -38,11 +36,11 @@ const createContextualFragment = (html: string) => {
 Range.prototype.createContextualFragment = (html: string) =>
   createContextualFragment(html);
 
-globalAny.window.URL.createObjectURL = function(): void {};
-globalAny.window.focus = () => {};
+global.window.URL.createObjectURL = function(): void {};
+global.window.focus = () => {};
 
 // HACK: Polyfill that allows codemirror to render in a JSDOM env.
-globalAny.window.document.createRange = function createRange() {
+global.window.document.createRange = function createRange() {
   return {
     setEnd: () => {},
     setStart: () => {},
@@ -56,7 +54,7 @@ globalAny.window.document.createRange = function createRange() {
 // HACK: To test index.js
 document.querySelector = () => document.createElement("div");
 
-process.on("unhandledRejection", (error:any, promise) => {
+process.on("unhandledRejection", (error, promise) => {
   console.error("Unhandled promise rejection somewhere in tests");
   console.error(error);
   console.error(error.stack);
