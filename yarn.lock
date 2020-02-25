@@ -2802,56 +2802,15 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mybinder/host-cache@^2.1.16-alpha.0":
-  version "2.1.16-alpha.0"
-  resolved "https://registry.yarnpkg.com/@mybinder/host-cache/-/host-cache-2.1.16-alpha.0.tgz#054ba73d513e54a499d78fdaa99a784f0cb5e545"
-  integrity sha512-1WavZTQmlhzHFeV380zM++2N1n7oxhhWyr8OScGU9+UEbZyCJ8r4CkwbSPIPBcLJJXmaD9zeBaOnJ5pkPHVe6w==
-  dependencies:
-    rx-binder "^4.0.2"
-    rx-jupyter "^5.5.1-alpha.0"
-    rxjs "^6.3.3"
-
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@nteract/actions@^3.0.1-alpha.0":
-  version "3.0.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/actions/-/actions-3.0.1-alpha.0.tgz#bb4b104e88cd9e41f3cfb4b51c6bf1186d60f92b"
-  integrity sha512-FHlHHq+cnjz75n3uXyD0jh2WBaOTwkrlnTeWzfLKR8tcKx8RUl2NiN0gEKnkzfMCIY2zVn9y+nqTPtqN0VFEuQ==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/messaging" "^6.2.6-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    immutable "^4.0.0-rc.12"
-    rx-jupyter "^5.5.1-alpha.0"
-
 "@nteract/any-vega@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@nteract/any-vega/-/any-vega-1.0.1.tgz#d790774bdc453bc5af663455747637a2100f634a"
   integrity sha512-RjECjm2bdQpEHuhpWyIjAg8dA8t5iWGDmx2VuStBhVSffciNrCn0WxhJiK5TSkyuBgk4rB4eAOspJ8UnfjOAyA==
-
-"@nteract/commutable@^7.2.5-alpha.0":
-  version "7.2.5-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/commutable/-/commutable-7.2.5-alpha.0.tgz#fab9522aecaabf2329a0cd0e1089961c9e084c21"
-  integrity sha512-rFl9SphR6F5IIiGlv/L7QJ3RJPoU7eB5tzNsaaKD4LXEcoaz4bC3OwDTpg0OZ/oNSHjML+zmnsSgHwZBKT2aTQ==
-  dependencies:
-    immutable "^4.0.0-rc.12"
-    uuid "^3.1.0"
-
-"@nteract/core@^12.0.1-alpha.0":
-  version "12.0.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/core/-/core-12.0.1-alpha.0.tgz#86b5e3026f6b0532da8117ca23a465273f19abc3"
-  integrity sha512-vNeo5bG0R+3NkPwDWm20dvNyL4714uxvE2KtdperDW70/zv2K1ltTInsCAvvxI6DZkMRS7Vr/JC31Ahp1Fwd3w==
-  dependencies:
-    "@nteract/actions" "^3.0.1-alpha.0"
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/epics" "^4.0.1-alpha.0"
-    "@nteract/reducers" "^3.0.2-alpha.0"
-    "@nteract/selectors" "^2.8.2-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    redux-logger "^3.0.6"
 
 "@nteract/data-explorer@^8.0.0":
   version "8.0.2"
@@ -2870,232 +2829,10 @@
     semiotic "^1.20.5"
     ts-jest "^24.3.0"
 
-"@nteract/dropdown-menu@^1.1.6-alpha.0":
-  version "1.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/dropdown-menu/-/dropdown-menu-1.1.6-alpha.0.tgz#3804ad1b23efad4b6b895f06ce60289472a440f3"
-  integrity sha512-FI6dgz8ow+QQ9qC+t3yoQnFBIDfFVd3eVVga89pgX1q9K/qXJOx23Xjo9jOF35Gm2daHFlKlIuLFLCk2/z+ERw==
-  dependencies:
-    react-hot-loader "^4.1.2"
-
-"@nteract/editor@^9.6.1-alpha.0":
-  version "9.6.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/editor/-/editor-9.6.1-alpha.0.tgz#2bdc9aa8a3d994813528fd79462370a098675b8f"
-  integrity sha512-O03ElMefRty7fYKGkA9UIP9xiyHHXWQNu/zjLhUmuQr37BhcHgiY3xKrTn1Fp+klyp60cKIVaH7HOXVZYfR6vA==
-  dependencies:
-    "@nteract/messaging" "^6.2.6-alpha.0"
-    "@nteract/outputs" "^3.0.5-alpha.0"
-    codemirror "5.51.0"
-    rxjs "^6.3.3"
-
-"@nteract/epics@^4.0.1-alpha.0":
-  version "4.0.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/epics/-/epics-4.0.1-alpha.0.tgz#6517ff59dfb9ec80ba0fd4324a2393c5856aa58b"
-  integrity sha512-BvIeYTVR7n187Rgu/hUnFxUf7Sp1pMT5I5l0zG60e1BD2Oi6AtiSA4e5ym/7tZF78DmHa/qB2AZwV/Xx94DMLg==
-  dependencies:
-    "@nteract/actions" "^3.0.1-alpha.0"
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/messaging" "^6.2.6-alpha.0"
-    "@nteract/selectors" "^2.8.2-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    file-saver "^2.0.0"
-    redux "^4.0.1"
-    redux-observable "^1.0.0"
-    rx-jupyter "^5.5.1-alpha.0"
-    rxjs "^6.3.3"
-
 "@nteract/examples@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.2.0.tgz#7cf20e3ea54ea87fa6cff0c135c45b023975ea38"
   integrity sha512-g/NXjsVHeGMq4EA8uZhMixrgH8cFg0d6Wa113fd//lRxvv673Hxf916s4BTcMf/eJySNRmk+70qQowt7kO8Jtw==
-
-"@nteract/fixtures@^2.2.13-alpha.0":
-  version "2.2.13-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/fixtures/-/fixtures-2.2.13-alpha.0.tgz#bdb3b0bb7f862031feee3f255fd946efb370549c"
-  integrity sha512-EyQcP5Vn6Ex48kp/0jkbbDeHKvh/oiPCH1s9zDCDveN06gAl3iNhEJ9pk8/qziLknI2w2BusWVqeTGgfGzlpRw==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/reducers" "^3.0.2-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-
-"@nteract/jupyter-widgets@^4.4.6-alpha.0":
-  version "4.4.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/jupyter-widgets/-/jupyter-widgets-4.4.6-alpha.0.tgz#8d892b3dd2cf7a3d52e1aa689783543b3de88fcd"
-  integrity sha512-bEVViqVPLUK4hT0oDkajmkD/h5hgewR47HlDed1St9FNBIURwM514umBGda01JLFOJ87dM5yA6nPDHMAMZf3sw==
-  dependencies:
-    "@jupyter-widgets/controls" "^1.5.2"
-    font-awesome "^4.7.0"
-    jquery "^3.4.1"
-    jquery-ui "^1.12.1"
-
-"@nteract/markdown@^4.3.6-alpha.0":
-  version "4.3.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.3.6-alpha.0.tgz#80e42881dc9339989e0c380807cbaf17943ffc44"
-  integrity sha512-FanB5HuOg0QC6vNwV7g/8bKM8LSUqzLcPL9aRjJV55QoWZ8jhjdoYV30zGQtvSvtUoiS1+9R80R8eN3+bGPyxw==
-  dependencies:
-    "@nteract/mathjax" "^4.0.4-alpha.0"
-    "@nteract/presentational-components" "^3.3.6-alpha.0"
-    github-markdown-css "^3.0.1"
-    react-markdown "^4.0.0"
-
-"@nteract/mathjax@^4.0.4-alpha.0":
-  version "4.0.4-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.4-alpha.0.tgz#657b919b26128b1aa31a6cf0e587f90e17f301f7"
-  integrity sha512-JczAqutG+XqAZhGn0vxDoAI+bzi49MCnXblW6Mm0Wf+t5PbhMsZPLUSLUtmbWSSMDqbnsD8gplye3w9EZLY4bw==
-  dependencies:
-    load-script "^1.0.0"
-
-"@nteract/messaging@^6.2.6-alpha.0":
-  version "6.2.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/messaging/-/messaging-6.2.6-alpha.0.tgz#2ad1e87eef32760968d5ed28f171e9325b1123b0"
-  integrity sha512-hMb/gHFAOe0tqdzxmgf/ynp7CNw+rOtrIgC9fQTl2Bf2wQW3ScChv+d6GdGws0eCrrtpPkYysG5sKc85FUx2WA==
-  dependencies:
-    "@nteract/types" "^5.1.1-alpha.0"
-    "@types/uuid" "^3.4.4"
-    lodash.clonedeep "^4.5.0"
-    rxjs "^6.3.3"
-    uuid "^3.1.0"
-
-"@nteract/notebook-app-component@^7.1.2-alpha.0":
-  version "7.1.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/notebook-app-component/-/notebook-app-component-7.1.2-alpha.0.tgz#211e99e8024b7c360213848c1ec61ceb1c011f34"
-  integrity sha512-s+DCrwsX3fn3O5d4lRGWMnrb/XCl80QO42lm+j9pNETTngZFhm4a4kZRzJNdHidARw40mSsWepVo4yEy/wxoYA==
-  dependencies:
-    "@nteract/actions" "^3.0.1-alpha.0"
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/core" "^12.0.1-alpha.0"
-    "@nteract/data-explorer" "^8.0.0"
-    "@nteract/dropdown-menu" "^1.1.6-alpha.0"
-    "@nteract/editor" "^9.6.1-alpha.0"
-    "@nteract/jupyter-widgets" "^4.4.6-alpha.0"
-    "@nteract/markdown" "^4.3.6-alpha.0"
-    "@nteract/octicons" "^2.0.0"
-    "@nteract/outputs" "^3.0.5-alpha.0"
-    "@nteract/presentational-components" "^3.3.6-alpha.0"
-    "@nteract/selectors" "^2.8.2-alpha.0"
-    "@nteract/stateful-components" "^1.3.3-alpha.0"
-    "@nteract/transform-geojson" "^5.1.7-alpha.0"
-    "@nteract/transform-model-debug" "^5.0.1"
-    "@nteract/transform-plotly" "^6.1.5-alpha.0"
-    "@nteract/transform-vdom" "^4.0.10-alpha.0"
-    "@nteract/transform-vega" "^7.0.5-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    "@types/memoize-one" "^4.1.0"
-    date-fns "^2.0.0"
-    react-dnd "^7.0.0"
-    react-dnd-html5-backend "^7.0.0"
-    react-helmet "^5.2.0"
-    react-hot-loader "^4.1.2"
-    react-redux "^6.0.0"
-    redux "^4.0.0"
-
-"@nteract/outputs@^3.0.5-alpha.0":
-  version "3.0.5-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/outputs/-/outputs-3.0.5-alpha.0.tgz#ab3e3cb15dd36ee5ead9d1dbc7f91a80f34f24ae"
-  integrity sha512-JI2t/seWTZgNYaaYiUptyNwwvaw6Jwnc7lUmPWRw6R0gqBfrze0zYQt6EXby6XM1I2RY1Y5PidWScDW2pTl1rw==
-  dependencies:
-    "@nteract/markdown" "^4.3.6-alpha.0"
-    "@nteract/mathjax" "^4.0.4-alpha.0"
-    ansi-to-react "^6.0.2-alpha.0"
-    react-json-tree "^0.11.0"
-
-"@nteract/presentational-components@^3.3.6-alpha.0":
-  version "3.3.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/presentational-components/-/presentational-components-3.3.6-alpha.0.tgz#2480e0b62507ad0c3accce29510983ce6f5f1208"
-  integrity sha512-1Q5GB10syrFDg22ctfT8Sj8WhRtCls5m3xs0EsbIMcyuFQbcCA+3uZdgnEtq9HPFFfVC/QPskRb6L8vv7AbUTg==
-  dependencies:
-    "@blueprintjs/core" "^3.7.0"
-    "@blueprintjs/select" "^3.2.0"
-    react-syntax-highlighter "^12.0.0"
-
-"@nteract/reducers@^3.0.2-alpha.0":
-  version "3.0.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/reducers/-/reducers-3.0.2-alpha.0.tgz#146bae2fd9ed1e1fae2718637fc79f488ac4498d"
-  integrity sha512-vpOT7C9MqnzJBtksezW2Swl883xf5q+WqXfQFpoYEDg9+psd8/fJd0MsU446QKBFbfl7jLExwRthyKW341X92A==
-  dependencies:
-    "@nteract/actions" "^3.0.1-alpha.0"
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    escape-carriage "^1.3.0"
-    immutable "^4.0.0-rc.12"
-    lodash.has "^4.5.2"
-    redux "^4.0.1"
-    redux-immutable "^4.0.0"
-    uuid "^3.3.2"
-
-"@nteract/selectors@^2.8.2-alpha.0":
-  version "2.8.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/selectors/-/selectors-2.8.2-alpha.0.tgz#7021a330f92f5b61be546c3e428414b087dc0a4e"
-  integrity sha512-FhDdgG0pQRVW4Ql3GqtZyvib8XWd3eJ0F2L7Lc/YFpcM4cRqhKaHHDoc3YmHEP1eWnix/XhXP3UAkKDqP2g30g==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/types" "^5.1.1-alpha.0"
-    immutable "^4.0.0-rc.12"
-    reselect "^4.0.0"
-    rx-jupyter "^5.5.1-alpha.0"
-
-"@nteract/stateful-components@^1.3.3-alpha.0":
-  version "1.3.3-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/stateful-components/-/stateful-components-1.3.3-alpha.0.tgz#6fbd87418df6aaa31addf45e9bcf41ab0c8d5cbb"
-  integrity sha512-MfNh84i9xLJg9Me1a1eX5CCOg9yYcLYc7cdIb9pXxFkGoXKjwzHCODS1X772iIT1J2sSmWynhbgT/kZdU5DF7w==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/core" "^12.0.1-alpha.0"
-    "@nteract/fixtures" "^2.2.13-alpha.0"
-    "@nteract/outputs" "^3.0.5-alpha.0"
-    "@nteract/presentational-components" "^3.3.6-alpha.0"
-    immutable "^4.0.0-rc.12"
-    redux "^4.0.4"
-
-"@nteract/styles@^2.1.4-alpha.0":
-  version "2.1.4-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/styles/-/styles-2.1.4-alpha.0.tgz#c513ea763e086fed2de1d17365ce1c2b5d33b21b"
-  integrity sha512-Cby3pkd3Yx68dB0XgLMu2vH3HaR72p6b3WjqRUiTshTcM41cbZfKYPs/xJ1vLVBqf7Endu18Uiai7Qf62f1ktA==
-
-"@nteract/transform-geojson@^5.1.7-alpha.0":
-  version "5.1.7-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/transform-geojson/-/transform-geojson-5.1.7-alpha.0.tgz#46e7a9c7855c7f8ed9d33c98fde985be0c9663d7"
-  integrity sha512-XVEKUpG39sC7AFi3iW16BL+k4zd7u+EWbHHFiHZn4iMBFEGBFQ0qFl/oKjSokRnhLO3pCYC7u4ZysIZeND5vyw==
-  dependencies:
-    leaflet "^1.3.4"
-
-"@nteract/transform-plotly@^6.1.5-alpha.0":
-  version "6.1.5-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/transform-plotly/-/transform-plotly-6.1.5-alpha.0.tgz#88d3a69b0706b80f436a4977d60719068b60e0b3"
-  integrity sha512-ikXhKaOmJT8wzi1EMlUTCOYTciTZWeIe6EaAR1wW0DuGsbxbpFNm85CUPXtXh5MrWRHN53MHpwFWYXqIOXCFfw==
-  dependencies:
-    lodash.clonedeep "^4.5.0"
-    plotly.js-dist "^1.51.3"
-
-"@nteract/transform-vdom@^4.0.10-alpha.0":
-  version "4.0.10-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/transform-vdom/-/transform-vdom-4.0.10-alpha.0.tgz#309a1fc34e44367c659f98936279b5c1b2f77c3d"
-  integrity sha512-koY/bKMOAxPwrzUOz0NFznK2iEYR4DOpFDnP/oynwL5/QEMspf0nWRWj0kgt4l//ZSsjhwP48KZilGGpOcpQfg==
-  dependencies:
-    lodash.clonedeep "^4.5.0"
-
-"@nteract/transform-vega@^7.0.5-alpha.0":
-  version "7.0.5-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/transform-vega/-/transform-vega-7.0.5-alpha.0.tgz#803af2b34d966b48847779c0dc1df5beb84ea792"
-  integrity sha512-Dx0DE5p0RfD9z4rGKJ6aCb/WLmlcAo4BfqGNDIPndYf61vaxQOYlQ3HiyMPED3Ixc+VlpsV2BdQFKZi3CXRe6Q==
-  dependencies:
-    "@nteract/any-vega" "^1.0.1"
-
-"@nteract/types@^5.1.1-alpha.0":
-  version "5.1.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/types/-/types-5.1.1-alpha.0.tgz#d59425916ecb4ec9c628e338fff80cb46895ffd0"
-  integrity sha512-U6NYZ/3xQ+39HrksdWcJtMceOvlbJ0LfhThGzuWZD0NNwxECfdaDVBFjDZMcjTMU94ViiJio4O0Ohd4RO9U4lw==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    immutable "^4.0.0-rc.12"
-    rxjs "^6.3.3"
-    uuid "^3.1.0"
-
-"@nteract/webpack-configurator@^3.1.6-alpha.0":
-  version "3.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/@nteract/webpack-configurator/-/webpack-configurator-3.1.6-alpha.0.tgz#d63a32d85d341f60061bd37975da2705cf5df3b1"
-  integrity sha512-lT9p2RPNMc6xAnPrnVJn0hDBonQpiBe3EQciFwfLOcwZyQsW46nxdnwxMpUapkO+ldsSoiHli+xHopPwlp8J1A==
-  dependencies:
-    rxjs "^6.3.3"
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
@@ -3340,10 +3077,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/codemirror@^0.0.85":
-  version "0.0.85"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.85.tgz#6fc36a0e8b76d58365c4b8a496873f9ed559039c"
-  integrity sha512-ZAVyNzXAHu/mkvvZlq2IYPBjm4X3mEno27epXpBRXwWbX75zAAeGZfubXxft1kWNqBSI2f50kvuJTG+fRwHaNg==
+"@types/codemirror@^0.0.86":
+  version "0.0.86"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.86.tgz#f6972d60e57024f7d787839a72cec8bdcb98edbb"
+  integrity sha512-BKUn2ojSwB0VMUzIOglC3Ka1+AjZDciak4h0CX1rpnzZ/ceawx0X0RyLMDLVfoeaDABmnYp9SfKY3go0RJKBvQ==
   dependencies:
     "@types/tern" "*"
 
@@ -4298,14 +4035,6 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
-
-ansi-to-react@^6.0.2-alpha.0:
-  version "6.0.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/ansi-to-react/-/ansi-to-react-6.0.2-alpha.0.tgz#5e6be9b742246bba466a3d2d70e4e4a50a9b0d0c"
-  integrity sha512-7shfXZNTZT5qO12XonjCTo5hPxGAvymQNlIRSdcORiOEmF8VvV0htkfC5vFA5h50fzbh7/y063h7xByyHSiZQg==
-  dependencies:
-    anser "^1.4.1"
-    escape-carriage "^1.3.0"
 
 any-observable@^0.3.0:
   version "0.3.0"
@@ -5763,15 +5492,15 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@5.51.0, codemirror@^5.51.0:
-  version "5.51.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.51.0.tgz#7746caaf5223e68f5c55ea11e2f3cc82a9a3929e"
-  integrity sha512-vyuYYRv3eXL0SCuZA4spRFlKNzQAewHcipRQCOKgRy7VNAvZxTKzbItdbCl4S5AgPZ5g3WkHp+ibWQwv9TLG7Q==
-
 codemirror@5.52.0:
   version "5.52.0"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.52.0.tgz#4dbd6aef7f0e63db826b9a23922f0c03ac75c0a7"
   integrity sha512-K2UB6zjscrfME03HeRe/IuOmCeqNpw7PLKGHThYpLbZEuKf+ZoujJPhxZN4hHJS1O7QyzEsV7JJZGxuQWVaFCg==
+
+codemirror@^5.51.0:
+  version "5.51.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.51.0.tgz#7746caaf5223e68f5c55ea11e2f3cc82a9a3929e"
+  integrity sha512-vyuYYRv3eXL0SCuZA4spRFlKNzQAewHcipRQCOKgRy7VNAvZxTKzbItdbCl4S5AgPZ5g3WkHp+ibWQwv9TLG7Q==
 
 collapse-white-space@^1.0.2:
   version "1.0.6"
@@ -8730,11 +8459,6 @@ github-from-package@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/github-from-package/-/github-from-package-0.0.0.tgz#97fb5d96bfde8973313f20e8288ef9a167fa64ce"
   integrity sha1-l/tdlr/eiXMxPyDoKI75oWf6ZM4=
-
-github-markdown-css@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/github-markdown-css/-/github-markdown-css-3.0.1.tgz#d08db1060d2e182025e0d07d547cfe2afed30205"
-  integrity sha512-9G5CIPsHoyk5ObDsb/H4KTi23J8KE1oDd4KYU51qwqeM+lKWAiO7abpSgCkyWswgmSKBiuE7/4f8xUz7f2qAiQ==
 
 github-slugger@^1.2.1:
   version "1.2.1"
@@ -15773,19 +15497,6 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   integrity sha1-6Eg5bwV9Ij8kOGkkYY4laUFh7Ec=
   dependencies:
     aproba "^1.1.1"
-
-rx-jupyter@^5.5.1-alpha.0:
-  version "5.5.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/rx-jupyter/-/rx-jupyter-5.5.1-alpha.0.tgz#00e09f8a91ac49f5d7f037741a2227078deea428"
-  integrity sha512-GilvAnwLd2Vl5qbfY2gAbEFo4/lJBokoS0DApUvOi2XPgXNR56GOZGyFX6wxSBi928d+W3pTC5cvkwDkZWYtXQ==
-  dependencies:
-    "@nteract/commutable" "^7.2.5-alpha.0"
-    "@nteract/messaging" "^6.2.6-alpha.0"
-    "@types/ungap__url-search-params" "^0.1.0"
-    "@ungap/url-search-params" "^0.1.2"
-    js-cookie "^2.2.0"
-    rxjs "^6.3.3"
-    url-join "^4.0.0"
 
 rxjs@^6.3.1, rxjs@^6.3.3, rxjs@^6.5.2:
   version "6.5.3"
