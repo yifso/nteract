@@ -2,7 +2,7 @@ import Anser, { AnserJsonEntry } from "anser";
 import { escapeCarriageReturn } from "escape-carriage";
 import * as React from "react";
 
-const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+const LINK_REGEX = /^(https?:\/\/(?:www\.|(?!www))[^\s.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})$/;
 
 /**
  * Converts ANSI strings into JSON output.
@@ -15,7 +15,7 @@ const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s.]+\.[^\s]{2,}|www\.[^\s]+\
  */
 function ansiToJSON(
   input: string,
-  use_classes: boolean = false,
+  use_classes: boolean = false
 ): AnserJsonEntry[] {
   input = escapeCarriageReturn(input);
   return Anser.ansiToJson(input, {
@@ -89,7 +89,7 @@ function convertBundleIntoReact(
   linkify: boolean,
   useClasses: boolean,
   bundle: AnserJsonEntry,
-  key: number,
+  key: number
 ): JSX.Element {
   const style = useClasses ? null : createStyle(bundle);
   const className = useClasses ? createClass(bundle) : null;
@@ -102,8 +102,9 @@ function convertBundleIntoReact(
     );
   }
 
-  const content = bundle.content.split(/(\s+)/).reduce(
-    (words: React.ReactNode[], word: string, index: number) => {
+  const content = bundle.content
+    .split(/(\s+)/)
+    .reduce((words: React.ReactNode[], word: string, index: number) => {
       // If this is a separator, re-add the space removed from split.
       if (index % 2 === 1) {
         words.push(word);
@@ -116,21 +117,20 @@ function convertBundleIntoReact(
         return words;
       }
 
+      const href = word.startsWith("www.") ? `http://${word}` : word;
       words.push(
         React.createElement(
           "a",
           {
             key: index,
-            href: word,
+            href: href,
             target: "_blank"
           },
           `${word}`
         )
       );
       return words;
-    },
-    [] as React.ReactNode[]
-  );
+    }, [] as React.ReactNode[]);
   return React.createElement("span", { style, key, className }, content);
 }
 
