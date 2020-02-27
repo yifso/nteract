@@ -49,6 +49,37 @@ You'll also need to publish the monorepo documentation. To do this, you'll need 
 4. Run `mkdocs build` to generate the documentation site to a new `site` directory.
 5. Run `now site/ --prod --name docs` to deploy the documentation directory.
 
+## Release Process for Snap
+
+Snap for nteract Desktop App is created and published using following steps: 
+
+#### Pre-Requisite
+- Install [snap](https://snapcraft.io/docs/installing-snapd)
+- Install snapcraft by `$ sudo snap install snapcraft`
+- Login to snapcraft CLI with Snapcraft developer account credentials by running `$ snapcraft login`
+
+#### Create and Publish
+
+1. Run `$ yarn dist` in the root of the project. it will create a `.snap` file at `/applications/desktop/dist`.
+2. Run `$ cd ./applications/desktop/dist` in root and then run `$ snapcraft push --release=edge nteract_xx.xx.xx-alpha.x_amd64.snap`
+
+> In step 2, make sure you are publishing to the right `--release` channel. It can be `stable`, `candidate`, `beta` or `edge`.
+
+#### Conflict in Snap
+
+Both, nteract desktop app and snapd automatically update the app when a new version is released. nteract desktop app auto-update when there is a release on the GitHub, while snapd auto-update when there is a release on snap-store.
+
+The conflict is, its really hard to predict the behaviour when a new version is released, as both the desktop app and snapd will try to update the app. Three possible cases are:
+
+**Case 1:** Snap update first
+- Then desktop won't auto-update, as it will already be on the latest release.
+
+**Case 2:** Desktop update first
+- Then Snap will still update.
+
+**Case 3:** Both trigger the update at the same time
+- It's a very rare case so possible outcome is very hard to predict.
+
 ## Release Process for Desktop App
 
 The nteract desktop app is shipped on a monthly cadence. You can ship nteract desktop releases from any operating system, with one notable exception. Due to technical limitations, macOS releases can only be shipped on macOS. On the topic of macOS...
