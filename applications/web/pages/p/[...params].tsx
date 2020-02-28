@@ -5,7 +5,7 @@ import React from "react";
 
 import { Host } from "@mybinder/host-cache";
 
-const Notebook = dynamic(() => import("../../components/notebook"), {
+const Notebook = dynamic(() => import("../../components/Main"), {
   ssr: false
 });
 
