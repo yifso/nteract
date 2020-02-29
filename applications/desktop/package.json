@@ -96,13 +96,13 @@
       "target": [
         { "target": "deb",
           "arch": [
-               "arm64"
+               "arm64",
+               "x64"
            ]
         },
         "snap",
         "AppImage",
         "tar.gz"
-
       ],
       "executableName": "nteract",
       "desktop": {
