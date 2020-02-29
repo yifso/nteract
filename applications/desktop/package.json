@@ -94,10 +94,15 @@
       "maintainer": "nteract contributors <jupyter@googlegroups.com>",
       "synopsis": "The nteract desktop application allows you to quickly view, edit, and publish notebooks from your desktop. It  is a great tool for first-time and veteran notebook users, alike.",
       "target": [
+        { "target": "deb",
+          "arch": [
+               "arm64"
+           ]
+        },
         "snap",
-        "deb",
         "AppImage",
         "tar.gz"
+
       ],
       "executableName": "nteract",
       "desktop": {
