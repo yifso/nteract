@@ -58,7 +58,7 @@ export const makeMapStateToProps = (
         expanded =
           cell.cell_type === "code" &&
           (cell.getIn(["metadata", "outputExpanded"]) ||
-            !cell.getIn(["metadata", "collapsed"]));
+            cell.getIn(["metadata", "collapsed"]) === false);
       }
     }
 
