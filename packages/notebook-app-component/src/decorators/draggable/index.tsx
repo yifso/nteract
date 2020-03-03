@@ -81,7 +81,7 @@ const DragHandle = styled.div.attrs({
   role: "presentation"
 })`
   position: absolute;
-  z-index: 200;
+  z-index: 5;
   width: var(--prompt-width, 50px);
   height: 100%;
   cursor: move;
