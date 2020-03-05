@@ -12,7 +12,7 @@ describe("unlinkObservable", () => {
     // File exists so we try to unlink it
     fs.existsSync.mockImplementation(() => true);
     // Unlink fails for some reason (permissions, etc.)
-    fs.unlink.mockImplementation((path, callback) =>
+    fs.unlink.mockImplementation((path: String, callback: (arg0: { message: string; }) => void) =>
       callback({ message: "forced failure" })
     );
     try {
@@ -29,7 +29,7 @@ describe("unlinkObservable", () => {
   it("completes and calls fs.existsSync, fs.unlink", async () => {
     expect.assertions(2);
     fs.existsSync.mockImplementation(() => true);
-    fs.unlink.mockImplementation((path, callback) => callback());
+    fs.unlink.mockImplementation((path: String, callback: () => void) => callback());
 
     await unlinkObservable("path2").toPromise();
 
@@ -44,7 +44,7 @@ describe("readdirObservable", () => {
   });
   it("lists a directory with ✨  Observables ✨", async () => {
     expect.assertions(2);
-    fs.readdir.mockImplementation((path, callback) => {
+    fs.readdir.mockImplementation((path: String, callback: (arg0: any, arg1: string[]) => void) => {
       callback(null, ["fantastic.ipynb", "README.md"]);
     });
 
@@ -58,7 +58,7 @@ describe("readdirObservable", () => {
   });
   it("handles errors listing directories, passes it back directly", async done => {
     expect.assertions(2);
-    fs.readdir.mockImplementation((path, callback) => {
+    fs.readdir.mockImplementation((path: String, callback: (arg0: Error) => void) => {
       callback(new Error("you can't look there"));
     });
 
