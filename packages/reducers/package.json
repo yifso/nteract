@@ -18,7 +18,7 @@
     "lodash.has": "^4.5.2",
     "redux": "^4.0.1",
     "redux-immutable": "^4.0.0",
-    "uuid": "^3.3.2"
+    "uuid": "^7.0.0"
   },
   "devDependencies": {
     "@types/lodash.has": "^4.5.6"
