@@ -3,9 +3,6 @@
 <h1 align="center">the interactive computing suite for you</h1>
 
 <p align="center">
-<a href="https://snapcraft.io/nteract">
-  <img alt="nteract" src="https://snapcraft.io/nteract/badge.svg" />
-  </a>
 <a href="https://codecov.io/github/nteract/nteract?branch=master"><img src="https://codecov.io/github/nteract/nteract/coverage.svg?branch=master"/></a>
 <a href="https://slack.nteract.io"><img src="https://slack.nteract.io/badge.svg"/></a>
 <a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"/></a>
