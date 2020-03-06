@@ -118,7 +118,8 @@ describe("acquireKernelInfo", () => {
       mockSocket,
       "fakeKernelRef",
       "fakeContentRef",
-      state
+      state,
+      "python"
     );
 
     const actions = await obs.pipe(toArray()).toPromise();
@@ -193,6 +194,178 @@ describe("acquireKernelInfo", () => {
           kernelInfo: stateModule.makeKernelspec()
         },
         type: "SET_KERNEL_METADATA"
+      }
+    ]);
+
+    done();
+  });
+  test("does not set kernel metadata if kernelspec name is not provided", async done => {
+    const sent = new Subject();
+    const received = new Subject();
+
+    const mockSocket = Subject.create(sent, received);
+
+    sent.subscribe((msg: JupyterMessage) => {
+      expect(msg.header.msg_type).toEqual("kernel_info_request");
+
+      const response = createMessage("kernel_info_reply" as MessageType);
+      response.parent_header = msg.header;
+      response.content = {
+        status: "ok",
+        protocol_version: "5.1",
+        implementation: "ipython",
+        implementation_version: "6.2.1",
+        language_info: {
+          name: "python",
+          version: "3.6.5",
+          mimetype: "text/x-python",
+          codemirror_mode: { name: "ipython", version: 3 },
+          pygments_lexer: "ipython3",
+          nbconvert_exporter: "python",
+          file_extension: ".py"
+        },
+        banner:
+          "Python 3.6.5 (default, Mar 30 2018, 06:41:53) \nType 'copyright', 'credits' or 'license' for more information\nIPython 6.2.1 -- An enhanced Interactive Python. Type '?' for help.\n",
+        help_links: [
+          { text: "Python Reference", url: "https://docs.python.org/3.6" },
+          {
+            text: "IPython Reference",
+            url: "https://ipython.org/documentation.html"
+          },
+          {
+            text: "NumPy Reference",
+            url: "https://docs.scipy.org/doc/numpy/reference/"
+          },
+          {
+            text: "SciPy Reference",
+            url: "https://docs.scipy.org/doc/scipy/reference/"
+          },
+          {
+            text: "Matplotlib Reference",
+            url: "https://matplotlib.org/contents.html"
+          },
+          {
+            text: "SymPy Reference",
+            url: "http://docs.sympy.org/latest/index.html"
+          },
+          {
+            text: "pandas Reference",
+            url: "https://pandas.pydata.org/pandas-docs/stable/"
+          }
+        ]
+      };
+
+      // TODO: Get the Rx handling proper here
+      setTimeout(() => received.next(response), 100);
+    });
+
+    const state = {
+      core: stateModule.makeStateRecord({
+        kernelRef: "kernelRef",
+        currentKernelspecsRef: "currentKernelspecsRef",
+        entities: stateModule.makeEntitiesRecord({
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({
+              kernelRef: stateModule.makeLocalKernelRecord({
+                status: "not connected"
+              })
+            })
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "oldKernelRef"
+                })
+              })
+            })
+          }),
+          kernelspecs: stateModule.makeKernelspecsRecord({
+            byRef: Immutable.Map({
+              currentKernelspecsRef: stateModule.makeKernelspecsByRefRecord({
+                byName: Immutable.Map({ python: stateModule.makeKernelspec() })
+              })
+            })
+          })
+        })
+      }),
+      app: stateModule.makeAppRecord({}),
+      comms: stateModule.makeCommsRecord(),
+      config: Immutable.Map({})
+    };
+
+    const obs = acquireKernelInfo(
+      mockSocket,
+      "fakeKernelRef",
+      "fakeContentRef",
+      state
+    );
+
+    const actions = await obs.pipe(toArray()).toPromise();
+
+    expect(actions).toEqual([
+      {
+        payload: {
+          contentRef: "fakeContentRef",
+          kernelRef: "fakeKernelRef",
+          langInfo: {
+            name: "python",
+            version: "3.6.5",
+            mimetype: "text/x-python",
+            codemirror_mode: { name: "ipython", version: 3 },
+            pygments_lexer: "ipython3",
+            nbconvert_exporter: "python",
+            file_extension: ".py"
+          }
+        },
+        type: "SET_LANGUAGE_INFO"
+      },
+      {
+        type: "CORE/SET_KERNEL_INFO",
+        payload: {
+          info: {
+            protocolVersion: "5.1",
+            implementation: "ipython",
+            implementationVersion: "6.2.1",
+            banner:
+              "Python 3.6.5 (default, Mar 30 2018, 06:41:53) \nType 'copyright', 'credits' or 'license' for more information\nIPython 6.2.1 -- An enhanced Interactive Python. Type '?' for help.\n",
+            helpLinks: [
+              { text: "Python Reference", url: "https://docs.python.org/3.6" },
+              {
+                text: "IPython Reference",
+                url: "https://ipython.org/documentation.html"
+              },
+              {
+                text: "NumPy Reference",
+                url: "https://docs.scipy.org/doc/numpy/reference/"
+              },
+              {
+                text: "SciPy Reference",
+                url: "https://docs.scipy.org/doc/scipy/reference/"
+              },
+              {
+                text: "Matplotlib Reference",
+                url: "https://matplotlib.org/contents.html"
+              },
+              {
+                text: "SymPy Reference",
+                url: "http://docs.sympy.org/latest/index.html"
+              },
+              {
+                text: "pandas Reference",
+                url: "https://pandas.pydata.org/pandas-docs/stable/"
+              }
+            ],
+            languageName: "python",
+            languageVersion: "3.6.5",
+            mimetype: "text/x-python",
+            fileExtension: ".py",
+            pygmentsLexer: "ipython3",
+            codemirrorMode: { name: "ipython", version: 3 },
+            nbconvertExporter: "python"
+          },
+          kernelRef: "fakeKernelRef"
+        }
       }
     ]);
 
