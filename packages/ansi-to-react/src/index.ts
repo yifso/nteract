@@ -117,13 +117,15 @@ function convertBundleIntoReact(
         return words;
       }
 
+      // Make sure the href we generate from the link is fully qualified. We assume http
+      // if it starts with a www because many sites don't support https
       const href = word.startsWith("www.") ? `http://${word}` : word;
       words.push(
         React.createElement(
           "a",
           {
             key: index,
-            href: href,
+            href,
             target: "_blank"
           },
           `${word}`
