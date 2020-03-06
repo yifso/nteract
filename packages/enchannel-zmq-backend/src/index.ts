@@ -3,7 +3,7 @@ import * as moduleJMP from "jmp";
 import { fromEvent, merge, Observable, Subject, Subscriber } from "rxjs";
 import { FromEventTarget } from "rxjs/internal/observable/fromEvent";
 import { map, publish, refCount } from "rxjs/operators";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 
 export const ZMQType = {
   frontend: {

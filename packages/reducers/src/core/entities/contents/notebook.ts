@@ -35,7 +35,7 @@ import {
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
 import has from "lodash.has";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 
 type KeyPath = List<string | number>;
 type KeyPaths = List<KeyPath>;

@@ -1,6 +1,6 @@
 import { Subject } from "rxjs";
 import { take, toArray } from "rxjs/operators";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 
 import {
   createMainChannelFromSockets,

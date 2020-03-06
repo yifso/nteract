@@ -1,4 +1,11 @@
-const fs = jest.genMockFromModule("fs");
+type Fs = {
+    unlinkSync: jest.Mock,
+    unlink: jest.Mock,
+    existsSync: jest.Mock,
+    writeFile: jest.Mock
+}
+
+const fs: Fs = jest.genMockFromModule("fs");
 
 fs.unlinkSync = jest.fn();
 fs.unlink = jest.fn();
