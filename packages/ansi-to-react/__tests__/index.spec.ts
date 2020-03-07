@@ -79,6 +79,36 @@ describe("Ansi", () => {
     );
   });
 
+  test("can linkify links starting with www.", () => {
+    const el = shallow(
+      React.createElement(
+        Ansi,
+        { linkify: true },
+        "this is a link: www.google.com"
+      )
+    );
+    expect(el).not.toBeNull();
+    expect(el.text()).toBe("this is a link: www.google.com");
+    expect(el.html()).toBe(
+      '<code><span>this is a link: <a href="http://www.google.com" target="_blank">www.google.com</a></span></code>'
+    );
+  });
+
+  test("doesn't linkify partial matches", () => {
+    const el = shallow(
+      React.createElement(
+        Ansi,
+        { linkify: true },
+        "cant click this link: 'http://www.google.com'"
+      )
+    );
+    expect(el).not.toBeNull();
+    expect(el.text()).toBe("cant click this link: 'http://www.google.com'");
+    expect(el.html()).toBe(
+      "<code><span>cant click this link: &#x27;http://www.google.com&#x27;</span></code>"
+    );
+  });
+
   test("can distinguish URL-ish text", () => {
     const el = shallow(
       React.createElement(
@@ -117,7 +147,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-green-fg\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-green-fg">world</span></code>'
       );
     });
 
@@ -132,7 +162,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-yellow-bg\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-yellow-bg">world</span></code>'
       );
     });
 
@@ -147,7 +177,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-yellow-bg ansi-green-fg\">world</span></code>"
+        '<code><span>hello </span><span class="ansi-yellow-bg ansi-green-fg">world</span></code>'
       );
     });
 
@@ -156,13 +186,13 @@ describe("Ansi", () => {
         React.createElement(
           Ansi,
           { useClasses: true },
-          `hello ${GREEN_FG}${BOLD}world${RESET}!`,
+          `hello ${GREEN_FG}${BOLD}world${RESET}!`
         )
       );
       expect(el).not.toBeNull();
       expect(el.text()).toBe("hello world!");
       expect(el.html()).toBe(
-        "<code><span>hello </span><span class=\"ansi-green-fg ansi-bold\">world</span><span>!</span></code>"
+        '<code><span>hello </span><span class="ansi-green-fg ansi-bold">world</span><span>!</span></code>'
       );
     });
 
@@ -177,7 +207,7 @@ describe("Ansi", () => {
       expect(el).not.toBeNull();
       expect(el.text()).toBe("this is a link: https://nteract.io/");
       expect(el.html()).toBe(
-        "<code><span class=\"ansi-green-fg\">this is a link: <a href=\"https://nteract.io/\" target=\"_blank\">https://nteract.io/</a></span></code>"
+        '<code><span class="ansi-green-fg">this is a link: <a href="https://nteract.io/" target="_blank">https://nteract.io/</a></span></code>'
       );
     });
   });
