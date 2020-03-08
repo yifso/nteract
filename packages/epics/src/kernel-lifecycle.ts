@@ -78,7 +78,8 @@ export function acquireKernelInfo(
   channels: Channels,
   kernelRef: KernelRef,
   contentRef: ContentRef,
-  state: AppState
+  state: AppState,
+  kernelSpecName?: string | null
 ) {
   const message = createMessage("kernel_info_request");
 
@@ -130,14 +131,18 @@ export function acquireKernelInfo(
           })
         ];
 
-        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
-        if (kernelspec) {
-          result.push(
-            actions.setKernelMetadata({
-              contentRef,
-              kernelInfo: kernelspec
-            })
-          );
+        if (kernelSpecName) {
+          const kernelspec = selectors.kernelspecByName(state, {
+            name: kernelSpecName
+          });
+          if (kernelspec) {
+            result.push(
+              actions.setKernelMetadata({
+                contentRef,
+                kernelInfo: kernelspec
+              })
+            );
+          }
         }
       }
 
@@ -166,12 +171,18 @@ export const acquireKernelInfoEpic = (
     switchMap((action: actions.NewKernelAction) => {
       const {
         payload: {
-          kernel: { channels },
+          kernel: { channels, kernelSpecName },
           kernelRef,
           contentRef
         }
       } = action;
-      return acquireKernelInfo(channels, kernelRef, contentRef, state$.value);
+      return acquireKernelInfo(
+        channels,
+        kernelRef,
+        contentRef,
+        state$.value,
+        kernelSpecName
+      );
     })
   );
 
