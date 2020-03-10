@@ -1,6 +1,6 @@
 {
   "name": "nteract",
-  "version": "0.22.1-alpha.0",
+  "version": "0.22.2-alpha.0",
   "description": "Interactive literate coding notebook!",
   "main": "./lib/webpacked-main.js",
   "repository": "nteract/nteract",
@@ -94,11 +94,12 @@
       "maintainer": "nteract contributors <jupyter@googlegroups.com>",
       "synopsis": "The nteract desktop application allows you to quickly view, edit, and publish notebooks from your desktop. It  is a great tool for first-time and veteran notebook users, alike.",
       "target": [
-        { "target": "deb",
+        {
+          "target": "deb",
           "arch": [
-               "arm64",
-               "x64"
-           ]
+            "arm64",
+            "x64"
+          ]
         },
         "snap",
         "AppImage",
