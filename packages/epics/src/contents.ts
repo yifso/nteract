@@ -13,6 +13,8 @@ import {
   NotebookContentRecordProps,
   ServerConfig
 } from "@nteract/types";
+import { sendNotification } from "@nteract/mythic-notifications";
+import { createKernelRef } from "@nteract/core";
 import FileSaver from "file-saver";
 import { RecordOf } from "immutable";
 import { Action } from "redux";
@@ -30,6 +32,7 @@ import {
   tap
 } from "rxjs/operators";
 import urljoin from "url-join";
+import * as path from "path";
 
 export function updateContentEpic(
   action$: ActionsObservable<actions.ChangeContentName>,
@@ -456,6 +459,42 @@ export function saveAsContentEpic(
 
       const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig = selectors.serverConfig(host);
+
+      const kernelRef = selectors.kernelRefByContentRef(
+        store.getState(), { contentRef } );
+      const kernel = selectors.kernel( state, { kernelRef } );
+      if ( kernel ) {
+        const cwd = filepath
+          ? path.dirname(path.resolve(filepath))
+          : getDocumentDirectory();
+        if ( cwd != kernel.cwd ) {
+          console.log( 'must prompt; different:', cwd, kernel.cwd );
+          store.dispatch(sendNotification.create({
+            title: "Notebook folder changed",
+            message:
+              "The kernel executing your code thinks your notebook is still " +
+              "in the old folder. Would you like to launch a new kernel in " +
+              "the new folder?",
+            level: "warning",
+            action: {
+              label: "Launch new kernel",
+              callback(): void {
+                store.dispatch(
+                  actions.launchKernelByName({
+                    kernelSpecName: kernel.kernelSpecName,
+                    cwd,
+                    kernelRef: createKernelRef(),
+                    selectNextKernel: true,
+                    contentRef
+                  })
+                );
+              }
+            }
+          }));
+        } else {
+          console.log( 'must not prompt; same:', cwd, kernel.cwd );
+        }
+      }
 
       return dependencies.contentProvider
         .save(serverConfig, filepath, saveModel)
