@@ -9,11 +9,6 @@
 module.exports = {
   lernaModules: [
     {
-      name: "ansi-to-react",
-      version: "4.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/commutable",
       version: "6.0.0-alpha.0",
       private: false
