@@ -24,7 +24,6 @@
     { "path": "mythic-notifications" },
     { "path": "myths" },
     { "path": "notebook-app-component" },
-    { "path": "octicons" },
     { "path": "outputs" },
     { "path": "presentational-components" },
     { "path": "reducers" },
