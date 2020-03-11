@@ -460,8 +460,7 @@ export function saveAsContentEpic(
       const host = selectors.currentHost(state) as JupyterHostRecord;
       const serverConfig = selectors.serverConfig(host);
 
-      const kernelRef = selectors.kernelRefByContentRef(
-        store.getState(), { contentRef } );
+      const kernelRef = selectors.kernelRefByContentRef( state, { contentRef } );
       const kernel = selectors.kernel( state, { kernelRef } );
       if ( kernel ) {
         const cwd = filepath
