@@ -16,7 +16,6 @@
     { "path": "host-cache" },
     { "path": "iron-icons" },
     { "path": "jupyter-widgets" },
-    { "path": "logos" },
     { "path": "markdown" },
     { "path": "mathjax" },
     { "path": "messaging" },
