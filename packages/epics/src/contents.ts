@@ -460,11 +460,17 @@ export function saveAsContentEpic(
       return dependencies.contentProvider
         .save(serverConfig, filepath, saveModel)
         .pipe(
-          map((xhr: AjaxResponse) => {
-            return actions.saveAsFulfilled({
-              contentRef: action.payload.contentRef,
-              model: xhr.response
-            });
+          mergeMap((xhr: AjaxResponse) => {
+            return of(
+              actions.changeFilename({
+                contentRef: action.payload.contentRef,
+                filepath
+              }),
+              actions.saveAsFulfilled({
+                contentRef: action.payload.contentRef,
+                model: xhr.response
+              })
+            );
           }),
           catchError((error: Error) =>
             of(
