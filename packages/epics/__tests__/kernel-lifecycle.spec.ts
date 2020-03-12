@@ -566,9 +566,6 @@ describe("restartKernelEpic", () => {
     });
   });
   test("emits no action for remote kernel", async () => {
-    const contentRef = "contentRef";
-    const newKernelRef = "newKernelRef";
-
     const state = {
       core: stateModule.makeStateRecord({
         kernelRef: "oldKernelRef",
@@ -609,6 +606,48 @@ describe("restartKernelEpic", () => {
       .toPromise();
 
     expect(responses).toEqual([]);
+  });
+  test("returns an error for no valid kernel ref", async () => {
+    const state = {
+      core: stateModule.makeStateRecord({
+        entities: stateModule.makeEntitiesRecord({
+          kernels: stateModule.makeKernelsRecord({
+            byRef: Immutable.Map({})
+          }),
+          contents: stateModule.makeContentsRecord({
+            byRef: Immutable.Map({
+              contentRef: stateModule.makeNotebookContentRecord({
+                model: stateModule.makeDocumentRecord({
+                  kernelRef: "notReal"
+                })
+              })
+            })
+          })
+        })
+      }),
+      app: stateModule.makeAppRecord({})
+    };
+
+    const responses = await restartKernelEpic(
+      ActionsObservable.of(
+        actionsModule.restartKernel({
+          outputHandling: "Run All",
+          kernelRef: "oldKernelRef",
+          contentRef: "contentRef"
+        })
+      ),
+      new StateObservable(new Subject(), state)
+    )
+      .pipe(toArray())
+      .toPromise();
+
+    expect(responses).toEqual([
+      sendNotification.create({
+        title: "Failure to Restart",
+        message: "Unable to restart kernel, please select a new kernel.",
+        level: "error"
+      })
+    ]);
   });
 });
 
