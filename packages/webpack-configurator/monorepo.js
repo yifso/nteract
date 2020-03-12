@@ -59,11 +59,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/iron-icons",
-      version: "0.2.5",
-      private: false
-    },
-    {
       name: "@nteract/jupyter-widgets",
       version: "1.0.0-alpha.0",
       private: false

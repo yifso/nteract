@@ -18,7 +18,6 @@
     { "path": "../../../packages/core" },
     { "path": "../../../packages/directory-listing" },
     { "path": "../../../packages/editor" },
-    { "path": "../../../packages/iron-icons" },
     { "path": "../../../packages/jupyter-widgets" },
     { "path": "../../../packages/logos" },
     { "path": "../../../packages/monaco-editor" },

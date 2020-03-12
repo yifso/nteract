@@ -14,7 +14,6 @@
     { "path": "fixtures" },
     { "path": "fs-observable" },
     { "path": "host-cache" },
-    { "path": "iron-icons" },
     { "path": "jupyter-widgets" },
     { "path": "logos" },
     { "path": "markdown" },
