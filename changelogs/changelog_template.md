@@ -34,20 +34,6 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
-### ansi-to-react ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
 ### @nteract/commutable ([publish-version-here])
 
 #### Breaking Changes
@@ -77,20 +63,6 @@ Provide a bulleted list of new features or improvements and a reference to the P
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
 ### @nteract/core ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
-### @nteract/directory-listing ([publish-version-here])
 
 #### Breaking Changes
 
@@ -202,35 +174,7 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
-### @nteract/iron-icons ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
 ### @nteract/jupyter-widgets ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
-### @nteract/logos ([publish-version-here])
 
 #### Breaking Changes
 
@@ -427,20 +371,6 @@ Provide a bulleted list of new features or improvements and a reference to the P
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
 ### @nteract/stateful-components ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
-### @nteract/styled-blueprintjsx ([publish-version-here])
 
 #### Breaking Changes
 
