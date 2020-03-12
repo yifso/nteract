@@ -129,11 +129,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/styled-blueprintjsx",
-      version: "1.1.1",
-      private: false
-    },
-    {
       name: "@nteract/styleguide-components",
       version: "0.1.4",
       private: false
