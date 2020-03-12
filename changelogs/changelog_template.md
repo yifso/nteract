@@ -90,20 +90,6 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
-### @nteract/directory-listing ([publish-version-here])
-
-#### Breaking Changes
-
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
-
 ### @nteract/dropdown-menu ([publish-version-here])
 
 #### Breaking Changes

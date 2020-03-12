@@ -22,7 +22,7 @@
     "@nteract/connected-components": "^6.7.10-alpha.0",
     "@nteract/core": "^13.0.2-alpha.0",
     "@nteract/data-explorer": "^8.0.0",
-    "@nteract/directory-listing": "^2.0.14-alpha.0",
+    "@nteract/directory-listing": "^2.1.0",
     "@nteract/editor": "^9.6.4-alpha.0",
     "@nteract/iron-icons": "^1.0.0",
     "@nteract/jupyter-widgets": "^4.4.9-alpha.0",
