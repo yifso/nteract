@@ -102,7 +102,7 @@
     ],
     "moduleNameMapper": {
       "^@nteract/any-vega": "@nteract/any-vega",
-      "^@nteract/([^/]*)$": "<rootDir>/packages/$1/src",
+      "^@nteract/([^/]*!octicons)$": "<rootDir>/packages/$1/src",
       "^(enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
       "\\.css$": "<rootDir>/scripts/noop-module.ts"
     },
