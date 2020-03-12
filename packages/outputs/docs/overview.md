@@ -129,7 +129,7 @@ print("I want to print an undefined variable: ", never_defined)
 }
 ```
 
-Note that the content of the error response is an ANSI-encoded string. nteract uses the [ansi-to-react](https://github.com/nteract/nteract/tree/master/packages/ansi-to-react) package to render this string in the user interface.
+Note that the content of the error response is an ANSI-encoded string. nteract uses the [ansi-to-react](https://github.com/nteract/ansi-to-react) package to render this string in the user interface.
 
 ### display_data
 
