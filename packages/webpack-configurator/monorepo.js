@@ -29,11 +29,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/directory-listing",
-      version: "1.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/dropdown-menu",
       version: "0.5.7",
       private: false

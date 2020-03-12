@@ -16,7 +16,6 @@
     { "path": "../../../packages/commutable" },
     { "path": "../../../packages/connected-components" },
     { "path": "../../../packages/core" },
-    { "path": "../../../packages/directory-listing" },
     { "path": "../../../packages/editor" },
     { "path": "../../../packages/jupyter-widgets" },
     { "path": "../../../packages/monaco-editor" },
