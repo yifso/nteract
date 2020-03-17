@@ -2850,6 +2850,15 @@
   resolved "https://registry.yarnpkg.com/@nteract/logos/-/logos-1.0.0.tgz#e17ca29f41a5282fe32fa5e4e69a5a3a9839d378"
   integrity sha512-6f675p3gzs7ZMAovzfOx+QOMNu1TGVT2aV5lPOwnPxJCM/APLpDRFcSoURwLA26CROlTTDEe10XweFzJgQ+VEQ==
 
+"@nteract/mathjax@^4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.7.tgz#9aef85b04e12eda7d6c2506fbc676c40837ffc11"
+  integrity sha512-FwdZmaGXJ3AY8u68k8ZBXvck3SgOLAjruc0c0nCqdQC/ahK/l1xwPjabE/cqcWCHQtBbzMgZpxLbwGnP8Uszuw==
+  dependencies:
+    load-script "^1.0.0"
+    react "^16.13.0"
+    react-dom "^16.13.0"
+
 "@nteract/octicons@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@nteract/octicons/-/octicons-2.0.0.tgz#eccd5de8bc0ef4d1bb4154b791db80f4f6bac995"
