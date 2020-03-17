@@ -6,15 +6,15 @@ via comm messages.
 
 A few years ago, Jupyter added a
 [custom messaging](https://jupyter-client.readthedocs.io/en/stable/messaging.html#custom-messages)
-system for developers to add their own objects with Frontend and Kernel-side components,
+system for developers to add their own objects with Front-end and Kernel-side components,
 and allow them to communicate with each other. To do this, IPython adds a notion of a `Comm`,
-which exists on both sides (Frontend and Kernerl), and can communicate in either direction.
+which exists on both sides (Front end and Kernel), and can communicate in either direction.
 As such, Comm messages are an arbitrary data exchange format built on top of the
 Jupyter Messaging Protocol.
 
 Comm messages are one-way communications to update comm state,
-used for synchronizing widget state, or simply requesting actions of a comm’s counterpart
-(kernel-side request to FrontEnd or FrontEnd request to Kernel-Side).
+used for synchronizing widget state, or simply requesting actions of a comm's counterpart
+(kernel-side request to front end or front-end request to kernel-side).
 
 ## commListenEpic
 
