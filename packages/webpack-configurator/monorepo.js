@@ -34,11 +34,6 @@ module.exports = {
       private: false
     },
     {
-      name: "enchannel-zmq-backend",
-      version: "8.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "fs-observable",
       version: "3.0.2",
       private: false

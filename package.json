@@ -50,7 +50,7 @@
     "predocs:deploy": "npm run docs:build",
     "docs:deploy": "now ./styleguide",
     "docs:promote": "now ./styleguide --prod",
-    "package:docs": "typedoc --options typedoc.js packages/commutable packages/rx-jupyter packages/rx-binder packages/enchannel-zmq-backend packages/messaging packages/actions packages/selectors packages/epics packages/types",
+    "package:docs": "typedoc --options typedoc.js packages/commutable packages/rx-jupyter packages/rx-binder packages/messaging packages/actions packages/selectors packages/epics packages/types",
     "prepackage:docs:deploy": "npm run package:docs",
     "package:docs:deploy": "now ./nteract-packages",
     "package:docs:promote": "now ./nteract-packages --prod",
@@ -103,7 +103,7 @@
     "moduleNameMapper": {
       "^@nteract/any-vega": "@nteract/any-vega",
       "^@nteract/([^/]*!octicons)$": "<rootDir>/packages/$1/src",
-      "^(enchannel-zmq-backend|fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
+      "^(fs-observable|rx-binder|rx-jupyter)$": "<rootDir>/packages/$1/src",
       "\\.css$": "<rootDir>/scripts/noop-module.ts"
     },
     "coveragePathIgnorePatterns": [

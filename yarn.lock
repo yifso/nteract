@@ -2812,6 +2812,14 @@
   resolved "https://registry.yarnpkg.com/@nteract/any-vega/-/any-vega-1.0.1.tgz#d790774bdc453bc5af663455747637a2100f634a"
   integrity sha512-RjECjm2bdQpEHuhpWyIjAg8dA8t5iWGDmx2VuStBhVSffciNrCn0WxhJiK5TSkyuBgk4rB4eAOspJ8UnfjOAyA==
 
+"@nteract/commutable@^7.2.6":
+  version "7.2.6"
+  resolved "https://registry.yarnpkg.com/@nteract/commutable/-/commutable-7.2.6.tgz#632d43c5d8d87d56771d387d0a46f8769492500f"
+  integrity sha512-pn2TVhnkrGumytmsmrKLhcKns1jBPdoeKnaihnSx1oaV55iUpfcWER9jgq/k7tcPronQy/dunJQid+s/Ch8mMQ==
+  dependencies:
+    immutable "^4.0.0-rc.12"
+    uuid "^3.1.0"
+
 "@nteract/data-explorer@^8.0.0":
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/@nteract/data-explorer/-/data-explorer-8.0.2.tgz#d84a5c105ce14d94d6bf7235b821a9797c86af6e"
@@ -2859,10 +2867,31 @@
     react "^16.13.0"
     react-dom "^16.13.0"
 
+"@nteract/messaging@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@nteract/messaging/-/messaging-7.0.0.tgz#2ed8665dfe29c11b0d4981a8109bc1428bfb4679"
+  integrity sha512-N/M8/7/seeSBYbtO0ZKzVeMnzJtVn5fiBSoDiEmvkFB8Y/UXoOeVxBusZVVZN054FbOgkX+vnRvaSEd75iRGag==
+  dependencies:
+    "@nteract/types" "^6.0.0"
+    "@types/uuid" "^3.4.4"
+    lodash.clonedeep "^4.5.0"
+    rxjs "^6.3.3"
+    uuid "^3.1.0"
+
 "@nteract/octicons@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@nteract/octicons/-/octicons-2.0.0.tgz#eccd5de8bc0ef4d1bb4154b791db80f4f6bac995"
   integrity sha512-wQHZMgYJHnZw/ozCeG/cwfUPiQDpmkmF8G57quKpWCMbBBLEN1tUhjRzcZ9IdJyZsiu0dxenjDhOs5+m5DHYGA==
+
+"@nteract/types@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@nteract/types/-/types-6.0.0.tgz#16202c716c62b719448bd3a4a80700d0013d3509"
+  integrity sha512-vpqZnXbJwQ31ngxHizs9c8t1g76Po3W4vay+zM5yiog8/bgWtfKiG8zVoQMesHrLGCJPt+QDoPIIXo2Ju61A3A==
+  dependencies:
+    "@nteract/commutable" "^7.2.6"
+    immutable "^4.0.0-rc.12"
+    rxjs "^6.3.3"
+    uuid "^3.1.0"
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
@@ -3610,6 +3639,11 @@
   resolved "https://registry.yarnpkg.com/@types/url-join/-/url-join-4.0.0.tgz#72eff71648a429c7d4acf94e03780e06671369bd"
   integrity sha512-awrJu8yML4E/xTwr2EMatC+HBnHGoDxc2+ImA9QyeUELI1S7dOCIZcyjki1rkwoA8P2D2NVgLAJLjnclkdLtAw==
 
+"@types/uuid@^3.4.4":
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.8.tgz#4ba887fcef88bd9a7515ca2de336d691e3e18318"
+  integrity sha512-zHWce3allXWSmRx6/AGXKCtSOA7JjeWd2L3t4aHfysNk8mouQnWCocveaT7a4IEIlPVHp81jzlnknqTgCjCLXA==
+
 "@types/uuid@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-7.0.0.tgz#9f6993ccc8210efa90bda7e1afabbb06a9f860cd"
@@ -3659,13 +3693,6 @@
   integrity sha512-sYlwNU7zYi6eZbMzFvG6eHD7VsEvFdoDtlD7eI1JTg7YNnuguzmiGsc6MPSq5l8n+h21AsNof0je+9sgOe4+dg==
   dependencies:
     "@types/yargs-parser" "*"
-
-"@types/zeromq@^4.6.1":
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/@types/zeromq/-/zeromq-4.6.2.tgz#3083a99eacfebfab91f96e5fb1f706294b951276"
-  integrity sha512-1eMOZBFMwWxdY1Z2/u3+YCInJa/NLGrvfyN0RhoJeYi68PKkXsiE1+bByenIVg1BgBjthnRj820IHK5ZEfF6hg==
-  dependencies:
-    "@types/node" "*"
 
 "@ungap/url-search-params@^0.1.2":
   version "0.1.4"
@@ -7386,6 +7413,15 @@ emojis-list@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
+
+enchannel-zmq-backend@^9.1.18:
+  version "9.1.18"
+  resolved "https://registry.yarnpkg.com/enchannel-zmq-backend/-/enchannel-zmq-backend-9.1.18.tgz#4eff1f8e329c4526d8bb22cb1b7eb77d7e9d1cbc"
+  integrity sha512-n3n0WZnudUgXijXDa6HMI3NmdE7djm135hYKP+7/xUgGvJ0DC2xZFH+sTKBVLcoaQZ203ClP3WTMjLRtBfmv7Q==
+  dependencies:
+    "@nteract/messaging" "^7.0.0"
+    jmp "^2.0.0"
+    uuid "^7.0.0"
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -17963,7 +17999,7 @@ uuid@3, uuid@^3.3.3:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
-uuid@^3.0.1, uuid@^3.3.2:
+uuid@^3.0.1, uuid@^3.1.0, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
