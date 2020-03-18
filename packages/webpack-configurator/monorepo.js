@@ -39,11 +39,6 @@ module.exports = {
       private: false
     },
     {
-      name: "fs-observable",
-      version: "3.0.2",
-      private: false
-    },
-    {
       name: "@mybinder/host-cache",
       version: "1.0.0-alpha.0",
       private: false

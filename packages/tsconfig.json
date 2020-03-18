@@ -10,7 +10,6 @@
     { "path": "enchannel-zmq-backend" },
     { "path": "epics" },
     { "path": "fixtures" },
-    { "path": "fs-observable" },
     { "path": "host-cache" },
     { "path": "jupyter-widgets" },
     { "path": "markdown" },
