@@ -5,7 +5,6 @@
     { "path": "commutable" },
     { "path": "connected-components" },
     { "path": "core" },
-    { "path": "dropdown-menu" },
     { "path": "editor" },
     { "path": "enchannel-zmq-backend" },
     { "path": "epics" },

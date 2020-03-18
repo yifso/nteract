@@ -2840,6 +2840,13 @@
     react-hot-loader "^4.1.2"
     react-timeago "^4.1.9"
 
+"@nteract/dropdown-menu@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@nteract/dropdown-menu/-/dropdown-menu-1.1.9.tgz#296fdde44fdd2496df2a1ffb90177fb4071f9d27"
+  integrity sha512-xmeVUKwSMnxfW1PnLW8NsRyL1H2WT+zu6DSCp/sXB57UqWLxVnB617CcLXKepwDOJ1HfWV3sCePgL67/CiUeHw==
+  dependencies:
+    react-hot-loader "^4.1.2"
+
 "@nteract/examples@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.2.0.tgz#7cf20e3ea54ea87fa6cff0c135c45b023975ea38"
