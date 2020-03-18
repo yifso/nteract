@@ -35,7 +35,7 @@ import {
 import { escapeCarriageReturnSafe } from "escape-carriage";
 import { fromJS, List, Map, RecordOf, Set } from "immutable";
 import has from "lodash.has";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 
 type KeyPath = List<string | number>;
 type KeyPaths = List<KeyPath>;
@@ -477,7 +477,7 @@ function unmarkCellAsDeleting(
 
 function deleteCellFromState(
   state: NotebookModel,
-  action: actionTypes.DeleteCell,
+  action: actionTypes.DeleteCell
 ): RecordOf<DocumentRecordProps> {
   const id = action.payload.id ? action.payload.id : state.cellFocused;
   if (!id) {
@@ -860,10 +860,15 @@ function toggleOutputExpansion(
   return state.updateIn(
     ["notebook", "cellMap"],
     (cells: Map<CellId, ImmutableCell>) =>
-      cells.setIn(
-        [id, "metadata", "outputExpanded"],
-        !cells.getIn([id, "metadata", "outputExpanded"])
-      )
+      cells
+        .setIn(
+          [id, "metadata", "collapsed"],
+          !cells.getIn([id, "metadata", "collapsed"])
+        )
+        .setIn(
+          [id, "metadata", "outputExpanded"],
+          !cells.getIn([id, "metadata", "outputExpanded"])
+        )
   );
 }
 

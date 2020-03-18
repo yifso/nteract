@@ -78,7 +78,8 @@ export function acquireKernelInfo(
   channels: Channels,
   kernelRef: KernelRef,
   contentRef: ContentRef,
-  state: AppState
+  state: AppState,
+  kernelSpecName?: string | null
 ) {
   const message = createMessage("kernel_info_request");
 
@@ -130,14 +131,18 @@ export function acquireKernelInfo(
           })
         ];
 
-        const kernelspec = selectors.kernelspecByName(state, { name: l.name });
-        if (kernelspec) {
-          result.push(
-            actions.setKernelMetadata({
-              contentRef,
-              kernelInfo: kernelspec
-            })
-          );
+        if (kernelSpecName) {
+          const kernelspec = selectors.kernelspecByName(state, {
+            name: kernelSpecName
+          });
+          if (kernelspec) {
+            result.push(
+              actions.setKernelMetadata({
+                contentRef,
+                kernelInfo: kernelspec
+              })
+            );
+          }
         }
       }
 
@@ -166,12 +171,18 @@ export const acquireKernelInfoEpic = (
     switchMap((action: actions.NewKernelAction) => {
       const {
         payload: {
-          kernel: { channels },
+          kernel: { channels, kernelSpecName },
           kernelRef,
           contentRef
         }
       } = action;
-      return acquireKernelInfo(channels, kernelRef, contentRef, state$.value);
+      return acquireKernelInfo(
+        channels,
+        kernelRef,
+        contentRef,
+        state$.value,
+        kernelSpecName
+      );
     })
   );
 
@@ -256,8 +267,7 @@ export const launchKernelWhenNotebookSetEpic = (
  */
 export const restartKernelEpic = (
   action$: ActionsObservable<actions.RestartKernel | actions.NewKernelAction>,
-  state$: any,
-  kernelRefGenerator: () => KernelRef = createKernelRef
+  state$: any
 ) =>
   action$.pipe(
     ofType(actions.RESTART_KERNEL),
@@ -294,7 +304,7 @@ export const restartKernelEpic = (
         );
       }
 
-      const newKernelRef = kernelRefGenerator();
+      const newKernelRef = createKernelRef();
       const initiatingContentRef = action.payload.contentRef;
       const successNotification = sendNotification.create({
         title: "Kernel Restarting...",

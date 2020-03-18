@@ -81,7 +81,7 @@ const DragHandle = styled.div.attrs({
   role: "presentation"
 })`
   position: absolute;
-  z-index: 200;
+  z-index: 5;
   width: var(--prompt-width, 50px);
   height: 100%;
   cursor: move;
@@ -106,9 +106,13 @@ const DragArea = styled.div.attrs<DragAreaProps>(props => ({
         : "3px transparent solid"
   }
 }))`
-  position: relative;
   padding: 10px;
 ` as StyledComponent<"div", any, DragAreaProps, never>; // Somehow setting the type on `attrs` isn't propagating properly;
+
+// This is the div that DragHandle's absolute position will anchor
+const DragHandleAnchor = styled.div`
+  position: relative;
+`;
 
 export function isDragUpper(
   props: Props,
@@ -213,13 +217,15 @@ export class DraggableCellView extends React.Component<
             this.el = el;
           }}
         >
-          {this.props.connectDragSource(
-            // Same thing with connectDragSource... It also needs a React Element that matches a DOM element
-            <div>
-              <DragHandle onClick={this.selectCell} />
-            </div>
-          )}
-          {this.props.children}
+          <DragHandleAnchor>
+            {this.props.connectDragSource(
+              // Same thing with connectDragSource... It also needs a React Element that matches a DOM element
+              <div>
+                <DragHandle onClick={this.selectCell} />
+              </div>
+            )}
+            {this.props.children}
+          </DragHandleAnchor>
         </DragArea>
       </div>
     );

@@ -17,10 +17,14 @@ module.exports = {
     const toPascalCase = string =>
       string
         .match(/[a-z]+/gi)
-        .map(word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+        .map(
+          word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase()
+        )
         .join("");
     const name = path.basename(componentPath, ".tsx");
-    const from = componentPath.replace(/^packages\//, "@nteract/").replace(/\.tsx?$/, "");
+    const from = componentPath
+      .replace(/^packages\//, "@nteract/")
+      .replace(/\.tsx?$/, "");
     return `import ${toPascalCase(name)} from '${from}';`;
   },
   sections: [
@@ -47,16 +51,8 @@ module.exports = {
     //   components: "packages/host-cache/src/components/*.tsx"
     // },
     {
-      name: "@nteract/directory-listing",
-      components: "packages/directory-listing/src/components/*.tsx"
-    },
-    {
       name: "@nteract/markdown",
       content: "packages/markdown/examples.md"
-    },
-    {
-      name: "@nteract/mathjax",
-      content: "packages/mathjax/examples.md"
     }
   ],
   // For overriding the components styleguidist uses
@@ -112,8 +108,8 @@ module.exports = {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
-        },
+          use: ["style-loader", "css-loader"]
+        }
       ]
     }
   }

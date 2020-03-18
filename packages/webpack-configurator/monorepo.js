@@ -9,11 +9,6 @@
 module.exports = {
   lernaModules: [
     {
-      name: "ansi-to-react",
-      version: "4.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/commutable",
       version: "6.0.0-alpha.0",
       private: false
@@ -26,16 +21,6 @@ module.exports = {
     {
       name: "@nteract/core",
       version: "9.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "@nteract/directory-listing",
-      version: "1.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "@nteract/dropdown-menu",
-      version: "0.5.7",
       private: false
     },
     {
@@ -59,27 +44,12 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/iron-icons",
-      version: "0.2.5",
-      private: false
-    },
-    {
       name: "@nteract/jupyter-widgets",
       version: "1.0.0-alpha.0",
       private: false
     },
     {
-      name: "@nteract/logos",
-      version: "0.1.5",
-      private: false
-    },
-    {
       name: "@nteract/markdown",
-      version: "3.0.1",
-      private: false
-    },
-    {
-      name: "@nteract/mathjax",
       version: "3.0.1",
       private: false
     },
@@ -96,11 +66,6 @@ module.exports = {
     {
       name: "@nteract/notebook-app-component",
       version: "4.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "@nteract/octicons",
-      version: "1.0.0-alpha.0",
       private: false
     },
     {
@@ -126,11 +91,6 @@ module.exports = {
     {
       name: "@nteract/selectors",
       version: "1.0.0",
-      private: false
-    },
-    {
-      name: "@nteract/styled-blueprintjsx",
-      version: "1.1.1",
       private: false
     },
     {
