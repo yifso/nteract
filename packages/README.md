@@ -14,7 +14,9 @@ Recently, we made an effort to improve the developer experience and release proc
 
 - [ansi-to-react](https://github.com/nteract/ansi-to-react)
 - [enchannel-zmq-backend](https://github.com/nteract/enchannel-zmq-backend)
+- [fs-observable](https://github.com/nteract/fs-observable)
 - [@nteract/directory-listing](https://github.com/nteract/directory-listing)
+- [@nteract/dropdown-menu](https://github.com/nteract/dropdown-menu)
 - [@nteract/logos](https://github.com/nteract/logos)
 - [@nteract/mathjax](https://github.com/nteract/mathjax)
 - [@nteract/octicons](https://github.com/nteract/octicons)

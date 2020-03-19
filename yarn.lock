@@ -2848,6 +2848,13 @@
     react-hot-loader "^4.1.2"
     react-timeago "^4.1.9"
 
+"@nteract/dropdown-menu@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@nteract/dropdown-menu/-/dropdown-menu-1.1.9.tgz#296fdde44fdd2496df2a1ffb90177fb4071f9d27"
+  integrity sha512-xmeVUKwSMnxfW1PnLW8NsRyL1H2WT+zu6DSCp/sXB57UqWLxVnB617CcLXKepwDOJ1HfWV3sCePgL67/CiUeHw==
+  dependencies:
+    react-hot-loader "^4.1.2"
+
 "@nteract/examples@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@nteract/examples/-/examples-3.2.0.tgz#7cf20e3ea54ea87fa6cff0c135c45b023975ea38"
@@ -3396,13 +3403,6 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
-
-"@types/mkdirp@^0.5.1":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.5.2.tgz#503aacfe5cc2703d5484326b1b27efa67a339c1f"
-  integrity sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==
-  dependencies:
-    "@types/node" "*"
 
 "@types/node@*":
   version "13.5.0"
@@ -8133,13 +8133,13 @@ file-loader@^1.1.11:
     loader-utils "^1.0.2"
     schema-utils "^0.4.5"
 
-file-loader@^5.0.0, file-loader@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-5.0.2.tgz#7f3d8b4ac85a5e8df61338cfec95d7405f971caa"
-  integrity sha512-QMiQ+WBkGLejKe81HU8SZ9PovsU/5uaLo0JdTCEXOYv7i7jfAjHZi1tcwp9tSASJPOmmHZtbdCervFmXMH/Dcg==
+file-loader@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-6.0.0.tgz#97bbfaab7a2460c07bcbd72d3a6922407f67649f"
+  integrity sha512-/aMOAYEFXDdjG0wytpTL5YQLfZnnTmLNjn+AIrJ/6HVnTfDqLsVKUUwkDf4I4kgex36BvjuXEn/TX9B/1ESyqQ==
   dependencies:
-    loader-utils "^1.2.3"
-    schema-utils "^2.5.0"
+    loader-utils "^2.0.0"
+    schema-utils "^2.6.5"
 
 file-saver@^2.0.0:
   version "2.0.2"
@@ -8422,6 +8422,14 @@ fs-minipass@^2.0.0:
   integrity sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==
   dependencies:
     minipass "^3.0.0"
+
+fs-observable@^4.1.9:
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/fs-observable/-/fs-observable-4.1.9.tgz#ecd5b8a9768edcddf80859e7351778e7a4241cd9"
+  integrity sha512-A579aIRWFKPIgrWLkDB1iaM1GTPpgqI1s5+LbBN68UpxmtxL2Dxke4e7umQZAvaLpj8FxWolOXiuF8HAHD6l1g==
+  dependencies:
+    filewatcher "^3.0.1"
+    mkdirp "^0.5.1"
 
 fs-write-stream-atomic@^1.0.8:
   version "1.0.10"
@@ -15867,7 +15875,7 @@ schema-utils@^2.0.0, schema-utils@^2.6.1, schema-utils@^2.6.4:
     ajv "^6.10.2"
     ajv-keywords "^3.4.1"
 
-schema-utils@^2.0.1, schema-utils@^2.5.0, schema-utils@^2.6.0:
+schema-utils@^2.0.1, schema-utils@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.1.tgz#eb78f0b945c7bcfa2082b3565e8db3548011dc4f"
   integrity sha512-0WXHDs1VDJyo+Zqs9TKLKyD/h7yDpHUhEFsM2CzkICFdoX1av+GBq/J2xRTFfsQO5kBfhZzANf2VcIm84jqDbg==

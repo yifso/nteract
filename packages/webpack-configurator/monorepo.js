@@ -24,18 +24,8 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/dropdown-menu",
-      version: "0.5.7",
-      private: false
-    },
-    {
       name: "@nteract/editor",
       version: "8.0.0-alpha.0",
-      private: false
-    },
-    {
-      name: "fs-observable",
-      version: "3.0.2",
       private: false
     },
     {
