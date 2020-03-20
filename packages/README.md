@@ -20,4 +20,5 @@ Recently, we made an effort to improve the developer experience and release proc
 - [@nteract/logos](https://github.com/nteract/logos)
 - [@nteract/mathjax](https://github.com/nteract/mathjax)
 - [@nteract/octicons](https://github.com/nteract/octicons)
+- [@nteract/outputs](https://github.com/nteract/outputs)
 - [@nteract/styled-blueprintjsx](https://github.com/nteract/styled-blueprintjsx)
