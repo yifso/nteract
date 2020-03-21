@@ -2890,6 +2890,16 @@
   resolved "https://registry.yarnpkg.com/@nteract/octicons/-/octicons-2.0.0.tgz#eccd5de8bc0ef4d1bb4154b791db80f4f6bac995"
   integrity sha512-wQHZMgYJHnZw/ozCeG/cwfUPiQDpmkmF8G57quKpWCMbBBLEN1tUhjRzcZ9IdJyZsiu0dxenjDhOs5+m5DHYGA==
 
+"@nteract/outputs@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@nteract/outputs/-/outputs-3.0.9.tgz#038dfbf12c5a8f40e56798896b4fd94195a7674c"
+  integrity sha512-WacLktT53d4aa8AbF4v3pAPaGHuyKEYalcFO1p4waGkzRpzWJu8GBSLOFwkCN+Kpa7SwCQfEpNiYLSUKMEtIdw==
+  dependencies:
+    "@nteract/markdown" "^4.3.10-alpha.0"
+    "@nteract/mathjax" "^4.0.7"
+    ansi-to-react "^6.0.5"
+    react-json-tree "^0.11.0"
+
 "@nteract/types@^6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@nteract/types/-/types-6.0.0.tgz#16202c716c62b719448bd3a4a80700d0013d3509"

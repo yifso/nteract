@@ -59,11 +59,6 @@ module.exports = {
       private: false
     },
     {
-      name: "@nteract/outputs",
-      version: "1.0.0-alpha.0",
-      private: false
-    },
-    {
       name: "@nteract/presentational-components",
       version: "2.0.0-alpha.0",
       private: false

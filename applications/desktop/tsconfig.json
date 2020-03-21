@@ -16,7 +16,6 @@
     { "path": "../../packages/transform-model-debug" },
     { "path": "../../packages/transform-plotly" },
     { "path": "../../packages/transform-vdom" },
-    { "path": "../../packages/transform-vega" },
-    { "path": "../../packages/outputs" }
+    { "path": "../../packages/transform-vega" }
   ]
 }
