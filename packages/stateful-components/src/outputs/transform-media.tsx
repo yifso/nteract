@@ -10,8 +10,6 @@ import {
 } from "@nteract/commutable";
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 
-import memoizeOne from "memoize-one";
-
 interface ComponentProps {
   output_type: string;
   id: string;
@@ -35,7 +33,7 @@ interface DispatchProps {
   };
 }
 
-const PureTransformMedia = (
+export const PureTransformMedia = (
   props: ComponentProps & StateProps & DispatchProps
 ) => {
   const {

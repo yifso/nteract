@@ -1,11 +1,14 @@
+import { mount } from "enzyme";
 import Immutable from "immutable";
+import React from "react";
 
 import { makeDisplayData } from "@nteract/commutable";
-import { makeContentsRecord, state as types } from "@nteract/core";
+import { state as types } from "@nteract/core";
 import { mockAppState } from "@nteract/fixtures";
 
 import {
   mapStateToProps,
+  PureTransformMedia,
   richestMediaType
 } from "../../src/outputs/transform-media";
 
@@ -95,5 +98,12 @@ describe("mapStateToProps", () => {
     const ownProps = { output_type: "display_data", output };
     const result = mapStateToProps(state, ownProps);
     expect(result.Media).toBe(transform);
+  });
+});
+
+describe("PureTransformMedia", () => {
+  it("renders nothing if there is no mediaType provided", () => {
+    const component = mount(<PureTransformMedia />);
+    expect(component.isEmptyRender()).toBe(true);
   });
 });
