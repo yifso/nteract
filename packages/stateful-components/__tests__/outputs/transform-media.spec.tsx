@@ -5,7 +5,7 @@ import { makeContentsRecord, state as types } from "@nteract/core";
 import { mockAppState } from "@nteract/fixtures";
 
 import {
-  makeMapStateToProps,
+  mapStateToProps,
   richestMediaType
 } from "../../src/outputs/transform-media";
 
@@ -52,11 +52,11 @@ describe("richestMediaType", () => {
   });
 });
 
-describe("makeMapStateToProps", () => {
+describe("mapStateToProps", () => {
   it("returns empty Media component for invalid output_types", () => {
     const state = mockAppState({});
     const ownProps = { output_type: "stream" };
-    const result = makeMapStateToProps(state, ownProps)(state);
+    const result = mapStateToProps(state, ownProps);
     expect(result.Media()).toBeNull();
   });
   it("returns an empty Media component for unregistered transforms", () => {
@@ -68,7 +68,7 @@ describe("makeMapStateToProps", () => {
       }
     });
     const ownProps = { output_type: "display_data", output };
-    const result = makeMapStateToProps(state, ownProps)(state);
+    const result = mapStateToProps(state, ownProps);
     expect(result.Media()).toBeNull();
   });
   it("returns an empty Media component for unregistered transforms", () => {
@@ -93,7 +93,7 @@ describe("makeMapStateToProps", () => {
       }
     });
     const ownProps = { output_type: "display_data", output };
-    const result = makeMapStateToProps(state, ownProps)(state);
+    const result = mapStateToProps(state, ownProps);
     expect(result.Media).toBe(transform);
   });
 });
