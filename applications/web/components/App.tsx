@@ -21,8 +21,6 @@ import {
   ServerConfig
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component";
-import { filepath } from "@nteract/selectors";
-import store from "../redux/store";
 
 
 interface ComponentProps {
@@ -104,10 +102,10 @@ const Side = styled.div`
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    /*props.setAppHost(
+    props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
-    );*/
-    console.log(props.params)
+    );
+    console.log(props.host)
     this.state = {
       contentRef: createContentRef(),
       kernelRef: createKernelRef(),
@@ -177,7 +175,6 @@ class App extends React.Component<Props, State> {
     event.preventDefault()
   }
 
-  // TODO: Remove or add this line in body { this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
   render() {
       return (
       <Layout>
@@ -212,6 +209,7 @@ class App extends React.Component<Props, State> {
         </Side>
         <Body>
           {this.state.fileContent}
+          { this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
         </Body>
         <Footer>
           { this.state.showConsole && <Console></Console> }
