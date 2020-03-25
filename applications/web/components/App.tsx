@@ -28,6 +28,7 @@ import store from "../redux/store";
 interface ComponentProps {
   host: ServerConfig;
   filepath: string;
+  params: string[] | string;
 }
 
 interface StateProps {}
@@ -49,6 +50,10 @@ interface State {
   fileContent: string;
   showConsole: boolean;
   showBinderMenu: boolean;
+  provider: string;
+  org: string;
+  repo: string;
+  gitRef: string;
 }
 
 const Layout = styled.div`
@@ -102,18 +107,27 @@ class App extends React.Component<Props, State> {
     /*props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
     );*/
+    console.log(props.params)
     this.state = {
       contentRef: createContentRef(),
       kernelRef: createKernelRef(),
       fileContent: "",
       showConsole: false,
-      showBinderMenu:false
+      showBinderMenu:false,
+      provider: this.props.params[0],
+      org: this.props.params[1],
+      repo: this.props.params[2],
+      gitRef: this.props.params[3],
     };
 
     this.loadFile = this.loadFile.bind(this);
     this.toggleConsole = this.toggleConsole.bind(this);
     this.toggleBinderMenu = this.toggleBinderMenu.bind(this);
     this.run = this.run.bind(this)
+    this.updateBinder = this.updateBinder.bind(this)
+
+    console.log(this.state)
+    console.log(props)
   }
 
   getFileType(type){
@@ -144,8 +158,8 @@ class App extends React.Component<Props, State> {
   loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
-      owner: "nteract",
-      repo: "examples",
+      owner: this.state.org,
+      repo: this.state.repo,
       path: fileName
     }).then(({data}) => {
       console.log(data)
@@ -153,13 +167,34 @@ class App extends React.Component<Props, State> {
     })
   }
 
+  updateBinder(provider, organ, repo, gitRef){
+    this.setState({
+      provider:provider,
+      org:organ,
+      repo:repo,
+      gitRef:gitRef
+    })
+    event.preventDefault()
+  }
+
   // TODO: Remove or add this line in body { this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
   render() {
       return (
       <Layout>
         <Header>
-          <Menu toggleBinderMenu={this.toggleBinderMenu} run={this.run}></Menu>
-           {this.state.showBinderMenu && <BinderMenu></BinderMenu> }
+          <Menu 
+              toggleBinderMenu={this.toggleBinderMenu} 
+              run={this.run}>    
+          </Menu>
+           {this.state.showBinderMenu && 
+                  <BinderMenu 
+                        provider={this.state.provider}
+                        org={this.state.org}
+                        repo={this.state.repo}
+                        gitRef={this.state.gitRef}
+                        updateBinder={this.updateBinder}
+                        >
+                  </BinderMenu> }
         </Header>
         <Side>
             <img
@@ -167,7 +202,12 @@ class App extends React.Component<Props, State> {
               alt="nteract logo"
               className="nteract-logo"
             />
-            <FilesListing loadFile={this.loadFile}></FilesListing>
+            <FilesListing 
+                  loadFile={this.loadFile} 
+                  org={this.state.org} 
+                  repo={this.state.repo}
+                  gitRef={this.state.gitRef}>
+            </FilesListing>
             
         </Side>
         <Body>

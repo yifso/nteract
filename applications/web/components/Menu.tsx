@@ -3,8 +3,8 @@ import * as React from "react";
 import styled from "styled-components";
 
 type Props = {
-  toggleBinderMenu: any,
-  run:any
+  toggleBinderMenu: () => void,
+  run:() => void
 }
 
 const MenuDiv = styled.div`

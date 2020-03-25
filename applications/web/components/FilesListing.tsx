@@ -4,9 +4,13 @@ import { generate } from 'shortid';
 import { Listing, Icon, Name, LastSaved, Entry} from "@nteract/directory-listing";
 
 import styled from "styled-components";
+import { async } from "rxjs/internal/scheduler/async";
 
 type Props = {
-  loadFile: any
+  loadFile: (x: string) => void,
+  org: string,
+  repo: string,
+  gitRef: string
 };
 
 interface State {
@@ -67,20 +71,33 @@ export default class FilesListing extends React.Component<Props,State> {
   }
     
   componentDidMount() {
+    this.getFiles()
+  }
 
+  componentDidUpdate(prevProps){
+    if (
+        prevProps.org !== this.props.org ||
+        prevProps.repo !== this.props.repo ||
+        prevProps.gitRef !== this.props.gitRef
+        ) {
+      this.getFiles()
+    }
+  }
+
+  getFiles = async () => {
     const octokit = new Octokit()
-    octokit.repos.getContents({
-      owner: "nteract",
-      repo: "examples",
+    await octokit.repos.getContents({
+      owner: this.props.org,
+      repo: this.props.repo,
+      ref: this.props.gitRef,
       path: ""
     }).then(({data}) => {
       console.log(data)
       this.setState({files: data})
-    })
-
-
+  }, (e) => {
+    console.log(e)
+  })
   }
-
 
     render() {
       return (

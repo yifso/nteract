@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 type Props = {
-  toggleConsole: any
+  toggleConsole: ()=>void
 }
 
 const StatusDiv = styled.div`

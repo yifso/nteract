@@ -49,7 +49,7 @@ export class Main extends React.PureComponent<WithRouterProps> {
       */
       let tempHost: ServerConfig;
       return (
-         <App filepath={filepath} host={tempHost} />
+         <App filepath={filepath} host={tempHost} params={params}/>
       );
     }
     return null;
