@@ -4,8 +4,10 @@ import { withRouter } from "next/router";
 import React from "react";
 
 import { Host } from "@mybinder/host-cache";
+import { serverConfig } from "@nteract/selectors";
+import { ServerConfig } from "@nteract/core";
 
-const Notebook = dynamic(() => import("../../components/Main"), {
+const App = dynamic(() => import("../../components/App"), {
   ssr: false
 });
 
@@ -37,12 +39,17 @@ export class Main extends React.PureComponent<WithRouterProps> {
         filepath = filepathSegments;
       }
 
-      return (
-        <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
+      /*
+        TODO: Replace this in return 
+          <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
           <Host.Consumer>
-            {host => <Notebook filepath={filepath} host={host} />}
+            {host => <App filepath={filepath} host={host} />}
           </Host.Consumer>
         </Host>
+      */
+      let tempHost: ServerConfig;
+      return (
+         <App filepath={filepath} host={tempHost} />
       );
     }
     return null;
