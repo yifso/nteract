@@ -34,11 +34,6 @@ module.exports = {
       private: false,
     },
     {
-      name: "@nteract/jupyter-widgets",
-      version: "1.0.0-alpha.0",
-      private: false,
-    },
-    {
       name: "@nteract/messaging",
       version: "5.0.0-alpha.0",
       private: false,
@@ -86,31 +81,6 @@ module.exports = {
     {
       name: "@nteract/styleguide-components",
       version: "0.1.4",
-      private: false,
-    },
-    {
-      name: "@nteract/transform-geojson",
-      version: "4.0.0-alpha.0",
-      private: false,
-    },
-    {
-      name: "@nteract/transform-model-debug",
-      version: "4.0.0-alpha.0",
-      private: false,
-    },
-    {
-      name: "@nteract/transform-plotly",
-      version: "4.0.0-alpha.0",
-      private: false,
-    },
-    {
-      name: "@nteract/transform-vdom",
-      version: "3.0.0-alpha.0",
-      private: false,
-    },
-    {
-      name: "@nteract/transform-vega",
-      version: "4.0.0-alpha.0",
       private: false,
     },
     {
