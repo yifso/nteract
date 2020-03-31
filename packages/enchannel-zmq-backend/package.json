@@ -1,6 +1,6 @@
 {
   "name": "enchannel-zmq-backend",
-  "version": "9.1.19",
+  "version": "9.1.20-alpha.0",
   "description": "Channeling jupyter over zmq",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
