@@ -12,7 +12,6 @@
     { "path": "fixtures" },
     { "path": "host-cache" },
     { "path": "jupyter-widgets" },
-    { "path": "markdown" },
     { "path": "messaging" },
     { "path": "monaco-editor" },
     { "path": "mythic-notifications" },

@@ -18,6 +18,7 @@ Recently, we made an effort to improve the developer experience and release proc
 - [@nteract/directory-listing](https://github.com/nteract/directory-listing)
 - [@nteract/dropdown-menu](https://github.com/nteract/dropdown-menu)
 - [@nteract/logos](https://github.com/nteract/logos)
+- [@nteract/markdown](https://github.com/nteract/markdown)
 - [@nteract/mathjax](https://github.com/nteract/mathjax)
 - [@nteract/octicons](https://github.com/nteract/octicons)
 - [@nteract/outputs](https://github.com/nteract/outputs)

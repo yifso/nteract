@@ -39,11 +39,6 @@ module.exports = {
       private: false,
     },
     {
-      name: "@nteract/markdown",
-      version: "3.0.1",
-      private: false,
-    },
-    {
       name: "@nteract/messaging",
       version: "5.0.0-alpha.0",
       private: false,
