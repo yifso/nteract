@@ -139,10 +139,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     console.log("run binder here")
   }
 
-  /* TODO: Folder type needs to be handled.
-     when user click on a folder, it should show the sub file and folders.
-  */
-  loadFile(fileName){
+    loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
       owner: this.state.org,
@@ -150,8 +147,17 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
       path: fileName
     }).then(({data}) => {
       if(data['type'] == "file"){
-        this.setState({fileContent: atob(data["content"])})
+        /* TODO: Add file rendering in nteract/web
+           Rendering can have two cases:
+
+           - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
+           - We want to render any other file type; we can keep it read only.
+        */
+           this.setState({fileContent: atob(data["content"])})
       }else{
+       /* TODO: Add folder listing in nteract/web
+          when user click on a folder, it should show the sub file and folders.
+       */
         console.log('Folder Type')
       }
       console.log(data)
@@ -210,17 +216,13 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
                   repo={this.state.repo}
                   gitRef={this.state.gitRef}>
             </FilesListing>
-            
         </Side>
         <Body>
-          {this.state.fileContent}
-       
           <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
             <Host.Consumer>
               {host => <Binder filepath={this.state.filepath} host={host} />}
             </Host.Consumer>
           </Host>
-       
         </Body>
         <Footer>
           { this.state.showConsole && <Console></Console> }
