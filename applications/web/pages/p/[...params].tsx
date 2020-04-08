@@ -117,8 +117,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     this.run = this.run.bind(this)
     this.updateBinder = this.updateBinder.bind(this)
 
-    console.log(this.state)
-    console.log(props)
+    console.table(this.state)
   }
 
   getFileType(type){
@@ -140,6 +139,9 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     console.log("run binder here")
   }
 
+  /* TODO: Folder type needs to be handled.
+     when user click on a folder, it should show the sub file and folders.
+  */
   loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
@@ -147,8 +149,12 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
       repo: this.state.repo,
       path: fileName
     }).then(({data}) => {
+      if(data['type'] == "file"){
+        this.setState({fileContent: atob(data["content"])})
+      }else{
+        console.log('Folder Type')
+      }
       console.log(data)
-      this.setState({fileContent: atob(data["content"])})
     })
   }
 
