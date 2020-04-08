@@ -13,12 +13,12 @@ module.exports = {
   defaultExample: false,
   propsParser: typescriptPropsParser,
   resolver: require("react-docgen").resolver.findAllComponentDefinitions,
-  getComponentPathLine: componentPath => {
-    const toPascalCase = string =>
+  getComponentPathLine: (componentPath) => {
+    const toPascalCase = (string) =>
       string
         .match(/[a-z]+/gi)
         .map(
-          word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase()
+          (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase()
         )
         .join("");
     const name = path.basename(componentPath, ".tsx");
@@ -30,32 +30,28 @@ module.exports = {
   sections: [
     {
       name: "Introduction",
-      content: "styleguide-components/intro.md"
+      content: "styleguide-components/intro.md",
     },
     {
       name: "@nteract/presentational-components",
-      components: "packages/presentational-components/src/components/*.tsx"
+      components: "packages/presentational-components/src/components/*.tsx",
     },
     // {
     //   name: "@mybinder/host-cache",
     //   components: "packages/host-cache/src/components/*.tsx"
-    // },
-    {
-      name: "@nteract/markdown",
-      content: "packages/markdown/examples.md"
-    }
+    // },s
   ],
   // For overriding the components styleguidist uses
   styleguideComponents: {
-    LogoRenderer: path.join(__dirname, "styleguide-components", "logo.tsx")
+    LogoRenderer: path.join(__dirname, "styleguide-components", "logo.tsx"),
   },
   compilerConfig: {
     // Allow us to use {...props}
     objectAssign: "Object.assign",
     transforms: {
       // whether template strings get transpiled (we don't want it to, so that we can use the native functionality)
-      templateString: false
-    }
+      templateString: false,
+    },
   },
   template: {
     body: {
@@ -67,18 +63,18 @@ module.exports = {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'UA-129108362-2');
-        </script>`
-    }
+        </script>`,
+    },
   },
   webpackConfig: {
     node: {
       fs: "empty",
       child_process: "empty",
       net: "empty",
-      canvas: "empty"
+      canvas: "empty",
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
+      extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
     },
     externals: ["canvas"],
     module: {
@@ -90,17 +86,17 @@ module.exports = {
             compilerOptions: {
               strict: true,
               jsx: "react",
-              composite: true
+              composite: true,
             },
             projectReferences: true,
-            transpileOnly: true
-          }
+            transpileOnly: true,
+          },
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader"]
-        }
-      ]
-    }
-  }
+          use: ["style-loader", "css-loader"],
+        },
+      ],
+    },
+  },
 };
