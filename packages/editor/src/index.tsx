@@ -32,6 +32,8 @@ import { Tooltip } from "./components/tooltip";
 import CodeMirrorCSS from "./vendored/codemirror";
 import ShowHintCSS from "./vendored/show-hint";
 
+import isEqual from "lodash.isequal";
+
 export { CodeMirrorCSS, ShowHintCSS };
 
 function normalizeLineEndings(str: string): string {
@@ -46,6 +48,7 @@ export interface EditorKeyEvent {
 }
 
 export type CodeMirrorEditorProps = {
+  autofocus: boolean;
   preserveScrollPosition: boolean;
   editorFocused: boolean;
   completion: boolean;
@@ -65,7 +68,8 @@ export type CodeMirrorEditorProps = {
   onFocusChange?: (focused: boolean) => void;
   value: string;
   editorType: "codemirror";
-} & Partial<FullEditorConfiguration>;
+  codeMirror: FullEditorConfiguration;
+};
 
 interface CodeMirrorEditorState {
   bundle: MediaBundle | null;
@@ -91,13 +95,18 @@ export default class CodeMirrorEditor extends React.Component<
     theme: "light",
     tip: false,
     autofocus: false,
-
+    editorType: "codemirror",
     // CodeMirror specific options for defaults
-    matchBrackets: true,
-    indentUnit: 4,
-    lineNumbers: false,
-    cursorBlinkRate: 530,
-    editorType: "codemirror"
+    codeMirror: {
+      matchBrackets: true,
+      autoCloseBrackets: false,
+      indentUnit: 4,
+      tabSize: 4,
+      lineNumbers: false,
+      smartIndent: true,
+      cursorBlinkRate: 530,
+      showCursorWhenSelecting: true
+    }
   };
 
   textarea?: HTMLTextAreaElement | null;
@@ -165,26 +174,29 @@ export default class CodeMirrorEditor extends React.Component<
 
   fullOptions(defaults: FullEditorConfiguration = {}) {
     // Only pass to codemirror the options we support
-    return Object.keys(this.props)
+    return Object.keys(this.props.codeMirror)
       .filter(isConfigurable)
       .reduce((obj, key) => {
-        obj[key] = this.props[key];
+        obj[key] = this.props.codeMirror[key];
         return obj;
       }, defaults);
   }
 
   cleanMode(): string | object {
-    if (!this.props.mode) {
+    if (!this.props.codeMirror.mode) {
       return "text/plain";
     }
-    if (typeof this.props.mode === "string") {
-      return this.props.mode;
+    if (typeof this.props.codeMirror.mode === "string") {
+      return this.props.codeMirror.mode;
     }
     // If the mode comes in as an immutable map, convert it first
-    if (typeof this.props.mode === "object" && "toJS" in this.props.mode) {
-      return this.props.mode.toJS();
+    if (
+      typeof this.props.codeMirror.mode === "object" &&
+      "toJS" in this.props.codeMirror.mode
+    ) {
+      return this.props.codeMirror.mode.toJS();
     }
-    return this.props.mode;
+    return this.props.codeMirror.mode;
   }
 
   componentDidMount(): void {
@@ -312,14 +324,29 @@ export default class CodeMirrorEditor extends React.Component<
     const valueChanged = this.props.value !== nextProps.value;
     const editorFocusedChanged =
       this.props.editorFocused !== nextProps.editorFocused;
-    const cursorBlinkRateChanged =
-      this.props.cursorBlinkRate !== nextProps.cursorBlinkRate;
-    return valueChanged || editorFocusedChanged || cursorBlinkRateChanged;
+
+    const codeMirrorConfigChanged = !isEqual(
+      this.props.codeMirror,
+      nextProps.codeMirror
+    );
+
+    return valueChanged || editorFocusedChanged || codeMirrorConfigChanged;
   }
 
   componentDidUpdate(prevProps: CodeMirrorEditorProps): void {
     if (!this.cm) {
       return;
+    }
+
+    for (const optionName in this.props.codeMirror) {
+      if (!isConfigurable(optionName)) {
+        continue;
+      }
+      if (
+        this.props.codeMirror[optionName] !== prevProps.codeMirror[optionName]
+      ) {
+        this.cm.setOption(optionName, this.props.codeMirror[optionName]);
+      }
     }
 
     const { editorFocused, theme } = this.props;
@@ -332,8 +359,10 @@ export default class CodeMirrorEditor extends React.Component<
       editorFocused ? this.cm.focus() : this.cm.getInputField().blur();
     }
 
-    if (prevProps.cursorBlinkRate !== this.props.cursorBlinkRate) {
-      this.cm.setOption("cursorBlinkRate", this.props.cursorBlinkRate);
+    if (
+      prevProps.codeMirror.cursorBlinkRate !==
+      this.props.codeMirror.cursorBlinkRate
+    ) {
       if (editorFocused) {
         // code mirror doesn't change the blink rate immediately, we have to
         // move the cursor, or unfocus and refocus the editor to get the blink
@@ -341,10 +370,6 @@ export default class CodeMirrorEditor extends React.Component<
         this.cm.getInputField().blur();
         this.cm.focus();
       }
-    }
-
-    if (prevProps.mode !== this.props.mode) {
-      this.cm.setOption("mode", this.cleanMode());
     }
 
     if (
@@ -359,15 +384,6 @@ export default class CodeMirrorEditor extends React.Component<
         this.cm.scrollTo(prevScrollPosition.left, prevScrollPosition.top);
       } else {
         this.cm.setValue(this.props.value);
-      }
-    }
-
-    for (const optionName in this.props) {
-      if (!isConfigurable(optionName)) {
-        continue;
-      }
-      if (this.props[optionName] !== this.props[optionName]) {
-        this.cm.setOption(optionName, this.props[optionName]);
       }
     }
   }

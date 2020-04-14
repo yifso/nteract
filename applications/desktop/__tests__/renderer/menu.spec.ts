@@ -195,8 +195,8 @@ describe("dispatchCopyCell", () => {
   });
 });
 
-describe("dispatchSetTheme", () => {
-  test("dispatches a SET_CONFIG_AT_KEY action", () => {
+describe("dispatchSetConfig for the theme", () => {
+  test("dispatches a SET_CONFIG action", () => {
     const store = {
       dispatch: jest.fn()
     };
@@ -204,19 +204,27 @@ describe("dispatchSetTheme", () => {
       contentRef: "123"
     };
 
-    menu.dispatchSetTheme(props, store, {}, "test_theme");
+    const config = { theme: "test_theme" };
+
+    menu.dispatchSetConfig(
+      props,
+      store,
+      {},
+      {
+        config
+      }
+    );
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actions.SET_CONFIG_AT_KEY,
+      type: actions.SET_CONFIG,
       payload: {
-        key: "theme",
-        value: "test_theme"
+        config
       }
     });
   });
 });
-describe("dispatchSetCursorBlink", () => {
-  test("dispatches a SET_CONFIG_AT_KEY action", () => {
+describe("dispatch dispatchSetConfig for the SetCursorBlink Codemirror configuration", () => {
+  test("dispatches a SET_CONFIG action", () => {
     const store = {
       dispatch: jest.fn()
     };
@@ -224,14 +232,13 @@ describe("dispatchSetCursorBlink", () => {
       contentRef: "123"
     };
 
-    menu.dispatchSetCursorBlink(props, store, {}, 42);
+    const config = { codeMirror: { cursorBlinkRate: 42 } };
+
+    menu.dispatchSetConfig(props, store, {}, config);
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: actions.SET_CONFIG_AT_KEY,
-      payload: {
-        key: "cursorBlinkRate",
-        value: 42
-      }
+      type: actions.SET_CONFIG,
+      payload: config
     });
   });
 });
@@ -712,8 +719,7 @@ describe("initMenuHandlers", () => {
       "menu:publish:gist",
       "menu:zoom-in",
       "menu:zoom-out",
-      "menu:theme",
-      "menu:set-blink-rate",
+      "menu:set-config",
       "main:load",
       "main:new"
     ].forEach(name => {
@@ -730,7 +736,7 @@ describe("exportPDF", () => {
       .first();
     const store = {
       dispatch: jest.fn(),
-      getState: jest.fn(() => state),
+      getState: jest.fn(() => state)
     };
     const filepath = "thisisafilename.ipynb";
     menu.exportPDF({ contentRef }, store, filepath);
@@ -741,9 +747,9 @@ describe("exportPDF", () => {
         level: "success",
         action: {
           label: "Open",
-          callback: expect.any(Function),
-        },
-      }),
+          callback: expect.any(Function)
+        }
+      })
     );
   });
 });
@@ -767,7 +773,7 @@ describe("storeToPDF", () => {
               })
             }
           }
-        },
+        }
       })
     };
 
@@ -780,7 +786,7 @@ describe("storeToPDF", () => {
           "Click the button below to save the notebook"
         ),
         level: "warning"
-      }),
+      })
     );
   });
 });
@@ -826,17 +832,12 @@ describe("exportPDF", () => {
             }
           }
         },
-        app: Immutable.Map({
-        })
+        app: Immutable.Map({})
       })
     };
 
     const invocation = () =>
-      menu.exportPDF(
-        { contentRef: "abc" },
-        store,
-        "my-notebook.pdf",
-      );
+      menu.exportPDF({ contentRef: "abc" }, store, "my-notebook.pdf");
     expect(invocation).toThrow();
   });
   it("unhides hidden cells before exporting to PDF", () => {
@@ -861,26 +862,17 @@ describe("exportPDF", () => {
   });
 });
 
-describe("dispatchSetConfigAtKey", () => {
-  test("dispatches a setConfigAtKey action", () => {
+describe("dispatch SetConfig", () => {
+  test("dispatches a setConfig action", () => {
     const store = {
       dispatch: jest.fn()
     };
     const props = {
       contentRef: "123"
     };
-    const key = "key";
-    const value = "value";
-    menu.dispatchSetConfigAtKey(
-      props,
-      store,
-      key,
-      new Event("testEvet"),
-      value
-    );
-    expect(store.dispatch).toHaveBeenCalledWith(
-      actions.setConfigAtKey(key, value)
-    );
+    const config = { key: "value" };
+    menu.dispatchSetConfig(props, store, {}, { config });
+    expect(store.dispatch).toHaveBeenCalledWith(actions.setConfig({ config }));
   });
 });
 

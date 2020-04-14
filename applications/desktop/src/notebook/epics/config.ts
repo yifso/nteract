@@ -21,11 +21,7 @@ export const loadConfigEpic = (action$: ActionsObservable<Actions>) =>
     ofType(actions.LOAD_CONFIG),
     switchMap(() =>
       readFileObservable(CONFIG_FILE_PATH).pipe(
-        map(data =>
-          actions.configLoaded({
-            config: JSON.parse(data.toString())
-          })
-        )
+        map(data => actions.configLoaded(JSON.parse(data.toString())))
       )
     )
   );
@@ -35,7 +31,7 @@ export const loadConfigEpic = (action$: ActionsObservable<Actions>) =>
  */
 export const saveConfigOnChangeEpic = (action$: ActionsObservable<Actions>) =>
   action$.pipe(
-    ofType(actions.SET_CONFIG_AT_KEY),
+    ofType(actions.SET_CONFIG),
     mapTo({ type: actions.SAVE_CONFIG })
   );
 

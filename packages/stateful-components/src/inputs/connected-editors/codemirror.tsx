@@ -27,7 +27,24 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
   const { id, contentRef } = ownProps;
   const mapStateToProps = (state: AppState) => {
     let mode = rawMode;
-    let cursorBlinkRate = state.config.get("cursorBlinkRate", 530);
+
+    const codeMirrorDefaults = {
+      cursorBlinkRate: 530,
+      showCursorWhenSelecting: false,
+      autoCloseBrackets: false,
+      matchBrackets: true,
+      smartIndent: true,
+      tabSize: 4,
+      lineNumbers: false
+    };
+    const codeMirrorCurrentConfig = state.config.get("codeMirror");
+
+    const codeMirror = Object.assign(
+      {},
+      codeMirrorDefaults,
+      codeMirrorCurrentConfig
+    );
+
     let lineWrapping = true;
 
     const model = selectors.model(state, { contentRef });
@@ -54,7 +71,7 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
     }
     return {
       mode,
-      cursorBlinkRate,
+      codeMirror,
       lineWrapping,
       tip: true,
       completion: true

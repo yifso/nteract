@@ -41,26 +41,150 @@ function createSender(
   };
 }
 
-const theme_menu = [
+const themeMenu = [
   {
     label: "Light",
-    click: createSender("menu:theme", "light")
+    click: createSender("menu:set-config", { theme: "light" })
   },
   {
     label: "Dark",
-    click: createSender("menu:theme", "dark")
+    click: createSender("menu:set-config", { theme: "dark" })
   }
 ];
-const blink_menu = [
-  // TODO: replace the with one `type: 'checkbox'` item once we have state to
-  // know which way it should be set initially.
-  {
-    label: "Do Not Blink Editor Cursor",
-    click: createSender("menu:set-blink-rate", 0)
-  },
+// Definitions for all the codeMirror configurations that can be set from the menu.
+// TODO: replace Yes/No `type: 'checkbox'` item once we have state to get current
+// configuration to know which way it should be set initially.
+const codeMirrorConfigMenu = [
   {
     label: "Blink Editor Cursor",
-    click: createSender("menu:set-blink-rate", 530)
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { cursorBlinkRate: 530 }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { cursorBlinkRate: 0 }
+        })
+      }
+    ]
+  },
+  {
+    label: "Show Cursor When Selecting",
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { showCursorWhenSelecting: true }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { showCursorWhenSelecting: false }
+        })
+      }
+    ]
+  },
+  {
+    type: "separator"
+  },
+  {
+    label: "Close Brackets Automatically",
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { autoCloseBrackets: true }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { autoCloseBrackets: false }
+        })
+      }
+    ]
+  },
+  {
+    label: "Show Matching Brackets",
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { matchBrackets: true }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { matchBrackets: false }
+        })
+      }
+    ]
+  },
+  {
+    label: "Use Smart Indent",
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { smartIndent: true }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { smartIndent: false }
+        })
+      }
+    ]
+  },
+  {
+    label: "Tab Size",
+    submenu: [
+      {
+        label: "2 Spaces",
+        click: createSender("menu:set-config", {
+          codeMirror: { tabSize: 2 }
+        })
+      },
+      {
+        label: "3 Spaces",
+        click: createSender("menu:set-config", {
+          codeMirror: { tabSize: 3 }
+        })
+      },
+      {
+        label: "4 Spaces",
+        click: createSender("menu:set-config", {
+          codeMirror: { tabSize: 4 }
+        })
+      }
+    ]
+  },
+  {
+    type: "separator"
+  },
+  {
+    label: "Show Line Numbers",
+    submenu: [
+      {
+        label: "Yes",
+        click: createSender("menu:set-config", {
+          codeMirror: { lineNumbers: true }
+        })
+      },
+      {
+        label: "No",
+        click: createSender("menu:set-config", {
+          codeMirror: { lineNumbers: false }
+        })
+      }
+    ]
   }
 ];
 
@@ -566,18 +690,20 @@ export function loadFullMenu(store = global.store) {
       },
       {
         label: "Theme",
-        submenu: theme_menu
+        submenu: themeMenu
       },
 
       {
-        label: "Editor options",
-        submenu: blink_menu
+        label: "Code Editor Options",
+        submenu: codeMirrorConfigMenu
       },
       {
         label: "Set default kernel",
         submenu: sortBy(kernelSpecs, "spec.display_name").map(kernel => ({
           label: kernel.spec.display_name,
-          click: createSender("menu:set-default-kernel", kernel.name)
+          click: createSender("menu:set-config", {
+            defaultKernel: kernel.name
+          })
         }))
       }
     ]

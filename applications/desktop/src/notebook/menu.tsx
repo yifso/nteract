@@ -161,13 +161,15 @@ export function dispatchPublishGist(
   }
 
   // If the Github Token isn't set, use our oauth server to acquire a token
-  store.dispatch(sendNotification.create({
-    key: "github-publish",
-    icon: "book",
-    title: "Publishing Gist",
-    message: "Authenticating...",
-    level: "in-progress",
-  }));
+  store.dispatch(
+    sendNotification.create({
+      key: "github-publish",
+      icon: "book",
+      title: "Publishing Gist",
+      message: "Authenticating...",
+      level: "in-progress"
+    })
+  );
 
   // Because the remote object from Electron main <--> renderer can be
   // "cleaned up"
@@ -192,13 +194,15 @@ export function dispatchPublishGist(
         try {
           const accessToken = JSON.parse(auth).access_token;
           store.dispatch(actions.setGithubToken(accessToken));
-          store.dispatch(sendNotification.create({
-            key: "github-publish",
-            icon: "book",
-            title: "Publishing Gist",
-            message: "Authenticated 🔒",
-            level: "in-progress",
-          }));
+          store.dispatch(
+            sendNotification.create({
+              key: "github-publish",
+              icon: "book",
+              title: "Publishing Gist",
+              message: "Authenticated 🔒",
+              level: "in-progress"
+            })
+          );
           // We are now authenticated and can finally publish
           store.dispatch(actions.publishGist(ownProps));
         } catch (e) {
@@ -269,11 +273,13 @@ export function dispatchInterruptKernel(
   const state = store.getState();
 
   if (process.platform === "win32") {
-    store.dispatch(sendNotification.create({
-      title: "Not supported in Windows",
-      message: "Kernel interruption is not supported in Windows.",
-      level: "error",
-    }));
+    store.dispatch(
+      sendNotification.create({
+        title: "Not supported in Windows",
+        message: "Kernel interruption is not supported in Windows.",
+        level: "error"
+      })
+    );
   } else {
     const kernelRef = selectors.kernelRefByContentRef(state, ownProps);
     if (!kernelRef) {
@@ -299,32 +305,13 @@ export function dispatchZoomReset(): void {
   webFrame.setZoomLevel(0);
 }
 
-export function dispatchSetTheme(
+export function dispatchSetConfig(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
   evt: Event,
-  theme: string
+  config: Object
 ): void {
-  store.dispatch(actions.setTheme(theme));
-}
-
-export function dispatchSetCursorBlink(
-  ownProps: { contentRef: ContentRef },
-  store: DesktopStore,
-  evt: Event,
-  value: string
-): void {
-  store.dispatch(actions.setCursorBlink(value));
-}
-
-export function dispatchSetConfigAtKey(
-  ownProps: { contentRef: ContentRef },
-  store: DesktopStore,
-  key: string,
-  evt: Event,
-  value: string
-): void {
-  store.dispatch(actions.setConfigAtKey(key, value));
+  store.dispatch(actions.setConfig(config));
 }
 
 export function dispatchCopyCell(
@@ -490,7 +477,7 @@ export function dispatchNewNotebook(
 export function exportPDF(
   ownProps: { contentRef: ContentRef },
   store: DesktopStore,
-  basepath: string,
+  basepath: string
 ): void {
   const state = store.getState();
 
@@ -554,32 +541,41 @@ export function exportPDF(
             background: transparent !important;
           }
 
-          li::after { margin: 0 3px !important; }
+          li::after {
+            margin: 0 3px !important;
+          }
         `;
 
-        store.dispatch(sendNotification.create({
-          title: "PDF exported",
-          message:
-            <>
-              <NoWrap>
-                <Breadcrumbs items={pdfPathParts.map((each, i) => ({
-                  text: each,
-                  icon: i === pdfPathParts.length - 1
-                    ? "document"
-                    : "folder-close",
-                  onClick: i === pdfPathParts.length - 1
-                    ? () => shell.openItem(pdfPath)
-                    : undefined,
-                }))}/>
-              </NoWrap>
-              <Spacer/>
-            </>,
-          level: "success",
-          action: {
-            label: "Open",
-            callback: () => shell.openItem(pdfPath),
-          },
-        }));
+        store.dispatch(
+          sendNotification.create({
+            title: "PDF exported",
+            message: (
+              <>
+                <NoWrap>
+                  <Breadcrumbs
+                    items={pdfPathParts.map((each, i) => ({
+                      text: each,
+                      icon:
+                        i === pdfPathParts.length - 1
+                          ? "document"
+                          : "folder-close",
+                      onClick:
+                        i === pdfPathParts.length - 1
+                          ? () => shell.openItem(pdfPath)
+                          : undefined
+                    }))}
+                  />
+                </NoWrap>
+                <Spacer />
+              </>
+            ),
+            level: "success",
+            action: {
+              label: "Open",
+              callback: () => shell.openItem(pdfPath)
+            }
+          })
+        );
       });
     }
   );
@@ -607,18 +603,20 @@ export function storeToPDF(
   const state = store.getState();
   const notebookName = selectors.filepath(state, ownProps);
   if (notebookName === null) {
-    store.dispatch(sendNotification.create({
-      title: "File has not been saved!",
-      message: `Click the button below to save the notebook so that it can be
+    store.dispatch(
+      sendNotification.create({
+        title: "File has not been saved!",
+        message: `Click the button below to save the notebook so that it can be
        exported as a PDF.`,
-      level: "warning",
-      action: {
-        label: "Save As",
-        callback(): void {
-          triggerSaveAsPDF(ownProps, store);
+        level: "warning",
+        action: {
+          label: "Save As",
+          callback(): void {
+            triggerSaveAsPDF(ownProps, store);
+          }
         }
-      }
-    }));
+      })
+    );
   } else {
     const basename = path.basename(notebookName, ".ipynb");
     const basepath = path.join(path.dirname(notebookName), basename);
@@ -694,12 +692,7 @@ export function initMenuHandlers(
     "menu:restart-and-run-all",
     dispatchRestartKernel.bind(null, opts, store, "Run All")
   );
-  ipc.on("menu:theme", dispatchSetTheme.bind(null, opts, store));
-  ipc.on("menu:set-blink-rate", dispatchSetCursorBlink.bind(null, opts, store));
-  ipc.on(
-    "menu:set-default-kernel",
-    dispatchSetConfigAtKey.bind(null, opts, store, "defaultKernel")
-  );
+  ipc.on("menu:set-config", dispatchSetConfig.bind(null, opts, store));
   ipc.on("menu:publish:gist", dispatchPublishGist.bind(null, opts, store));
   ipc.on("menu:exportPDF", storeToPDF.bind(null, opts, store));
   ipc.on("main:load", dispatchLoad.bind(null, opts, store));
