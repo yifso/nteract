@@ -1,8 +1,8 @@
 import { ofMessageType } from "@nteract/messaging";
 import { ofType, StateObservable } from "redux-observable";
 import { ActionsObservable } from "redux-observable";
-import { merge } from "rxjs";
-import { map, switchMap, takeUntil, filter } from "rxjs/operators";
+import { merge, of } from "rxjs";
+import { map, switchMap, takeUntil, filter, catchError } from "rxjs/operators";
 
 import {
   commMessageAction,
@@ -10,10 +10,11 @@ import {
   KILL_KERNEL_SUCCESSFUL,
   LAUNCH_KERNEL_SUCCESSFUL,
   NewKernelAction,
-  KillKernelSuccessful
+  KillKernelSuccessful,
+  executeFailed
 } from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState } from "@nteract/types";
+import { AppState, errors } from "@nteract/types";
 
 import { ipywidgetsModel$ } from "./ipywidgets";
 
@@ -57,7 +58,18 @@ export const commListenEpic = (
                 action.payload.kernelRef === kernelRef
             )
           )
-        )
+        ),
+        catchError((error: Error) => {
+          return of(
+            executeFailed({
+                error: new Error(
+                "The WebSocket connection has unexpectedly disconnected."
+                ),
+                code: errors.EXEC_WEBSOCKET_ERROR,
+                contentRef
+            })
+        );
+        })
       );
 
       const commMessageAction$ = kernel.channels.pipe(
@@ -71,7 +83,18 @@ export const commListenEpic = (
                 action.payload.kernelRef === kernelRef
             )
           )
-        )
+        ),
+        catchError((error: Error) => {
+          return of(
+            executeFailed({
+                error: new Error(
+                "The WebSocket connection has unexpectedly disconnected."
+                ),
+                code: errors.EXEC_WEBSOCKET_ERROR,
+                contentRef
+            })
+        );
+        })
       );
 
       return merge(
