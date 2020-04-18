@@ -19,7 +19,15 @@ type Props = ComponentProps & StateProps;
 
 export class Cell extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.selected !== this.props.selected;
+    // Update cell directly after converting between markdown and code
+    if (this.props.cell.cell_type !== nextProps.cell.cell_type) {
+      return true;
+    }
+    // Update cell when selecting or de-selecting it
+    if (nextProps.selected !== this.props.selected) {
+      return true
+    }
+    return false
   }
 
   render(): JSX.Element | null {
