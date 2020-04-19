@@ -58,7 +58,11 @@ in the nteract world? Here's a quick rundown!
 $ git clone https://github.com/github-username/repository-name.git
 ```
 
-5.  Install the dependencies required for the project by running `yarn`.
+5.  `cd` into your new clone and run the following scripts:
+
+- `yarn install` or just `yarn` to install dependencies
+- `yarn build:all` to compile typescript
+
 6.  Create a new branch for your fix using:
 
 ```
