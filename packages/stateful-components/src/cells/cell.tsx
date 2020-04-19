@@ -25,7 +25,8 @@ export class Cell extends React.Component<Props> {
       return true;
     }
     // Update cell when selecting or de-selecting it
-    if (nextProps.selected !== this.props.selected) {
+    if (nextProps?.selected !== this.props?.selected) {
+
       return true
     }
     return false
