@@ -26,7 +26,9 @@
     "@nteract/outputs": "^3.0.9",
     "@nteract/presentational-components": "^3.3.12-alpha.0",
     "immutable": "^4.0.0-rc.12",
-    "react-markdown": "^4.3.1",
     "redux": "^4.0.4"
+  },
+  "devDependencies": {
+    "react-markdown": "^4.3.1"
   }
 }
