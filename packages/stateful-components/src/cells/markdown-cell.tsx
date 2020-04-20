@@ -10,6 +10,7 @@ import Editor, { EditorSlots, PassedEditorProps } from "../inputs/editor";
 import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 
 import { ImmutableCell } from "@nteract/commutable/src";
+import { ReactMarkdownProps } from "react-markdown";
 
 interface NamedMDCellSlots {
   editor?: EditorSlots;
@@ -27,6 +28,7 @@ interface StateProps {
   isCellFocused: boolean;
   isEditorFocused: boolean;
   cell?: ImmutableCell;
+  markdownOptions: ReactMarkdownProps;
 }
 
 interface DispatchProps {
@@ -42,7 +44,7 @@ export class PureMarkdownCell extends React.Component<
   render() {
     const { contentRef, id, cell, children } = this.props;
 
-    const { isEditorFocused, isCellFocused } = this.props;
+    const { isEditorFocused, isCellFocused, markdownOptions } = this.props;
 
     const {
       focusAboveCell,
@@ -75,6 +77,7 @@ export class PureMarkdownCell extends React.Component<
           editorFocused={isEditorFocused}
           unfocusEditor={unfocusEditor}
           source={source}
+          markdownOptions={markdownOptions}
         >
           <Source className="nteract-cell-source">
             <Editor id={id} contentRef={contentRef}>
@@ -104,10 +107,22 @@ export const makeMapStateToProps = (
       isEditorFocused = model.editorFocused === id;
     }
 
+    const markdownOptionsDefaults = {
+      linkTarget: "_blank"
+    };
+    const currentMarkdownOptions = state.config.get("markdownOptions");
+
+    const markdownOptions = Object.assign(
+      {},
+      markdownOptionsDefaults,
+      currentMarkdownOptions
+    );
+
     return {
       cell,
       isCellFocused,
-      isEditorFocused
+      isEditorFocused,
+      markdownOptions
     };
   };
 
