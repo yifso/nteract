@@ -220,6 +220,9 @@ export default class CodeMirrorEditor extends React.Component<
     require("codemirror/mode/sql/sql");
     require("codemirror/mode/markdown/markdown");
     require("codemirror/mode/gfm/gfm");
+    require("codemirror/mode/go/go");
+    require("codemirror/mode/powershell/powershell");
+    require("codemirror/mode/mllike/mllike");
 
     require("./mode/ipython");
 
