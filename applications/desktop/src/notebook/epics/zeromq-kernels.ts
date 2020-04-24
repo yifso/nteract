@@ -407,7 +407,7 @@ export const killKernelEpic = (
         // If we don't get a response within 2s, assume failure :(
         timeout(1000 * 2),
         catchError(err =>
-          of(actions.shutdownReplyTimedOut({ error: err, kernelRef }))
+          of(actions.shutdownReplyTimedOut({ kernelRef }))
         ),
         mergeMap(resultingAction => {
           // End all communication on the channels
