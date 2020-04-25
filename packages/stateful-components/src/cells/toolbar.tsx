@@ -4,6 +4,7 @@ import { Dispatch } from "redux";
 
 import { ContentRef, actions, AppState, selectors } from "@nteract/core";
 import { CellType } from "@nteract/commutable";
+import styled from "styled-components";
 
 export interface ComponentProps {
   id: string;
@@ -38,16 +39,24 @@ export const CellToolbarContext = React.createContext({});
 
 export type CellToolbarProps = DispatchProps & StateProps;
 
+const CellToolbarRegion = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
 class CellToolbar extends React.Component<
   ComponentProps & StateProps & DispatchProps
 > {
   render() {
     return (
-      <div className="nteract-cell-toolbar">
-        <CellToolbarContext.Provider value={this.props}>
-          {this.props.children}
-        </CellToolbarContext.Provider>
-      </div>
+      <CellToolbarRegion>
+        <div className="nteract-cell-toolbar">
+          <CellToolbarContext.Provider value={this.props}>
+            {this.props.children}
+          </CellToolbarContext.Provider>
+        </div>
+      </CellToolbarRegion>
     );
   }
 }
