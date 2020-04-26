@@ -23,6 +23,7 @@ import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
 import NotebookApp from "@nteract/notebook-app-component";
+import NotebookHelmet from "@nteract/notebook-app-component/decorators/notebook-helmet";
 import { Media } from "@nteract/outputs";
 
 import "@nteract/styles/app.css";
@@ -172,6 +173,7 @@ export default class App extends React.PureComponent {
     return (
       <Provider store={store}>
         <MathJax.Provider src={mathJaxPath} input="tex">
+          <NotebookHelmet contentRef={contentRef} />
           <NotebookApp
             // The desktop app always keeps the same contentRef in a
             // browser window
