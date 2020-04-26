@@ -131,6 +131,11 @@
   opacity: 1;
 }
 
+@media print {
+  .nteract-cell-toolbar {
+    display: none;
+  }
+}
 
 .nteract-cell-toolbar button {
   display: inline-block;
