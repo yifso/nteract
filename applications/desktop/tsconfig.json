@@ -9,7 +9,7 @@
     { "path": "../../packages/types" },
     { "path": "../../packages/editor" },
     { "path": "../../packages/fs-observable" },
-    { "path": "../../packages/notebook-app-component" },
+    { "path": "../../packages/notebook-app-component/src" },
     { "path": "../../packages/presentational-components" },
     { "path": "../../packages/styles" }
   ]
