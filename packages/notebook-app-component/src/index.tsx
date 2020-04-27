@@ -1,3 +1,3 @@
-import NotebookApp from "./notebook-apps/draggable-with-cell-creator";
+import NotebookApp from "./notebook-apps/with-helmet";
 
 export default NotebookApp;

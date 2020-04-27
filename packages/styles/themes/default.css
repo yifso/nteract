@@ -118,9 +118,11 @@
   display: none;
 }
 
-.nteract-cell-container:hover:not(.selected) .nteract-cell-toolbar,
-.nteract-cell-container.selected .nteract-cell-toolbar {
-  display: inline-block;
+@media screen {
+  .nteract-cell-container:hover:not(.selected) .nteract-cell-toolbar,
+  .nteract-cell-container.selected .nteract-cell-toolbar {
+    display: inline-block;
+  }
 }
 
 .nteract-cell-toolbar > div {
@@ -131,6 +133,11 @@
   opacity: 1;
 }
 
+@media print {
+  .nteract-cell-toolbar {
+    display: none;
+  }
+}
 
 .nteract-cell-toolbar button {
   display: inline-block;
