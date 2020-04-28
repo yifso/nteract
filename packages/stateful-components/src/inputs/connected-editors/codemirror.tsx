@@ -1,20 +1,20 @@
 import { connect } from "react-redux";
 
-import { selectors, AppState, ContentRef } from "@nteract/core";
+import { AppState, ContentRef, selectors } from "@nteract/core";
 import CodeMirrorEditor from "@nteract/editor";
 
 const markdownMode = {
   name: "gfm",
   tokenTypeOverrides: {
-    emoji: "emoji"
-  }
+    emoji: "emoji",
+  },
 };
 
 const rawMode = {
   name: "text/plain",
   tokenTypeOverrides: {
-    emoji: "emoji"
-  }
+    emoji: "emoji",
+  },
 };
 
 interface ComponentProps {
@@ -35,15 +35,9 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
       matchBrackets: true,
       smartIndent: true,
       tabSize: 4,
-      lineNumbers: false
+      lineNumbers: false,
     };
     const codeMirrorCurrentConfig = state.config.get("codeMirror");
-
-    const codeMirror = Object.assign(
-      {},
-      codeMirrorDefaults,
-      codeMirrorCurrentConfig
-    );
 
     let lineWrapping = true;
 
@@ -69,12 +63,19 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
         }
       }
     }
+
+    const codeMirror = Object.assign(
+      {},
+      { ...codeMirrorDefaults, mode },
+      codeMirrorCurrentConfig
+    );
+
     return {
       mode,
       codeMirror,
       lineWrapping,
       tip: true,
-      completion: true
+      completion: true,
     };
   };
   return mapStateToProps;
