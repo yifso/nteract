@@ -1,6 +1,6 @@
 {
   "name": "@nteract/stateful-components",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0",
   "description": "A collection of sub-components pre-connected to nteract's Redux state",
   "keywords": [
     "redux",
@@ -19,12 +19,12 @@
     "url": "https://github.com/nteract/nteract/issues"
   },
   "dependencies": {
-    "@nteract/commutable": "^7.2.11-alpha.0",
-    "@nteract/core": "^13.1.1-alpha.0",
-    "@nteract/fixtures": "^2.3.6-alpha.0",
+    "@nteract/commutable": "^7.2.11",
+    "@nteract/core": "^13.1.1",
+    "@nteract/fixtures": "^2.3.6",
     "@nteract/markdown": "4.4.0",
     "@nteract/outputs": "^3.0.9",
-    "@nteract/presentational-components": "^3.3.13-alpha.0",
+    "@nteract/presentational-components": "^3.3.13",
     "immutable": "^4.0.0-rc.12",
     "redux": "^4.0.4"
   },
