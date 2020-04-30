@@ -12,7 +12,7 @@
     "@types/uuid": "^7.0.0",
     "lodash.clonedeep": "^4.5.0",
     "rxjs": "^6.3.3",
-    "uuid": "^7.0.0"
+    "uuid": "^8.0.0"
   },
   "publishConfig": {
     "access": "public"

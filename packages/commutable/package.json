@@ -19,7 +19,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
-    "uuid": "^7.0.0"
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@types/uuid": "^7.0.0"
