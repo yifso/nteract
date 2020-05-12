@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import { manifest } from "@nteract/examples";
+import { KernelspecInfo } from "@nteract/types";
 import {
   app,
   BrowserWindow,
@@ -10,13 +11,12 @@ import {
   Menu,
   MenuItemConstructorOptions,
   shell,
-  WebContents
+  WebContents,
 } from "electron";
 import sortBy from "lodash.sortby";
-import { addRightClickMenu } from "./newfile-entry";
-import { KernelspecInfo } from "@nteract/types";
 import { installShellCommand } from "./cli";
 import { launch, launchNewNotebook } from "./launch";
+import { addRightClickMenu } from "./newfile-entry";
 
 function send(
   focusedWindow: BrowserWindow,
@@ -44,12 +44,12 @@ function createSender(
 const themeMenu = [
   {
     label: "Light",
-    click: createSender("menu:set-config", { theme: "light" })
+    click: createSender("menu:set-config", { theme: "light" }),
   },
   {
     label: "Dark",
-    click: createSender("menu:set-config", { theme: "dark" })
-  }
+    click: createSender("menu:set-config", { theme: "dark" }),
+  },
 ];
 // Definitions for all the codeMirror configurations that can be set from the menu.
 // TODO: replace Yes/No `type: 'checkbox'` item once we have state to get current
@@ -61,16 +61,16 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { cursorBlinkRate: 530 }
-        })
+          codeMirror: { cursorBlinkRate: 530 },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { cursorBlinkRate: 0 }
-        })
-      }
-    ]
+          codeMirror: { cursorBlinkRate: 0 },
+        }),
+      },
+    ],
   },
   {
     label: "Show Cursor When Selecting",
@@ -78,19 +78,19 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { showCursorWhenSelecting: true }
-        })
+          codeMirror: { showCursorWhenSelecting: true },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { showCursorWhenSelecting: false }
-        })
-      }
-    ]
+          codeMirror: { showCursorWhenSelecting: false },
+        }),
+      },
+    ],
   },
   {
-    type: "separator"
+    type: "separator",
   },
   {
     label: "Close Brackets Automatically",
@@ -98,16 +98,16 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { autoCloseBrackets: true }
-        })
+          codeMirror: { autoCloseBrackets: true },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { autoCloseBrackets: false }
-        })
-      }
-    ]
+          codeMirror: { autoCloseBrackets: false },
+        }),
+      },
+    ],
   },
   {
     label: "Show Matching Brackets",
@@ -115,16 +115,16 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { matchBrackets: true }
-        })
+          codeMirror: { matchBrackets: true },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { matchBrackets: false }
-        })
-      }
-    ]
+          codeMirror: { matchBrackets: false },
+        }),
+      },
+    ],
   },
   {
     label: "Use Smart Indent",
@@ -132,16 +132,16 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { smartIndent: true }
-        })
+          codeMirror: { smartIndent: true },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { smartIndent: false }
-        })
-      }
-    ]
+          codeMirror: { smartIndent: false },
+        }),
+      },
+    ],
   },
   {
     label: "Tab Size",
@@ -149,25 +149,25 @@ const codeMirrorConfigMenu = [
       {
         label: "2 Spaces",
         click: createSender("menu:set-config", {
-          codeMirror: { tabSize: 2 }
-        })
+          codeMirror: { tabSize: 2 },
+        }),
       },
       {
         label: "3 Spaces",
         click: createSender("menu:set-config", {
-          codeMirror: { tabSize: 3 }
-        })
+          codeMirror: { tabSize: 3 },
+        }),
       },
       {
         label: "4 Spaces",
         click: createSender("menu:set-config", {
-          codeMirror: { tabSize: 4 }
-        })
-      }
-    ]
+          codeMirror: { tabSize: 4 },
+        }),
+      },
+    ],
   },
   {
-    type: "separator"
+    type: "separator",
   },
   {
     label: "Show Line Numbers",
@@ -175,17 +175,17 @@ const codeMirrorConfigMenu = [
       {
         label: "Yes",
         click: createSender("menu:set-config", {
-          codeMirror: { lineNumbers: true }
-        })
+          codeMirror: { lineNumbers: true },
+        }),
       },
       {
         label: "No",
         click: createSender("menu:set-config", {
-          codeMirror: { lineNumbers: false }
-        })
-      }
-    ]
-  }
+          codeMirror: { lineNumbers: false },
+        }),
+      },
+    ],
+  },
 ];
 
 const windowDraft = {
@@ -195,24 +195,24 @@ const windowDraft = {
     {
       label: "Minimize",
       accelerator: "CmdOrCtrl+M",
-      role: "minimize"
+      role: "minimize",
     },
     {
       label: "Close",
       accelerator: "CmdOrCtrl+W",
-      role: "close"
-    }
-  ] as any[]
+      role: "close",
+    },
+  ] as any[],
 };
 
 if (process.platform === "darwin") {
   windowDraft.submenu.push(
     {
-      type: "separator"
+      type: "separator",
     },
     {
       label: "Bring All to Front",
-      role: "front"
+      role: "front",
     }
   );
 }
@@ -221,7 +221,7 @@ export const window = windowDraft;
 
 const shellCommands = {
   label: "Install Shell Commands",
-  click: () => installShellCommand()
+  click: () => installShellCommand(),
 };
 
 const helpDraft = {
@@ -230,25 +230,25 @@ const helpDraft = {
   submenu: [
     {
       label: "Add Context Menu Item",
-      click: () => addRightClickMenu()
+      click: () => addRightClickMenu(),
     },
     {
       label: "Documentation",
       click: () => {
         shell.openExternal("https://docs.nteract.io");
-      }
+      },
     },
     {
       label: "Keyboard Shortcuts",
       click: () => {
-        shell.openExternal("https://docs.nteract.io/#/desktop/shortcut-keys");
-      }
+        shell.openExternal("https://docs.nteract.io/kbd-shortcuts/");
+      },
     },
     {
       label: "View nteract on GitHub",
       click: () => {
         shell.openExternal("http://github.com/nteract/nteract");
-      }
+      },
     },
     {
       label: `Release Notes (${app.getVersion()})`,
@@ -256,15 +256,15 @@ const helpDraft = {
         shell.openExternal(
           `https://github.com/nteract/nteract/releases/tag/v${app.getVersion()}`
         );
-      }
+      },
     },
     {
       label: "Install Additional Kernels",
       click: () => {
         shell.openExternal("https://nteract.io/kernels");
-      }
-    }
-  ] as any[]
+      },
+    },
+  ] as any[],
 };
 
 if (process.platform !== "darwin") {
@@ -281,46 +281,46 @@ export const named = {
   submenu: [
     {
       label: `About ${name}`,
-      role: "about"
+      role: "about",
     },
     {
-      type: "separator"
+      type: "separator",
     },
     shellCommands,
     {
-      type: "separator"
+      type: "separator",
     },
     {
       label: "Services",
       role: "services",
-      submenu: []
+      submenu: [],
     },
     {
-      type: "separator"
+      type: "separator",
     },
     {
       label: `Hide ${name}`,
       accelerator: "Command+H",
-      role: "hide"
+      role: "hide",
     },
     {
       label: "Hide Others",
       accelerator: "Command+Alt+H",
-      role: "hideothers"
+      role: "hideothers",
     },
     {
       label: "Show All",
-      role: "unhide"
+      role: "unhide",
     },
     {
-      type: "separator"
+      type: "separator",
     },
     {
       label: "Quit",
       accelerator: "Command+Q",
-      click: () => app.quit()
-    }
-  ]
+      click: () => app.quit(),
+    },
+  ],
 };
 
 export function loadFullMenu(store = global.store) {
@@ -332,7 +332,7 @@ export function loadFullMenu(store = global.store) {
   function generateSubMenu(kernel: KernelspecInfo) {
     return {
       label: kernel.spec.display_name,
-      click: createSender("menu:new-kernel", kernel)
+      click: createSender("menu:new-kernel", kernel),
     };
   }
 
@@ -341,9 +341,9 @@ export function loadFullMenu(store = global.store) {
   );
 
   const newNotebookItems = sortBy(kernelSpecs, "spec.display_name").map(
-    kernel => ({
+    (kernel) => ({
       label: kernel.spec.display_name,
-      click: () => launchNewNotebook(null, kernel)
+      click: () => launchNewNotebook(null, kernel),
     })
   );
 
@@ -356,24 +356,24 @@ export function loadFullMenu(store = global.store) {
   const openExampleNotebooks = {
     label: "&Open Example Notebook",
     // From the @nteract/examples manifest...
-    submenu: manifest.map(collection => {
+    submenu: manifest.map((collection) => {
       return {
         // create a submenu for each language
         label: `&${collection.language}`,
-        submenu: collection.files.map(fileInfo => {
+        submenu: collection.files.map((fileInfo) => {
           return {
             click: launch.bind(null, path.join(examplesBaseDir, fileInfo.path)),
-            label: `&${fileInfo.metadata.title}`
+            label: `&${fileInfo.metadata.title}`,
           };
-        })
+        }),
       };
-    })
+    }),
   };
 
   const fileSubMenus = {
     new: {
       label: "&New",
-      accelerator: "CmdOrCtrl+N"
+      accelerator: "CmdOrCtrl+N",
     },
     open: {
       label: "&Open",
@@ -387,7 +387,7 @@ export function loadFullMenu(store = global.store) {
           title: "Open a notebook",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
           properties: ["openFile"],
-          defaultPath: undefined
+          defaultPath: undefined,
         };
         if (process.cwd() === "/") {
           opts.defaultPath = app.getPath("home");
@@ -400,14 +400,14 @@ export function loadFullMenu(store = global.store) {
           }
         });
       },
-      accelerator: "CmdOrCtrl+O"
+      accelerator: "CmdOrCtrl+O",
     },
     openExampleNotebooks,
     save: {
       label: "&Save",
       enabled: BrowserWindow.getAllWindows().length > 0,
       click: createSender("menu:save"),
-      accelerator: "CmdOrCtrl+S"
+      accelerator: "CmdOrCtrl+S",
     },
     saveAs: {
       label: "Save &As",
@@ -420,14 +420,14 @@ export function loadFullMenu(store = global.store) {
         } = {
           title: "Save Notebook As",
           filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
-          defaultPath: undefined
+          defaultPath: undefined,
         };
 
         if (process.cwd() === "/") {
           opts.defaultPath = app.getPath("home");
         }
 
-        dialog.showSaveDialog(opts, filename => {
+        dialog.showSaveDialog(opts, (filename) => {
           if (!filename) {
             return;
           }
@@ -436,7 +436,7 @@ export function loadFullMenu(store = global.store) {
           send(focusedWindow, "menu:save-as", `${filename}${ext}`);
         });
       },
-      accelerator: "CmdOrCtrl+Shift+S"
+      accelerator: "CmdOrCtrl+Shift+S",
     },
     publish: {
       label: "&Publish",
@@ -445,15 +445,15 @@ export function loadFullMenu(store = global.store) {
         {
           label: "&Gist",
           enabled: BrowserWindow.getAllWindows().length > 0,
-          click: createSender("menu:publish:gist")
-        }
-      ]
+          click: createSender("menu:publish:gist"),
+        },
+      ],
     },
     exportPDF: {
       label: "Export &PDF",
       enabled: BrowserWindow.getAllWindows().length > 0,
-      click: createSender("menu:exportPDF")
-    }
+      click: createSender("menu:exportPDF"),
+    },
   };
 
   const file = {
@@ -465,19 +465,19 @@ export function loadFullMenu(store = global.store) {
       fileSubMenus.save,
       fileSubMenus.saveAs,
       fileSubMenus.publish,
-      fileSubMenus.exportPDF
-    ] as any[]
+      fileSubMenus.exportPDF,
+    ] as any[],
   };
 
   if (process.platform === "win32") {
     file.submenu.push(
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Exit",
         accelerator: "Alt+F4",
-        role: "close"
+        role: "close",
       }
     );
   } else if (process.platform === "darwin") {
@@ -487,9 +487,9 @@ export function loadFullMenu(store = global.store) {
       submenu: [
         {
           label: "Clear Recent",
-          role: "clearrecentdocuments"
-        }
-      ]
+          role: "clearrecentdocuments",
+        },
+      ],
     });
   }
 
@@ -499,76 +499,76 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Cut",
         accelerator: "CmdOrCtrl+X",
-        role: "cut"
+        role: "cut",
       },
       {
         label: "Copy",
         accelerator: "CmdOrCtrl+C",
-        role: "copy"
+        role: "copy",
       },
       {
         label: "Paste",
         accelerator: "CmdOrCtrl+V",
-        role: "paste"
+        role: "paste",
       },
       {
         label: "Select All",
         accelerator: "CmdOrCtrl+A",
-        role: "selectall"
+        role: "selectall",
       },
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Insert Code Cell Above",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+A",
-        click: createSender("menu:new-code-cell-above")
+        click: createSender("menu:new-code-cell-above"),
       },
       {
         label: "Insert Code Cell Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+B",
-        click: createSender("menu:new-code-cell-below")
+        click: createSender("menu:new-code-cell-below"),
       },
       {
         label: "Insert Text Cell Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:new-text-cell-below")
+        click: createSender("menu:new-text-cell-below"),
       },
       {
         label: "Insert Raw Cell Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:new-raw-cell-below")
+        click: createSender("menu:new-raw-cell-below"),
       },
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Copy Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+C",
-        click: createSender("menu:copy-cell")
+        click: createSender("menu:copy-cell"),
       },
       {
         label: "Cut Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+X",
-        click: createSender("menu:cut-cell")
+        click: createSender("menu:cut-cell"),
       },
       {
         label: "Paste Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+V",
-        click: createSender("menu:paste-cell")
+        click: createSender("menu:paste-cell"),
       },
       {
         label: "Delete Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+D",
-        click: createSender("menu:delete-cell")
-      }
-    ]
+        click: createSender("menu:delete-cell"),
+      },
+    ],
   };
 
   // Pasting cells will also paste text, so we need to intercept the event with
@@ -585,7 +585,7 @@ export function loadFullMenu(store = global.store) {
   }
 
   const pasteCell = edit.submenu.find(
-    each => each.label === "Paste Cell"
+    (each) => each.label === "Paste Cell"
   ) as MenuItemConstructorOptions;
 
   interceptAcceleratorAndForceOnlyMenuAction(pasteCell);
@@ -597,38 +597,38 @@ export function loadFullMenu(store = global.store) {
         label: "Change Cell Type to Code",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+Y",
-        click: createSender("menu:change-cell-to-code")
+        click: createSender("menu:change-cell-to-code"),
       },
       {
         label: "Change Cell Type to Text",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+Shift+M",
-        click: createSender("menu:change-cell-to-text")
+        click: createSender("menu:change-cell-to-text"),
       },
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Run All",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:run-all")
+        click: createSender("menu:run-all"),
       },
       {
         label: "Run All Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:run-all-below")
+        click: createSender("menu:run-all-below"),
       },
       {
         label: "Clear All Outputs",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:clear-all")
+        click: createSender("menu:clear-all"),
       },
       {
         label: "Unhide Input and Output in all Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:unhide-all")
-      }
-    ]
+        click: createSender("menu:unhide-all"),
+      },
+    ],
   };
 
   const view = {
@@ -638,7 +638,7 @@ export function loadFullMenu(store = global.store) {
         label: "Reload",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+R",
-        click: createSender("reload")
+        click: createSender("reload"),
       },
       {
         label: "Toggle Full Screen",
@@ -653,7 +653,7 @@ export function loadFullMenu(store = global.store) {
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
-        }
+        },
       },
       {
         label: "Toggle Developer Tools",
@@ -668,45 +668,45 @@ export function loadFullMenu(store = global.store) {
           if (focusedWindow) {
             focusedWindow.toggleDevTools();
           }
-        }
+        },
       },
       {
         label: "Actual Size",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+0",
-        click: createSender("menu:zoom-reset")
+        click: createSender("menu:zoom-reset"),
       },
       {
         label: "Zoom In",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+=",
-        click: createSender("menu:zoom-in")
+        click: createSender("menu:zoom-in"),
       },
       {
         label: "Zoom Out",
         enabled: BrowserWindow.getAllWindows().length > 0,
         accelerator: "CmdOrCtrl+-",
-        click: createSender("menu:zoom-out")
+        click: createSender("menu:zoom-out"),
       },
       {
         label: "Theme",
-        submenu: themeMenu
+        submenu: themeMenu,
       },
 
       {
         label: "Code Editor Options",
-        submenu: codeMirrorConfigMenu
+        submenu: codeMirrorConfigMenu,
       },
       {
         label: "Set default kernel",
-        submenu: sortBy(kernelSpecs, "spec.display_name").map(kernel => ({
+        submenu: sortBy(kernelSpecs, "spec.display_name").map((kernel) => ({
           label: kernel.spec.display_name,
           click: createSender("menu:set-config", {
-            defaultKernel: kernel.name
-          })
-        }))
-      }
-    ]
+            defaultKernel: kernel.name,
+          }),
+        })),
+      },
+    ],
   };
 
   const languageMenu = {
@@ -715,42 +715,42 @@ export function loadFullMenu(store = global.store) {
       {
         label: "&Kill",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:kill-kernel")
+        click: createSender("menu:kill-kernel"),
       },
       {
         label: "&Interrupt",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:interrupt-kernel")
+        click: createSender("menu:interrupt-kernel"),
       },
       {
         label: "&Restart",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:restart-kernel")
+        click: createSender("menu:restart-kernel"),
       },
       {
         label: "Restart and &Clear All Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:restart-and-clear-all")
+        click: createSender("menu:restart-and-clear-all"),
       },
       {
         label: "Restart and Run &All Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        click: createSender("menu:restart-and-run-all")
+        click: createSender("menu:restart-and-run-all"),
       },
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "&Install Runtimes",
         enabled: true,
-        click: () => shell.openExternal("https://nteract.io/kernels")
+        click: () => shell.openExternal("https://nteract.io/kernels"),
       },
       {
-        type: "separator"
+        type: "separator",
       },
       // All the available kernels
-      ...kernelMenuItems
-    ]
+      ...kernelMenuItems,
+    ],
   };
 
   const template = [];
@@ -764,26 +764,26 @@ export function loadFullMenu(store = global.store) {
     submenu: [
       {
         label: "&New",
-        submenu: newNotebookItems
+        submenu: newNotebookItems,
       },
       fileSubMenus.open,
       fileSubMenus.openExampleNotebooks,
       fileSubMenus.save,
       fileSubMenus.saveAs,
       fileSubMenus.publish,
-      fileSubMenus.exportPDF
-    ] as any[]
+      fileSubMenus.exportPDF,
+    ] as any[],
   };
 
   if (process.platform === "win32") {
     fileWithNew.submenu.push(
       {
-        type: "separator"
+        type: "separator",
       },
       {
         label: "Exit",
         accelerator: "Alt+F4",
-        role: "close"
+        role: "close",
       }
     );
   } else if (process.platform === "darwin") {
@@ -793,9 +793,9 @@ export function loadFullMenu(store = global.store) {
       submenu: [
         {
           label: "Clear Recent",
-          role: "clearrecentdocuments"
-        }
-      ]
+          role: "clearrecentdocuments",
+        },
+      ],
     });
   }
 
@@ -820,9 +820,9 @@ export function loadTrayMenu(store = global.store) {
   const kernelSpecs = state.get("kernelSpecs") ? state.get("kernelSpecs") : {};
 
   const newNotebookItems = sortBy(kernelSpecs, "spec.display_name").map(
-    kernel => ({
+    (kernel) => ({
       label: kernel.spec.display_name,
-      click: () => launchNewNotebook(null, kernel)
+      click: () => launchNewNotebook(null, kernel),
     })
   );
 
@@ -838,7 +838,7 @@ export function loadTrayMenu(store = global.store) {
         title: "Open a notebook",
         filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
         properties: ["openFile"],
-        defaultPath: undefined
+        defaultPath: undefined,
       };
       if (process.cwd() === "/") {
         opts.defaultPath = app.getPath("home");
@@ -850,14 +850,14 @@ export function loadTrayMenu(store = global.store) {
           app.addRecentDocument(fname[0]);
         }
       });
-    }
+    },
   };
 
   const template = [];
 
   const fileWithNew = {
     label: "&New",
-    submenu: newNotebookItems
+    submenu: newNotebookItems,
   };
 
   template.push(fileWithNew);
