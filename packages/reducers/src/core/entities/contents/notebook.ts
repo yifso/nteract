@@ -500,17 +500,17 @@ function createCellBelow(
     return state;
   }
 
-  const { cellType, source } = action.payload;
-  const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
+  const { cellType } = action.payload;
+  let cell: ImmutableCell =
+    cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
+  if (action.payload.cell) {
+    cell = action.payload.cell;
+  }
+
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const index = notebook.get("cellOrder", List()).indexOf(id) + 1;
-    return insertCellAt(
-      notebook,
-      (cell as ImmutableMarkdownCell).set("source", source),
-      cellId,
-      index
-    );
+    return insertCellAt(notebook, cell, cellId, index);
   });
 }
 
@@ -524,7 +524,11 @@ function createCellAbove(
   }
 
   const { cellType } = action.payload;
-  const cell = cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
+  let cell: ImmutableCell =
+    cellType === "markdown" ? emptyMarkdownCell : emptyCodeCell;
+  if (action.payload.cell) {
+    cell = action.payload.cell;
+  }
   const cellId = uuid();
   return state.update("notebook", (notebook: ImmutableNotebook) => {
     const cellOrder: List<CellId> = notebook.get("cellOrder", List());
@@ -573,8 +577,7 @@ function acceptPayloadMessage(
         type: actionTypes.CREATE_CELL_BELOW,
         payload: {
           cellType: "code",
-          // TODO: is payload.text guaranteed to be defined?
-          source: payload.text || "",
+          cell: emptyCodeCell.setIn("source", payload.text || ""),
           id,
           contentRef: action.payload.contentRef,
         },
