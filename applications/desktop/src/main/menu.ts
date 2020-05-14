@@ -12,15 +12,65 @@ import { MainAction, MainStateRecord } from "./reducers";
 // FIXME replace when mythic-configuration goes in:
 type HasPrivateConfigurationState = any;
 const customAccelerators = (state: any) => ({} as Accelerators);
+const BOOLEAN = [
+  {label: "Yes", value: true},
+  {label: "No", value: false},
+];
 const allConfigOptions = () => [
   {
     label: "Blink Editor Cursor",
     key: "codeMirror.cursorBlinkRate",
-    defaultValue: 530,
     values: [
       {label: "Yes", value: 530},
       {label: "No", value: 0},
     ],
+  },
+  {
+    label: "Show Cursor When Selecting",
+    key: "codeMirror.showCursorWhenSelecting",
+    values: BOOLEAN,
+  },
+  {
+    label: "Close Brackets Automatically",
+    key: "codeMirror.autoCloseBrackets",
+    values: BOOLEAN,
+  },
+  {
+    label: "Show Matching Brackets",
+    key: "codeMirror.matchBrackets",
+    values: BOOLEAN,
+  },
+  {
+    label: "Use Smart Indent",
+    key: "codeMirror.tabSize",
+    values: [
+      {label: "2 Spaces", value: 2},
+      {label: "3 Spaces", value: 3},
+      {label: "4 Spaces", value: 4},
+    ],
+  },
+  {
+    label: "Tab Size",
+    key: "codeMirror.matchBrackets",
+    values: BOOLEAN,
+  },
+  {
+    label: "Show Line Numbers",
+    key: "codeMirror.lineNumbers",
+    values: BOOLEAN,
+  },
+  {
+    label: "Theme",
+    key: "theme",
+    values: [
+      {label: "Light", value: "light"},
+      {label: "Dark", value: "dark"},
+    ],
+  },
+  {
+    label: "Set default kernel",
+    key: "defaultKernel",
+    valuesFrom: "kernelspecs",
   },
 ] as ConfigurationOption[];
 
