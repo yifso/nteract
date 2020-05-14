@@ -1,3 +1,4 @@
+import { RecordOf } from "immutable";
 import { applyMiddleware, combineReducers, createStore, Middleware, ReducersMapObject, Store } from "redux";
 import { combineEpics, createEpicMiddleware, Epic, StateObservable } from "redux-observable";
 import { Observable } from "rxjs";
@@ -7,7 +8,7 @@ import { MythicAction, MythicPackage } from "./types";
 export const makeConfigureStore = <STATE>() => <DEPS>(
   definition: {
     packages: MythicPackage[],
-    reducers?: ReducersMapObject<STATE, any>
+    reducers?: ReducersMapObject<Omit<STATE, "__private__">, any>
     epics?: Epic[],
     epicMiddleware?: Middleware[],
     epicDependencies?: DEPS,
@@ -47,20 +48,23 @@ export const makeConfigureStore = <STATE>() => <DEPS>(
       })
     );
 
-  return (initialState: Partial<STATE>): Store<STATE, MythicAction> => {
-    const baseEnhancer = applyMiddleware(
-      epicMiddleware,
-      ...(definition.epicMiddleware ?? []),
-    );
-    const store = createStore(
-      rootReducer,
-      (initialState as unknown) as any,
-      definition.enhancer
-        ? definition.enhancer(baseEnhancer)
-        : baseEnhancer,
-    );
-    epicMiddleware.run(rootEpic);
+  return (
+    (initialState?: Partial<STATE>): Store<RecordOf<STATE>, MythicAction> => {
+      const baseEnhancer = applyMiddleware(
+        epicMiddleware,
+        ...(definition.epicMiddleware ?? []),
+      );
+      const store = createStore(
+        rootReducer,
+        initialState as any,
+        definition.enhancer
+          ? definition.enhancer(baseEnhancer)
+          : baseEnhancer,
+      );
 
-    return store as any;
-  };
+      epicMiddleware.run(rootEpic);
+
+      return store as any;
+    }
+  );
 };

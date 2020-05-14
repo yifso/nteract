@@ -1,4 +1,5 @@
 import { MythicAction } from "@nteract/myths";
+import { of } from "rxjs";
 import { notifications } from "../package";
 import { NotificationMessage } from "../types";
 
@@ -27,14 +28,16 @@ export const sendNotification =
     reduce: (state, action) =>
       state.current.addNotification(action.payload),
 
-    epics: [
+    andAlso: [
       {
-        on: action => action.error ?? false,
-        create: action => ({
-          title: titleFromAction(action),
-          message: messageFromAction(action),
-          level: "error",
-        }),
+        when: action => action.error ?? false,
+        dispatch: (action, _, sendNotificationMyth) => of(
+          sendNotificationMyth.create({
+            title: titleFromAction(action),
+            message: messageFromAction(action),
+            level: "error",
+          }),
+        ),
       },
     ],
   });
