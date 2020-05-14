@@ -31,7 +31,7 @@ export function launch(filename?: string) {
     icon: iconPath,
     title: "nteract",
     show: false,
-    webPreferences: { nodeIntegration: true }
+    webPreferences: { nodeIntegration: true },
   });
 
   win.once("ready-to-show", () => {
@@ -41,7 +41,7 @@ export function launch(filename?: string) {
   win.loadURL(`file://${index}`);
 
   win.webContents.on("did-finish-load", () => {
-    const menu = loadFullMenu();
+    const menu = loadFullMenu((global as any).CONFIG.keyboardShortcuts);
     Menu.setApplicationMenu(menu);
     if (filename !== undefined) {
       win.webContents.send("main:load", filename);
@@ -52,18 +52,18 @@ export function launch(filename?: string) {
   win.webContents.on("will-navigate", deferURL);
 
   win.on("focus", () => {
-    const menu = loadFullMenu();
+    const menu = loadFullMenu((global as any).CONFIG.keyboardShortcuts);
     Menu.setApplicationMenu(menu);
   });
 
   win.on("show", () => {
-    const menu = loadFullMenu();
+    const menu = loadFullMenu((global as any).CONFIG.keyboardShortcuts);
     Menu.setApplicationMenu(menu);
   });
 
   // Emitted when the window is closed.
   win.on("closed", () => {
-    const menu = loadFullMenu();
+    const menu = loadFullMenu((global as any).CONFIG.keyboardShortcuts);
     Menu.setApplicationMenu(menu);
   });
   return win;

@@ -18,6 +18,34 @@ import { installShellCommand } from "./cli";
 import { launch, launchNewNotebook } from "./launch";
 import { addRightClickMenu } from "./newfile-entry";
 
+interface KeyboardShortcuts {
+  new: string;
+  open: string;
+  save: string;
+  saveAs: string;
+  publish: string;
+  exportPDF: string;
+  selectAll: string;
+  newCodeCellAbove: string;
+  newCodeCellBelow: string;
+  newTextCellBelow: string;
+  copyCell: string;
+  cutCell: string;
+  pasteCell: string;
+  deleteCell: string;
+  changeToCodeCell: string;
+  changeToMarkdownCell: string;
+  runAllCells: string;
+  runAllCellsBelow: string;
+  clearAllOutputs: string;
+  expandContents: string;
+  killKernel: string;
+  interruptKernel: string;
+  restartKernel: string;
+  restartAndRunAll: string;
+  restartAndClearAll: string;
+}
+
 function send(
   focusedWindow: BrowserWindow,
   eventName: string,
@@ -323,7 +351,10 @@ export const named = {
   ],
 };
 
-export function loadFullMenu(store = global.store) {
+export function loadFullMenu(
+  keyboardShortcuts: KeyboardShortcuts,
+  store = global.store
+) {
   // NOTE for those looking for selectors -- this state is not the same as the
   //      "core" state -- it's a main process side model in the electron app
   const state = store.getState();
@@ -373,7 +404,7 @@ export function loadFullMenu(store = global.store) {
   const fileSubMenus = {
     new: {
       label: "&New",
-      accelerator: "CmdOrCtrl+N",
+      accelerator: keyboardShortcuts.new || "CmdOrCtrl+N",
     },
     open: {
       label: "&Open",
@@ -400,14 +431,14 @@ export function loadFullMenu(store = global.store) {
           }
         });
       },
-      accelerator: "CmdOrCtrl+O",
+      accelerator: keyboardShortcuts.open || "CmdOrCtrl+O",
     },
     openExampleNotebooks,
     save: {
       label: "&Save",
       enabled: BrowserWindow.getAllWindows().length > 0,
       click: createSender("menu:save"),
-      accelerator: "CmdOrCtrl+S",
+      accelerator: keyboardShortcuts.save || "CmdOrCtrl+S",
     },
     saveAs: {
       label: "Save &As",
@@ -436,11 +467,12 @@ export function loadFullMenu(store = global.store) {
           send(focusedWindow, "menu:save-as", `${filename}${ext}`);
         });
       },
-      accelerator: "CmdOrCtrl+Shift+S",
+      accelerator: keyboardShortcuts.saveAs || "CmdOrCtrl+Shift+S",
     },
     publish: {
       label: "&Publish",
       enabled: BrowserWindow.getAllWindows().length > 0,
+      accelerator: keyboardShortcuts.publish,
       submenu: [
         {
           label: "&Gist",
@@ -452,6 +484,7 @@ export function loadFullMenu(store = global.store) {
     exportPDF: {
       label: "Export &PDF",
       enabled: BrowserWindow.getAllWindows().length > 0,
+      accelerator: keyboardShortcuts.exportPDF,
       click: createSender("menu:exportPDF"),
     },
   };
@@ -513,7 +546,7 @@ export function loadFullMenu(store = global.store) {
       },
       {
         label: "Select All",
-        accelerator: "CmdOrCtrl+A",
+        accelerator: keyboardShortcuts.selectAll || "CmdOrCtrl+A",
         role: "selectall",
       },
       {
@@ -522,18 +555,19 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Insert Code Cell Above",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+A",
+        accelerator: keyboardShortcuts.newCodeCellAbove || "CmdOrCtrl+Shift+A",
         click: createSender("menu:new-code-cell-above"),
       },
       {
         label: "Insert Code Cell Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+B",
+        accelerator: keyboardShortcuts.newCodeCellBelow || "CmdOrCtrl+Shift+B",
         click: createSender("menu:new-code-cell-below"),
       },
       {
         label: "Insert Text Cell Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.newTextCellBelow,
         click: createSender("menu:new-text-cell-below"),
       },
       {
@@ -547,13 +581,13 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Copy Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+C",
+        accelerator: keyboardShortcuts.copyCell || "CmdOrCtrl+Shift+C",
         click: createSender("menu:copy-cell"),
       },
       {
         label: "Cut Cell",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+X",
+        accelerator: keyboardShortcuts.cutCell || "CmdOrCtrl+Shift+X",
         click: createSender("menu:cut-cell"),
       },
       {
@@ -596,13 +630,14 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Change Cell Type to Code",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+Y",
+        accelerator: keyboardShortcuts.changeToCodeCell || "CmdOrCtrl+Shift+Y",
         click: createSender("menu:change-cell-to-code"),
       },
       {
         label: "Change Cell Type to Text",
         enabled: BrowserWindow.getAllWindows().length > 0,
-        accelerator: "CmdOrCtrl+Shift+M",
+        accelerator:
+          keyboardShortcuts.changeToMarkdownCell || "CmdOrCtrl+Shift+M",
         click: createSender("menu:change-cell-to-text"),
       },
       {
@@ -611,21 +646,25 @@ export function loadFullMenu(store = global.store) {
       {
         label: "Run All",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.runAllCells,
         click: createSender("menu:run-all"),
       },
       {
         label: "Run All Below",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.runAllCellsBelow,
         click: createSender("menu:run-all-below"),
       },
       {
         label: "Clear All Outputs",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.clearAllOutputs,
         click: createSender("menu:clear-all"),
       },
       {
         label: "Unhide Input and Output in all Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.expandContents,
         click: createSender("menu:unhide-all"),
       },
     ],
@@ -715,26 +754,31 @@ export function loadFullMenu(store = global.store) {
       {
         label: "&Kill",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.killKernel,
         click: createSender("menu:kill-kernel"),
       },
       {
         label: "&Interrupt",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.interruptKernel,
         click: createSender("menu:interrupt-kernel"),
       },
       {
         label: "&Restart",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.restartKernel,
         click: createSender("menu:restart-kernel"),
       },
       {
         label: "Restart and &Clear All Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.restartAndClearAll,
         click: createSender("menu:restart-and-clear-all"),
       },
       {
         label: "Restart and Run &All Cells",
         enabled: BrowserWindow.getAllWindows().length > 0,
+        accelerator: keyboardShortcuts.restartAndRunAll,
         click: createSender("menu:restart-and-run-all"),
       },
       {

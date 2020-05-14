@@ -14,12 +14,12 @@ import {
   Event,
   ipcMain as ipc,
   Menu,
-  Tray
+  Tray,
 } from "electron";
 import {
   mkdirpObservable,
   readFileObservable,
-  writeFileObservable
+  writeFileObservable,
 } from "fs-observable";
 import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
 import {
@@ -29,14 +29,14 @@ import {
   mergeMap,
   skipUntil,
   takeUntil,
-  tap
+  tap,
 } from "rxjs/operators";
 
 import {
   QUITTING_STATE_NOT_STARTED,
   QUITTING_STATE_QUITTING,
   setKernelSpecs,
-  setQuittingState
+  setQuittingState,
 } from "./actions";
 import { initAutoUpdater } from "./auto-updater";
 import initializeKernelSpecs from "./kernel-specs";
@@ -66,7 +66,7 @@ const argv = yargs()
 
 log.info("args", argv);
 
-const notebooks = argv._.filter(x => /(.ipynb)$/.test(x));
+const notebooks = argv._.filter((x) => /(.ipynb)$/.test(x));
 
 ipc.on("new-kernel", (_event: any, k: KernelspecInfo) => {
   launchNewNotebook(null, k);
@@ -88,7 +88,7 @@ ipc.on("show-message-box", (event: Event, arg: any) => {
 
 app.on("ready", initAutoUpdater);
 
-const electronReady$ = new Observable(observer => {
+const electronReady$ = new Observable((observer) => {
   app.on("ready", (event: Event) => observer.next(event));
 });
 const windowReady$ = fromEvent(ipc, "react-ready");
@@ -98,8 +98,8 @@ const fullAppReady$ = zip(electronReady$, prepareEnv).pipe(first());
 const jupyterConfigDir = join(app.getPath("home"), ".jupyter");
 const nteractConfigFilename = join(jupyterConfigDir, "nteract.json");
 
-const CONFIG = {
-  defaultKernel: "python3"
+(global as any).CONFIG = {
+  defaultKernel: "python3",
 };
 
 const prepJupyterObservable = prepareEnv.pipe(
@@ -115,12 +115,12 @@ const prepJupyterObservable = prepareEnv.pipe(
   // Set up our configuration file
   mergeMap(() =>
     readFileObservable(nteractConfigFilename).pipe(
-      catchError(err => {
+      catchError((err) => {
         if (err.code === "ENOENT") {
           return writeFileObservable(
             nteractConfigFilename,
             JSON.stringify({
-              theme: "light"
+              theme: "light",
             })
           );
         }
@@ -128,9 +128,9 @@ const prepJupyterObservable = prepareEnv.pipe(
       })
     )
   ),
-  tap(file => {
+  tap((file) => {
     if (file) {
-      Object.assign(CONFIG, JSON.parse(file.toString("utf8")));
+      Object.assign((global as any).CONFIG, JSON.parse(file.toString("utf8")));
     }
   })
 );
@@ -158,7 +158,7 @@ export function createSplashSubscriber() {
         useContentSize: true,
         title: "loading",
         frame: false,
-        show: false
+        show: false,
       });
 
       const index = join(__dirname, "..", "static", "splash.html");
@@ -167,7 +167,7 @@ export function createSplashSubscriber() {
         win.show();
       });
     },
-    err => {
+    (err) => {
       console.error(err);
     },
     () => {
@@ -189,7 +189,7 @@ electronReady$
   .pipe(takeUntil(appAndKernelSpecsReady))
   .subscribe(createSplashSubscriber());
 
-app.on("before-quit", e => {
+app.on("before-quit", (e) => {
   // We use Electron's before-quit to give us a hook to into full app quit events,
   // such as Command+Q on macOS.
 
@@ -203,7 +203,7 @@ app.on("before-quit", e => {
   const windows = BrowserWindow.getAllWindows();
   if (
     // `win.close()` teardown is async, so `isVisible` is more reliable, see #3656
-    windows.filter(win => win.isVisible()).length > 0 &&
+    windows.filter((win) => win.isVisible()).length > 0 &&
     store.getState().get("quittingState") === QUITTING_STATE_NOT_STARTED
   ) {
     e.preventDefault();
@@ -211,11 +211,11 @@ app.on("before-quit", e => {
 
     // Trigger each windows' closeNotebookEpic. If and when all windows are closed,
     // the window-all-closed event will fire and we will complete the quit action.
-    windows.forEach(win => win.close());
+    windows.forEach((win) => win.close());
   }
 });
 
-const windowAllClosed = new Observable(observer => {
+const windowAllClosed = new Observable((observer) => {
   app.on("window-all-closed", (event: Event) => observer.next(event));
 });
 
@@ -247,7 +247,7 @@ const openFile$ = new Observable(
     const handler = (event: Event, filename: string) => {
       observer.next({
         event,
-        filename
+        filename,
       });
     };
     app.on(eventName, handler);
@@ -258,7 +258,7 @@ const openFile$ = new Observable(
 
 function openFileFromEvent({
   event,
-  filename
+  filename,
 }: {
   event: Event;
   filename: string;
@@ -281,7 +281,7 @@ openFile$
       kernelSpecsPromise.then((specs: Kernelspecs) => {
         let kernel: string;
         const passedKernel = argv.kernel as string;
-        const defaultKernel = CONFIG.defaultKernel;
+        const defaultKernel = (global as any).CONFIG.defaultKernel;
 
         if (passedKernel && passedKernel in specs) {
           kernel = passedKernel;
@@ -303,7 +303,7 @@ openFile$
       log.info("launching an empty notebook by default");
       cliLaunchNewNotebook(null);
     } else {
-      notebooks.forEach(f => {
+      notebooks.forEach((f) => {
         if (existsSync(resolve(f))) {
           try {
             launch(resolve(f));
@@ -325,11 +325,11 @@ openFile$.pipe(skipUntil(fullAppReady$)).subscribe(openFileFromEvent);
 let tray = null;
 fullAppReady$.subscribe(() => {
   kernelSpecsPromise
-    .then(kernelSpecs => {
+    .then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
         store.dispatch(setKernelSpecs(kernelSpecs));
       }
-      const menu = loadFullMenu();
+      const menu = loadFullMenu((global as any).CONFIG.keyboardShortcuts);
       Menu.setApplicationMenu(menu);
       const logo = process.platform === "win32" ? "logoWhite" : "logoTemplate";
       const trayImage = join(__dirname, "..", "static", `${logo}.png`);
@@ -337,7 +337,7 @@ fullAppReady$.subscribe(() => {
       const trayMenu = loadTrayMenu();
       tray.setContextMenu(trayMenu);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Unexpected error when fetching kernelspecs: ", err);
     });
 });
