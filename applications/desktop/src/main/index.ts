@@ -1,49 +1,21 @@
+import { KernelspecInfo, Kernelspecs } from "@nteract/types";
+import { app, BrowserWindow, dialog, Event, ipcMain as ipc, Menu, Tray } from "electron";
+import initContextMenu from "electron-context-menu";
 import * as log from "electron-log";
 import { existsSync } from "fs";
+import { mkdirpObservable, readFileObservable, writeFileObservable } from "fs-observable";
 import * as jupyterPaths from "jupyter-paths";
 import * as kernelspecs from "kernelspecs";
 import { join, resolve } from "path";
-import yargs from "yargs/yargs";
-
-import { KernelspecInfo, Kernelspecs } from "@nteract/types";
-
-import {
-  app,
-  BrowserWindow,
-  dialog,
-  Event,
-  ipcMain as ipc,
-  Menu,
-  Tray
-} from "electron";
-import {
-  mkdirpObservable,
-  readFileObservable,
-  writeFileObservable
-} from "fs-observable";
 import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
-import {
-  buffer,
-  catchError,
-  first,
-  mergeMap,
-  skipUntil,
-  takeUntil,
-  tap
-} from "rxjs/operators";
-
-import {
-  QUITTING_STATE_NOT_STARTED,
-  QUITTING_STATE_QUITTING,
-  setKernelSpecs,
-  setQuittingState
-} from "./actions";
+import { buffer, catchError, first, mergeMap, skipUntil, takeUntil, tap } from "rxjs/operators";
+import yargs from "yargs/yargs";
+import { QUITTING_STATE_NOT_STARTED, QUITTING_STATE_QUITTING, setKernelSpecs, setQuittingState } from "./actions";
 import { initAutoUpdater } from "./auto-updater";
 import initializeKernelSpecs from "./kernel-specs";
 import { launch, launchNewNotebook } from "./launch";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
-
 import configureStore from "./store";
 
 const store = configureStore();
@@ -324,6 +296,9 @@ openFile$
 openFile$.pipe(skipUntil(fullAppReady$)).subscribe(openFileFromEvent);
 let tray = null;
 fullAppReady$.subscribe(() => {
+  // Setup right-click context menu for all BrowserWindows
+  initContextMenu();
+  
   kernelSpecsPromise
     .then(kernelSpecs => {
       if (Object.keys(kernelSpecs).length !== 0) {
