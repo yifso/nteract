@@ -32,7 +32,12 @@ Then, run Jupyter with the nteract extension installed using the following comma
 $ jupyter nteract
 ```
 
-Your default browser should open to the nteract web interface where you can open, create, and edit notebooks.
+Your default browser should open to the nteract web interface where you can open, create, and edit notebooks.  If you want to run the examples mentioned later, you will need to install them separately:  navigate to the directory (for example, in a Command Prompt window) and run the following
+
+```
+git clone https://github.com/nteract/examples
+cd examples
+```
 
 ### How to create a new notebook
 
