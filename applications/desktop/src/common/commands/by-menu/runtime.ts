@@ -35,7 +35,7 @@ export const RestartAndClearAll: DesktopCommand<ReqContent> = {
 };
 
 export const RestartAndRunAll: DesktopCommand<ReqContent> = {
-  name: "RestartAsRunAll",
+  name: "RestartAndRunAll",
   props: {
     contentRef: "required",
   },

@@ -39,7 +39,9 @@ export const menu: MenuDefinition = [
       {
         forEach: "kernelspec",
         create: spec =>
-          [spec.name, commands.LaunchNewNotebook, {props: {kernelSpec: spec}}],
+          [spec.spec.display_name, commands.LaunchNewNotebook, {props: {
+            kernelSpec: spec,
+          }}],
       },
     ]],
     ["&Open", commands.Open],      // v-- Listed in electron docs, but not types
@@ -117,7 +119,7 @@ export const menu: MenuDefinition = [
     {
       forEach: "kernelspec",
       create: spec =>
-        [spec.name, commands.NewKernel, { props: { kernelSpec: spec } }],
+        [spec.spec.display_name, commands.NewKernel, { props: { kernelSpec: spec } }],
     },
   ]],
   ["Preferences", [
@@ -139,7 +141,7 @@ export const menu: MenuDefinition = [
   ]],
   ["Help", { role: "help" }, [
     ["Documentation", "https://docs.nteract.io"],
-    ["Keyboard Shortcuts", "https://docs.nteract.io/#/desktop/shortcut-keys"],
+    ["Keyboard Shortcuts", "https://docs.nteract.io/kbd-shortcuts/"],
     ["View nteract on GitHub", "https://github.com/nteract/nteract"],
     ["Release Notes (<<version>>)", "https://github.com/nteract/nteract/releases/tag/v<<version>>"],
     ["Install Additional Kernels", "https://nteract.io/kernels"],

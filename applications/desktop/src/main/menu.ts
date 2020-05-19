@@ -42,17 +42,17 @@ const allConfigOptions = () => [
   },
   {
     label: "Use Smart Indent",
+    key: "codeMirror.smartIndent",
+    values: BOOLEAN,
+  },
+  {
+    label: "Tab Size",
     key: "codeMirror.tabSize",
     values: [
       {label: "2 Spaces", value: 2},
       {label: "3 Spaces", value: 3},
       {label: "4 Spaces", value: 4},
     ],
-  },
-  {
-    label: "Tab Size",
-    key: "codeMirror.matchBrackets",
-    values: BOOLEAN,
   },
   {
     label: "Show Line Numbers",
