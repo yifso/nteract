@@ -493,6 +493,18 @@ describe("createCellAbove", () => {
     expect(state.getIn(["notebook", "cellOrder"]).size).toBe(3);
     expect(state.getIn(["notebook", "cellOrder"]).last()).toBe(id);
   });
+  test("creates new cell given cell contents", () => {
+    const originalState = initialDocument.set("notebook", fixtureCommutable);
+    const id = originalState.getIn(["notebook", "cellOrder"]).last();
+    const state = reducers(
+      originalState,
+      actions.createCellAbove({ cellType: "markdown", id, cell: emptyMarkdownCell.set("source", "test contents") })
+    );
+    expect(state.getIn(["notebook", "cellOrder"]).size).toBe(3);
+    expect(state.getIn(["notebook", "cellOrder"]).last()).toBe(id);
+    const insertedCellId = state.getIn(["notebook", "cellOrder", 1]);
+    expect(state.getIn(["notebook", "cellMap", insertedCellId, "source"])).toEqual("test contents")
+  })
 });
 
 describe("newCellAppend", () => {

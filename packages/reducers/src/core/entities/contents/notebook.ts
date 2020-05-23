@@ -10,7 +10,6 @@ import {
   emptyNotebook,
   ImmutableCell,
   ImmutableCodeCell,
-  ImmutableMarkdownCell,
   ImmutableNotebook,
   ImmutableOutput,
   insertCellAfter,
