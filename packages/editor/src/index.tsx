@@ -269,7 +269,9 @@ export default class CodeMirrorEditor extends React.Component<
 
     this.cm = CodeMirror.fromTextArea(this.textareaRef.current!, options);
 
-    this.loadMode().then(mode => this.cm.setOption("mode", mode));
+    this.loadMode()
+      .then(mode => this.cm.setOption("mode", mode))
+      .catch(error => console.error("Unable to load mode", error));
 
     this.cm.setValue(this.props.value || "");
 
@@ -370,7 +372,9 @@ export default class CodeMirrorEditor extends React.Component<
         this.props.codeMirror[optionName] !== prevProps.codeMirror[optionName]
       ) {
         if (optionName === "mode") {
-          this.loadMode().then(mode => this.cm.setOption("mode", mode));
+          this.loadMode()
+            .then(mode => this.cm.setOption("mode", mode))
+            .catch(error => console.error("Unable to load mode", error));
         } else {
           this.cm.setOption(optionName, this.props.codeMirror[optionName]);
         }
