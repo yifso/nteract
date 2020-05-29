@@ -94,7 +94,7 @@ describe("contents", () => {
         path: "save/to/this/path"
       };
       const create$ = JupyterContentProvider.save(serverConfig, "/path/to/content", model);
-      const request = (create$ as AjaxObservable).request;
+      const request = (create$.source as AjaxObservable).request; // Because of a workaround the AjaxObservable is source
       expect(request.url).toBe(
         "http://localhost:8888/api/contents/path/to/content"
       );
