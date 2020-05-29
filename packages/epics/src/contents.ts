@@ -24,12 +24,10 @@ import { EMPTY, from, interval, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
 import {
   catchError,
-  distinctUntilChanged,
   filter,
   map,
   mergeMap,
   switchMap,
-  take,
   tap
 } from "rxjs/operators";
 import urljoin from "url-join";
@@ -344,55 +342,12 @@ export function saveContentEpic(
                     })
                   );
                 }
-
-                const pollIntervalMs = 500;
-                const maxPollNb = 4;
-
-                // Last_modified value from jupyter server is unreliable:
-                // https://github.com/nteract/nteract/issues/4583
-                // Check last-modified until value is stable.
-                return interval(pollIntervalMs)
-                  .pipe(take(maxPollNb))
-                  .pipe(
-                    mergeMap(_unused =>
-                      dependencies.contentProvider
-                        .get(serverConfig, filepath, { content: 0 })
-                        .pipe(
-                          map((innerXhr: AjaxResponse) => {
-                            if (
-                              innerXhr.status !== 200 ||
-                              typeof innerXhr.response === "string"
-                            ) {
-                              return undefined;
-                            }
-                            return innerXhr.response.last_modified;
-                          })
-                        )
-                    ),
-                    distinctUntilChanged(),
-                    mergeMap(lastModified => {
-                      if (!lastModified) {
-                        // Don't do anything special
-                        return of(
-                          actions.saveFulfilled({
-                            contentRef: action.payload.contentRef,
-                            model: saveXhr.response
-                          })
-                        );
-                      }
-
-                      // Update lastModified with the correct value
-                      return of(
-                        actions.saveFulfilled({
-                          contentRef: action.payload.contentRef,
-                          model: {
-                            ...saveXhr.response,
-                            last_modified: lastModified
-                          }
-                        })
-                      );
-                    })
-                  );
+                return of(
+                  actions.saveFulfilled({
+                    contentRef: action.payload.contentRef,
+                    model: saveXhr.response
+                  })
+                );
               }),
               catchError((error: Error) =>
                 of(

@@ -4,6 +4,7 @@ import { ajax, AjaxResponse } from "rxjs/ajax";
 import urljoin from "url-join";
 import { ServerConfig, IGetParams, IContent, FileType, IContentProvider } from "@nteract/types";
 import { createAJAXSettings, JupyterAjaxResponse } from "./base";
+import { mergeMap } from "rxjs/operators";
 
 const formURI = (path: string) => urljoin("/api/contents/", path);
 
@@ -231,7 +232,36 @@ export const JupyterContentProvider: IContentProvider = {
   },
 
   save<FT extends FileType>(serverConfig: ServerConfig, path: string, model: Partial<IContent<FT>>) {
-    return save(serverConfig, path, model);
+    return save(serverConfig, path, model)
+      .pipe(
+        mergeMap(async (saveXhr: AjaxResponse) => {
+          if (saveXhr.response.errno) {
+            return saveXhr;
+          }
+
+          const pollIntervalMs = 500;
+          const maxPollNb = 4;
+
+          // Last_modified value from jupyter server is unreliable:
+          // https://github.com/nteract/nteract/issues/4583
+          // Check last-modified until value is stable.
+          for (let i = 0; i < maxPollNb; ++i) {
+            await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+            const getXhr: AjaxResponse = await get(serverConfig, path, { content: 0 }).toPromise();
+            if (
+              getXhr.status === 200 &&
+              typeof getXhr.response !== "string" &&
+              getXhr.response.last_modified &&
+              Date.parse(getXhr.response.last_modified) > Date.parse(saveXhr.response.last_modified)
+            ) {
+              // Found a newer last_modified
+              saveXhr.response.last_modified = getXhr.response.last_modified;
+              return saveXhr;
+            }
+          }
+          return saveXhr;
+        })
+      );
   },
 
   listCheckpoints(serverConfig: ServerConfig, path: string) {
