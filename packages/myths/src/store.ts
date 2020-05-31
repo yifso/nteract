@@ -70,7 +70,7 @@ export const makeConfigureStore = <STATE = {}>() =>
 
         epicMiddleware.run(rootEpic);
 
-        return store as Store<STATE | {
+        return store as Store<STATE & {
           __private__: {
             [key in UnionOfProperty<PKGS, "name">]:
             UnionOfProperty<PKGS, "initialState">;
