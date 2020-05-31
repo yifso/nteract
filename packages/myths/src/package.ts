@@ -42,12 +42,8 @@ export const createMythicPackage =
 
         createSelector:
           <T>(selector: Selector<STATE, T>) =>
-            (state?: MaybeRootState<PKG, STATE>) => {
-              const value = selector(state?.__private__?.[pkg]);
-              return (value as any).toJS !== undefined
-                ? (value as any).toJS()
-                : value;
-            },
+            (state?: MaybeRootState<PKG, STATE>) =>
+              selector(state?.__private__?.[pkg]),
       };
 
       packageWIP.testMarbles = (
@@ -64,9 +60,11 @@ export const createMythicPackage =
           },
         };
 
-        new TestScheduler(
+        const scheduler = new TestScheduler(
           (actual, expected) => expect(actual).toEqual(expected)
-        ).run(helpers => {
+        );
+
+        scheduler.run(helpers => {
           const { hot, expectObservable } = helpers;
           const inputAction$ = hot(inputMarbles, marblesMapToActions);
           const outputAction$ = packageWIP.makeRootEpic!()(

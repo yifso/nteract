@@ -58,9 +58,44 @@ const configureStore = makeConfigureStore<NonPrivateState>()({
 export const store = configureStore({ foo: "bar" });
 ```
 
-## Documentation
+## Epic Definitions
 
-We're working on adding more documentation for this component. Stay tuned by watching this repository!
+To define epics there are two different shorthand definitions available:
+
+```typescript
+export const addToSum =
+  iCanAdd.createMyth("addToSum")<number>({
+
+    reduce: (state, action) =>
+      state.set("sum", state.get("sum") + action.payload),
+
+    thenDispatch: [
+      (action, state) =>
+        state.get("sum") - action.payload < 100 && 100 <= state.get("sum")
+          ? of(sendNotification.create({message: "Just passed 100!"}))
+          : EMPTY,
+    ],
+
+    andAlso: [
+      {
+        // Half the sum every time an error action happens
+        when: action => action.error ?? false,
+        dispatch: (action, state, addToSum_) =>
+          of(addToSum_.create(-state.get("sum") / 2)),
+      },
+    ],
+
+  });
+```
+
+Use `thenDispatch: []` to define actions then should be generated from actions of the type being defined, and `andAlso: []` to
+generate actions based on a custom predicate. Since the type being defined is not available for reference yet, it is
+passed as third argument to the dispatch function.
+ 
+## Testing
+
+To test the actions of a mythic package, you can use the `testMarbles(...)` method. Note that this only tests the epics,
+without evaluating reducers.
 
 ## Support
 

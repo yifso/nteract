@@ -12,14 +12,14 @@ const makeEpic = <
   pkg: PKG,
   myth: Myth<PKG, NAME, PROPS, STATE>,
   dispatch: EpicFuncDefinition<STATE, PROPS, MythicAction>,
-  narrow: (source: Observable<MythicAction>) => Observable<MythicAction>
+  filterBy: (source: Observable<MythicAction>) => Observable<MythicAction>
 ) =>
     (
       action$: Observable<MythicAction>,
       state$: StateObservable<RootState<PKG, STATE>>,
     ) =>
       action$.pipe(
-        narrow,
+        filterBy,
         withLatestFrom(state$.pipe(map(state => state.__private__[pkg]))),
         mergeMap(([action, state]) => dispatch(action, state, myth) ?? EMPTY),
       );
