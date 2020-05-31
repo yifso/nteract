@@ -5,7 +5,7 @@ import CodeMirror, {
   Editor,
   EditorChangeLinkedList,
   EditorFromTextArea,
-  Position
+  Position,
 } from "codemirror";
 
 import { FullEditorConfiguration, isConfigurable } from "./configurable";
@@ -20,7 +20,7 @@ import {
   partition,
   repeat,
   switchMap,
-  takeUntil
+  takeUntil,
 } from "rxjs/operators";
 
 import { codeComplete, pick } from "./jupyter/complete";
@@ -83,8 +83,8 @@ interface CodeCompletionEvent {
 }
 
 type Mode = {
-  name: string
-}
+  name: string;
+};
 
 export default class CodeMirrorEditor extends React.Component<
   CodeMirrorEditorProps,
@@ -109,8 +109,8 @@ export default class CodeMirrorEditor extends React.Component<
       lineNumbers: false,
       smartIndent: true,
       cursorBlinkRate: 530,
-      showCursorWhenSelecting: true
-    }
+      showCursorWhenSelecting: true,
+    },
   };
 
   textarea?: HTMLTextAreaElement | null;
@@ -134,7 +134,7 @@ export default class CodeMirrorEditor extends React.Component<
     this.debounceNextCompletionRequest = true;
     this.state = {
       bundle: null,
-      cursorCoords: null
+      cursorCoords: null,
     };
 
     this.fullOptions = this.fullOptions.bind(this);
@@ -155,16 +155,16 @@ export default class CodeMirrorEditor extends React.Component<
       "Shift-Tab": (editor: Editor) => editor.execCommand("indentLess"),
       Tab: this.executeTab,
       Up: this.goLineUpOrEmit,
-      Esc: this.deleteTip
+      Esc: this.deleteTip,
     };
 
     const hintOptions = {
       // In automatic autocomplete mode we don't want override
       completeSingle: false,
       extraKeys: {
-        Right: pick
+        Right: pick,
       },
-      hint: this.hint
+      hint: this.hint,
     };
 
     this.defaultOptions = Object.assign({
@@ -173,7 +173,7 @@ export default class CodeMirrorEditor extends React.Component<
       // This sets the class on the codemirror <div> that gets created to
       // cm-s-composition
       theme: "composition",
-      lineWrapping: true
+      lineWrapping: true,
     });
   }
 
@@ -212,7 +212,7 @@ export default class CodeMirrorEditor extends React.Component<
       return mode;
     }
 
-    await import(`codemirror/mode/${mode}/${mode}.js`)
+    await import(`codemirror/mode/${mode}/${mode}.js`);
 
     return mode;
   }
@@ -264,14 +264,14 @@ export default class CodeMirrorEditor extends React.Component<
     const options: FullEditorConfiguration = {
       ...this.fullOptions(),
       ...this.defaultOptions,
-      mode: this.cleanMode()
+      mode: this.cleanMode(),
     };
 
     this.cm = CodeMirror.fromTextArea(this.textareaRef.current!, options);
 
     this.loadMode()
-      .then(mode => this.cm.setOption("mode", mode))
-      .catch(error => console.error("Unable to load mode", error));
+      .then((mode) => this.cm.setOption("mode", mode))
+      .catch((error) => console.error("Unable to load mode", error));
 
     this.cm.setValue(this.props.value || "");
 
@@ -299,7 +299,7 @@ export default class CodeMirrorEditor extends React.Component<
 
     // tslint:disable no-shadowed-variable
     const [debounce, immediate] = partition<CodeCompletionEvent>(
-      ev => ev.debounce === true
+      (ev) => ev.debounce === true
     )(this.completionSubject);
 
     const mergedCompletionEvents: Observable<CodeCompletionEvent> = merge(
@@ -316,7 +316,7 @@ export default class CodeMirrorEditor extends React.Component<
     );
 
     const completionResults: Observable<() => void> = mergedCompletionEvents.pipe(
-      switchMap(ev => {
+      switchMap((ev) => {
         const { channels } = this.props;
         if (!channels) {
           throw new Error(
@@ -324,7 +324,7 @@ export default class CodeMirrorEditor extends React.Component<
           );
         }
         return codeComplete(channels, ev.editor).pipe(
-          map(completionResult => () => ev.callback(completionResult)),
+          map((completionResult) => () => ev.callback(completionResult)),
           // Complete immediately upon next event, even if it's a debounced one
           // https://blog.strongbrew.io/building-a-safe-autocomplete-operator-with-rxjs/
           takeUntil(this.completionSubject),
@@ -336,7 +336,7 @@ export default class CodeMirrorEditor extends React.Component<
       })
     ) as Observable<() => void>;
 
-    this.completionEventsSubscriber = completionResults.subscribe(callback =>
+    this.completionEventsSubscriber = completionResults.subscribe((callback) =>
       callback()
     );
   }
@@ -373,8 +373,8 @@ export default class CodeMirrorEditor extends React.Component<
       ) {
         if (optionName === "mode") {
           this.loadMode()
-            .then(mode => this.cm.setOption("mode", mode))
-            .catch(error => console.error("Unable to load mode", error));
+            .then((mode) => this.cm.setOption("mode", mode))
+            .catch((error) => console.error("Unable to load mode", error));
         } else {
           this.cm.setOption(optionName, this.props.codeMirror[optionName]);
         }
@@ -438,17 +438,22 @@ export default class CodeMirrorEditor extends React.Component<
     const debounceThisCompletionRequest: boolean = this
       .debounceNextCompletionRequest;
     this.debounceNextCompletionRequest = true;
+    console.log(completion && channels);
     if (completion && channels) {
       const el: CodeCompletionEvent = {
         editor,
         callback,
-        debounce: debounceThisCompletionRequest
+        debounce: debounceThisCompletionRequest,
       };
       this.completionSubject.next(el);
     }
   }
 
   deleteTip(): void {
+    if (this.tooltipNode) {
+      console.log("deleting tip");
+      ReactDOM.unmountComponentAtNode(this.tooltipNode);
+    }
     this.setState({ bundle: null });
   }
 
