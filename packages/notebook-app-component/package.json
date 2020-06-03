@@ -17,6 +17,7 @@
     "@nteract/data-explorer": "^8.0.0",
     "@nteract/dropdown-menu": "^1.1.9",
     "@nteract/editor": "^10.0.2",
+    "@nteract/mythic-configuration": "^0.1.0",
     "@nteract/mythic-notifications": "^0.1.9",
     "@nteract/octicons": "^2.0.0",
     "@nteract/outputs": "^3.0.9",

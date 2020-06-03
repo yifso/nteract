@@ -6,6 +6,7 @@ import {
   MarkdownCell,
   RawCell,
 } from "@nteract/stateful-components";
+import { ThemeFromConfig } from "@nteract/stateful-components";
 import React from "react";
 
 import StatusBar from "../derived-components/status-bar";
@@ -19,7 +20,6 @@ import CellCreator from "../decorators/cell-creator";
 import DraggableCell from "../decorators/draggable";
 import HijackScroll from "../decorators/hijack-scroll";
 import KeyboardShortcuts from "../decorators/kbd-shortcuts";
-import Themer from "../decorators/themer";
 import UndoableCellDelete from "../decorators/undoable/undoable-cell-delete";
 
 interface ComponentProps {
@@ -52,7 +52,7 @@ export class NotebookApp extends React.Component<ComponentProps> {
   render(): JSX.Element {
     return (
       <React.Fragment>
-        <Themer>
+        <ThemeFromConfig>
           <KeyboardShortcuts contentRef={this.props.contentRef}>
             <Cells contentRef={this.props.contentRef}>
               {{
@@ -121,7 +121,7 @@ export class NotebookApp extends React.Component<ComponentProps> {
             <StatusBar contentRef={this.props.contentRef} />
             <ThemableNotifications />
           </KeyboardShortcuts>
-        </Themer>
+        </ThemeFromConfig>
       </React.Fragment>
     );
   }

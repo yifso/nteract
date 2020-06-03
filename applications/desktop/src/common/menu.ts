@@ -2,6 +2,7 @@ import * as path from "path";
 import { appName } from "./appname";
 import * as commands from "./commands";
 import { MenuDefinition } from "./commands/types";
+import { isEqual } from "lodash";
 
 const examplesBaseDir = path
   .join(__dirname, "..", "node_modules", "@nteract/examples")
@@ -119,18 +120,43 @@ export const menu: MenuDefinition = [
     {
       forEach: "kernelspec",
       create: spec =>
-        [spec.spec.display_name, commands.NewKernel, { props: { kernelSpec: spec } }],
+        [
+          spec.spec.display_name,
+          commands.NewKernel,
+          { props: { kernelSpec: spec } }
+        ],
     },
   ]],
   ["Preferences", [
     {
       forEach: "preference",
       create: item =>
-        [item.label, (item.values ?? []).map(value => [
-          value.label,
-          commands.SetPreference,
-          { props: { key: item.key, value: value.value } },
-        ])],
+        item.values &&
+        item.values.length === 2 &&
+        item.values[0].label === "Yes" &&
+        item.values[1].label === "No"
+          ? [
+            item.label,
+            commands.TogglePreference,
+            {
+              type: "checkbox",
+              isChecked: item.value === item.values[0].value,
+              props: { key: item.key },
+            }
+          ]
+          : [
+            item.label,
+            (item.values ?? [])
+              .map(value => [
+                value.label,
+                commands.SetPreference,
+                {
+                  type: "radio",
+                  isChecked: item.value === value.value,
+                  props: { key: item.key, value: value.value }
+                },
+              ])
+            ],
     },
   ]],
   ["Window", { role: "window" }, [

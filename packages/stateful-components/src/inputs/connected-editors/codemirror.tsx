@@ -1,7 +1,79 @@
-import { connect } from "react-redux";
-
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import CodeMirrorEditor from "@nteract/editor";
+import { createConfigCollection, createConfigOption, createDeprecatedConfigOption, HasPrivateConfigurationState } from "@nteract/mythic-configuration";
+import { connect } from "react-redux";
+
+const codeMirrorConfig = createConfigCollection({
+  key: "codeMirror",
+});
+
+createDeprecatedConfigOption({
+  key: "cursorBlinkRate",
+  changeTo: (value: number) => ({
+    "codeMirror.cursorBlinkRate": value,
+  }),
+});
+
+const BOOLEAN = [
+  {label: "Yes", value: true},
+  {label: "No", value: false},
+];
+
+createConfigOption({
+  label: "Blink Editor Cursor",
+  key: "codeMirror.cursorBlinkRate",
+  values: [
+    {label: "Yes", value: 530},
+    {label: "No", value: 0},
+  ],
+  defaultValue: 0,
+});
+
+createConfigOption({
+  label: "Show Cursor When Selecting",
+  key: "codeMirror.showCursorWhenSelecting",
+  values: BOOLEAN,
+  defaultValue: false,
+});
+
+createConfigOption({
+  label: "Close Brackets Automatically",
+  key: "codeMirror.autoCloseBrackets",
+  values: BOOLEAN,
+  defaultValue: false,
+});
+
+createConfigOption({
+  label: "Show Matching Brackets",
+  key: "codeMirror.matchBrackets",
+  values: BOOLEAN,
+  defaultValue: true,
+});
+
+createConfigOption({
+  label: "Use Smart Indent",
+  key: "codeMirror.smartIndent",
+  values: BOOLEAN,
+  defaultValue: true,
+});
+
+createConfigOption({
+  label: "Tab Size",
+  key: "codeMirror.tabSize",
+  values: [
+    {label: "2 Spaces", value: 2},
+    {label: "3 Spaces", value: 3},
+    {label: "4 Spaces", value: 4},
+  ],
+  defaultValue: 4,
+});
+
+createConfigOption({
+  label: "Show Line Numbers",
+  key: "codeMirror.lineNumbers",
+  values: BOOLEAN,
+  defaultValue: false,
+});
 
 const markdownMode = {
   name: "gfm",
@@ -23,22 +95,10 @@ interface ComponentProps {
   editorType: string;
 }
 
-const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
+const makeMapStateToProps = (state: AppState & HasPrivateConfigurationState, ownProps: ComponentProps) => {
   const { id, contentRef } = ownProps;
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: AppState & HasPrivateConfigurationState) => {
     let mode = rawMode;
-
-    const codeMirrorDefaults = {
-      cursorBlinkRate: 530,
-      showCursorWhenSelecting: false,
-      autoCloseBrackets: false,
-      matchBrackets: true,
-      smartIndent: true,
-      tabSize: 4,
-      lineNumbers: false,
-    };
-    const codeMirrorCurrentConfig = state.config.get("codeMirror");
-
     let lineWrapping = true;
 
     const model = selectors.model(state, { contentRef });
@@ -64,11 +124,10 @@ const makeMapStateToProps = (state: AppState, ownProps: ComponentProps) => {
       }
     }
 
-    const codeMirror = Object.assign(
-      {},
-      { ...codeMirrorDefaults, mode },
-      codeMirrorCurrentConfig
-    );
+    const codeMirror = {
+      ...mode,
+      ...codeMirrorConfig(state as any),
+    };
 
     return {
       mode,

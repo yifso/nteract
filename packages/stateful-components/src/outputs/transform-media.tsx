@@ -1,14 +1,10 @@
+import { ImmutableDisplayData, ImmutableExecuteResult, JSONObject } from "@nteract/commutable";
+import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 import Immutable from "immutable";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-
-import {
-  ImmutableDisplayData,
-  ImmutableExecuteResult,
-  JSONObject
-} from "@nteract/commutable";
-import { actions, AppState, ContentRef, selectors } from "@nteract/core";
+import { userTheme } from "../config-options";
 
 interface ComponentProps {
   output_type: string;
@@ -102,7 +98,7 @@ export const mapStateToProps = (
 
   const handlers = selectors.transformsById(state);
   const order = selectors.displayOrder(state);
-  const theme = selectors.userTheme(state);
+  const theme = userTheme(state);
 
   const mediaType = richestMediaType(output, order, handlers);
 

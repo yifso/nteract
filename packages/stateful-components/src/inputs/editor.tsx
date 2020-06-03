@@ -1,8 +1,21 @@
+import { createConfigOption } from "@nteract/mythic-configuration";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { actions, AppState, ContentRef, selectors } from "@nteract/core";
+
+const {
+  selector: editorTypeConfig,
+} = createConfigOption({
+  key: "editorType",
+  label: "Editor Type",
+  defaultValue: "codemirror",
+  values: [
+    { value: "codemirror", label: "CodeMirror" },
+    { value: "monaco", label: "Monaco" },
+  ],
+});
 
 export interface PassedEditorProps {
   id: string;
@@ -12,7 +25,6 @@ export interface PassedEditorProps {
   value: string;
   channels: any;
   kernelStatus: string;
-  theme: string;
   onChange: (text: string) => void;
   onFocusChange: (focused: boolean) => void;
   className: string;
@@ -34,7 +46,6 @@ interface StateProps {
   value: string;
   channels: any;
   kernelStatus: string;
-  theme: string;
 }
 
 interface DispatchProps {
@@ -59,7 +70,6 @@ export class Editor extends React.PureComponent<Props> {
         editorFocused: this.props.editorFocused,
         channels: this.props.channels,
         kernelStatus: this.props.kernelStatus,
-        theme: this.props.theme,
         onChange: this.props.onChange,
         onFocusChange: this.props.onFocusChange,
         className: "nteract-cell-editor"
@@ -81,8 +91,7 @@ export const makeMapStateToProps = (
     let channels = null;
     let kernelStatus = "not connected";
     let value = "";
-    const editorType = selectors.editorType(state);
-    const theme = selectors.userTheme(state);
+    const editorType = editorTypeConfig(state);
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
@@ -105,7 +114,6 @@ export const makeMapStateToProps = (
       channels,
       kernelStatus,
       editorType,
-      theme
     };
   };
 

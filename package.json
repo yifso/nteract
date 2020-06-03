@@ -32,6 +32,7 @@
     "lint:ts:fix": "tslint --config tslint.json --project tsconfig.base.json --fix",
     "build:all": "tsc -b",
     "build:all:ci": "tsc -b --verbose",
+    "build:all:cleanly": "npm run clean && yarn && npm run build:all",
     "build": "cross-env NODE_ENV=production npm run build:packages",
     "build:clean": "npm run build:packages -- --clean",
     "build:apps": "lerna run build --scope nteract --scope nteract-on-jupyter --parallel --stream",

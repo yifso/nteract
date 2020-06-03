@@ -1,78 +1,15 @@
 import { manifest as examplesManifest } from "@nteract/examples";
+import { allConfigOptions, HasPrivateConfigurationState } from "@nteract/mythic-configuration";
 import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions, shell } from "electron";
 import sortBy from "lodash.sortby";
 import { Store } from "redux";
 import { accelerators } from "../common/accelerators";
 import { appName } from "../common/appname";
 import { dispatchCommandInMain } from "../common/commands/dispatch";
-import { Accelerators, ActionCommand, Command, ConfigurationOption, MenuDefinition, MenuitemOptions, Platform, SubmenuOptions } from "../common/commands/types";
+import { ActionCommand, Command, MenuDefinition, MenuitemOptions, Platform, SubmenuOptions } from "../common/commands/types";
 import { menu, tray } from "../common/menu";
+import { customAccelerators } from "./config-options";
 import { MainAction, MainStateRecord } from "./reducers";
-
-// FIXME replace when mythic-configuration goes in:
-type HasPrivateConfigurationState = any;
-const customAccelerators = (state: any) => ({} as Accelerators);
-const BOOLEAN = [
-  {label: "Yes", value: true},
-  {label: "No", value: false},
-];
-const allConfigOptions = () => [
-  {
-    label: "Blink Editor Cursor",
-    key: "codeMirror.cursorBlinkRate",
-    values: [
-      {label: "Yes", value: 530},
-      {label: "No", value: 0},
-    ],
-  },
-  {
-    label: "Show Cursor When Selecting",
-    key: "codeMirror.showCursorWhenSelecting",
-    values: BOOLEAN,
-  },
-  {
-    label: "Close Brackets Automatically",
-    key: "codeMirror.autoCloseBrackets",
-    values: BOOLEAN,
-  },
-  {
-    label: "Show Matching Brackets",
-    key: "codeMirror.matchBrackets",
-    values: BOOLEAN,
-  },
-  {
-    label: "Use Smart Indent",
-    key: "codeMirror.smartIndent",
-    values: BOOLEAN,
-  },
-  {
-    label: "Tab Size",
-    key: "codeMirror.tabSize",
-    values: [
-      {label: "2 Spaces", value: 2},
-      {label: "3 Spaces", value: 3},
-      {label: "4 Spaces", value: 4},
-    ],
-  },
-  {
-    label: "Show Line Numbers",
-    key: "codeMirror.lineNumbers",
-    values: BOOLEAN,
-  },
-  {
-    label: "Theme",
-    key: "theme",
-    values: [
-      {label: "Light", value: "light"},
-      {label: "Dark", value: "dark"},
-    ],
-  },
-  {
-    label: "Set default kernel",
-    key: "defaultKernel",
-    valuesFrom: "kernelspecs",
-  },
-] as ConfigurationOption[];
 
 const interceptAcceleratorEarly =
   (accelerator: string, command: ActionCommand<any, any>, props: any) =>
@@ -136,8 +73,9 @@ function buildMenuTemplate(
   const collections = {
     kernelspec: kernelspecs,
     example: examplesManifest,
-    preference: allConfigOptions()
+    preference: allConfigOptions(store.getState())
       .filter(x => x.values !== undefined || x.valuesFrom === "kernelspecs")
+      .sort((a, b) => a.key < b.key ? -1 : 1)
       .map(x => {
         if (x.valuesFrom === "kernelspecs") {
           return {
@@ -172,6 +110,8 @@ function buildMenuTemplate(
           accelerator: acceleratorFor(store.getState(), command, options),
         }
         : {
+          type: options.type,
+          checked: options.isChecked,
           label: processString(label),
           click: () => dispatchCommandInMain(command, options.props),
           accelerator: acceleratorFor(store.getState(), command, options),

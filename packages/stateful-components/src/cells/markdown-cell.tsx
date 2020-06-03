@@ -1,3 +1,4 @@
+import { createConfigOption } from "@nteract/mythic-configuration";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -11,6 +12,14 @@ import CodeMirrorEditor from "../inputs/connected-editors/codemirror";
 
 import { ImmutableCell } from "@nteract/commutable/src";
 import { ReactMarkdownProps } from "react-markdown";
+
+const {
+  selector: markdownConfig,
+} = createConfigOption({
+  key: "markdownOptions",
+  label: "Markdown Editor Options",
+  defaultValue: {},
+});
 
 interface NamedMDCellSlots {
   editor?: EditorSlots;
@@ -110,7 +119,7 @@ export const makeMapStateToProps = (
     const markdownOptionsDefaults = {
       linkTarget: "_blank"
     };
-    const currentMarkdownOptions = state.config.get("markdownOptions");
+    const currentMarkdownOptions = markdownConfig(state);
 
     const markdownOptions = Object.assign(
       {},

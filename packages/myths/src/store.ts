@@ -1,3 +1,4 @@
+import { RecordOf } from "immutable";
 import { applyMiddleware, combineReducers, createStore, Middleware, ReducersMapObject, Store } from "redux";
 import { combineEpics, createEpicMiddleware, Epic, StateObservable } from "redux-observable";
 import { Observable } from "rxjs";
@@ -55,27 +56,27 @@ export const makeConfigureStore = <STATE = {}>() =>
       );
 
     return (
-      (initialState?: Partial<STATE>) => {
+      (initialState?: STATE) => {
         const baseEnhancer = applyMiddleware(
           epicMiddleware,
           ...(definition.epicMiddleware ?? []),
         );
         const store = createStore(
-          rootReducer,
-          initialState as any,
+          rootReducer as any,
+          initialState,
           definition.enhancer
             ? definition.enhancer(baseEnhancer)
             : baseEnhancer,
-        );
-
-        epicMiddleware.run(rootEpic);
-
-        return store as Store<STATE & {
+        ) as Store<RecordOf<STATE & {
           __private__: {
             [key in UnionOfProperty<PKGS, "name">]:
             UnionOfProperty<PKGS, "initialState">;
           };
-        }, MythicAction>;
+        }>, MythicAction>;
+
+        epicMiddleware.run(rootEpic);
+
+        return store;
       }
     );
   };
