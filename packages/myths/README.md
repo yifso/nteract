@@ -88,7 +88,7 @@ export const addToSum =
   });
 ```
 
-Use `thenDispatch: []` to define actions then should be generated from actions of the type being defined, and `andAlso: []` to
+Use `thenDispatch: []` to define actions then should be dispatched when actions of the type defined are dispatched, and `andAlso: []` to
 generate actions based on a custom predicate. Since the type being defined is not available for reference yet, it is
 passed as third argument to the dispatch function.
  
