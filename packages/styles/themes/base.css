@@ -15,7 +15,11 @@
   outline: none;
   /* When expanded, this is overtaken to 100% */
   text-overflow: ellipsis;
-  max-height: 300px;
+  max-height: 336px;
+}
+
+.nteract-cell-outputs.hidden {
+  display: none;
 }
 
 .nteract-cell-outputs.expanded {
