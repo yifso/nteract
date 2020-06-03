@@ -18,6 +18,10 @@
   max-height: 300px;
 }
 
+.nteract-cell-outputs.hidden {
+  display: none;
+}
+
 .nteract-cell-outputs.expanded {
   height: 100%;
   max-height: 100%;
