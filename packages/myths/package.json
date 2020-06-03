@@ -24,6 +24,9 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
+  "devDependencies": {
+    "utility-types": "^3.10.0"
+  },
   "author": "nteract contributers",
   "license": "BSD-3-Clause"
 }

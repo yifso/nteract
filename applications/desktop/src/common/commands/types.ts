@@ -25,7 +25,7 @@ export type Command =
   | ElectronRoleCommand
   ;
 
-export interface ActionCommand<STORE extends Store, PROPS> {
+export interface ActionCommand<STORE extends Store<any, any>, PROPS> {
   name: string;
   props: { [key in RequiredKeys<PROPS>]: "required" }
        & { [key in OptionalKeys<PROPS>]: "optional" };

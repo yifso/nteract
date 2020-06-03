@@ -4,63 +4,78 @@ import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { MythicAction, MythicPackage } from "./types";
 
-export const makeConfigureStore = <STATE>() => <DEPS>(
-  definition: {
-    packages: MythicPackage[],
-    reducers?: ReducersMapObject<STATE, any>
-    epics?: Epic[],
-    epicMiddleware?: Middleware[],
-    epicDependencies?: DEPS,
-    enhancer?: (enhancer: any) => any,
-  }
-) => {
-  const rootReducer = combineReducers(
-    Object.assign(
-      definition.reducers ?? {},
-      {
-        __private__: combineReducers(
-          definition.packages
-            .map(pkg => ({ [pkg.name]: pkg.rootReducer }))
-            .reduce(Object.assign, {})
-        ),
-      },
-    ),
-  );
+type UnionOfProperty<U, P extends string> = (
+  U extends { [key in P]: any }
+    ? U[P]
+    : never
+);
 
-  const epicMiddleware = createEpicMiddleware<any, any, STATE, any>({
-    dependencies: definition.epicDependencies ?? {},
-  });
+export const makeConfigureStore = <STATE = {}>() =>
+  <DEPS, PKGS extends MythicPackage>(
+    definition: {
+      packages: PKGS[],
+      reducers?: ReducersMapObject<Omit<STATE, "__private__">, any>
+      epics?: Epic[],
+      epicMiddleware?: Middleware[],
+      epicDependencies?: DEPS,
+      enhancer?: (enhancer: any) => any,
+    }
+  ) => {
+    const reducers = definition.packages
+      .map(pkg => ({ [pkg.name]: pkg.rootReducer }))
+      .reduce(Object.assign, {});
 
-  const rootEpic = (
-    action$: Observable<any>,
-    store$: StateObservable<any>,
-    dependencies: any,
-  ) =>
-    combineEpics(
-      ...(definition.epics ?? []),
-      ...definition.packages
-        .map(pkg => pkg.makeRootEpic()),
-    )(action$, store$, dependencies).pipe(
-      catchError((error: any, source: Observable<any>) => {
-        console.error(error);
-        return source;
-      })
+    const rootReducer = combineReducers(
+      Object.assign(
+        definition.reducers ?? {},
+        {
+          __private__: combineReducers(reducers),
+        },
+      )
     );
 
-  return (initialState: Partial<STATE>): Store<STATE, MythicAction> => {
-    const baseEnhancer = applyMiddleware(
-      epicMiddleware,
-      ...(definition.epicMiddleware ?? []),
-    );
-    const store = createStore(
-      rootReducer,
-      (initialState as unknown) as any,
-      definition.enhancer
-        ? definition.enhancer(baseEnhancer)
-        : baseEnhancer,
-    );
-    epicMiddleware.run(rootEpic);
+    const epicMiddleware = createEpicMiddleware<any, any, STATE, any>({
+      dependencies: definition.epicDependencies ?? {},
+    });
 
-    return store as any;
+    const rootEpic = (
+      action$: Observable<any>,
+      store$: StateObservable<any>,
+      dependencies: any,
+    ) =>
+      combineEpics(
+        ...(definition.epics ?? []),
+        ...definition.packages
+          .map(pkg => pkg.makeRootEpic()),
+      )(action$, store$, dependencies).pipe(
+        catchError((error: any, source: Observable<any>) => {
+          console.error(error);
+          return source;
+        })
+      );
+
+    return (
+      (initialState?: Partial<STATE>) => {
+        const baseEnhancer = applyMiddleware(
+          epicMiddleware,
+          ...(definition.epicMiddleware ?? []),
+        );
+        const store = createStore(
+          rootReducer,
+          initialState as any,
+          definition.enhancer
+            ? definition.enhancer(baseEnhancer)
+            : baseEnhancer,
+        );
+
+        epicMiddleware.run(rootEpic);
+
+        return store as Store<STATE & {
+          __private__: {
+            [key in UnionOfProperty<PKGS, "name">]:
+            UnionOfProperty<PKGS, "initialState">;
+          };
+        }, MythicAction>;
+      }
+    );
   };
-};

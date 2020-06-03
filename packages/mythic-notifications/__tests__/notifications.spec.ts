@@ -1,8 +1,4 @@
 import { notifications, sendNotification } from "@nteract/mythic-notifications";
-import { TestScheduler } from "rxjs/testing";
-
-const buildScheduler = () =>
-  new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 
 describe("notifications", () => {
   test("emits a notification when sendNotification is reduced", () => {
@@ -25,9 +21,10 @@ describe("notifications", () => {
   });
 
   test("emits sendNotification on an error action", () => {
-    buildScheduler().run(helpers => {
-      const { hot, expectObservable } = helpers;
-      const inputActions = {
+    notifications.testMarbles(
+      "ab|",
+      "AB|",
+      {
         a: {
           type: "catContent/downloadFailed",
           error: true,
@@ -41,9 +38,6 @@ describe("notifications", () => {
           error: true,
           payload: new Error("🙀"),
         },
-      };
-
-      const outputActions = {
         A: sendNotification.create({
           title: "Download failed",
           message: "😿 no new cat pics found 😿",
@@ -54,19 +48,7 @@ describe("notifications", () => {
           message: "🙀",
           level: "error",
         }),
-      };
-
-      const inputMarbles  = "ab|";
-      const outputMarbles = "AB|";
-
-      const inputAction$ = hot(inputMarbles, inputActions);
-      const outputAction$ = notifications.makeRootEpic()(
-        inputAction$,
-        null,
-        {},
-      );
-
-      expectObservable(outputAction$).toBe(outputMarbles, outputActions);
-    });
+      },
+    );
   });
 });

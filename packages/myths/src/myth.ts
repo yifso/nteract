@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { Diff } from "utility-types";
 import { makeEpics } from "./epics";
 import { makeCreateConnectedComponent } from "./react";
 import { makeReducer } from "./reducer";
@@ -7,7 +8,7 @@ import { Myth, MythDefinition, MythicAction, Myths } from "./types";
 export const makeCreateMyth =
   <PKG extends string, STATE>(pkg: PKG, myths: Myths<PKG, STATE>) =>
     <NAME extends string>(name: NAME) =>
-      <PROPS>(
+      <PROPS extends {}>(
         definition: MythDefinition<STATE, PROPS>,
       ): Myth<PKG, NAME, PROPS, STATE> => {
         type OurMyth = Myth<PKG, NAME, PROPS, STATE>;
@@ -32,9 +33,18 @@ export const makeCreateMyth =
         mythWIP.create =
           (payload: PROPS) => ({ type: mythWIP.type!, payload });
 
+        // Function to partial create actions
+        mythWIP.with =
+          <DEFINED_PROPS extends Partial<PROPS>>
+          (partial: DEFINED_PROPS & Partial<PROPS>) =>
+            (payload: Diff<PROPS, DEFINED_PROPS>) => ({
+              type: mythWIP.type!,
+              payload: { ...partial, ...payload } as DEFINED_PROPS & PROPS,
+            });
+
         // Epics to include into our rootEpic
         mythWIP.epics =
-          makeEpics(mythWIP.create, definition.epics ?? []);
+          makeEpics(pkg, mythWIP as OurMyth, definition);
 
         // Is this action one of ours?
         mythWIP.appliesTo =

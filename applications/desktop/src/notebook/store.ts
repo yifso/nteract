@@ -1,13 +1,11 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
 import { notifications } from "@nteract/mythic-notifications";
 import { makeConfigureStore } from "@nteract/myths";
-import { Store } from "redux";
 import epics from "./epics";
 import { LocalContentProvider } from "./local-content-provider";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
 
-export type DesktopStore = Store<DesktopNotebookAppState, any>;
 export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
   packages: [
     notifications,
@@ -27,3 +25,4 @@ export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
   epicDependencies: { contentProvider: new LocalContentProvider() },
 });
 export default configureStore;
+export type DesktopStore = ReturnType<typeof configureStore>;

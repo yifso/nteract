@@ -21,7 +21,7 @@ export const dispatchCommandInMain = <
 };
 
 export const dispatchCommandInRenderer = <
-  STORE extends Store,
+  STORE extends Store<any, any>,
   COMMAND extends ActionCommand<STORE, PROPS>,
   PROPS
 >(
