@@ -2,7 +2,6 @@ import * as path from "path";
 import { appName } from "./appname";
 import * as commands from "./commands";
 import { MenuDefinition } from "./commands/types";
-import { isEqual } from "lodash";
 
 const examplesBaseDir = path
   .join(__dirname, "..", "node_modules", "@nteract/examples")

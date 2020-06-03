@@ -1,4 +1,3 @@
-import { ignoreElements } from "rxjs/operators";
 import { configuration } from "../package";
 
 export const saveConfig = configuration.createMyth("saveConfig")<void>({

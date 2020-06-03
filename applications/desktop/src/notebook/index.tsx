@@ -64,7 +64,7 @@ import { Provider } from "react-redux";
 import { initGlobalHandlers } from "./global-events";
 import { initMenuHandlers } from "./menu";
 import { initNativeHandlers } from "./native-window";
-import { DesktopNotebookAppState, makeDesktopNotebookRecord } from "./state";
+import { makeDesktopNotebookRecord } from "./state";
 import configureStore, { DesktopStore } from "./store";
 
 // Load the nteract fonts
