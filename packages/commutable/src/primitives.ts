@@ -209,23 +209,26 @@ export function createFrozenMediaBundle(
 export function createOnDiskMediaBundle(
   mediaBundle: Readonly<MediaBundle>
 ): OnDiskMediaBundle {
-  // Technically we could return just the mediaBundle as is
-  // return mediaBundle;
+  // Return the bundle as is
+  return mediaBundle;
+
+  // The remultiline function in the code below is costly when the data payload is large
+  // TODO: figure out a configurable way to reformat the string when needed.
+
   // However for the sake of on-disk readability we write out remultilined
   // versions of the array and string ones
-
-  const freshBundle: OnDiskMediaBundle = {};
-  for (const key in mediaBundle) {
-    if (IS_VEGA.test(key)) {
-      freshBundle[key] = JSON.parse(mediaBundle[key] as string);
-    } else if (
-      !isJSONKey(key) &&
-      (typeof mediaBundle[key] === "string" || Array.isArray(mediaBundle[key]))
-    ) {
-      freshBundle[key] = remultiline(mediaBundle[key] as MultiLineString);
-    } else {
-      freshBundle[key] = mediaBundle[key];
-    }
-  }
-  return freshBundle;
+  // const freshBundle: OnDiskMediaBundle = {};
+  // for (const key in mediaBundle) {
+  //   if (IS_VEGA.test(key)) {
+  //     freshBundle[key] = JSON.parse(mediaBundle[key] as string);
+  //   } else if (
+  //     !isJSONKey(key) &&
+  //     (typeof mediaBundle[key] === "string" || Array.isArray(mediaBundle[key]))
+  //   ) {
+  //     freshBundle[key] = remultiline(mediaBundle[key] as MultiLineString);
+  //   } else {
+  //     freshBundle[key] = mediaBundle[key];
+  //   }
+  // }
+  // return freshBundle;
 }

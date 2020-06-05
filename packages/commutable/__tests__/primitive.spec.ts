@@ -83,9 +83,12 @@ describe("createOnDiskMediaBundle", () => {
       "application/vnd.vega.v2+json": '{ "test":"1, 2, 4"}'
     };
 
-    const expectedResult = {
-      "application/vnd.vega.v2+json": { test: "1, 2, 4" }
-    };
+    // Uncomment the reformated result when we turn on the reformatting
+    const expectedResult = mediaBundle;
+    // const expectedResult = {
+    //   "application/vnd.vega.v2+json": { test: "1, 2, 4" }
+    // };
+
     expect(createOnDiskMediaBundle(mediaBundle)).toStrictEqual(expectedResult);
   });
   it("multilines string values into array of strings", () => {
@@ -93,9 +96,11 @@ describe("createOnDiskMediaBundle", () => {
       "text/html": "test\n\n\nthis\n\nout"
     };
 
-    const expectedResult = {
-      "text/html": ["test\n", "\n", "\n", "this\n", "\n", "out"]
-    };
+    // Uncomment the reformated result when we turn on the reformatting
+    const expectedResult = mediaBundle;
+    // const expectedResult = {
+    //   "text/html": ["test\n", "\n", "\n", "this\n", "\n", "out"]
+    // };
 
     expect(createOnDiskMediaBundle(mediaBundle)).toStrictEqual(expectedResult);
   });
