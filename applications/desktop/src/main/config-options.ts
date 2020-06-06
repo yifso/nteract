@@ -10,9 +10,9 @@ export const {
 });
 
 export const {
-  selector: customAccelerators,
+  selector: customKeyboardShortcuts,
 } = defineConfigOption({
-  key: "accelerators",
-  label: "Custom accelerators",
+  key: "keyboardShortcuts",
+  label: "Custom keyboard shortcuts",
   defaultValue: {},
 });

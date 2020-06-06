@@ -1,5 +1,5 @@
 import { createMythicPackage } from "@nteract/myths";
-import { List, Map } from "immutable";
+import { Map } from "immutable";
 import { inMemoryConfigurationBackend } from "./backends/in-memory-transient";
 import { ConfigurationState } from "./types";
 
@@ -8,5 +8,5 @@ export const configuration =
     initialState: {
       backend: inMemoryConfigurationBackend,
       current: Map(),
-    },
+    }
   });

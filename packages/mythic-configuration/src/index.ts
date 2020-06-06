@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { isImmutable, List } from "immutable";
 import { isEqual, result, set, unset } from "lodash";
 import { setConfigAtKey } from "./myths/set-config-at-key";
 import { configuration } from "./package";
@@ -45,8 +45,14 @@ export const defineConfigOption = <TYPE>(
     ...props,
     value: props.defaultValue,
     selector: configuration.createSelector(
-      state => state?.current?.getIn(props.key.split("."))
-        ?? props.defaultValue,
+      state => {
+        const value =
+          state?.current?.getIn(props.key.split(".")) ?? props.defaultValue;
+
+        return isImmutable(value)
+          ? value.toJS()
+          : value;
+      }
     ),
     action: (value: TYPE) => setConfigAtKey.create({ key: props.key, value }),
   };
@@ -94,8 +100,7 @@ export const allConfigOptions = (state?: HasPrivateConfigurationState) => {
   if (state !== undefined) {
     return all.map(x => ({
       ...x,
-      value: state.__private__.configuration.current
-        .getIn(x.key.split("."), x.defaultValue),
+      value: x.selector(state),
     }));
   }
   else {

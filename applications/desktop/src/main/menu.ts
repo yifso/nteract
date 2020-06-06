@@ -8,7 +8,7 @@ import { appName } from "../common/appname";
 import { dispatchCommandInMain } from "../common/commands/dispatch";
 import { ActionCommand, Command, MenuDefinition, MenuitemOptions, Platform, SubmenuOptions } from "../common/commands/types";
 import { menu, tray } from "../common/menu";
-import { customAccelerators } from "./config-options";
+import { customKeyboardShortcuts } from "./config-options";
 import { MainAction, MainStateRecord } from "./reducers";
 
 const interceptAcceleratorEarly =
@@ -22,7 +22,7 @@ const acceleratorFor = (
   command: Command,
   options: MenuitemOptions,
 ) => {
-  const customs = customAccelerators(state);
+  const customs = customKeyboardShortcuts(state);
   const data: any = customs[command.name]  ?? accelerators[command.name];
 
   if (data === undefined) {

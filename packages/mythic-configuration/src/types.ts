@@ -1,5 +1,5 @@
 import { RootState } from "@nteract/myths";
-import { List, Map } from "immutable";
+import { Map } from "immutable";
 import { Observable } from "rxjs";
 import { loadConfig } from "./myths/load-config";
 import { setConfig } from "./myths/set-config";
@@ -8,9 +8,9 @@ import { setConfigAtKey } from "./myths/set-config-at-key";
 export type Configuration = Map<string, any>;
 
 export interface ConfigurationBackend {
-  setup: () => Observable<typeof loadConfig.action>,
-  load: () => Observable<typeof setConfig.action>
-  save: (current: Configuration) => Observable<any>,
+  setup: () => Observable<typeof loadConfig.action>;
+  load: () => Observable<typeof setConfig.action>;
+  save: (current: Configuration) => Observable<any>;
 }
 
 export interface ConfigurationState {

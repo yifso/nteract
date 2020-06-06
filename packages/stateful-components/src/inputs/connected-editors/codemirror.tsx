@@ -124,8 +124,15 @@ const makeMapStateToProps = (state: AppState & HasPrivateConfigurationState, own
       }
     }
 
+    // FIXME: The type for mode is wrong; it can also be a string or a Map at
+    //        this point! Hence:
+    // tslint:disable-next-line:strict-type-predicates
+    mode = typeof mode === "object" && "toJS" in mode
+      ? (mode as any).toJS()
+      : mode;
+
     const codeMirror = {
-      ...mode,
+      mode,
       ...codeMirrorConfig(state as any),
     };
 
