@@ -1,6 +1,6 @@
 import * as actions from "@nteract/actions";
 import { Notebook, stringifyNotebook, toJS } from "@nteract/commutable";
-import { transferConfigOptionFromRenderer } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 import { sendNotification } from "@nteract/mythic-notifications";
 import * as selectors from "@nteract/selectors";
 import { AppState, ContentRef, createKernelRef, DirectoryContentRecordProps, DummyContentRecordProps, FileContentRecordProps, IContent, IContentProvider, JupyterHostRecord, NotebookContentRecordProps, ServerConfig } from "@nteract/types";
@@ -137,10 +137,7 @@ export function downloadString(
   FileSaver.saveAs(blob, filename);
 }
 
-// FIXME: should be createConfigOption(), but that gets called twice during some
-//        tests... hence the abuse of below function, which allows duplicate
-//        definitions
-const { selector: autoSaveInterval } = transferConfigOptionFromRenderer({
+const { selector: autoSaveInterval } = defineConfigOption({
   key: "autoSaveInterval",
   label: "Auto-save interval",
   defaultValue: 120_000,

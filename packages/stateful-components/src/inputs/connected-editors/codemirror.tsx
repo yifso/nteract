@@ -1,6 +1,6 @@
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import CodeMirrorEditor from "@nteract/editor";
-import { createConfigCollection, createConfigOption, createDeprecatedConfigOption, HasPrivateConfigurationState } from "@nteract/mythic-configuration";
+import { createConfigCollection, createDeprecatedConfigOption, defineConfigOption, HasPrivateConfigurationState } from "@nteract/mythic-configuration";
 import { connect } from "react-redux";
 
 const codeMirrorConfig = createConfigCollection({
@@ -19,7 +19,7 @@ const BOOLEAN = [
   {label: "No", value: false},
 ];
 
-createConfigOption({
+defineConfigOption({
   label: "Blink Editor Cursor",
   key: "codeMirror.cursorBlinkRate",
   values: [
@@ -29,35 +29,35 @@ createConfigOption({
   defaultValue: 0,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Show Cursor When Selecting",
   key: "codeMirror.showCursorWhenSelecting",
   values: BOOLEAN,
   defaultValue: false,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Close Brackets Automatically",
   key: "codeMirror.autoCloseBrackets",
   values: BOOLEAN,
   defaultValue: false,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Show Matching Brackets",
   key: "codeMirror.matchBrackets",
   values: BOOLEAN,
   defaultValue: true,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Use Smart Indent",
   key: "codeMirror.smartIndent",
   values: BOOLEAN,
   defaultValue: true,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Tab Size",
   key: "codeMirror.tabSize",
   values: [
@@ -68,7 +68,7 @@ createConfigOption({
   defaultValue: 4,
 });
 
-createConfigOption({
+defineConfigOption({
   label: "Show Line Numbers",
   key: "codeMirror.lineNumbers",
   values: BOOLEAN,

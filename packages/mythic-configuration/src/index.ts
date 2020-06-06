@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { result, set } from "lodash";
+import { isEqual, result, set, unset } from "lodash";
 import { setConfigAtKey } from "./myths/set-config-at-key";
 import { configuration } from "./package";
 import { ConfigurationOption, ConfigurationOptionDefinition, ConfigurationOptionDeprecatedDefinition, HasPrivateConfigurationState } from "./types";
@@ -13,12 +13,32 @@ export * from "./types";
 const options: {[key: string]: ConfigurationOption} = {};
 const deprecated: {[key: string]: <T>(value: T) => { [key: string]: T }} = {};
 
-const defineConfigOption = <TYPE>(
+export const defineConfigOption = <TYPE>(
   props: ConfigurationOptionDefinition<TYPE>,
-  allowDuplicate: boolean,
 ) => {
-  if ((!allowDuplicate && props.key in options) || props.key in deprecated) {
-    throw new Error(`Duplicate configuration option "${props.key}"`);
+  if (props.key in deprecated) {
+    throw new Error(`Duplicate deprecated configuration option "${props.key}"`);
+  }
+
+  if (props.key in options) {
+    // Make copies and trim everything down to just the spec
+    const oldSpec = {...options[props.key]};
+    const newSpec = {...props};
+
+    unset(oldSpec, "value");
+    unset(oldSpec, "selector");
+    unset(oldSpec, "action");
+
+    unset(newSpec, "value");
+
+    if (!isEqual(oldSpec, newSpec)) {
+      console.group(`Duplicate configuration option "${props.key}"`)
+      console.log("old config option spec:", oldSpec);
+      console.log("new config option spec:", newSpec);
+      console.groupEnd()
+
+      throw new Error(`Duplicate configuration option "${props.key}"`);
+    }
   }
 
   options[props.key] = {
@@ -37,20 +57,16 @@ const defineConfigOption = <TYPE>(
 export const createDeprecatedConfigOption = <TYPE>(
   props: ConfigurationOptionDeprecatedDefinition,
 ) => {
-  if (props.key in options || props.key in deprecated) {
-    throw new Error(`Duplicate configuration option "${props.key}"`);
+  if (props.key in options) {
+    throw new Error(`Duplicate deprecated configuration option "${props.key}"`);
+  }
+
+  if (props.key in deprecated && props.changeTo !== deprecated[props.key]) {
+    throw new Error(`Duplicate deprecated configuration option "${props.key}"`);
   }
 
   deprecated[props.key] = props.changeTo;
 }
-
-export const createConfigOption = <TYPE>(
-  props: ConfigurationOptionDefinition<TYPE>
-) => defineConfigOption(props, false);
-
-export const transferConfigOptionFromRenderer = <TYPE>(
-  props: ConfigurationOptionDefinition<TYPE>,
-) => defineConfigOption(props, true);
 
 export const createConfigCollection = <TYPE>(
   { key }: { key: string },

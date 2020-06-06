@@ -1,13 +1,13 @@
 import { fromJS, Map } from "immutable";
+import { allDeprecations } from "../index";
 import { configuration } from "../package";
 
-export const mergeConfig = configuration.createMyth("mergeConfig")<object>({
+export const setConfig = configuration.createMyth("setConfig")<object>({
   reduce: (state, action) => {
     const initialConfig = fromJS(action.payload) as Map<string, any>;
 
     // Set new keys from deprecations
-    const amendedConfig = state
-      .get("deprecations")
+    const amendedConfig = allDeprecations()
       .filter((deprecation) => initialConfig.hasIn(deprecation.key.split(".")))
       .reduce((outerConfig, deprecation) =>
         Object
@@ -26,8 +26,7 @@ export const mergeConfig = configuration.createMyth("mergeConfig")<object>({
       );
 
     // Remove old keys from deprecations
-    const config = state
-      .get("deprecations")
+    const config = allDeprecations()
       .filter((deprecation) => initialConfig.hasIn(deprecation.key.split(".")))
       .reduce((outerConfig, deprecation) =>
         outerConfig.removeIn(deprecation.key.split(".")),

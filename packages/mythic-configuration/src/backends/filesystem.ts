@@ -6,7 +6,7 @@ import { concat, of } from "rxjs";
 import { ignoreElements, map, mapTo, skipWhile } from "rxjs/operators";
 import { ConfigurationBackend } from "..";
 import { loadConfig } from "../myths/load-config";
-import { mergeConfig } from "../myths/merge-config";
+import { setConfig } from "../myths/set-config";
 import { setConfigBackend } from "../myths/set-config-backend";
 
 const filesystemConfigurationBackend = (filename: string) => ({
@@ -25,7 +25,7 @@ const filesystemConfigurationBackend = (filename: string) => ({
       // SyntaxError means the file is probably in the middle of a write
       mapErrorTo(undefined, err => err.name === "SyntaxError"),
       skipWhile(data => data === undefined),
-      map(mergeConfig.create),
+      map(setConfig.create),
     ),
 
   save: (current: Map<string, any>) =>

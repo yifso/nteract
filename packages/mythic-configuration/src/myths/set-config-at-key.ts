@@ -1,3 +1,4 @@
+import { fromJS } from "immutable";
 import { of } from "rxjs";
 import { configuration } from "../package";
 import { saveConfig } from "./save-config";
@@ -9,7 +10,7 @@ export const setConfigAtKey = configuration.createMyth("setConfigAtKey")<{
   reduce: (state, action) =>
     state.setIn(
       ["current", ...action.payload.key.split(".")],
-      action.payload.value,
+      fromJS(action.payload.value),
     ),
 
   thenDispatch: [

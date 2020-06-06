@@ -1,4 +1,4 @@
-import { createConfigOption } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -7,7 +7,7 @@ import { actions, AppState, ContentRef, selectors } from "@nteract/core";
 
 const {
   selector: editorTypeConfig,
-} = createConfigOption({
+} = defineConfigOption({
   key: "editorType",
   label: "Editor Type",
   defaultValue: "codemirror",

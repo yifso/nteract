@@ -1,8 +1,8 @@
-import { createConfigOption } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 
 export const {
   selector: userTheme,
-} = createConfigOption({
+} = defineConfigOption({
   key: "theme",
   label: "Theme",
   values: [

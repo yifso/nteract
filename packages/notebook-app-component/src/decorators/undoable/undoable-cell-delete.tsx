@@ -1,5 +1,5 @@
 import { actions, AppState, selectors } from "@nteract/core";
-import { createConfigOption } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -8,7 +8,7 @@ import UndoableDelete from "./undoable-delete";
 
 export const {
   selector: deleteDelay,
-} = createConfigOption({
+} = defineConfigOption({
   key: "deleteDelay",
   label: "Delay for undo-ing deletes",
   defaultValue: 10_000,

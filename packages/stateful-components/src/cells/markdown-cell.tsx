@@ -1,4 +1,4 @@
-import { createConfigOption } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -15,7 +15,7 @@ import { ReactMarkdownProps } from "react-markdown";
 
 const {
   selector: markdownConfig,
-} = createConfigOption({
+} = defineConfigOption({
   key: "markdownOptions",
   label: "Markdown Editor Options",
   defaultValue: {},

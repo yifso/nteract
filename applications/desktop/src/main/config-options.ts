@@ -1,8 +1,8 @@
-import { createConfigOption } from "@nteract/mythic-configuration";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 
 export const {
   selector: defaultKernel,
-} = createConfigOption({
+} = defineConfigOption({
   key: "defaultKernel",
   label: "Default kernel on startup",
   valuesFrom: "kernelspecs",
@@ -11,7 +11,7 @@ export const {
 
 export const {
   selector: customAccelerators,
-} = createConfigOption({
+} = defineConfigOption({
   key: "accelerators",
   label: "Custom accelerators",
   defaultValue: {},

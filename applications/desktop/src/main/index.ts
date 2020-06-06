@@ -1,4 +1,4 @@
-import { ConfigurationOption, setConfigFile, transferConfigOptionFromRenderer } from "@nteract/mythic-configuration";
+import { ConfigurationOption, setConfigFile, defineConfigOption } from "@nteract/mythic-configuration";
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 import { app, BrowserWindow, dialog, Event, ipcMain as ipc, Menu, Tray } from "electron";
 import initContextMenu from "electron-context-menu";
@@ -44,7 +44,7 @@ const notebooks = argv._.filter((x) => /(.ipynb)$/.test(x));
 
 ipc.on("transfer-config-options-to-main",
   (_event: any, options: ConfigurationOption[]) => {
-    options.forEach(each => transferConfigOptionFromRenderer(each));
+    options.forEach(each => defineConfigOption(each));
   });
 
 ipc.on("new-kernel", (_event: any, k: KernelspecInfo) => {
@@ -159,7 +159,7 @@ app.on("before-quit", (e) => {
   if (
     // `win.close()` teardown is async, so `isVisible` is more reliable, see #3656
     windows.filter((win) => win.isVisible()).length > 0 &&
-    store.getState().get("quittingState") === QUITTING_STATE_NOT_STARTED
+    store.getState().quittingState === QUITTING_STATE_NOT_STARTED
   ) {
     e.preventDefault();
     store.dispatch(setQuittingState(QUITTING_STATE_QUITTING));
@@ -184,7 +184,7 @@ windowAllClosed.pipe(skipUntil(appAndKernelSpecsReady)).subscribe(() => {
   // - Quit when last window closed.
   if (
     process.platform !== "darwin" ||
-    store.getState().get("quittingState") === QUITTING_STATE_QUITTING
+    store.getState().quittingState === QUITTING_STATE_QUITTING
   ) {
     app.quit();
   }

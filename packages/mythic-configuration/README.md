@@ -14,7 +14,8 @@ $ npm install --save @nteract/mythic-configuration
 
 ## Usage
 
-Initialize the package by including the `configuration` package and dispatching a `setConfigFile` action:
+Initialize the package by including the `configuration` package. Per default it will save the configuration in memory.
+If you would like to use a config file, you can dispatch a `setConfigFile` action:
 
 ```javascript
 import { configuration } from "@nteract/mythic-configuration";
@@ -33,19 +34,31 @@ After this initialisation, you can then work with configuration options:
 
 ```javascript
 export const {
-  selector: defaultKernel,
-  action: setDefaultKernel,
-} = createConfigOption({
-  key: "defaultKernel",
-  label: "Default kernel on startup",
-  valuesFrom: "kernelspecs",
-  defaultValue: "python3",
+  selector: tabSize,
+  action: setTabSize,
+} = defineConfigOption({
+  label: "Tab Size",
+  key: "codeMirror.tabSize",
+  values: [
+    {label: "2 Spaces", value: 2},
+    {label: "3 Spaces", value: 3},
+    {label: "4 Spaces", value: 4},
+  ],
+  defaultValue: 4,
 });
 
-const currentValue = defaultKernel(store.getState());
+const currentValue = tabSize(store.getState());
 
-store.dispatch(setDefaultKernel("node_nteract"));
+store.dispatch(setTabSize(2));
 ```
+
+To get an object from all config options with a common prefix, use `createConfigCollection`:
+```javascript
+const codeMirrorConfig = createConfigCollection({
+  key: "codeMirror",
+});
+```
+Now `codeMirrorConfig()` will give you e.g. with above option `{tabSize: 4}`, with default values properly handled. 
 
 You can also get all options:
 ```javascript
@@ -54,6 +67,18 @@ import { allConfigOptions } from "@nteract/mythic-configuration";
 const options = allConfigOptions();
 const optionsWithCurrentValues = allConfigOptions(store.getState());
 ```
+
+In case you want to change the key of a config option, you can deprecate the old key:
+```javascript
+createDeprecatedConfigOption({
+  key: "cursorBlinkRate",
+  changeTo: (value: number) => ({
+    "codeMirror.cursorBlinkRate": value,
+  }),
+});
+```
+
+This will change the old key to the new key, unless the new key already has a value.
 
 ## API
 
