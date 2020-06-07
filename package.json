@@ -223,7 +223,7 @@
     "remark-parse": "^8.0.0",
     "remark-stringify": "^8.0.0",
     "rimraf": "^3.0.0",
-    "rxjs": "^6.5.5",
+    "rxjs": "^6.3.3",
     "shell-env": "^3.0.0",
     "spawn-rx": "^3.0.0",
     "spawnteract": "^5.0.0",
