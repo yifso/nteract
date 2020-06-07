@@ -3,7 +3,7 @@ import {
   DocumentRecordProps,
   selectors,
 } from "@nteract/core";
-import { ipcRenderer as ipc, IpcRendererEvent } from "electron";
+import { ipcRenderer as ipc, IpcRendererEvent, MessageBoxReturnValue } from "electron";
 import { RecordOf } from "immutable";
 import { ofType, StateObservable } from "redux-observable";
 import { concat, empty, Observable, Observer, of, zip } from "rxjs";
@@ -53,8 +53,8 @@ export const closeNotebookEpic = (
           };
           ipc.once(
             "show-message-box-response",
-            (_event: IpcRendererEvent, arg: number) => {
-              observer.next(arg === 0);
+            (_event: IpcRendererEvent, arg: MessageBoxReturnValue) => {
+              observer.next(arg.response === 0);
               observer.complete();
             }
           );

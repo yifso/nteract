@@ -1,6 +1,6 @@
-import { ConfigurationOption, setConfigFile, defineConfigOption } from "@nteract/mythic-configuration";
+import { ConfigurationOption, defineConfigOption, setConfigFile } from "@nteract/mythic-configuration";
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
-import { app, BrowserWindow, dialog, Event, ipcMain as ipc, Menu, Tray } from "electron";
+import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, Tray } from "electron";
 import initContextMenu from "electron-context-menu";
 import * as log from "electron-log";
 import { existsSync } from "fs";
@@ -8,42 +8,7 @@ import { mkdirpObservable } from "fs-observable";
 import * as jupyterPaths from "jupyter-paths";
 import * as kernelspecs from "kernelspecs";
 import { join, resolve } from "path";
-import yargs from "yargs/yargs";
-
-import { KernelspecInfo, Kernelspecs } from "@nteract/types";
-
-import {
-  app,
-  BrowserWindow,
-  dialog,
-  Event,
-  ipcMain as ipc,
-  IpcMainEvent,
-  Menu,
-  Tray,
-} from "electron";
-import {
-  mkdirpObservable,
-  readFileObservable,
-  writeFileObservable,
-} from "fs-observable";
 import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
-import {
-  buffer,
-  catchError,
-  first,
-  mergeMap,
-  skipUntil,
-  takeUntil,
-  tap,
-} from "rxjs/operators";
-
-import {
-  QUITTING_STATE_NOT_STARTED,
-  QUITTING_STATE_QUITTING,
-  setKernelSpecs,
-  setQuittingState,
-} from "./actions";
 import { buffer, first, mergeMap, skipUntil, takeUntil } from "rxjs/operators";
 import yargs from "yargs/yargs";
 import { QUITTING_STATE_NOT_STARTED, QUITTING_STATE_QUITTING, setKernelSpecs, setQuittingState } from "./actions";
@@ -54,6 +19,12 @@ import { launch, launchNewNotebook } from "./launch";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
 import configureStore from "./store";
+
+// FIXME: Needed to load zeromq for now, but deprecated and to be removed in
+//        electron@11. Need to figure out how to get a version of zmq that
+//        complies with the new requirements for native modules.
+//        See also: https://github.com/electron/electron/issues/18397
+app.allowRendererProcessReuse = false
 
 const store = configureStore(undefined);
 
@@ -95,8 +66,8 @@ ipc.on("reload", (event: IpcMainEvent) => {
   event.returnValue = null;
 });
 
-ipc.on("show-message-box", (event: IpcMainEvent, arg: any) => {
-  const response = dialog.showMessageBox(arg);
+ipc.on("show-message-box", async (event: IpcMainEvent, arg: any) => {
+  const response = await dialog.showMessageBox(arg);
   event.sender.send("show-message-box-response", response);
 });
 
@@ -123,11 +94,6 @@ const prepJupyterObservable = prepareEnv.pipe(
       // The config directory is taken care of by the configuration myths
     )
   ),
-  tap((file) => {
-    if (file) {
-      Object.assign(CONFIG, JSON.parse(file.toString("utf8")));
-    }
-  })
 );
 
 const kernelSpecsPromise = prepJupyterObservable
