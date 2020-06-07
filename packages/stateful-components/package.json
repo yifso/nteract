@@ -23,6 +23,7 @@
     "@nteract/core": "^14.0.0",
     "@nteract/fixtures": "^2.3.7",
     "@nteract/markdown": "4.4.0",
+    "@nteract/mythic-configuration": "0.1.0",
     "@nteract/outputs": "^3.0.9",
     "@nteract/presentational-components": "^3.3.14",
     "immutable": "^4.0.0-rc.12",

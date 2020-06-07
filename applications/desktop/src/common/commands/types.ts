@@ -1,24 +1,9 @@
 import { ContentRef, KernelspecInfo } from "@nteract/core";
 import { ManifestItem } from "@nteract/examples";
+import { ConfigurationOption } from "@nteract/mythic-configuration";
 import { Action, Store } from "redux";
 import { OptionalKeys, RequiredKeys } from "utility-types";
 import { DesktopStore } from "../../notebook/store";
-
-// FIXME from mythic-configuration
-export interface ConfigurationOptionDefinition<TYPE = any> {
-  label: string;
-  key: string;
-  defaultValue: TYPE;
-  valuesFrom?: string;
-  values?: Array<{
-    label: string;
-    value: TYPE;
-  }>;
-}
-export interface ConfigurationOption<TYPE = any>
-  extends ConfigurationOptionDefinition<TYPE> {
-  value?: TYPE;
-}
 
 export type Command =
   | ActionCommand<any, any>
@@ -80,6 +65,8 @@ export interface DynamicMenuItems<NAME extends string, T> {
 export interface MenuitemOptions {
   platform?: Platform;
   props?: {};
+  type?: "radio" | "checkbox";
+  isChecked?: boolean;
 }
 
 export interface SubmenuOptions {

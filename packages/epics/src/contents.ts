@@ -1,20 +1,9 @@
 import * as actions from "@nteract/actions";
 import { Notebook, stringifyNotebook, toJS } from "@nteract/commutable";
+import { defineConfigOption } from "@nteract/mythic-configuration";
 import { sendNotification } from "@nteract/mythic-notifications";
 import * as selectors from "@nteract/selectors";
-import {
-  AppState,
-  ContentRef,
-  createKernelRef,
-  DirectoryContentRecordProps,
-  DummyContentRecordProps,
-  FileContentRecordProps,
-  IContent,
-  IContentProvider,
-  JupyterHostRecord,
-  NotebookContentRecordProps,
-  ServerConfig
-} from "@nteract/types";
+import { AppState, ContentRef, createKernelRef, DirectoryContentRecordProps, DummyContentRecordProps, FileContentRecordProps, IContent, IContentProvider, JupyterHostRecord, NotebookContentRecordProps, ServerConfig } from "@nteract/types";
 import FileSaver from "file-saver";
 import { RecordOf } from "immutable";
 import * as path from "path";
@@ -22,14 +11,7 @@ import { Action } from "redux";
 import { ofType, StateObservable } from "redux-observable";
 import { EMPTY, from, interval, Observable, of } from "rxjs";
 import { AjaxResponse } from "rxjs/ajax";
-import {
-  catchError,
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  tap
-} from "rxjs/operators";
+import { catchError, filter, map, mergeMap, switchMap, tap } from "rxjs/operators";
 import urljoin from "url-join";
 
 export function updateContentEpic(
@@ -155,12 +137,18 @@ export function downloadString(
   FileSaver.saveAs(blob, filename);
 }
 
+const { selector: autoSaveInterval } = defineConfigOption({
+  key: "autoSaveInterval",
+  label: "Auto-save interval",
+  defaultValue: 120_000,
+});
+
 export function autoSaveCurrentContentEpic(
   action$: Observable<Action>,
   state$: StateObservable<AppState>
 ): Observable<actions.Save> {
   return state$.pipe(
-    map(state => selectors.autoSaveInterval(state)),
+    map(state => autoSaveInterval(state)),
     switchMap(time => interval(time)),
     mergeMap(() => {
       const state = state$.value;

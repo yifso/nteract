@@ -24,6 +24,7 @@ import {
 import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
+import { allConfigOptions } from "@nteract/mythic-configuration";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
 
@@ -84,9 +85,6 @@ const store = configureStore({
     version: remote.app.getVersion(),
   }),
   comms: makeCommsRecord(),
-  config: Immutable.Map({
-    theme: "light",
-  }),
   core: makeStateRecord({
     entities: makeEntitiesRecord({
       contents: makeContentsRecord({
@@ -184,6 +182,8 @@ export default class App extends React.PureComponent {
     );
   }
 }
+
+ipc.send("transfer-config-options-to-main", allConfigOptions());
 
 const app = document.querySelector("#app");
 

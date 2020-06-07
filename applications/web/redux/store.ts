@@ -1,4 +1,4 @@
-import Immutable from "immutable";
+import Immutable, { Record } from "immutable";
 import { compose } from "redux";
 
 import {
@@ -28,14 +28,11 @@ const composeEnhancers =
     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : compose;
 
-export const initialState: AppState = {
+export const initialState = Record<AppState>({
   app: makeAppRecord({
     version: "@nteract/web"
   }),
   comms: makeCommsRecord(),
-  config: Immutable.Map({
-    theme: "light"
-  }),
   core: makeStateRecord({
     currentKernelspecsRef: kernelspecsRef,
     entities: makeEntitiesRecord({
@@ -73,14 +70,13 @@ export const initialState: AppState = {
       })
     })
   })
-};
+})();
 
 const configureStore = makeConfigureStore<AppState>()({
   packages: [notifications],
   reducers: {
     app: reducers.app,
     comms: reducers.comms,
-    config: reducers.config,
     core: reducers.core as any
   },
   epics: coreEpics.allEpics,

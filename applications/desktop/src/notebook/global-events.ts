@@ -1,5 +1,7 @@
 import { actions, ContentRef, createKernelRef, KernelspecInfo, selectors } from "@nteract/core";
+import { setConfigFile } from "@nteract/mythic-configuration";
 import { Event, ipcRenderer as ipc, remote } from "electron";
+import * as path from "path";
 import { NewNotebook } from "../common/commands";
 import { dispatchCommandInRenderer } from "../common/commands/dispatch";
 import { ReqContent, ReqKernelSpec } from "../common/commands/types";
@@ -81,5 +83,14 @@ export function initGlobalHandlers(
         kernelSpec,
         filepath: filepath ?? undefined,
       } as ReqContent & ReqKernelSpec),
+  );
+
+  ipc.on(
+    "main:load-config", (_event: Event) =>
+      store.dispatch(
+        setConfigFile(path.join(
+          remote.app.getPath("home"), ".jupyter", "nteract.json",
+        )),
+      ),
   );
 }

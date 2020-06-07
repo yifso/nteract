@@ -55,8 +55,6 @@ export type CodeMirrorEditorProps = {
   tip?: boolean;
   focusAbove?: (instance: Editor) => void;
   focusBelow?: (instance: Editor) => void;
-  // _Our_ theme, not the codemirror one we use
-  theme: string;
   channels?: Channels | null;
   /**
    * We use the kernelStatus to check to see if the kernel is currently
@@ -96,7 +94,6 @@ export default class CodeMirrorEditor extends React.Component<
     completion: false,
     editorFocused: false,
     kernelStatus: "not connected",
-    theme: "light",
     tip: false,
     autofocus: false,
     editorType: "codemirror",
@@ -381,11 +378,7 @@ export default class CodeMirrorEditor extends React.Component<
       }
     }
 
-    const { editorFocused, theme } = this.props;
-
-    if (prevProps.theme !== theme) {
-      this.cm.refresh();
-    }
+    const { editorFocused } = this.props;
 
     if (prevProps.editorFocused !== editorFocused) {
       editorFocused ? this.cm.focus() : this.cm.getInputField().blur();

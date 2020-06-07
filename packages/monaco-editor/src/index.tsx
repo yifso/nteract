@@ -2,7 +2,6 @@ import { editor } from "monaco-editor";
 import * as React from "react";
 
 export interface MonacoEditorProps {
-  theme: string;
   mode?: string;
   onChange: (value: string) => void;
   value: string;
@@ -29,7 +28,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
     this.monaco = editor.create(this.monacoContainerRef.current!, {
       value: this.props.value,
       language: this.props.mode,
-      theme: this.props.theme,
       minimap: {
         enabled: false
       },
@@ -58,10 +56,6 @@ export default class MonacoEditor extends React.Component<MonacoEditorProps> {
     const model = this.monaco.getModel();
     if (model && this.props.mode && model.getModeId() !== this.props.mode) {
       editor.setModelLanguage(model, this.props.mode);
-    }
-
-    if (this.props.theme) {
-      editor.setTheme(this.props.theme);
     }
   }
 

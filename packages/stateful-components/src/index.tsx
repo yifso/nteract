@@ -8,6 +8,8 @@ import RawCell from "./cells/raw-cell";
 import CellToolbar, { CellToolbarContext } from "./cells/toolbar";
 import StatusBar, { StatusBarContext } from "./notebook/status-bar";
 
+import ThemeFromConfig from "./decorators/theme-from-config";
+
 export {
   Cells,
   CodeCell,
@@ -16,8 +18,13 @@ export {
   CellToolbar,
   CellToolbarContext,
   StatusBar,
-  StatusBarContext
+  StatusBarContext,
+  ThemeFromConfig,
 };
+
+export {
+  userTheme
+} from "./config-options";
 
 interface ComponentProps {
   contentRef: ContentRef;

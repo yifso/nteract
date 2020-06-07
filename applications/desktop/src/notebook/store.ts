@@ -1,4 +1,5 @@
 import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
+import { configuration } from "@nteract/mythic-configuration";
 import { notifications } from "@nteract/mythic-notifications";
 import { makeConfigureStore } from "@nteract/myths";
 import epics from "./epics";
@@ -8,12 +9,12 @@ import { DesktopNotebookAppState } from "./state";
 
 export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
   packages: [
+    configuration,
     notifications,
   ],
   reducers: {
     app: reducers.app,
     comms: reducers.comms,
-    config: reducers.config,
     core: reducers.core as any,
     desktopNotebook: handleDesktopNotebook,
   },

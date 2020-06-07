@@ -10,6 +10,7 @@
     { "path": "../commutable" },
     { "path": "../core" },
     { "path": "../editor" },
+    { "path": "../mythic-configuration" },
     { "path": "../mythic-notifications" },
     { "path": "../presentational-components" },
     { "path": "../stateful-components" },
