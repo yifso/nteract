@@ -12,6 +12,12 @@ import { LightTheme, DarkTheme } from "./styles";
 import * as Icons from "./components/Icons";
 import { ToggleSwitch } from "./components/ToggleSwitch/ToggleSwitch";
 
+import {
+  CommandButtonRow,
+  CommandPalette,
+  Props as CommandPaletteProps,
+} from "./components/CommandPalette";
+import * as Icons from "./components/Icons";
 export * from "./styles";
 
 export {
@@ -28,8 +34,11 @@ export {
   CellMenu,
   CellMenuItem,
   CellMenuSection,
-  Icons,
   ToggleSwitch,
   LightTheme,
   DarkTheme,
+  CommandButtonRow,
+  CommandPalette,
+  CommandPaletteProps,
+  Icons,
 };
