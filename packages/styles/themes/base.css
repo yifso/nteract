@@ -6,10 +6,11 @@
   width: var(--prompt-width, 50px);
   padding: 9px 0;
   text-align: center;
+  display: none;
 }
 
 .nteract-cell-outputs {
-  padding: 10px 10px 10px calc(var(--prompt-width, 50px) + 10px);
+  border-top: 1px solid #EEEFF0;
   word-wrap: break-word;
   overflow-y: auto;
   outline: none;

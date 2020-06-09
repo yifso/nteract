@@ -32,6 +32,8 @@ export interface DispatchProps {
   focusBelowCell: () => void;
   unfocusEditor: () => void;
   markCellAsDeleting: () => void;
+  insertCodeCellBelow: () => void;
+  insertCodeCellAbove: () => void;
 }
 
 export const CellToolbarContext = React.createContext({});
@@ -43,11 +45,9 @@ class CellToolbar extends React.Component<
 > {
   render() {
     return (
-      <div className="nteract-cell-toolbar">
-        <CellToolbarContext.Provider value={this.props}>
-          {this.props.children}
-        </CellToolbarContext.Provider>
-      </div>
+      <CellToolbarContext.Provider value={this.props}>
+        {this.props.children}
+      </CellToolbarContext.Provider>
     );
   }
 }
@@ -110,7 +110,15 @@ const mapDispatchToProps = (
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
     markCellAsDeleting: () =>
-      dispatch(actions.markCellAsDeleting({ id, contentRef }))
+      dispatch(actions.markCellAsDeleting({ id, contentRef })),
+    insertCodeCellBelow: () =>
+      dispatch(
+        actions.createCellBelow({ cellType: "code", source: "", contentRef })
+      ),
+    insertCodeCellAbove: () =>
+      dispatch(
+        actions.createCellAbove({ cellType: "code", source: "", contentRef })
+      ),
   };
 };
 
