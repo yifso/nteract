@@ -5,7 +5,7 @@
 <p align="center">
 <a href="https://codecov.io/github/nteract/nteract?branch=master"><img src="https://codecov.io/github/nteract/nteract/coverage.svg?branch=master"/></a>
 <a href="https://slack.nteract.io"><img src="https://slack.nteract.io/badge.svg"/></a>
-<a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"/></a>
+<a href="https://lerna.js.org/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"/></a>
 <a href="https://circleci.com/gh/nteract/nteract/tree/master"><img src="https://circleci.com/gh/nteract/nteract/tree/master.svg?style=shield"/></a>
 </p>
 
