@@ -7,6 +7,7 @@ import MarkdownCell from "./cells/markdown-cell";
 import RawCell from "./cells/raw-cell";
 import CellToolbar, { CellToolbarContext } from "./cells/toolbar";
 import StatusBar, { StatusBarContext } from "./notebook/status-bar";
+import AppToolbar, { AppToolbarProps, AppToolbarContext } from "./AppToolbar";
 
 import ThemeFromConfig from "./decorators/theme-from-config";
 
@@ -31,6 +32,9 @@ export {
   CommandProps,
   CommandDispatchProps,
   CommandContainer,
+  AppToolbar,
+  AppToolbarProps,
+  AppToolbarContext,
 };
 
 export { userTheme } from "./config-options";

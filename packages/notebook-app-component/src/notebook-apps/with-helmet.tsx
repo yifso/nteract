@@ -10,6 +10,7 @@ import AppCommandPalette from "./app-command-palette";
 configure({
   ignoreTags: [],
 });
+import AppToolbar from "./app-toolbar";
 interface ComponentProps {
   contentRef: ContentRef;
 }
@@ -42,6 +43,7 @@ export default class extends React.PureComponent<
     const { props } = this;
     return (
       <React.Fragment>
+        <AppToolbar contentRef={props.contentRef} />
         <GlobalHotKeys keyMap={keymap} handlers={handlers} />
         <AppCommandPalette
           contentRef={props.contentRef}

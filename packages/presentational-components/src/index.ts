@@ -43,3 +43,32 @@ export {
   CommandPaletteProps,
   Icons,
 };
+
+import {
+  Clear,
+  Collapse,
+  Commands,
+  Expand,
+  ExpandSidebar,
+  Group,
+  Pause,
+  Play,
+  Plus,
+  Toolbar,
+  ToolbarItem,
+  ToolbarItemProps,
+} from "./components/Toolbar";
+
+const ToolbarIcons = {
+  Clear,
+  Commands,
+  Expand,
+  Collapse,
+  ExpandSidebar,
+  Group,
+  Pause,
+  Play,
+  Plus,
+};
+
+export { Toolbar, ToolbarItem, ToolbarItemProps, ToolbarIcons };
