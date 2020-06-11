@@ -9,6 +9,12 @@ import CellToolbar, { CellToolbarContext } from "./cells/toolbar";
 import StatusBar, { StatusBarContext } from "./notebook/status-bar";
 
 import ThemeFromConfig from "./decorators/theme-from-config";
+import {
+  CommandContext,
+  CommandContainerProps,
+  DispatchProps as CommandDispatchProps,
+  default as CommandContainer,
+} from "./command-palette/command-palette";
 
 export {
   Cells,
@@ -20,11 +26,13 @@ export {
   StatusBar,
   StatusBarContext,
   ThemeFromConfig,
+  CommandContext,
+  CommandContainerProps,
+  CommandDispatchProps,
+  CommandContainer,
 };
 
-export {
-  userTheme
-} from "./config-options";
+export { userTheme } from "./config-options";
 
 interface ComponentProps {
   contentRef: ContentRef;

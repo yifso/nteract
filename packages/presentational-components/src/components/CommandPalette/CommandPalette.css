@@ -107,5 +107,11 @@ button.command-palette-row span > *:not(:last-child) {
   border: 1px solid transparent;
   border-radius: unset;
   border-bottom: 3px solid rgba(253, 253, 253, .1);
+}
 
+.command-palette-overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0,0,0,0);
 }

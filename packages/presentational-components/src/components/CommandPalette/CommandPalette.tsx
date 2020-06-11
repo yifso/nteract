@@ -8,40 +8,52 @@ export interface Props
   shortCut: string[];
   children: ReactNode | ReactNodeArray;
   isVisible?: boolean;
+  onClose: () => void;
 }
 
-export const CommandPalette: FC<Props> = ({
-  children,
-  shortCut,
-  onChange,
-  isVisible,
-  ...props
-}) => {
-  const mainClassName = isVisible
-    ? "command-palette visible"
-    : "command-palette";
-  return (
-    <div className={mainClassName}>
-      <div className="command-palette-row">
-        <Commands muted />
-        <KeyTag>
-          Hide Menu Bar
-          {shortCut.map((shortcutKey) => (
-            <KeyTag mini>{shortcutKey}</KeyTag>
-          ))}
-        </KeyTag>
-      </div>
-      <div className="command-palette-input-row">
-        <label htmlFor="commandFilter">Filter commands</label>
-        <input
-          onChange={onChange}
-          type="text"
-          name="commandFilter"
-          id="commandFilter"
-          {...props}
-        />
-      </div>
-      {children}
-    </div>
-  );
-};
+export class CommandPalette extends React.Component<Props> {
+  componentDidMount() {
+    document.querySelector(".command-palette input").focus();
+  }
+
+  render() {
+    const {
+      isVisible,
+      onClose,
+      shortcutKey,
+      shortCut,
+      onChange,
+      children,
+    } = this.props;
+
+    const mainClassName = isVisible
+      ? "command-palette visible"
+      : "command-palette";
+    return (
+      <React.Fragment>
+        <div className="command-palette-overlay" onClick={onClose} />
+        <div className={mainClassName} tabIndex={-1}>
+          <div className="command-palette-row">
+            <Commands muted />
+            <KeyTag>
+              Hide Menu Bar
+              {shortCut.map((shortcutKey) => (
+                <KeyTag mini>{shortcutKey}</KeyTag>
+              ))}
+            </KeyTag>
+          </div>
+          <div className="command-palette-input-row">
+            <label htmlFor="commandFilter">Filter commands</label>
+            <input
+              onChange={(e) => onChange(e.target.value)}
+              type="text"
+              name="commandFilter"
+              id="commandFilter"
+            />
+          </div>
+          <div class="items">{children}</div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
