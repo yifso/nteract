@@ -9,8 +9,11 @@
   display: none;
 }
 
-.nteract-cell-outputs {
+.nteract-cell-input ~ .nteract-cell-outputs {
   border-top: 1px solid #EEEFF0;
+}
+
+.nteract-cell-outputs {
   word-wrap: break-word;
   overflow-y: auto;
   outline: none;
@@ -23,6 +26,9 @@
   display: none;
 }
 
+.nteract-cell-outputs.hidden {
+  display: none;
+}
 .nteract-cell-outputs.expanded {
   height: 100%;
   max-height: 100%;
