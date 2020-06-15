@@ -118,9 +118,9 @@ export default class CodeCell extends React.Component<ComponentProps> {
             </Input>
             {pagers({ id, contentRef })}
             {inputPrompts({ id, contentRef })}
+            {outputs({ id, contentRef })}
           </div>
         </div>
-        {outputs({ id, contentRef })}
       </div>
     );
   }
