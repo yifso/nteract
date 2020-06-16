@@ -1,13 +1,13 @@
 import { ContentRef } from "@nteract/core";
 import React from "react";
 
+import AppToolbar, { AppToolbarContext, AppToolbarProps } from "./app-toolbar";
 import Cells from "./cells/cells";
 import CodeCell from "./cells/code-cell";
 import MarkdownCell from "./cells/markdown-cell";
 import RawCell from "./cells/raw-cell";
 import CellToolbar, { CellToolbarContext } from "./cells/toolbar";
 import StatusBar, { StatusBarContext } from "./notebook/status-bar";
-import AppToolbar, { AppToolbarProps, AppToolbarContext } from "./AppToolbar";
 
 import ThemeFromConfig from "./decorators/theme-from-config";
 

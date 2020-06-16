@@ -2,25 +2,47 @@ import React from "react";
 
 export const Collapse = ({ className }: { className?: string }) => (
   <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
-    fill="none"
+    width="25px"
+    height="25px"
+    viewBox="0 0 25 25"
+    version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
-    <path
-      d="M8 5.5L6 3.5L4 5.5"
-      stroke="#757F88"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M8 8.5L6 6.5L4 8.5"
-      stroke="#757F88"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+    <g
+      id="Page-1"
+      stroke="none"
+      stroke-width="1"
+      fill="none"
+      fill-rule="evenodd"
+    >
+      <g id="SVG-Layer" transform="translate(0.500000, 0.500000)">
+        <rect
+          id="Rectangle"
+          fill="#E2E5E7"
+          fill-rule="nonzero"
+          x="0"
+          y="0"
+          width="24"
+          height="24"
+          rx="4"
+        ></rect>
+        <polyline
+          id="Path"
+          stroke="#757F88"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="14 11.5 12 9.5 10 11.5"
+        ></polyline>
+        <polyline
+          id="Path"
+          stroke="#757F88"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="14 14.5 12 12.5 10 14.5"
+        ></polyline>
+      </g>
+    </g>
   </svg>
 );
 
