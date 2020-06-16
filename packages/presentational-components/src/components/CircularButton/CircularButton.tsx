@@ -3,8 +3,6 @@ import React, { HTMLAttributes } from "react";
 import classnames from "classnames";
 import { ProgressRing } from "./ProgressRing";
 
-import "./CircularButton.css";
-
 export interface Props extends HTMLAttributes<HTMLButtonElement> {
   showPercent?: boolean;
   percent?: number;

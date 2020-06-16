@@ -2,8 +2,6 @@ import React, { HTMLAttributes } from "react";
 
 import classnames from "classnames";
 
-import "./CellMenu.css";
-
 interface CellMenuProps extends React.FC<HTMLAttributes<HTMLDivElement>> {
   visible: boolean;
 }

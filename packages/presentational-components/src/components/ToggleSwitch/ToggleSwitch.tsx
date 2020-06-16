@@ -1,6 +1,5 @@
 import React, { HTMLAttributes } from "react";
 import Toggle from "react-toggle";
-import "./ToggleSwitch.css";
 
 type LabelPlacement = "start" | "end";
 

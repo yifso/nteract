@@ -9,6 +9,7 @@
     "app.css",
     "editor-overrides.css",
     "global-variables.css",
+    "toggle-switch.css",
     "themes",
     "markdown"
   ],
