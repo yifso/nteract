@@ -112,13 +112,9 @@ const mapDispatchToProps = (
     markCellAsDeleting: () =>
       dispatch(actions.markCellAsDeleting({ id, contentRef })),
     insertCodeCellBelow: () =>
-      dispatch(
-        actions.createCellBelow({ cellType: "code", source: "", contentRef })
-      ),
+      dispatch(actions.createCellBelow({ cellType: "code", contentRef })),
     insertCodeCellAbove: () =>
-      dispatch(
-        actions.createCellAbove({ cellType: "code", source: "", contentRef })
-      ),
+      dispatch(actions.createCellAbove({ cellType: "code", contentRef })),
   };
 };
 
