@@ -7,11 +7,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nteract/dropdown-menu";
-import {
-  ChevronDownOcticon,
-  TrashOcticon,
-  TriangleRightOcticon,
-} from "@nteract/octicons";
+
 import { ContentRef } from "@nteract/types";
 import * as React from "react";
 
@@ -21,10 +17,10 @@ import { ToggleSwitch } from "@nteract/presentational-components";
 import styled from "styled-components";
 
 import {
-  CircularButton,
   CellMenu,
   CellMenuItem,
   CellMenuSection,
+  CircularButton,
 } from "@nteract/presentational-components";
 import { CellToolbar, CellToolbarContext } from "@nteract/stateful-components";
 

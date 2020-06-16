@@ -78,19 +78,19 @@ export const Commands: FC<MutedProps> = ({ muted = false }) => (
           fill-rule="nonzero"
         ></path>
         <polygon
-          id="Path"
+          id="Path2"
           fill="#8F969D"
           fill-rule="nonzero"
           points="10.998 12.0560525 5 9.0572525 10.998 5.7077525 16.995 9.0572525"
         ></polygon>
         <polygon
-          id="Path"
+          id="Path3"
           fill="#29313A"
           fill-rule="nonzero"
           points="5 9.0587625 10.998 12.0529525 10.998 18.4066525 5 15.4078525"
         ></polygon>
         <polygon
-          id="Path"
+          id="Path4"
           fill="#BABFC4"
           fill-rule="nonzero"
           points="16.995 9.0587625 10.997 12.0529525 10.997 18.4066525 16.995 15.4078525"

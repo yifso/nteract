@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes } from "react";
+import React, { HTMLAttributes } from "react";
 
 import classnames from "classnames";
 import { ProgressRing } from "./ProgressRing";
