@@ -232,7 +232,7 @@ export default class Toolbar extends React.PureComponent<
                         <CellMenuItem
                           title="add cell below"
                           onClick={this.performActionAndClose(
-                            context.insertCodeCellAbove
+                            context.insertCodeCellBelow
                           )}
                         >
                           <Icons.AddCell below />
