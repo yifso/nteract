@@ -1,3 +1,3 @@
-export * from './Toolbar';
-export * from './ToolbarItem';
-export * from './Icons';
+export * from "./toolbar";
+export * from "./toolbar-item";
+export * from "./Icons";

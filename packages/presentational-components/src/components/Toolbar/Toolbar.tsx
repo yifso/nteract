@@ -6,8 +6,7 @@ import React, {
   Component,
 } from "react";
 import classnames from "classnames";
-import { ToolbarItem } from "./ToolbarItem";
-import "./Toolbar.css";
+import { ToolbarItem } from "./toolbar-item";
 
 import { Commands, Expand, Collapse, ExpandSidebar } from "./Icons";
 

@@ -1,7 +1,5 @@
-import React, { FC, HTMLAttributes } from 'react';
-import classnames from 'classnames';
-
-import './ToolbarItem.css';
+import React, { FC, HTMLAttributes } from "react";
+import classnames from "classnames";
 
 export interface ToolbarItemProps extends HTMLAttributes<HTMLDivElement> {
   image: React.ReactNode;
@@ -20,7 +18,7 @@ export const ToolbarItem: FC<ToolbarItemProps> = ({
   onClick,
   buttonClassName,
 }) => {
-  const className = classnames('toolbar-item', buttonClassName, {
+  const className = classnames("toolbar-item", buttonClassName, {
     hidden: !showButton,
   });
   return (

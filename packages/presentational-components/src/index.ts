@@ -57,7 +57,7 @@ import {
   Toolbar,
   ToolbarItem,
   ToolbarItemProps,
-} from "./components/Toolbar";
+} from "./components/toolbar";
 
 const ToolbarIcons = {
   Clear,

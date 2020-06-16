@@ -13,7 +13,8 @@
     "themes",
     "markdown",
     "cell-menu",
-    "command-palette.css"
+    "command-palette.css",
+    "toolbar.css"
   ],
   "scripts": {},
   "publishConfig": {

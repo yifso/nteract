@@ -36,6 +36,7 @@ import "@nteract/styles/themes/base.css";
 import "@nteract/styles/themes/default.css";
 import "@nteract/styles/toggle-switch.css";
 
+import "@nteract/styles/toolbar.css";
 import GeoJSONTransform from "@nteract/transform-geojson";
 import ModelDebug from "@nteract/transform-model-debug";
 import PlotlyTransform from "@nteract/transform-plotly";
