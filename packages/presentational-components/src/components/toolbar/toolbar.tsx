@@ -48,7 +48,7 @@ export class Toolbar extends Component<Props, State> {
       <div className={className}>
         <span>
           <ToolbarItem
-            image={<ExpandSidebar />}
+            image={<ExpandSidebar isSidebarVisible={isSidebarVisible} />}
             buttonClassName="toolbar-item-expand"
             text=""
             showText={!isCollapsed}
