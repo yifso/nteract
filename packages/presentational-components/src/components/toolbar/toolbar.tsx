@@ -13,6 +13,7 @@ import { Commands, Expand, Collapse, ExpandSidebar } from "./Icons";
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactChild | JSX.Element[];
   onToggleFileBrowser: () => void;
+  isSidebarVisible?: boolean;
 }
 
 export interface State {
@@ -35,7 +36,7 @@ export class Toolbar extends Component<Props, State> {
   }
 
   render() {
-    const { children, onToggleFileBrowser } = this.props;
+    const { children, onToggleFileBrowser, isSidebarVisible } = this.props;
     const { toolbarState } = this.state;
     const isCollapsed = toolbarState === toolbarStates.collapsed;
 
@@ -63,11 +64,6 @@ export class Toolbar extends Component<Props, State> {
               })
           )}
         </span>
-        {console.log(
-          " TOOL BAR STATE ",
-          toolbarState,
-          toolbarState === toolbarStates.collapsed
-        )}
         <ToolbarItem
           image={
             toolbarState === toolbarStates.collapsed ? <Expand /> : <Collapse />

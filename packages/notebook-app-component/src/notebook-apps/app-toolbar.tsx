@@ -21,9 +21,8 @@ const AppToolbar = () => (
   <AppToolbarContext.Consumer>
     {(value: AppToolbarProps) => (
       <Toolbar
-        onToggleFileBrowser={() => {
-          console.log("Here");
-        }}
+        onToggleFileBrowser={value.toggleSidebar}
+        isSidebarVisible={value.isSidebarVisible}
       >
         <ToolbarItem
           image={<ToolbarIcons.Plus />}

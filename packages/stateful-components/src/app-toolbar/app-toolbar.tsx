@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { actions, selectors, ContentRef } from "@nteract/core";
+import { AppState } from "@nteract/types";
+import { isSidebarVisible } from "@nteract/selectors";
 
 export interface DispatchProps {
   addCell: () => void;
@@ -16,6 +18,7 @@ export interface ComponentProps {
   id: string;
   children: React.ReactNode | JSX.Element;
   contentRef: ContentRef;
+  isSidebarVisible?: boolean;
 }
 
 export type AppToolbarProps = DispatchProps & ComponentProps;
@@ -39,6 +42,7 @@ const mapDispatchToProps = (
   const { id, children, contentRef } = ownProps;
 
   return {
+    toggleSidebar: () => dispatch(actions.toggleSidebar()),
     clearOutputs: () => dispatch(actions.clearAllOutputs({ contentRef })),
     addCell: () => {
       dispatch(
@@ -48,11 +52,14 @@ const mapDispatchToProps = (
       );
     },
     restartAndRun: () => dispatch(actions.executeAllCells({ contentRef })),
-    toggleSidebar: () => {},
     interrupt: () => {
       dispatch(actions.interruptKernel({ contentRef }));
     },
   };
 };
 
-export default connect(null, mapDispatchToProps)(AppToolbar);
+const mapStateToProps = (state: AppState) => ({
+  isSidebarVisible: state.core.entities.sidebar.isSidebarVisible,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppToolbar);

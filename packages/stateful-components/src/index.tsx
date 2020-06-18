@@ -2,6 +2,7 @@ import { ContentRef } from "@nteract/core";
 import React from "react";
 
 import AppToolbar, { AppToolbarContext, AppToolbarProps } from "./app-toolbar";
+import AppSidebar, { AppSidebarProps, AppSidebarContext } from "./app-sidebar";
 import Cells from "./cells/cells";
 import CodeCell from "./cells/code-cell";
 import MarkdownCell from "./cells/markdown-cell";
@@ -35,6 +36,9 @@ export {
   AppToolbar,
   AppToolbarProps,
   AppToolbarContext,
+  AppSidebar,
+  AppSidebarProps,
+  AppSidebarContext,
 };
 
 export { userTheme } from "./config-options";

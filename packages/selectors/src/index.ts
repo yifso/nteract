@@ -28,3 +28,6 @@ export const modalType = (state: AppState) =>
  */
 export const messageQueue = (state: AppState) =>
   state.core.entities.messages.messageQueue;
+
+export const isSidebarVisible = (state: AppState) =>
+  state.core.entities.sidebar.isSidebarVisible;

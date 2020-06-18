@@ -32,6 +32,7 @@ import "@nteract/styles/app.css";
 
 import "@nteract/styles/global-variables.css";
 
+import "@nteract/styles/sidebar.css";
 import "@nteract/styles/themes/base.css";
 import "@nteract/styles/themes/default.css";
 import "@nteract/styles/toggle-switch.css";

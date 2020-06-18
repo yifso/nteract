@@ -10,6 +10,7 @@ import { kernels } from "./kernels";
 import { kernelspecs } from "./kernelspecs";
 import { messages } from "./messages";
 import { modals } from "./modals";
+import { sidebar } from "./sidebar";
 import { transforms } from "./transforms";
 
 export const entities = combineReducers(
@@ -21,7 +22,8 @@ export const entities = combineReducers(
     kernelspecs,
     messages,
     modals,
-    transforms
+    sidebar,
+    transforms,
   },
   makeEntitiesRecord as any
 );
