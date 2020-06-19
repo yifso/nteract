@@ -53,10 +53,6 @@
   align-items: center;
 }
 
-.command-palette-row:focus {
-  background-color: #fab;
-}
-
 button.command-palette-row {
   font-size: 14px;
   color: #fff;
@@ -74,8 +70,10 @@ button.command-palette-row span > *:not(:last-child) {
   margin-right: 4px;
 }
 
-.command-palette-row:hover:not(:first-child) {
+.command-palette-row:hover:not(:first-child),
+.command-palette-row:focus {
   background-color: rgba(143, 150, 157, 0.1);
+  outline: none;
 }
 
 .command-palette-row .command-name > *:first-child {
