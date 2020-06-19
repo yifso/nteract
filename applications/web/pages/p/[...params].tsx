@@ -1,25 +1,33 @@
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter } from "next/router";
-
 import React, { useState } from "react";
 import { Octokit } from "@octokit/rest";
-
-import styled from "styled-components";
-import Menu from '../../components/Menu'
-import Console from '../../components/Console'
-import StatusLine from '../../components/StatusLine'
-import BinderMenu from '../../components/BinderMenu'
-import FilesListing from "../../components/FilesListing"
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
+import { faGithubAlt, faPython } from '@fortawesome/free-brands-svg-icons'
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
+
+import { Menu, MenuItem } from '../../components/Menu'
+import { Button } from '../../components/Button'
+import { Console } from '../../components/Console'
+import { BinderMenu } from '../../components/BinderMenu'
+import FilesListing from "../../components/FilesListing"
+import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
+
+const runIcon =  <FontAwesomeIcon icon={faPlay} />
+const saveIcon =  <FontAwesomeIcon icon={faSave} />
+const menuIcon =  <FontAwesomeIcon icon={faBars} />
+const githubIcon =  <FontAwesomeIcon icon={faGithubAlt} />
+const consoleIcon =  <FontAwesomeIcon icon={faTerminal} />
+const pythonIcon =  <FontAwesomeIcon icon={faPython} />
+const serverIcon =  <FontAwesomeIcon icon={faServer} />
 
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
 });
 
 const BINDER_URL = "https://mybinder.org";
-
 
 interface State {
   fileContent: string;
@@ -32,59 +40,7 @@ interface State {
   filepath: string
 }
 
-const Layout = styled.div`
-  min-height: calc(100vh);
-  display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 220px auto;
-  grid-row-gap:00px;
-  grid-column-gap:0px;
-  grid-template-areas:
-        "side header"
-        "side body"
-        "footer footer";
-  font-size: 14px;
-`;
-
-const Header = styled.div`
-  grid-area: header;
-  min-height:50px;
-`;
-
-const Footer = styled.div`
-  grid-area:footer;
-  min-height:30px;
-`;
-
-const Body = styled.div`
-  grid-area: body;
-  padding:20px;
-  max-height:calc(100vh - 100px);
-  overflow:auto;
-`;
-
-const Side = styled.div`
-  grid-area: side;
-  background-color:#38023b;
-  min-height: 50px;
-  color: #fff;
-
-  .nteract-logo {
-    width: 80px;
-    display: block;
-    margin: auto;
-    margin-top: 5px;
-  }
-`
-
-export class Main extends React.PureComponent<WithRouterProps, State> {
-
-  constructor(props) {
-    super(props);
-
-    const { params } = this.props.router.query;
-
-    /**
+/**
      * Since we use a single file named [...params] to aggregate
      * all of the configurable options passeed into the url, we have
      * to parse the parameters positional based on their position in the
@@ -92,6 +48,12 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
      *
      * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
      */
+
+export class Main extends React.PureComponent<WithRouterProps, State> {
+
+  constructor(props) {
+    super(props);
+    const { params } = this.props.router.query;
     const filepathSegments = params.slice(4);
     let filepath;
     if (typeof filepathSegments !== "string") {
@@ -115,9 +77,8 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     this.toggleConsole = this.toggleConsole.bind(this);
     this.toggleBinderMenu = this.toggleBinderMenu.bind(this);
     this.run = this.run.bind(this)
-    this.updateBinder = this.updateBinder.bind(this)
-
-    console.table(this.state)
+    this.updateVCSInfo = this.updateVCSInfo.bind(this)
+    this.oauthGithub = this.oauthGithub.bind(this)
   }
 
   getFileType(type){
@@ -126,7 +87,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     else if (type =="dir")
       return "directory"
   }
-  
+
   toggleConsole(){
     this.setState({showConsole: !this.state.showConsole})
   }
@@ -139,7 +100,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     console.log("run binder here")
   }
 
-    loadFile(fileName){
+  loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
       owner: this.state.org,
@@ -164,7 +125,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     })
   }
 
-  updateBinder(provider, organ, repo, gitRef){
+  updateVCSInfo(event, provider, organ, repo, gitRef){
     this.setState({
       provider:provider,
       org:organ,
@@ -174,64 +135,107 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     event.preventDefault()
   }
 
+  oauthGithub(){
+      console.log("http://localhost:3000/p/gh/nteract/examples/master/happiness.ipynb")
+  }
+
 
   render(): JSX.Element {
     const { params } = this.props.router.query;
+    // We won't be following this logic, we will render the data from github and only send changes to binder  
+     /*
+       <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
+         <Host.Consumer>
+           {host => <Binder filepath={this.state.filepath} host={host} />}
+         </Host.Consumer>
+       </Host>
+       */
 
-    /**
-     * Since we use a single file named [...params] to aggregate
-     * all of the configurable options passeed into the url, we have
-     * to parse the parameters positional based on their position in the
-     * URL.
-     *
-     * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
-     */
-    if (params) {
       return (
         <Layout>
-        <Header>
-          <Menu 
-              toggleBinderMenu={this.toggleBinderMenu} 
-              run={this.run}>    
-          </Menu>
-           {this.state.showBinderMenu && 
-                  <BinderMenu 
+           {
+             this.state.showBinderMenu &&
+                  
+               <BinderMenu
                         provider={this.state.provider}
                         org={this.state.org}
                         repo={this.state.repo}
                         gitRef={this.state.gitRef}
-                        updateBinder={this.updateBinder}
-                        >
-                  </BinderMenu> }
+                        updateVCSInfo={this.updateVCSInfo}
+                        style={{
+                                height: "150px",
+                                position: "absolute",
+                                marginTop: "50px",
+                                width: "calc(100% - 260px)",
+                                right: "0px",
+                                borderBottom: "1px solid #FBECEC",
+                           }}
+                        />
+           }
+        
+          { 
+            this.state.showConsole && <Console style={{ 
+                               position: "absolute",
+                               bottom: "30px",
+                               right: "0px",
+                               width: "calc(100% - 260px)"
+                 }}>Console</Console> 
+          }
+
+        <Header>
+          <Menu>
+              <MenuItem>
+                    <Button text="Run" variant="outlined" icon={runIcon} onClick={() => this.run()}/>
+              </MenuItem>
+              <MenuItem>
+                    <Button text="Menu" variant="outlined" icon={menuIcon} onClick={() => this.toggleBinderMenu()}/>
+              </MenuItem>
+
+          </Menu>
+            <Menu>
+                  <MenuItem>
+                    <Button onClick={ () => this.oauthGithub()} text="Connect to Github" icon={githubIcon} />
+                  </MenuItem>
+            </Menu>
         </Header>
         <Side>
             <img
-              src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_red_inverted.png"
+              src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_purple.png"
               alt="nteract logo"
-              className="nteract-logo"
+              className="logo"
             />
-            <FilesListing 
-                  loadFile={this.loadFile} 
-                  org={this.state.org} 
+            <FilesListing
+                  loadFile={this.loadFile}
+                  org={this.state.org}
                   repo={this.state.repo}
                   gitRef={this.state.gitRef}>
             </FilesListing>
         </Side>
         <Body>
-          <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
-            <Host.Consumer>
-              {host => <Binder filepath={this.state.filepath} host={host} />}
-            </Host.Consumer>
-          </Host>
+
         </Body>
+
         <Footer>
-          { this.state.showConsole && <Console></Console> }
-            <StatusLine toggleConsole={this.toggleConsole}></StatusLine>
+
+            <Menu>
+                <MenuItem>
+                      <Button text="Console" icon={consoleIcon} variant="transparent" onClick={this.toggleConsole}/>
+                </MenuItem>
+                <MenuItem>
+                      <Button text="Python 3" icon={pythonIcon} variant="transparent" disabled />
+                </MenuItem>
+                <MenuItem>
+                      <Button text="Idle" icon={serverIcon} variant="transparent" disabled/>
+                </MenuItem>
+            </Menu>
+            <Menu>
+              <MenuItem>
+                Last Saved Never
+                </MenuItem>
+            </Menu>
         </Footer>
       </Layout>
       );
-    }
-    return null;
   }
 }
 
