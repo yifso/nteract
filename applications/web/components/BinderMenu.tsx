@@ -1,133 +1,95 @@
-import * as React from "react";
-
+import React, { FC,  HTMLAttributes,  useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRocket } from '@fortawesome/free-solid-svg-icons'
 
-type Props = {
-    provider: string,
-    org: string,
-    repo: string,
-    gitRef: string
-    updateBinder: (x:string,y:string,z:string,a:string) => void
-}
+import { Button } from "./Button";
+import { Input } from "./Input";
 
-type State = {
-    provider: string,
-    org: string,
-    repo: string,
-    gitRef: string
-}
+const rocketIcon =  <FontAwesomeIcon icon={faRocket} />
 
-const BinderMenuDiv = styled.div`
-    border-bottom:1px solid #d1e3dd;
-    padding:20px;
+const BinderMenuDiv = styled.div<Props>`
+    border-bottom:0px solid #d1e3dd;
+    padding:25px;
     display: flex;
-    
+    align-items: center;
 
-    input,select{
-        height:35px;
-        margin-left: 20px;
-        outline: none;
-        background-color:#fff;
-        border:1px solid #d1e3dd;
-        border-radius: 3px;
-        padding-left: 10px;
-        padding-right: 10px;
+    form {
+        display: flex;
     }
 
-    .submit-button{
-        background-color:#0e6ba8;
-        color: #fff;
-        height:33px;
-        border-radius:3px;
-        border:1px solid #0e6ba8;
-        cursor:pointer;
+    input, select, button, label {
+      margin-left: 25px;
     }
 
-    .submit-button:hover{
-        background-color:#0a2472;
-        border:1px solid #0a2472;
-    }
 
-    .binder-logo {
-    width: 60px;
+  .binder-logo {
+    width: 80px;
     display: block;
   }
 
 `;
 
+export interface Props extends HTMLAttributes<HTMLDivElement> {
+  /** Children is the child/sub nodes **/
+  children?: React.ReactNode;
+  /** Provider is the name of VCS **/
+  provider?: string;
+  /** VCS owner of the repo **/
+  org?: string;
+  /** Name of the VCS repo **/
+  repo?: string;
+  /** Branch or git reference **/
+  gitRef?: string;
+  /** Function to update the VCS info **/
+  updateVCSInfo: (e: React.FormEvent<HTMLFormElement>, x: string | undefined, y: string | undefined, z: string | undefined, a: string | undefined) => void;
+}
 
-export default class BinderMenu extends React.Component<Props,State> {
-    constructor(props){
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {
-            provider: this.props.provider,
-            org: this.props.org,
-            repo: this.props.repo,
-            gitRef: this.props.gitRef
-        }
-    }
+function useInput(val: string | undefined ){
+  const [value, setValue] = useState(val);
+  
+  function handleChange(e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) {
+    setValue(e.currentTarget.value);
+  }
+  
+  return { 
+    value, 
+    onChange: handleChange
+  }
+}
 
-    handleChange(event){
-        const value = event.target.value
-        switch(event.target.name){
-            case "provider":
-                this.setState({provider: value})
-            break;
-            case "org":
-                this.setState({org: value})
-            break;
-            case "repo":
-                this.setState({repo: value})
-            break;
-            case "gitRef":
-                this.setState({gitRef: value})
-            break;
-        }
-    }
+ 
+export const BinderMenu: FC<Props> = (props: Props) => {
+  const provider = useInput(props.provider)
+  const org = useInput( props.org)
+  const repo = useInput(props.repo)
+  const gitRef = useInput(props.gitRef)
+   
+  return (
+       <>
 
-    render() {
-      return (
-        <BinderMenuDiv>  
-            <img
-            className="binder-logo"
-            src="https://mybinder.org/static/logo.svg?v=f9f0d927b67cc9dc99d788c822ca21c0"
-          />
-            <form 
-                onSubmit={() => this.props.updateBinder(
-                    this.state.provider,
-                    this.state.org,
-                    this.state.repo,
-                    this.state.gitRef
-                )} >
-                <select defaultValue={this.state.provider} 
-                        name="provider" 
-                        onChange={this.handleChange}>
-                    <option value="gh">Github</option>
-                </select>
-                <input 
-                    placeholder="Organization/username" 
-                    value={this.state.org}
-                    name="org"
-                    onChange={this.handleChange}
-                    />
-                <input 
-                    placeholder="Repository"
-                    value={this.state.repo} 
-                    name="repo"
-                    onChange={this.handleChange}
-                    />
-                <input 
-                    placeholder="Branch"
-                    value={this.state.gitRef}
-                    name="gitRef"
-                    onChange={this.handleChange} 
-                    />
-                <input 
-                    type="submit" 
-                    className="submit-button" value="Launch"/>
-            </form>
-        </BinderMenuDiv>    
+      <BinderMenuDiv {...props}>
+
+        <img className="binder-logo" alt="binder-logo" src="https://mybinder.org/static/logo.svg?v=f9f0d927b67cc9dc99d788c822ca21c0" />
+        <form onSubmit={(e) => props.updateVCSInfo( e, provider.value, org.value, repo.value, gitRef.value )} >
+          <Input variant="select" label="VCS" { ...provider} style={{width: "120px"}}>
+                      <option value="gh">Github</option>
+                </Input>
+                <Input label="Owner" {...org} />
+                <Input  label="Repository" {...repo}/>
+                <Input label="Branch" {...gitRef}/>
+                <Button text="Launch" style={ {marginLeft: '30px'}} icon={rocketIcon} />
+          </form>
+      </BinderMenuDiv>
+      </>
       );
-    }
   } 
+
+// If we want to pass on the default values
+BinderMenu.defaultProps = {
+  provider: "gh",
+  org: "",
+  repo: "",
+  gitRef: "",
+}
+

@@ -20,6 +20,7 @@ interface State {
 const FilesListingDiv = styled.div`
   font-size:12px;
   margin-top:30px;
+  color: #545454;
 
   .tag{
     margin-left: 10px;
@@ -44,7 +45,11 @@ const FilesListingDiv = styled.div`
   }
 
   li:hover{
-    background-color:#79037f;
+      color: #000;
+
+      span {
+        color: #000;
+      }
   }
 
   .icon{
@@ -69,7 +74,7 @@ export default class FilesListing extends React.Component<Props,State> {
       else if (type =="dir")
         return "directory"
   }
-    
+
   componentDidMount() {
     this.getFiles()
   }
@@ -101,18 +106,18 @@ export default class FilesListing extends React.Component<Props,State> {
 
     render() {
       return (
-        <FilesListingDiv>  
+        <FilesListingDiv>
               <div className="tag">Explorer</div>
           <ul>
             {
-              this.state.files.map((file)=> 
+              this.state.files.map((file)=>
                   <li key={generate()} onClick={() => this.props.loadFile(file.name)}>
-                     <span className="icon"><Icon fileType={this.getFileType(file.type)} color="#fff" /></span> {file.name}
+                     <span className="icon"><Icon fileType={this.getFileType(file.type)} color="#545454" /></span> {file.name}
                   </li>
               )
             }
           </ul>
-        </FilesListingDiv>    
+        </FilesListingDiv>
       );
     }
-  } 
+  }
