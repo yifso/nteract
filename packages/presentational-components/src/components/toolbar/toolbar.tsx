@@ -1,14 +1,8 @@
-import React, {
-  FC,
-  HTMLAttributes,
-  ReactChild,
-  useState,
-  Component,
-} from "react";
+import React, { HTMLAttributes, ReactChild, Component } from "react";
 import classnames from "classnames";
 import { ToolbarItem } from "./toolbar-item";
 
-import { Commands, Expand, Collapse, ExpandSidebar } from "./Icons";
+import { Expand, Collapse, ExpandSidebar } from "./Icons";
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactChild | JSX.Element[];

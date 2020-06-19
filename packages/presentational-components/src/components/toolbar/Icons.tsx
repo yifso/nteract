@@ -18,7 +18,6 @@ export const Collapse = ({ className }: { className?: string }) => (
     >
       <g id="SVG-Layer" transform="translate(0.500000, 0.500000)">
         <rect
-          id="Rectangle"
           fill="#E2E5E7"
           fill-rule="nonzero"
           x="0"
@@ -28,14 +27,12 @@ export const Collapse = ({ className }: { className?: string }) => (
           rx="4"
         ></rect>
         <polyline
-          id="Path"
           stroke="#757F88"
           stroke-linecap="round"
           stroke-linejoin="round"
           points="14 11.5 12 9.5 10 11.5"
         ></polyline>
         <polyline
-          id="Path"
           stroke="#757F88"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -98,7 +95,6 @@ export const ExpandSidebar = ({
       viewBox="0 0 16 24"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      className={isSidebarVisible ? "sidebar-hide-icon" : undefined}
     >
       <title>Group</title>
       <g
@@ -120,34 +116,10 @@ export const ExpandSidebar = ({
             fill="#29313A"
             fill-rule="nonzero"
           >
-            <rect
-              id="Rectangle"
-              x="0"
-              y="0"
-              width="5"
-              height="1"
-              rx="0.5"
-            ></rect>
-            <rect
-              id="Rectangle"
-              x="0"
-              y="2"
-              width="5"
-              height="1"
-              rx="0.5"
-            ></rect>
-            <rect
-              id="Rectangle"
-              x="0"
-              y="4"
-              width="5"
-              height="1"
-              rx="0.5"
-            ></rect>
-            <path
-              d="M9.1427,2.28563 L7.3786,1.22717 C7.212,1.1272 7,1.24722 7,1.44155 L7,3.55845 C7,3.75278 7.212,3.8728 7.3786,3.77283 L9.1427,2.71437 C9.3045,2.61727 9.3045,2.38273 9.1427,2.28563 Z"
-              id="Path"
-            ></path>
+            <rect x="0" y="0" width="5" height="1" rx="0.5"></rect>
+            <rect x="0" y="2" width="5" height="1" rx="0.5"></rect>
+            <rect x="0" y="4" width="5" height="1" rx="0.5"></rect>
+            <path d="M9.1427,2.28563 L7.3786,1.22717 C7.212,1.1272 7,1.24722 7,1.44155 L7,3.55845 C7,3.75278 7.212,3.8728 7.3786,3.77283 L9.1427,2.71437 C9.3045,2.61727 9.3045,2.38273 9.1427,2.28563 Z"></path>
           </g>
         </g>
       </g>
@@ -172,7 +144,6 @@ export const Clear = () => (
     >
       <g id="Group-4">
         <rect
-          id="Rectangle"
           fill="#E2E5E7"
           fill-rule="nonzero"
           x="0"
@@ -186,7 +157,6 @@ export const Clear = () => (
           y1="13.5"
           x2="18.5"
           y2="13.5"
-          id="Path"
           stroke="#29313A"
           stroke-linecap="round"
           stroke-linejoin="bevel"
@@ -196,7 +166,6 @@ export const Clear = () => (
           y1="11.5"
           x2="18.5"
           y2="11.5"
-          id="Path"
           stroke="#29313A"
           stroke-linecap="round"
           stroke-linejoin="bevel"
@@ -206,7 +175,6 @@ export const Clear = () => (
           y1="9.5"
           x2="18.5"
           y2="9.5"
-          id="Path"
           stroke="#29313A"
           stroke-linecap="round"
           stroke-linejoin="bevel"
@@ -221,7 +189,6 @@ export const Clear = () => (
           y1="10.7986"
           x2="16.5"
           y2="5.67474"
-          id="Path"
           stroke="#29313A"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -249,7 +216,6 @@ export const Commands = () => (
     >
       <g id="Group" transform="translate(0.000000, 0.292248)">
         <rect
-          id="Rectangle"
           fill-opacity="0"
           fill="#D8D8D8"
           x="0"
@@ -259,24 +225,20 @@ export const Commands = () => (
         ></rect>
         <path
           d="M0,20.5077525 L3.96,22.7077525 L11,18.7077525 L18.04,22.7077525 L22,20.5077525 L22,6.8677525 L11.977,1.2549925 C11.37,0.9150025 10.63,0.9150025 10.023,1.2549925 L0,6.8677525 L0,20.5077525 Z"
-          id="Path"
           fill="#E2E5E7"
           fill-rule="nonzero"
         ></path>
         <polygon
-          id="Path"
           fill="#8F969D"
           fill-rule="nonzero"
           points="10.998 12.0560525 5 9.0572525 10.998 5.7077525 16.995 9.0572525"
         ></polygon>
         <polygon
-          id="Path"
           fill="#29313A"
           fill-rule="nonzero"
           points="5 9.0587625 10.998 12.0529525 10.998 18.4066525 5 15.4078525"
         ></polygon>
         <polygon
-          id="Path"
           fill="#BABFC4"
           fill-rule="nonzero"
           points="16.995 9.0587625 10.997 12.0529525 10.997 18.4066525 16.995 15.4078525"
@@ -424,17 +386,8 @@ export const Pause = () => (
       fill-rule="evenodd"
     >
       <g id="Group-3" fill-rule="nonzero">
-        <rect
-          id="Rectangle"
-          fill="#E2E5E7"
-          x="0"
-          y="0"
-          width="24"
-          height="24"
-          rx="4"
-        ></rect>
+        <rect fill="#E2E5E7" x="0" y="0" width="24" height="24" rx="4"></rect>
         <polygon
-          id="Path"
           stroke="#29313A"
           stroke-width="2"
           fill="#29313A"
@@ -443,7 +396,6 @@ export const Pause = () => (
           points="9 15 10 15 10 9 9 9"
         ></polygon>
         <polygon
-          id="Path"
           stroke="#29313A"
           stroke-width="2"
           fill="#29313A"
@@ -473,18 +425,9 @@ export const Play = () => (
       fill-rule="evenodd"
     >
       <g id="Group-2" fill-rule="nonzero">
-        <rect
-          id="Rectangle"
-          fill="#E2E5E7"
-          x="0"
-          y="0"
-          width="24"
-          height="24"
-          rx="4"
-        ></rect>
+        <rect fill="#E2E5E7" x="0" y="0" width="24" height="24" rx="4"></rect>
         <path
           d="M16.1317,11.4573 L9.9792,7.612 C9.5529,7.34558 9,7.65204 9,8.15472 L9,15.8453 C9,16.348 9.5529,16.6544 9.9792,16.388 L16.1316,12.5427 C16.5327,12.2921 16.5327,11.7079 16.1317,11.4573 Z"
-          id="Path"
           stroke="#29313A"
           fill="#29313A"
           stroke-linecap="round"
@@ -513,7 +456,6 @@ export const Plus = () => (
     >
       <g id="Group-5">
         <rect
-          id="Rectangle"
           fill="#E2E5E7"
           fill-rule="nonzero"
           x="0"
@@ -522,25 +464,23 @@ export const Plus = () => (
           height="24"
           rx="4"
         ></rect>
-        <path d="M12,8 L12,16 L12,8 Z" id="Path" fill="#29313A"></path>
+        <path d="M12,8 L12,16 L12,8 Z" fill="#29313A"></path>
         <line
           x1="12"
           y1="8"
           x2="12"
           y2="16"
-          id="Path"
           stroke="#29313A"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         ></line>
-        <path d="M8,12 L16,12 L8,12 Z" id="Path" fill="#29313A"></path>
+        <path d="M8,12 L16,12 L8,12 Z" fill="#29313A"></path>
         <line
           x1="8"
           y1="12"
           x2="16"
           y2="12"
-          id="Path"
           stroke="#29313A"
           stroke-width="2"
           stroke-linecap="round"

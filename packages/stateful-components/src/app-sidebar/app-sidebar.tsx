@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from "react";
 import { connect } from "react-redux";
-import { selectors } from "@nteract/core";
+
 import { AppState } from "@nteract/types";
 
 export const AppSidebarContext = React.createContext({});

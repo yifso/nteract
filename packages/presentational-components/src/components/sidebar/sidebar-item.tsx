@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, ReactChild } from "react";
+import React, { HTMLAttributes } from "react";
 import classnames from "classnames";
 
 import { File, Folder, Chevron } from "../icons";
@@ -85,19 +85,17 @@ export class SidebarItem extends React.PureComponent<
   state: SidebarItemState = { isExpanded: openStates.unset };
 
   handleToggleExpanded = (e: React.MouseEvent) => {
+    const { onSelect } = this.props;
     e.preventDefault();
     this.setState((previous) => ({ isExpanded: !previous.isExpanded }));
+
+    if (onSelect) {
+      onSelect();
+    }
   };
 
   render() {
-    const {
-      subItems,
-      name,
-      defaultIsExpanded = false,
-      onSelect,
-      level,
-      ...props
-    } = this.props;
+    const { subItems, name, defaultIsExpanded = false, level } = this.props;
 
     const isFolder = subItems !== undefined;
     const image = isFolder ? <Folder /> : <File />;

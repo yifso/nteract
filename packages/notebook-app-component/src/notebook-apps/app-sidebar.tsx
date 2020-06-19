@@ -6,8 +6,6 @@ import {
   AppSidebarProps,
 } from "@nteract/stateful-components";
 
-import { remote } from "electron";
-
 import { ContentRef } from "@nteract/core";
 import { Sidebar, SidebarItem } from "@nteract/presentational-components";
 

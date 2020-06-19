@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { actions, selectors, ContentRef } from "@nteract/core";
+import { actions, ContentRef } from "@nteract/core";
 import { AppState } from "@nteract/types";
-import { isSidebarVisible } from "@nteract/selectors";
 
 export interface DispatchProps {
   addCell: () => void;
@@ -39,7 +38,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch,
   ownProps: ComponentProps
 ): DispatchProps => {
-  const { id, children, contentRef } = ownProps;
+  const { contentRef } = ownProps;
 
   return {
     toggleSidebar: () => dispatch(actions.toggleSidebar()),

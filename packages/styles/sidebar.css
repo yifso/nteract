@@ -4,13 +4,13 @@
 }
 
 .sidebar {
-  background-color: #e2e5e7;
   display: flex;
   flex-direction: column;
   font-size: 13px;
   height: 100vh;
   width: 0;
   display: none;
+  background-color: #e2e5e7;
 }
 
 .sidebar + * {
@@ -19,7 +19,7 @@
 
 .sidebar.sidebar-visible {
   display: block;
-  width: 200px;
+  min-width: 200px;
 }
 
 .sidebar ul {
