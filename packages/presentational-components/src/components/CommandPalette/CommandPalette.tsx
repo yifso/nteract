@@ -1,4 +1,11 @@
-import React, { FC, ReactNode, ReactNodeArray, HTMLAttributes } from "react";
+import React, {
+  FC,
+  ReactNode,
+  ReactNodeArray,
+  HTMLAttributes,
+  EventHandler,
+  SyntheticEvent,
+} from "react";
 import "./CommandPalette.css";
 import { Commands } from "../Icons";
 import { KeyTag } from "./KeyTag";
@@ -9,22 +16,21 @@ export interface Props
   children: ReactNode | ReactNodeArray;
   isVisible?: boolean;
   onClose: () => void;
+  onChangeFilter: (value: string) => void;
 }
 
-export class CommandPalette extends React.Component<Props> {
+export class CommandPalette extends React.PureComponent<Props> {
   componentDidMount() {
-    document.querySelector(".command-palette input").focus();
+    const element: any = document.querySelector(".command-palette input");
+    element.focus();
   }
 
+  handleChangeFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.onChangeFilter(e.target.value);
+  };
+
   render() {
-    const {
-      isVisible,
-      onClose,
-      shortcutKey,
-      shortCut,
-      onChange,
-      children,
-    } = this.props;
+    const { isVisible, onClose, shortCut, onChange, children } = this.props;
 
     const mainClassName = isVisible
       ? "command-palette visible"
@@ -45,13 +51,14 @@ export class CommandPalette extends React.Component<Props> {
           <div className="command-palette-input-row">
             <label htmlFor="commandFilter">Filter commands</label>
             <input
-              onChange={(e) => onChange(e.target.value)}
+              onChange={this.handleChangeFilter}
               type="text"
               name="commandFilter"
               id="commandFilter"
+              placeholder="Filter commands"
             />
           </div>
-          <div class="items">{children}</div>
+          <div className="items">{children}</div>
         </div>
       </React.Fragment>
     );

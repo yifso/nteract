@@ -19,11 +19,11 @@ export interface ComponentProps {
   contentRef: ContentRef;
 }
 
-export type CommandProps = DispatchProps & ComponentProps;
+export type CommandProps = DispatchProps;
 
 export const CommandContext = React.createContext({});
 
-class CommandContainer extends React.Component<CommandToolbarProps> {
+class CommandContainer extends React.PureComponent<CommandProps> {
   render() {
     return (
       <CommandContext.Provider value={this.props}>

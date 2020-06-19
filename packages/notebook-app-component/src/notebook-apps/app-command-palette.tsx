@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import os from "os";
 import {
   CommandPalette as Palette,
@@ -15,131 +15,210 @@ import {
 } from "@nteract/stateful-components";
 
 const isMac = os.platform() === "darwin";
+const commandOrControl = isMac ? "⌘" : "Ctrl";
 
-const keymap: KeyMap = {
-  HIDE_MENU: ["ctrl+p", "meta+p"],
-  RUN_CELL: "shift+enter",
-  CREATE_CELL_ABOVE: "shift+m",
-  CREATE_CELL_BELOW: "shift+backspace",
-  CONVERT_TO_MARKDOWN: ["ctrl+m"],
-  HIDE_OUTPUT: ["shift+o"],
-  HIDE_INPUT: ["shift+i"],
+const actions = {
+  HIDE_MENU: "HIDE_MENU",
+  RUN_CELL: "RUN_CELL",
+  CREATE_CELL_ABOVE: "CREATE_CELL_ABOVE",
+  CREATE_CELL_BELOW: "CREATE_CELL_BELOW",
+  CONVERT_TO_MARKDOWN: "CONVERT_TO_MARKDOWN",
+  HIDE_OUTPUT: "HIDE_OUTPUT",
+  HIDE_INPUT: "HIDE_INPUT",
 };
 
-const filters = [
-  {
-    icon: <Icons.Play />,
-    onClick: console.log("play"),
-    text: "Run Cell",
-    shortCut: ["Shift", "Enter"],
-  },
-  {
-    icon: <Icons.AddCell />,
-    onClick: () => console.log("Add Cell Below"),
-    shortCut: ["Shift", "M"],
-    text: "Add Cell Below",
-  },
-  {
-    icon: <Icons.AddCell />,
-    onClick: () => console.log("Add Cell Above"),
-    shortCut: ["Shift", "Backspace"],
-    text: "Add Cell Above",
-  },
-  {
-    icon: <Icons.Markdown />,
-    onClick: () => console.log("Markdown"),
-    shortCut: ["Control", "M"],
-    text: "Convert to Markdown",
-  },
-  {
-    icon: <Icons.Eye />,
-    onClick: () => console.log("Hide Output"),
-    shortCut: ["Shift", "O"],
-    text: "Hide Output",
-  },
-  {
-    icon: <Icons.Eye />,
-    onClick: () => console.log("Hide Input"),
-    shortCut: ["Shift", "I"],
-    text: "Hide Input",
-  },
-];
+interface Filter {
+  id: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  text: string;
+  displayShortcut: string[];
+  shortcut: string | string[];
+}
 
-interface Props extends CommandDispatchProps {
+function getFilters(handlers: any): Filter[] {
+  return [
+    {
+      id: actions.RUN_CELL,
+      icon: <Icons.Play />,
+      onClick: () => {
+        handlers[actions.RUN_CELL]();
+      },
+      text: "Run Cell",
+      displayShortcut: [commandOrControl, "M"],
+      shortcut: ["ctrl+enter", "meta+enter"],
+    },
+    {
+      id: actions.CREATE_CELL_BELOW,
+      icon: <Icons.AddCell />,
+      onClick: () => {
+        handlers[actions.CREATE_CELL_BELOW]();
+      },
+      displayShortcut: ["Shift", "M"],
+      text: "Add Cell Below",
+      shortcut: "ctrl+shift+b",
+    },
+    {
+      id: actions.CREATE_CELL_ABOVE,
+      icon: <Icons.AddCell />,
+      onClick: () => {
+        handlers[actions.CREATE_CELL_ABOVE]();
+      },
+      displayShortcut: ["Shift", "Backspace"],
+      text: "Add Cell Above",
+      shortcut: "ctrl+shift+a",
+    },
+    {
+      id: actions.CONVERT_TO_MARKDOWN,
+      icon: <Icons.Markdown />,
+      onClick: () => {
+        handlers[actions.CONVERT_TO_MARKDOWN]();
+      },
+      displayShortcut: [commandOrControl, "M"],
+      text: "Convert to Markdown",
+      shortcut: ["ctrl+shift+m"],
+    },
+    {
+      id: actions.HIDE_OUTPUT,
+      icon: <Icons.Eye />,
+      onClick: () => {
+        handlers[actions.HIDE_OUTPUT]();
+      },
+      displayShortcut: ["Shift", "O"],
+      text: "Hide Output",
+      shortcut: ["shift+o"],
+    },
+    {
+      id: actions.HIDE_INPUT,
+      icon: <Icons.Eye />,
+      onClick: () => {
+        handlers[actions.HIDE_INPUT]();
+      },
+      displayShortcut: ["Shift", "I"],
+      text: "Hide Input",
+      shortcut: ["shift+i"],
+    },
+  ];
+}
+
+interface Handlers {
+  restartAndRun: () => void;
+  addCellAbove: () => void;
+  addCellBelow: () => void;
+  hideOutput: () => void;
+  hideInput: () => void;
+  onToggleVisibility: () => void;
+  convertToMarkdown: () => void;
+}
+
+function getHandlers({
+  restartAndRun,
+  addCellAbove,
+  addCellBelow,
+  hideOutput,
+  hideInput,
+  onToggleVisibility,
+  convertToMarkdown,
+}: Handlers) {
+  const handlers = {
+    RUN_CELL: () => {
+      restartAndRun();
+      onToggleVisibility();
+    },
+    CREATE_CELL_ABOVE: () => {
+      addCellAbove();
+      onToggleVisibility();
+    },
+    CREATE_CELL_BELOW: () => {
+      addCellBelow();
+      onToggleVisibility();
+    },
+    CONVERT_TO_MARKDOWN: () => {
+      convertToMarkdown();
+      onToggleVisibility();
+    },
+    HIDE_OUTPUT: () => {
+      hideOutput();
+      onToggleVisibility();
+    },
+    HIDE_INPUT: () => {
+      hideInput();
+      onToggleVisibility();
+    },
+  };
+
+  return handlers;
+}
+
+function getKeymap(filters: Filter[]) {
+  return filters.reduce(
+    (acc, next) => ({ ...acc, [next.id]: next.shortcut }),
+    {}
+  );
+}
+
+type BaseProps = CommandDispatchProps & Handlers;
+interface Props extends BaseProps {
   isVisible: boolean;
 }
-class CommandPalette extends React.Component<Props> {
-  state = {
+interface State {
+  filter: string;
+}
+class CommandPalette extends React.PureComponent<Props, State> {
+  handlers: any = undefined;
+  filters: any = undefined;
+  keymap: any = undefined;
+
+  state: State = {
     filter: "",
   };
 
+  constructor(props: Props) {
+    super(props);
+
+    this.handlers = getHandlers(props);
+    this.filters = getFilters(this.handlers);
+    this.keymap = getKeymap(this.filters);
+  }
+
   getFilteredData = (search: string) => {
     return (
-      filters.filter(
-        (filter) => filter.text.toLowerCase().indexOf(search.toLowerCase()) > -1
+      this.filters.filter(
+        (filter: Filter) =>
+          filter.text.toLowerCase().indexOf(search.toLowerCase()) > -1
       ) || []
     );
   };
 
-  getHandlers = () => {
-    const {
-      restartAndRun,
-      addCellAbove,
-      addCellBelow,
-      hideOutput,
-      hideInput,
-      onToggleVisibility,
-      convertToMarkdown,
-    } = this.props;
-
-    const handlers = {
-      RUN_CELL: () => {
-        restartAndRun();
-        onToggleVisibility();
-      },
-      CREATE_CELL_ABOVE: () => {
-        addCellAbove();
-        onToggleVisibility();
-      },
-      CREATE_CELL_BELOW: () => {
-        addCellBelow();
-        onToggleVisibility();
-      },
-      CONVERT_TO_MARKDOWN: () => {
-        convertToMarkdown();
-        onToggleVisibility();
-      },
-      HIDE_OUTPUT: () => {
-        hideOutput();
-        onToggleVisibility();
-      },
-      HIDE_INPUT: () => {
-        hideInput();
-        onToggleVisibility();
-      },
-    };
-
-    return handlers;
+  handleChange = (value: string) => {
+    this.setState({ filter: value });
   };
 
+  componentDidUpdate(previousProps: Props) {
+    if (previousProps.isVisible !== this.props.isVisible) {
+      this.handleChange("");
+    }
+  }
   render() {
-    console.log("PROPS", this.props);
     const { isVisible, onToggleVisibility } = this.props;
     const data = this.getFilteredData(this.state.filter);
-    const handlers = this.getHandlers();
+    const handlers = getHandlers(this.props);
 
     return isVisible ? (
-      <GlobalHotKeys keyMap={keymap} handlers={handlers}>
+      <GlobalHotKeys keyMap={this.keymap} handlers={handlers}>
         <Palette
           placeholder="Filter commands"
-          onChange={(value) => this.setState({ filter: value })}
-          shortCut={["Control", "P"]}
+          onChangeFilter={this.handleChange}
+          shortCut={[commandOrControl, "P"]}
           isVisible={isVisible}
           onClose={onToggleVisibility}
-          selectedIndex={2}
         >
-          {data.map((item) => (
-            <CommandButtonRow onClick={item.onClick} shortCut={item.shortCut}>
+          {data.map((item: Filter) => (
+            <CommandButtonRow
+              key={item.text}
+              onClick={item.onClick}
+              shortCut={item.displayShortcut}
+            >
               {item.icon}
               {item.text}
             </CommandButtonRow>
@@ -155,19 +234,18 @@ interface ComponentProps {
 }
 
 const Container = (props: Props & ComponentProps) => {
-  console.log("PROPS", props.componentRef);
   return (
     <CommandContainer contentRef={props.contentRef} id="command-palette">
       <CommandContext.Consumer>
-        {(actions: CommandDispatchProps) => (
+        {(commandActions: any) => (
           <CommandPalette
             {...props}
-            addCellBelow={actions.addCellBelow}
-            addCellAbove={actions.addCellAbove}
-            restartAndRun={actions.restartAndRun}
-            hideOutput={actions.hideOutput}
-            hideInput={actions.hideInput}
-            convertToMarkdown={actions.convertToMarkdown}
+            addCellBelow={commandActions.addCellBelow}
+            addCellAbove={commandActions.addCellAbove}
+            restartAndRun={commandActions.restartAndRun}
+            hideOutput={commandActions.hideOutput}
+            hideInput={commandActions.hideInput}
+            convertToMarkdown={commandActions.convertToMarkdown}
           />
         )}
       </CommandContext.Consumer>

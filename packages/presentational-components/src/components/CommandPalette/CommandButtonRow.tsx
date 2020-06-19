@@ -11,12 +11,7 @@ export const CommandButtonRow: FC<CommandButtonRowProps> = ({
   ...props
 }) => {
   return (
-    <button
-      type="button"
-      {...props}
-      className="command-palette-row"
-      tabIndex={-1}
-    >
+    <button type="button" {...props} className="command-palette-row">
       <span className="command-name">{children}</span>
       <span>
         {shortCut &&
