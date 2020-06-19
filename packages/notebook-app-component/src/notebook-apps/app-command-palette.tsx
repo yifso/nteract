@@ -45,7 +45,7 @@ function getFilters(handlers: any): Filter[] {
         handlers[actions.RUN_CELL]();
       },
       text: "Run Cell",
-      displayShortcut: [commandOrControl, "M"],
+      displayShortcut: [commandOrControl, "Enter"],
       shortcut: ["ctrl+enter", "meta+enter"],
     },
     {
@@ -54,7 +54,7 @@ function getFilters(handlers: any): Filter[] {
       onClick: () => {
         handlers[actions.CREATE_CELL_BELOW]();
       },
-      displayShortcut: ["Shift", "M"],
+      displayShortcut: [commandOrControl, "Shift", "B"],
       text: "Add Cell Below",
       shortcut: "ctrl+shift+b",
     },
@@ -64,7 +64,7 @@ function getFilters(handlers: any): Filter[] {
       onClick: () => {
         handlers[actions.CREATE_CELL_ABOVE]();
       },
-      displayShortcut: ["Shift", "Backspace"],
+      displayShortcut: [commandOrControl, "Shift", "A"],
       text: "Add Cell Above",
       shortcut: "ctrl+shift+a",
     },
@@ -74,7 +74,7 @@ function getFilters(handlers: any): Filter[] {
       onClick: () => {
         handlers[actions.CONVERT_TO_MARKDOWN]();
       },
-      displayShortcut: [commandOrControl, "M"],
+      displayShortcut: [commandOrControl, "Shift", "M"],
       text: "Convert to Markdown",
       shortcut: ["ctrl+shift+m"],
     },

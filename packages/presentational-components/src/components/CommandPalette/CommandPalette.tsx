@@ -6,7 +6,6 @@ import React, {
   EventHandler,
   SyntheticEvent,
 } from "react";
-import "./CommandPalette.css";
 import { Commands } from "../Icons";
 import { KeyTag } from "./KeyTag";
 
