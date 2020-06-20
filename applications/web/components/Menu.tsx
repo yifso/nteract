@@ -6,6 +6,7 @@ const MenuBox = styled.ul<Props>`
   margin: 0px;
   padding:0px;
   display: flex;
+  align-items: center;
 `;
 
 export const MenuItem = styled.li<Props>`

@@ -1,17 +1,19 @@
+import React, { FC,  HTMLAttributes, useState, useEffect} from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter } from "next/router";
-import React, { useState } from "react";
 import { Octokit } from "@octokit/rest";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
 import { faGithubAlt, faPython } from '@fortawesome/free-brands-svg-icons'
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
+import { getFilePath, getFileType } from "../util.js"
 
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
 import { BinderMenu } from '../../components/BinderMenu'
+import { Avatar } from '../../components/Avatar'
 import FilesListing from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 
@@ -29,17 +31,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-interface State {
-  fileContent: string;
-  showConsole: boolean;
-  showBinderMenu: boolean;
-  provider: string;
-  org: string;
-  repo: string;
-  gitRef: string;
-  filepath: string
-}
-
 /**
      * Since we use a single file named [...params] to aggregate
      * all of the configurable options passeed into the url, we have
@@ -49,62 +40,59 @@ interface State {
      * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
      */
 
-export class Main extends React.PureComponent<WithRouterProps, State> {
-
-  constructor(props) {
-    super(props);
-    const { params } = this.props.router.query;
-    const filepathSegments = params.slice(4);
-    let filepath;
-    if (typeof filepathSegments !== "string") {
-      filepath = filepathSegments.join("");
-    } else {
-      filepath = filepathSegments;
-    }
-    this.state = {
-      fileContent: "",
-      showConsole: false,
-      showBinderMenu:false,
-      provider: params[0],
-      org: params[1],
-      repo: params[2],
-      gitRef: params[3],
-      filepath: filepath
-    };
-
-
-    this.loadFile = this.loadFile.bind(this);
-    this.toggleConsole = this.toggleConsole.bind(this);
-    this.toggleBinderMenu = this.toggleBinderMenu.bind(this);
-    this.run = this.run.bind(this)
-    this.updateVCSInfo = this.updateVCSInfo.bind(this)
-    this.oauthGithub = this.oauthGithub.bind(this)
+export interface Props extends HTMLAttributes<HTMLDivElement> {
+  router: any
   }
 
-  getFileType(type){
-    if (type == "file")
-      return "file"
-    else if (type =="dir")
-      return "directory"
+export const Main: FC<WithRouterProps> = (props: Props) => {
+
+    const { params } = props.router.query;
+    
+    const [ showBinderMenu, setShowBinderMenu ] = useState(false)
+    const [ showConsole, setShowConsole ] = useState(false)
+    
+    const [ fileContent, setFileContent ] = useState("")
+    const [ provider, setProvider ] = useState(params[0])
+    const [ org, setOrg ] = useState(params[1])
+    const [ repo, setRepo ] = useState(params[2])
+    const [ gitRef, setGitRef ] = useState(params[3])
+    const [ filepath, setFilepath ] = useState(getFilePath(params))
+    
+    const [ loggedIn, setLoggedIn ] = useState(false)
+    const [ username, setUsername ] = useState("")
+    const [ userImage, setUserImage ] = useState("")
+    const [ userLink, setUserLink ] = useState("")
+   
+// This Effect runs only when the username change
+  useEffect( () => {
+  // Check if user has a token saved
+  if ( localStorage.getItem("token") != undefined ){
+        getGithubUserDetails()
+  }
+  }, [username])
+
+  
+ function toggleConsole(){
+   setShowConsole(!showConsole)
   }
 
-  toggleConsole(){
-    this.setState({showConsole: !this.state.showConsole})
+  function toggleBinderMenu(){
+    setShowBinderMenu(!showBinderMenu)
   }
 
-  toggleBinderMenu(){
-    this.setState({showBinderMenu: !this.state.showBinderMenu})
-  }
-
-  run(){
+  function run(){
     console.log("run binder here")
   }
 
-  loadFile(fileName){
+  function onSave(){
+    console.log("on github save")
+  }
+
+ function  loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
-      owner: this.state.org,
-      repo: this.state.repo,
+      owner: org,
+      repo: repo,
       path: fileName
     }).then(({data}) => {
       if(data['type'] == "file"){
@@ -114,7 +102,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
            - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
            - We want to render any other file type; we can keep it read only.
         */
-           this.setState({fileContent: atob(data["content"])})
+           setFileContent( atob(data["content"]) )
       }else{
        /* TODO: Add folder listing in nteract/web
           when user click on a folder, it should show the sub file and folders.
@@ -125,22 +113,25 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     })
   }
 
-  updateVCSInfo(event, provider, organ, repo, gitRef){
-    this.setState({
-      provider:provider,
-      org:organ,
-      repo:repo,
-      gitRef:gitRef
-    })
+  function updateVCSInfo(event, provider, org, repo, gitRef){
+    setProvider(provider)
+    setOrg(org)
+    setRepo(repo)
+    setGitRef(gitRef)
     event.preventDefault()
   }
 
-  oauthGithub(){
+ function  oauthGithub(){
    if ( localStorage.getItem("token") == undefined ){
     window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
     console.log(localStorage.getItem("token"))
    }else{
-        const token = localStorage.getItem("token") 
+        getGithubUserDetails()
+   }
+  }
+
+  function getGithubUserDetails(){
+    const token = localStorage.getItem("token") 
         fetch("https://api.github.com/user", {
           method: "GET",
           headers: new Headers({
@@ -149,13 +140,15 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
           
         })
         .then( (res) => res.json())
-        .then( (data) => console.log(data))
-   }
+        .then( (data) => {
+          setLoggedIn(true)
+          setUsername(data["login"])
+          setUserLink(data["html_url"])
+          setUserImage(data["avatar_url"])
+        })
   }
 
 
-  render(): JSX.Element {
-    const { params } = this.props.router.query;
     // We won't be following this logic, we will render the data from github and only send changes to binder  
      /*
        <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
@@ -168,14 +161,14 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
       return (
         <Layout>
            {
-             this.state.showBinderMenu &&
+             showBinderMenu &&
                   
                <BinderMenu
-                        provider={this.state.provider}
-                        org={this.state.org}
-                        repo={this.state.repo}
-                        gitRef={this.state.gitRef}
-                        updateVCSInfo={this.updateVCSInfo}
+                        provider={provider}
+                        org={org}
+                        repo={repo}
+                        gitRef={gitRef}
+                        updateVCSInfo={updateVCSInfo}
                         style={{
                                 height: "150px",
                                 position: "absolute",
@@ -188,7 +181,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
            }
         
           { 
-            this.state.showConsole && <Console style={{ 
+            showConsole && <Console style={{ 
                                position: "absolute",
                                bottom: "30px",
                                right: "0px",
@@ -199,16 +192,25 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
         <Header>
           <Menu>
               <MenuItem>
-                    <Button text="Run" variant="outlined" icon={runIcon} onClick={() => this.run()}/>
+                    <Button text="Run" variant="outlined" icon={runIcon} onClick={() => run()}/>
               </MenuItem>
+            { loggedIn &&
               <MenuItem>
-                    <Button text="Menu" variant="outlined" icon={menuIcon} onClick={() => this.toggleBinderMenu()}/>
+                    <Button text="Save" variant="outlined" icon={saveIcon} onClick={() => onSave()}/>
+              </MenuItem>
+            }
+
+              <MenuItem>
+                    <Button text="Menu" variant="outlined" icon={menuIcon} onClick={() => toggleBinderMenu()}/>
               </MenuItem>
 
           </Menu>
             <Menu>
-                  <MenuItem>
-                    <Button onClick={ () => this.oauthGithub()} text="Connect to Github" icon={githubIcon} />
+              <MenuItem >
+                    { loggedIn
+                          ? <Avatar userImage={userImage} username={username} userLink={userLink} / >
+                          : <Button onClick={ () => oauthGithub()} text="Connect to Github" icon={githubIcon} />
+                    }
                   </MenuItem>
             </Menu>
         </Header>
@@ -219,10 +221,10 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
               className="logo"
             />
             <FilesListing
-                  loadFile={this.loadFile}
-                  org={this.state.org}
-                  repo={this.state.repo}
-                  gitRef={this.state.gitRef}>
+                  loadFile={loadFile}
+                  org={org}
+                  repo={repo}
+                  gitRef={gitRef}>
             </FilesListing>
         </Side>
         <Body>
@@ -233,7 +235,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
 
             <Menu>
                 <MenuItem>
-                      <Button text="Console" icon={consoleIcon} variant="transparent" onClick={this.toggleConsole}/>
+                      <Button text="Console" icon={consoleIcon} variant="transparent" onClick={toggleConsole}/>
                 </MenuItem>
                 <MenuItem>
                       <Button text="Python 3" icon={pythonIcon} variant="transparent" disabled />
@@ -250,7 +252,6 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
         </Footer>
       </Layout>
       );
-  }
 }
 
 export default withRouter(Main);
