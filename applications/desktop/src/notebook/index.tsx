@@ -84,9 +84,9 @@ const store = configureStore({
     host: makeLocalHostRecord(),
     version: remote.app.getVersion(),
   }),
-  comms: makeCommsRecord(),
   core: makeStateRecord({
     entities: makeEntitiesRecord({
+      comms: makeCommsRecord(),
       contents: makeContentsRecord({
         byRef: initialRefs,
       }),

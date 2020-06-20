@@ -32,13 +32,13 @@ export const initialState = Record<AppState>({
   app: makeAppRecord({
     version: "@nteract/web"
   }),
-  comms: makeCommsRecord(),
   core: makeStateRecord({
     currentKernelspecsRef: kernelspecsRef,
     entities: makeEntitiesRecord({
       hosts: makeHostsRecord({
         byRef: Immutable.Map<string, HostRecord>()
       }),
+      comms: makeCommsRecord(),
       contents: makeContentsRecord({
         byRef: Immutable.Map<string, ContentRecord>()
       }),
@@ -76,7 +76,6 @@ const configureStore = makeConfigureStore<AppState>()({
   packages: [notifications],
   reducers: {
     app: reducers.app,
-    comms: reducers.comms,
     core: reducers.core as any
   },
   epics: coreEpics.allEpics,

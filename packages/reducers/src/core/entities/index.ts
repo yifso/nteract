@@ -3,6 +3,7 @@ import { makeEntitiesRecord } from "@nteract/types";
 import { combineReducers } from "redux-immutable";
 
 // Local modules
+import { comms } from "./comms";
 import { contents } from "./contents";
 import { hosts } from "./hosts";
 import { kernels } from "./kernels";
@@ -13,6 +14,7 @@ import { transforms } from "./transforms";
 
 export const entities = combineReducers(
   {
+    comms,
     contents,
     hosts,
     kernels,

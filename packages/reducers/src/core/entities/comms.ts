@@ -66,7 +66,7 @@ function processCommMessage(
 
 type CommAction = RegisterCommTargetAction | CommMessageAction | CommOpenAction;
 
-export default function(
+const comms = function(
   state: CommsRecord = makeCommsRecord(),
   action: CommAction
 ): CommsRecord {
@@ -81,3 +81,5 @@ export default function(
       return state;
   }
 }
+
+export { comms };

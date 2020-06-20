@@ -1,6 +1,7 @@
 import * as stateModule from "@nteract/types";
 
-import commsReducer from "../src/comms";
+import { comms as commsReducer } from "../../../../src/core/entities/comms";
+
 import Immutable from "immutable";
 
 describe("registerCommTarget", () => {
