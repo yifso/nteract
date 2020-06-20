@@ -4,11 +4,20 @@ import { withRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
+
+import { highlight, languages } from 'prismjs/components/prism-core';
 import { faGithubAlt, faPython } from '@fortawesome/free-brands-svg-icons'
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
-import { getFilePath, getFileType } from "../util.js"
 
+import Editor from 'react-simple-code-editor';
+import Prism from "prismjs";
+
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+
+
+import { getFilePath, getFileType } from "../util.js"
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
@@ -16,6 +25,7 @@ import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
 import FilesListing from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
+
 
 const runIcon =  <FontAwesomeIcon icon={faPlay} />
 const saveIcon =  <FontAwesomeIcon icon={faSave} />
@@ -31,6 +41,11 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
+const codeMirrorOptions = {
+      mode: 'javascript',
+      theme: 'dracula',
+      lineNumbers: true
+}
 /**
      * Since we use a single file named [...params] to aggregate
      * all of the configurable options passeed into the url, we have
@@ -65,6 +80,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
    
 // This Effect runs only when the username change
   useEffect( () => {
+
   // Check if user has a token saved
   if ( localStorage.getItem("token") != undefined ){
         getGithubUserDetails()
@@ -172,7 +188,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
                         style={{
                                 height: "150px",
                                 position: "absolute",
-                                marginTop: "50px",
+                                marginTop: "51px",
                                 width: "calc(100% - 260px)",
                                 right: "0px",
                                 borderBottom: "1px solid #FBECEC",
@@ -228,7 +244,19 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             </FilesListing>
         </Side>
         <Body>
-
+              <Editor
+                  value={fileContent}
+                  placeholder="Empty File..."
+                  className="language-javascript"
+                 onValueChange={ code => setFileContent(code) }
+                        highlight={code => highlight(code, languages.javascript, "javascript")}
+                        padding={30}
+                        style={{
+                          fontFamily: '"Fira code", "Fira Mono", monospace',
+                          fontSize: 13,
+                        }}
+                    className="container__editor"
+              />
         </Body>
 
         <Footer>

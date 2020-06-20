@@ -9,10 +9,12 @@ import { Input } from "./Input";
 const rocketIcon =  <FontAwesomeIcon icon={faRocket} />
 
 const BinderMenuDiv = styled.div<Props>`
+    background-color:white;
     border-bottom:0px solid #d1e3dd;
     padding:25px;
     display: flex;
     align-items: center;
+    z-index:1000;
 
     form {
         display: flex;
