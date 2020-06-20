@@ -61,7 +61,6 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
     } else {
       filepath = filepathSegments;
     }
-
     this.state = {
       fileContent: "",
       showConsole: false,
@@ -72,6 +71,7 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
       gitRef: params[3],
       filepath: filepath
     };
+
 
     this.loadFile = this.loadFile.bind(this);
     this.toggleConsole = this.toggleConsole.bind(this);
@@ -136,7 +136,21 @@ export class Main extends React.PureComponent<WithRouterProps, State> {
   }
 
   oauthGithub(){
-      console.log("http://localhost:3000/p/gh/nteract/examples/master/happiness.ipynb")
+   if ( localStorage.getItem("token") == undefined ){
+    window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
+    console.log(localStorage.getItem("token"))
+   }else{
+        const token = localStorage.getItem("token") 
+        fetch("https://api.github.com/user", {
+          method: "GET",
+          headers: new Headers({
+            "Authorization": "token " + token
+          })
+          
+        })
+        .then( (res) => res.json())
+        .then( (data) => console.log(data))
+   }
   }
 
 
