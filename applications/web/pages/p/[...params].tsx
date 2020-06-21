@@ -2,21 +2,19 @@ import React, { FC,  HTMLAttributes, useState, useEffect} from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
-
-import { highlight, languages } from 'prismjs/components/prism-core';
 import { faGithubAlt, faPython } from '@fortawesome/free-brands-svg-icons'
+
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
 
 import Editor from 'react-simple-code-editor';
-import Prism from "prismjs";
-
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 
-
-import { getFilePath, getFileType } from "../util.js"
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
@@ -40,11 +38,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-const codeMirrorOptions = {
-      mode: 'javascript',
-      theme: 'dracula',
-      lineNumbers: true
-}
 /**
      * Since we use a single file named [...params] to aggregate
      * all of the configurable options passeed into the url, we have
@@ -53,6 +46,26 @@ const codeMirrorOptions = {
      *
      * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
      */
+
+function getFilePath(params){
+    const filepathSegments = params.slice(4);
+    let filepath;
+    if (typeof filepathSegments !== "string") {
+      filepath = filepathSegments.join("");
+    } else {
+      filepath = filepathSegments;
+    }
+  
+    return filepath
+  }
+
+function getFileType(type){
+    if (type == "file")
+      return "file"
+    else if (type =="dir")
+      return "directory"
+  }
+
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
@@ -118,9 +131,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
            - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
            - We want to render any other file type; we can keep it read only.
         */
-
            setFileContent( atob(data["content"]) )
-
         /* TODO: Further, check if its a notebook or note, and render them differently. */
       }else{
        /* TODO: Add folder listing in nteract/web
@@ -250,7 +261,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
               <Editor
                   value={fileContent}
                   placeholder="Empty File..."
-                  className="language-javascript"
+                  className="language-javascript container__editor"
                  onValueChange={ code => setFileContent(code) }
                         highlight={code => highlight(code, languages.javascript, "javascript")}
                         padding={30}
