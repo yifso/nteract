@@ -7,7 +7,7 @@ import React, {
   SyntheticEvent,
 } from "react";
 import { Commands } from "../Icons";
-import { KeyTag } from "./KeyTag";
+import { KeyTag } from "./key-tag";
 
 export interface Props
   extends HTMLAttributes<HTMLDivElement & HTMLInputElement> {

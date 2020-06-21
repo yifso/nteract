@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, FC } from "react";
-import { KeyTag } from "./KeyTag";
+import { KeyTag } from "./key-tag";
 
 interface CommandButtonRowProps extends HTMLAttributes<HTMLButtonElement> {
   shortCut: string[];
