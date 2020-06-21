@@ -13,7 +13,6 @@ import { Host } from "@mybinder/host-cache";
 import Editor from 'react-simple-code-editor';
 import Prism from "prismjs";
 
-import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 
 
@@ -67,6 +66,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ showConsole, setShowConsole ] = useState(false)
     
     const [ fileContent, setFileContent ] = useState("")
+    const [ fileType, setFileType ] = useState("")
     const [ provider, setProvider ] = useState(params[0])
     const [ org, setOrg ] = useState(params[1])
     const [ repo, setRepo ] = useState(params[2])
@@ -118,7 +118,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
            - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
            - We want to render any other file type; we can keep it read only.
         */
+
            setFileContent( atob(data["content"]) )
+
+        /* TODO: Further, check if its a notebook or note, and render them differently. */
       }else{
        /* TODO: Add folder listing in nteract/web
           when user click on a folder, it should show the sub file and folders.
@@ -255,7 +258,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
                           fontFamily: '"Fira code", "Fira Mono", monospace',
                           fontSize: 13,
                         }}
-                    className="container__editor"
               />
         </Body>
 

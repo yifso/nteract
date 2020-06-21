@@ -33,8 +33,9 @@ useEffect( () => {
   }
 }, [code, codeState])
 
+/* TODO: Upload server from official account and replace the name  */
 const oauthGithub = () => {
-  fetch(`https://play-oauth-server-gjjwxcr82.vercel.app/github?code=${code}&state=${codeState}`)
+  fetch(`https://play-oauth-server.ramantehlan.vercel.app/github?code=${code}&state=${codeState}` )
    .then(res => res.json())
    .then(data => { 
      if ( data.access_token !== undefined){
