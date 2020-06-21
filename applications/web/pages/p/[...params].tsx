@@ -92,21 +92,15 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ userLink, setUserLink ] = useState("")
    
 // This Effect runs only when the username change
-  useEffect( () => {
-
+useEffect( () => {
   // Check if user has a token saved
   if ( localStorage.getItem("token") != undefined ){
         getGithubUserDetails()
   }
-  }, [username])
-
+}, [username])
   
- function toggleConsole(){
-   setShowConsole(!showConsole)
-  }
-
-  function toggleBinderMenu(){
-    setShowBinderMenu(!showBinderMenu)
+ function toggle( value, setFunction){
+   setFunction(!value)
   }
 
   function run(){
@@ -131,15 +125,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
            - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
            - We want to render any other file type; we can keep it read only.
         */
-           setFileContent( atob(data["content"]) )
+        setFileContent( atob(data["content"]) )
         /* TODO: Further, check if its a notebook or note, and render them differently. */
       }else{
        /* TODO: Add folder listing in nteract/web
           when user click on a folder, it should show the sub file and folders.
        */
-        console.log('Folder Type')
+        console.log(username)
       }
-      console.log(data)
     })
   }
 
@@ -153,8 +146,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
  function  oauthGithub(){
    if ( localStorage.getItem("token") == undefined ){
-    window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
-    console.log(localStorage.getItem("token"))
+        window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
    }else{
         getGithubUserDetails()
    }
@@ -171,10 +163,15 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         })
         .then( (res) => res.json())
         .then( (data) => {
-          setLoggedIn(true)
-          setUsername(data["login"])
-          setUserLink(data["html_url"])
-          setUserImage(data["avatar_url"])
+          if( data["login"] !== undefined) {
+            setLoggedIn(true)
+            setUsername(data["login"])
+            setUserLink(data["html_url"])
+            setUserImage(data["avatar_url"])
+          }else{
+            // Login failed | also give notification here
+            localStorage.removeItem("token")
+          }
         })
   }
 
@@ -231,7 +228,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             }
 
               <MenuItem>
-                    <Button text="Menu" variant="outlined" icon={menuIcon} onClick={() => toggleBinderMenu()}/>
+                    <Button text="Menu" variant="outlined" icon={menuIcon} onClick={() => toggle( showBinderMenu, setShowBinderMenu)}/>
               </MenuItem>
 
           </Menu>
@@ -261,13 +258,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
               <Editor
                   value={fileContent}
                   placeholder="Empty File..."
-                  className="language-javascript container__editor"
+                  className="language-javascript"
                  onValueChange={ code => setFileContent(code) }
                         highlight={code => highlight(code, languages.javascript, "javascript")}
                         padding={30}
                         style={{
-                          fontFamily: '"Fira code", "Fira Mono", monospace',
-                          fontSize: 13,
+                          fontFamily: ' "Fira Mode", "Fira cono", monospace',
+                          fontSize: 14,
+                          backgroundColor: "#fff" 
                         }}
               />
         </Body>
@@ -276,7 +274,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
             <Menu>
                 <MenuItem>
-                      <Button text="Console" icon={consoleIcon} variant="transparent" onClick={toggleConsole}/>
+                  <Button text="Console" icon={consoleIcon} variant="transparent" onClick={() => toggle(showConsole, setShowConsole)}/>
                 </MenuItem>
                 <MenuItem>
                       <Button text="Python 3" icon={pythonIcon} variant="transparent" disabled />

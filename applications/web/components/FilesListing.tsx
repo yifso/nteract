@@ -97,7 +97,6 @@ export default class FilesListing extends React.Component<Props,State> {
       ref: this.props.gitRef,
       path: ""
     }).then(({data}) => {
-      console.table(data)
       this.setState({files: data})
   }, (e) => {
     console.log(e)
