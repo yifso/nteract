@@ -45,9 +45,11 @@ class CellToolbar extends React.Component<
 > {
   render() {
     return (
-      <CellToolbarContext.Provider value={this.props}>
-        {this.props.children}
-      </CellToolbarContext.Provider>
+      <div className="nteract-cell-toolbar">
+        <CellToolbarContext.Provider value={this.props}>
+          {this.props.children}
+        </CellToolbarContext.Provider>
+      </div>
     );
   }
 }

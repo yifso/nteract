@@ -7,23 +7,64 @@ interface CellMenuProps extends React.FC<HTMLAttributes<HTMLDivElement>> {
 }
 
 export type Props = React.FC<HTMLAttributes<HTMLUListElement>>;
-export type MenuItemProps = React.FC<HTMLAttributes<HTMLLIElement>>;
+
+interface MenuItemProps extends React.FC<HTMLAttributes<HTMLLIElement>> {
+  className?: string;
+  onClick?: () => void;
+  focusWithin?: boolean;
+}
 
 export const CellMenuSection: Props = ({ children }) => {
   return <ul className="cell-menu-section">{children}</ul>;
 };
 
-export const CellMenuItem: MenuItemProps = ({
+export class CellMenuItem extends React.PureComponent<MenuItemProps, null> {
+  element: any = React.createRef();
+
+  handleKeypress = (e: KeyboardEvent) => {
+    if (e.keyCode === 13 || e.keyCode === 32) {
+      this.props.onClick && this.props.onClick();
+    }
+  };
+
+  handleFocus = () => {
+    if (this.props.focusWithin) {
+      this.element.current.querySelector(":first-child").focus();
+    }
+  };
+
+  componentDidMount() {
+    this.element.current.addEventListener("focus", this.handleFocus);
+    this.element.current.addEventListener("keypress", this.handleKeypress);
+  }
+
+  componentWillUnmount() {
+    this.element.current.removeEventListener("focus", this.handleFocus);
+    this.element.current.removeEventListener("keypress", this.handleKeypress);
+  }
+
+  render() {
+    const { children, className, ...props } = this.props;
+
+    return (
+      <li
+        ref={this.element}
+        className={classnames("cell-menu-item", className)}
+        {...props}
+      >
+        {children}
+      </li>
+    );
+  }
+}
+
+export const CellMenuItem2: MenuItemProps = ({
   children,
   className,
   ...props
 }) => {
   return (
-    <li
-      className={classnames("cell-menu-item", className)}
-      {...props}
-      tabIndex={-1}
-    >
+    <li className={classnames("cell-menu-item", className)} {...props}>
       {children}
     </li>
   );

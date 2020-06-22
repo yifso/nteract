@@ -210,6 +210,7 @@ export default class Toolbar extends React.PureComponent<
                             context.markCellAsDeleting
                           )}
                           title="delete cell"
+                          tabIndex={0}
                         >
                           <Icons.Delete />
                           <a>Delete Cell</a>
@@ -221,6 +222,7 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.insertCodeCellAbove
                           )}
+                          tabIndex={0}
                         >
                           <Icons.AddCell />
                           <a>Add Cell Above</a>
@@ -230,6 +232,7 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.insertCodeCellBelow
                           )}
+                          tabIndex={0}
                         >
                           <Icons.AddCell below />
                           <a>Add Cell Below</a>
@@ -239,7 +242,7 @@ export default class Toolbar extends React.PureComponent<
                         <CellMenuItem className="heading">
                           Visibility
                         </CellMenuItem>
-                        <CellMenuItem>
+                        <CellMenuItem tabIndex={0} focusWithin>
                           <ToggleSwitch
                             label="Input"
                             labelPlacement="start"
@@ -250,7 +253,7 @@ export default class Toolbar extends React.PureComponent<
                             className="cell-menu-item-toggle"
                           />
                         </CellMenuItem>
-                        <CellMenuItem>
+                        <CellMenuItem tabIndex={0} focusWithin>
                           <ToggleSwitch
                             label="Output"
                             labelPlacement="start"
@@ -261,7 +264,7 @@ export default class Toolbar extends React.PureComponent<
                             className="cell-menu-item-toggle"
                           />
                         </CellMenuItem>
-                        <CellMenuItem>
+                        <CellMenuItem tabIndex={0} focusWithin>
                           <ToggleSwitch
                             label="Extended Output"
                             labelPlacement="start"
@@ -274,7 +277,7 @@ export default class Toolbar extends React.PureComponent<
                         </CellMenuItem>
                       </CellMenuSection>
                       <CellMenuSection>
-                        <CellMenuItem>
+                        <CellMenuItem tabIndex={0}>
                           <ToggleSwitch
                             label="Parameterized Cell"
                             labelPlacement="start"
@@ -309,6 +312,7 @@ export default class Toolbar extends React.PureComponent<
                             context.markCellAsDeleting
                           )}
                           title="delete cell"
+                          tabIndex={0}
                         >
                           <Icons.Delete />
                           <a>Delete Cell</a>
@@ -320,6 +324,7 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.insertCodeCellAbove
                           )}
+                          tabIndex={0}
                         >
                           <Icons.AddCell />
                           <a>Add Cell Above</a>
@@ -329,6 +334,7 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.insertCodeCellBelow
                           )}
+                          tabIndex={0}
                         >
                           <Icons.AddCell below />
                           <a>Add Cell Below</a>
