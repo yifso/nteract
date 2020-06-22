@@ -177,7 +177,7 @@ Provide a bulleted list of bug fixes and a reference to the PR(s) containing the
 ### @nteract/mythic-configuration ([publish-version-here])
 
 - New mythic package, will setup a transient in-memory configuration store per default. ([PR#5137](https://github.com/nteract/nteract/pull/5137))
-- Dispatch the return value of `setConfigFile(<path>)` to make to load/write/watch a config file instead.
+- Dispatch the return value of `setConfigFile(<path>)` to make it load/write/watch a config file instead.
 - To define configuration options, use `defineConfigOption(...)`:
     ```typescript
     import {defineConfigOption} from "@nteract/mythic-configuration";
