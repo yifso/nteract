@@ -16,8 +16,8 @@ import {
   CommandButtonRow,
   CommandPalette,
   Props as CommandPaletteProps,
-} from "./components/CommandPalette";
-import * as Icons from "./components/Icons";
+} from "./components/command-palette";
+import * as Icons from "./components/icons";
 export * from "./styles";
 
 export {

@@ -45,6 +45,17 @@
   font-size: 13px;
 }
 
+.command-palette-heading {
+  font-size: var(--nt-font-size-md);
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.command-palette-heading :first-child {
+  margin-right: 12px;
+}
+
 .command-palette-row {
   padding: 6px 32px;
   display: flex;

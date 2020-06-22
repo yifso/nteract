@@ -9,11 +9,12 @@ import CellToolbar, { CellToolbarContext } from "./cells/toolbar";
 import StatusBar, { StatusBarContext } from "./notebook/status-bar";
 
 import ThemeFromConfig from "./decorators/theme-from-config";
+
 import {
   CommandContext,
-  CommandContainerProps,
-  DispatchProps as CommandDispatchProps,
+  CommandProps,
   default as CommandContainer,
+  DispatchProps as CommandDispatchProps,
 } from "./command-palette/command-palette";
 
 export {
@@ -27,7 +28,7 @@ export {
   StatusBarContext,
   ThemeFromConfig,
   CommandContext,
-  CommandContainerProps,
+  CommandProps,
   CommandDispatchProps,
   CommandContainer,
 };

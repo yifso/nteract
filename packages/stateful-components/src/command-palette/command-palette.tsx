@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
+import { CellId } from "@nteract/commutable";
 import { actions, ContentRef } from "@nteract/core";
 
 export interface DispatchProps {
@@ -14,7 +15,7 @@ export interface DispatchProps {
 }
 
 export interface ComponentProps {
-  id: string;
+  id: CellId;
   children: React.ReactNode | JSX.Element;
   contentRef: ContentRef;
 }

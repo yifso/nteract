@@ -6,7 +6,7 @@ import React, {
   EventHandler,
   SyntheticEvent,
 } from "react";
-import { Commands } from "../Icons";
+import { Commands } from "../icons";
 import { KeyTag } from "./key-tag";
 
 export interface Props
@@ -100,7 +100,10 @@ export class CommandPalette extends React.PureComponent<Props, State> {
         <div className="command-palette-overlay" onClick={onClose} />
         <div className={mainClassName} tabIndex={-1}>
           <div className="command-palette-row">
-            <Commands muted />
+            <span className="command-palette-heading">
+              <Commands muted />
+              nteract Command
+            </span>
             <KeyTag>
               Hide Menu Bar
               {shortCut.map((shortcutKey) => (
@@ -111,7 +114,7 @@ export class CommandPalette extends React.PureComponent<Props, State> {
           <div className="command-palette-input-row">
             <label htmlFor="commandFilter">Filter commands</label>
             <input
-              onFocus={}
+              onFocus={this.handleInputFocus}
               onChange={this.handleChangeFilter}
               type="text"
               name="commandFilter"
