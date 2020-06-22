@@ -174,33 +174,63 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
+### @nteract/mythic-configuration ([publish-version-here])
+
+- New mythic package, will setup a transient in-memory configuration store per default. ([PR#5137](https://github.com/nteract/nteract/pull/5137))
+- Dispatch the return value of `setConfigFile(<path>)` to make to load/write/watch a config file instead.
+- To define configuration options, use `defineConfigOption(...)`:
+    ```typescript
+    import {defineConfigOption} from "@nteract/mythic-configuration";
+    
+    export const {
+      selector: tabSize,
+      action: setTabSize,
+    } = defineConfigOption({
+      label: "Tab Size",
+      key: "codeMirror.tabSize",
+      values: [
+        {label: "2 Spaces", value: 2},
+        {label: "3 Spaces", value: 3},
+        {label: "4 Spaces", value: 4},
+      ],
+      defaultValue: 4,
+    });
+    ```
+- You can then use the selector (e.g. `tabSize` above) to get the value from a store (e.g. `tabSize(store.getState())`).
+- You can then alter the state by dispatching the result of the action function (e.g. `setTabSize` above, `store.dispatch(setTabSize(4))`).
+- If you have a group of config options with a common prefix (e.g. `codemirror.<...>`), you can get a selector for the whole group with `createConfigCollection(...)`:
+    ```typescript
+    import {createConfigCollection} from "@nteract/mythic-configuration";
+    
+    const codeMirrorConfig = createConfigCollection({
+      key: "codeMirror",
+    });
+    ```
+    You can then do something like `codeMirrorConfig(store.getState())` to get something like
+    ```javascript
+    {
+      tabSize: 4,
+      // ... other options starting with `codemirror.`, potentially nested if more than one dot 
+    }
+    ```
+- The state is stored under `__private__.configuration` in the store, but it shouldn't be neccessary to directly access it.
+- To type the state/store you can use `HasPrivateConfigurationState`.
+
 ### @nteract/mythic-notifications ([publish-version-here])
 
-#### Breaking Changes
+#### Internal Changes
 
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
-
-#### New Features
-
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
+- Adapted to changes in the `myths` API (no functional change). ([PR#5106](https://github.com/nteract/nteract/pull/5106))
 
 ### @nteract/myths ([publish-version-here])
 
 #### Breaking Changes
 
-Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
+- Changed API somewhat, see `README.md` for details. ([PR#5106](https://github.com/nteract/nteract/pull/5106))
 
 #### New Features
 
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
-
-#### Bug Fixes
-
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
+- See `README.md` for details. ([PR#5106](https://github.com/nteract/nteract/pull/5106))
 
 ### @nteract/notebook-app-component ([publish-version-here])
 
