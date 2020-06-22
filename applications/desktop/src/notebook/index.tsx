@@ -71,6 +71,8 @@ import configureStore, { DesktopStore } from "./store";
 // Load the nteract fonts
 import("./fonts");
 // Needs to be last
+
+import "@nteract/styles/cell-menu.css";
 import "@nteract/styles/editor-overrides.css";
 
 const contentRef = createContentRef();

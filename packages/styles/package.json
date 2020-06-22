@@ -11,7 +11,8 @@
     "global-variables.css",
     "toggle-switch.css",
     "themes",
-    "markdown"
+    "markdown",
+    "cell-menu"
   ],
   "scripts": {},
   "publishConfig": {
