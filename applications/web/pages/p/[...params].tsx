@@ -4,8 +4,8 @@ import { withRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
-import { faGithubAlt, faPython } from '@fortawesome/free-brands-svg-icons'
+import { faPlay, faPlus, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
+import { faGithubAlt,  faPython } from '@fortawesome/free-brands-svg-icons'
 
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
@@ -20,6 +20,8 @@ import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
 import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
+import { Input } from '../../components/Input'
+import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
 import FilesListing from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 
@@ -31,6 +33,7 @@ const githubIcon =  <FontAwesomeIcon icon={faGithubAlt} />
 const consoleIcon =  <FontAwesomeIcon icon={faTerminal} />
 const pythonIcon =  <FontAwesomeIcon icon={faPython} />
 const serverIcon =  <FontAwesomeIcon icon={faServer} />
+const commitIcon =  <FontAwesomeIcon icon={faPlus} />
 
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
@@ -67,6 +70,33 @@ function getFileType(type){
   }
 
 
+function useInput(val: string | undefined ){
+  const [value, setValue] = useState(val);
+  
+  function handleChange(e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) {
+    setValue(e.currentTarget.value);
+  }
+  
+  return { 
+    value, 
+    onChange: handleChange
+  }
+}
+
+function useCheckInput(val: boolean | undefined ){
+  const [value, setValue] = useState(val);
+  
+  function handleChange(e: React.FormEvent<HTMLInputElement>) {
+    setValue(e.currentTarget.checked);
+  }
+  
+  return { 
+    value, 
+    onChange: handleChange
+  }
+}
+
+
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
   }
@@ -74,10 +104,13 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 export const Main: FC<WithRouterProps> = (props: Props) => {
 
     const { params } = props.router.query;
-    
+   
+    // Toggle Values
     const [ showBinderMenu, setShowBinderMenu ] = useState(false)
     const [ showConsole, setShowConsole ] = useState(false)
-    
+    const [ showSaveDialog, setShowSaveDialog ] = useState(false)
+   
+    // Git API Values
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
     const [ provider, setProvider ] = useState(params[0])
@@ -85,7 +118,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ repo, setRepo ] = useState(params[2])
     const [ gitRef, setGitRef ] = useState(params[3])
     const [ filepath, setFilepath ] = useState(getFilePath(params))
-    
+  
+    // Commit Values
+    const commitMessage = useInput("")
+    const commitDescription = useInput("")
+    // This should be a boolean value but as a string
+    const stripOutput = useCheckInput(false)
+
+    // Login Values
     const [ loggedIn, setLoggedIn ] = useState(false)
     const [ username, setUsername ] = useState("")
     const [ userImage, setUserImage ] = useState("")
@@ -108,7 +148,7 @@ useEffect( () => {
   }
 
   function onSave(){
-    console.log("on github save")
+    toggle(showSaveDialog, setShowSaveDialog)
   }
 
  function  loadFile(fileName){
@@ -137,11 +177,12 @@ useEffect( () => {
   }
 
   function updateVCSInfo(event, provider, org, repo, gitRef){
+    // TODO: Add a loading experience for the users and error if project not found
+    event.preventDefault()
     setProvider(provider)
     setOrg(org)
     setRepo(repo)
     setGitRef(gitRef)
-    event.preventDefault()
   }
 
  function  oauthGithub(){
@@ -185,7 +226,9 @@ useEffect( () => {
        </Host>
        */
 
-      return (
+const dialogInputStyle = { width: "98%" }
+
+return (
         <Layout>
            {
              showBinderMenu &&
@@ -215,6 +258,27 @@ useEffect( () => {
                                width: "calc(100% - 260px)"
                  }}>Console</Console> 
           }
+
+        { showSaveDialog &&
+          <>
+            <Shadow onClick={ ()=> toggle(showSaveDialog, setShowSaveDialog) } />
+        <Dialog >
+          
+          <DialogRow>
+                <Input label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
+          </DialogRow>
+          <DialogRow>
+              <Input variant="textarea" label="Description" {...commitDescription} style={dialogInputStyle} />
+          </DialogRow>
+          <DialogRow>
+              <Input variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
+          </DialogRow>
+          <DialogFooter> 
+            <Button text="Commit" icon={commitIcon} />
+          </DialogFooter>
+          </Dialog>
+          </>
+        }
 
         <Header>
           <Menu>
