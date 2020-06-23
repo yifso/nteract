@@ -7,7 +7,9 @@ import { KernelspecsRecordProps, makeKernelspecsRecord } from "./kernelspecs";
 import { makeMessagesRecord, MessagesRecordProps } from "./messages";
 import { makeModalsRecord, ModalsRecordProps } from "./modals";
 import { makeTransformsRecord, TransformsRecordProps } from "./transforms";
+import { makeCommsRecord, CommsRecordProps } from "./comms";
 
+export * from "./comms";
 export * from "./contents";
 export * from "./hosts";
 export * from "./kernels";
@@ -18,6 +20,7 @@ export * from "./modals";
 export * from "./transforms";
 
 export interface EntitiesRecordProps {
+  comms: Immutable.RecordOf<CommsRecordProps>;
   contents: Immutable.RecordOf<ContentsRecordProps>;
   hosts: Immutable.RecordOf<HostsRecordProps>;
   kernels: Immutable.RecordOf<KernelsRecordProps>;
@@ -30,6 +33,7 @@ export interface EntitiesRecordProps {
 export type EntitiesRecord = Immutable.RecordOf<EntitiesRecordProps>;
 
 export const makeEntitiesRecord = Immutable.Record<EntitiesRecordProps>({
+  comms: makeCommsRecord(),
   contents: makeContentsRecord(),
   hosts: makeHostsRecord(),
   kernels: makeKernelsRecord(),

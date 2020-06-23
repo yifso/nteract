@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 
 import { appendCellToNotebook, emptyCodeCell, emptyMarkdownCell, emptyNotebook, ImmutableNotebook, JSONObject, monocellNotebook } from "@nteract/commutable";
-import { comms, core } from "@nteract/reducers";
+import { core } from "@nteract/reducers";
 import { AppState, createContentRef, createKernelRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDocumentRecord, makeEntitiesRecord, makeKernelsRecord, makeNotebookContentRecord, makeRemoteKernelRecord, makeStateRecord } from "@nteract/types";
 import * as Immutable from "immutable";
 import { combineReducers, createStore, Store } from "redux";
@@ -10,7 +10,6 @@ export { fixtureCommutable, fixture, fixtureJSON } from "./fixture-nb";
 
 const rootReducer = combineReducers({
   app: (state = makeAppRecord()) => state,
-  comms,
   core
 });
 
@@ -81,6 +80,7 @@ export const mockAppState = (config: JSONObject): AppState => {
     core: makeStateRecord({
       kernelRef,
       entities: makeEntitiesRecord({
+        comms: makeCommsRecord(),
         contents: makeContentsRecord({
           byRef: Immutable.Map({
             [contentRef]: makeNotebookContentRecord({
@@ -115,8 +115,7 @@ export const mockAppState = (config: JSONObject): AppState => {
     }),
     app: makeAppRecord({
       githubToken: "TOKEN",
-    }),
-    comms: makeCommsRecord(),
+    })
   };
 };
 
