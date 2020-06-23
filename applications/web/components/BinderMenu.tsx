@@ -1,20 +1,18 @@
 import React, { FC,  HTMLAttributes,  useState } from "react";
 import styled from "styled-components";
+import { Button } from "./Button";
+import { Input } from "./Input";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 
-import { Button } from "./Button";
-import { Input } from "./Input";
-
 const rocketIcon =  <FontAwesomeIcon icon={faRocket} />
 
+
 const BinderMenuDiv = styled.div<Props>`
-    background-color:white;
     border-bottom:0px solid #d1e3dd;
     padding:25px;
     display: flex;
     align-items: center;
-    z-index:1000;
 
     form {
         display: flex;
@@ -73,15 +71,15 @@ export const BinderMenu: FC<Props> = (props: Props) => {
       <BinderMenuDiv {...props}>
 
         <img className="binder-logo" alt="binder-logo" src="https://mybinder.org/static/logo.svg?v=f9f0d927b67cc9dc99d788c822ca21c0" />
-        <form onSubmit={(e) => props.updateVCSInfo( e, provider.value, org.value, repo.value, gitRef.value )} >
-          <Input variant="select" label="VCS" { ...provider} style={{width: "120px"}}>
+        <form onSubmit={(e) => props.updateVCSInfo( e, provider.value, org.value, repo.value, gitRef.value )} style={{ marginTop: "-25px"}} >
+                <Input variant="select" label="VCS" { ...provider} style={{width: "120px"}}>
                       <option value="gh">Github</option>
                 </Input>
                 <Input label="Owner" {...org} />
                 <Input  label="Repository" {...repo}/>
                 <Input label="Branch" {...gitRef}/>
-                <Button text="Launch" style={ {marginLeft: '30px'}} icon={rocketIcon} />
           </form>
+          <Button text="Launch" style={ {marginLeft: '30px'}} icon={rocketIcon} />
       </BinderMenuDiv>
       </>
       );

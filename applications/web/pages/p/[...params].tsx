@@ -264,7 +264,7 @@ useEffect( () => {
                         padding={30}
                         style={{
                           fontFamily: ' "Fira Mode", "Fira cono", monospace',
-                          fontSize: 14,
+                          fontSize: 12,
                           backgroundColor: "#fff" 
                         }}
               />
