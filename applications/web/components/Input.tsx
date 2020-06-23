@@ -12,7 +12,7 @@ const Box = styled.div<Props>`
 
 
 .input, .select, .textarea {
-  height: 34px; 
+  height: 32px; 
   min-width: 80px;
   background-color: #fff;
   border: 1px solid #EBD8D8;

@@ -15,9 +15,6 @@ const ConsoleDiv = styled.div<Props>`
   overflow: auto;
   counter-reset: line-numbering;
   border-top: 1px solid #000;
-  position: fixed;
-  left: 50%;
-  top: 25%;
   z-index: 1000;
 `;
 
