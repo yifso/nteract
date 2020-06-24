@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, FC } from "react";
+import React from "react";
 
 export const Markdown = (props: any) => {
   return (
@@ -28,6 +28,9 @@ interface MutedProps extends HTMLAttributes<SVGElement> {
 
 export const Commands: FC<MutedProps> = ({ muted = false }) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Updates to icons and sidebar overflow
   <svg width={24} height={24} fill="none">
     <path
       d="M1 20.8L4.96 23 12 19l7.04 4L23 20.8V7.16L12.977 1.547a2 2 0 00-1.954 0L1 7.16V20.8z"
@@ -47,6 +50,7 @@ export const Commands: FC<MutedProps> = ({ muted = false }) => (
       stroke="#757F88"
       strokeWidth={1.5}
     />
+<<<<<<< HEAD
 =======
   <svg
     width="22px"
@@ -102,6 +106,8 @@ export const Commands: FC<MutedProps> = ({ muted = false }) => (
       </g>
     </g>
 >>>>>>> Makes sidebar resizable
+=======
+>>>>>>> Updates to icons and sidebar overflow
   </svg>
 );
 
