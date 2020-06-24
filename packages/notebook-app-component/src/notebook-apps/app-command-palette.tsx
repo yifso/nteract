@@ -1,17 +1,18 @@
-import React, { FormEvent } from "react";
-import os from "os";
+import React from "react";
+
 import {
-  CommandPalette as Palette,
   CommandButtonRow,
-  CommandPaletteProps,
+  CommandPalette as Palette,
   Icons,
 } from "@nteract/presentational-components";
-import { GlobalHotKeys, KeyMap } from "react-hotkeys";
+import os from "os";
+import { GlobalHotKeys } from "react-hotkeys";
+
 import { ContentRef } from "@nteract/core";
 import {
   CommandContainer,
-  CommandDispatchProps,
   CommandContext,
+  CommandDispatchProps,
 } from "@nteract/stateful-components";
 
 const isMac = os.platform() === "darwin";

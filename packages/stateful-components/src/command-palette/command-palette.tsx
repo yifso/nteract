@@ -38,7 +38,7 @@ const mapDispatchToProps = (
   dispatch: Dispatch,
   ownProps: ComponentProps
 ): DispatchProps => {
-  const { id, children, contentRef } = ownProps;
+  const { id, contentRef } = ownProps;
 
   return {
     addCellBelow: () => {

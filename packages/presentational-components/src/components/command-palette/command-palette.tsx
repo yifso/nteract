@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  ReactNode,
-  ReactNodeArray,
-  HTMLAttributes,
-  EventHandler,
-  SyntheticEvent,
-} from "react";
+import React, { HTMLAttributes, ReactNode, ReactNodeArray } from "react";
 import { Commands } from "../icons";
 import { KeyTag } from "./key-tag";
 
@@ -90,14 +83,19 @@ export class CommandPalette extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { isVisible, onClose, shortCut, onChange, children } = this.props;
+    const { isVisible, onClose, shortCut, children } = this.props;
 
     const mainClassName = isVisible
       ? "command-palette visible"
       : "command-palette";
     return (
       <React.Fragment>
-        <div className="command-palette-overlay" onClick={onClose} />
+        <div
+          className="command-palette-overlay"
+          onClick={onClose}
+          role="button"
+          aria-label="Close command palette"
+        />
         <div className={mainClassName} tabIndex={-1}>
           <div className="command-palette-row">
             <span className="command-palette-heading">
@@ -107,7 +105,9 @@ export class CommandPalette extends React.PureComponent<Props, State> {
             <KeyTag>
               Hide Menu Bar
               {shortCut.map((shortcutKey) => (
-                <KeyTag mini>{shortcutKey}</KeyTag>
+                <KeyTag mini key={shortcutKey}>
+                  {shortcutKey}
+                </KeyTag>
               ))}
             </KeyTag>
           </div>
