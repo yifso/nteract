@@ -22,12 +22,12 @@ export interface ComponentProps {
 
 export type AppToolbarProps = DispatchProps & ComponentProps;
 
-export const AppToolbarContext = React.createContext({});
+export const AppToolbarContext = React.createContext<any>({});
 
-class AppToolbar extends React.Component<AppToolbarProps> {
+class AppToolbar extends React.PureComponent<AppToolbarProps> {
   render() {
     return (
-      <AppToolbarContext.Provider value={this.props}>
+      <AppToolbarContext.Provider value={this.props as AppToolbarProps}>
         {this.props.children}
       </AppToolbarContext.Provider>
     );

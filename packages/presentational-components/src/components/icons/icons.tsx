@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, HTMLAttributes } from "react";
 
 export const Markdown = (props: any) => {
   return (

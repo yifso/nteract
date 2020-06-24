@@ -52,16 +52,15 @@ interface ListWrapperProps extends HTMLAttributes<HTMLUListElement> {
 }
 
 class ListWrapper extends React.PureComponent<ListWrapperProps, any> {
-  listEl: React.Ref<HTMLUListElement> | null | undefined = React.createRef();
+  listEl?: React.RefObject<HTMLUListElement> = React.createRef();
 
   componentDidMount() {
     const { level } = this.props;
-    if (this.listEl) {
-      this.listEl.current &&
-        this.listEl.current.style.setProperty(
-          "--padding",
-          `${(level + 1) * 16}px`
-        );
+    if (this.listEl && this.listEl.current) {
+      this.listEl.current.style.setProperty(
+        "--padding",
+        `${((level || 0) + 1) * 16}px`
+      );
     }
   }
 
