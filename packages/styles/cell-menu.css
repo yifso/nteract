@@ -122,6 +122,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-family: var(--nt-font-family-normal);
 }
 
 .circular-button svg:not(.progress-ring) * {

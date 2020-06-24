@@ -23,6 +23,7 @@ import {
   CircularButton,
 } from "@nteract/presentational-components";
 import { CellToolbar, CellToolbarContext } from "@nteract/stateful-components";
+import { ExecutionCount } from "../../../commutable/lib";
 
 const StyledDropdownContent = styled(DropdownContent)``;
 
@@ -37,6 +38,7 @@ interface ComponentState {
   checkOutput: boolean;
   checkExtendedOutput: boolean;
   checkParameterizedCell: boolean;
+  showExecuteButton: boolean;
 }
 
 export default class Toolbar extends React.PureComponent<
@@ -55,6 +57,7 @@ export default class Toolbar extends React.PureComponent<
       checkOutput: true,
       checkExtendedOutput: false,
       checkParameterizedCell: false,
+      showExecuteButton: false,
     };
 
     this.toggleMenuRef = React.createRef();
@@ -149,6 +152,14 @@ export default class Toolbar extends React.PureComponent<
     );
   };
 
+  showExecuteButton = () => {
+    this.setState({ showExecuteButton: true });
+  }
+
+  hideExecuteButton = (executionCount: ExecutionCount) => {
+    this.setState({ showExecuteButton: executionCount !== null ? false : true });
+  }
+
   render(): JSX.Element {
     return (
       <CellToolbar contentRef={this.props.contentRef} id={this.props.id}>
@@ -158,10 +169,12 @@ export default class Toolbar extends React.PureComponent<
               {context.type !== "markdown" ? (
                 <CircularButton
                   onClick={context.executeCell}
-                  title="execute cell"
+                  title="Execute this cell"
                   className="executeButton"
+                  onMouseEnter={this.showExecuteButton}
+                  onMouseLeave={() => this.hideExecuteButton(context.executionCount)}
                 >
-                  <Icons.Play />
+                  {context.executionCount == null ? <Icons.Play/> : (this.state.showExecuteButton ? <Icons.Play/> : context.executionCount)}
                 </CircularButton>
               ) : null}
               <div ref={this.dropdownRef}>
