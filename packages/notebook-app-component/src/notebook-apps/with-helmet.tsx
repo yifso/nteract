@@ -14,12 +14,19 @@ interface ComponentProps {
   contentRef: ContentRef;
 }
 
+interface ComponentState {
+  isCommandPaletteVisible: boolean;
+}
+
 const keymap: KeyMap = {
   SHOW_COMMAND_PALETTE: ["ctrl+p", "meta+p"],
 };
 
-export default class extends React.Component<ComponentProps> {
-  state = { isCommandPaletteVisible: false };
+export default class extends React.PureComponent<
+  ComponentProps,
+  ComponentState
+> {
+  state: ComponentState = { isCommandPaletteVisible: false };
 
   showPalette = () => {
     this.setState((previous) => ({

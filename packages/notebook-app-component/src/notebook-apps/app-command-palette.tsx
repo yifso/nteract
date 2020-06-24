@@ -101,16 +101,6 @@ function getFilters(handlers: any): Filter[] {
   ];
 }
 
-interface Handlers {
-  restartAndRun: () => void;
-  addCellAbove: () => void;
-  addCellBelow: () => void;
-  hideOutput: () => void;
-  hideInput: () => void;
-  onToggleVisibility: () => void;
-  convertToMarkdown: () => void;
-}
-
 function getHandlers({
   restartAndRun,
   addCellAbove,
@@ -119,7 +109,7 @@ function getHandlers({
   hideInput,
   onToggleVisibility,
   convertToMarkdown,
-}: Handlers) {
+}: Props) {
   const handlers = {
     RUN_CELL: () => {
       restartAndRun();
@@ -157,10 +147,14 @@ function getKeymap(filters: Filter[]) {
   );
 }
 
-type BaseProps = CommandDispatchProps & Handlers;
-interface Props extends BaseProps {
+interface ComponentProps {
+  contentRef: ContentRef;
   isVisible: boolean;
+  onToggleVisibility: () => void;
 }
+
+type Props = CommandDispatchProps & ComponentProps;
+
 interface State {
   filter: string;
 }
@@ -229,11 +223,7 @@ class CommandPalette extends React.PureComponent<Props, State> {
   }
 }
 
-interface ComponentProps {
-  contentRef: ContentRef;
-}
-
-const Container = (props: Props & ComponentProps) => {
+const Container = (props: ComponentProps) => {
   return (
     <CommandContainer contentRef={props.contentRef} id="command-palette">
       <CommandContext.Consumer>
