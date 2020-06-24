@@ -16,7 +16,6 @@ import CellToolbar from "../derived-components/toolbar";
 import { DragDropContext as dragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-import CellCreator from "../decorators/cell-creator";
 import DraggableCell from "../decorators/draggable";
 import HijackScroll from "../decorators/hijack-scroll";
 import KeyboardShortcuts from "../decorators/kbd-shortcuts";
@@ -35,11 +34,9 @@ const decorate = (
   const Cell = () => (
     <DraggableCell id={id} contentRef={contentRef}>
       <HijackScroll id={id} contentRef={contentRef}>
-        <CellCreator id={id} contentRef={contentRef}>
-          <UndoableCellDelete id={id} contentRef={contentRef}>
-            {children}
-          </UndoableCellDelete>
-        </CellCreator>
+        <UndoableCellDelete id={id} contentRef={contentRef}>
+          {children}
+        </UndoableCellDelete>
       </HijackScroll>
     </DraggableCell>
   );

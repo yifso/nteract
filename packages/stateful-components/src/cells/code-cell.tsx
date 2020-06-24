@@ -33,7 +33,7 @@ interface ComponentProps {
 
 export default class CodeCell extends React.Component<ComponentProps> {
   static defaultProps = {
-    cell_type: "code"
+    cell_type: "code",
   };
 
   render() {
@@ -61,7 +61,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
       editor: {
         codemirror: (props: PassedEditorProps) => (
           <CodeMirrorEditor {...props} editorType={"codemirror"} />
-        )
+        ),
       },
       pagers: (props: any) => (
         <Pagers id={id} contentRef={contentRef}>
@@ -93,7 +93,7 @@ export default class CodeCell extends React.Component<ComponentProps> {
           <KernelOutputError />
           <StreamText />
         </Outputs>
-      )
+      ),
     };
 
     const prompt = children?.prompt || defaults.prompt;
@@ -105,18 +105,22 @@ export default class CodeCell extends React.Component<ComponentProps> {
 
     return (
       <div className="nteract-code-cell nteract-cell">
-        {toolbar && toolbar()}
-        <Input id={id} contentRef={contentRef}>
-          {prompt({ id, contentRef })}
-          <Source className="nteract-cell-source">
-            <Editor id={id} contentRef={contentRef}>
-              {editor}
-            </Editor>
-          </Source>
-        </Input>
-        {pagers({ id, contentRef })}
-        {outputs({ id, contentRef })}
-        {inputPrompts({ id, contentRef })}
+        <div className="nteract-cell-row">
+          <div className="nteract-cell-gutter">{toolbar && toolbar()}</div>
+          <div className="nteract-cell-body">
+            <Input id={id} contentRef={contentRef}>
+              {prompt({ id, contentRef })}
+              <Source className="nteract-cell-source">
+                <Editor id={id} contentRef={contentRef}>
+                  {editor}
+                </Editor>
+              </Source>
+            </Input>
+            {pagers({ id, contentRef })}
+            {inputPrompts({ id, contentRef })}
+            {outputs({ id, contentRef })}
+          </div>
+        </div>
       </div>
     );
   }

@@ -198,7 +198,7 @@ const LightTheme = createGlobalStyle`
   
   --theme-pager-bg: #fafafa;
 
-  --cm-background: #fafafa;
+  --cm-background: #fff;
   --cm-color: black;
 
   --cm-gutter-bg: white;

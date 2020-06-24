@@ -32,6 +32,8 @@ export interface DispatchProps {
   focusBelowCell: () => void;
   unfocusEditor: () => void;
   markCellAsDeleting: () => void;
+  insertCodeCellBelow: () => void;
+  insertCodeCellAbove: () => void;
 }
 
 export const CellToolbarContext = React.createContext({});
@@ -110,7 +112,11 @@ const mapDispatchToProps = (
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
     markCellAsDeleting: () =>
-      dispatch(actions.markCellAsDeleting({ id, contentRef }))
+      dispatch(actions.markCellAsDeleting({ id, contentRef })),
+    insertCodeCellBelow: () =>
+      dispatch(actions.createCellBelow({ cellType: "code", contentRef })),
+    insertCodeCellAbove: () =>
+      dispatch(actions.createCellAbove({ cellType: "code", contentRef })),
   };
 };
 
