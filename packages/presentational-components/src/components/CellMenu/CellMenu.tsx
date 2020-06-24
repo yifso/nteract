@@ -12,13 +12,14 @@ interface MenuItemProps extends React.FC<HTMLAttributes<HTMLLIElement>> {
   className?: string;
   onClick?: () => void;
   focusWithin?: boolean;
+  tabIndex?: number;
 }
 
 export const CellMenuSection: Props = ({ children }) => {
   return <ul className="cell-menu-section">{children}</ul>;
 };
 
-export class CellMenuItem extends React.PureComponent<MenuItemProps, null> {
+export class CellMenuItem extends React.PureComponent<MenuItemProps, {}> {
   element: any = React.createRef();
 
   handleKeypress = (e: KeyboardEvent) => {
@@ -57,18 +58,6 @@ export class CellMenuItem extends React.PureComponent<MenuItemProps, null> {
     );
   }
 }
-
-export const CellMenuItem2: MenuItemProps = ({
-  children,
-  className,
-  ...props
-}) => {
-  return (
-    <li className={classnames("cell-menu-item", className)} {...props}>
-      {children}
-    </li>
-  );
-};
 
 export const CellMenu: React.FC<CellMenuProps> = ({ visible, children }) => {
   return (

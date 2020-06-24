@@ -186,8 +186,6 @@ export default class Toolbar extends React.PureComponent<
                             context.clearOutputs
                           )}
                           className="clearOutput"
-                          role="option"
-                          aria-selected="false"
                           tabIndex={0}
                         >
                           <Icons.Clear />
@@ -198,8 +196,6 @@ export default class Toolbar extends React.PureComponent<
                             context.changeToMarkdownCell
                           )}
                           className="changeType"
-                          role="option"
-                          aria-selected="false"
                           tabIndex={0}
                         >
                           <Icons.Markdown />
@@ -209,7 +205,6 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.markCellAsDeleting
                           )}
-                          title="delete cell"
                           tabIndex={0}
                         >
                           <Icons.Delete />
@@ -218,7 +213,6 @@ export default class Toolbar extends React.PureComponent<
                       </CellMenuSection>
                       <CellMenuSection>
                         <CellMenuItem
-                          title="add cell above"
                           onClick={this.performActionAndClose(
                             context.insertCodeCellAbove
                           )}
@@ -228,7 +222,6 @@ export default class Toolbar extends React.PureComponent<
                           <a>Add Cell Above</a>
                         </CellMenuItem>
                         <CellMenuItem
-                          title="add cell below"
                           onClick={this.performActionAndClose(
                             context.insertCodeCellBelow
                           )}
@@ -301,8 +294,6 @@ export default class Toolbar extends React.PureComponent<
                             context.changeToCodeCell
                           )}
                           className="changeType"
-                          role="option"
-                          aria-selected="false"
                           tabIndex={0}
                         >
                           <a>Convert to Code Cell</a>
@@ -311,7 +302,6 @@ export default class Toolbar extends React.PureComponent<
                           onClick={this.performActionAndClose(
                             context.markCellAsDeleting
                           )}
-                          title="delete cell"
                           tabIndex={0}
                         >
                           <Icons.Delete />
@@ -320,7 +310,6 @@ export default class Toolbar extends React.PureComponent<
                       </CellMenuSection>
                       <CellMenuSection>
                         <CellMenuItem
-                          title="add cell above"
                           onClick={this.performActionAndClose(
                             context.insertCodeCellAbove
                           )}
@@ -330,7 +319,6 @@ export default class Toolbar extends React.PureComponent<
                           <a>Add Cell Above</a>
                         </CellMenuItem>
                         <CellMenuItem
-                          title="add cell below"
                           onClick={this.performActionAndClose(
                             context.insertCodeCellBelow
                           )}

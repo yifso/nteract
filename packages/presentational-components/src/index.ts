@@ -8,6 +8,7 @@ import { Pagers } from "./components/pagers";
 import { Prompt, PromptBuffer } from "./components/prompt";
 import { Source } from "./components/source";
 import { CellMenu, CellMenuItem, CellMenuSection } from "./components/CellMenu";
+import { LightTheme, DarkTheme } from "./styles";
 import * as Icons from "./components/Icons";
 import { ToggleSwitch } from "./components/ToggleSwitch/ToggleSwitch";
 
@@ -29,4 +30,6 @@ export {
   CellMenuSection,
   Icons,
   ToggleSwitch,
+  LightTheme,
+  DarkTheme,
 };
