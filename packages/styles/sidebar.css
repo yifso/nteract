@@ -1,7 +1,7 @@
 .sidebar-container {
   display: flex;
   flex-direction: row;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -21,6 +21,7 @@
 .sidebar.sidebar-visible {
   display: block;
   min-width: 200px;
+  height: 100%;
 }
 
 .sidebar ul {

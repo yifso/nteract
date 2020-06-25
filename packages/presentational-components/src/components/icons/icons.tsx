@@ -27,10 +27,6 @@ interface MutedProps extends HTMLAttributes<SVGElement> {
 }
 
 export const Commands: FC<MutedProps> = ({ muted = false }) => (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Updates to icons and sidebar overflow
   <svg width={24} height={24} fill="none">
     <path
       d="M1 20.8L4.96 23 12 19l7.04 4L23 20.8V7.16L12.977 1.547a2 2 0 00-1.954 0L1 7.16V20.8z"
@@ -50,64 +46,6 @@ export const Commands: FC<MutedProps> = ({ muted = false }) => (
       stroke="#757F88"
       strokeWidth={1.5}
     />
-<<<<<<< HEAD
-=======
-  <svg
-    width="22px"
-    height="25px"
-    viewBox="0 0 22 25"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <title>Group</title>
-    <g
-      id="Page-1"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
-      <g id="Group" transform="translate(0.000000, 0.292248)">
-        <rect
-          id="Rectangle"
-          fill-opacity="0"
-          fill="#D8D8D8"
-          x="0"
-          y="0.7077525"
-          width="22"
-          height="23"
-        ></rect>
-        <path
-          d="M0,20.5077525 L3.96,22.7077525 L11,18.7077525 L18.04,22.7077525 L22,20.5077525 L22,6.8677525 L11.977,1.2549925 C11.37,0.9150025 10.63,0.9150025 10.023,1.2549925 L0,6.8677525 L0,20.5077525 Z"
-          fill={muted ? "#475059" : "#E2E5E7"}
-          fill-rule="nonzero"
-        ></path>
-        <polygon
-          fill="#8F969D"
-          fill-rule="nonzero"
-          points="10.998 12.0560525 5 9.0572525 10.998 5.7077525 16.995 9.0572525"
-        ></polygon>
-        <polygon
-          fill="#29313A"
-          fill-rule="nonzero"
-          points="5 9.0587625 10.998 12.0529525 10.998 18.4066525 5 15.4078525"
-        ></polygon>
-        <polygon
-          fill="#BABFC4"
-          fill-rule="nonzero"
-          points="16.995 9.0587625 10.997 12.0529525 10.997 18.4066525 16.995 15.4078525"
-        ></polygon>
-        <path
-          d="M10.998,18.4021525 L10.998,12.0437525 M10.998,12.0437525 L5,9.0542525 M10.998,12.0437525 L17,9.0542525"
-          id="Shape"
-          stroke="#E2E5E7"
-          stroke-width="1.5"
-        ></path>
-      </g>
-    </g>
->>>>>>> Makes sidebar resizable
-=======
->>>>>>> Updates to icons and sidebar overflow
   </svg>
 );
 
