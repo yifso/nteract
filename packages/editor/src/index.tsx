@@ -346,7 +346,7 @@ export default class CodeMirrorEditor extends React.Component<
    * re-renders triggered by the `Editor` parent component in the
    * @nteract/stateful-components package.
    */
-  shouldComponentUpdate(nextProps: CodeMirrorEditorProps): boolean {
+  shouldComponentUpdate(nextProps: CodeMirrorEditorProps, nextState: CodeMirrorEditorState): boolean {
     const valueChanged = this.props.value !== nextProps.value;
     const editorFocusedChanged =
       this.props.editorFocused !== nextProps.editorFocused;
@@ -356,7 +356,13 @@ export default class CodeMirrorEditor extends React.Component<
       nextProps.codeMirror
     );
 
-    return valueChanged || editorFocusedChanged || codeMirrorConfigChanged;
+    // Re-render the page when viewing the tip.
+    const bundleChanged = !isEqual(
+      this.state.bundle,
+      nextState.bundle
+    )
+
+    return valueChanged || editorFocusedChanged || codeMirrorConfigChanged || bundleChanged;
   }
 
   componentDidUpdate(prevProps: CodeMirrorEditorProps): void {
