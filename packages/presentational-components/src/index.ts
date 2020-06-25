@@ -7,11 +7,18 @@ import { Outputs } from "./components/outputs";
 import { Pagers } from "./components/pagers";
 import { Prompt, PromptBuffer } from "./components/prompt";
 import { Source } from "./components/source";
-import { CellMenu, CellMenuItem, CellMenuSection } from "./components/CellMenu";
-import { LightTheme, DarkTheme } from "./styles";
-import * as Icons from "./components/Icons";
-import { ToggleSwitch } from "./components/ToggleSwitch/ToggleSwitch";
 
+import { CellMenu, CellMenuItem, CellMenuSection } from "./components/CellMenu";
+import { ToggleSwitch } from "./components/ToggleSwitch/ToggleSwitch";
+import { DarkTheme, LightTheme } from "./styles";
+
+import {
+  CommandButtonRow,
+  CommandPalette,
+  Props as CommandPaletteProps,
+} from "./components/command-palette";
+
+import * as Icons from "./components/icons";
 export * from "./styles";
 
 export {
@@ -28,8 +35,11 @@ export {
   CellMenu,
   CellMenuItem,
   CellMenuSection,
-  Icons,
   ToggleSwitch,
   LightTheme,
   DarkTheme,
+  CommandButtonRow,
+  CommandPalette,
+  CommandPaletteProps,
+  Icons,
 };

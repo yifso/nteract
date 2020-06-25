@@ -10,6 +10,13 @@ import StatusBar, { StatusBarContext } from "./notebook/status-bar";
 
 import ThemeFromConfig from "./decorators/theme-from-config";
 
+import {
+  CommandContext,
+  CommandProps,
+  default as CommandContainer,
+  DispatchProps as CommandDispatchProps,
+} from "./command-palette/command-palette";
+
 export {
   Cells,
   CodeCell,
@@ -20,11 +27,13 @@ export {
   StatusBar,
   StatusBarContext,
   ThemeFromConfig,
+  CommandContext,
+  CommandProps,
+  CommandDispatchProps,
+  CommandContainer,
 };
 
-export {
-  userTheme
-} from "./config-options";
+export { userTheme } from "./config-options";
 
 interface ComponentProps {
   contentRef: ContentRef;

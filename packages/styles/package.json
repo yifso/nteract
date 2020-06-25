@@ -12,7 +12,8 @@
     "toggle-switch.css",
     "themes",
     "markdown",
-    "cell-menu"
+    "cell-menu",
+    "command-palette.css"
   ],
   "scripts": {},
   "publishConfig": {
