@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPlus, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
 import { faGithubAlt,  faPython } from '@fortawesome/free-brands-svg-icons'
 
+import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
 
@@ -50,7 +51,7 @@ const BINDER_URL = "https://mybinder.org";
      * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
      */
 
-function getFilePath(params){
+function getPath(params){
     const filepathSegments = params.slice(4);
     let filepath;
     if (typeof filepathSegments !== "string") {
@@ -61,14 +62,6 @@ function getFilePath(params){
   
     return filepath
   }
-
-function getFileType(type){
-    if (type == "file")
-      return "file"
-    else if (type =="dir")
-      return "directory"
-  }
-
 
 function useInput(val: string | undefined ){
   const [value, setValue] = useState(val);
@@ -99,7 +92,7 @@ function useCheckInput(val: boolean | undefined ){
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
-  }
+}
 
 export const Main: FC<WithRouterProps> = (props: Props) => {
 
@@ -117,7 +110,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ org, setOrg ] = useState(params[1])
     const [ repo, setRepo ] = useState(params[2])
     const [ gitRef, setGitRef ] = useState(params[3])
-    const [ filepath, setFilepath ] = useState(getFilePath(params))
+    const [ filepath, setFilepath ] = useState(getPath(params))
   
     // Commit Values
     const commitMessage = useInput("")
@@ -151,6 +144,10 @@ useEffect( () => {
     toggle(showSaveDialog, setShowSaveDialog)
   }
 
+  function isNotebook (name: string) {
+    return name.includes(".ipynb") 
+  }
+
  function  loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
@@ -159,19 +156,18 @@ useEffect( () => {
       path: fileName
     }).then(({data}) => {
       if(data['type'] == "file"){
-        /* TODO: Add file rendering in nteract/web
-           Rendering can have two cases:
-
-           - We want to render a notebook; It can be edited and changes should be sent to the binder instance.
-           - We want to render any other file type; we can keep it read only.
-        */
         setFileContent( atob(data["content"]) )
-        /* TODO: Further, check if its a notebook or note, and render them differently. */
+
+        if ( isNotebook(data["name"]) )
+            setFileType("notebook")
+        else
+            setFileType("other")
+        
       }else{
        /* TODO: Add folder listing in nteract/web
           when user click on a folder, it should show the sub file and folders.
        */
-        console.log(username)
+        console.log("Folder")
       }
     })
   }
@@ -227,6 +223,10 @@ useEffect( () => {
        */
 
 const dialogInputStyle = { width: "98%" }
+const notebookRef = ""// React.createRef()
+/* { false &&  <Notebook  contentRef={notebookRef} >
+           </Notebook>
+}*/
 
 return (
         <Layout>
@@ -242,7 +242,7 @@ return (
                         style={{
                                 height: "150px",
                                 position: "absolute",
-                                marginTop: "51px",
+                                marginTop: "49px",
                                 width: "calc(100% - 260px)",
                                 right: "0px",
                                 borderBottom: "1px solid #FBECEC",
@@ -319,6 +319,7 @@ return (
             </FilesListing>
         </Side>
         <Body>
+          { fileContent != "" &&
               <Editor
                   value={fileContent}
                   placeholder="Empty File..."
@@ -332,6 +333,7 @@ return (
                           backgroundColor: "#fff" 
                         }}
               />
+          }
         </Body>
 
         <Footer>

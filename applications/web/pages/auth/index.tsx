@@ -1,11 +1,6 @@
 import React, { FC , useEffect, useState } from "react";
 import styled from "styled-components";
 
-export const Main: FC = () => {
-const [ code, setCode ] = useState("")
-const [ codeState, setCodeState ] = useState("")
-const [ auth, setAuth ] = useState(false)
-
 const Message = styled.div`
     width:600px;
     padding: 30px;
@@ -20,6 +15,10 @@ const Message = styled.div`
     border-radius: 4px;
 `
 
+export const Main: FC = () => {
+const [ code, setCode ] = useState("")
+const [ codeState, setCodeState ] = useState("")
+const [ auth, setAuth ] = useState(false)
 
 useEffect( () =>{
  const params = new URLSearchParams(window.location.search)
