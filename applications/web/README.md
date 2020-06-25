@@ -17,7 +17,7 @@ This web application is a great way to test changes on the nteract core SDK with
   - [Pre-Requisites](#pre-requisites)
   - [Developmen Environment](#development-environment)
 - [URL Format](#url-format)
-- [Gith Auth](#gith-auth)
+- [Github Auth](#github-auth)
 - [Community](#community)
   - [Contribution](#contribution)
 - [License](#license)
@@ -38,6 +38,8 @@ pre-requisites the system needs to develop this project.
 
 - NPM or Yarn
 - Node
+
+### Development Environment
 
 To setup the development.
 

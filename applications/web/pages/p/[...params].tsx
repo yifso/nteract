@@ -97,7 +97,6 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 export const Main: FC<WithRouterProps> = (props: Props) => {
 
     const { params } = props.router.query;
-   
     // Toggle Values
     const [ showBinderMenu, setShowBinderMenu ] = useState(false)
     const [ showConsole, setShowConsole ] = useState(false)
@@ -123,7 +122,8 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ username, setUsername ] = useState("")
     const [ userImage, setUserImage ] = useState("")
     const [ userLink, setUserLink ] = useState("")
-   
+
+
 // This Effect runs only when the username change
 useEffect( () => {
   // Check if user has a token saved
@@ -140,12 +140,62 @@ useEffect( () => {
     console.log("run binder here")
   }
 
-  function onSave(){
+  function showSave(){
     toggle(showSaveDialog, setShowSaveDialog)
   }
 
   function isNotebook (name: string) {
     return name.includes(".ipynb") 
+  }
+
+  function onSave(event){
+  event.preventDefault()
+  
+  if( username == org ){
+        console.log("user is owner")
+  }else{
+    let forkFound = false;
+    listForks(org, repo).then( ({data}) => {
+     for (const repo of data){
+        if ( repo.owner.login == username){
+          forkFound = true
+          break;
+        }
+     };
+
+     if (!forkFound)
+        createFork(org, repo)
+    })
+  }
+
+  // Save data here
+
+  }
+
+  function listForks(owner, repo){
+   return new Promise(function(resolve, reject) { 
+    const octokit = new Octokit()
+    // This is get the fork of the active repo
+     octokit.repos.listForks({
+         owner,
+         repo,
+      }).then(({data}) => {
+         resolve({data})
+      }).then((e) => {
+         reject(e)
+      })
+   });
+  }
+
+  function createFork(owner, repo){
+    const auth = localStorage.getItem("token") 
+    const octokit = new Octokit({
+       auth 
+    })
+    octokit.repos.createFork({
+        owner,
+        repo,
+    });
   }
 
  function  loadFile(fileName){
@@ -263,7 +313,7 @@ return (
           <>
             <Shadow onClick={ ()=> toggle(showSaveDialog, setShowSaveDialog) } />
         <Dialog >
-          
+          <form onSubmit={(e) => onSave(e)} > 
           <DialogRow>
                 <Input label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
           </DialogRow>
@@ -276,6 +326,7 @@ return (
           <DialogFooter> 
             <Button text="Commit" icon={commitIcon} />
           </DialogFooter>
+          </form>
           </Dialog>
           </>
         }
@@ -287,7 +338,7 @@ return (
               </MenuItem>
             { loggedIn &&
               <MenuItem>
-                    <Button text="Save" variant="outlined" icon={saveIcon} onClick={() => onSave()}/>
+                    <Button text="Save" variant="outlined" icon={saveIcon} onClick={() => showSave()}/>
               </MenuItem>
             }
 
