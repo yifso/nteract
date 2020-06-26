@@ -85,7 +85,7 @@
 
 .nteract-cell-gutter {
   background-color: var(--nt-color-grey-lighter);
-  padding: 8px;
+  padding: var(--nt-spacing-s, 5px);
 }
 
 .nteract-cell-gutter .nteract-cell-toolbar > * {
@@ -95,7 +95,7 @@
 .nteract-cell-body {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: var(--nt-spacing-m, 10px);
   height: 100%;
   width: 100%;
 }

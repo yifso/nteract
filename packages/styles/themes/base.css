@@ -61,7 +61,8 @@
 
 .nteract-cells {
   padding-bottom: 10px;
-  padding: var(--nt-spacing-m, 10px);
+  padding-right: var(--nt-spacing-s, 5px);
+  padding-left: var(--nt-spacing-s, 5px);
 }
 
 .nteract-cell-input .nteract-cell-source {
