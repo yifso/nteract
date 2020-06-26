@@ -6,6 +6,7 @@ import { Input } from "./components/input";
 import { Outputs } from "./components/outputs";
 import { Pagers } from "./components/pagers";
 import { Prompt, PromptBuffer } from "./components/prompt";
+import { Sidebar, SidebarItem, SidebarItemProps } from "./components/sidebar";
 import { Source } from "./components/source";
 
 import { CellMenu, CellMenuItem, CellMenuSection } from "./components/CellMenu";
@@ -21,7 +22,45 @@ import {
 import * as Icons from "./components/icons";
 export * from "./styles";
 
+import {
+  Clear,
+  Collapse,
+  Commands,
+  Expand,
+  ExpandSidebar,
+  Group,
+  Pause,
+  Play,
+  Plus,
+  Toolbar,
+  ToolbarItem,
+  ToolbarItemProps,
+} from "./components/toolbar";
+
+const ToolbarIcons = {
+  Clear,
+  Commands,
+  Expand,
+  Collapse,
+  ExpandSidebar,
+  Group,
+  Pause,
+  Play,
+  Plus,
+};
+
 export {
+  CommandButtonRow,
+  CommandPalette,
+  CommandPaletteProps,
+  CircularButton,
+  CellMenu,
+  CellMenuItem,
+  CellMenuSection,
+  Icons,
+  ToggleSwitch,
+  LightTheme,
+  DarkTheme,
   Input,
   Outputs,
   Pagers,
@@ -31,15 +70,11 @@ export {
   Cell,
   Cells,
   Error,
-  CircularButton,
-  CellMenu,
-  CellMenuItem,
-  CellMenuSection,
-  ToggleSwitch,
-  LightTheme,
-  DarkTheme,
-  CommandButtonRow,
-  CommandPalette,
-  CommandPaletteProps,
-  Icons,
+  Sidebar,
+  SidebarItem,
+  SidebarItemProps,
+  Toolbar,
+  ToolbarItem,
+  ToolbarItemProps,
+  ToolbarIcons,
 };

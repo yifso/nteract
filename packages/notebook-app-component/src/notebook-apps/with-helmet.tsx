@@ -10,6 +10,9 @@ import AppCommandPalette from "./app-command-palette";
 configure({
   ignoreTags: [],
 });
+
+import AppSidebar from "./app-sidebar";
+import AppToolbar from "./app-toolbar";
 interface ComponentProps {
   contentRef: ContentRef;
 }
@@ -49,7 +52,13 @@ export default class extends React.PureComponent<
           onToggleVisibility={this.showPalette}
         />
         <NotebookHelmet contentRef={props.contentRef} />
-        <DraggableNotebook contentRef={props.contentRef} />
+        <div className="sidebar-container">
+          <AppSidebar contentRef={props.contentRef} />
+          <div className="content-wrapper">
+            <AppToolbar contentRef={props.contentRef} />
+            <DraggableNotebook contentRef={props.contentRef} />
+          </div>
+        </div>
       </React.Fragment>
     );
   }
