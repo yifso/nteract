@@ -69,6 +69,14 @@ export const NewCodeCellBelow: DesktopCommand<ReqContent> = {
   makeAction: actions.createCellBelow.with({ cellType: "code", source: "" }),
 };
 
+export const NewTextCellAbove: DesktopCommand<ReqContent> = {
+  name: "NewTextCellAbove",
+  props: {
+    contentRef: "required",
+  },
+  makeAction: actions.createCellAbove.with({ cellType: "markdown", source: "" }),
+};
+
 export const NewTextCellBelow: DesktopCommand<ReqContent> = {
   name: "NewTextCellBelow",
   props: {
@@ -78,12 +86,4 @@ export const NewTextCellBelow: DesktopCommand<ReqContent> = {
     cellType: "markdown",
     source: "",
   }),
-};
-
-export const NewRawCellBelow: DesktopCommand<ReqContent> = {
-  name: "NewRawCellBelow",
-  props: {
-    contentRef: "required",
-  },
-  makeAction: actions.createCellBelow.with({ cellType: "raw", source: "" }),
 };
