@@ -1,3 +1,12 @@
+/**
+* Since we use a single file named [...params] to aggregate
+* all of the configurable options passeed into the url, we have
+* to parse the parameters positional based on their position in the
+* URL.
+*
+* The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
+*/
+
 import React, { FC,  HTMLAttributes, useState, useEffect} from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter } from "next/router";
@@ -26,7 +35,6 @@ import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog
 import FilesListing from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 
-
 const runIcon =  <FontAwesomeIcon icon={faPlay} />
 const saveIcon =  <FontAwesomeIcon icon={faSave} />
 const menuIcon =  <FontAwesomeIcon icon={faBars} />
@@ -42,15 +50,8 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-/**
-     * Since we use a single file named [...params] to aggregate
-     * all of the configurable options passeed into the url, we have
-     * to parse the parameters positional based on their position in the
-     * URL.
-     *
-     * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
-     */
-
+/* TODO: Functions like this are or can be used in 
+ multiple files, find a way to make them globally available. */
 function getPath(params){
     const filepathSegments = params.slice(4);
     let filepath;
@@ -63,6 +64,7 @@ function getPath(params){
     return filepath
   }
 
+// TODO: Below two functions are identical, they can be one
 function useInput(val: string | undefined ){
   const [value, setValue] = useState(val);
   
@@ -103,6 +105,8 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ showSaveDialog, setShowSaveDialog ] = useState(false)
    
     // Git API Values
+    /* TODO: We need to be able to save multiple files, so this logic 
+       won't work. We need to have store for multiple files */
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
     const [ provider, setProvider ] = useState(params[0])
@@ -122,6 +126,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ username, setUsername ] = useState("")
     const [ userImage, setUserImage ] = useState("")
     const [ userLink, setUserLink ] = useState("")
+
+/* 
+* TODO: Add @nteract/mythic-notifications to file
+*/
 
 
 // This Effect runs only when the username change
@@ -168,7 +176,7 @@ useEffect( () => {
     })
   }
 
-  // Save data here
+    // TODO: Add a blob here with changes made and push them to github
 
   }
 
@@ -210,8 +218,10 @@ useEffect( () => {
 
         if ( isNotebook(data["name"]) )
             setFileType("notebook")
+            // TODO: Handle notebook using Notebook component from @nteract/stateful-components
         else
             setFileType("other")
+            // TODO: Handle other files using @nteract/monaco-editor | currently using react-simple-code-editor
         
       }else{
        /* TODO: Add folder listing in nteract/web
@@ -232,6 +242,7 @@ useEffect( () => {
   }
 
  function  oauthGithub(){
+   // TODO: Here also subscribe to change in local storage | We can use window.addEventListener("storage", func) 
    if ( localStorage.getItem("token") == undefined ){
         window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
    }else{
@@ -273,10 +284,6 @@ useEffect( () => {
        */
 
 const dialogInputStyle = { width: "98%" }
-const notebookRef = ""// React.createRef()
-/* { false &&  <Notebook  contentRef={notebookRef} >
-           </Notebook>
-}*/
 
 return (
         <Layout>

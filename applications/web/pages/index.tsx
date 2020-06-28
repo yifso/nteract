@@ -38,4 +38,8 @@ return (
       );
 }
 
+/*
+ TODO: We need to add nteract logo and few instructions here about the application, this is the landing page.
+ */
+
 export default Main
