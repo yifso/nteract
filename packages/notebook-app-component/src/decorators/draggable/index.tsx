@@ -9,7 +9,7 @@ import {
   DragSourceMonitor,
   DropTarget,
   DropTargetConnector,
-  DropTargetMonitor
+  DropTargetMonitor,
 } from "react-dnd";
 
 import { connect } from "react-redux";
@@ -43,7 +43,7 @@ const cellDragPreviewImage = [
   "s46mRlWqQiudxebVV3gAj7C9hXsmgZeztnfe/91YODEr3IoF/JY/sE2gbGaVLci3",
   "hh0tRtWNvsm16JmNcOs6N9dW72LP7yOtWbEhjAUkZ+icoJ5HbE6+NSxMjKWe6cKb",
   "GkUWgMwiFbXSlRpFkXelUlF4F70rVd7Bd4oZ/LL8xiDmtPV2Nwyf2zOlTfHERY7i",
-  "Haa1+w2+iFqx0aIgvgAAAABJRU5ErkJggg=="
+  "Haa1+w2+iFqx0aIgvgAAAABJRU5ErkJggg==",
 ].join("");
 
 interface Props {
@@ -72,16 +72,17 @@ interface State {
 const cellSource = {
   beginDrag(props: Props) {
     return {
-      id: props.id
+      id: props.id,
     };
-  }
+  },
 };
 
 const DragHandle = styled.div.attrs({
-  role: "presentation"
+  role: "presentation",
 })`
   position: absolute;
   z-index: 5;
+  right: 0;
   width: var(--prompt-width, 50px);
   height: 100%;
   cursor: move;
@@ -93,7 +94,7 @@ interface DragAreaProps {
   hoverUpperHalf: boolean;
 }
 
-const DragArea = styled.div.attrs<DragAreaProps>(props => ({
+const DragArea = styled.div.attrs<DragAreaProps>((props) => ({
   style: {
     opacity: props.isDragging ? 0.25 : 1,
     borderTop:
@@ -103,8 +104,8 @@ const DragArea = styled.div.attrs<DragAreaProps>(props => ({
     borderBottom:
       props.isOver && !props.hoverUpperHalf
         ? "3px lightgray solid"
-        : "3px transparent solid"
-  }
+        : "3px transparent solid",
+  },
 }))`
   padding: 10px;
 ` as StyledComponent<"div", any, DragAreaProps, never>; // Somehow setting the type on `attrs` isn't propagating properly;
@@ -137,7 +138,7 @@ export const cellTarget = {
         id: monitor.getItem().id,
         destinationId: props.id,
         above: hoverUpperHalf,
-        contentRef: props.contentRef
+        contentRef: props.contentRef,
       });
     }
   },
@@ -145,10 +146,10 @@ export const cellTarget = {
   hover(props: Props, monitor: DropTargetMonitor, component: any): void {
     if (monitor) {
       component.setState({
-        hoverUpperHalf: isDragUpper(props, monitor, component.el)
+        hoverUpperHalf: isDragUpper(props, monitor, component.el),
       });
     }
-  }
+  },
 };
 
 function collectSource(
@@ -162,7 +163,7 @@ function collectSource(
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
-    connectDragPreview: connect.dragPreview()
+    connectDragPreview: connect.dragPreview(),
   };
 }
 
@@ -175,7 +176,7 @@ function collectTarget(
 } {
   return {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    isOver: monitor.isOver(),
   };
 }
 
@@ -186,7 +187,7 @@ export class DraggableCellView extends React.Component<
   el?: HTMLDivElement | null;
 
   state = {
-    hoverUpperHalf: true
+    hoverUpperHalf: true,
   };
 
   componentDidMount(): void {
@@ -213,7 +214,7 @@ export class DraggableCellView extends React.Component<
           isDragging={this.props.isDragging}
           hoverUpperHalf={this.state.hoverUpperHalf}
           isOver={this.props.isOver}
-          ref={el => {
+          ref={(el) => {
             this.el = el;
           }}
         >
@@ -248,7 +249,7 @@ export const makeMapDispatchToProps = (initialDispatch: Dispatch) => {
     moveCell: (payload: actions.MoveCell["payload"]) =>
       dispatch(actions.moveCell(payload)),
     focusCell: (payload: actions.FocusCell["payload"]) =>
-      dispatch(actions.focusCell(payload))
+      dispatch(actions.focusCell(payload)),
   });
   return mapDispatchToProps;
 };

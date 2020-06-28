@@ -59,15 +59,15 @@ export class PureMarkdownCell extends React.Component<
       focusAboveCell,
       focusBelowCell,
       focusEditor,
-      unfocusEditor
+      unfocusEditor,
     } = this.props;
 
     const defaults = {
       editor: {
         codemirror: (props: PassedEditorProps) => (
           <CodeMirrorEditor {...props} editorType={"codemirror"} />
-        )
-      }
+        ),
+      },
     };
 
     const editor = children?.editor || defaults.editor;
@@ -77,23 +77,27 @@ export class PureMarkdownCell extends React.Component<
 
     return (
       <div className="nteract-md-cell nteract-cell">
-        {toolbar && toolbar()}
-        <MarkdownPreviewer
-          focusAbove={focusAboveCell}
-          focusBelow={focusBelowCell}
-          focusEditor={focusEditor}
-          cellFocused={isCellFocused}
-          editorFocused={isEditorFocused}
-          unfocusEditor={unfocusEditor}
-          source={source}
-          markdownOptions={markdownOptions}
-        >
-          <Source className="nteract-cell-source">
-            <Editor id={id} contentRef={contentRef}>
-              {editor}
-            </Editor>
-          </Source>
-        </MarkdownPreviewer>
+        <div className="nteract-cell-row">
+          <div className="nteract-cell-gutter">{toolbar && toolbar()}</div>
+          <div className="nteract-cell-body">
+            <MarkdownPreviewer
+              focusAbove={focusAboveCell}
+              focusBelow={focusBelowCell}
+              focusEditor={focusEditor}
+              cellFocused={isCellFocused}
+              editorFocused={isEditorFocused}
+              unfocusEditor={unfocusEditor}
+              source={source}
+              markdownOptions={markdownOptions}
+            >
+              <Source className="nteract-cell-source">
+                <Editor id={id} contentRef={contentRef}>
+                  {editor}
+                </Editor>
+              </Source>
+            </MarkdownPreviewer>
+          </div>
+        </div>
       </div>
     );
   }
@@ -117,7 +121,7 @@ export const makeMapStateToProps = (
     }
 
     const markdownOptionsDefaults = {
-      linkTarget: "_blank"
+      linkTarget: "_blank",
     };
     const currentMarkdownOptions = markdownConfig(state);
 
@@ -131,7 +135,7 @@ export const makeMapStateToProps = (
       cell,
       isCellFocused,
       isEditorFocused,
-      markdownOptions
+      markdownOptions,
     };
   };
 
@@ -157,7 +161,7 @@ const makeMapDispatchToProps = (
     },
     focusEditor: () => dispatch(actions.focusCellEditor({ id, contentRef })),
     unfocusEditor: () =>
-      dispatch(actions.focusCellEditor({ id: undefined, contentRef }))
+      dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
   });
 
   return mapDispatchToProps;

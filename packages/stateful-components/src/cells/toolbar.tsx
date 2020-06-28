@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { ContentRef, actions, AppState, selectors } from "@nteract/core";
-import { CellType } from "@nteract/commutable";
+import { CellType, ExecutionCount } from "@nteract/commutable";
 
 export interface ComponentProps {
   id: string;
@@ -13,6 +13,7 @@ export interface ComponentProps {
 
 export interface StateProps {
   type?: CellType;
+  executionCount?: ExecutionCount;
 }
 
 export interface DispatchProps {
@@ -32,6 +33,8 @@ export interface DispatchProps {
   focusBelowCell: () => void;
   unfocusEditor: () => void;
   markCellAsDeleting: () => void;
+  insertCodeCellBelow: () => void;
+  insertCodeCellAbove: () => void;
 }
 
 export const CellToolbarContext = React.createContext({});
@@ -60,14 +63,16 @@ const makeMapStateToProps = (
     const { id, contentRef } = ownProps;
     const model = selectors.model(state, { contentRef });
     let type: CellType = "code";
+    let executionCount: ExecutionCount = null;
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
       if (cell) {
         type = cell.get<CellType>("cell_type", "code");
+        executionCount = cell.get<ExecutionCount>("execution_count", null);
       }
     }
-    return { type };
+    return { type, executionCount };
   };
   return mapStateToProps;
 };
@@ -110,7 +115,11 @@ const mapDispatchToProps = (
     unfocusEditor: () =>
       dispatch(actions.focusCellEditor({ id: undefined, contentRef })),
     markCellAsDeleting: () =>
-      dispatch(actions.markCellAsDeleting({ id, contentRef }))
+      dispatch(actions.markCellAsDeleting({ id, contentRef })),
+    insertCodeCellBelow: () =>
+      dispatch(actions.createCellBelow({ cellType: "code", contentRef })),
+    insertCodeCellAbove: () =>
+      dispatch(actions.createCellAbove({ cellType: "code", contentRef })),
   };
 };
 

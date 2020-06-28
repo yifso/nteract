@@ -9,8 +9,12 @@
     "app.css",
     "editor-overrides.css",
     "global-variables.css",
+    "toggle-switch.css",
     "themes",
-    "markdown"
+    "markdown",
+    "cell-menu",
+    "command-palette.css",
+    "toolbar.css"
   ],
   "scripts": {},
   "publishConfig": {

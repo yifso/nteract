@@ -96,20 +96,6 @@ export type PayloadMessage =
   | EditPayloadMessage
   | AskExitPayloadMessage;
 
-export interface CommsRecordProps {
-  targets: Immutable.Map<any, any>;
-  info: Immutable.Map<any, any>;
-  models: Immutable.Map<any, any>;
-}
-
-export type CommsRecord = Immutable.RecordOf<CommsRecordProps>;
-
-export const makeCommsRecord = Immutable.Record<CommsRecordProps>({
-  targets: Immutable.Map(),
-  info: Immutable.Map(),
-  models: Immutable.Map()
-});
-
 // Pull version from our package.json
 const version: string = require("../package.json").version;
 
@@ -151,6 +137,5 @@ export type AppRecord = Immutable.RecordOf<AppRecordProps>;
 
 export interface AppState {
   app: AppRecord;
-  comms: CommsRecord;
   core: CoreRecord;
 }
