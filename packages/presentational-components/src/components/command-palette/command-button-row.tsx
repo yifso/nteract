@@ -15,7 +15,11 @@ export const CommandButtonRow: FC<CommandButtonRowProps> = ({
       <span className="command-name">{children}</span>
       <span>
         {shortCut &&
-          shortCut.map((shortcut) => <KeyTag mini>{shortcut}</KeyTag>)}
+          shortCut.map((shortcut) => (
+            <KeyTag mini key={shortcut}>
+              {shortcut}
+            </KeyTag>
+          ))}
       </span>
     </button>
   );
