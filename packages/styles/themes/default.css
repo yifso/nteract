@@ -61,7 +61,8 @@
   display: flex;
   flex-direction: column;
   background: var(--theme-cell-bg, white);
-  border: 1px solid #eeeff0;
+  border: 1px solid;
+  border-color: var(--theme-cell-border);
   box-shadow: 0px 2px 4px rgba(41, 49, 58, 0.075);
   border-radius: 4px;
   font-family: "Source Code Pro", sans-serif;
@@ -78,14 +79,20 @@
 .nteract-cell-container.selected .nteract-cell {
   outline: 0;
   background: var(--theme-cell-bg, white);
-  border: 1px solid #e2e5e7;
+  border: 1px solid;
+  border-color: var(--theme-cell-border);
   box-shadow: 0px 2px 8px rgba(41, 49, 58, 0.15);
   border-radius: 4px;
 }
 
 .nteract-cell-gutter {
-  background-color: var(--nt-color-grey-lighter);
+  background-color: var(--theme-cell-gutter);
+  color: var(--theme-cell-gutter-color);
   padding: var(--nt-spacing-s, 5px);
+}
+
+.nteract-cell-gutter button {
+  color: var(--theme-cell-gutter-color);
 }
 
 .nteract-cell-gutter .nteract-cell-toolbar > * {
