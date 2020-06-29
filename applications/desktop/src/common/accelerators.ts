@@ -16,6 +16,8 @@ export const accelerators: Accelerators = {
   Minimize: "CmdOrCtrl+M",
   NewCodeCellAbove: "CmdOrCtrl+Shift+A",
   NewCodeCellBelow: "CmdOrCtrl+Shift+B",
+  NewTextCellAbove: "CmdOrCtrl+Shift+E",
+  NewTextCellBelow: "CmdOrCtrl+Shift+G",
   NewNotebook: "CmdOrCtrl+N",
   Open: "CmdOrCtrl+O",
   Paste: "CmdOrCtrl+V",
