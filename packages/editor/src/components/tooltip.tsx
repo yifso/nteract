@@ -33,7 +33,8 @@ export const Tip: StyledComponent<"div", {}, TipProps> = styled.div`
   position: absolute;
   top: ${(props: TipProps) => props.cursorCoords.top}px;
   white-space: pre-wrap;
-  width: auto;
+  width: 100vh;
+  overflow-wrap: break-word;
   z-index: 9999999;
 `;
 
