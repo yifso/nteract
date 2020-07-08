@@ -3,7 +3,7 @@ const merge = require("webpack-merge");
 
 const { commonMainConfig, commonRendererConfig } = require("./webpack.common");
 
-const rendererConfig = merge(commonRendererConfig, {
+const rendererConfig = merge.merge(commonRendererConfig, {
   devtool: false, // Turn off webpack's default source maps, as they generate
   plugins: [      // conflicting information with the plugin.
     new webpack.SourceMapDevToolPlugin({
