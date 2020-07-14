@@ -45,7 +45,7 @@ export class CellMenuItem extends React.PureComponent<MenuItemProps, {}> {
   }
 
   render() {
-    const { children, className, ...props } = this.props;
+    const { children, className, focusWithin, ...props } = this.props;
 
     return (
       <li

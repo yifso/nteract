@@ -40,7 +40,10 @@ const DarkTheme = createGlobalStyle`
   --theme-menu-fg-hover: var(--theme-app-fg);
   --theme-menu-fg-focus: var(--theme-app-fg);
 
-  --theme-cell-bg: var(--theme-app-bg);
+  --theme-cell-bg: #111;
+  --theme-cell-border: #444;
+  --theme-cell-gutter: #222;
+  --theme-cell-gutter-color: #999;
   --theme-cell-shadow-hover: var(--theme-primary-shadow-hover);
   --theme-cell-shadow-focus: var(--theme-primary-shadow-focus);
 
@@ -112,6 +115,11 @@ const DarkTheme = createGlobalStyle`
   --cm-hint-bg-active: #111;
 
   --status-bar: #111;
+  --theme-toolbar-background: #4E4E4E;
+  --theme-toolbar-color: #FAFAFA;
+  --theme-sidebar-background: #3A3A3A;
+  --theme-sidebar-color: #FAFAFA;
+  --theme-cell-menu-background: #2F2F2F;
 }
 `;
 
@@ -154,6 +162,9 @@ const LightTheme = createGlobalStyle`
   --theme-menu-fg-focus: var(--theme-app-fg);
 
   --theme-cell-bg: var(--theme-app-bg);
+  --theme-cell-border: #e2e5e7;
+  --theme-cell-gutter: var(--nt-color-grey-lighter);
+  --theme-cell-gutter-color: unset;
   --theme-cell-shadow-hover: var(--theme-primary-shadow-hover);
   --theme-cell-shadow-focus: var(--theme-primary-shadow-focus);
 
@@ -225,6 +236,11 @@ const LightTheme = createGlobalStyle`
   --cm-hint-bg-active: #abd1ff;
 
   --status-bar: #eeedee;
+  --theme-toolbar-background: #fff;
+  --theme-toolbar-color: #757f88;
+  --theme-sidebar-background: #e2e5e7;
+  --theme-sidebar-color: #333;
+  --theme-cell-menu-background: #29313a;
 }
 `;
 
