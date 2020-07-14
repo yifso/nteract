@@ -21,6 +21,7 @@ import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
 
 import Editor from 'react-simple-code-editor';
+//const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
@@ -242,13 +243,11 @@ useEffect( () => {
   }
 
  function  oauthGithub(){
-   // TODO: Here also subscribe to change in local storage | We can use window.addEventListener("storage", func) 
    if ( localStorage.getItem("token") == undefined ){
         window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
-   }else{
-        getGithubUserDetails()
-   }
-  }
+        window.addEventListener('storage', getGithubUserDetails)
+   }  
+ }
 
   function getGithubUserDetails(){
     const token = localStorage.getItem("token") 
@@ -271,6 +270,7 @@ useEffect( () => {
             localStorage.removeItem("token")
           }
         })
+    window.removeEventListener("storage", getGithubUserDetails)
   }
 
 
@@ -282,6 +282,32 @@ useEffect( () => {
          </Host.Consumer>
        </Host>
        */
+
+  /*
+   *
+<CodeMirrorEditor
+            theme="light"
+            id="just-a-cell"
+            onFocusChange={() => {}}
+                focusAbove={() => {}}
+                focusBelow={() => {}}
+                kernelStatus={"not connected"}
+                options={{
+                  lineNumbers: true,
+                  extraKeys: {
+                          "Ctrl-Space": "autocomplete",
+                            "Ctrl-Enter": () => {},
+                            "Cmd-Enter": () => {}
+                        },
+                  cursorBlinkRate: 0,
+                  mode: "python"
+                }}
+                value={"import pandas as pd"}
+                onChange={() => {}}
+            />
+
+   *  
+   */
 
 const dialogInputStyle = { width: "98%" }
 
@@ -378,7 +404,7 @@ return (
         </Side>
         <Body>
           { fileContent != "" &&
-              <Editor
+      <Editor
                   value={fileContent}
                   placeholder="Empty File..."
                   className="language-javascript"
@@ -391,7 +417,8 @@ return (
                           backgroundColor: "#fff" 
                         }}
               />
-          }
+      
+                      }
         </Body>
 
         <Footer>
