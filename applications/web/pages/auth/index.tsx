@@ -52,7 +52,7 @@ return (
               <>
                 <h3>Authentication Successful!</h3>
               
-                <p>Go back to the application and click on the 'Connect to Github' button again. You can close this window now.</p>
+                <p>The authentication was successful. You can close this window now and go back to the application.</p>
               </>
              
             : 
