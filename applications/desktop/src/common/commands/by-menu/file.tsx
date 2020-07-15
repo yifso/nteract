@@ -200,7 +200,7 @@ export const ExportPDF: DesktopCommand<ReqContent> = {
       level: "success",
       action: {
         label: "Open",
-        callback: async () => await shell.openPath(pdfPath),
+        callback: () => shell.openItem(pdfPath),
       },
     });
   },
