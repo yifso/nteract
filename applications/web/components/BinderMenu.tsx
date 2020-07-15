@@ -92,8 +92,8 @@ export const BinderMenu: FC<Props> = (props: Props) => {
 // If we want to pass on the default values
 BinderMenu.defaultProps = {
   provider: "gh",
-  org: "",
-  repo: "",
-  gitRef: "",
+  org: "nteract",
+  repo: "examples",
+  gitRef: "master",
 }
 

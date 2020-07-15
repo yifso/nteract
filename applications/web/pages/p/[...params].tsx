@@ -18,13 +18,10 @@ import { faGithubAlt,  faPython } from '@fortawesome/free-brands-svg-icons'
 
 import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import { Host } from "@mybinder/host-cache";
 
-import Editor from 'react-simple-code-editor';
-//const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
-import { highlight, languages } from 'prismjs/components/prism-core';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
+const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
@@ -283,36 +280,15 @@ useEffect( () => {
        </Host>
        */
 
-  /*
-   *
-<CodeMirrorEditor
-            theme="light"
-            id="just-a-cell"
-            onFocusChange={() => {}}
-                focusAbove={() => {}}
-                focusBelow={() => {}}
-                kernelStatus={"not connected"}
-                options={{
-                  lineNumbers: true,
-                  extraKeys: {
-                          "Ctrl-Space": "autocomplete",
-                            "Ctrl-Enter": () => {},
-                            "Cmd-Enter": () => {}
-                        },
-                  cursorBlinkRate: 0,
-                  mode: "python"
-                }}
-                value={"import pandas as pd"}
-                onChange={() => {}}
-            />
-
-   *  
-   */
-
 const dialogInputStyle = { width: "98%" }
 
 return (
         <Layout>
+          <Head>
+             <title>nteract play: Run interactive code</title> 
+             <meta charSet="utf-8" />
+             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          </Head>
            {
              showBinderMenu &&
                   
@@ -404,20 +380,31 @@ return (
         </Side>
         <Body>
           { fileContent != "" &&
-      <Editor
-                  value={fileContent}
-                  placeholder="Empty File..."
-                  className="language-javascript"
-                 onValueChange={ code => setFileContent(code) }
-                        highlight={code => highlight(code, languages.javascript, "javascript")}
-                        padding={30}
-                        style={{
-                          fontFamily: ' "Fira Mode", "Fira cono", monospace',
-                          fontSize: 12,
-                          backgroundColor: "#fff" 
-                        }}
-              />
-      
+
+          <CodeMirrorEditor
+            cellFocused
+            editorFocused
+            theme="light"
+            id="not-really-a-cell"
+            onFocusChange={() => {}}
+            focusAbove={() => {}}
+            focusBelow={() => {}}
+            kernelStatus={"not connected"}
+            options={{
+                  lineNumbers: true,
+                  extraKeys: {
+                          "Ctrl-Space": "autocomplete",
+                          "Ctrl-Enter": () => {},
+                          "Cmd-Enter": () => {}
+                  },
+                  cursorBlinkRate: 0,
+                  mode: "python"
+                }}
+                value={fileContent}
+                onChange={() => {}}
+            />
+
+            
                       }
         </Body>
 
