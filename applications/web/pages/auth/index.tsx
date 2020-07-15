@@ -1,4 +1,5 @@
 import React, { FC , useEffect, useState } from "react";
+import Head from "next/head";
 import styled from "styled-components";
 
 const Message = styled.div`
@@ -50,6 +51,13 @@ return (
           { auth 
             ? 
               <>
+
+          <Head>
+            <title>nteract play: Github Autentication</title> 
+             <meta charSet="utf-8" />
+             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          </Head>
+
                 <h3>Authentication Successful!</h3>
               
                 <p>The authentication was successful. You can close this window now and go back to the application.</p>

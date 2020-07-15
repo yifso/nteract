@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import Head from "next/head";
 import styled from "styled-components";
 import { BinderMenu } from "../components/BinderMenu"
 
@@ -24,6 +25,13 @@ function updateVCSInfo(e: React.FormEvent<HTMLFormElement>, provider: string | u
 }
 
 return (
+  <>
+          <Head>
+             <title>nteract play: Run interactive code</title> 
+             <meta charSet="utf-8" />
+             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          </Head>
+
   <Box>
               <BinderMenu
                         provider="gh"
@@ -35,6 +43,7 @@ return (
               />
 
   </Box>
+  </>
       );
 }
 
