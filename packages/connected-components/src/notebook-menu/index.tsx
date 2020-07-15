@@ -7,11 +7,17 @@ import {
   HostRecord,
   KernelRef,
   KernelspecsByRefRecordProps,
-  KernelspecsRef
+  KernelspecsRef,
 } from "@nteract/types";
 import { RecordOf } from "immutable";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+
+import {
+  selectCell,
+  unselectCell,
+  clearSelectedCells,
+} from "../../../mythic-multiselect/src/";
 
 // Local modules
 import { MODAL_TYPES } from "../modal-controller";
@@ -41,13 +47,14 @@ export function makeMapStateToProps(
       ? state.core.entities.kernelspecs.byRef.get(currentKernelspecsRef, null)
       : null;
 
+    console.log("content from menu", content);
     // This menu should only work for notebooks
     if (!content || content.type !== "notebook") {
       return {
         currentContentRef,
         currentKernelRef: null,
         currentKernelspecs,
-        currentKernelspecsRef
+        currentKernelspecsRef,
       };
     }
 
@@ -58,7 +65,7 @@ export function makeMapStateToProps(
       currentContentRef,
       currentKernelRef,
       currentKernelspecs,
-      currentKernelspecsRef
+      currentKernelspecsRef,
     };
   };
 
@@ -69,6 +76,8 @@ export function makeMapDispatchToProps(
   initialDispatch: Dispatch,
   initialProps: { contentRef: ContentRef }
 ) {
+  console.log("actions", actions);
+  console.log("selectCell", selectCell);
   const mapDispatchToProps = (dispatch: Dispatch) => ({
     onPublish: (payload: { contentRef: string }) =>
       dispatch(actions.publishToBookstore(payload)),
@@ -139,7 +148,22 @@ export function makeMapDispatchToProps(
     interruptKernel: (payload: {
       kernelRef?: KernelRef | null;
       contentRef?: ContentRef | null;
-    }) => dispatch(actions.interruptKernel(payload))
+    }) => dispatch(actions.interruptKernel(payload)),
+    selectCell: (payload: {
+      id?: string | undefined;
+      to: CellType;
+      contentRef: string;
+    }) => dispatch(actions.changeCellType(payload)),
+    unselectCell: (payload: {
+      id?: string | undefined;
+      to: CellType;
+      contentRef: string;
+    }) => dispatch(actions.changeCellType(payload)),
+    clearSelectedCells: (payload: {
+      id?: string | undefined;
+      to: CellType;
+      contentRef: string;
+    }) => dispatch(actions.changeCellType(payload)),
   });
   return mapDispatchToProps;
 }
