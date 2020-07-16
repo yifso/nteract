@@ -27,7 +27,7 @@ $ npm install --save myths
 
 First, create a `MythicPackage` with a name, a type for its private state, and the initial state.
 As an example, the following creates a `MythicPackage` named `"iCanAdd"` which uses the `number`
-type for its private state `sum` and an initial state of `sum` as `0:
+type for its private state `sum` and an initial state of `sum` as `0`:
 
 ```typescript
 export const iCanAdd = createMythicPackage("iCanAdd")<
