@@ -6,9 +6,6 @@
   },
   "include": ["src"],
   "references": [
-    { "path": "../commutable" },
-    { "path": "../core" },
-    { "path": "../types" },
-    { "path": "../mythic-multiselect" }
+    { "path": "../myths" }
   ]
 }
