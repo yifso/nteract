@@ -39,6 +39,8 @@ describe("multiselect", () => {
       })
     );
 
-    expect(nextState.selectedCells.size).toBeLessThan(state.selectedCells.size);
+    expect(nextState2.selectedCells.size).toBeLessThan(
+      state.selectedCells.size
+    );
   });
 });
