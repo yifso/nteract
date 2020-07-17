@@ -8,7 +8,6 @@ import {
   epics as coreEpics,
   HostRecord,
   makeAppRecord,
-  makeCommsRecord,
   makeContentsRecord,
   makeEntitiesRecord,
   makeHostsRecord,
