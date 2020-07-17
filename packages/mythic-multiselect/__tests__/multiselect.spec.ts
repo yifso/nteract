@@ -1,28 +1,34 @@
 import {
   selectCell,
   unselectCell,
-  clearSelectedCells,
   multiselect,
 } from "@nteract/mythic-multiselect";
+import { List } from "immutable";
 
 describe("multiselect", () => {
-  test("emits a notification when sendNotification is reduced", () => {
+  test("selects a cell", () => {
     const originalState = multiselect.makeStateRecord({
-      current: {
-        addNotification: jest.fn(),
-      },
+      selectedCells: List(),
     });
 
     const state = multiselect.rootReducer(
       originalState,
       selectCell.create({
-        title: "add me add me add me",
-        message: "you just gotta addNotification() me",
-        level: "info",
+        id: "test",
       })
     );
 
-    expect(state).toEqual(originalState);
-    expect(state.current.addNotification).toBeCalledTimes(1);
+    expect(state.selectedCells.size).toBeLessThan(
+      originalState.selectedCells.size
+    );
+
+    const nextState = multiselect.rootReducer(
+      state,
+      unselectCell.create({
+        id: "test2",
+      })
+    );
+
+    expect(nextState.selectedCells.size).toBeLessThan(state.selectedCells.size);
   });
 });
