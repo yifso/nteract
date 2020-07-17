@@ -14,7 +14,7 @@ import {
   makeHostsRecord,
   makeStateRecord,
   makeTransformsRecord,
-  reducers
+  reducers,
 } from "@nteract/core";
 import { notifications } from "@nteract/mythic-notifications";
 import { makeConfigureStore } from "@nteract/myths";
@@ -30,17 +30,16 @@ const composeEnhancers =
 
 export const initialState = Record<AppState>({
   app: makeAppRecord({
-    version: "@nteract/web"
+    version: "@nteract/web",
   }),
-  comms: makeCommsRecord(),
   core: makeStateRecord({
     currentKernelspecsRef: kernelspecsRef,
     entities: makeEntitiesRecord({
       hosts: makeHostsRecord({
-        byRef: Immutable.Map<string, HostRecord>()
+        byRef: Immutable.Map<string, HostRecord>(),
       }),
       contents: makeContentsRecord({
-        byRef: Immutable.Map<string, ContentRecord>()
+        byRef: Immutable.Map<string, ContentRecord>(),
       }),
       transforms: makeTransformsRecord({
         displayOrder: Immutable.List([
@@ -53,7 +52,7 @@ export const initialState = Record<AppState>({
           "image/gif",
           "image/png",
           "image/jpeg",
-          "text/plain"
+          "text/plain",
         ]),
         byId: Immutable.Map({
           "application/json": Media.Json,
@@ -65,23 +64,22 @@ export const initialState = Record<AppState>({
           "image/gif": Media.Image,
           "image/png": Media.Image,
           "image/jpeg": Media.Image,
-          "text/plain": Media.Plain
-        })
-      })
-    })
-  })
+          "text/plain": Media.Plain,
+        }),
+      }),
+    }),
+  }),
 })();
 
 const configureStore = makeConfigureStore<AppState>()({
   packages: [notifications],
   reducers: {
     app: reducers.app,
-    comms: reducers.comms,
-    core: reducers.core as any
+    core: reducers.core as any,
   },
   epics: coreEpics.allEpics,
   epicDependencies: { contentProvider: contents.JupyterContentProvider },
-  enhancer: composeEnhancers
+  enhancer: composeEnhancers,
 });
 
 export default () => configureStore(initialState);
