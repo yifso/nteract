@@ -6,10 +6,13 @@ The `myths` framework allows for integrating sets of closely related actions, re
 close relationships where DRY and dependencies are minimized. Therefore, Myths provide for a structured way
 to avoid boilerplate.
 
+Myths build on top of the [Redux](https://react-redux.js.org/) and
+[RxJS](https://redux.js.org/) libraries that are used elsewhere in the nteract core SDK.
 As a refresher, Redux helps you maintain application state. In Redux, actions and reducers provide
 predictable state management. The state may only be changed by dispatching an action to a reducer.
-In Redux-Observable, an epic is a function that takes in a stream of actions and returns a stream
-of actions.
+In [Redux-Observable](https://redux-observable.js.org/), an epic
+is a function that takes in a stream of actions and returns
+a stream of actions.
 
 ## Installation
 
