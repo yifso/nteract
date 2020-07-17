@@ -18,8 +18,8 @@ describe("multiselect", () => {
       })
     );
 
-    expect(state.selectedCells.size).toBeLessThan(
-      originalState.selectedCells.size
+    expect(originalState.selectedCells.size).toBeLessThan(
+      state.selectedCells.size
     );
 
     const nextState = multiselect.rootReducer(
