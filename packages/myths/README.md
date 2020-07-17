@@ -43,7 +43,7 @@ export const iCanAdd = createMythicPackage("iCanAdd")<
 
 ### Myth
 
-Next, you can the use the `MythicPackage` to create a `Myth`with a name, a type for its payload, and optionally a reducer
+Next, you can the use the `MythicPackage` to create a `Myth` with a name, a type for its payload, and optionally a reducer
 operating on its package's private state. In this example, the `MythicPackage` named `iCanAdd` creates a `Myth`
 named `"addToSum"`:
 
