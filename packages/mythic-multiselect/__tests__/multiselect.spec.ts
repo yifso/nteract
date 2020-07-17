@@ -29,6 +29,16 @@ describe("multiselect", () => {
       })
     );
 
+    //Should only remove if the key exists
+    expect(nextState.selectedCells.size).toEqual(state.selectedCells.size);
+
+    const nextState2 = multiselect.rootReducer(
+      state,
+      unselectCell.create({
+        id: "test",
+      })
+    );
+
     expect(nextState.selectedCells.size).toBeLessThan(state.selectedCells.size);
   });
 });
