@@ -324,16 +324,16 @@ return (
         <Dialog >
           <form onSubmit={(e) => onSave(e)} > 
           <DialogRow>
-                <Input label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
+                <Input id="commit_message" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
           </DialogRow>
           <DialogRow>
-              <Input variant="textarea" label="Description" {...commitDescription} style={dialogInputStyle} />
+              <Input id="commit_description" variant="textarea" label="Description" {...commitDescription} style={dialogInputStyle} />
           </DialogRow>
           <DialogRow>
-              <Input variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
+              <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
           </DialogRow>
           <DialogFooter> 
-            <Button text="Commit" icon={commitIcon} />
+            <Button id="commit_button" text="Commit" icon={commitIcon} />
           </DialogFooter>
           </form>
           </Dialog>
