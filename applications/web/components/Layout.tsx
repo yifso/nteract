@@ -56,6 +56,8 @@ export const Side = styled.div<Props>`
   border-right: 1px solid #FBECEC;
   padding: 10px;
   color: #000;
+  height: calc(100vh);
+  overflow: auto;
 
   .logo {
     width: 110px;

@@ -30,7 +30,7 @@ import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
 import { Input } from '../../components/Input'
 import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
-import FilesListing from "../../components/FilesListing"
+import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 
 const runIcon =  <FontAwesomeIcon icon={faPlay} />
@@ -204,6 +204,29 @@ useEffect( () => {
     });
   }
 
+  // Folder Exploring Function
+ async function getFiles( path: string ) {
+    const octokit = new Octokit()
+    let fileList: string[][] = []
+    await octokit.repos.getContents({
+      owner: org,
+      repo: repo,
+      ref: gitRef,
+      path
+    }).then((res :any) => {
+       res.data.map( (item: any) => {
+         fileList.push([ item.name, item.path, item.type])
+       })
+    }, (e: Error) => {
+      fileList =  [[""]]
+      console.log("Repo Not found")
+      console.log(e)
+  })
+
+  return fileList
+
+}
+
  function  loadFile(fileName){
     const octokit = new Octokit()
     octokit.repos.getContents({
@@ -211,22 +234,11 @@ useEffect( () => {
       repo: repo,
       path: fileName
     }).then(({data}) => {
-      if(data['type'] == "file"){
         setFileContent( atob(data["content"]) )
-
         if ( isNotebook(data["name"]) )
             setFileType("notebook")
-            // TODO: Handle notebook using Notebook component from @nteract/stateful-components
         else
             setFileType("other")
-            // TODO: Handle other files using @nteract/monaco-editor | currently using react-simple-code-editor
-        
-      }else{
-       /* TODO: Add folder listing in nteract/web
-          when user click on a folder, it should show the sub file and folders.
-       */
-        console.log("Folder")
-      }
     })
   }
 
@@ -373,10 +385,11 @@ return (
             />
             <FilesListing
                   loadFile={loadFile}
+                  loadFolder={getFiles}
                   org={org}
                   repo={repo}
-                  gitRef={gitRef}>
-            </FilesListing>
+                  gitRef={gitRef} 
+          />
         </Side>
         <Body>
           { fileContent != "" &&
