@@ -4,10 +4,10 @@ import { FileExplorer } from "./FileExplorer"
 import styled from "styled-components";
 
 const Heading = styled.div`
-  font-size: 14px;
-  margin-top: 20px;
+  font-size: 13px;
+  margin-top: 30px;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: 0.7;
 `
 
 const Body = styled.div`

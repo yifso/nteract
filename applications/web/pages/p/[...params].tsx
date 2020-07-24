@@ -105,20 +105,21 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     // Git API Values
     /* TODO: We need to be able to save multiple files, so this logic 
        won't work. We need to have store for multiple files */
+    const [ filepath, setFilepath ] = useState(getPath(params))
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
     const [ provider, setProvider ] = useState(params[0])
     const [ org, setOrg ] = useState(params[1])
     const [ repo, setRepo ] = useState(params[2])
     const [ gitRef, setGitRef ] = useState(params[3])
-    const [ filepath, setFilepath ] = useState(getPath(params))
   
     // Commit Values
     const commitMessage = useInput("")
     const commitDescription = useInput("")
     // This should be a boolean value but as a string
     const stripOutput = useCheckInput(false)
-
+    const [ fileBuffer, setFileBuffer ] = useState({})
+    
     // Login Values
     const [ loggedIn, setLoggedIn ] = useState(false)
     const [ username, setUsername ] = useState("")
@@ -129,7 +130,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 * TODO: Add @nteract/mythic-notifications to file
 */
 
-
 // This Effect runs only when the username change
 useEffect( () => {
   // Check if user has a token saved
@@ -137,7 +137,15 @@ useEffect( () => {
         getGithubUserDetails()
   }
 }, [username])
-  
+
+function addBuffer(e){
+  setFileContent(e);
+  const newFileBuffer = fileBuffer
+  newFileBuffer[filepath] = e
+  setFileBuffer(newFileBuffer)
+  console.table(fileBuffer)
+}
+
  function toggle( value, setFunction){
    setFunction(!value)
   }
@@ -228,6 +236,15 @@ useEffect( () => {
 }
 
  function  loadFile(fileName){
+    if( fileName in fileBuffer ) {
+      setFileContent(fileBuffer[fileName])
+      setFilepath(fileName)
+      if ( isNotebook(fileName) )
+            setFileType("notebook")
+      else
+            setFileType("other")
+
+    }else{
     const octokit = new Octokit()
     octokit.repos.getContents({
       owner: org,
@@ -235,11 +252,13 @@ useEffect( () => {
       path: fileName
     }).then(({data}) => {
         setFileContent( atob(data["content"]) )
+        setFilepath(data["path"])
         if ( isNotebook(data["name"]) )
             setFileType("notebook")
         else
             setFileType("other")
     })
+    }
   }
 
   function updateVCSInfo(event, provider, org, repo, gitRef){
@@ -395,26 +414,27 @@ return (
           { fileContent != "" &&
 
           <CodeMirrorEditor
-            cellFocused
             editorFocused
-            theme="light"
-            id="not-really-a-cell"
+            completion
+            autofocus            
+            codeMirror={{
+                lineNumbers: true,
+                extraKeys: {
+                  "Ctrl-Space": "autocomplete",
+                  "Ctrl-Enter": () => {},
+                          "Cmd-Enter": () => {}
+                      },
+                cursorBlinkRate: 0,
+                mode: "python"
+              }}
+            preserveScrollPosition
+            editorType="codemirror"
             onFocusChange={() => {}}
             focusAbove={() => {}}
             focusBelow={() => {}}
             kernelStatus={"not connected"}
-            options={{
-                  lineNumbers: true,
-                  extraKeys: {
-                          "Ctrl-Space": "autocomplete",
-                          "Ctrl-Enter": () => {},
-                          "Cmd-Enter": () => {}
-                  },
-                  cursorBlinkRate: 0,
-                  mode: "python"
-                }}
-                value={fileContent}
-                onChange={() => {}}
+            value={fileContent}
+                onChange={(e) => { addBuffer(e)}}
             />
 
             
