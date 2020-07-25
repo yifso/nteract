@@ -3,9 +3,9 @@ const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 const { commonMainConfig, commonRendererConfig } = require("./webpack.common");
 
-const mainConfig = merge.merge(commonMainConfig, { mode: "production" });
+const mainConfig = merge(commonMainConfig, { mode: "production" });
 
-const rendererConfig = merge.merge(commonRendererConfig, {
+const rendererConfig = merge(commonRendererConfig, {
   plugins: [new LodashModuleReplacementPlugin()],
   mode: "production"
 });

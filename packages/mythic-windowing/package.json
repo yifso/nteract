@@ -1,0 +1,26 @@
+{
+  "name": "@nteract/mythic-windowing",
+  "version": "0.1.0",
+  "description": "TODO",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "nteractDesktop": "src/index.ts",
+  "scripts": {},
+  "repository": "https://github.com/nteract/nteract/tree/master/packages/mythic-windowing",
+  "keywords": [
+    "nteract"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+    "@nteract/myths": "^0.2.0",
+    "electron": "7.3.2"
+  },
+  "peerDependencies": {
+  },
+  "author": "nteract contributers",
+  "license": "BSD-3-Clause"
+}

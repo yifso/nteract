@@ -13,6 +13,7 @@
     { "path": "monaco-editor" },
     { "path": "mythic-configuration" },
     { "path": "mythic-notifications" },
+    { "path": "mythic-windowing" },
     { "path": "myths" },
     { "path": "notebook-app-component" },
     { "path": "presentational-components" },
