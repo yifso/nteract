@@ -9,13 +9,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node-version: [12.x, 14.x]
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Install dependencies
         run: yarn
       - name: Lint packages
@@ -26,13 +26,13 @@ jobs:
         run: yarn test
   
   validate_dev_setup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node-version: [12.x, 14.x]
     
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Install dependencies
         run: yarn
       - name: Run destkop build
