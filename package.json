@@ -139,12 +139,10 @@
   },
   "lint-staged": {
     "*.tsx,*.ts,*.js,!*js.snap": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.json,!package.json": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "private": true,
