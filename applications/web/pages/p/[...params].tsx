@@ -89,6 +89,144 @@ function useCheckInput(val: boolean | undefined ){
   }
 }
 
+/*
+ *
+ * Save commit to github
+ *
+ */
+const uploadToRepo = async (
+    octo: Octokit,
+    org: string,
+    repo: string,
+    branch: string = `master`,
+    buffer: {},
+) => {
+    console.log("inside uploadToRepo")
+    const currentCommit = await getCurrentCommit(octo, org, repo, branch)
+    console.log(currentCommit)
+    // Save only if buffer is not empty
+    let pathsForBlobs = []
+    let filesContent = []
+    for( var key in buffer){
+      pathsForBlobs.push(key)
+      filesContent.push(buffer[key])
+    }
+    const filesBlobs = await Promise.all(filesContent.map(createBlobForFile(octo, org, repo)))
+    console.log(filesBlobs) 
+
+    //const pathsForBlobs = filesPaths.map(fullPath => path.relative(coursePath, fullPath))
+    const newTree = await createNewTree(
+          octo,
+          org,
+          repo,
+          filesBlobs,
+          pathsForBlobs,
+          currentCommit.treeSha
+        )
+    console.log(newTree)
+    const commitMessage = `Auto Commit`
+    const newCommit = await createNewCommit(
+          octo,
+          org,
+          repo,
+          commitMessage,
+          newTree.sha,
+          currentCommit.commitSha
+        )
+     console.log(newCommit)
+    await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
+}
+
+const getCurrentCommit = async (
+    octo: Octokit,
+    org: string,
+    repo: string,
+    branch: string = 'master'
+) => {
+    const { data: refData } = await octo.git.getRef({
+          owner: org,
+          repo,
+          ref: `heads/${branch}`,
+            })
+    const commitSha = refData.object.sha
+    const { data: commitData } = await octo.git.getCommit({
+          owner: org,
+          repo,
+          commit_sha: commitSha,
+        })
+    return {
+          commitSha,
+          treeSha: commitData.tree.sha,
+        }
+}
+
+// Notice that readFile's utf8 is typed differently from Github's utf-8
+//const getFileAsUTF8 = (filePath: string) => readFile(filePath, 'utf8')
+
+const createBlobForFile = (octo: Octokit, org: string, repo: string) => async (
+    content: string
+) => {
+    const blobData = await octo.git.createBlob({
+          owner: org,
+          repo,
+          content,
+          encoding: 'utf-8',
+        })
+    return blobData.data
+}
+
+const createNewTree = async (
+    octo: Octokit,
+    owner: string,
+    repo: string,
+    blobs: Octokit.GitCreateBlobResponse[],
+    paths: string[],
+    parentTreeSha: string
+) => {
+  const tree = blobs.map(({ sha }, index) => ({
+        path: paths[index],
+        mode: `100644`,
+        type: `blob`,
+        sha,
+      })) as Octokit.GitCreateTreeParamsTree[]
+    const { data } = await octo.git.createTree({
+          owner,
+          repo,
+          tree,
+          base_tree: parentTreeSha,
+        })
+    return data
+}
+
+const createNewCommit = async (
+    octo: Octokit,
+    org: string,
+    repo: string,
+    message: string,
+    currentTreeSha: string,
+    currentCommitSha: string
+) =>
+    (await octo.git.createCommit({
+          owner: org,
+          repo,
+          message,
+          tree: currentTreeSha,
+          parents: [currentCommitSha],
+        })).data
+
+const setBranchToCommit = (
+    octo: Octokit,
+    org: string,
+    repo: string,
+    branch: string = `master`,
+    commitSha: string
+) =>
+    octo.git.updateRef({
+          owner: org,
+          repo,
+          ref: `heads/${branch}`,
+          sha: commitSha,
+    })
 
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
@@ -143,7 +281,6 @@ function addBuffer(e){
   const newFileBuffer = fileBuffer
   newFileBuffer[filepath] = e
   setFileBuffer(newFileBuffer)
-  console.table(fileBuffer)
 }
 
  function toggle( value, setFunction){
@@ -164,7 +301,7 @@ function addBuffer(e){
 
   function onSave(event){
   event.preventDefault()
-  
+    
   if( username == org ){
         console.log("user is owner")
   }else{
@@ -181,9 +318,17 @@ function addBuffer(e){
         createFork(org, repo)
     })
   }
+  // Change org to username as the fork exist
+  setOrg(username)
 
+
+   const auth = localStorage.getItem("token") 
+   const octo = new Octokit({
+     auth
+   })
+    
     // TODO: Add a blob here with changes made and push them to github
-
+    uploadToRepo( octo, org, repo, gitRef, fileBuffer)
   }
 
   function listForks(owner, repo){
