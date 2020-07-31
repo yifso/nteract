@@ -89,6 +89,77 @@ function useCheckInput(val: boolean | undefined ){
   }
 }
 
+
+function listForks(owner, repo){
+   return new Promise(function(resolve, reject) { 
+    // This is get the fork of the active repo
+    const octo = new Octokit()
+     octo.repos.listForks({
+         owner: owner,
+         repo,
+      }).then(({data}) => {
+         console.log(data)
+         resolve({data})
+      }).then((e) => {
+         console.log("error")
+         console.log(e)
+         reject(e)
+      })
+   });
+}
+
+function createFork(octo, owner, repo){
+  return new Promise( (resolve, reject) => {
+    octo.repos.createFork({
+          owner,
+          repo,
+        }).then(() => {
+            console.log("we are about to create fork")
+            resolve()
+      })
+    })
+}
+
+const checkFork = (
+  octo: Octokit,
+  org: string,
+  repo: string,
+  branch: string = `master`,
+  username: string
+) => {
+  return new Promise( (resolve, reject) => {
+  console.log("inside fork")
+  // Check if user is owner of the repo
+  if( username == org ){
+        console.log("user is owner")
+        resolve()
+  }else{
+  // Check if user already have a fork of the repo
+  listForks(org, repo).then( ({data}) => {
+     console.log("inside listForks")
+     console.log(data)
+     for (const repo of data){
+        console.log("loop")
+        if ( repo.owner.login === username){
+          console.log(" username is found in list")
+          resolve()
+        }
+     };
+
+      console.log("Fork not found, we need to create fork")
+      // Fork the repo
+      createFork(octo, org, repo).then( () => {
+         console.log("fork created") 
+         resolve()
+      })
+
+    })
+  
+  }
+ 
+})
+}
+
 /*
  *
  * Save commit to github
@@ -133,6 +204,7 @@ const uploadToRepo = async (
           newTree.sha,
           currentCommit.commitSha
         )
+
      console.log(newCommit)
     await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
 }
@@ -301,62 +373,31 @@ function addBuffer(e){
 
   function onSave(event){
   event.preventDefault()
-    
-  if( username == org ){
-        console.log("user is owner")
-  }else{
-    let forkFound = false;
-    listForks(org, repo).then( ({data}) => {
-     for (const repo of data){
-        if ( repo.owner.login == username){
-          forkFound = true
-          break;
-        }
-     };
 
-     if (!forkFound)
-        createFork(org, repo)
-    })
-  }
-  // Change org to username as the fork exist
-  setOrg(username)
-
+    if( Object.keys(fileBuffer).length == 0){
+      console.log("No Change or buffer empty")
+      return 
+    }
 
    const auth = localStorage.getItem("token") 
    const octo = new Octokit({
      auth
    })
-    
-    // TODO: Add a blob here with changes made and push them to github
-    uploadToRepo( octo, org, repo, gitRef, fileBuffer)
-  }
-
-  function listForks(owner, repo){
-   return new Promise(function(resolve, reject) { 
-    const octokit = new Octokit()
-    // This is get the fork of the active repo
-     octokit.repos.listForks({
-         owner,
-         repo,
-      }).then(({data}) => {
-         resolve({data})
-      }).then((e) => {
-         reject(e)
-      })
-   });
-  }
-
-  function createFork(owner, repo){
-    const auth = localStorage.getItem("token") 
-    const octokit = new Octokit({
-       auth 
+    console.log("inside save")
+    console.log("username" + username)
+    console.log("org: " + org)
+    checkFork( octo, org, repo, gitRef, username).then( () => {
+        console.log("inside then")
+        setOrg(username)
+      uploadToRepo( octo, username, repo, gitRef, fileBuffer).then( () => {
+            console.log("saved")
+        })
     })
-    octokit.repos.createFork({
-        owner,
-        repo,
-    });
+
   }
 
+  
+  
   // Folder Exploring Function
  async function getFiles( path: string ) {
     const octokit = new Octokit()
