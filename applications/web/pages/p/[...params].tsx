@@ -48,8 +48,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-/* TODO: Functions like this are or can be used in 
- multiple files, find a way to make them globally available. */
 function getPath(params){
     const filepathSegments = params.slice(4);
     let filepath;
@@ -58,40 +56,39 @@ function getPath(params){
     } else {
       filepath = filepathSegments;
     }
-  
+
     return filepath
   }
 
-// TODO: Below two functions are identical, they can be one
 function useInput(val: string | undefined ){
   const [value, setValue] = useState(val);
-  
+
   function handleChange(e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) {
     setValue(e.currentTarget.value);
   }
-  
-  return { 
-    value, 
+
+  return {
+    value,
     onChange: handleChange
   }
 }
 
 function useCheckInput(val: boolean | undefined ){
   const [value, setValue] = useState(val);
-  
+
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     setValue(e.currentTarget.checked);
   }
-  
-  return { 
-    value, 
+
+  return {
+    value,
     onChange: handleChange
   }
 }
 
 
 const listForks = (owner, repo) => {
-   return new Promise(function(resolve, reject) { 
+   return new Promise(function(resolve, reject) {
     // This is get the fork of the active repo
     const octo = new Octokit()
      octo.repos.listForks({
@@ -129,12 +126,12 @@ const checkFork = (
   username: string
 ) => {
   return new Promise( (resolve, reject) => {
-  
+
     // Step 1: Check if user is owner of the repo
     if( username == org ){
         resolve()
     }else{
-    
+
       // Step 2: Check if user already have a fork of the repo
       listForks(org, repo).then( ({data}) => {
         for (const repo of data){
@@ -166,20 +163,20 @@ const uploadToRepo = (
     commitMessage: string = `Auto Commit`,
 ) => {
     return new Promise( async (resolve, reject) => {
-    // Step 1: Get current commit 
+    // Step 1: Get current commit
     const currentCommit = await getCurrentCommit(octo, org, repo, branch)
-    
-    // Step 2: Get files path and content to create blob    
+
+    // Step 2: Get files path and content to create blob
     let pathsForBlobs = []
     let filesContent = []
     for( var key in buffer){
       pathsForBlobs.push(key)
       filesContent.push(buffer[key])
     }
-    
+
     // Step 3: Create File Blob
     const filesBlobs = await Promise.all(filesContent.map(createBlobForFile(octo, org, repo)))
-    
+
     // Step 4: Create new tree with new files
     const newTree = await createNewTree(
           octo,
@@ -189,7 +186,7 @@ const uploadToRepo = (
           pathsForBlobs,
           currentCommit.treeSha
         )
-    
+
     // Step 5: Create new commit
     const newCommit = await createNewCommit(
           octo,
@@ -231,9 +228,6 @@ const getCurrentCommit = async (
           treeSha: commitData.tree.sha,
         }
 }
-
-// Notice that readFile's utf8 is typed differently from Github's utf-8
-//const getFileAsUTF8 = (filePath: string) => readFile(filePath, 'utf8')
 
 const createBlobForFile = (octo: Octokit, org: string, repo: string) => async (
     content: string
@@ -311,10 +305,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ showBinderMenu, setShowBinderMenu ] = useState(false)
     const [ showConsole, setShowConsole ] = useState(false)
     const [ showSaveDialog, setShowSaveDialog ] = useState(false)
-   
     // Git API Values
-    /* TODO: We need to be able to save multiple files, so this logic 
-       won't work. We need to have store for multiple files */
     const [ filepath, setFilepath ] = useState(getPath(params))
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
@@ -322,21 +313,19 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ org, setOrg ] = useState(params[1])
     const [ repo, setRepo ] = useState(params[2])
     const [ gitRef, setGitRef ] = useState(params[3])
-  
     // Commit Values
     const commitMessage = useInput("")
-    const commitDescription = useInput("")
     // This should be a boolean value but as a string
     const stripOutput = useCheckInput(false)
     const [ fileBuffer, setFileBuffer ] = useState({})
-    
+
     // Login Values
     const [ loggedIn, setLoggedIn ] = useState(false)
     const [ username, setUsername ] = useState("")
     const [ userImage, setUserImage ] = useState("")
     const [ userLink, setUserLink ] = useState("")
 
-/* 
+/*
 * TODO: Add @nteract/mythic-notifications to file
 */
 
@@ -368,7 +357,11 @@ function addBuffer(e){
   }
 
   function isNotebook (name: string) {
-    return name.includes(".ipynb") 
+    return name.includes(".ipynb")
+  }
+
+  const getFileType = (fileName: string) => {
+    
   }
 
   // To save/upload data to github
@@ -378,11 +371,11 @@ function addBuffer(e){
     // Step 1: Check if buffer is empty
     if( Object.keys(fileBuffer).length == 0){
       console.log("Notification: No changes in data")
-      return 
+      return
     }
 
    // Step 2: Get authentication of user
-   const auth = localStorage.getItem("token") 
+   const auth = localStorage.getItem("token")
    const octo = new Octokit({
      auth
    })
@@ -393,7 +386,7 @@ function addBuffer(e){
       setOrg(username)
       // Step 5: Upload to the repo from buffer
       uploadToRepo( octo, username, repo, gitRef, fileBuffer, commitMessage.value ).then( () => {
-      // Step 6: Empty the buffer 
+      // Step 6: Empty the buffer
       setFileBuffer({})
       console.log("Notification: Data Saved")
       }).catch( (e) => {
@@ -403,8 +396,8 @@ function addBuffer(e){
 
 }
 
-  
-  
+
+
   // Folder Exploring Function
  async function getFiles( path: string ) {
     const octokit = new Octokit()
@@ -466,17 +459,17 @@ function addBuffer(e){
    if ( localStorage.getItem("token") == undefined ){
         window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
         window.addEventListener('storage', getGithubUserDetails)
-   }  
+   }
  }
 
   function getGithubUserDetails(){
-    const token = localStorage.getItem("token") 
+    const token = localStorage.getItem("token")
         fetch("https://api.github.com/user", {
           method: "GET",
           headers: new Headers({
             "Authorization": "token " + token
           })
-          
+
         })
         .then( (res) => res.json())
         .then( (data) => {
@@ -494,7 +487,7 @@ function addBuffer(e){
   }
 
 
-    // We won't be following this logic, we will render the data from github and only send changes to binder  
+    // We won't be following this logic, we will render the data from github and only send changes to binder
      /*
        <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
          <Host.Consumer>
@@ -508,13 +501,13 @@ const dialogInputStyle = { width: "98%" }
 return (
         <Layout>
           <Head>
-             <title>nteract play: Run interactive code</title> 
+             <title>nteract play: Run interactive code</title>
              <meta charSet="utf-8" />
              <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           </Head>
            {
              showBinderMenu &&
-                  
+
                <BinderMenu
                         provider={provider}
                         org={org}
@@ -531,31 +524,28 @@ return (
                            }}
                         />
            }
-        
-          { 
-            showConsole && <Console style={{ 
+
+          {
+            showConsole && <Console style={{
                                position: "absolute",
                                bottom: "30px",
                                right: "0px",
                                width: "calc(100% - 260px)"
-                 }}>Console</Console> 
+                 }}>Console</Console>
           }
 
         { showSaveDialog &&
           <>
             <Shadow onClick={ ()=> toggle(showSaveDialog, setShowSaveDialog) } />
         <Dialog >
-          <form onSubmit={(e) => onSave(e)} > 
+          <form onSubmit={(e) => onSave(e)} >
           <DialogRow>
-                <Input id="commit_message" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
-          </DialogRow>
-          <DialogRow>
-              <Input id="commit_description" variant="textarea" label="Description" {...commitDescription} style={dialogInputStyle} />
+                <Input id="commit_message"  variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
           </DialogRow>
           <DialogRow>
               <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
           </DialogRow>
-          <DialogFooter> 
+          <DialogFooter>
             <Button id="commit_button" text="Commit" icon={commitIcon} />
           </DialogFooter>
           </form>
@@ -599,7 +589,7 @@ return (
                   loadFolder={getFiles}
                   org={org}
                   repo={repo}
-                  gitRef={gitRef} 
+                  gitRef={gitRef}
           />
         </Side>
         <Body>
@@ -608,7 +598,7 @@ return (
           <CodeMirrorEditor
             editorFocused
             completion
-            autofocus            
+            autofocus
             codeMirror={{
                 lineNumbers: true,
                 extraKeys: {
@@ -617,7 +607,7 @@ return (
                           "Cmd-Enter": () => {}
                       },
                 cursorBlinkRate: 0,
-                mode: "python"
+                mode: "markdown"
               }}
             preserveScrollPosition
             editorType="codemirror"
@@ -629,7 +619,7 @@ return (
                 onChange={(e) => { addBuffer(e)}}
             />
 
-            
+
                       }
         </Body>
 
