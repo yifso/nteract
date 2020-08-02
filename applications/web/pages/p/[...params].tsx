@@ -90,7 +90,7 @@ function useCheckInput(val: boolean | undefined ){
 }
 
 
-function listForks(owner, repo){
+const listForks = (owner, repo) => {
    return new Promise(function(resolve, reject) { 
     // This is get the fork of the active repo
     const octo = new Octokit()
@@ -98,28 +98,29 @@ function listForks(owner, repo){
          owner: owner,
          repo,
       }).then(({data}) => {
-         console.log(data)
          resolve({data})
       }).then((e) => {
-         console.log("error")
-         console.log(e)
          reject(e)
       })
    });
 }
 
-function createFork(octo, owner, repo){
+const createFork = (octo, owner, repo) => {
   return new Promise( (resolve, reject) => {
     octo.repos.createFork({
           owner,
           repo,
         }).then(() => {
-            console.log("we are about to create fork")
             resolve()
       })
     })
 }
 
+
+// checkFork is to perform 3 checks
+// A: If user is the owner of repo.
+// B: If fork Exist.
+// C: If fork doesn't exist, create it.
 const checkFork = (
   octo: Octokit,
   org: string,
@@ -128,36 +129,27 @@ const checkFork = (
   username: string
 ) => {
   return new Promise( (resolve, reject) => {
-  console.log("inside fork")
-  // Check if user is owner of the repo
-  if( username == org ){
-        console.log("user is owner")
-        resolve()
-  }else{
-  // Check if user already have a fork of the repo
-  listForks(org, repo).then( ({data}) => {
-     console.log("inside listForks")
-     console.log(data)
-     for (const repo of data){
-        console.log("loop")
-        if ( repo.owner.login === username){
-          console.log(" username is found in list")
-          resolve()
-        }
-     };
-
-      console.log("Fork not found, we need to create fork")
-      // Fork the repo
-      createFork(octo, org, repo).then( () => {
-         console.log("fork created") 
-         resolve()
-      })
-
-    })
   
-  }
- 
-})
+    // Step 1: Check if user is owner of the repo
+    if( username == org ){
+        resolve()
+    }else{
+    
+      // Step 2: Check if user already have a fork of the repo
+      listForks(org, repo).then( ({data}) => {
+        for (const repo of data){
+          if ( repo.owner.login === username){
+            resolve()
+          }
+        };
+
+        // Step 3: Create the fork
+        createFork(octo, org, repo).then( () => {
+          resolve()
+        })
+      })
+    }
+  })
 }
 
 /*
@@ -165,27 +157,30 @@ const checkFork = (
  * Save commit to github
  *
  */
-const uploadToRepo = async (
+const uploadToRepo = (
     octo: Octokit,
     org: string,
     repo: string,
     branch: string = `master`,
     buffer: {},
+    commitMessage: string = `Auto Commit`,
 ) => {
-    console.log("inside uploadToRepo")
+    return new Promise( async (resolve, reject) => {
+    // Step 1: Get current commit 
     const currentCommit = await getCurrentCommit(octo, org, repo, branch)
-    console.log(currentCommit)
-    // Save only if buffer is not empty
+    
+    // Step 2: Get files path and content to create blob    
     let pathsForBlobs = []
     let filesContent = []
     for( var key in buffer){
       pathsForBlobs.push(key)
       filesContent.push(buffer[key])
     }
+    
+    // Step 3: Create File Blob
     const filesBlobs = await Promise.all(filesContent.map(createBlobForFile(octo, org, repo)))
-    console.log(filesBlobs) 
-
-    //const pathsForBlobs = filesPaths.map(fullPath => path.relative(coursePath, fullPath))
+    
+    // Step 4: Create new tree with new files
     const newTree = await createNewTree(
           octo,
           org,
@@ -194,8 +189,8 @@ const uploadToRepo = async (
           pathsForBlobs,
           currentCommit.treeSha
         )
-    console.log(newTree)
-    const commitMessage = `Auto Commit`
+    
+    // Step 5: Create new commit
     const newCommit = await createNewCommit(
           octo,
           org,
@@ -205,8 +200,13 @@ const uploadToRepo = async (
           currentCommit.commitSha
         )
 
-     console.log(newCommit)
-    await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
+    // Step 6:  Push new commit to github
+    await setBranchToCommit(octo, org, repo, branch, newCommit.sha).catch( (e) => {
+      reject()
+    })
+
+    resolve()
+  })
 }
 
 const getCurrentCommit = async (
@@ -251,7 +251,7 @@ const createNewTree = async (
     octo: Octokit,
     owner: string,
     repo: string,
-    blobs: Octokit.GitCreateBlobResponse[],
+    blobs,
     paths: string[],
     parentTreeSha: string
 ) => {
@@ -260,7 +260,7 @@ const createNewTree = async (
         mode: `100644`,
         type: `blob`,
         sha,
-      })) as Octokit.GitCreateTreeParamsTree[]
+      }))
     const { data } = await octo.git.createTree({
           owner,
           repo,
@@ -371,30 +371,37 @@ function addBuffer(e){
     return name.includes(".ipynb") 
   }
 
-  function onSave(event){
+  // To save/upload data to github
+  const onSave = (event) => {
   event.preventDefault()
 
+    // Step 1: Check if buffer is empty
     if( Object.keys(fileBuffer).length == 0){
-      console.log("No Change or buffer empty")
+      console.log("Notification: No changes in data")
       return 
     }
 
+   // Step 2: Get authentication of user
    const auth = localStorage.getItem("token") 
    const octo = new Octokit({
      auth
    })
-    console.log("inside save")
-    console.log("username" + username)
-    console.log("org: " + org)
+
+    // Step 3: Find fork or handle in case it doesn't exist.
     checkFork( octo, org, repo, gitRef, username).then( () => {
-        console.log("inside then")
-        setOrg(username)
-      uploadToRepo( octo, username, repo, gitRef, fileBuffer).then( () => {
-            console.log("saved")
-        })
+      // Step 4: Since user is working on the fork or is owner of the repo
+      setOrg(username)
+      // Step 5: Upload to the repo from buffer
+      uploadToRepo( octo, username, repo, gitRef, fileBuffer, commitMessage.value ).then( () => {
+      // Step 6: Empty the buffer 
+      setFileBuffer({})
+      console.log("Notification: Data Saved")
+      }).catch( (e) => {
+        console.log("Notification: Error in saving")
+      })
     })
 
-  }
+}
 
   
   
@@ -413,8 +420,7 @@ function addBuffer(e){
        })
     }, (e: Error) => {
       fileList =  [[""]]
-      console.log("Repo Not found")
-      console.log(e)
+      console.log("Notification: Repo not found")
   })
 
   return fileList
