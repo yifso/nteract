@@ -27,7 +27,7 @@
     "spawn": "lerna run spawn --scope nteract",
     "spawn:debug": "lerna run spawn:debug --scope nteract --stream",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --quiet",
-    "lint:fix": "npm run lint:ts:fix",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --quiet --fix",
     "build:all": "tsc -b",
     "build:all:ci": "tsc -b --verbose",
     "build:all:cleanly": "yarn clean && yarn && yarn build:all",
