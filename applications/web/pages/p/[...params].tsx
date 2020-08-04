@@ -9,7 +9,7 @@
 
 import React, { FC,  HTMLAttributes, useState, useEffect} from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
-import { withRouter } from "next/router";
+import  { withRouter , useRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -116,6 +116,19 @@ const createFork = (octo, owner, repo) => {
 }
 
 
+const repoExist = (octo, owner, repo) => {
+  return new Promise( (resolve, reject) => {
+    octo.repos.get({
+          owner,
+          repo,
+        }).then(() => {
+            resolve()
+        }).catch( (e) => {
+            reject(e)
+        })
+    })
+}
+
 // checkFork is to perform 3 checks
 // A: If user is the owner of repo.
 // B: If fork Exist.
@@ -131,7 +144,12 @@ const checkFork = (
 
     // Step 1: Check if user is owner of the repo
     if( username == org ){
+      repoExist(octo, username, repo).then( () => {
         resolve()
+      }).catch( () => {
+        // Repo don't exist
+        reject()
+      })
     }else{
 
       // Step 2: Check if user already have a fork of the repo
@@ -300,7 +318,7 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Main: FC<WithRouterProps> = (props: Props) => {
-
+    const router = useRouter()
     const { params } = props.router.query;
     // Toggle Values
     const [ showBinderMenu, setShowBinderMenu ] = useState(false)
@@ -341,6 +359,12 @@ useEffect( () => {
         getGithubUserDetails()
   }
 }, [username])
+
+
+// This is to update the url when the repo, org etc is changed.
+const updateQuery = (proider, org, repo, gitRef) => {
+  router.push(`/p/${provider}/${org}/${repo}/${gitRef}`, undefined, { shallow: true })
+}
 
 function addBuffer(e){
   setFileContent(e);
@@ -462,6 +486,9 @@ function addBuffer(e){
     setOrg(org)
     setRepo(repo)
     setGitRef(gitRef)
+    // To empty buffer when repo is updated
+    setFileBuffer({})
+    //updateQuery( provider, org, repo, gitRef)
   }
 
  function  oauthGithub(){
@@ -495,7 +522,7 @@ function addBuffer(e){
     window.removeEventListener("storage", getGithubUserDetails)
   }
 
-
+      
     // This code will be used when connecting to MyBinder.
      /*
        <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
