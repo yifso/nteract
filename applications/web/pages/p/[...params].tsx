@@ -18,7 +18,6 @@ import { faGithubAlt,  faPython } from '@fortawesome/free-brands-svg-icons'
 
 import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import { Host } from "@mybinder/host-cache";
 
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
@@ -32,6 +31,7 @@ import { Input } from '../../components/Input'
 import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
 import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
+import NextHead from "../../components/Header";
 
 const runIcon =  <FontAwesomeIcon icon={faPlay} />
 const saveIcon =  <FontAwesomeIcon icon={faSave} />
@@ -509,11 +509,7 @@ const dialogInputStyle = { width: "98%" }
 
 return (
         <Layout>
-          <Head>
-             <title>nteract play: Run interactive code</title>
-             <meta charSet="utf-8" />
-             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          </Head>
+          <NextHead />
            {
              showBinderMenu &&
 
