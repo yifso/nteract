@@ -96,7 +96,7 @@ const listForks = (owner, repo) => {
          repo,
       }).then(({data}) => {
          resolve({data})
-      }).then((e) => {
+      }).catch((e) => {
          reject(e)
       })
    });
@@ -109,7 +109,9 @@ const createFork = (octo, owner, repo) => {
           repo,
         }).then(() => {
             resolve()
-      })
+        }).catch( (e) => {
+            reject(e)
+        })
     })
 }
 
@@ -143,10 +145,15 @@ const checkFork = (
         // Step 3: Create the fork
         createFork(octo, org, repo).then( () => {
           resolve()
+        }).catch( (e) => {
+          reject(e)
         })
+      }).catch( (e) => {
+          reject(e)
       })
     }
   })
+
 }
 
 /*
@@ -154,15 +161,14 @@ const checkFork = (
  * Save commit to github
  *
  */
-const uploadToRepo = (
+const uploadToRepo = async (
     octo: Octokit,
     org: string,
     repo: string,
     branch: string = `master`,
     buffer: {},
-    commitMessage: string = `Auto Commit`,
+    commitMessage: string = `Auto commit from nteract web`,
 ) => {
-    return new Promise( async (resolve, reject) => {
     // Step 1: Get current commit
     const currentCommit = await getCurrentCommit(octo, org, repo, branch)
 
@@ -198,12 +204,7 @@ const uploadToRepo = (
         )
 
     // Step 6:  Push new commit to github
-    await setBranchToCommit(octo, org, repo, branch, newCommit.sha).catch( (e) => {
-      reject()
-    })
-
-    resolve()
-  })
+    await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
 }
 
 const getCurrentCommit = async (
@@ -314,7 +315,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ repo, setRepo ] = useState(params[2])
     const [ gitRef, setGitRef ] = useState(params[3])
     // Commit Values
-    const commitMessage = useInput("")
+    const commitMessage = useInput("Auto commit from nteract web")
     // This should be a boolean value but as a string
     const stripOutput = useCheckInput(false)
     const [ fileBuffer, setFileBuffer ] = useState({})
@@ -328,6 +329,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 /*
 * TODO: Add @nteract/mythic-notifications to file
 */
+
+/*
+ * TODO: Replace all placeholder console with notification
+ */
 
 // This Effect runs only when the username change
 useEffect( () => {
@@ -357,15 +362,15 @@ function addBuffer(e){
   }
 
   function isNotebook (name: string) {
-    return name.includes(".ipynb")
+    return name.endsWith(".ipynb")
   }
 
   const getFileType = (fileName: string) => {
-    
+
   }
 
   // To save/upload data to github
-  const onSave = (event) => {
+  const onSave = async (event) => {
   event.preventDefault()
 
     // Step 1: Check if buffer is empty
@@ -381,17 +386,21 @@ function addBuffer(e){
    })
 
     // Step 3: Find fork or handle in case it doesn't exist.
-    checkFork( octo, org, repo, gitRef, username).then( () => {
+    await checkFork( octo, org, repo, gitRef, username).then( () => {
       // Step 4: Since user is working on the fork or is owner of the repo
       setOrg(username)
       // Step 5: Upload to the repo from buffer
-      uploadToRepo( octo, username, repo, gitRef, fileBuffer, commitMessage.value ).then( () => {
-      // Step 6: Empty the buffer
-      setFileBuffer({})
-      console.log("Notification: Data Saved")
-      }).catch( (e) => {
-        console.log("Notification: Error in saving")
-      })
+      try {
+        uploadToRepo( octo, username, repo, gitRef, fileBuffer, commitMessage.value ).then( () => {
+          // Step 6: Empty the buffer
+          setFileBuffer({})
+          console.log("Notification: Data Saved")
+        })
+      }catch(err){
+          console.log("Notification: Error in upload")
+      }
+    }).catch( (e) => {
+         console.log("Notification: Repo not found")
     })
 
 }
@@ -487,7 +496,7 @@ function addBuffer(e){
   }
 
 
-    // We won't be following this logic, we will render the data from github and only send changes to binder
+    // This code will be used when connecting to MyBinder.
      /*
        <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
          <Host.Consumer>
@@ -607,6 +616,7 @@ return (
                           "Cmd-Enter": () => {}
                       },
                 cursorBlinkRate: 0,
+                // TODO: Make the below mode dynamic by identifying the language on open
                 mode: "markdown"
               }}
             preserveScrollPosition
