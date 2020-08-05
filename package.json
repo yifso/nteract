@@ -26,10 +26,8 @@
     "start": "npm run app:desktop",
     "spawn": "lerna run spawn --scope nteract",
     "spawn:debug": "lerna run spawn:debug --scope nteract --stream",
-    "lint": "npm run lint:ts",
-    "lint:fix": "npm run lint:ts:fix",
-    "lint:ts": "tslint --config tslint.json --project tsconfig.base.json --force --format stylish",
-    "lint:ts:fix": "tslint --config tslint.json --project tsconfig.base.json --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --quiet",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --quiet --fix",
     "build:all": "tsc -b",
     "build:all:ci": "tsc -b --verbose",
     "build:all:cleanly": "yarn clean && yarn && yarn build:all",
@@ -139,12 +137,10 @@
   },
   "lint-staged": {
     "*.tsx,*.ts,*.js,!*js.snap": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.json,!package.json": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "private": true,
@@ -183,6 +179,8 @@
     "@types/semver": "^7.0.0",
     "@types/styled-components": "^5.0.1",
     "@types/webfontloader": "^1.6.29",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
     "concurrently": "^5.0.0",
     "cpy-cli": "^3.0.0",
     "cross-env": "^7.0.0",
@@ -195,6 +193,13 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.1",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-enzyme": "^0.2.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.5",
     "husky": "^4.0.0",
     "immutable": "^4.0.0-rc.12",
     "jest": "^26.0.0",
@@ -231,7 +236,6 @@
     "ts-jest": "^26.0.0",
     "ts-loader": "^8.0.0",
     "ts-node": "^8.0.0",
-    "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.0.0",
