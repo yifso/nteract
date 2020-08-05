@@ -12,7 +12,7 @@ const Box = styled.div`
 
 const Logo = styled.img`
   width: 220px;
-  margin-top:80px;
+  margin-top:120px;
 `
 
 const customStyle = {
@@ -20,7 +20,7 @@ const customStyle = {
     width: "1050px",
     background: "#f5f2f7",
     border: "1px solid #e6e0ea",
-    marginTop: "80px",
+    marginTop: "120px",
     borderRadius: "4px",
 }
 
@@ -43,6 +43,13 @@ return (
   <Box>
   <div>
   </div>
+
+    <Logo src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_purple.png" alt="nteract logo" />
+        
+        <P> 
+          Welcome to <b>nteract web</b>. It's an interactive playground for users to connect to kernels hosted on <a href="#" >MyBinder</a> and run code samples against it. It allows you to run notebooks online in seconds and share it with your audience/colleagues/students. 
+        </P>
+
               <BinderMenu
                         provider="gh"
                         org="nteract"
@@ -52,11 +59,6 @@ return (
                         style={customStyle}
               />
 
-        <Logo src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_purple.png" alt="nteract logo" />
-        
-        <P> 
-          Welcome to <b>nteract web</b>. It's an interactive playground for users to connect to kernels hosted on <a href="#" >MyBinder</a> and run code samples against it. It allows you to run notebooks online in seconds and share it with your audience/colleagues/students. 
-        </P>
 
   </Box>
   </>
