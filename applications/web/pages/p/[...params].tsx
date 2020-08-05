@@ -31,7 +31,7 @@ import { Avatar } from '../../components/Avatar'
 import { Input } from '../../components/Input'
 import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
 import { FilesListing } from "../../components/FilesListing"
-import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
+import { Layout, Header, Body, Side, Footer, H3, P} from "../../components/Layout"
 
 const runIcon =  <FontAwesomeIcon icon={faPlay} />
 const saveIcon =  <FontAwesomeIcon icon={faSave} />
@@ -439,6 +439,28 @@ return (
 
             
                       }
+
+          {
+              fileContent == "" &&
+
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "180px" }}>
+                      
+                  <H3>Welcome to nteract play</H3>
+                      <P>
+                        nteract play is an awesome environment for you to reproduce your or other notebook projects quickly and edithem on the fly. It takes just a few seconds to get started.
+                        
+                        <ol>
+                          <li>Click on the menu above, and provide the path to the repository you want to reproduce. </li>
+                          <li>Use file explorer to open, run and edit files. </li>
+                          <li>Connect to the Github to save back your changes. </li>
+                          <li>Share the above link to your network for them to reproduce it. </li>
+                        </ol>
+                        Made with love by nteract contributors.
+                      </P>
+    
+                </div>
+
+          }
         </Body>
 
         <Footer>

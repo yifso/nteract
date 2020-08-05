@@ -1,18 +1,26 @@
 import React, { FC } from "react";
-import Head from "next/head";
 import styled from "styled-components";
 import { BinderMenu } from "../components/BinderMenu"
+import { H3, P } from "../components/Layout"
+import Head from "next/head";
 
 const Box = styled.div`
   display: flex;
-  justify-content: center; 
+   align-items: center;
+  flex-direction: column;
+`
+
+const Logo = styled.img`
+  width: 220px;
+  margin-top:80px;
 `
 
 const customStyle = {
     height: "150px",
+    width: "1050px",
     background: "#f5f2f7",
     border: "1px solid #e6e0ea",
-    marginTop: "200px",
+    marginTop: "80px",
     borderRadius: "4px",
 }
 
@@ -27,12 +35,14 @@ function updateVCSInfo(e: React.FormEvent<HTMLFormElement>, provider: string | u
 return (
   <>
           <Head>
-             <title>nteract play: Run interactive code</title> 
+             <title>nteract web: Run interactive code</title> 
              <meta charSet="utf-8" />
              <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           </Head>
 
   <Box>
+  <div>
+  </div>
               <BinderMenu
                         provider="gh"
                         org="nteract"
@@ -41,6 +51,12 @@ return (
                         updateVCSInfo={updateVCSInfo}
                         style={customStyle}
               />
+
+        <Logo src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_purple.png" alt="nteract logo" />
+        
+        <P> 
+          Welcome to <b>nteract web</b>. It's an interactive playground for users to connect to kernels hosted on <a href="#" >MyBinder</a> and run code samples against it. It allows you to run notebooks online in seconds and share it with your audience/colleagues/students. 
+        </P>
 
   </Box>
   </>
