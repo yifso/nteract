@@ -39,7 +39,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 const BINDER_URL = "https://mybinder.org";
 
 function getPath(params){
-  console.log(params)
     const filepathSegments = params.slice(4);
     let filepath;
     if (typeof filepathSegments !== "string") {
@@ -244,7 +243,7 @@ function addBuffer(e){
     //updateQuery( provider, org, repo, gitRef)
   }
 
- function  oauthGithub(){
+ function  OAuthGithub(){
    if ( localStorage.getItem("token") == undefined ){
         window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
         window.addEventListener('storage', getGithubUserDetails)
@@ -358,7 +357,7 @@ return (
               <MenuItem >
                     { loggedIn
                           ? <Avatar userImage={userImage} username={username} userLink={userLink} / >
-                          : <Button onClick={ () => oauthGithub()} text="Connect to Github" icon={githubIcon} />
+                          : <Button onClick={ () => OAuthGithub()} text="Connect to Github" icon={githubIcon} />
                     }
                   </MenuItem>
             </Menu>
