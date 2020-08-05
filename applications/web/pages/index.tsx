@@ -41,13 +41,11 @@ return (
           </Head>
 
   <Box>
-  <div>
-  </div>
 
     <Logo src="https://media.githubusercontent.com/media/nteract/logos/master/nteract_logo_cube_book/exports/images/png/nteract_logo_wide_clear_space_purple.png" alt="nteract logo" />
         
         <P> 
-          Welcome to <b>nteract web</b>. It's an interactive playground for users to connect to kernels hosted on <a href="#" >MyBinder</a> and run code samples against it. It allows you to run notebooks online in seconds and share it with your audience/colleagues/students. 
+          Welcome to <b>nteract web</b>. It's an interactive playground for users to connect to kernels hosted on <a href="https://mybinder.org/" title="Binder" >MyBinder</a> and run code samples against it. It allows you to run notebooks online in seconds and share it with your audience/colleagues/students. 
         </P>
 
               <BinderMenu
