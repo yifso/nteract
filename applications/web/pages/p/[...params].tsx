@@ -662,13 +662,13 @@ return (
                       
                   <H3>Welcome to nteract play</H3>
                       <P>
-                        nteract play is an awesome environment for you to reproduce your or other notebook projects quickly and edithem on the fly. It takes just a few seconds to get started.
+                        nteract play is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
                         
                         <ol>
                           <li>Click on the menu above, and provide the path to the repository you want to reproduce. </li>
                           <li>Use file explorer to open, run and edit files. </li>
-                          <li>Connect to the Github to save back your changes. </li>
-                          <li>Share the above link to your network for them to reproduce it. </li>
+                          <li>Connect to the GitHub to save back your changes. </li>
+                          <li>Share the above link to your network so they can reproduce your notebook. </li>
                         </ol>
                         Made with love by nteract contributors.
                       </P>
