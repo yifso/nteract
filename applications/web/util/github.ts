@@ -3,7 +3,7 @@ import { Octokit } from "@octokit/rest";
 
 export const listForks = (owner, repo) => {
    return new Promise(function(resolve, reject) {
-    // This is get the fork of the active repo
+    // This gets the fork of the active repo
     const octo = new Octokit()
      octo.repos.listForks({
          owner: owner,
@@ -43,9 +43,9 @@ export const repoExist = (octo, owner, repo) => {
     })
 }
 
-// checkFork is to perform 3 checks
+// checkFork performs 3 checks
 // A: If user is the owner of repo.
-// B: If fork Exist.
+// B: If fork exists.
 // C: If fork doesn't exist, create it.
 export const checkFork = (
   octo: Octokit,

@@ -1,10 +1,16 @@
-export const getLanguage =  (extention: string) =>  {
+export const getLanguage =  (extension: string) =>  {
       let language = "markdown"
       
-      switch( extention.toLowerCase() ) {
+      switch( extension.toLowerCase() ) {
           case "pyc":
           case "py":
             language = "python"
+          break;
+          case "jl":
+            language = "julia"
+          break;
+         case "r":
+            language = "r"
           break;
           case "jsx":
           case "ts":
@@ -36,25 +42,21 @@ export const getLanguage =  (extention: string) =>  {
           break;
           case "html":
             language = "html"
+          break;
           case "css": 
             language = "css"
-          break;
-          break;
-          case "jl":
-            language = "julia"
           break;
           case "sql":
             language = "sql"
           break;
-          case "r":
-            language = "r"
           case "makefile":
             language = "cmake"
+          break;
           case "sh":
             language = "bash"
+          break;
       }
       
-      console.log(language) 
       return language
   }
 

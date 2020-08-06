@@ -227,8 +227,8 @@ function addBuffer(e){
     })
     }
    
-   let extention = fileName.split('.').pop()
-   setLang( getLanguage( extention ) )
+   let extension = fileName.split('.').pop()
+   setLang( getLanguage( extension ) )
   }
 
   function updateVCSInfo(event, provider, org, repo, gitRef){
