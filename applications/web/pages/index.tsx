@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { BinderMenu } from "../components/BinderMenu"
-import { H3, P } from "../components/Layout"
+import { H3, P } from "../components/Basic"
 import Head from "next/head";
 
 const Box = styled.div`
