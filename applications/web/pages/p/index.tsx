@@ -361,14 +361,11 @@ useEffect( () => {
 
 // To keep the link updated for users to share it
 useEffect( () => {
-    updateQuery( provider, org, repo, gitRef, filePath)
-}, [provider, org,repo, gitRef, filePath  ])
+    router.push(`/p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}&file=${filePath}`, undefined, { shallow: true })
+
+}, [provider, org, repo, gitRef, filePath  ])
 
 
-// This is to update the url when the repo, org etc is changed.
-const updateQuery = (proider, org, repo, gitRef, filePath) => {
-  router.push(`/p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}&file=${filePath}`, undefined, { shallow: true })
-}
 
 function addBuffer(e){
   setFileContent(e);
