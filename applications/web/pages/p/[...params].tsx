@@ -28,7 +28,7 @@ import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog
 import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 import NextHead from "../../components/Header";
-import { getLanguage } from "../../util/helpers"
+import { getLanguage, getPath } from "../../util/helpers"
 import { uploadToRepo, checkFork } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
 
@@ -37,18 +37,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 });
 
 const BINDER_URL = "https://mybinder.org";
-
-function getPath(params){
-    const filepathSegments = params.slice(4);
-    let filepath;
-    if (typeof filepathSegments !== "string") {
-      filepath = filepathSegments.join("");
-    } else {
-      filepath = filepathSegments;
-    }
-
-    return filepath
-  }
 
 function useInput(val: string | undefined ){
   const [value, setValue] = useState(val);
