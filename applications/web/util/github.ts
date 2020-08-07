@@ -1,90 +1,52 @@
 import { Octokit } from "@octokit/rest";
 
 
-export const listForks = (owner, repo) => {
-   return new Promise(function(resolve, reject) {
+export const listForks = async (owner: string, repo: string) => {
     // This gets the fork of the active repo
     const octo = new Octokit()
-     octo.repos.listForks({
-         owner: owner,
-         repo,
-      }).then(({data}) => {
-         resolve({data})
-      }).catch((e) => {
-         reject(e)
-      })
-   });
+    const data = await octo.repos.listForks({ owner: owner, repo })
+    return data
 }
 
-export const createFork = (octo, owner, repo) => {
-  return new Promise( (resolve, reject) => {
-    octo.repos.createFork({
-          owner,
-          repo,
-        }).then(() => {
-            resolve()
-        }).catch( (e) => {
-            reject(e)
-        })
-    })
+export const createFork = async (octo, owner: string, repo: string) => {
+    const fork = await octo.repos.createFork({owner,repo,})
+    return fork
 }
 
-
-export const repoExist = (octo, owner, repo) => {
-  return new Promise( (resolve, reject) => {
-    octo.repos.get({
-          owner,
-          repo,
-        }).then(() => {
-            resolve()
-        }).catch( (e) => {
-            reject(e)
-        })
-    })
+export const repoExist = async (octo, owner: string, repo: string) => {
+    const bool = await octo.repos.get({ owner, repo })
+    return bool
 }
 
 // checkFork performs 3 checks
 // A: If user is the owner of repo.
 // B: If fork exists.
 // C: If fork doesn't exist, create it.
-export const checkFork = (
+export const checkFork =async (
   octo: Octokit,
   org: string,
   repo: string,
   branch: string = `master`,
   username: string
 ) => {
-  return new Promise( (resolve, reject) => {
 
     // Step 1: Check if user is owner of the repo
     if( username == org ){
-      repoExist(octo, username, repo).then( () => {
-        resolve()
-      }).catch( () => {
-        // Repo don't exist
-        reject()
-      })
+      await repoExist(octo, username, repo)
     }else{
 
       // Step 2: Check if user already have a fork of the repo
-      listForks(org, repo).then( ({data}) => {
+      await listForks(org, repo).then( ({data}) => {
         for (const repo of data){
           if ( repo.owner.login === username){
-            resolve()
+            return
           }
-        };
-
-        // Step 3: Create the fork
-        createFork(octo, org, repo).then( () => {
-          resolve()
-        }).catch( (e) => {
-          reject(e)
-        })
-      }).catch( (e) => {
-          reject(e)
+        }
       })
-    }
-  })
+         
+      // Step 3: Create the fork
+      await createFork(octo, org, repo)
+  }
 
 }
 
