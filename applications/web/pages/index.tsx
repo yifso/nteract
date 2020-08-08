@@ -1,19 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { BinderMenu } from "../components/BinderMenu"
-import { H3, P } from "../components/Basic"
+import { H3, P, Box, Logo } from "../components/Basic"
 import Head from "next/head";
-
-const Box = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`
-
-const Logo = styled.img`
-  width: 220px;
-  margin-top:120px;
-`
 
 const customStyle = {
     height: "150px",

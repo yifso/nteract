@@ -15,6 +15,17 @@ export const P = styled.p<Props>`
   }
 `
 
+export const Box = styled.div<Props>`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const Logo = styled.img<Props>`
+  width: 220px;
+  margin-top:120px;
+`
+
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
