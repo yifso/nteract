@@ -20,7 +20,7 @@ export const electronBackend: WindowingBackend<BrowserWindow> = {
       window.show();
     });
 
-    return of(registerWindow<BrowserWindow>().create({ id, window }));
+    return of(registerWindow.create({ id, window }));
   },
 
   closeWindow: (id: string, window?: BrowserWindow) => {

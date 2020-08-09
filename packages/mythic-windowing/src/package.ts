@@ -1,15 +1,11 @@
 import { createMythicPackage } from "@nteract/myths";
-import { BrowserWindow } from "electron";
 import * as Immutable from "immutable";
-import { electronBackend } from "./backends/electron";
-import { WindowingState } from "./types";
+import { Window, Windowing, WindowingBackend } from "./types";
 
 
-export const windowing = createMythicPackage("windowing")<
-  WindowingState<BrowserWindow>
->({
+export const windowing: Windowing = createMythicPackage("windowing")({
   initialState: {
-    backend: electronBackend,
-    windows: Immutable.Map<string, BrowserWindow>(),
+    backend: null as unknown as WindowingBackend<Window>,
+    windows: Immutable.Map<string, Window>(),
   },
 });

@@ -1,8 +1,15 @@
 import { windowing } from "../package";
+import { Window, WindowingBackend } from "../types";
 
 
-export const registerWindow = <T>() =>
-  windowing.createMyth("registerWindow")<{ id: string; window: T }>({
+export const setWindowingBackend =
+  windowing.createMyth("setWindowingBackend")<WindowingBackend<Window>>({
+    reduce: (state, action) =>
+      state.set("backend", action.payload),
+  });
+
+export const registerWindow =
+  windowing.createMyth("registerWindow")<{ id: string; window: Window }>({
     reduce: (state, action) =>
       state.setIn(["windows", action.payload.id], action.payload.window),
   });

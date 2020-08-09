@@ -1,7 +1,21 @@
-import { MythicAction } from "@nteract/myths";
+import { MythicAction, MythicPackage } from "@nteract/myths";
 import { BrowserWindow } from "electron";
 import * as Immutable from "immutable";
 import { Observable } from "rxjs";
+
+
+export type Window = BrowserWindow;
+export type Windowing = MythicPackage<"windowing", WindowingState>;
+
+export interface WindowingState {
+  backend: WindowingBackend<Window>;
+  windows: Immutable.Map<string, Window>;
+}
+
+export interface WindowingBackend<WINDOW> {
+  showWindow: (props: WindowProps) => Observable<MythicAction>;
+  closeWindow: (id: string, window?: WINDOW) => Observable<MythicAction>;
+}
 
 export interface WindowProps {
   id: string;
@@ -9,14 +23,4 @@ export interface WindowProps {
   width: number;
   height: number;
   path?: string;
-}
-
-export interface WindowingBackend<T> {
-  showWindow: (props: WindowProps) => Observable<MythicAction>;
-  closeWindow: (id: string, window?: T) => Observable<MythicAction>;
-}
-
-export interface WindowingState<T> {
-  backend: WindowingBackend<T>;
-  windows: Immutable.Map<string, T>;
 }

@@ -1,4 +1,5 @@
 import { ConfigurationOption, defineConfigOption, setConfigFile } from "@nteract/mythic-configuration";
+import { closeWindow, electronBackend, setWindowingBackend, showWindow } from "@nteract/mythic-windowing";
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, Tray } from "electron";
 import initContextMenu from "electron-context-menu";
@@ -11,7 +12,6 @@ import { join, resolve } from "path";
 import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
 import { buffer, first, mergeMap, skipUntil, takeUntil } from "rxjs/operators";
 import yargs from "yargs/yargs";
-import { closeWindow, showWindow } from "../../../../packages/mythic-windowing/src";
 import { QUITTING_STATE_NOT_STARTED, QUITTING_STATE_QUITTING, setKernelSpecs, setQuittingState } from "./actions";
 import { initAutoUpdater } from "./auto-updater";
 import { defaultKernel } from "./config-options";
@@ -109,6 +109,8 @@ const appAndKernelSpecsReady = zip(
   windowReady$,
   kernelSpecsPromise,
 );
+
+store.dispatch(setWindowingBackend.create(electronBackend));
 
 electronReady$
   .pipe(takeUntil(appAndKernelSpecsReady))
