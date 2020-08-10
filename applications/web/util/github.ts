@@ -144,9 +144,10 @@ export const createNewTree = async (
     paths: string[],
     parentTreeSha: string
 ) => {
+  const mode = `100644`
   const tree = blobs.map(({ sha }, index) => ({
         path: paths[index],
-        mode: `100644`,
+        mode,
         type: `blob`,
         sha,
       }))
@@ -166,14 +167,16 @@ export const createNewCommit = async (
     message: string,
     currentTreeSha: string,
     currentCommitSha: string
-) =>
-    (await octo.git.createCommit({
+) => {
+    const commit = (await octo.git.createCommit({
           owner: org,
           repo,
           message,
           tree: currentTreeSha,
           parents: [currentCommitSha],
-        })).data
+        }))
+    return commit.data
+}
 
 export const setBranchToCommit = (
     octo: Octokit,
