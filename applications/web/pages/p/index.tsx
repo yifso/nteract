@@ -49,18 +49,6 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-function getPath(params){
-    const filepathSegments = params.slice(4);
-    let filepath;
-    if (typeof filepathSegments !== "string") {
-      filepath = filepathSegments.join("");
-    } else {
-      filepath = filepathSegments;
-    }
-
-    return filepath
-  }
-
 function useInput(val: string | undefined ){
   const [value, setValue] = useState(val);
 
@@ -325,13 +313,13 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ showConsole, setShowConsole ] = useState(false)
     const [ showSaveDialog, setShowSaveDialog ] = useState(false)
     // Git API Values
-    const [ filePath, setFilepath ] = useState(router.query.file)
+    const [ filePath, setFilepath ] = useState(router.query.file as string)
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
-    const [ provider, setProvider ] = useState(router.query.vcs)
-    const [ org, setOrg ] = useState(router.query.org)
-    const [ repo, setRepo ] = useState(router.query.repo)
-    const [ gitRef, setGitRef ] = useState(router.query.ref)
+    const [ provider, setProvider ] = useState(router.query.vcs as string)
+    const [ org, setOrg ] = useState(router.query.org as string)
+    const [ repo, setRepo ] = useState(router.query.repo as string)
+    const [ gitRef, setGitRef ] = useState(router.query.ref as string)
     // Commit Values
     const commitMessage = useInput("Auto commit from nteract web")
     // This should be a boolean value but as a string
