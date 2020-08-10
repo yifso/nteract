@@ -12,10 +12,6 @@ import { WithRouterProps } from "next/dist/client/with-router";
 import  { withRouter , useRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faPlus, faSave, faBars, faTerminal, faServer} from '@fortawesome/free-solid-svg-icons'
-import { faGithubAlt,  faPython } from '@fortawesome/free-brands-svg-icons'
-
 import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
@@ -33,15 +29,9 @@ import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
 import { H3, P} from "../../components/Basic"
 import NextHead from "../../components/Header";
-
-const runIcon =  <FontAwesomeIcon icon={faPlay} />
-const saveIcon =  <FontAwesomeIcon icon={faSave} />
-const menuIcon =  <FontAwesomeIcon icon={faBars} />
-const githubIcon =  <FontAwesomeIcon icon={faGithubAlt} />
-const consoleIcon =  <FontAwesomeIcon icon={faTerminal} />
-const pythonIcon =  <FontAwesomeIcon icon={faPython} />
-const serverIcon =  <FontAwesomeIcon icon={faServer} />
-const commitIcon =  <FontAwesomeIcon icon={faPlus} />
+import { getLanguage, getPath } from "../../util/helpers"
+import { uploadToRepo, checkFork } from "../../util/github"
+import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
 
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
@@ -76,232 +66,6 @@ function useCheckInput(val: boolean | undefined ){
 }
 
 
-const listForks = (owner, repo) => {
-   return new Promise(function(resolve, reject) {
-    // This is get the fork of the active repo
-    const octo = new Octokit()
-     octo.repos.listForks({
-         owner: owner,
-         repo,
-      }).then(({data}) => {
-         resolve({data})
-      }).catch((e) => {
-         reject(e)
-      })
-   });
-}
-
-const createFork = (octo, owner, repo) => {
-  return new Promise( (resolve, reject) => {
-    octo.repos.createFork({
-          owner,
-          repo,
-        }).then(() => {
-            resolve()
-        }).catch( (e) => {
-            reject(e)
-        })
-    })
-}
-
-
-const repoExist = (octo, owner, repo) => {
-  return new Promise( (resolve, reject) => {
-    octo.repos.get({
-          owner,
-          repo,
-        }).then(() => {
-            resolve()
-        }).catch( (e) => {
-            reject(e)
-        })
-    })
-}
-
-// checkFork is to perform 3 checks
-// A: If user is the owner of repo.
-// B: If fork Exist.
-// C: If fork doesn't exist, create it.
-const checkFork = (
-  octo: Octokit,
-  org: string,
-  repo: string,
-  branch: string = `master`,
-  username: string
-) => {
-  return new Promise( (resolve, reject) => {
-
-    // Step 1: Check if user is owner of the repo
-    if( username == org ){
-      repoExist(octo, username, repo).then( () => {
-        resolve()
-      }).catch( () => {
-        // Repo don't exist
-        reject()
-      })
-    }else{
-
-      // Step 2: Check if user already have a fork of the repo
-      listForks(org, repo).then( ({data}) => {
-        for (const repo of data){
-          if ( repo.owner.login === username){
-            resolve()
-          }
-        };
-
-        // Step 3: Create the fork
-        createFork(octo, org, repo).then( () => {
-          resolve()
-        }).catch( (e) => {
-          reject(e)
-        })
-      }).catch( (e) => {
-          reject(e)
-      })
-    }
-  })
-
-}
-
-/*
- *
- * Save commit to github
- *
- */
-const uploadToRepo = async (
-    octo: Octokit,
-    org: string,
-    repo: string,
-    branch: string = `master`,
-    buffer: {},
-    commitMessage: string = `Auto commit from nteract web`,
-) => {
-    // Step 1: Get current commit
-    const currentCommit = await getCurrentCommit(octo, org, repo, branch)
-
-    // Step 2: Get files path and content to create blob
-    let pathsForBlobs = []
-    let filesContent = []
-    for( var key in buffer){
-      pathsForBlobs.push(key)
-      filesContent.push(buffer[key])
-    }
-
-    // Step 3: Create File Blob
-    const filesBlobs = await Promise.all(filesContent.map(createBlobForFile(octo, org, repo)))
-
-    // Step 4: Create new tree with new files
-    const newTree = await createNewTree(
-          octo,
-          org,
-          repo,
-          filesBlobs,
-          pathsForBlobs,
-          currentCommit.treeSha
-        )
-
-    // Step 5: Create new commit
-    const newCommit = await createNewCommit(
-          octo,
-          org,
-          repo,
-          commitMessage,
-          newTree.sha,
-          currentCommit.commitSha
-        )
-
-    // Step 6:  Push new commit to github
-    await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
-}
-
-const getCurrentCommit = async (
-    octo: Octokit,
-    org: string,
-    repo: string,
-    branch: string = 'master'
-) => {
-    const { data: refData } = await octo.git.getRef({
-          owner: org,
-          repo,
-          ref: `heads/${branch}`,
-            })
-    const commitSha = refData.object.sha
-    const { data: commitData } = await octo.git.getCommit({
-          owner: org,
-          repo,
-          commit_sha: commitSha,
-        })
-    return {
-          commitSha,
-          treeSha: commitData.tree.sha,
-        }
-}
-
-const createBlobForFile = (octo: Octokit, org: string, repo: string) => async (
-    content: string
-) => {
-    const blobData = await octo.git.createBlob({
-          owner: org,
-          repo,
-          content,
-          encoding: 'utf-8',
-        })
-    return blobData.data
-}
-
-const createNewTree = async (
-    octo: Octokit,
-    owner: string,
-    repo: string,
-    blobs,
-    paths: string[],
-    parentTreeSha: string
-) => {
-  const tree = blobs.map(({ sha }, index) => ({
-        path: paths[index],
-        mode: `100644`,
-        type: `blob`,
-        sha,
-      }))
-    const { data } = await octo.git.createTree({
-          owner,
-          repo,
-          tree,
-          base_tree: parentTreeSha,
-        })
-    return data
-}
-
-const createNewCommit = async (
-    octo: Octokit,
-    org: string,
-    repo: string,
-    message: string,
-    currentTreeSha: string,
-    currentCommitSha: string
-) =>
-    (await octo.git.createCommit({
-          owner: org,
-          repo,
-          message,
-          tree: currentTreeSha,
-          parents: [currentCommitSha],
-        })).data
-
-const setBranchToCommit = (
-    octo: Octokit,
-    org: string,
-    repo: string,
-    branch: string = `master`,
-    commitSha: string
-) =>
-    octo.git.updateRef({
-          owner: org,
-          repo,
-          ref: `heads/${branch}`,
-          sha: commitSha,
-    })
-
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
 }
@@ -320,12 +84,13 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     const [ org, setOrg ] = useState(router.query.org as string)
     const [ repo, setRepo ] = useState(router.query.repo as string)
     const [ gitRef, setGitRef ] = useState(router.query.ref as string)
+    // File info 
+    const [ lang, setLang ] = useState("markdown")
     // Commit Values
     const commitMessage = useInput("Auto commit from nteract web")
     // This should be a boolean value but as a string
     const stripOutput = useCheckInput(false)
     const [ fileBuffer, setFileBuffer ] = useState({})
-
     // Login Values
     const [ loggedIn, setLoggedIn ] = useState(false)
     const [ username, setUsername ] = useState("")
@@ -336,9 +101,9 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 * TODO: Add @nteract/mythic-notifications to file
 */
 
-/*
- * TODO: Replace all placeholder console with notification
- */
+
+// TODO: Replace all placeholder console with notification
+
 
 // This Effect runs only when the username change
 useEffect( () => {
@@ -373,14 +138,6 @@ function addBuffer(e){
 
   function showSave(){
     toggle(showSaveDialog, setShowSaveDialog)
-  }
-
-  function isNotebook (name: string) {
-    return name.endsWith(".ipynb")
-  }
-
-  const getFileType = (fileName: string) => {
-
   }
 
   // To save/upload data to github
@@ -438,7 +195,6 @@ function addBuffer(e){
       fileList =  [[""]]
       console.log("Notification: Repo not found")
   })
-
   return fileList
 
 }
@@ -447,11 +203,7 @@ function addBuffer(e){
     if( fileName in fileBuffer ) {
       setFileContent(fileBuffer[fileName])
       setFilepath(fileName)
-      if ( isNotebook(fileName) )
-            setFileType("notebook")
-      else
-            setFileType("other")
-
+      setFileType(fileName.split('.').pop())
     }else{
     const octokit = new Octokit()
     octokit.repos.getContents({
@@ -461,12 +213,12 @@ function addBuffer(e){
     }).then(({data}) => {
         setFileContent( atob(data["content"]) )
         setFilepath(data["path"])
-        if ( isNotebook(data["name"]) )
-            setFileType("notebook")
-        else
-            setFileType("other")
+        setFileType(fileName.split('.').pop())
     })
     }
+   
+   let extension = fileName.split('.').pop()
+   setLang( getLanguage( extension ) )
   }
 
   function updateVCSInfo(event, provider, org, repo, gitRef){
@@ -480,7 +232,7 @@ function addBuffer(e){
     setFileBuffer({})
   }
 
- function  oauthGithub(){
+ function  OAuthGithub(){
    if ( localStorage.getItem("token") == undefined ){
         window.open('https://github.com/login/oauth/authorize?client_id=83370967af4ee7984ea7&scope=repo,read:user&state=23DF32sdGc12e', '_blank');
         window.addEventListener('storage', getGithubUserDetails)
@@ -594,7 +346,7 @@ return (
               <MenuItem >
                     { loggedIn
                           ? <Avatar userImage={userImage} username={username} userLink={userLink} / >
-                          : <Button onClick={ () => oauthGithub()} text="Connect to Github" icon={githubIcon} />
+                          : <Button onClick={ () => OAuthGithub()} text="Connect to Github" icon={githubIcon} />
                     }
                   </MenuItem>
             </Menu>
@@ -628,8 +380,7 @@ return (
                           "Cmd-Enter": () => {}
                       },
                 cursorBlinkRate: 0,
-                // TODO: Make the below mode dynamic by identifying the language on open
-                mode: "markdown"
+                mode: lang
               }}
             preserveScrollPosition
             editorType="codemirror"
