@@ -362,11 +362,7 @@ return (
         </Side>
         <Body>
         <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
-         <Host.Consumer>
-          {
-           host => console.log(host)
-           }     
-         </Host.Consumer>
+           
        </Host>
        
           { fileContent  &&
