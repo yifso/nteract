@@ -523,20 +523,15 @@ function addBuffer(e){
     window.removeEventListener("storage", getGithubUserDetails)
   }
 
-      
-    // This code will be used when connecting to MyBinder.
-     /*
-       <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
-         <Host.Consumer>
-           {host => <Binder filepath={this.state.filepath} host={host} />}
-         </Host.Consumer>
-       </Host>
-       */
+  
+  //  {host => <Binder filepath={this.state.filepath} host={host} />}
+
 
 const dialogInputStyle = { width: "98%" }
 
 return (
         <Layout>
+        
           <NextHead />
            {
              showBinderMenu &&
@@ -626,6 +621,14 @@ return (
           />
         </Side>
         <Body>
+        <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
+         <Host.Consumer>
+          {
+           host => console.log(host)
+           }     
+         </Host.Consumer>
+       </Host>
+       
           { fileContent  &&
 
           <CodeMirrorEditor
