@@ -72,21 +72,20 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export const Main: FC<WithRouterProps> = (props: Props) => {
     const router = useRouter()
-    const { params } = props.router.query;
     // Toggle Values
     const [ showBinderMenu, setShowBinderMenu ] = useState(false)
     const [ showConsole, setShowConsole ] = useState(false)
     const [ showSaveDialog, setShowSaveDialog ] = useState(false)
-    // File info 
-    const [ filepath, setFilepath ] = useState(getPath(params))
+    // Git API Values
+    const [ filePath, setFilepath ] = useState(router.query.file as string)
     const [ fileContent, setFileContent ] = useState("")
     const [ fileType, setFileType ] = useState("")
+    const [ provider, setProvider ] = useState(router.query.vcs as string)
+    const [ org, setOrg ] = useState(router.query.org as string)
+    const [ repo, setRepo ] = useState(router.query.repo as string)
+    const [ gitRef, setGitRef ] = useState(router.query.ref as string)
+    // File info 
     const [ lang, setLang ] = useState("markdown")
-    // Git API Values
-    const [ provider, setProvider ] = useState(params[0])
-    const [ org, setOrg ] = useState(params[1])
-    const [ repo, setRepo ] = useState(params[2])
-    const [ gitRef, setGitRef ] = useState(params[3])
     // Commit Values
     const commitMessage = useInput("Auto commit from nteract web")
     // This should be a boolean value but as a string
@@ -114,16 +113,18 @@ useEffect( () => {
   }
 }, [username])
 
+// To keep the link updated for users to share it
+useEffect( () => {
+    router.push(`/p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}&file=${filePath}`, undefined, { shallow: true })
 
-// This is to update the url when the repo, org etc is changed.
-const updateQuery = (proider, org, repo, gitRef) => {
-  router.push(`/p/${provider}/${org}/${repo}/${gitRef}`, undefined, { shallow: true })
-}
+}, [provider, org, repo, gitRef, filePath  ])
+
+
 
 function addBuffer(e){
   setFileContent(e);
   const newFileBuffer = fileBuffer
-  newFileBuffer[filepath] = e
+  newFileBuffer[filePath] = e
   setFileBuffer(newFileBuffer)
 }
 
@@ -229,7 +230,6 @@ function addBuffer(e){
     setGitRef(gitRef)
     // To empty buffer when repo is updated
     setFileBuffer({})
-    //updateQuery( provider, org, repo, gitRef)
   }
 
  function  OAuthGithub(){

@@ -14,11 +14,10 @@ const customStyle = {
 }
 
 export const Main: FC<HTMLDivElement> = () => {
- 
-function updateVCSInfo(e: React.FormEvent<HTMLFormElement>, provider: string | undefined, org: string | undefined, repo: string | undefined, gitRef: string | undefined){
-    const url = `${window.location.href}p/${provider}/${org}/${repo}/${gitRef}`
-    window.open(url, "_self");
-    e.preventDefault()
+ function updateVCSInfo(e: React.FormEvent<HTMLFormElement>, provider: string | undefined, org: string | undefined, repo: string | undefined, gitRef: string | undefined){
+  e.preventDefault()
+  const url = `${window.location.href}p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}`
+  window.open(url, "_self");
 }
 
 return (
