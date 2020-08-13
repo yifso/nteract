@@ -7,23 +7,29 @@
 * The expected URL structire is /{provider}/{org}/{repo}/{ref}/{filepath}.
 */
 
+// Other
 import React, { FC,  HTMLAttributes, useState, useEffect} from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import  { withRouter , useRouter } from "next/router";
 import { Octokit } from "@octokit/rest";
+import moment from "moment";
 
+// nteract 
 import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
-
+import NotebookApp from "@nteract/notebook-app-component";
+import { CodeCell } from "@nteract/stateful-components";
+import { Input, Prompt, Source, Outputs, Cell } from "@nteract/presentational-components";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
+// Custom
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
 import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
-import { Input } from '../../components/Input'
+import { Inp } from '../../components/Input'
 import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
 import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer} from "../../components/Layout"
@@ -32,6 +38,7 @@ import NextHead from "../../components/Header";
 import { getLanguage, getPath } from "../../util/helpers"
 import { uploadToRepo, checkFork } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
+
 
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
@@ -91,11 +98,18 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     // This should be a boolean value but as a string
     const stripOutput = useCheckInput(false)
     const [ fileBuffer, setFileBuffer ] = useState({})
+    const [ savedTime, setSavedTime ] = useState(moment())
+    const [ savedSince, setSavedSince ] = useState("Last Saved Never")
+    
+    // Server
+    const [ serverStatus, setServerStatus ] = useState("Connecting...")
+    
     // Login Values
     const [ loggedIn, setLoggedIn ] = useState(false)
     const [ username, setUsername ] = useState("")
     const [ userImage, setUserImage ] = useState("")
     const [ userLink, setUserLink ] = useState("")
+
 
 /*
 * TODO: Add @nteract/mythic-notifications to file
@@ -166,6 +180,8 @@ function addBuffer(e){
           // Step 6: Empty the buffer
           setFileBuffer({})
           console.log("Notification: Data Saved")
+          // Update time of save
+          setSavedTime(moment())
         })
       }catch(err){
           console.log("Notification: Error in upload")
@@ -263,8 +279,15 @@ function addBuffer(e){
     window.removeEventListener("storage", getGithubUserDetails)
   }
 
+const addBinder = ( host ) => {
+    console.log("got it")
+    console.log(host)
+    setServerStatus("Connected")
+}
+
   
-  //  {host => <Binder filepath={this.state.filepath} host={host} />}
+//  {host => <Binder filepath={this.state.filepath} host={host} />}
+/*         */
 
 
 const dialogInputStyle = { width: "98%" }
@@ -308,10 +331,10 @@ return (
         <Dialog >
           <form onSubmit={(e) => onSave(e)} >
           <DialogRow>
-                <Input id="commit_message"  variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
+                <Inp id="commit_message"  variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
           </DialogRow>
           <DialogRow>
-              <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
+              <Inp id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value}  onChange={stripOutput.onChange}  style={dialogInputStyle}  />
           </DialogRow>
           <DialogFooter>
             <Button id="commit_button" text="Commit" icon={commitIcon} />
@@ -361,9 +384,23 @@ return (
           />
         </Side>
         <Body>
+          { /*
+          <Cell isSelected>
+              <Input>
+                    <Prompt counter={2} />
+                    <Source language="python">{`print("Hello World")`}</Source>
+                  </Input>
+              <Outputs>
+                    <pre>Hello World</pre>
+                  </Outputs>
+          </Cell>*/ }
+
+
         <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
-           
-       </Host>
+          <Host.Consumer>
+            { host => <> {addBinder(host)} </> }
+          </Host.Consumer>
+        </Host>
        
           { fileContent  &&
 
@@ -427,12 +464,12 @@ return (
                       <Button text="Python 3" icon={pythonIcon} variant="transparent" disabled />
                 </MenuItem>
                 <MenuItem>
-                      <Button text="Idle" icon={serverIcon} variant="transparent" disabled/>
+                      <Button text={serverStatus} icon={serverIcon} variant="transparent" disabled/>
                 </MenuItem>
             </Menu>
             <Menu>
               <MenuItem>
-                Last Saved Never
+                {savedTime.fromNow()}
                 </MenuItem>
             </Menu>
         </Footer>

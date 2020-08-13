@@ -58,7 +58,7 @@ export interface Props extends HTMLAttributes<HTMLInputElement | HTMLSelectEleme
   autoFocus?: boolean;
 }
 
-export const Input: FC<Props> = (props: Props) => {
+export const Inp: FC<Props> = (props: Props) => {
       let style={}
       let input = (
            <input  id={props.id} className={`input ${props.className}`} autoFocus={props.autoFocus}  type="input" {...props} />
@@ -86,7 +86,7 @@ export const Input: FC<Props> = (props: Props) => {
       );
   } 
 
-Input.defaultProps = {
+Inp.defaultProps = {
   id: "name",
   variant: "input",
   label: "label",
