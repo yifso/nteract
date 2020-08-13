@@ -1,70 +1,60 @@
-# @nteract/mythic-notifications
+# @nteract/mythic-windowing
 
-This package implements a notification system based on `blueprintjs`, using the `myths` framework.
+This package implements a windowing system based on `electron`, using the `myths` framework.
 
 ## Installation
 
 ```
-$ yarn add @nteract/mythic-notifications
+$ yarn add @nteract/mythic-windowing
 ```
 
 ```
-$ npm install --save @nteract/mythic-notifications
+$ npm install --save @nteract/mythic-windowing
 ```
 
 ## Usage
 
-Initialize the package by including the `notifications` package in your store and rendering the `<NotificationsRoot/>`:
+Initialize the package by including the `windowing` package in your store:
 
 ```javascript
-import { notifications, NotificationRoot } from "@nteract/mythic-notifications";
+import { windowing, setWindowingBackend, electronBackend } from "@nteract/mythic-windowing";
 import { makeConfigureStore } from "@nteract/myths";
 
 export const configureStore = makeConfigureStore({
-  packages: [notifications],
+  packages: [windowing],
 });
 
-export const App = () =>
-    <>
-      {/* ... */}
-      <NotificationRoot darkTheme={false} />
-    </>
-```
+store.dispatch(setWindowingBackend.create(electronBackend));
 
-Then dispatch actions made by `sendNotification.create`:
+const electronReady$ = new Observable((observer) => {
+  (app as any).on("ready", launchInfo => observer.next(launchInfo));
+});
 
-```javascript
-import { sendNotification } from "@nteract/mythic-notifications";
-
-store.dispatch(sendNotification.create({
-  title: "Hello World!",
-  message: <em>Hi out there!</em>,
-  level: "info",
-}));
+electronReady$
+  .subscribe(
+    () => store.dispatch(
+      showWindow.create({
+        id: "splash",
+        kind: "splash",
+        width: 565,
+        height: 233,
+        path: join(__dirname, "..", "static", "splash.html"),
+      })
+    ),
+    (err) => console.error(err),
+    () => store.dispatch(
+      closeWindow.create("splash")
+    ),
+  );
 ```
 
 ## API
 
-```typescript
-import { IconName } from "@blueprintjs/core";
-
-export interface NotificationMessage {
-  key?: string;
-  icon?: IconName;
-  title?: string;
-  message: string | JSX.Element;
-  level: "error" | "warning" | "info" | "success" | "in-progress";
-  action?: {
-    icon?: IconName;
-    label: string;
-    callback: () => void;
-  };
-}
-```
+TBD
 
 ## Support
 
-If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:mythic-notifications` label.
+If you experience an issue while using this package or have a feature request, please file an issue on the [issue board](https://github.com/nteract/nteract/issues/new/choose) and add the `pkg:mythic-windowing` label.
 
 ## License
 
