@@ -1,4 +1,4 @@
-import React, {  HTMLAttributes} from "react";
+import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
 
 export const H3 = styled.h3<Props>`
@@ -29,4 +29,3 @@ export const Logo = styled.img<Props>`
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
-
