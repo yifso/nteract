@@ -61,9 +61,19 @@ This will start the development server on port `3000`.
 
     localhost:3000/p?=VCS=${1}&org=${2}&repo=${3}&ref=${4}&file=${5}
 
-## Github Auth
+## Github Authentication
 
 The program/page to handle Github auth is at `@nteract/web/pages/auth/`. It is powered by the [play-oauth-server](https://github.com/nteract/play-oauth-server/). It currently supports only `Github` but support for more VCS can be added in future.
+
+## File Structure
+
+File/Folder Name | Description
+-----------------|------------
+components/      | This folder holds all the components used by the application.
+pages/           | This folder holds all the endpoints or pages. To create a new endpoint, create a folder with the endpoint name. `/p` and `/auth` are currently the endpoints used.
+redux/           | The redux store
+util/            | This holds all the internal utility files used in the application.
+
 
 ## Community
 
