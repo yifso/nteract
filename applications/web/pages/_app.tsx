@@ -7,11 +7,10 @@ import configureStore from "../redux/store";
 
 /**
  * Next.JS requires all global CSS to be imported here.
+ * Note: Do not change the order of css
  */
 import "@nteract/styles/app.css";
-
 import "@nteract/styles/global-variables.css";
-
 import "@nteract/styles/themes/base.css";
 import "@nteract/styles/themes/default.css";
 
@@ -19,10 +18,7 @@ import "codemirror/addon/hint/show-hint.css";
 import "codemirror/lib/codemirror.css";
 
 import "@nteract/styles/editor-overrides.css";
-
 import "@nteract/styles/markdown/github.css";
-
-import "../css/prism.css"
 
 interface StoreProps {
   store: Store;

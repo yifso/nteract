@@ -1,4 +1,4 @@
-import React, { FC,  HTMLAttributes} from "react";
+import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 
@@ -25,10 +25,9 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 
 // TODO: Implement iterm.js here to connect with the termianl | This can be also done when working with jupyter server
 export const Console: FC<Props> = (props: Props) => {
-      return (
-        <ConsoleDiv {...props} >
-          {props.children} 
-        </ConsoleDiv>
-      );
-  } 
-
+  return (
+    <ConsoleDiv {...props} >
+      {props.children}
+    </ConsoleDiv>
+  );
+}
