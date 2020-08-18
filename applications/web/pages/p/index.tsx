@@ -103,7 +103,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   const [userImage, setUserImage] = useState("")
   const [userLink, setUserLink] = useState("")
 
-
   /*
   * TODO: Add @nteract/mythic-notifications to file
   */
@@ -331,7 +330,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
               <DialogRow>
                 <Inp id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
               </DialogRow>
-              t          <DialogFooter>
+            <DialogFooter>
                 <Button id="commit_button" text="Commit" icon={commitIcon} />
               </DialogFooter>
             </form>
@@ -379,16 +378,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         />
       </Side>
       <Body>
-        <Cell isSelected>
-          <Input>
-            <Prompt counter={2} />
-            <Source language="python">{`print("Hello World")`}</Source>
-          </Input>
-          <Outputs>
-            <pre>Hello World</pre>
-          </Outputs>
-        </Cell>
-
 
         <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
           <Host.Consumer>
@@ -423,7 +412,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             value={fileContent}
             onChange={(e) => { addBuffer(e) }}
           />
-
 
         }
 

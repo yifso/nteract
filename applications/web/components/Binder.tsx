@@ -36,48 +36,48 @@ type State = {
 }
 
 const BinderDiv = styled.div`
-    
+
 `;
 
 class Binder extends React.Component<Props, State> {
-    constructor(props){
-        super(props);
-        props.setAppHost(
-          makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
-        );
-        
-        this.state = {
-          contentRef: createContentRef(),
-          kernelRef: createKernelRef(),
-        }
+  constructor(props) {
+    super(props);
+    props.setAppHost(
+      makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
+    );
+
+    this.state = {
+      contentRef: createContentRef(),
+      kernelRef: createKernelRef(),
     }
+  }
 
-    componentDidMount() {
-      // TODO: Fetch data from github
-      const { filepath } = this.props;
-      const { contentRef, kernelRef } = this.state;
-      this.props.fetchContent(filepath, contentRef, kernelRef);
-    }
+  componentDidMount() {
+    const { filepath } = this.props;
+    const { contentRef, kernelRef } = this.state;
+    this.props.fetchContent(filepath, contentRef, kernelRef);
+  }
 
-    render() {
-      return (
-        <BinderDiv>  
-            { this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
-        </BinderDiv>    
-      );
-    }
-  } 
+  render() {
+    return (
+      <BinderDiv>
+        {this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
+      </BinderDiv>
+    );
+  }
+}
 
-  const mapDispatchToProps = (dispatch: Dispatch) => ({
-    setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
-    fetchContent: (
-      filepath: string,
-      contentRef: ContentRef,
-      kernelRef: KernelRef
-    ) =>
-      dispatch(
-        actions.fetchContent({ filepath, contentRef, kernelRef, params: {} })
-      )
-  });
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
+  fetchContent: (
+    filepath: string,
+    contentRef: ContentRef,
+    kernelRef: KernelRef
+  ) =>
+    dispatch(
+      actions.fetchContent({ filepath, contentRef, kernelRef, params: {} })
+    )
+});
 
-  export default connect(null, mapDispatchToProps)(Binder);
+export default connect(null, mapDispatchToProps)(Binder);
+
