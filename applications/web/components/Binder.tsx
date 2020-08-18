@@ -11,7 +11,7 @@ import {
   makeJupyterHostRecord,
   ServerConfig
 } from "@nteract/core";
-import NotebookApp from "@nteract/notebook-app-component";
+import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
 import styled from "styled-components";
 
 type ComponentProps = {
@@ -53,6 +53,7 @@ class Binder extends React.Component<Props, State> {
     }
 
     componentDidMount() {
+      // TODO: Fetch data from github
       const { filepath } = this.props;
       const { contentRef, kernelRef } = this.state;
       this.props.fetchContent(filepath, contentRef, kernelRef);

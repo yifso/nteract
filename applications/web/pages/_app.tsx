@@ -22,6 +22,10 @@ import "@nteract/styles/editor-overrides.css";
 
 import "@nteract/styles/markdown/github.css";
 
+
+import "@nteract/styles/sidebar.css";
+import "@nteract/styles/toggle-switch.css";
+
 interface StoreProps {
   store: Store;
 }
