@@ -1,4 +1,4 @@
-export { default } from "./MonacoEditor";
+export { default, IMonacoProps, IMonacoShortCutProps } from "./MonacoEditor";
 
 export { completionProvider } from "./completions/completionItemProvider";
 export {Mode, mapCodeMirrorModeToMonaco } from "./converter";

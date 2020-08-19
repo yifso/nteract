@@ -36,17 +36,17 @@ export interface IMonacoProps {
   cellLanguageOverride?: string;
   notebookLanguageOverride?: string;
   readOnly?: boolean;
-  channels: Channels | undefined;
-  enableCompletion: boolean;
+  channels?: Channels | undefined;
+  enableCompletion?: boolean;
   shouldRegisterDefaultCompletion?: boolean;
-  onChange: (value: string, event?: any) => void;
-  onFocusChange: (focus: boolean) => void;
+  onChange?: (value: string, event?: any) => void;
+  onFocusChange?: (focus: boolean) => void;
   onCursorPositionChange?: (selection: monaco.ISelection | null) => void;
   onRegisterCompletionProvider?: (languageId: string) => void;
   language: string;
   value: string;
-  editorType: string;
-  editorFocused: boolean;
+  editorType?: string;
+  editorFocused?: boolean;
   lineNumbers?: boolean;
   /** set height of editor to fit the specified number of lines in display */
   numberOfLines?: number;
@@ -193,7 +193,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         this.props.shortcutsHandler(this.editor, this.props.shortcutsOptions);
       }
 
-      this.toggleEditorOptions(this.props.editorFocused);
+      this.toggleEditorOptions(!!this.props.editorFocused);
 
       if (this.props.editorFocused) {
         if (!this.editor.hasTextFocus()) {
@@ -363,13 +363,17 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   }
 
   private onFocus() {
-    this.props.onFocusChange(true);
+    if(this.props.onFocusChange){
+      this.props.onFocusChange(true);
+    }
     this.toggleEditorOptions(true);
     this.registerCursorListener();
   }
 
   private onBlur() {
-    this.props.onFocusChange(false);
+    if(this.props.onFocusChange){
+      this.props.onFocusChange(false);
+    }
     this.toggleEditorOptions(false);
     this.unregisterCursorListener();
   }
