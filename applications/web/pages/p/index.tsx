@@ -6,18 +6,15 @@ import { Octokit } from "@octokit/rest";
 import moment from "moment";
 
 // nteract
-import Notebook from "@nteract/stateful-components";
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
-import NotebookApp from "@nteract/notebook-app-component";
-import { CodeCell } from "@nteract/stateful-components";
-import { Input, Prompt, Source, Outputs, Cell } from "@nteract/presentational-components";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
 // Custom
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
+import { Notification } from '../../components/Notification'
 import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
 import { Inp } from '../../components/Input'
@@ -26,7 +23,7 @@ import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer } from "../../components/Layout"
 import { H3, P } from "../../components/Basic"
 import NextHead from "../../components/Header";
-import { getLanguage, getPath } from "../../util/helpers"
+import { getLanguage } from "../../util/helpers"
 import { ghUploadToRepo, ghCheckFork } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
 
@@ -91,25 +88,21 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   const [fileBuffer, setFileBuffer] = useState({})
   const [savedTime, setSavedTime] = useState(moment())
   const [savedSince, setSavedSince] = useState("Last Saved Never")
-
+  
+  // Console 
+  const [ consoleLog , setConsoleLog ] = useState([])
+  const [ notificationLog, setNotificationLog ] = useState([])
   // Server
-  const [serverStatus, setServerStatus] = useState("Connecting...")
+  const [serverStatus, setServerStatus] = useState("Launching...")
   const [serverEndpoint, setServerEndpoint] = useState("")
   const [serverToken, setServerToken] = useState("")
+
 
   // Login Values
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
   const [userImage, setUserImage] = useState("")
   const [userLink, setUserLink] = useState("")
-
-  /*
-  * TODO: Add @nteract/mythic-notifications to file
-  */
-
-
-  // TODO: Replace all placeholder console with notification
-
 
   // This Effect runs only when the username change
   useEffect(() => {
@@ -118,6 +111,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       getGithubUserDetails()
     }
   }, [username])
+
+  useEffect(() => {
+      loadFile(filePath)      
+  }, [filePath])
 
   // To keep the link updated for users to share it
   useEffect(() => {
@@ -146,6 +143,38 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     toggle(showSaveDialog, setShowSaveDialog)
   }
 
+
+  const addToNotification =  ( log ) => {
+      let newNotificationLog = [ ...notificationLog ]
+      newNotificationLog.push(log)
+      setNotificationLog(newNotificationLog) 
+    // To remove the notification
+    console.log(newNotificationLog)
+    setTimeout( removeNotification , 5000);
+  }
+
+  const removeNotification = () => {
+      let newNotificationLog = [ ...notificationLog ]
+      console.log("fun")
+      console.log(notificationLog)
+      newNotificationLog.shift()
+      console.log(newNotificationLog)
+      setNotificationLog(newNotificationLog)
+  }
+
+  const addToConsole =  ( log ) => {
+      let newConsoleLog  = [...consoleLog]
+      newConsoleLog.push(log)
+      setConsoleLog(newConsoleLog) 
+  }
+
+  // Function to add logs to both notification and console
+  const addLog =  ( log ) => {
+      addToConsole(log) 
+      addToNotification(log)
+  }
+
+
   // To save/upload data to github
   const onSave = async (event) => {
     event.preventDefault()
@@ -153,7 +182,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     // Step 1: Check if buffer is empty
     if (Object.keys(fileBuffer).length == 0) {
       console.log("Notification: No changes in data")
-      return
+      return addLog({ 
+          type: "failure",
+        message: "Can't save changes, no file updated"
+      })
     }
 
     // Step 2: Get authentication of user
@@ -172,14 +204,28 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           // Step 6: Empty the buffer
           setFileBuffer({})
           console.log("Notification: Data Saved")
+          addLog({ 
+             type: "success",
+             message: "Successfully saved!"
+          })
+
           // Update time of save
           setSavedTime(moment())
         })
       } catch (err) {
         console.log("Notification: Error in upload")
+        addLog({ 
+             type: "failure",
+             message: "Error while saving changes."
+          })
+
       }
     }).catch((e) => {
       console.log("Notification: Repo not found")
+        addLog({ 
+             type: "failure",
+             message: "Github repository not found."
+          })
     })
 
   }
@@ -202,6 +248,11 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     }, (e: Error) => {
       fileList = [[""]]
       console.log("Notification: Repo not found")
+      addLog({ 
+        type: "failure",
+        message: "Github repository not found."
+      })
+
     })
     return fileList
 
@@ -272,7 +323,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   }
 
   const addBinder = (host) => {
-    console.log(host)
     setServerStatus("Connected")
     setServerEndpoint(host.endpoint)
     setServerToken(host.token)
@@ -283,6 +333,44 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
   const dialogInputStyle = { width: "98%" }
 
+  const generalEditor =  (<CodeMirrorEditor
+            editorFocused
+            completion
+            autofocus
+            codeMirror={{
+              lineNumbers: true,
+              extraKeys: {
+                "Ctrl-Space": "autocomplete",
+                "Ctrl-Enter": () => { },
+                "Cmd-Enter": () => { }
+              },
+              cursorBlinkRate: 0,
+              mode: lang
+            }}
+            preserveScrollPosition
+            editorType="codemirror"
+            onFocusChange={() => { }}
+            focusAbove={() => { }}
+            focusBelow={() => { }}
+            kernelStatus={"not connected"}
+            value={fileContent}
+            onChange={(e) => { addBuffer(e) }}
+          />)
+
+  const binderEditor = (
+        <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
+          <Host.Consumer>
+            {host => <>
+                    {addBinder(host)}
+                  <Binder filepath={filePath} host={host} />
+              </>}
+          </Host.Consumer>
+        </Host>
+
+  )
+
+  const editor = lang == "ipynb"? binderEditor : generalEditor
+    
   return (
     <Layout>
 
@@ -307,18 +395,18 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         />
       }
 
+      <Notification notifications={notificationLog} />
+
       {
         showConsole && <Console style={{
           position: "absolute",
           bottom: "30px",
           right: "0px",
           width: "calc(100% - 260px)"
-        }}>
-          <a style={{ color: "#fff" }} href={`${serverEndpoint}?token=${serverToken}`}> {serverEndpoint}?token={serverToken} </a>
-
-        </Console>
+          }} logs={consoleLog}  />
       }
 
+      
       {showSaveDialog &&
         <>
           <Shadow onClick={() => toggle(showSaveDialog, setShowSaveDialog)} />
@@ -379,40 +467,9 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       </Side>
       <Body>
 
-        <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
-          <Host.Consumer>
-            {host => <>
-              <Binder filepath={filePath} host={host} />
-            </>}
-          </Host.Consumer>
-        </Host>
 
         {fileContent &&
-
-          <CodeMirrorEditor
-            editorFocused
-            completion
-            autofocus
-            codeMirror={{
-              lineNumbers: true,
-              extraKeys: {
-                "Ctrl-Space": "autocomplete",
-                "Ctrl-Enter": () => { },
-                "Cmd-Enter": () => { }
-              },
-              cursorBlinkRate: 0,
-              mode: lang
-            }}
-            preserveScrollPosition
-            editorType="codemirror"
-            onFocusChange={() => { }}
-            focusAbove={() => { }}
-            focusBelow={() => { }}
-            kernelStatus={"not connected"}
-            value={fileContent}
-            onChange={(e) => { addBuffer(e) }}
-          />
-
+              editor
         }
 
         {
@@ -424,7 +481,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             <P>
               nteract play is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
 
-                        <ol>
+              <ol>
                 <li>Click on the menu above, and provide the path to the repository you want to reproduce. </li>
                 <li>Use file explorer to open, run and edit files. </li>
                 <li>Connect to GitHub to save back your changes. </li>
