@@ -12,11 +12,11 @@ import {
   ServerConfig
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
-import styled from "styled-components";
+
 
 type ComponentProps = {
   filepath: string,
-  host: ServerConfig
+  host?: ServerConfig
 }
 
 interface DispatchProps {
@@ -35,9 +35,6 @@ type State = {
   kernelRef: KernelRef;
 }
 
-const BinderDiv = styled.div`
-
-`;
 
 class Binder extends React.Component<Props, State> {
   constructor(props) {
@@ -51,7 +48,6 @@ class Binder extends React.Component<Props, State> {
       kernelRef: createKernelRef(),
     }
   }
-
   componentDidMount() {
     const { filepath } = this.props;
     const { contentRef, kernelRef } = this.state;
@@ -60,9 +56,9 @@ class Binder extends React.Component<Props, State> {
 
   render() {
     return (
-      <BinderDiv>
+      <>
         {this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
-      </BinderDiv>
+      </>
     );
   }
 }
