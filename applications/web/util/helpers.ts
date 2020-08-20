@@ -5,14 +5,3 @@ export const getLanguage = (extension: string) => {
 }
 
 
-export const getPath = (params) => {
-  const filepathSegments = params.slice(4);
-  let filepath;
-  if (typeof filepathSegments !== "string") {
-    filepath = filepathSegments.join("");
-  } else {
-    filepath = filepathSegments;
-  }
-
-  return filepath
-}
