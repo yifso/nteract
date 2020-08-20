@@ -17,7 +17,7 @@ export const ghListForks = async (owner: string, repo: string) => {
 }
 
 export const ghCreateFork = async (octo, owner: string, repo: string) => {
-  const fork = await octo.repos.ghCreateFork({ owner, repo, })
+  const fork = await octo.repos.createFork({ owner, repo, })
   return fork
 }
 
