@@ -411,7 +411,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           <Shadow onClick={() => toggle(showSaveDialog, setShowSaveDialog)} />
           <Dialog >
             <form onSubmit={(e) => onSave(e)} >
-              <DialogRow>
+              You are about to commit to <b>{username}/{repo}[{gitRef}]</b> as <b>{username}</b>. 
+              <br/><br/>
+             If this repo doesn&apos;t already exist, it will automatically be created/forked. Enter your commit message here. 
+             <DialogRow>
                 <Inp id="commit_message" variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
               </DialogRow>
               <DialogRow>
