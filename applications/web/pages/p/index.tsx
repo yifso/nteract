@@ -113,7 +113,9 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   }, [username])
 
   useEffect(() => {
+  if ( router.query.file != undefined){
       loadFile(filePath)      
+    }
   }, [filePath])
 
   // To keep the link updated for users to share it
@@ -181,11 +183,11 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
     // Step 1: Check if buffer is empty
     if (Object.keys(fileBuffer).length == 0) {
-      console.log("Notification: No changes in data")
-      return addLog({ 
+      addLog({ 
           type: "failure",
         message: "Can't save changes, no file updated"
       })
+      return
     }
 
     // Step 2: Get authentication of user
@@ -203,7 +205,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         ghUploadToRepo(octo, username, repo, gitRef, fileBuffer, commitMessage.value).then(() => {
           // Step 6: Empty the buffer
           setFileBuffer({})
-          console.log("Notification: Data Saved")
           addLog({ 
              type: "success",
              message: "Successfully saved!"
@@ -213,7 +214,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           setSavedTime(moment())
         })
       } catch (err) {
-        console.log("Notification: Error in upload")
         addLog({ 
              type: "failure",
              message: "Error while saving changes."
@@ -221,7 +221,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
       }
     }).catch((e) => {
-      console.log("Notification: Repo not found")
         addLog({ 
              type: "failure",
              message: "Github repository not found."
