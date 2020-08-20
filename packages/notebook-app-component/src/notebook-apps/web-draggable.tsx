@@ -19,6 +19,22 @@ import DraggableCell from "../decorators/draggable";
 import HijackScroll from "../decorators/hijack-scroll";
 import KeyboardShortcuts from "../decorators/kbd-shortcuts";
 import UndoableCellDelete from "../decorators/undoable/undoable-cell-delete";
+import styled from "styled-components";
+
+// Custom CSS
+// .nteract-cell-container:focus .nteract-cell, .nteract-cell-container:focus-within .nteract-cell, .nteract-cell-container.selected .nteract-cell 
+const Wrapper = styled.div`
+
+.nteract-cell {
+  box-shadow: none !important;
+}
+
+.nteract-cell-gutter {
+  background-color: hsl(240, 100%, 99%);
+  border-right: 1px solid #fbecec;
+}
+
+`
 
 interface ComponentProps {
   contentRef: ContentRef;
@@ -47,6 +63,7 @@ const decorate = (
 export class NotebookApp extends React.Component<ComponentProps> {
   render(): JSX.Element {
     return (
+      <Wrapper>
       <React.Fragment>
         <ThemeFromConfig>
           <KeyboardShortcuts contentRef={this.props.contentRef}>
@@ -118,6 +135,7 @@ export class NotebookApp extends React.Component<ComponentProps> {
           </KeyboardShortcuts>
         </ThemeFromConfig>
       </React.Fragment>
+    </Wrapper>
     );
   }
 }
