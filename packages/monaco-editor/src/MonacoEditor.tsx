@@ -23,6 +23,7 @@ export interface IMonacoShortCutProps {
   focusEditor: () => void;
   focusNextCellEditor: (setPosition?: boolean) => void;
   focusPreviousCellEditor: () => void;
+  unfocusEditor: () => void;
 }
 
 /**

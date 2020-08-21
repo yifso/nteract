@@ -3,9 +3,6 @@ import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
 import { childOf, JupyterMessage, ofMessageType, Channels } from "@nteract/messaging";
 
-/**
- * TODO: import from nteract when the changes under editor-base.ts are ported to nteract.
- */
 import {
   CompletionResults,
   CompletionMatch,
