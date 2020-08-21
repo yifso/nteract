@@ -1,7 +1,5 @@
 import * as monaco from "monaco-editor";
 
-// TODO: move defineTheme calls to an initialization function
-
 /**
  * The default light theme with customized background
  */
