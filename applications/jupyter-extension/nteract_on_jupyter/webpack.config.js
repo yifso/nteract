@@ -1,3 +1,5 @@
+const path = require("path");
+
 const configurator = require("@nteract/webpack-configurator");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const webpack = require("webpack");
@@ -30,15 +32,21 @@ module.exports = {
   devServer: isProd
     ? {}
     : {
+        writeToDisk: true,
         publicPath: "/nteract/static/dist/",
         hot: true,
         headers: { "Access-Control-Allow-Origin": "*" }
       },
   target: "web",
-  output: {
-    chunkFilename: isProd ? "[name]-[chunkhash].bundle.js" : "[name].bundle.js",
-    publicPath: "/nteract/static/dist/"
-  },
+  output: isProd
+    ? {
+        chunkFilename: "[name]-[chunkhash].bundle.js"
+      }
+    : {
+        chunkFilename: "[name].bundle.js",
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: "/nteract/static/dist/",
+      },
   node: {
     fs: "empty"
   },
