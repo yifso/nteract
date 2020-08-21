@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
-// Custom
+// User defined
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
@@ -23,48 +23,22 @@ import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer } from "../../components/Layout"
 import { H3, P } from "../../components/Basic"
 import NextHead from "../../components/Header";
-import { getLanguage } from "../../util/helpers"
+import { getLanguage, useInput, useCheckInput } from "../../util/helpers"
 import { ghUploadToRepo, ghCheckFork } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
-
-
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
 });
 
 const BINDER_URL = "https://mybinder.org";
 
-function useInput(val: string | undefined) {
-  const [value, setValue] = useState(val);
-
-  function handleChange(e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) {
-    setValue(e.currentTarget.value);
-  }
-
-  return {
-    value,
-    onChange: handleChange
-  }
-}
-
-function useCheckInput(val: boolean | undefined) {
-  const [value, setValue] = useState(val);
-
-  function handleChange(e: React.FormEvent<HTMLInputElement>) {
-    setValue(e.currentTarget.checked);
-  }
-
-  return {
-    value,
-    onChange: handleChange
-  }
-}
-
-
 export interface Props extends HTMLAttributes<HTMLDivElement> {
   router: any
 }
 
+/**************************
+ Main Component
+**************************/
 export const Main: FC<WithRouterProps> = (props: Props) => {
   const router = useRouter()
   // Toggle Values
@@ -96,30 +70,67 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   const [serverStatus, setServerStatus] = useState("Launching...")
   const [serverEndpoint, setServerEndpoint] = useState("")
   const [serverToken, setServerToken] = useState("")
-
-
   // Login Values
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
   const [userImage, setUserImage] = useState("")
   const [userLink, setUserLink] = useState("")
 
-  // This Effect runs only when the username change
-  useEffect(() => {
-    // Check if user has a token saved
-    if (localStorage.getItem("token") != undefined) {
+/***************************************
+  Notification and Console functions
+****************************************/
+  // Function to add logs to notification
+  const addToNotification =  ( log ) => {
+      let newNotificationLog = [ ...notificationLog ]
+      newNotificationLog.push(log)
+      setNotificationLog(newNotificationLog) 
+  }
+ 
+  // Function to add logs to console
+  const addToConsole =  ( log ) => {
+      let newConsoleLog  = [...consoleLog]
+      newConsoleLog.push(log)
+      setConsoleLog(newConsoleLog) 
+  }
+
+  // Function to add logs to both notification and console
+  const addLog =  ( log ) => {
+      addToConsole(log) 
+      addToNotification(log)
+  }
+
+/******************
+  Effect Hooks
+ *****************/
+
+  useEffect( () => {
+  // To check if Github token exist, if yes, get user details
+  if (localStorage.getItem("token") != undefined) {
+    // Check if username is empty because we need to 
+    // get username only if it's not defined.
+    if(username == ""){
       getGithubUserDetails()
     }
+  }
   }, [username])
 
+
   // To update file when filePath is updated
+  // Also makes sure that filepath is not undefined
+  // If it is undefined or empty, don't load the file
+  // and set filePath to empty and not undefined
   useEffect(() => {
-  if ( router.query.file != undefined){
+  if ( router.query.file != undefined && filePath != ""){
       loadFile(filePath)      
+    }else {
+      setFilepath("")
     }
   }, [filePath])
   
   // Remove notification after 3 seconds
+  // We are removing the first element only, because
+  // all the previous notifications has already
+  // been removed by now
   useEffect( () => {
     const timer = setTimeout( () => {      
       let newNotificationLog = [ ...notificationLog ]
@@ -129,20 +140,16 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     return () => clearTimeout(timer)
   },[notificationLog])
 
-  // To keep the link updated for users to share it
+  // When use update the binder menu, we also need to update the route and url
   useEffect(() => {
     router.push(`/p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}&file=${filePath}`, undefined, { shallow: true })
-
+    
   }, [provider, org, repo, gitRef, filePath])
+
 
   function addBuffer(e) {
     // If file is empty, add a space.
-    // 
-    if (e != ""){
-      setFileContent(e);
-    }else{
-      setFileContent(" ");
-    }
+    setFileContent(e);
     const newFileBuffer = fileBuffer
     newFileBuffer[filePath] = e
     setFileBuffer(newFileBuffer)
@@ -160,25 +167,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     toggle(showSaveDialog, setShowSaveDialog)
   }
 
-
-  const addToNotification =  ( log ) => {
-      let newNotificationLog = [ ...notificationLog ]
-      newNotificationLog.push(log)
-      setNotificationLog(newNotificationLog) 
-  }
-
-  
-  const addToConsole =  ( log ) => {
-      let newConsoleLog  = [...consoleLog]
-      newConsoleLog.push(log)
-      setConsoleLog(newConsoleLog) 
-  }
-
-  // Function to add logs to both notification and console
-  const addLog =  ( log ) => {
-      addToConsole(log) 
-      addToNotification(log)
-  }
 
 
   // To save/upload data to github
@@ -283,15 +271,29 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     setLang(getLanguage(extension))
   }
 
-  function updateVCSInfo(event, provider, org, repo, gitRef) {
-    // TODO: Add a loading experience for the users and error if project not found
+  function updateVCSInfo(event, providerP, orgP, repoP, gitRefP) {
     event.preventDefault()
-    setProvider(provider)
-    setOrg(org)
-    setRepo(repo)
-    setGitRef(gitRef)
-    // To empty buffer when repo is updated
-    setFileBuffer({})
+    
+    if( provider != providerP || org != orgP || repo != repoP || gitRef != gitRefP){
+      setProvider(providerP)
+      setOrg(orgP)
+      setRepo(repoP)
+      setGitRef(gitRefP)
+      setFilepath("")
+      // To empty buffer when repo is updated
+      setFileBuffer({})
+     
+      addToNotification({ 
+        type: "success",
+        message: `Repo updated.`
+      })
+
+      addToConsole({ 
+        type: "success",
+        message: `Repo updated: VCS=${provider} Owner=${org} repo=${repo} ref=${gitRef} file=${filePath}`
+      })
+    }
+    
   }
 
   function OAuthGithub() {
@@ -317,9 +319,20 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           setUsername(data["login"])
           setUserLink(data["html_url"])
           setUserImage(data["avatar_url"])
+         
+          addToConsole({ 
+            type: "success",
+            message: `Successfully logged into Github as @${data["login"]}`
+          })
+
         } else {
-          // Login failed | also give notification here
           localStorage.removeItem("token")
+          setLoggedIn(false)
+          addLog({ 
+            type: "failure",
+            message: `Github token expired. User logged out.`
+          })
+
         }
       })
     window.removeEventListener("storage", getGithubUserDetails)
@@ -421,9 +434,11 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
              <DialogRow>
                 <Inp id="commit_message" variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
               </DialogRow>
+          { false &&
               <DialogRow>
                 <Inp id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
               </DialogRow>
+              }
             <DialogFooter>
                 <Button id="commit_button" text="Commit" icon={commitIcon} />
               </DialogFooter>
@@ -474,18 +489,18 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       <Body>
 
 
-        {fileContent &&
+        {filePath &&
               editor
         }
 
         {
-          !fileContent &&
+          !filePath &&
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "180px" }}>
 
-            <H3>Welcome to nteract play</H3>
+            <H3>Welcome to nteract web</H3>
             <P>
-              nteract play is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
+              nteract web is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
 
               <ol>
                 <li>Click on the menu above, and provide the path to the repository you want to reproduce. </li>
