@@ -112,11 +112,22 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     }
   }, [username])
 
+  // To update file when filePath is updated
   useEffect(() => {
   if ( router.query.file != undefined){
       loadFile(filePath)      
     }
   }, [filePath])
+  
+  // Remove notification after 3 seconds
+  useEffect( () => {
+    const timer = setTimeout( () => {      
+      let newNotificationLog = [ ...notificationLog ]
+      newNotificationLog.shift()
+      setNotificationLog(newNotificationLog)
+    }, 3000);
+    return () => clearTimeout(timer)
+  },[notificationLog])
 
   // To keep the link updated for users to share it
   useEffect(() => {
@@ -124,10 +135,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
   }, [provider, org, repo, gitRef, filePath])
 
-
-
   function addBuffer(e) {
-    setFileContent(e);
+    // If file is empty, add a space.
+    // 
+    if (e != ""){
+      setFileContent(e);
+    }else{
+      setFileContent(" ");
+    }
     const newFileBuffer = fileBuffer
     newFileBuffer[filePath] = e
     setFileBuffer(newFileBuffer)
@@ -150,20 +165,9 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       let newNotificationLog = [ ...notificationLog ]
       newNotificationLog.push(log)
       setNotificationLog(newNotificationLog) 
-    // To remove the notification
-    console.log(newNotificationLog)
-    setTimeout( removeNotification , 5000);
   }
 
-  const removeNotification = () => {
-      let newNotificationLog = [ ...notificationLog ]
-      console.log("fun")
-      console.log(notificationLog)
-      newNotificationLog.shift()
-      console.log(newNotificationLog)
-      setNotificationLog(newNotificationLog)
-  }
-
+  
   const addToConsole =  ( log ) => {
       let newConsoleLog  = [...consoleLog]
       newConsoleLog.push(log)
@@ -411,7 +415,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           <Shadow onClick={() => toggle(showSaveDialog, setShowSaveDialog)} />
           <Dialog >
             <form onSubmit={(e) => onSave(e)} >
-              You are about to commit to <b>{username}/{repo}[{gitRef}]</b> as <b>{username}</b>. 
+              You are about to commit to <b>{username}/{repo}[{gitRef}]</b> as <b>@{username}</b>. 
               <br/><br/>
              If this repo doesn&apos;t already exist, it will automatically be created/forked. Enter your commit message here. 
              <DialogRow>
