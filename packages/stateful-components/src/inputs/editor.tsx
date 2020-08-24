@@ -70,22 +70,21 @@ export class Editor extends React.PureComponent<Props> {
       kernelStatus: this.props.kernelStatus,
       onChange: this.props.onChange,
       onFocusChange: this.props.onFocusChange,
-      className: "nteract-cell-editor"
+      className: "nteract-cell-editor",
     };
 
     /**
      * We filter on the children Editor Slots and render the correct editorType
      */
-    if(children && children[editorType]){
+    if (children && children[editorType]) {
       const chosenEditor = children[editorType];
       return chosenEditor(editorProps);
-    }
-
+    } else if(editorComponent) {
     /**
      * Fallback to the editor component stored in the state from dynamic import
      * We'd eventually want to deprecate the static imports and move entirely to on-demand loading
      */
-    else if(editorComponent){
+
       return React.createElement(editorComponent, editorProps);
     }
 
@@ -106,7 +105,7 @@ export const makeMapStateToProps = (
     let kernelStatus = "not connected";
     let value = "";
     const editorType = editorTypeConfig(state);
-    const editorComponent = selectors.editor(state, {id: editorType});
+    const editorComponent = selectors.editor(state, { id: editorType });
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });
@@ -129,7 +128,7 @@ export const makeMapStateToProps = (
       channels,
       kernelStatus,
       editorType,
-      editorComponent
+      editorComponent,
     };
   };
 
