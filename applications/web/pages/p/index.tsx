@@ -24,7 +24,7 @@ import { Layout, Header, Body, Side, Footer } from "../../components/Layout"
 import { H3, P } from "../../components/Basic"
 import NextHead from "../../components/Header";
 import { getLanguage, useInput, useCheckInput } from "../../util/helpers"
-import { ghUploadToRepo, ghCheckFork } from "../../util/github"
+import { ghUploadToRepo, ghCheckFork, ghGetContent } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
@@ -61,15 +61,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   const stripOutput = useCheckInput(false)
   const [fileBuffer, setFileBuffer] = useState({})
   const [savedTime, setSavedTime] = useState(moment())
-  const [savedSince, setSavedSince] = useState("Last Saved Never")
   
   // Console 
   const [ consoleLog , setConsoleLog ] = useState([])
   const [ notificationLog, setNotificationLog ] = useState([])
   // Server
   const [serverStatus, setServerStatus] = useState("Launching...")
-  const [serverEndpoint, setServerEndpoint] = useState("")
-  const [serverToken, setServerToken] = useState("")
+  const [host, setHost] = useState()
+
   // Login Values
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
@@ -146,7 +145,9 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     
   }, [provider, org, repo, gitRef, filePath])
 
-
+/*************************************************
+  Other functions
+************************************************/
   function addBuffer(e) {
     // If file is empty, add a space.
     setFileContent(e);
@@ -226,13 +227,8 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   // Folder Exploring Function
   async function getFiles(path: string) {
     const octokit = new Octokit()
-    let fileList: string[][] = []
-    await octokit.repos.getContents({
-      owner: org,
-      repo: repo,
-      ref: gitRef,
-      path
-    }).then((res: any) => {
+    let fileList: string[][] = [ ]
+    await ghGetContent(octokit, org, repo, gitRef, path).then((res) => {
       res.data.map((item: any) => {
         fileList.push([item.name, item.path, item.type])
       })
@@ -256,11 +252,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       setFileType(fileName.split('.').pop())
     } else {
       const octokit = new Octokit()
-      octokit.repos.getContents({
-        owner: org,
-        repo: repo,
-        path: fileName
-      }).then(({ data }) => {
+      ghGetContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
         setFileContent(atob(data["content"]))
         setFilepath(data["path"])
         setFileType(fileName.split('.').pop())
@@ -338,14 +330,28 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     window.removeEventListener("storage", getGithubUserDetails)
   }
 
-  const addBinder = (host) => {
+  const addBinder = (ht) => {
+    if ( ht != host){
     setServerStatus("Connected")
-    setServerEndpoint(host.endpoint)
-    setServerToken(host.token)
+    setHost(ht)
+    addToNotification({
+      type: "success",
+      message: `Successfully connected to MyBinder`
+    })
+
+    addToConsole({ 
+      type: "success",
+      message: `Successfully connected to MyBiner. \n\tServer running at ${ht.endpoint}?token=${ht.token}`
+    })
+
+    }
   }
 
-
-
+  const getNotebook = async (fileName) => {
+      const octokit = new Octokit()
+      const data = await ghGetContent(octokit, org, repo, gitRef, fileName)
+      return data
+  }
 
   const dialogInputStyle = { width: "98%" }
 
@@ -374,21 +380,26 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           />)
 
   const binderEditor = (
-        <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
-          <Host.Consumer>
-            {host => <>
-                    {addBinder(host)}
-                  <Binder filepath={filePath} host={host} />
-              </>}
-          </Host.Consumer>
-        </Host>
-
+        <>
+              <Binder getContent={getNotebook} filepath={filePath} host={host} />
+        </>
   )
 
-  const editor = lang == "ipynb"? binderEditor : generalEditor
+  const editor = lang == "ipynb"? binderEditor : generalEditor;
     
   return (
     <Layout>
+          <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
+            <Host.Consumer>
+              {host => 
+                host ? (
+                <>
+                    {addBinder(host)}
+                </>
+                ): null
+            }
+          </Host.Consumer>
+        </Host>
 
       <NextHead />
       {
@@ -489,9 +500,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       <Body>
 
 
-        {filePath &&
-              editor
-        }
+        {filePath && editor}
 
         {
           !filePath &&
