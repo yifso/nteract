@@ -37,8 +37,8 @@ export default () => {
 ### Editor
 The `monaco-editor` provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component and also fetch completition items when connected to a Jupyter kernel in the context of a notebook. Since it is designed to work well with the semantics of a notebook, it requires the following props as laid down in the `IMonacoProps` interface:
 
-* `id` - A unique identifier for the editor instance
-* `contentRef` - A unique identifier for the editor's host application
+* `id` - A unique identifier for the editor instance. In the notebook context, since every cell is tied to a single instance of the editor, `id` refers to the unique ID of the cell.
+* `contentRef` - A unique identifier for the editor's host application. In the notebook context, `contentRef` provides a reference to the container element for the main notebook app component.
 * `theme` - Theme to be used for rendering the component ([docs](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.idiffeditorconstructionoptions.html#theme))
 * `language` - Valid language ID of a supported language (eg: `python`, `typescript`, `plaintext` etc.) Check out this Monaco Editor [playground](https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-custom-languages) to add support for a language not yet supported out of the box
 

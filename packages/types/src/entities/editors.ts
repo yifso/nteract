@@ -4,8 +4,8 @@ export interface EditorComponentProps {
   byEditorType: Immutable.Map<string, any>;
 }
 
-export type EditorComponentsRecord = Immutable.RecordOf<EditorComponentProps>;
+export type EditorsRecord = Immutable.RecordOf<EditorComponentProps>;
 
-export const makeEditorComponentsRecord = Immutable.Record<EditorComponentProps>({
+export const makeEditorsRecord = Immutable.Record<EditorComponentProps>({
   byEditorType: Immutable.Map<string, any>()
 });

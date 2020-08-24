@@ -8,7 +8,7 @@ export const ADD_TRANSFORM                = "ADD_TRANSFORM";
 export const REMOVE_TRANSFORM             = "REMOVE_TRANSFORM";
 export const ERROR                        = "CORE/ERROR";
 export const TOGGLE_SIDEBAR               = "TOGGLE_SIDEBAR";
-export const ADD_EDITOR_COMPONENT         = "ADD_EDITOR_COMPONENT";
+export const ADD_EDITOR                   = "ADD_EDITOR";
 
 export type OpenModal                     = Action     <typeof OPEN_MODAL,              { modalType: string }>;
 export type CloseModal                    = Action     <typeof CLOSE_MODAL>;
@@ -17,7 +17,7 @@ export type AddTransform                  = Action     <typeof ADD_TRANSFORM,   
 export type RemoveTransform               = Action     <typeof REMOVE_TRANSFORM,        { mediaType: string; component: any }>;
 export type CoreError                     = ErrorAction<typeof ERROR>;
 export type ToggleSidebar                 = Action<typeof TOGGLE_SIDEBAR>;
-export type AddEditorComponent            = Action<typeof ADD_EDITOR_COMPONENT, {editorType: string; component: any}>;
+export type AddEditor                     = Action<typeof ADD_EDITOR, {editorType: string; component: any}>;
 
 export const openModal                    = makeActionFunction      <OpenModal>                   (OPEN_MODAL);
 export const closeModal                   = makeActionFunction      <CloseModal>                  (CLOSE_MODAL);
@@ -26,4 +26,4 @@ export const addTransform                 = makeActionFunction      <AddTransfor
 export const removeTransform              = makeActionFunction      <RemoveTransform>             (REMOVE_TRANSFORM);
 export const coreError                    = makeErrorActionFunction <CoreError>                   (ERROR);
 export const toggleSidebar                = makeActionFunction<ToggleSidebar>             (TOGGLE_SIDEBAR);
-export const addEditorComponent           = makeActionFunction      <AddEditorComponent>           (ADD_EDITOR_COMPONENT);
+export const addEditor                    = makeActionFunction      <AddEditor>           (ADD_EDITOR);

@@ -37,7 +37,7 @@ export interface EditorSlots {
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
-  children: EditorSlots | undefined;
+  children?: EditorSlots;
 }
 
 interface StateProps {
@@ -106,7 +106,7 @@ export const makeMapStateToProps = (
     let kernelStatus = "not connected";
     let value = "";
     const editorType = editorTypeConfig(state);
-    const editorComponent = selectors.editorComponent(state, {id: editorType});
+    const editorComponent = selectors.editor(state, {id: editorType});
 
     if (model && model.type === "notebook") {
       const cell = selectors.notebook.cellById(model, { id });

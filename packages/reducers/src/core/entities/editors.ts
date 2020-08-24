@@ -1,5 +1,5 @@
 import * as actions from "@nteract/actions";
-import { makeEditorComponentsRecord } from "@nteract/types";
+import { makeEditorsRecord } from "@nteract/types";
 import { Map } from "immutable";
 import { Action, Reducer } from "redux";
 import { combineReducers } from "redux-immutable";
@@ -10,8 +10,8 @@ export const byEditorType = (
 ): Map<string, any> => {
   let typedAction;
   switch (action.type) {
-    case actions.ADD_EDITOR_COMPONENT:
-      typedAction = action as actions.AddEditorComponent;
+    case actions.ADD_EDITOR:
+      typedAction = action as actions.AddEditor;
       return state.set(
         typedAction.payload.editorType,
         typedAction.payload.component
@@ -21,9 +21,9 @@ export const byEditorType = (
   }
 };
 
-export const editorComponents: Reducer<
+export const editors: Reducer<
   {
     byEditorType: Map<string, any>;
   },
   Action<any>
-> = combineReducers({ byEditorType }, makeEditorComponentsRecord as any);
+> = combineReducers({ byEditorType }, makeEditorsRecord as any);

@@ -69,7 +69,7 @@ export class TextFile extends React.PureComponent<
     return (
       <EditorContainer className="nteract-editor">
         <Editor
-          id={"foo"}
+          id={"no-cell-id-for-single-editor"}
           contentRef={this.props.contentRef}
           theme={this.props.theme === "dark" ? "vs-dark" : "vs"}
           language={"plaintext"}
