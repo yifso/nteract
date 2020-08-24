@@ -8,6 +8,10 @@
 */
 import { Octokit } from "@octokit/rest";
 
+export const ghGetContent = async(octo, org: string, repo: string, ref: string, fileName: string) => {
+  const data = octo.repos.getContents({ owner: org, repo: repo, ref: ref, path: fileName })
+  return data
+}
 
 export const ghListForks = async (owner: string, repo: string) => {
   // This gets the fork of the active repo
