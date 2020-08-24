@@ -263,7 +263,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       return;
     }
 
-    const { value, channels, language, contentRef, id, editorFocused, theme } = this.props;
+    const { value, language, contentRef, id, editorFocused, theme } = this.props;
 
     if(this.props.cursorPositionHandler){
       this.props.cursorPositionHandler(this.editor, this.props);

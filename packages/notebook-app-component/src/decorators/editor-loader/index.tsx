@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { actions, ContentRef } from "@nteract/core";
+import { actions } from "@nteract/core";
 
 interface Props {
   addEditor(editorType: string, component: any): void;
