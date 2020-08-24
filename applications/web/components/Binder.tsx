@@ -1,5 +1,7 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import { Octokit } from "@octokit/rest";
 import { Dispatch } from "redux";
+import { ghGetContent } from "../util/github"
 import { connect } from "react-redux";
 import {
   actions,
@@ -13,9 +15,9 @@ import {
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
 
-
 type ComponentProps = {
   filepath: string,
+  getContent: (x: string) => Promise<any>,
   host?: ServerConfig
 }
 
@@ -35,32 +37,46 @@ type State = {
   kernelRef: KernelRef;
 }
 
+const Binder = (props: Props, state: State) => {
+   const [ content, setContent ] = useState("")
+   const [ contentRef, setContentRef ] = useState(createContentRef())
+   const [ kernelRef, setKernelRef ] = useState(createKernelRef())
+   const {filepath} = props
+   const octokit = new Octokit()
+  
+  // We need to fetch content again as the filePath has been updated
+  useEffect( () => {
+    console.log(filepath) 
+    console.log("in Binder component")
+    // const { contentRef, kernelRef } = state;
+    props.getContent(filepath).then( ({ data }) => {
+      setContent(atob(data['content']))
+    })
 
-class Binder extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    props.setAppHost(
+    props.fetchContent(filepath, contentRef, kernelRef);
+  }, [filepath])
+
+  // Once the host is set, add it
+  useEffect( () => {
+    console.log("host changes")  
+   /* props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
     );
+    */
+  }, [props.host])
 
-    this.state = {
-      contentRef: createContentRef(),
-      kernelRef: createKernelRef(),
-    }
-  }
-  componentDidMount() {
-    const { filepath } = this.props;
-    const { contentRef, kernelRef } = this.state;
-    this.props.fetchContent(filepath, contentRef, kernelRef);
-  }
-
-  render() {
     return (
       <>
-        {this.state.contentRef ? (<NotebookApp contentRef={this.state.contentRef} />) : "Wating"}
+        {state.contentRef ? (
+            <>
+              <NotebookApp contentRef={state.contentRef} />
+            </>
+        ) : <>
+              {content}
+              
+        </>}
       </>
     );
-  }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
