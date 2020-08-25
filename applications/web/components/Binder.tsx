@@ -42,7 +42,7 @@ function createNotebookModel(filePath: string,  content?: string): IContent<"not
       const created = ""
       // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
       const last_modified = ""
-
+      console.log(content)
         return {
                 name,
                 path: filePath,
@@ -69,6 +69,7 @@ function createSuccessAjaxResponse(notebook: IContent<"notebook">): AjaxResponse
     }
 
 const Binder = (props: Props) => {
+   const [ contentFlag, setContentFlag ] = useState(false)
    const [ content, setContent ] = useState("")
    const [ contentRef, setContentRef ] = useState(createContentRef())
    const [ kernelRef, setKernelRef ] = useState(createKernelRef())
@@ -82,10 +83,11 @@ const Binder = (props: Props) => {
     // const { contentRef, kernelRef } = state;
     props.getContent(filepath).then( ({ data }) => {
       const content = atob(data['content'])
-      setContent(content)
       const notebook = createNotebookModel(filepath, content );
       const response = createSuccessAjaxResponse(notebook);
-      props.fetchContentFulfilled(filepath, response, kernelRef, contentRef);
+      props.fetchContentFulfilled(filepath, notebook, kernelRef, contentRef);
+      setContentFlag(true)
+      setContent(content)
 
       console.log(contentRef)
       console.log(kernelRef)
@@ -99,22 +101,24 @@ const Binder = (props: Props) => {
   useEffect( () => {
    console.log("Host update. New host below")  
    console.log(props.host)
+   if( props.host  ){
    props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
     );
+   }
   
   }, [props.host])
 
     return (
       <>
-        {contentRef ? (
+        {
+          contentFlag ? (
             <>
+              {content}
               <NotebookApp contentRef={contentRef} />
             </>
-        ) : <>
-              {content}
-              
-        </>}
+        ) : "Waiting" 
+        }
       </>
     );
 }
@@ -133,6 +137,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     )
   }
 });
+
+// If we want to pass on the default values
+Binder.defaultProps = {
+  host: {
+    crossDomain: true,
+    endpoint: "",
+    token: "",
+  }
+}
 
 export default connect(null, mapDispatchToProps)(Binder);
 

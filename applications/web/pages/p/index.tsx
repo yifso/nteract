@@ -246,21 +246,22 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   }
 
   function loadFile(fileName) {
-    if (fileName in fileBuffer) {
-      setFileContent(fileBuffer[fileName])
-      setFilepath(fileName)
-      setFileType(fileName.split('.').pop())
-    } else {
-      const octokit = new Octokit()
-      ghGetContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
-        setFileContent(atob(data["content"]))
-        setFilepath(data["path"])
-        setFileType(fileName.split('.').pop())
-      })
+    let extension = fileName.split('.').pop()
+    setFilepath(fileName)
+    setFileType(extension)
+    setLang(getLanguage(extension))
+    
+    if( extension != "ipynb" ){
+     if (fileName in fileBuffer) {
+        setFileContent(fileBuffer[fileName])
+      } else {
+       const octokit = new Octokit()
+        ghGetContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
+         setFileContent(atob(data["content"]))
+        })
+      }
     }
 
-    let extension = fileName.split('.').pop()
-    setLang(getLanguage(extension))
   }
 
   function updateVCSInfo(event, providerP, orgP, repoP, gitRefP) {
