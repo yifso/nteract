@@ -42,7 +42,6 @@ function createNotebookModel(filePath: string,  content?: string): IContent<"not
       const created = ""
       // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
       const last_modified = ""
-      console.log(content)
         return {
                 name,
                 path: filePath,
@@ -85,15 +84,16 @@ const Binder = (props: Props) => {
       const content = atob(data['content'])
       const notebook = createNotebookModel(filepath, content );
       const response = createSuccessAjaxResponse(notebook);
-      props.fetchContentFulfilled(filepath, notebook, kernelRef, contentRef);
-      setContentFlag(true)
-      setContent(content)
-
       console.log(contentRef)
       console.log(kernelRef)
       console.log(notebook)
       console.log(response)
-    })
+
+      props.fetchContentFulfilled(filepath, notebook, contentRef, kernelRef);
+      setContentFlag(true)
+      setContent(content)
+
+         })
 
   }, [filepath])
 
@@ -114,7 +114,6 @@ const Binder = (props: Props) => {
         {
           contentFlag ? (
             <>
-              {content}
               <NotebookApp contentRef={contentRef} />
             </>
         ) : "Waiting" 
@@ -133,7 +132,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   ) => {
     console.log("fetchContentFulfilled dispatch")
     dispatch(
-      actions.fetchContentFulfilled({ filepath, model, kernelRef, contentRef  })
+      actions.fetchContentFulfilled({ filepath, model, contentRef, kernelRef  })
     )
   }
 });
