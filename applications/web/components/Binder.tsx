@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Octokit } from "@octokit/rest";
 import { Dispatch } from "redux";
-import { ghGetContent } from "../util/github"
 import { connect } from "react-redux";
+import { AjaxResponse } from "rxjs/ajax";
 import {
   actions,
   createContentRef,
@@ -13,6 +13,7 @@ import {
   makeJupyterHostRecord,
   ServerConfig
 } from "@nteract/core";
+import { IContent } from "@nteract/types";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
 
 type ComponentProps = {
@@ -23,8 +24,9 @@ type ComponentProps = {
 
 interface DispatchProps {
   setAppHost: (host: HostRecord) => void;
-  fetchContent: (
+  fetchContentFulfilled: (
     filepath: string,
+    model: any,
     contentRef: ContentRef,
     kernelRef: KernelRef
   ) => void;
@@ -32,12 +34,41 @@ interface DispatchProps {
 
 type Props = ComponentProps & DispatchProps;
 
-type State = {
-  contentRef: ContentRef;
-  kernelRef: KernelRef;
-}
 
-const Binder = (props: Props, state: State) => {
+function createNotebookModel(filePath: string,  content?: string): IContent<"notebook"> {
+      const name = filePath
+      // tslint:disable-next-line no-bitwise
+      const writable = true
+      const created = ""
+      // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
+      const last_modified = ""
+
+        return {
+                name,
+                path: filePath,
+                type: "notebook",
+                writable,
+                created,
+                last_modified,
+                mimetype: "application/x-ipynb+json",
+                content: content ? JSON.parse(content) : null,
+                format: "json"
+              };
+      }
+
+function createSuccessAjaxResponse(notebook: IContent<"notebook">): AjaxResponse {
+      return {
+              originalEvent: new Event("no-op"),
+              xhr: new XMLHttpRequest(),
+              request: {},
+              status: 200,
+              response: notebook,
+              responseText: JSON.stringify(notebook),
+              responseType: "json"
+            };
+    }
+
+const Binder = (props: Props) => {
    const [ content, setContent ] = useState("")
    const [ contentRef, setContentRef ] = useState(createContentRef())
    const [ kernelRef, setKernelRef ] = useState(createKernelRef())
@@ -50,26 +81,35 @@ const Binder = (props: Props, state: State) => {
     console.log("in Binder component")
     // const { contentRef, kernelRef } = state;
     props.getContent(filepath).then( ({ data }) => {
-      setContent(atob(data['content']))
+      const content = atob(data['content'])
+      setContent(content)
+      const notebook = createNotebookModel(filepath, content );
+      const response = createSuccessAjaxResponse(notebook);
+      props.fetchContentFulfilled(filepath, response, kernelRef, contentRef);
+
+      console.log(contentRef)
+      console.log(kernelRef)
+      console.log(notebook)
+      console.log(response)
     })
 
-    props.fetchContent(filepath, contentRef, kernelRef);
   }, [filepath])
 
   // Once the host is set, add it
   useEffect( () => {
-    console.log("host changes")  
-   /* props.setAppHost(
+   console.log("Host update. New host below")  
+   console.log(props.host)
+   props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
     );
-    */
+  
   }, [props.host])
 
     return (
       <>
-        {state.contentRef ? (
+        {contentRef ? (
             <>
-              <NotebookApp contentRef={state.contentRef} />
+              <NotebookApp contentRef={contentRef} />
             </>
         ) : <>
               {content}
@@ -81,14 +121,17 @@ const Binder = (props: Props, state: State) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
-  fetchContent: (
+  fetchContentFulfilled: (
     filepath: string,
+    model: any,
     contentRef: ContentRef,
     kernelRef: KernelRef
-  ) =>
+  ) => {
+    console.log("fetchContentFulfilled dispatch")
     dispatch(
-      actions.fetchContent({ filepath, contentRef, kernelRef, params: {} })
+      actions.fetchContentFulfilled({ filepath, model, kernelRef, contentRef  })
     )
+  }
 });
 
 export default connect(null, mapDispatchToProps)(Binder);
