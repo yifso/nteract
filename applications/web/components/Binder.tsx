@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Octokit } from "@octokit/rest";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { AjaxResponse } from "rxjs/ajax";
 import {
   actions,
   createContentRef,
@@ -13,13 +12,14 @@ import {
   makeJupyterHostRecord,
   ServerConfig
 } from "@nteract/core";
-import { IContent } from "@nteract/types";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
+import { contentRefByFilepath } from "@nteract/selectors";
+import { createNotebookModel, createSuccessAjaxResponse } from "../util/helpers"
 
 type ComponentProps = {
   filepath: string,
   getContent: (x: string) => Promise<any>,
-  host?: ServerConfig
+  host: ServerConfig
 }
 
 interface DispatchProps {
@@ -35,41 +35,9 @@ interface DispatchProps {
 type Props = ComponentProps & DispatchProps;
 
 
-function createNotebookModel(filePath: string,  content?: string): IContent<"notebook"> {
-      const name = filePath
-      // tslint:disable-next-line no-bitwise
-      const writable = true
-      const created = ""
-      // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API
-      const last_modified = ""
-        return {
-                name,
-                path: filePath,
-                type: "notebook",
-                writable,
-                created,
-                last_modified,
-                mimetype: "application/x-ipynb+json",
-                content: content ? JSON.parse(content) : null,
-                format: "json"
-              };
-      }
-
-function createSuccessAjaxResponse(notebook: IContent<"notebook">): AjaxResponse {
-      return {
-              originalEvent: new Event("no-op"),
-              xhr: new XMLHttpRequest(),
-              request: {},
-              status: 200,
-              response: notebook,
-              responseText: JSON.stringify(notebook),
-              responseType: "json"
-            };
-    }
 
 const Binder = (props: Props) => {
    const [ contentFlag, setContentFlag ] = useState(false)
-   const [ content, setContent ] = useState("")
    const [ contentRef, setContentRef ] = useState(createContentRef())
    const [ kernelRef, setKernelRef ] = useState(createKernelRef())
    const {filepath} = props
@@ -77,31 +45,25 @@ const Binder = (props: Props) => {
   
   // We need to fetch content again as the filePath has been updated
   useEffect( () => {
-    console.log(filepath) 
-    console.log("in Binder component")
-    // const { contentRef, kernelRef } = state;
+     /* const cr = createContentRef()
+      const kr = createKernelRef() 
+      setContentRef(cr)
+      setKernelRef(kr) */
+
+    //contentRefByFilepath(state, { filepath: filepath })
     props.getContent(filepath).then( ({ data }) => {
       const content = atob(data['content'])
       const notebook = createNotebookModel(filepath, content );
       const response = createSuccessAjaxResponse(notebook);
-      console.log(contentRef)
-      console.log(kernelRef)
-      console.log(notebook)
-      console.log(response)
-
       props.fetchContentFulfilled(filepath, notebook, contentRef, kernelRef);
       setContentFlag(true)
-      setContent(content)
-
-         })
+    })
 
   }, [filepath])
 
   // Once the host is set, add it
   useEffect( () => {
-   console.log("Host update. New host below")  
-   console.log(props.host)
-   if( props.host  ){
+   if( props.host.endpoint != ""  ){
    props.setAppHost(
       makeJupyterHostRecord({ ...props.host, origin: props.host.endpoint })
     );
@@ -116,7 +78,7 @@ const Binder = (props: Props) => {
             <>
               <NotebookApp contentRef={contentRef} />
             </>
-        ) : "Waiting" 
+        ) : "" 
         }
       </>
     );
@@ -129,12 +91,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     model: any,
     contentRef: ContentRef,
     kernelRef: KernelRef
-  ) => {
-    console.log("fetchContentFulfilled dispatch")
+  ) => 
     dispatch(
       actions.fetchContentFulfilled({ filepath, model, contentRef, kernelRef  })
     )
-  }
 });
 
 // If we want to pass on the default values
