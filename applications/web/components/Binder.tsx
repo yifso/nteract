@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Octokit } from "@octokit/rest";
 import { Dispatch } from "redux";
+import Store from "../redux/store";
 import { connect } from "react-redux";
 import {
+  AppState,
   actions,
   createContentRef,
   createKernelRef,
@@ -32,32 +34,79 @@ interface DispatchProps {
   ) => void;
 }
 
-type Props = ComponentProps & DispatchProps;
+type StateProps = {
+  contentRef : string
+}
+
+type Props = ComponentProps & DispatchProps & StateProps;
+
+const makeMapStateToProps = (
+    initialState: AppState,
+    ownProps: ComponentProps
+) => {
+  const mapStateToProps = (state: AppState, ownProps: ComponentProps): StateProps => {
+    const { filepath } = ownProps
+    const ref = contentRefByFilepath(  state, { filepath: filepath })
+    console.group(">> Map <<")
+    console.info("contentRef: " + ref)
+    console.info("Filename: " + filepath)
+    console.groupEnd()
+    return {
+        contentRef: ref
+    }
+  }
+
+  return mapStateToProps
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
+  fetchContentFulfilled: (
+    filepath: string,
+    model: any,
+    contentRef: ContentRef,
+    kernelRef: KernelRef
+  ) => 
+    dispatch(
+      actions.fetchContentFulfilled({ filepath, model, contentRef, kernelRef  })
+    )
+});
 
 
 
 const Binder = (props: Props) => {
    const [ contentFlag, setContentFlag ] = useState(false)
-   const [ contentRef, setContentRef ] = useState(createContentRef())
-   const [ kernelRef, setKernelRef ] = useState(createKernelRef())
-   const {filepath} = props
+   const [ contentRef, setContentRef ] = useState("")
+   const [ kernelRef, setKernelRef ] = useState("")
+   const { filepath } = props
+   const preContentRef = props.contentRef
    const octokit = new Octokit()
-  
   // We need to fetch content again as the filePath has been updated
   useEffect( () => {
-     /* const cr = createContentRef()
+      if(preContentRef === undefined){
+      // Since contentRef for filepath is undefined
+      // We generate new contentRef and use that
+      const cr = createContentRef()
       const kr = createKernelRef() 
       setContentRef(cr)
-      setKernelRef(kr) */
-
-    //contentRefByFilepath(state, { filepath: filepath })
-    props.getContent(filepath).then( ({ data }) => {
-      const content = atob(data['content'])
-      const notebook = createNotebookModel(filepath, content );
-      const response = createSuccessAjaxResponse(notebook);
-      props.fetchContentFulfilled(filepath, notebook, contentRef, kernelRef);
-      setContentFlag(true)
-    })
+      setKernelRef(kr)
+          
+         // Get content from github
+          props.getContent(filepath).then( ({ data }) => {
+            console.group(">> Effect <<")
+            console.info("ContentRef: " + cr)
+            console.groupEnd()
+            const content = atob(data['content'])
+            const notebook = createNotebookModel(filepath, content );
+            const response = createSuccessAjaxResponse(notebook);
+            // Set content in store
+            props.fetchContentFulfilled(filepath, notebook, cr, kr);
+            setContentFlag(true)
+        })
+      }else{
+          setContentRef( preContentRef )
+          setContentFlag(true)
+      }
 
   }, [filepath])
 
@@ -84,18 +133,6 @@ const Binder = (props: Props) => {
     );
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
-  fetchContentFulfilled: (
-    filepath: string,
-    model: any,
-    contentRef: ContentRef,
-    kernelRef: KernelRef
-  ) => 
-    dispatch(
-      actions.fetchContentFulfilled({ filepath, model, contentRef, kernelRef  })
-    )
-});
 
 // If we want to pass on the default values
 Binder.defaultProps = {
@@ -106,5 +143,5 @@ Binder.defaultProps = {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Binder);
+export default connect(makeMapStateToProps, mapDispatchToProps)(Binder);
 

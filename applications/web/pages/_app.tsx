@@ -42,7 +42,8 @@ class WebApp extends App<StoreProps> {
 
   render() {
     const { Component, pageProps, store } = this.props;
-    return (<Component {...pageProps} />);
+    return (
+      <Component {...pageProps} />);
   }
 }
 

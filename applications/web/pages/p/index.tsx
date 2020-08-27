@@ -2,9 +2,10 @@
 import React, { FC, HTMLAttributes, useState, useEffect } from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter, useRouter } from "next/router";
+import { connect } from "react-redux";
 import { Octokit } from "@octokit/rest";
 import moment from "moment";
-
+import { AppState } from "@nteract/core"
 // nteract
 import dynamic from "next/dynamic";
 import { Host } from "@mybinder/host-cache";
@@ -32,9 +33,15 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 
 const BINDER_URL = "https://mybinder.org";
 
-export interface Props extends HTMLAttributes<HTMLDivElement> {
+export interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   router: any
 }
+
+export interface StateProps {
+  contents : any
+}
+
+type Props = ComponentProps & StateProps;
 
 /**************************
  Main Component
@@ -549,4 +556,18 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   );
 }
 
-export default withRouter(Main);
+
+const makeMapStateToProps = (
+    initialState: AppState
+) => {
+  const mapStateToProps = (state: AppState): StateProps => {
+    return {
+      contents: state.core.entities.contents
+    }
+  }
+
+  return mapStateToProps
+};
+
+
+export default connect(makeMapStateToProps, null)(withRouter(Main))
