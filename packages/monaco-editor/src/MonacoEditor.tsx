@@ -27,38 +27,51 @@ export interface IMonacoShortCutProps {
 }
 
 /**
- * Initial props for Monaco received from agnostic component
+ * Common props passed to the editor component
  */
-export interface IMonacoProps {
+export interface IMonacoComponentProps {
   id: string;
   contentRef: ContentRef;
-  modelUri?: monaco.Uri;
   theme: string;
-  cellLanguageOverride?: string;
-  notebookLanguageOverride?: string;
   readOnly?: boolean;
   channels?: Channels | undefined;
-  enableCompletion?: boolean;
-  shouldRegisterDefaultCompletion?: boolean;
-  onChange?: (value: string, event?: any) => void;
-  onFocusChange?: (focus: boolean) => void;
-  onCursorPositionChange?: (selection: monaco.ISelection | null) => void;
-  onRegisterCompletionProvider?: (languageId: string) => void;
-  language: string;
   value: string;
   editorType?: string;
   editorFocused?: boolean;
+  onChange?: (value: string, event?: any) => void;
+  onFocusChange?: (focus: boolean) => void;
+}
+
+/**
+ * Props passed for configuring Monaco Editor
+ */
+export interface IMonacoConfiguration {
+  /**
+   * modelUri acts an identifier to query the editor model
+   * without being tied to the UI
+   * Calling the getModel(modelUri) API
+   */
+  modelUri?: monaco.Uri;
+  enableCompletion?: boolean;
+  shouldRegisterDefaultCompletion?: boolean;
+  onCursorPositionChange?: (selection: monaco.ISelection | null) => void;
+  onRegisterCompletionProvider?: (languageId: string) => void;
+  language: string;
   lineNumbers?: boolean;
   /** set height of editor to fit the specified number of lines in display */
   numberOfLines?: number;
   indentSize?: number;
   tabSize?: number;
-
   options?: monaco.editor.IEditorOptions;
   shortcutsOptions?: IMonacoShortCutProps;
   shortcutsHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoShortCutProps) => void;
   cursorPositionHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoProps) => void;
 }
+
+/**
+ * Initial props for Monaco Editor received from agnostic component
+ */
+export type IMonacoProps = IMonacoComponentProps & IMonacoConfiguration;
 
 /**
  * Creates a MonacoEditor instance
@@ -237,7 +250,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       // Monaco editor doesn't have margins
       // https://github.com/notable/notable/issues/551
       // This is a workaround to add an editor area 12px padding at the top
-      // so that cursors rendered by collab decorators could be visible without being cut.
+      // so that cursors decorators and context menus can be rendered correctly.
       this.editor.changeViewZones((changeAccessor) => {
         const domNode = document.createElement("div");
         changeAccessor.addZone({

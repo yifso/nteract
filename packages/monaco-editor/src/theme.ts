@@ -13,10 +13,8 @@ export const customMonacoLightTheme: monaco.editor.IStandaloneThemeData = {
   inherit: true,
   rules: [],
   colors: {
-    // We want Monaco background to use the same background for our themes.
+    // Ensure that editor background is set to white
     // Without this, the Monaco light theme has a yellowish tone.
-    // Verified with UX that white meets all the accessbility requirements for light
-    // and high contrast light theme.
     "editor.background": "#FFFFFF"
   }
 };
@@ -61,10 +59,8 @@ export const customMonacoHCLightTheme: monaco.editor.IStandaloneThemeData = {
     { token: "predefined.sql", foreground: "000000" }
   ],
   colors: {
-    // We want Monaco background to use the same background for our themes.
+    // Ensure that editor background is set to white
     // Without this, the Monaco light theme has a yellowish tone.
-    // Verified with UX that white meets all the accessbility requirements for light
-    // and high contrast light theme.
     "editor.background": "#FFFFFF"
   }
 };
