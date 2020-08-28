@@ -1,32 +1,40 @@
 import * as monaco from "monaco-editor";
 import { Observable, Observer } from "rxjs";
 import { first, map } from "rxjs/operators";
-import { childOf, JupyterMessage, ofMessageType, Channels } from "@nteract/messaging";
+import {
+  childOf,
+  JupyterMessage,
+  ofMessageType,
+  Channels,
+} from "@nteract/messaging";
 
 import {
   CompletionResults,
   CompletionMatch,
   completionRequest,
-  js_idx_to_char_idx
+  js_idx_to_char_idx,
 } from "../editor-base";
 
 /**
  * Jupyter to Monaco completion item kinds.
  */
 const unknownJupyterKind = "<unknown>";
-const jupyterToMonacoCompletionItemKind: {[key:string]: monaco.languages.CompletionItemKind}= {
+const jupyterToMonacoCompletionItemKind: {
+  [key: string]: monaco.languages.CompletionItemKind;
+} = {
   [unknownJupyterKind]: monaco.languages.CompletionItemKind.Field,
   class: monaco.languages.CompletionItemKind.Class,
   function: monaco.languages.CompletionItemKind.Function,
   keyword: monaco.languages.CompletionItemKind.Keyword,
   instance: monaco.languages.CompletionItemKind.Variable,
-  statement: monaco.languages.CompletionItemKind.Variable
+  statement: monaco.languages.CompletionItemKind.Variable,
 };
 
 /**
  * Completion item provider.
  */
-class CompletionItemProvider implements monaco.languages.CompletionItemProvider {
+class CompletionItemProvider
+  implements monaco.languages.CompletionItemProvider {
   private channels: Channels | undefined;
 
   /**
@@ -56,7 +64,10 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
    * @param model Monaco editor text model.
    * @param position Position of cursor.
    */
-  async provideCompletionItems(model: monaco.editor.ITextModel, position: monaco.Position) {
+  async provideCompletionItems(
+    model: monaco.editor.ITextModel,
+    position: monaco.Position
+  ) {
     // Convert to zero-based index
     let cursorPos = model.getOffsetAt(position);
     const code = model.getValue();
@@ -67,7 +78,11 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
     if (this.channels) {
       try {
         const message = completionRequest(code, cursorPos);
-        items = await this.codeCompleteObservable(this.channels, message, model).toPromise();
+        items = await this.codeCompleteObservable(
+          this.channels,
+          message,
+          model
+        ).toPromise();
       } catch (error) {
         // tslint:disable-next-line
         console.error(error);
@@ -76,7 +91,7 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
 
     return Promise.resolve<monaco.languages.CompletionList>({
       suggestions: items,
-      incomplete: false
+      incomplete: false,
     });
   }
 
@@ -86,7 +101,11 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
    * @param message Jupyter message for completion request.
    * @param model Text model.
    */
-  private codeCompleteObservable(channels: Channels, message: JupyterMessage, model: monaco.editor.ITextModel) {
+  private codeCompleteObservable(
+    channels: Channels,
+    message: JupyterMessage,
+    model: monaco.editor.ITextModel
+  ) {
     // Process completion response
     const completion$ = channels.pipe(
       childOf(message),
@@ -107,7 +126,10 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
   /**
    * Converts Jupyter completion result to list of Monaco completion items.
    */
-  private adaptToMonacoCompletions(results: CompletionResults, model: monaco.editor.ITextModel) {
+  private adaptToMonacoCompletions(
+    results: CompletionResults,
+    model: monaco.editor.ITextModel
+  ) {
     let range: monaco.IRange;
     let percentCount = 0;
     let matches = results ? results.matches : [];
@@ -124,7 +146,7 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
           label: text,
           insertText: text,
           filterText: filtered,
-          sortText: this.getSortText(index)
+          sortText: this.getSortText(index),
         } as monaco.languages.CompletionItem;
       } else {
         // We only need to get the range once as the range is the same for all completion items in the list.
@@ -135,7 +157,7 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
             startLineNumber: start.lineNumber,
             startColumn: start.column,
             endLineNumber: end.lineNumber,
-            endColumn: end.column
+            endColumn: end.column,
           };
 
           // Get the range representing the text before the completion action was invoked.
@@ -163,7 +185,7 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
           label: text,
           insertText: percentCount > 0 ? insert : text,
           filterText: filtered,
-          sortText: this.getSortText(index)
+          sortText: this.getSortText(index),
         } as monaco.languages.CompletionItem;
       }
     });
@@ -175,7 +197,9 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
    */
   private adaptToMonacoCompletionItemKind(kind: string) {
     const result = jupyterToMonacoCompletionItemKind[kind];
-    return result ? result : jupyterToMonacoCompletionItemKind[unknownJupyterKind];
+    return result
+      ? result
+      : jupyterToMonacoCompletionItemKind[unknownJupyterKind];
   }
 
   /**
@@ -187,7 +211,9 @@ class CompletionItemProvider implements monaco.languages.CompletionItemProvider 
    */
   private sanitizeText(text: string) {
     const index = text.lastIndexOf(".");
-    return index > -1 && index < text.length - 1 ? text.substring(index + 1) : text;
+    return index > -1 && index < text.length - 1
+      ? text.substring(index + 1)
+      : text;
   }
 
   /**

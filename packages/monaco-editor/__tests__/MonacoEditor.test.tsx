@@ -12,7 +12,7 @@ const monacoEditorCommonProps = {
   value: "test_value",
   enableCompletion: true,
   language: "python",
-  onCursorPositionChange: () => {}
+  onCursorPositionChange: () => {},
 };
 
 describe("MonacoEditor component is rendering correctly", () => {
@@ -47,12 +47,12 @@ const mockEditor = {
   focus: jest.fn(),
   hasTextFocus: jest.fn(),
   addCommand: jest.fn(),
-  changeViewZones: jest.fn()
+  changeViewZones: jest.fn(),
 };
 
 const mockEditorModel = {
-  updateOptions: jest.fn()
-}
+  updateOptions: jest.fn(),
+};
 const mockCreateEditor = jest.fn().mockReturnValue(mockEditor);
 Monaco.editor.create = mockCreateEditor;
 Monaco.editor.createModel = jest.fn().mockReturnValue(mockEditorModel);
@@ -79,7 +79,9 @@ describe("MonacoEditor default wcompletion provider", () => {
       />
     );
     expect(mockCreateEditor).toHaveBeenCalledTimes(1);
-    expect(MonacoEditor.prototype.registerDefaultCompletionProvider).toHaveBeenCalledTimes(1);
+    expect(
+      MonacoEditor.prototype.registerDefaultCompletionProvider
+    ).toHaveBeenCalledTimes(1);
   });
 
   it("Should not call registerDefaultCompletionProvider method when registerCompletionUsingDefault is set to false", () => {
@@ -95,7 +97,9 @@ describe("MonacoEditor default wcompletion provider", () => {
       />
     );
     expect(mockCreateEditor).toHaveBeenCalledTimes(1);
-    expect(MonacoEditor.prototype.registerDefaultCompletionProvider).toHaveBeenCalledTimes(0);
+    expect(
+      MonacoEditor.prototype.registerDefaultCompletionProvider
+    ).toHaveBeenCalledTimes(0);
   });
 });
 
