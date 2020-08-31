@@ -47,10 +47,12 @@ const makeMapStateToProps = (
   const mapStateToProps = (state: AppState, ownProps: ComponentProps): StateProps => {
     const { filepath } = ownProps
     const ref = contentRefByFilepath(  state, { filepath: filepath })
+    /*
     console.group(">> Map <<")
     console.info("contentRef: " + ref)
     console.info("Filename: " + filepath)
     console.groupEnd()
+     */
     return {
         contentRef: ref
     }
@@ -93,9 +95,11 @@ const Binder = (props: Props) => {
           
          // Get content from github
           props.getContent(filepath).then( ({ data }) => {
+            /*
             console.group(">> Effect <<")
             console.info("ContentRef: " + cr)
             console.groupEnd()
+             */
             const content = atob(data['content'])
             const notebook = createNotebookModel(filepath, content );
             const response = createSuccessAjaxResponse(notebook);
@@ -132,7 +136,6 @@ const Binder = (props: Props) => {
       </>
     );
 }
-
 
 // If we want to pass on the default values
 Binder.defaultProps = {

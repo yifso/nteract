@@ -6,9 +6,11 @@ import { connect } from "react-redux";
 import { Octokit } from "@octokit/rest";
 import moment from "moment";
 import { AppState } from "@nteract/core"
-// nteract
 import dynamic from "next/dynamic";
+// nteract
+import { contentByRef } from "@nteract/selectors";
 import { Host } from "@mybinder/host-cache";
+import { toJS, stringifyNotebook } from "@nteract/commutable";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
 // User defined
@@ -82,6 +84,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   const [userImage, setUserImage] = useState("")
   const [userLink, setUserLink] = useState("")
 
+
 /***************************************
   Notification and Console functions
 ****************************************/
@@ -120,7 +123,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   }
   }, [username])
 
-
   // To update file when filePath is updated
   // Also makes sure that filepath is not undefined
   // If it is undefined or empty, don't load the file
@@ -155,9 +157,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 /*************************************************
   Other functions
 ************************************************/
-  function addBuffer(e) {
-    // If file is empty, add a space.
-    setFileContent(e);
+  function addBuffer(e, filePath) {
     const newFileBuffer = fileBuffer
     newFileBuffer[filePath] = e
     setFileBuffer(newFileBuffer)
@@ -180,6 +180,12 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   // To save/upload data to github
   const onSave = async (event) => {
     event.preventDefault()
+     
+    props.contents.map( x => {
+        const content = stringifyNotebook(toJS(x.model.notebook))
+        addBuffer(content, x.filepath)
+      }
+    )
 
     // Step 1: Check if buffer is empty
     if (Object.keys(fileBuffer).length == 0) {
@@ -241,7 +247,6 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       })
     }, (e: Error) => {
       fileList = [[""]]
-      console.log("Notification: Repo not found")
       addLog({ 
         type: "failure",
         message: "Github repository not found."
@@ -384,7 +389,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             focusBelow={() => { }}
             kernelStatus={"not connected"}
             value={fileContent}
-            onChange={(e) => { addBuffer(e) }}
+            onChange={(e) => { 
+                    addBuffer(e, filePath)
+                    setFileContent(e);
+                  }}
           />)
 
   const binderEditor = (
@@ -562,7 +570,7 @@ const makeMapStateToProps = (
 ) => {
   const mapStateToProps = (state: AppState): StateProps => {
     return {
-      contents: state.core.entities.contents
+      contents: contentByRef(state)
     }
   }
 
