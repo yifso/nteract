@@ -1,6 +1,6 @@
 {
   "name": "nteract",
-  "version": "0.24.1",
+  "version": "0.25.0",
   "description": "Interactive literate coding notebook!",
   "main": "./lib/webpacked-main.js",
   "repository": "nteract/nteract",
@@ -159,8 +159,8 @@
     "@types/lodash.throttle": "^4.1.6",
     "electron": "7.3.3",
     "file-loader": "^6.0.0",
-    "utility-types": "^3.10.0",
-    "monaco-editor-webpack-plugin": "1.7.0"
+    "monaco-editor-webpack-plugin": "1.7.0",
+    "utility-types": "^3.10.0"
   },
   "resolutions": {
     "**/node-abi": "2.18.0",
