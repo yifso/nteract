@@ -100,7 +100,8 @@ const Binder = (props : Props) => {
         contentRef
       } /> </>)
       : ""
-  } < />
+    } 
+  </>
     );
 }
 
