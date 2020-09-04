@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import {Octokit} from "@octokit/rest";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {
@@ -15,7 +14,7 @@ import {
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
 import {contentRefByFilepath} from "@nteract/selectors";
-import {createNotebookModel, createSuccessAjaxResponse} from "../util/helpers"
+import {createNotebookModel} from "../util/helpers"
 
 type ComponentProps = {
   filepath: string,
