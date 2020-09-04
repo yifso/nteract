@@ -28,9 +28,10 @@ interface CellProps {
   contentRef: ContentRef;
 }
 
-export class Cells extends React.Component<StateProps & ComponentProps> {
-  render() {
-    const { cellOrder, contentRef, children } = this.props;
+type Props = StateProps & ComponentProps
+
+export const Cells = (props: Props) => {
+    const { cellOrder, contentRef, children } = props;
 
     const defaults = {
       markdown: (props: CellProps) => (
@@ -67,17 +68,16 @@ export class Cells extends React.Component<StateProps & ComponentProps> {
         ))}
       </div>
     );
-  }
 }
 
 export const makeMapStateToProps = (
   state: AppState,
   ownProps: ComponentProps
-): ((state: AppState) => StateProps) => {
-  const mapStateToProps = (state: AppState) => {
+): ((state: AppState, ownProps: ComponentProps) => StateProps) => {
+
+  const mapStateToProps = (state: AppState, ownProps: ComponentProps) => {
     const { contentRef } = ownProps;
     const model = selectors.model(state, { contentRef });
-
     let cellOrder = Immutable.List();
 
     if (model && model.type === "notebook") {
