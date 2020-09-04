@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Octokit} from "@octokit/rest";
 import {Dispatch} from "redux";
-import Store from "../redux/store";
 import {connect} from "react-redux";
 import {
   AppState,
@@ -53,31 +52,26 @@ const mapDispatchToProps = (dispatch : Dispatch) => ({
 const Binder = (props : Props) => {
   const [contentFlag, setContentFlag] = useState(false)
   const [contentRef, setContentRef] = useState("")
-  const [kernelRef, setKernelRef] = useState("")
   const {filepath} = props
-  const preContentRef = props.contentRef
-  const octokit = new Octokit()
   // We need to fetch content again as the filePath has been updated
   useEffect(() => {
-    if (preContentRef === undefined) {
+    if (props.contentRef === undefined) {
       // Since contentRef for filepath is undefined
       // We generate new contentRef and use that
       const cr = createContentRef()
       const kr = createKernelRef()
       setContentRef(cr)
-      setKernelRef(kr)
 
       // Get content from github
       props.getContent(filepath).then(({data}) => {
         const content = atob(data['content'])
         const notebook = createNotebookModel(filepath, content);
-        const response = createSuccessAjaxResponse(notebook);
         // Set content in store
         props.fetchContentFulfilled(filepath, notebook, cr, kr);
         setContentFlag(true)
       })
     } else {
-      setContentRef(preContentRef)
+      setContentRef(props.contentRef)
       setContentFlag(true)
     }
 

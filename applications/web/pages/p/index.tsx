@@ -358,6 +358,8 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
       })
 
     }
+
+    return ""
   }
 
   const getNotebook = async (fileName) => {
