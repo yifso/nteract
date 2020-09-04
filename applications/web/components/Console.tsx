@@ -1,4 +1,4 @@
-import React, { FC,  HTMLAttributes} from "react";
+import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { generate } from "shortid";
 
@@ -36,7 +36,7 @@ const Log = styled.div<LogProps>`
   }
 `
 
-export interface LogProps extends HTMLAttributes<HTMLDivElement>   {
+export interface LogProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
 }
 
@@ -46,17 +46,16 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Console: FC<Props> = (props: Props) => {
-      return (
-        <ConsoleDiv {...props} >
-          {props.children} 
-          { props.logs.map( (value) => {
-            return (<Log className={value.type} key={generate()} >
-                <span className="preLog">$ </span>
-                    {value.message} 
-                     </Log> )
-            })
-          }
-        </ConsoleDiv>
-      );
-  } 
-
+  return (
+    <ConsoleDiv {...props} >
+      {props.children}
+      {props.logs.map((value) => {
+        return (<Log className={value.type} key={generate()} >
+          <span className="preLog">$ </span>
+          {value.message}
+        </Log>)
+      })
+      }
+    </ConsoleDiv>
+  );
+}

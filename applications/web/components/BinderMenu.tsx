@@ -73,17 +73,17 @@ export const BinderMenu: FC<Props> = (props: Props) => {
       <BinderMenuDiv {...props}>
 
         <img className="binder-logo" alt="binder-logo" src="https://mybinder.org/static/logo.svg?v=f9f0d927b67cc9dc99d788c822ca21c0" />
-        <form onSubmit={(e) => props.updateVCSInfo( e, provider.value, org.value, repo.value, gitRef.value )} >
-          <div style={{display: "flex",  marginTop: "-25px"}} >
-                <Inp id="provider" variant="select" label="VCS"  { ...provider} style={{width: "120px"}}>
-                      <option value="gh">Github</option>
-                </Inp>
-                <Inp id="owner" label="Owner" {...org} autoFocus />
-                <Inp id="repo" label="Repository" {...repo}/>
-                <Inp id="branch"  label="Branch" {...gitRef}/>
-            </div>
-          <Button id="launch_button" text="Launch" style={ {marginLeft: '30px'}} icon={rocketIcon} />
-          </form>
+        <form onSubmit={(e) => props.updateVCSInfo(e, provider.value, org.value, repo.value, gitRef.value)} >
+          <div style={{ display: "flex", marginTop: "-25px" }} >
+            <Inp id="provider" variant="select" label="VCS"  {...provider} style={{ width: "120px" }}>
+              <option value="gh">Github</option>
+            </Inp>
+            <Inp id="owner" label="Owner" {...org} autoFocus />
+            <Inp id="repo" label="Repository" {...repo} />
+            <Inp id="branch" label="Branch" {...gitRef} />
+          </div>
+          <Button id="launch_button" text="Launch" style={{ marginLeft: '30px' }} icon={rocketIcon} />
+        </form>
       </BinderMenuDiv>
     </>
   );

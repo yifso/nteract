@@ -59,20 +59,20 @@ export interface Props extends HTMLAttributes<HTMLInputElement | HTMLSelectEleme
 }
 
 export const Inp: FC<Props> = (props: Props) => {
-      let style={}
-      let input = (
-           <input  id={props.id} className={`input ${props.className}`} autoFocus={props.autoFocus}  type="input" {...props} />
-      )
+  let style = {}
+  let input = (
+    <input id={props.id} className={`input ${props.className}`} autoFocus={props.autoFocus} type="input" {...props} />
+  )
 
-      if (props.variant === "select"){
-        input = (<select id={props.id} {...props} className={`select ${props.className}`} style={{ height: "34px", width: "120px"}} >
-                  {props.children}
-              </select>)
-      }else if (props.variant === "textarea"){
-        input = ( <textarea id={props.id} {...props} className={`textarea ${props.className}`}  value={props.value} />)
-      }else if (props.variant === "checkbox"){
-        input = (<> <input type="checkbox"  className={`checkbox ${props.className}`} checked={props.checked} onChange={props.onChange} /> <Label className="checkbox-label" htmlFor={props.id}> {props.label} </Label> </> )
-        style = { padding: "0px" }
+  if (props.variant === "select") {
+    input = (<select id={props.id} {...props} className={`select ${props.className}`} style={{ height: "34px", width: "120px" }} >
+      {props.children}
+    </select>)
+  } else if (props.variant === "textarea") {
+    input = (<textarea id={props.id} {...props} className={`textarea ${props.className}`} value={props.value} />)
+  } else if (props.variant === "checkbox") {
+    input = (<> <input type="checkbox" className={`checkbox ${props.className}`} checked={props.checked} onChange={props.onChange} /> <Label className="checkbox-label" htmlFor={props.id}> {props.label} </Label> </>)
+    style = { padding: "0px" }
   }
 
 

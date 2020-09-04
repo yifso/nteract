@@ -8,7 +8,7 @@
 */
 import { Octokit } from "@octokit/rest";
 
-export const ghGetContent = async(octo, org: string, repo: string, ref: string, fileName: string) => {
+export const ghGetContent = async (octo, org: string, repo: string, ref: string, fileName: string) => {
   const data = octo.repos.getContents({ owner: org, repo: repo, ref: ref, path: fileName })
   return data
 }

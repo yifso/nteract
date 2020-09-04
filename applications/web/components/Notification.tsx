@@ -1,4 +1,4 @@
-import React, { FC,  HTMLAttributes} from "react";
+import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { generate } from "shortid";
 
@@ -30,10 +30,10 @@ const NotificationBox = styled.div<NotifProps>`
 
   &.failure{
     background: #8F1803;
-  } 
+  }
 `;
 
-export interface NotifProps extends HTMLAttributes<HTMLDivElement>   {
+export interface NotifProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
 }
 
@@ -42,15 +42,14 @@ export interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Notification: FC<Props> = (props: Props) => {
-      
-      return (
-        <NotificationWrapper {...props} >
-          { props.notifications.map( (value) => {
-             return (<NotificationBox className={value.type} key={generate()} > {value.message} </NotificationBox> )
-          })
-          }
 
-        </NotificationWrapper>
-      );
-  } 
+  return (
+    <NotificationWrapper {...props} >
+      {props.notifications.map((value) => {
+        return (<NotificationBox className={value.type} key={generate()} > {value.message} </NotificationBox>)
+      })
+      }
 
+    </NotificationWrapper>
+  );
+}
