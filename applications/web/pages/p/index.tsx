@@ -1,4 +1,3 @@
-// Other
 import React, { FC, HTMLAttributes, useState, useEffect } from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter, useRouter } from "next/router";
@@ -20,14 +19,14 @@ import { Console } from '../../components/Console'
 import { Notification } from '../../components/Notification'
 import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
-import { Inp } from '../../components/Input'
+import { Input } from '../../components/Input'
 import { Dialog, Shadow, DialogRow, DialogFooter } from '../../components/Dialog';
 import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer } from "../../components/Layout"
 import { H3, P } from "../../components/Basic"
 import NextHead from "../../components/Header";
 import { getLanguage, useInput, useCheckInput } from "../../util/helpers"
-import { ghUploadToRepo, ghCheckFork, ghGetContent } from "../../util/github"
+import { uploadToRepo, checkFork, getContent } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
@@ -203,12 +202,12 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     })
 
     // Step 3: Find fork or handle in case it doesn't exist.
-    await ghCheckFork(octo, org, repo, gitRef, username).then(() => {
+    await checkFork(octo, org, repo, gitRef, username).then(() => {
       // Step 4: Since user is working on the fork or is owner of the repo
       setOrg(username)
       // Step 5: Upload to the repo from buffer
       try {
-        ghUploadToRepo(octo, username, repo, gitRef, fileBuffer, commitMessage.value).then(() => {
+        uploadToRepo(octo, username, repo, gitRef, fileBuffer, commitMessage.value).then(() => {
           // Step 6: Empty the buffer
           setFileBuffer({})
           addLog({
@@ -241,7 +240,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   async function getFiles(path: string) {
     const octokit = new Octokit()
     let fileList: string[][] = []
-    await ghGetContent(octokit, org, repo, gitRef, path).then((res) => {
+    await getContent(octokit, org, repo, gitRef, path).then((res) => {
       res.data.map((item: any) => {
         fileList.push([item.name, item.path, item.type])
       })
@@ -268,7 +267,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         setFileContent(fileBuffer[fileName])
       } else {
         const octokit = new Octokit()
-        ghGetContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
+        getContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
           setFileContent(atob(data["content"]))
         })
       }
@@ -364,7 +363,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
   const getNotebook = async (fileName) => {
     const octokit = new Octokit()
-    const data = await ghGetContent(octokit, org, repo, gitRef, fileName)
+    const data = await getContent(octokit, org, repo, gitRef, fileName)
     return data
   }
 
@@ -461,11 +460,11 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
               <br /><br />
               If this repo doesn&apos;t already exist, it will automatically be created/forked. Enter your commit message here.
              <DialogRow>
-                <Inp id="commit_message" variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
+                <Input id="commit_message" variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
               </DialogRow>
               {false &&
                 <DialogRow>
-                  <Inp id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
+                  <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
                 </DialogRow>
               }
               <DialogFooter>

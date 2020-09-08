@@ -8,24 +8,24 @@
 */
 import { Octokit } from "@octokit/rest";
 
-export const ghGetContent = async (octo, org: string, repo: string, ref: string, fileName: string) => {
+export const getContent = async (octo, org: string, repo: string, ref: string, fileName: string) => {
   const data = octo.repos.getContents({ owner: org, repo: repo, ref: ref, path: fileName })
   return data
 }
 
-export const ghListForks = async (owner: string, repo: string) => {
+export const listForks = async (owner: string, repo: string) => {
   // This gets the fork of the active repo
   const octo = new Octokit()
   const data = await octo.repos.listForks({ owner: owner, repo })
   return data
 }
 
-export const ghCreateFork = async (octo, owner: string, repo: string) => {
+export const createFork = async (octo, owner: string, repo: string) => {
   const fork = await octo.repos.createFork({ owner, repo, })
   return fork
 }
 
-export const ghRepoExist = async (octo, owner: string, repo: string) => {
+export const repoExist = async (octo, owner: string, repo: string) => {
   const bool = await octo.repos.get({ owner, repo })
   return bool
 }
@@ -35,7 +35,7 @@ export const ghRepoExist = async (octo, owner: string, repo: string) => {
 // A: If user is the owner of repo.
 // B: If fork exists.
 // C: If fork doesn't exist, create it.
-export const ghCheckFork = async (
+export const checkFork = async (
   octo: Octokit,
   org: string,
   repo: string,
@@ -45,11 +45,11 @@ export const ghCheckFork = async (
 
   // Step 1: Check if user is owner of the repo
   if (username == org) {
-    await ghRepoExist(octo, username, repo)
+    await repoExist(octo, username, repo)
   } else {
 
     // Step 2: Check if user already have a fork of the repo
-    await ghListForks(org, repo).then(({ data }) => {
+    await listForks(org, repo).then(({ data }) => {
       for (const repo of data) {
         if (repo.owner.login === username) {
           return
@@ -58,7 +58,7 @@ export const ghCheckFork = async (
     })
 
     // Step 3: Create the fork
-    await ghCreateFork(octo, org, repo)
+    await createFork(octo, org, repo)
   }
 
 }
@@ -68,7 +68,7 @@ export const ghCheckFork = async (
  * Save commit to github
  *
  */
-export const ghUploadToRepo = async (
+export const uploadToRepo = async (
   octo: Octokit,
   org: string,
   repo: string,
@@ -77,7 +77,7 @@ export const ghUploadToRepo = async (
   commitMessage: string = `Auto commit from nteract web`,
 ) => {
   // Step 1: Get current commit
-  const currentCommit = await ghGetCurrentCommit(octo, org, repo, branch)
+  const currentCommit = await getCurrentCommit(octo, org, repo, branch)
 
   // Step 2: Get files path and content to create blob
   let pathsForBlobs = []
@@ -88,10 +88,10 @@ export const ghUploadToRepo = async (
   }
 
   // Step 3: Create File Blob
-  const filesBlobs = await Promise.all(filesContent.map(ghCreateBlobForFile(octo, org, repo)))
+  const filesBlobs = await Promise.all(filesContent.map(createBlobForFile(octo, org, repo)))
 
   // Step 4: Create new tree with new files
-  const newTree = await ghCreateNewTree(
+  const newTree = await createNewTree(
     octo,
     org,
     repo,
@@ -101,7 +101,7 @@ export const ghUploadToRepo = async (
   )
 
   // Step 5: Create new commit
-  const newCommit = await ghCreateNewCommit(
+  const newCommit = await createNewCommit(
     octo,
     org,
     repo,
@@ -111,10 +111,10 @@ export const ghUploadToRepo = async (
   )
 
   // Step 6:  Push new commit to github
-  await ghSetBranchToCommit(octo, org, repo, branch, newCommit.sha)
+  await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
 }
 
-export const ghGetCurrentCommit = async (
+export const getCurrentCommit = async (
   octo: Octokit,
   org: string,
   repo: string,
@@ -137,7 +137,7 @@ export const ghGetCurrentCommit = async (
   }
 }
 
-export const ghCreateBlobForFile = (octo: Octokit, org: string, repo: string) => async (
+export const createBlobForFile = (octo: Octokit, org: string, repo: string) => async (
   content: string
 ) => {
   const blobData = await octo.git.createBlob({
@@ -149,7 +149,7 @@ export const ghCreateBlobForFile = (octo: Octokit, org: string, repo: string) =>
   return blobData.data
 }
 
-export const ghCreateNewTree = async (
+export const createNewTree = async (
   octo: Octokit,
   owner: string,
   repo: string,
@@ -173,7 +173,7 @@ export const ghCreateNewTree = async (
   return data
 }
 
-export const ghCreateNewCommit = async (
+export const createNewCommit = async (
   octo: Octokit,
   org: string,
   repo: string,
@@ -191,7 +191,7 @@ export const ghCreateNewCommit = async (
   return commit.data
 }
 
-export const ghSetBranchToCommit = (
+export const setBranchToCommit = (
   octo: Octokit,
   org: string,
   repo: string,

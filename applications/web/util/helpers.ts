@@ -35,7 +35,6 @@ export const useCheckInput = (val: boolean | undefined) => {
 
 export function createNotebookModel(filePath: string, content?: string): IContent<"notebook"> {
   const name = filePath
-  // tslint:disable-next-line no-bitwise
   const writable = true
   const created = ""
   // tslint:disable-next-line variable-name -- jupyter camel case naming convention for API

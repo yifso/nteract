@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {Dispatch} from "redux";
-import {connect} from "react-redux";
+import React, { useState, useEffect } from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import {
   AppState,
   actions,
@@ -13,18 +13,18 @@ import {
   ServerConfig
 } from "@nteract/core";
 import NotebookApp from "@nteract/notebook-app-component/lib/notebook-apps/web-draggable";
-import {contentRefByFilepath} from "@nteract/selectors";
-import {createNotebookModel} from "../util/helpers"
+import { contentRefByFilepath } from "@nteract/selectors";
+import { createNotebookModel } from "../util/helpers"
 
 type ComponentProps = {
   filepath: string,
-  getContent: (x : string) => Promise<any>,
+  getContent: (x: string) => Promise<any>,
   host: ServerConfig
 }
 
 interface DispatchProps {
-  setAppHost: (host : HostRecord) => void;
-  fetchContentFulfilled: (filepath : string, model : any, contentRef : ContentRef, kernelRef : KernelRef) => void;
+  setAppHost: (host: HostRecord) => void;
+  fetchContentFulfilled: (filepath: string, model: any, contentRef: ContentRef, kernelRef: KernelRef) => void;
 }
 
 type StateProps = {
@@ -33,25 +33,24 @@ type StateProps = {
 
 type Props = ComponentProps & DispatchProps & StateProps;
 
-const makeMapStateToProps = (initialState : AppState, ownProps : ComponentProps) => {
-  const mapStateToProps = (state : AppState, ownProps : ComponentProps): StateProps => {
-    const {filepath} = ownProps
-    const ref = contentRefByFilepath(state, {filepath: filepath})
-    return {contentRef: ref}
+const makeMapStateToProps = (initialState: AppState, ownProps: ComponentProps) => {
+  const mapStateToProps = (state: AppState, ownProps: ComponentProps): StateProps => {
+    const { filepath } = ownProps
+    const ref = contentRefByFilepath(state, { filepath: filepath })
+    return { contentRef: ref }
   }
 
   return mapStateToProps
 };
 
-const mapDispatchToProps = (dispatch : Dispatch) => ({
-  setAppHost: (host : HostRecord) => dispatch(actions.setAppHost({host})),
-  fetchContentFulfilled: (filepath : string, model : any, contentRef : ContentRef, kernelRef : KernelRef) => dispatch(actions.fetchContentFulfilled({filepath, model, contentRef, kernelRef}))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setAppHost: (host: HostRecord) => dispatch(actions.setAppHost({ host })),
+  fetchContentFulfilled: (filepath: string, model: any, contentRef: ContentRef, kernelRef: KernelRef) => dispatch(actions.fetchContentFulfilled({ filepath, model, contentRef, kernelRef }))
 });
 
-const Binder = (props : Props) => {
-  const [contentFlag, setContentFlag] = useState(false)
+const Binder = (props: Props) => {
   const [contentRef, setContentRef] = useState("")
-  const {filepath} = props
+  const { filepath } = props
   // We need to fetch content again as the filePath has been updated
   useEffect(() => {
     if (props.contentRef === undefined) {
@@ -62,16 +61,14 @@ const Binder = (props : Props) => {
       setContentRef(cr)
 
       // Get content from github
-      props.getContent(filepath).then(({data}) => {
+      props.getContent(filepath).then(({ data }) => {
         const content = atob(data['content'])
         const notebook = createNotebookModel(filepath, content);
         // Set content in store
         props.fetchContentFulfilled(filepath, notebook, cr, kr);
-        setContentFlag(true)
       })
     } else {
       setContentRef(props.contentRef)
-      setContentFlag(true)
     }
 
   }, [filepath])
@@ -87,15 +84,8 @@ const Binder = (props : Props) => {
 
   }, [props.host])
 
-  return (<> {
-    contentFlag
-      ? (<> < NotebookApp contentRef = {
-        contentRef
-      } /> </>)
-      : ""
-    } 
-  </>
-    );
+  return ( < NotebookApp contentRef={contentRef} />)
+
 }
 
 
