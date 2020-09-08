@@ -18,7 +18,6 @@ describe("makeMapStateToProps", () => {
     const contentRef = state.core.entities.contents.byRef.keySeq().first()
     const ownProps = { contentRef: contentRef as string};
     const result = makeMapStateToProps(state, ownProps)(state, ownProps);
-    console.log(result)
     expect(result.cellOrder.size).toBe(3);
   });
 });

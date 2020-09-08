@@ -28,11 +28,9 @@ interface CellProps {
   contentRef: ContentRef;
 }
 
-type Props = StateProps & ComponentProps
-
-export const Cells = (props: Props) => {
-    const { cellOrder, contentRef, children } = props;
-
+export class Cells extends React.Component<StateProps & ComponentProps> {
+  render() {
+    const { cellOrder, contentRef, children } = this.props;
     const defaults = {
       markdown: (props: CellProps) => (
         <MarkdownCell
@@ -68,6 +66,7 @@ export const Cells = (props: Props) => {
         ))}
       </div>
     );
+  }
 }
 
 export const makeMapStateToProps = (
