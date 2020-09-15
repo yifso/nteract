@@ -6,6 +6,7 @@ import { Octokit } from "@octokit/rest";
 import { formatDistanceToNow } from "date-fns";
 import { AppState } from "@nteract/core"
 import dynamic from "next/dynamic";
+import Immutable from "immutable";
 // nteract
 import { contentByRef } from "@nteract/selectors";
 import { ContentRecord } from "@nteract/types";
@@ -40,7 +41,7 @@ export interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface StateProps {
-  contents: ContentRecord
+  contents: Immutable.Map<string, ContentRecord>
 }
 
 type Props = ComponentProps & StateProps;
@@ -180,7 +181,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     event.preventDefault()
 
     props.contents.map(x => {
-      const content = stringifyNotebook(toJS(x.model.notebook))
+      const content = stringifyNotebook(x.model.get("notebook", undefined))
       addBuffer(content, x.filepath)
     }
     )
