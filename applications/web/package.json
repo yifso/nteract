@@ -19,6 +19,7 @@
     "@nteract/stateful-components": "^1.6.0",
     "@nteract/styles": "^2.2.1",
     "@octokit/rest": "^17.1.1",
+    "date-fns": "^2.16.1",
     "lang-map": "^0.4.0",
     "next": "^9.4.1",
     "next-redux-wrapper": "^6.0.0",

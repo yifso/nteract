@@ -1,13 +1,14 @@
 import React, { FC, HTMLAttributes, useState, useEffect } from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
-import { withRouter, useRouter } from "next/router";
+import { withRouter, useRouter, NextRouter } from "next/router";
 import { connect } from "react-redux";
 import { Octokit } from "@octokit/rest";
-import moment from "moment";
+import { formatDistanceToNow } from "date-fns";
 import { AppState } from "@nteract/core"
 import dynamic from "next/dynamic";
 // nteract
 import { contentByRef } from "@nteract/selectors";
+import { ContentRecord } from "@nteract/types";
 import { Host } from "@mybinder/host-cache";
 import { toJS, stringifyNotebook } from "@nteract/commutable";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
@@ -35,11 +36,11 @@ const Binder = dynamic(() => import("../../components/Binder"), {
 const BINDER_URL = "https://mybinder.org";
 
 export interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
-  router: any
+  router: NextRouter
 }
 
 export interface StateProps {
-  contents: any
+  contents: ContentRecord
 }
 
 type Props = ComponentProps & StateProps;
@@ -68,7 +69,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   // This should be a boolean value but as a string
   const stripOutput = useCheckInput(false)
   const [fileBuffer, setFileBuffer] = useState({})
-  const [savedTime, setSavedTime] = useState(moment())
+  const [savedTime, setSavedTime] = useState(new Date())
 
   // Console
   const [consoleLog, setConsoleLog] = useState([])
@@ -113,12 +114,10 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
   useEffect(() => {
     // To check if Github token exist, if yes, get user details
-    if (localStorage.getItem("token") != undefined) {
-      // Check if username is empty because we need to
-      // get username only if it's not defined.
-      if (username == "") {
+    // Check if username is empty because we need to
+    // get username only if it's not defined.
+    if (localStorage.getItem("token") != undefined && username === "") {
         getGithubUserDetails()
-      }
     }
   }, [username])
 
@@ -216,7 +215,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           })
 
           // Update time of save
-          setSavedTime(moment())
+          setSavedTime(new Date())
         })
       } catch (err) {
         addLog({
@@ -275,14 +274,14 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
 
   }
 
-  function updateVCSInfo(event, providerP, orgP, repoP, gitRefP) {
+  function updateVCSInfo(event, previousProvider, previousOrg, previousRepo, previousGitRef) {
     event.preventDefault()
 
-    if (provider != providerP || org != orgP || repo != repoP || gitRef != gitRefP) {
-      setProvider(providerP)
-      setOrg(orgP)
-      setRepo(repoP)
-      setGitRef(gitRefP)
+    if (provider != previousProvider || org != previousOrg || repo != previousRepo || gitRef != previousGitRef ) {
+      setProvider(previousProvider)
+      setOrg(previousOrg)
+      setRepo(previousRepo)
+      setGitRef(previousGitRef )
       setFilepath("")
       // To empty buffer when repo is updated
       setFileBuffer({})
@@ -557,7 +556,7 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         </Menu>
         <Menu>
           <MenuItem>
-            {savedTime.fromNow()}
+            {formatDistanceToNow(savedTime)}
           </MenuItem>
         </Menu>
       </Footer>
