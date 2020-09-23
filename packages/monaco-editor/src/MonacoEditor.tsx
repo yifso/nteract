@@ -5,6 +5,7 @@ import * as React from "react";
 import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
+import debounce from "lodash/debounce";
 
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
@@ -88,7 +89,8 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    */
   private parameterWidget?: Element;
   private blurEditorWidgetListener?: monaco.IDisposable;
-  private leaveTimer?: number;
+  private focusEditorWidgetListener?: monaco.IDisposable;
+  private mouseMoveListener?: monaco.IDisposable;
 
   constructor(props: IMonacoProps) {
     super(props);
@@ -97,6 +99,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     this.onDidChangeModelContent = this.onDidChangeModelContent.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.resize = this.resize.bind(this);
+    this.hideAllOtherParameterWidgets = debounce(this.hideAllOtherParameterWidgets.bind(this), 150);
   }
 
   onDidChangeModelContent(e: monaco.editor.IModelContentChangedEvent) {
@@ -254,6 +257,16 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       this.blurEditorWidgetListener = this.editor.onDidBlurEditorWidget(() => {
         this.hideParameterWidget();
       });
+
+      this.focusEditorWidgetListener = this.editor.onDidFocusEditorWidget(() => {
+        this.hideAllOtherParameterWidgets();
+      });
+
+      if (this.editor) {
+        this.mouseMoveListener = this.editor.onMouseMove(() => {
+            this.hideAllOtherParameterWidgets();
+        });
+      }
     }
   }
 
@@ -373,6 +386,9 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     }
     if (this.blurEditorWidgetListener) {
       this.blurEditorWidgetListener.dispose();
+    }
+    if (this.focusEditorWidgetListener) {
+      this.focusEditorWidgetListener.dispose();
     }
   }
 
@@ -574,4 +590,42 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       }
     });
   }
+
+  /**
+     * Hides widgets such as parameters and hover, that belong to a given parent HTML element.
+     *
+     * @private
+     * @param {HTMLDivElement} widgetParent
+     * @param {string[]} selectors
+     * @memberof MonacoEditor
+     */
+    private hideWidgets(widgetParent: HTMLDivElement, selectors: string[]){
+      for (const selector of selectors){
+        for (const widget of Array.from<HTMLDivElement>(widgetParent.querySelectorAll(selector))) {
+            widget.setAttribute('class', widget.className.split(' ').filter((cls: string) => cls !== 'visible').join(' '));
+            if (widget.style.visibility !== 'hidden') {
+              widget.style.visibility = 'hidden';
+            }
+        }
+      }
+    }
+
+     /**
+     * Hides the parameters widgets related to other monaco editors.
+     * Use this to ensure we only display parameters widgets for current editor (by hiding others).
+     *
+     * @private
+     * @returns
+     * @memberof MonacoEditor
+     */
+    private hideAllOtherParameterWidgets(){
+      const root = document.getElementById('app');
+      if (!root || !this.editorContainerRef.current){
+          return;
+      }
+      const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(root.querySelectorAll('div.monaco-container'));
+      widgetParents
+      .filter(widgetParent => widgetParent !== this.editorContainerRef.current)
+      .forEach(widgetParent => this.hideWidgets(widgetParent, ['.parameter-hints-widget']));
+    }
 }
