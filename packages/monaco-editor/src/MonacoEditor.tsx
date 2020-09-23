@@ -503,7 +503,9 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * @memberof MonacoEditor
    */
   private hideParameterWidget() {
-    if (!this.editor || !this.editor.getDomNode()) {
+    if (!this.editor || !this.editor.getDomNode() ||
+      // Make sure that we don't break screen readers
+      this.parameterWidget?.contains(document.activeElement)) {
       return;
     }
 
