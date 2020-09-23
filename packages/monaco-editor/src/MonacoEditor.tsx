@@ -83,6 +83,13 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   contentHeight?: number;
   private cursorPositionListener?: monaco.IDisposable;
 
+  /**
+   * Reference to parameter widget (used by monaco to display parameter docs).
+   */
+  private parameterWidget?: Element;
+  private blurEditorWidgetListener?: monaco.IDisposable;
+  private leaveTimer?: number;
+
   constructor(props: IMonacoProps) {
     super(props);
     this.calculateHeight = this.calculateHeight.bind(this);
@@ -242,6 +249,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       if(this.props.cursorPositionHandler){
         this.props.cursorPositionHandler(this.editor, this.props);
       }
+
+      // When editor loses focus, hide parameter widgets (if any currently displayed).
+      this.blurEditorWidgetListener = this.editor.onDidBlurEditorWidget(() => {
+        this.hideParameterWidget();
+      });
     }
   }
 
@@ -355,6 +367,13 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         console.error(`Error occurs in disposing editor: ${JSON.stringify(err)}`);
       }
     }
+    if (this.parameterWidget) {
+      this.parameterWidget.removeEventListener('mouseleave', this.outermostParentLeave);
+      this.parameterWidget = undefined;
+    }
+    if (this.blurEditorWidgetListener) {
+      this.blurEditorWidgetListener.dispose();
+    }
   }
 
   render() {
@@ -440,5 +459,119 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         this.registerDefaultCompletionProvider(language);
       }
     }
+  }
+
+  /**
+   * Hide the parameter widget on mouse leave event.
+   */
+  private outermostParentLeave() {
+    if (this.editor) {
+      // Possible user is viewing the parameter hints, wait before user moves the mouse.
+      // Waiting for 1s is too long to move the mouse and hide the hints (100ms seems like a good fit).
+      setTimeout(() => this.hideParameterWidget(), 100);
+    }
+  }
+
+  /**
+   * This will hide the parameter widget if the user is not hovering over
+   * the parameter widget for this monaco editor.
+   *
+   * Notes: See issue https://github.com/microsoft/vscode-python/issues/7851 for further info.
+   * Hide the parameter widget if all of the following conditions have been met:
+   * - Editor doesn't have focus
+   * - Mouse is not over the editor
+   * - Mouse is not over (hovering) the parameter widget
+   *
+   * @private
+   * @returns
+   * @memberof MonacoEditor
+   */
+  private hideParameterWidget() {
+    if (!this.editor || !this.editor.getDomNode()) {
+      return;
+    }
+
+    // Find all elements that the user is hovering over.
+    // It's possible the parameter widget is one of them.
+    const hoverElements: Element[] = Array.prototype.slice.call(document.querySelectorAll(':hover'));
+    if (!this.editorContainerRef.current) {
+      return;
+    }
+
+    // Find all parameter widgets related to this monaco editor that are currently displayed.
+    const visibleParameterHintsWidgets: Element[] = Array.prototype.slice.call(this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget.visible'));
+    if (hoverElements.length === 0 && visibleParameterHintsWidgets.length === 0) {
+      // If user is not hovering over anything and there are no visible parameter widgets,
+      // then, we have nothing to do but get out of here.
+      return;
+    }
+
+    // Find all parameter widgets related to this monaco editor.
+    const knownParameterHintsWidgets: HTMLDivElement[] = Array.prototype.slice.call(this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget'));
+
+    // Let's not assume we'll have the exact same DOM for parameter widgets.
+    // So, just remove the event handler, and add it again later.
+    if (this.parameterWidget) {
+      this.parameterWidget.removeEventListener('mouseleave', this.outermostParentLeave);
+    }
+
+    // These are the classes that will appear on a parameter widget when they are visible.
+    const parameterWidgetClasses = ['editor-widget', 'parameter-hints-widget', 'visible'];
+
+    // Find the parameter widget the user is currently hovering over.
+    this.parameterWidget = hoverElements.find(item => {
+      if (!item.className) {
+        return false;
+      }
+
+      // Check if user is hovering over a parameter widget.
+      const classes = item.className.split(' ');
+
+      if (!parameterWidgetClasses.every(cls => classes.indexOf(cls) >= 0)) {
+        // Not all classes required in a parameter hint widget are in this element.
+        // Hence this is not a parameter widget.
+        return false;
+      }
+
+      // Ok, this element that the user is hovering over is a parameter widget.
+      // Next, check whether this parameter widget belongs to this monaco editor.
+      // We have a list of parameter widgets that belong to this editor, hence a simple lookup.
+      return knownParameterHintsWidgets.some(widget => widget === item);
+    });
+
+    if (this.parameterWidget) {
+      // We know the user is hovering over the parameter widget for this editor.
+      // Hovering could mean the user is scrolling through a large parameter list.
+      // We need to add a mouse leave event handler, so as to hide this.
+      this.parameterWidget.addEventListener('mouseleave', this.outermostParentLeave);
+      // In case the event handler doesn't get fired, have a backup of checking within 1s.
+      setTimeout(() => this.hideParameterWidget(), 1000);
+      return;
+    }
+
+    if (visibleParameterHintsWidgets.length === 0) {
+      // There are no parameter widgets displayed for this editor.
+      // Hence nothing to do.
+      return;
+    }
+
+    // If the editor has focus, don't hide the parameter widget.
+    // This is the default behavior. Let the user hit `Escape` or click somewhere
+    // to forcefully hide the parameter widget.
+    if (this.editor.hasWidgetFocus()) {
+      return;
+    }
+
+    // If we got here, then the user is not hovering over the parameter widgets.
+    // & the editor doesn't have focus.
+    // However some of the parameter widgets associated with this monaco editor are visible.
+    // We need to hide them.
+    // Solution: Hide the widgets manually.
+    knownParameterHintsWidgets.forEach(widget => {
+      widget.setAttribute('class', widget.className.split(' ').filter(cls => cls !== 'visible').join(' '));
+      if (widget.style.visibility !== 'hidden') {
+        widget.style.visibility = 'hidden';
+      }
+    });
   }
 }
