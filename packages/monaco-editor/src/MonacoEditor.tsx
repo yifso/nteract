@@ -503,21 +503,23 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * @memberof MonacoEditor
    */
   private hideParameterWidget() {
-    if (!this.editor || !this.editor.getDomNode() ||
-      // Make sure that we don't break screen readers
-      this.parameterWidget?.contains(document.activeElement)) {
+    if (
+      !this.editor ||
+      !this.editor.getDomNode() ||
+      !this.editorContainerRef.current ||
+      this.parameterWidget?.contains(document.activeElement) // Don't break screen readers
+    ) {
       return;
     }
 
     // Find all elements that the user is hovering over.
     // It's possible the parameter widget is one of them.
     const hoverElements: Element[] = Array.prototype.slice.call(document.querySelectorAll(':hover'));
-    if (!this.editorContainerRef.current) {
-      return;
-    }
 
     // Find all parameter widgets related to this monaco editor that are currently displayed.
-    const visibleParameterHintsWidgets: Element[] = Array.prototype.slice.call(this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget.visible'));
+    const visibleParameterHintsWidgets: Element[] = Array.prototype.slice.call(
+      this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget.visible'));
+    
     if (hoverElements.length === 0 && visibleParameterHintsWidgets.length === 0) {
       // If user is not hovering over anything and there are no visible parameter widgets,
       // then, we have nothing to do but get out of here.
@@ -525,7 +527,8 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     }
 
     // Find all parameter widgets related to this monaco editor.
-    const knownParameterHintsWidgets: HTMLDivElement[] = Array.prototype.slice.call(this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget'));
+    const knownParameterHintsWidgets: HTMLDivElement[] = Array.prototype.slice.call(
+      this.editorContainerRef.current.querySelectorAll('.parameter-hints-widget'));
 
     // Let's not assume we'll have the exact same DOM for parameter widgets.
     // So, just remove the event handler, and add it again later.
@@ -538,7 +541,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
 
     // Find the parameter widget the user is currently hovering over.
     this.parameterWidget = hoverElements.find(item => {
-      if (!item.className) {
+      if (typeof item.className !== 'string') {
         return false;
       }
 
@@ -562,6 +565,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       // Hovering could mean the user is scrolling through a large parameter list.
       // We need to add a mouse leave event handler, so as to hide this.
       this.parameterWidget.addEventListener('mouseleave', this.outermostParentLeave);
+      
       // In case the event handler doesn't get fired, have a backup of checking within 1s.
       setTimeout(() => this.hideParameterWidget(), 1000);
       return;
@@ -585,12 +589,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     // However some of the parameter widgets associated with this monaco editor are visible.
     // We need to hide them.
     // Solution: Hide the widgets manually.
-    knownParameterHintsWidgets.forEach(widget => {
-      widget.setAttribute('class', widget.className.split(' ').filter(cls => cls !== 'visible').join(' '));
-      if (widget.style.visibility !== 'hidden') {
-        widget.style.visibility = 'hidden';
-      }
-    });
+    this.hideWidgets(this.editorContainerRef.current, ['.parameter-hints-widget']);
   }
 
   /**
@@ -604,10 +603,16 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     private hideWidgets(widgetParent: HTMLDivElement, selectors: string[]){
       for (const selector of selectors){
         for (const widget of Array.from<HTMLDivElement>(widgetParent.querySelectorAll(selector))) {
-            widget.setAttribute('class', widget.className.split(' ').filter((cls: string) => cls !== 'visible').join(' '));
-            if (widget.style.visibility !== 'hidden') {
-              widget.style.visibility = 'hidden';
-            }
+          widget.setAttribute(
+            'class',
+            widget.className
+              .split(' ')
+              .filter((cls: string) => cls !== 'visible')
+              .join(' ')
+          );
+          if (widget.style.visibility !== 'hidden') {
+            widget.style.visibility = 'hidden';
+          }
         }
       }
     }
@@ -625,7 +630,8 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       if (!root || !this.editorContainerRef.current){
           return;
       }
-      const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(root.querySelectorAll('div.monaco-container'));
+      const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(
+        root.querySelectorAll('div.monaco-container'));
       widgetParents
       .filter(widgetParent => widgetParent !== this.editorContainerRef.current)
       .forEach(widgetParent => this.hideWidgets(widgetParent, ['.parameter-hints-widget']));
