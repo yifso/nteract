@@ -5,7 +5,7 @@ import * as React from "react";
 import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
-import debounce from "lodash/debounce";
+import debounce from "lodash.debounce";
 
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
