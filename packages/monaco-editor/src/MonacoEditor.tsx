@@ -10,6 +10,13 @@ import debounce from "lodash/debounce";
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
 /**
+ * This adds an additional padded area around the editor for the mouse
+ * to move around before we decide to hide the popup. This makes the
+ * transition less erratic and hopefully a smoother experience.
+ */
+const HOVER_BOUND_OFFSET: number = 5;
+
+/**
  * Settings for configuring keyboard shortcuts with Monaco
  */
 export interface IMonacoShortCutProps {
@@ -263,8 +270,10 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       });
 
       if (this.editor) {
-        this.mouseMoveListener = this.editor.onMouseMove(() => {
+        this.mouseMoveListener = this.editor.onMouseMove((e: any) => {
+          if (!this.coordsInsideEditor(e.event?.pos?.x, e.event?.pos?.y)) {
             this.hideAllOtherParameterWidgets();
+          }
         });
       }
     }
@@ -483,8 +492,8 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   /**
    * Hide the parameter widget on mouse leave event.
    */
-  private outermostParentLeave() {
-    if (this.editor) {
+  private outermostParentLeave(e: any) {
+    if (this.editor && !this.coordsInsideEditor(e.event?.pos?.x, e.event?.pos?.y)) {
       // Possible user is viewing the parameter hints, wait before user moves the mouse.
       // Waiting for 1s is too long to move the mouse and hide the hints (100ms seems like a good fit).
       setTimeout(() => this.hideParameterWidget(), 100);
@@ -638,5 +647,20 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     widgetParents
       .filter(widgetParent => widgetParent !== this.editorContainerRef.current)
       .forEach(widgetParent => this.hideWidgets(widgetParent, ['.parameter-hints-widget']));
+  }
+
+  private coordsInsideEditor(x: number, y: number): boolean {
+    if (this.editorContainerRef.current && this.props.editorFocused) {
+        const clientRect = this.editorContainerRef.current.getBoundingClientRect();
+        if (
+          x >= clientRect.left - HOVER_BOUND_OFFSET &&
+          x <= clientRect.right + HOVER_BOUND_OFFSET &&
+          y >= clientRect.top - HOVER_BOUND_OFFSET &&
+          y <= clientRect.bottom + HOVER_BOUND_OFFSET
+        ) {
+            return true;
+        }
+    }
+    return false;
   }
 }
