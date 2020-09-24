@@ -5,6 +5,7 @@ import * as React from "react";
 import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
+import "./style.css";
 
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
@@ -266,7 +267,8 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * Tells editor to check the surrounding container size and resize itself appropriately
    */
   resize() {
-    if (this.editor) {
+    // We call layout only for the focussed editor and resize other instances using CSS
+    if (this.editor && this.props.editorFocused) {
       this.editor.layout();
     }
   }
