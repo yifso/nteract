@@ -14,7 +14,7 @@ export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
  * to move around before we decide to hide the popup. This makes the
  * transition less erratic and hopefully a smoother experience.
  */
-const HOVER_BOUND_OFFSET: number = 5;
+const HOVER_BOUND_DEFAULT_PADDING: number = 5;
 
 /**
  * Settings for configuring keyboard shortcuts with Monaco
@@ -106,7 +106,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     this.onDidChangeModelContent = this.onDidChangeModelContent.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.resize = this.resize.bind(this);
-    this.hideAllOtherParameterWidgets = debounce(this.hideAllOtherParameterWidgets.bind(this), 150);
+    this.hideAllOtherParameterWidgets = this.hideAllOtherParameterWidgets.bind(this);
+    this.handleCoordsOutsideWidgetActiveRegion = debounce(
+      this.handleCoordsOutsideWidgetActiveRegion.bind(this),
+      50 // Make sure we rate limit the calls made by mouse movement
+    );
   }
 
   onDidChangeModelContent(e: monaco.editor.IModelContentChangedEvent) {
@@ -271,9 +275,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
 
       if (this.editor) {
         this.mouseMoveListener = this.editor.onMouseMove((e: any) => {
-          if (!this.coordsInsideEditor(e.event?.pos?.x, e.event?.pos?.y)) {
-            this.hideAllOtherParameterWidgets();
-          }
+          this.handleCoordsOutsideWidgetActiveRegion(e.event?.pos?.x, e.event?.pos?.y);
         });
       }
     }
@@ -493,7 +495,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * Hide the parameter widget on mouse leave event.
    */
   private outermostParentLeave(e: any) {
-    if (this.editor && !this.coordsInsideEditor(e.event?.pos?.x, e.event?.pos?.y)) {
+    if (this.editor) {
       // Possible user is viewing the parameter hints, wait before user moves the mouse.
       // Waiting for 1s is too long to move the mouse and hide the hints (100ms seems like a good fit).
       setTimeout(() => this.hideParameterWidget(), 100);
@@ -644,23 +646,45 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     }
     const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(
       rootSelector[0].querySelectorAll('div.monaco-container'));
+
     widgetParents
-      .filter(widgetParent => widgetParent !== this.editorContainerRef.current)
+      .filter(widgetParent => widgetParent !== this.editorContainerRef.current?.parentElement)
       .forEach(widgetParent => this.hideWidgets(widgetParent, ['.parameter-hints-widget']));
   }
 
-  private coordsInsideEditor(x: number, y: number): boolean {
-    if (this.editorContainerRef.current && this.props.editorFocused) {
-        const clientRect = this.editorContainerRef.current.getBoundingClientRect();
-        if (
-          x >= clientRect.left - HOVER_BOUND_OFFSET &&
-          x <= clientRect.right + HOVER_BOUND_OFFSET &&
-          y >= clientRect.top - HOVER_BOUND_OFFSET &&
-          y <= clientRect.bottom + HOVER_BOUND_OFFSET
-        ) {
-            return true;
-        }
+  /**
+   * Return true if (x,y) coordinates overlap with an element's bounding rect. 
+   * @param {HTMLDivElement} element 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} padding
+   */
+  private coordsInsideElement(
+    element: Element | null | undefined,
+    x: number,
+    y: number,
+    padding: number = HOVER_BOUND_DEFAULT_PADDING
+  ): boolean {
+    if (!element) return false;
+    const clientRect = element.getBoundingClientRect();
+    return (
+      x >= clientRect.left - padding &&
+      x <= clientRect.right + padding &&
+      y >= clientRect.top - padding &&
+      y <= clientRect.bottom + padding
+    );
+  }
+
+  /**
+   * Hide all other widgets belonging to other cells only if the currently active
+   * parameter widget (at most one) is being hovered by the user.
+   * @param {number} x 
+   * @param {number} y 
+   */
+  private handleCoordsOutsideWidgetActiveRegion(x: number, y: number) {
+    let widget = document.querySelector('.parameter-hints-widget');
+    if (widget != null && !this.coordsInsideElement(widget, x, y)) {
+      this.hideAllOtherParameterWidgets();
     }
-    return false;
   }
 }
