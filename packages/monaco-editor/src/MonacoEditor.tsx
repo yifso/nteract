@@ -5,8 +5,16 @@ import * as React from "react";
 import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
+import debounce from "lodash.debounce";
 
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
+
+/**
+ * This adds an additional padded area around the editor for the mouse
+ * to move around before we decide to hide the popup. This makes the
+ * transition less erratic and hopefully a smoother experience.
+ */
+const HOVER_BOUND_DEFAULT_PADDING: number = 5;
 
 /**
  * Settings for configuring keyboard shortcuts with Monaco
@@ -83,6 +91,12 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   contentHeight?: number;
   private cursorPositionListener?: monaco.IDisposable;
 
+  /**
+   * Reference to parameter widget (used by monaco to display parameter docs).
+   */
+  private blurEditorWidgetListener?: monaco.IDisposable;
+  private mouseMoveListener?: monaco.IDisposable;
+
   constructor(props: IMonacoProps) {
     super(props);
     this.calculateHeight = this.calculateHeight.bind(this);
@@ -90,6 +104,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     this.onDidChangeModelContent = this.onDidChangeModelContent.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.resize = this.resize.bind(this);
+    this.hideAllOtherParameterWidgets = this.hideAllOtherParameterWidgets.bind(this);
+    this.handleCoordsOutsideWidgetActiveRegion = debounce(
+      this.handleCoordsOutsideWidgetActiveRegion.bind(this),
+      50 // Make sure we rate limit the calls made by mouse movement
+    );
   }
 
   onDidChangeModelContent(e: monaco.editor.IModelContentChangedEvent) {
@@ -242,6 +261,17 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       if(this.props.cursorPositionHandler){
         this.props.cursorPositionHandler(this.editor, this.props);
       }
+
+      // When editor loses focus, hide parameter widgets (if any currently displayed).
+      this.blurEditorWidgetListener = this.editor.onDidBlurEditorWidget(() => {
+        this.hideParameterWidget();
+      });
+
+      if (this.editor) {
+        this.mouseMoveListener = this.editor.onMouseMove((e: any) => {
+          this.handleCoordsOutsideWidgetActiveRegion(e.event?.pos?.x, e.event?.pos?.y);
+        });
+      }
     }
   }
 
@@ -355,6 +385,12 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         console.error(`Error occurs in disposing editor: ${JSON.stringify(err)}`);
       }
     }
+    if (this.blurEditorWidgetListener) {
+      this.blurEditorWidgetListener.dispose();
+    }
+    if (this.mouseMoveListener) {
+      this.mouseMoveListener.dispose();
+    }
   }
 
   render() {
@@ -439,6 +475,160 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       } else if (shouldRegisterDefaultCompletion) {
         this.registerDefaultCompletionProvider(language);
       }
+    }
+  }
+
+  /**
+   * This will hide the parameter widget if the user is not hovering over
+   * the parameter widget for this monaco editor.
+   *
+   * Notes: See issue https://github.com/microsoft/vscode-python/issues/7851 for further info.
+   * Hide the parameter widget if the following conditions have been met:
+   * - Editor doesn't have focus
+   * - Mouse is not over (hovering) the parameter widget
+   *
+   * This method is only used for blurring at the moment given that parameter widgets from
+   * other cells are hidden by mouse move events.
+   * 
+   * @private
+   * @returns
+   * @memberof MonacoEditor
+   */
+  private hideParameterWidget() {
+    if (
+      !this.editor ||
+      !this.editor.getDomNode() ||
+      !this.editorContainerRef.current
+    ) {
+      return;
+    }
+
+    // Find all elements that the user is hovering over.
+    // It's possible the parameter widget is one of them.
+    const hoverElements: Element[] = Array.prototype.slice.call(document.querySelectorAll(':hover'));
+
+    // These are the classes that will appear on a parameter widget when they are visible.
+    const parameterWidgetClasses = ['editor-widget', 'parameter-hints-widget', 'visible'];
+
+    // Find the parameter widget the user is currently hovering over.
+    let isParameterWidgetHovered = hoverElements.find(item => {
+      if (typeof item.className !== 'string') {
+        return false;
+      }
+
+      // Check if user is hovering over a parameter widget.
+      const classes = item.className.split(' ');
+
+      if (!parameterWidgetClasses.every(cls => classes.indexOf(cls) >= 0)) {
+        // Not all classes required in a parameter hint widget are in this element.
+        // Hence this is not a parameter widget.
+        return false;
+      }
+
+      // Ok, this element that the user is hovering over is a parameter widget.
+      // Next, check whether this parameter widget belongs to this monaco editor.
+      // We have a list of parameter widgets that belong to this editor, hence a simple lookup.
+      return this.editorContainerRef.current?.contains(item);
+    });
+
+    // If the parameter widget is being hovered, don't hide it.
+    if (isParameterWidgetHovered) {
+      return;
+    }
+
+    // If the editor has focus, don't hide the parameter widget.
+    // This is the default behavior. Let the user hit `Escape` or click somewhere
+    // to forcefully hide the parameter widget.
+    if (this.editor.hasWidgetFocus()) {
+      return;
+    }
+
+    // If we got here, then the user is not hovering over the parameter widgets.
+    // & the editor doesn't have focus.
+    // However some of the parameter widgets associated with this monaco editor are visible.
+    // We need to hide them.
+    // Solution: Hide the widgets manually.
+    this.hideWidgets(this.editorContainerRef.current, ['.parameter-hints-widget']);
+  }
+
+  /**
+   * Hides widgets such as parameters and hover, that belong to a given parent HTML element.
+   *
+   * @private
+   * @param {HTMLDivElement} widgetParent
+   * @param {string[]} selectors
+   * @memberof MonacoEditor
+   */
+  private hideWidgets(widgetParent: HTMLDivElement, selectors: string[]) {
+    for (const selector of selectors) {
+      for (const widget of Array.from<HTMLDivElement>(widgetParent.querySelectorAll(selector))) {
+        widget.setAttribute(
+          'class',
+          widget.className
+            .split(' ')
+            .filter((cls: string) => cls !== 'visible')
+            .join(' ')
+        );
+        if (widget.style.visibility !== 'hidden') {
+          widget.style.visibility = 'hidden';
+        }
+      }
+    }
+  }
+
+  /**
+   * Hides the parameters widgets related to other monaco editors.
+   * Use this to ensure we only display parameters widgets for current editor (by hiding others).
+   *
+   * @private
+   * @returns
+   * @memberof MonacoEditor
+   */
+  private hideAllOtherParameterWidgets() {
+    if (!this.editorContainerRef.current) {
+      return;
+    }
+    const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(
+      document.querySelectorAll('div.monaco-container'));
+
+    widgetParents
+      .filter(widgetParent => widgetParent !== this.editorContainerRef.current?.parentElement)
+      .forEach(widgetParent => this.hideWidgets(widgetParent, ['.parameter-hints-widget']));
+  }
+
+  /**
+   * Return true if (x,y) coordinates overlap with an element's bounding rect. 
+   * @param {HTMLDivElement} element 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} padding
+   */
+  private coordsInsideElement(
+    element: Element | null | undefined,
+    x: number,
+    y: number,
+    padding: number = HOVER_BOUND_DEFAULT_PADDING
+  ): boolean {
+    if (!element) return false;
+    const clientRect = element.getBoundingClientRect();
+    return (
+      x >= clientRect.left - padding &&
+      x <= clientRect.right + padding &&
+      y >= clientRect.top - padding &&
+      y <= clientRect.bottom + padding
+    );
+  }
+
+  /**
+   * Hide all other widgets belonging to other cells only if the currently active
+   * parameter widget (at most one) is being hovered by the user.
+   * @param {number} x 
+   * @param {number} y 
+   */
+  private handleCoordsOutsideWidgetActiveRegion(x: number, y: number) {
+    let widget = document.querySelector('.parameter-hints-widget');
+    if (widget != null && !this.coordsInsideElement(widget, x, y)) {
+      this.hideAllOtherParameterWidgets();
     }
   }
 }
