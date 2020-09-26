@@ -483,11 +483,13 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * the parameter widget for this monaco editor.
    *
    * Notes: See issue https://github.com/microsoft/vscode-python/issues/7851 for further info.
-   * Hide the parameter widget if all of the following conditions have been met:
+   * Hide the parameter widget if the following conditions have been met:
    * - Editor doesn't have focus
-   * - Mouse is not over the editor
    * - Mouse is not over (hovering) the parameter widget
    *
+   * This method is only used for blurring at the moment given that parameter widgets from
+   * other cells are hidden by mouse move events.
+   * 
    * @private
    * @returns
    * @memberof MonacoEditor
@@ -509,7 +511,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     const parameterWidgetClasses = ['editor-widget', 'parameter-hints-widget', 'visible'];
 
     // Find the parameter widget the user is currently hovering over.
-    let parameterWidget = hoverElements.find(item => {
+    let isParameterWidgetHovered = hoverElements.find(item => {
       if (typeof item.className !== 'string') {
         return false;
       }
@@ -530,7 +532,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     });
 
     // If the parameter widget is being hovered, don't hide it.
-    if (parameterWidget) {
+    if (isParameterWidgetHovered) {
       return;
     }
 
@@ -583,12 +585,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
    * @memberof MonacoEditor
    */
   private hideAllOtherParameterWidgets() {
-    const rootSelector = document.querySelectorAll('.nteract-cells');
-    if (!rootSelector || !this.editorContainerRef.current) {
+    if (!this.editorContainerRef.current) {
       return;
     }
     const widgetParents: HTMLDivElement[] = Array.prototype.slice.call(
-      rootSelector[0].querySelectorAll('div.monaco-container'));
+      document.querySelectorAll('div.monaco-container'));
 
     widgetParents
       .filter(widgetParent => widgetParent !== this.editorContainerRef.current?.parentElement)
