@@ -1,17 +1,24 @@
 import React, { FC, HTMLAttributes, useState, useEffect } from "react";
 import { WithRouterProps } from "next/dist/client/with-router";
-import { withRouter, useRouter } from "next/router";
+import { withRouter, useRouter, NextRouter } from "next/router";
+import { connect } from "react-redux";
 import { Octokit } from "@octokit/rest";
-
-import Notebook from "@nteract/stateful-components";
+import { formatDistanceToNow } from "date-fns";
+import { AppState } from "@nteract/core"
 import dynamic from "next/dynamic";
+import Immutable from "immutable";
+// nteract
+import { contentByRef } from "@nteract/selectors";
+import { ContentRecord } from "@nteract/types";
 import { Host } from "@mybinder/host-cache";
-
+import { toJS, stringifyNotebook } from "@nteract/commutable";
 const CodeMirrorEditor = dynamic(() => import('@nteract/editor'), { ssr: false });
 
+// User defined
 import { Menu, MenuItem } from '../../components/Menu'
 import { Button } from '../../components/Button'
 import { Console } from '../../components/Console'
+import { Notification } from '../../components/Notification'
 import { BinderMenu } from '../../components/BinderMenu'
 import { Avatar } from '../../components/Avatar'
 import { Input } from '../../components/Input'
@@ -20,47 +27,28 @@ import { FilesListing } from "../../components/FilesListing"
 import { Layout, Header, Body, Side, Footer } from "../../components/Layout"
 import { H3, P } from "../../components/Basic"
 import NextHead from "../../components/Header";
-import { getLanguage, getPath } from "../../util/helpers"
-import { uploadToRepo, checkFork } from "../../util/github"
+import { getLanguage, useInput, useCheckInput } from "../../util/helpers"
+import { uploadToRepo, checkFork, getContent } from "../../util/github"
 import { runIcon, saveIcon, menuIcon, githubIcon, consoleIcon, pythonIcon, serverIcon, commitIcon } from "../../util/icons"
-
 const Binder = dynamic(() => import("../../components/Binder"), {
   ssr: false
 });
 
 const BINDER_URL = "https://mybinder.org";
 
-function useInput(val: string | undefined) {
-  const [value, setValue] = useState(val);
-
-  function handleChange(e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) {
-    setValue(e.currentTarget.value);
-  }
-
-  return {
-    value,
-    onChange: handleChange
-  }
+export interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
+  router: NextRouter
 }
 
-function useCheckInput(val: boolean | undefined) {
-  const [value, setValue] = useState(val);
-
-  function handleChange(e: React.FormEvent<HTMLInputElement>) {
-    setValue(e.currentTarget.checked);
-  }
-
-  return {
-    value,
-    onChange: handleChange
-  }
+export interface StateProps {
+  contents: Immutable.Map<string, ContentRecord>
 }
 
+type Props = ComponentProps & StateProps;
 
-export interface Props extends HTMLAttributes<HTMLDivElement> {
-  router: any
-}
-
+/**************************
+ Main Component
+**************************/
 export const Main: FC<WithRouterProps> = (props: Props) => {
   const router = useRouter()
   // Toggle Values
@@ -82,38 +70,93 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   // This should be a boolean value but as a string
   const stripOutput = useCheckInput(false)
   const [fileBuffer, setFileBuffer] = useState({})
+  const [savedTime, setSavedTime] = useState(new Date())
+
+  // Console
+  const [consoleLog, setConsoleLog] = useState([])
+  const [notificationLog, setNotificationLog] = useState([])
+  // Server
+  const [serverStatus, setServerStatus] = useState("Launching...")
+  const [host, setHost] = useState()
+
   // Login Values
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
   const [userImage, setUserImage] = useState("")
   const [userLink, setUserLink] = useState("")
 
-  /*
-  * TODO: Add @nteract/mythic-notifications to file
-  */
 
+  /***************************************
+    Notification and Console functions
+  ****************************************/
+  // Function to add logs to notification
+  const addToNotification = (log) => {
+    let newNotificationLog = [...notificationLog]
+    newNotificationLog.push(log)
+    setNotificationLog(newNotificationLog)
+  }
 
-  // TODO: Replace all placeholder console with notification
+  // Function to add logs to console
+  const addToConsole = (log) => {
+    let newConsoleLog = [...consoleLog]
+    newConsoleLog.push(log)
+    setConsoleLog(newConsoleLog)
+  }
 
+  // Function to add logs to both notification and console
+  const addLog = (log) => {
+    addToConsole(log)
+    addToNotification(log)
+  }
 
-  // This Effect runs only when the username change
+  /******************
+    Effect Hooks
+   *****************/
+
   useEffect(() => {
-    // Check if user has a token saved
-    if (localStorage.getItem("token") != undefined) {
-      getGithubUserDetails()
+    // To check if Github token exist, if yes, get user details
+    // Check if username is empty because we need to
+    // get username only if it's not defined.
+    if (localStorage.getItem("token") != undefined && username === "") {
+        getGithubUserDetails()
     }
   }, [username])
 
-  // To keep the link updated for users to share it
+  // To update file when filePath is updated
+  // Also makes sure that filepath is not undefined
+  // If it is undefined or empty, don't load the file
+  // and set filePath to empty and not undefined
+  useEffect(() => {
+    if (router.query.file != undefined && filePath != "") {
+      loadFile(filePath)
+    } else {
+      setFilepath("")
+    }
+  }, [filePath])
+
+  // Remove notification after 3 seconds
+  // We are removing the first element only, because
+  // all the previous notifications has already
+  // been removed by now
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      let newNotificationLog = [...notificationLog]
+      newNotificationLog.shift()
+      setNotificationLog(newNotificationLog)
+    }, 3000);
+    return () => clearTimeout(timer)
+  }, [notificationLog])
+
+  // When use update the binder menu, we also need to update the route and url
   useEffect(() => {
     router.push(`/p?vcs=${provider}&org=${org}&repo=${repo}&ref=${gitRef}&file=${filePath}`, undefined, { shallow: true })
 
   }, [provider, org, repo, gitRef, filePath])
 
-
-
-  function addBuffer(e) {
-    setFileContent(e);
+  /*************************************************
+    Other functions
+  ************************************************/
+  function addBuffer(e, filePath) {
     const newFileBuffer = fileBuffer
     newFileBuffer[filePath] = e
     setFileBuffer(newFileBuffer)
@@ -131,13 +174,24 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
     toggle(showSaveDialog, setShowSaveDialog)
   }
 
+
+
   // To save/upload data to github
   const onSave = async (event) => {
     event.preventDefault()
 
+    props.contents.map(x => {
+      const content = stringifyNotebook(x.model.get("notebook", undefined))
+      addBuffer(content, x.filepath)
+    }
+    )
+
     // Step 1: Check if buffer is empty
     if (Object.keys(fileBuffer).length == 0) {
-      console.log("Notification: No changes in data")
+      addLog({
+        type: "failure",
+        message: "Can't save changes, no file updated"
+      })
       return
     }
 
@@ -156,13 +210,26 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         uploadToRepo(octo, username, repo, gitRef, fileBuffer, commitMessage.value).then(() => {
           // Step 6: Empty the buffer
           setFileBuffer({})
-          console.log("Notification: Data Saved")
+          addLog({
+            type: "success",
+            message: "Successfully saved!"
+          })
+
+          // Update time of save
+          setSavedTime(new Date())
         })
       } catch (err) {
-        console.log("Notification: Error in upload")
+        addLog({
+          type: "failure",
+          message: "Error while saving changes."
+        })
+
       }
     }).catch((e) => {
-      console.log("Notification: Repo not found")
+      addLog({
+        type: "failure",
+        message: "Github repository not found."
+      })
     })
 
   }
@@ -173,54 +240,64 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
   async function getFiles(path: string) {
     const octokit = new Octokit()
     let fileList: string[][] = []
-    await octokit.repos.getContents({
-      owner: org,
-      repo: repo,
-      ref: gitRef,
-      path
-    }).then((res: any) => {
+    await getContent(octokit, org, repo, gitRef, path).then((res) => {
       res.data.map((item: any) => {
         fileList.push([item.name, item.path, item.type])
       })
     }, (e: Error) => {
       fileList = [[""]]
-      console.log("Notification: Repo not found")
+      addLog({
+        type: "failure",
+        message: "Github repository not found."
+      })
+
     })
     return fileList
 
   }
 
   function loadFile(fileName) {
-    if (fileName in fileBuffer) {
-      setFileContent(fileBuffer[fileName])
-      setFilepath(fileName)
-      setFileType(fileName.split('.').pop())
-    } else {
-      const octokit = new Octokit()
-      octokit.repos.getContents({
-        owner: org,
-        repo: repo,
-        path: fileName
-      }).then(({ data }) => {
-        setFileContent(atob(data["content"]))
-        setFilepath(data["path"])
-        setFileType(fileName.split('.').pop())
+    let extension = fileName.split('.').pop()
+    setFilepath(fileName)
+    setFileType(extension)
+    setLang(getLanguage(extension))
+
+    if (extension != "ipynb") {
+      if (fileName in fileBuffer) {
+        setFileContent(fileBuffer[fileName])
+      } else {
+        const octokit = new Octokit()
+        getContent(octokit, org, repo, gitRef, fileName).then(({ data }) => {
+          setFileContent(atob(data["content"]))
+        })
+      }
+    }
+
+  }
+
+  function updateVCSInfo(event, previousProvider, previousOrg, previousRepo, previousGitRef) {
+    event.preventDefault()
+
+    if (provider != previousProvider || org != previousOrg || repo != previousRepo || gitRef != previousGitRef ) {
+      setProvider(previousProvider)
+      setOrg(previousOrg)
+      setRepo(previousRepo)
+      setGitRef(previousGitRef )
+      setFilepath("")
+      // To empty buffer when repo is updated
+      setFileBuffer({})
+
+      addToNotification({
+        type: "success",
+        message: `Repo updated.`
+      })
+
+      addToConsole({
+        type: "success",
+        message: `Repo updated: VCS=${provider} Owner=${org} repo=${repo} ref=${gitRef} file=${filePath}`
       })
     }
 
-    let extension = fileName.split('.').pop()
-    setLang(getLanguage(extension))
-  }
-
-  function updateVCSInfo(event, provider, org, repo, gitRef) {
-    // TODO: Add a loading experience for the users and error if project not found
-    event.preventDefault()
-    setProvider(provider)
-    setOrg(org)
-    setRepo(repo)
-    setGitRef(gitRef)
-    // To empty buffer when repo is updated
-    setFileBuffer({})
   }
 
   function OAuthGithub() {
@@ -246,28 +323,101 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
           setUsername(data["login"])
           setUserLink(data["html_url"])
           setUserImage(data["avatar_url"])
+
+          addToConsole({
+            type: "success",
+            message: `Successfully logged into Github as @${data["login"]}`
+          })
+
         } else {
-          // Login failed | also give notification here
           localStorage.removeItem("token")
+          setLoggedIn(false)
+          addLog({
+            type: "failure",
+            message: `Github token expired. User logged out.`
+          })
+
         }
       })
     window.removeEventListener("storage", getGithubUserDetails)
   }
 
+  const addBinder = (ht) => {
+    if (ht != host) {
+      setServerStatus("Connected")
+      setHost(ht)
+      addToNotification({
+        type: "success",
+        message: `Successfully connected to MyBinder`
+      })
 
-  // This code will be used when connecting to MyBinder.
-  /*
-    <Host repo={`${this.state.org}/${this.state.repo}`} gitRef={this.state.gitRef} binderURL={BINDER_URL}>
-      <Host.Consumer>
-        {host => <Binder filepath={this.state.filepath} host={host} />}
-      </Host.Consumer>
-    </Host>
-    */
+      addToConsole({
+        type: "success",
+        message: `Successfully connected to MyBiner. \n\tServer running at ${ht.endpoint}?token=${ht.token}`
+      })
+
+    }
+
+    return ""
+  }
+
+  const getNotebook = async (fileName) => {
+    const octokit = new Octokit()
+    const data = await getContent(octokit, org, repo, gitRef, fileName)
+    return data
+  }
 
   const dialogInputStyle = { width: "98%" }
 
+  const generalEditor = (<CodeMirrorEditor
+    editorFocused
+    completion
+    autofocus
+    codeMirror={{
+      lineNumbers: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Ctrl-Enter": () => { },
+        "Cmd-Enter": () => { }
+      },
+      cursorBlinkRate: 0,
+      mode: lang
+    }}
+    preserveScrollPosition
+    editorType="codemirror"
+    onFocusChange={() => { }}
+    focusAbove={() => { }}
+    focusBelow={() => { }}
+    kernelStatus={"not connected"}
+    value={fileContent}
+    onChange={(e) => {
+      addBuffer(e, filePath)
+      setFileContent(e);
+    }}
+  />)
+
+  const binderEditor = (
+    <>
+      <Binder getContent={getNotebook} filepath={filePath} host={host} />
+    </>
+  )
+
+  const editor = lang == "ipynb" ? binderEditor : generalEditor;
+
   return (
     <Layout>
+      <Host repo={`${org}/${repo}`} gitRef={gitRef} binderURL={BINDER_URL}>
+        <Host.Consumer>
+          {host =>
+            host ? (
+              <>
+                {addBinder(host)}
+              </>
+            ) : null
+          }
+        </Host.Consumer>
+      </Host>
+
       <NextHead />
       {
         showBinderMenu &&
@@ -289,26 +439,34 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         />
       }
 
+      <Notification notifications={notificationLog} />
+
       {
         showConsole && <Console style={{
           position: "absolute",
           bottom: "30px",
           right: "0px",
           width: "calc(100% - 260px)"
-        }}>Console</Console>
+        }} logs={consoleLog} />
       }
+
 
       {showSaveDialog &&
         <>
           <Shadow onClick={() => toggle(showSaveDialog, setShowSaveDialog)} />
           <Dialog >
             <form onSubmit={(e) => onSave(e)} >
-              <DialogRow>
+              You are about to commit to <b>{username}/{repo}[{gitRef}]</b> as <b>@{username}</b>.
+              <br /><br />
+              If this repo doesn&apos;t already exist, it will automatically be created/forked. Enter your commit message here.
+             <DialogRow>
                 <Input id="commit_message" variant="textarea" label="Commit Message" {...commitMessage} autoFocus style={dialogInputStyle} />
               </DialogRow>
-              <DialogRow>
-                <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
-              </DialogRow>
+              {false &&
+                <DialogRow>
+                  <Input id="strip_output" variant="checkbox" label="Strip the notebook output?" checked={stripOutput.value} onChange={stripOutput.onChange} style={dialogInputStyle} />
+                </DialogRow>
+              }
               <DialogFooter>
                 <Button id="commit_button" text="Commit" icon={commitIcon} />
               </DialogFooter>
@@ -357,44 +515,20 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
         />
       </Side>
       <Body>
-        {fileContent &&
-
-          <CodeMirrorEditor
-            editorFocused
-            completion
-            autofocus
-            codeMirror={{
-              lineNumbers: true,
-              extraKeys: {
-                "Ctrl-Space": "autocomplete",
-                "Ctrl-Enter": () => { },
-                "Cmd-Enter": () => { }
-              },
-              cursorBlinkRate: 0,
-              mode: lang
-            }}
-            preserveScrollPosition
-            editorType="codemirror"
-            onFocusChange={() => { }}
-            focusAbove={() => { }}
-            focusBelow={() => { }}
-            kernelStatus={"not connected"}
-            value={fileContent}
-            onChange={(e) => { addBuffer(e) }}
-          />
 
 
-        }
+        {filePath && editor}
 
         {
-          !fileContent &&
+          !filePath &&
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "180px" }}>
 
-            <H3>Welcome to nteract play</H3>
+            <H3>Welcome to nteract web</H3>
             <P>
-              nteract play is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
-                <ol>
+              nteract web is an awesome environment for you to reproduce a notebook project quickly and edit a notebook without installing additional software. It takes just a few seconds to get started.
+
+              <ol>
                 <li>Click on the menu above, and provide the path to the repository you want to reproduce. </li>
                 <li>Use file explorer to open, run and edit files. </li>
                 <li>Connect to GitHub to save back your changes. </li>
@@ -418,17 +552,31 @@ export const Main: FC<WithRouterProps> = (props: Props) => {
             <Button text="Python 3" icon={pythonIcon} variant="transparent" disabled />
           </MenuItem>
           <MenuItem>
-            <Button text="Idle" icon={serverIcon} variant="transparent" disabled />
+            <Button text={serverStatus} icon={serverIcon} variant="transparent" disabled />
           </MenuItem>
         </Menu>
         <Menu>
           <MenuItem>
-            Last Saved Never
-                </MenuItem>
+            {formatDistanceToNow(savedTime)}
+          </MenuItem>
         </Menu>
       </Footer>
     </Layout>
   );
 }
 
-export default withRouter(Main);
+
+const makeMapStateToProps = (
+  initialState: AppState
+) => {
+  const mapStateToProps = (state: AppState): StateProps => {
+    return {
+      contents: contentByRef(state)
+    }
+  }
+
+  return mapStateToProps
+};
+
+
+export default connect(makeMapStateToProps, null)(withRouter(Main))

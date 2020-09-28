@@ -1,5 +1,17 @@
+/*
+  This file is work with Github API.
+  It is for internal use only.
+
+  Functions in this file starts with gh to represent GitHub.
+  This will be helpful to add other version control systems in
+  future, as gh can represent GitHub and gl can represent GitLab
+*/
 import { Octokit } from "@octokit/rest";
 
+export const getContent = async (octo, org: string, repo: string, ref: string, fileName: string) => {
+  const data = octo.repos.getContents({ owner: org, repo: repo, ref: ref, path: fileName })
+  return data
+}
 
 export const listForks = async (owner: string, repo: string) => {
   // This gets the fork of the active repo
@@ -18,7 +30,8 @@ export const repoExist = async (octo, owner: string, repo: string) => {
   return bool
 }
 
-// checkFork performs 3 checks
+
+// ghCheckFork performs 3 checks
 // A: If user is the owner of repo.
 // B: If fork exists.
 // C: If fork doesn't exist, create it.

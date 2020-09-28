@@ -78,9 +78,6 @@ export const Input: FC<Props> = (props: Props) => {
 
   return (
     <Box style={style} >
-      {props.variant !== "checkbox" &&
-        <Label htmlFor={props.id} >{props.label}</Label>
-      }
       {input}
     </Box>
   );
