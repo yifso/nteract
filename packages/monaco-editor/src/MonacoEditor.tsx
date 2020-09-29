@@ -6,8 +6,9 @@ import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
 import debounce from "lodash.debounce";
-import "./style.css";
+import monacoEditorCSS from "./monacoStyle";
 
+export { monacoEditorCSS };
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
 /**
