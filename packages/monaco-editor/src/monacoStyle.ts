@@ -8,14 +8,14 @@ So we don't need to use Monaco editor's layout() function which is expensive ope
 */
 
 export default createGlobalStyle`
-.monaco-container .monaco-editor {
+  .monaco-container .monaco-editor {
     width: inherit !important;
   }
-    
+
   .monaco-container .monaco-editor .overflow-guard {
     width: inherit !important;
   }
-    
+
   /* 26px is the left margin for .monaco-scrollable-element  */
   .monaco-container .monaco-editor .monaco-scrollable-element.editor-scrollable.vs {
     width: calc(100% - 26px) !important;
