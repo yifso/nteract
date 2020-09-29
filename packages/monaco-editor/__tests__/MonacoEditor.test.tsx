@@ -37,6 +37,8 @@ const mockEditor = {
   onDidFocusEditorText: jest.fn(),
   onDidBlurEditorText: jest.fn(),
   onDidChangeCursorSelection: jest.fn(),
+  onDidBlurEditorWidget: jest.fn(),
+  onMouseMove: jest.fn(),
   updateOptions: jest.fn(),
   getValue: jest.fn(),
   setValue: jest.fn(),
