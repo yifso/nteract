@@ -62,7 +62,9 @@ The completion behavior is controlled by the following props:
 * `shouldRegisterDefaultCompletion` - Boolean flag to enable/disable the default completion provider
 * `onRegisterCompletionProvider?: (languageId: string) => void` - Custom completion provider implementation for a Monaco Editor supported language.
 
-Performance Tip: If you want to enable completions in your app when you use this package, it is ideal to do it on a [`Web worker`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) which is separate from the UI thread. This provides a performance boost and ensures that the app doesn't stall UI updates when the editor is waiting for completions from the Jupyter Kernel. In Nteract, we use the [Monaco Editor Web pack plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) to register and use the `editor` worker by Monaco. Check out the Monaco Editor [docs](https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-esm.md) for more information on configuring the package and setting up web workers in a different set up.
+### Performance Tip
+
+If you want to enable completions in your app when you use this package, it is ideal to do it on a [`Web worker`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) which is separate from the UI thread. This provides a performance boost and ensures that the app doesn't stall UI updates when the editor is waiting for completions from the Jupyter Kernel. In Nteract, we use the [Monaco Editor Web pack plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) to register and use the `editor` worker by Monaco. Check out the Monaco Editor [docs](https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-esm.md) for more information on configuring the package and setting up web workers in a different set up.
 
 Improving window resizing performance:
 On resizing the browser window, the width of the container of this component is recalculated. Consider using these simple css overrides to further improve resizing performance:
@@ -80,6 +82,11 @@ On resizing the browser window, the width of the container of this component is 
 .monaco-container .monaco-editor .monaco-scrollable-element.editor-scrollable.vs {
   width: calc(100% - 26px) !important;
 }
+```
+These style overrides for resize performance can also be found in the `@nteract/styles` package.
+The CSS can be imported in a top level React component simply by doing:
+```typescript
+import "@nteract/styles/monaco/overrides.css";
 ```
 
 ## Support
