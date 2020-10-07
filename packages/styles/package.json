@@ -12,6 +12,7 @@
     "toggle-switch.css",
     "themes",
     "markdown",
+    "monaco",
     "cell-menu",
     "command-palette.css",
     "toolbar.css"

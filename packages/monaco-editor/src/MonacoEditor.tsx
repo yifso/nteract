@@ -6,9 +6,8 @@ import { completionProvider } from "./completions/completionItemProvider";
 import { ContentRef } from "@nteract/core";
 import { DocumentUri } from "./documentUri";
 import debounce from "lodash.debounce";
-import monacoEditorCSS from "./monacoStyle";
 
-export { monacoEditorCSS };
+
 export type IModelContentChangedEvent = monaco.editor.IModelContentChangedEvent;
 
 /**
@@ -93,9 +92,6 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   contentHeight?: number;
   private cursorPositionListener?: monaco.IDisposable;
 
-  /**
-   * Reference to parameter widget (used by monaco to display parameter docs).
-   */
   private blurEditorWidgetListener?: monaco.IDisposable;
   private mouseMoveListener?: monaco.IDisposable;
 
