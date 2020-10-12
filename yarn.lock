@@ -2662,19 +2662,10 @@
     "@nteract/presentational-components" "^3.3.11"
     react-markdown "^4.0.0"
 
-"@nteract/mathjax@4.0.11", "@nteract/mathjax@^4.0.11":
+"@nteract/mathjax@4.0.11", "@nteract/mathjax@^4.0.11", "@nteract/mathjax@^4.0.7":
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.11.tgz#48c66fa0d26bd9caa54d231e2562bf690aeba785"
   integrity sha512-W+MIjPAA/CFaXJIubSod/ANK6iNpRR21mGFh0Z7Dde7fHLEM2gwCjqdzbxjvCMl82zRMGFPNuZ1bMyX4JArO2g==
-  dependencies:
-    load-script "^1.0.0"
-    react "^16.13.0"
-    react-dom "^16.13.0"
-
-"@nteract/mathjax@^4.0.7":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.9.tgz#f7cdb758931f185d9f353b2d89960eec44322703"
-  integrity sha512-/RWipkAdg2LeC/0UBSFyo1l7xQR1pfPPC6teeVmEevj4Ukfi3S+RY1kdeDV5mRj7n68LVJEa7s0yx/nA6J6jsA==
   dependencies:
     load-script "^1.0.0"
     react "^16.13.0"
@@ -7343,6 +7334,14 @@ electron-log@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-4.2.1.tgz#a5e9f5b7a9c8cffb6ae5af78b76e68012d5e68da"
   integrity sha512-tUI9w3kUP3qhwXJ92RDUPFVZfwtBwKCy/1TsSHndXYLlNCB/7+vkiQG0uxv9D2Leuxc/DJKfYyrdEBpzi/vyZg==
+
+electron-notarize@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-notarize/-/electron-notarize-1.0.0.tgz#bc925b1ccc3f79e58e029e8c4706572b01a9fd8f"
+  integrity sha512-dsib1IAquMn0onCrNMJ6gtEIZn/azG8hZMCYOuZIMVMUeRMgBYHK1s5TK9P8xAcrAjh/2aN5WYHzgVSWX314og==
+  dependencies:
+    debug "^4.1.1"
+    fs-extra "^9.0.1"
 
 electron-publish@22.7.0:
   version "22.7.0"
@@ -12385,9 +12384,9 @@ nice-try@^1.0.4:
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
 node-abi@^2.7.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.18.0.tgz#1f5486cfd7d38bd4f5392fa44a4ad4d9a0dffbf4"
-  integrity sha512-yi05ZoiuNNEbyT/xXfSySZE+yVnQW6fxPZuFbLyS1s6b5Kw3HzV2PHOM4XR+nsjzkHxByK+2Wg+yCQbe35l8dw==
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.19.1.tgz#6aa32561d0a5e2fdb6810d8c25641b657a8cea85"
+  integrity sha512-HbtmIuByq44yhAzK7b9j/FelKlHYISKQn0mtvcBrU5QBkhoCMp5bu8Hv5AI34DcKfOAcJBcOEMwLlwO62FFu9A==
   dependencies:
     semver "^5.4.1"
 
