@@ -1,3 +1,4 @@
+import { KernelStatus } from "@nteract/types";
 import { AppState, KernelRef } from "@nteract/types";
 
 import { createSelector } from "reselect";
@@ -71,6 +72,6 @@ export const currentKernelStatus = createSelector(
     if (kernel && kernel.status) {
       return kernel.status;
     }
-    return "not connected";
+    return KernelStatus.NotConnected;
   }
 );

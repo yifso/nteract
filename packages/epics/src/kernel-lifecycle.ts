@@ -25,7 +25,7 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState, ContentRef, KernelInfo, KernelRef } from "@nteract/types";
+import { AppState, ContentRef, KernelInfo, KernelRef, KernelStatus } from "@nteract/types";
 import { createKernelRef, errors } from "@nteract/types";
 
 const path = require("path");
@@ -140,7 +140,7 @@ export function acquireKernelInfo(
             kernelRef,
             info
           }),
-          actions.setExecutionState({ kernelStatus: "launched", kernelRef })
+          actions.setExecutionState({ kernelStatus: KernelStatus.Launched, kernelRef })
         ];
 
         if (kernelSpecName) {

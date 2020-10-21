@@ -37,7 +37,7 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       typedAction = action as actionTypes.RestartKernel;
       return state.setIn(
         [typedAction.payload.kernelRef, "status"],
-        "restarting"
+        KernelStatus.Restarting
       );
     case actionTypes.LAUNCH_KERNEL:
       typedAction = action as actionTypes.LaunchKernelAction;
@@ -84,10 +84,10 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
 
       const helpLinks = typedAction.payload.info.helpLinks
         ? List(
-            (typedAction.payload.info.helpLinks as HelpLink[]).map(
-              makeHelpLinkRecord
-            )
+          (typedAction.payload.info.helpLinks as HelpLink[]).map(
+            makeHelpLinkRecord
           )
+        )
         : List();
 
       return state.setIn(

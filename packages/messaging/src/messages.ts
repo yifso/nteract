@@ -1,3 +1,4 @@
+import { KernelStatus } from "@nteract/types";
 import { v4 as uuid } from "uuid";
 import {
   BasicOutputMessageContent,
@@ -314,14 +315,14 @@ export function stream(content: { name: "stdout" | "stderr"; text: string }) {
 
 export interface ExecuteReplyError {
   status: string;
-  execution_count : number;
-  ename : string;
-  evalue : string;
-  traceback : string[];
+  execution_count: number;
+  ename: string;
+  evalue: string;
+  traceback: string[];
 }
 export interface ExecuteReplyOk {
   status: string;
-  execution_count : number;
+  execution_count: number;
   payload?: object[];
   user_expressions?: object;
 
@@ -342,7 +343,7 @@ export function executeReply(
  *
  * @param execution_state The kernel's execution state
  */
-export function status(execution_state: "busy" | "idle" | "starting") {
+export function status(execution_state: KernelStatus.Busy | KernelStatus.Idle | KernelStatus.Starting) {
   return message(
     {
       msg_type: "status"
