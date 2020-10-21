@@ -110,7 +110,7 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 #### Bug Fixes
 
-Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
+- Update kernel execution state after receiving a `kernel_request_reply` message ([PR#5331](https://github.com/nteract/nteract/pull/5331))
 
 ### @nteract/fixtures ([publish-version-here])
 
