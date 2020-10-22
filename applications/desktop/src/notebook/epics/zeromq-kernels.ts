@@ -30,7 +30,7 @@ import {
 } from "rxjs/operators";
 import { launchSpec } from "spawnteract";
 
-import { KernelspecInfo, Kernelspecs } from "@nteract/types";
+import { KernelspecInfo, Kernelspecs, KernelStatus } from "@nteract/types";
 
 import {
   Channels,
@@ -134,7 +134,7 @@ export function launchKernelObservable(
             cwd,
             kernelSpecName: kernelSpec.name,
             lastActivity: null,
-            status: "launched"
+            status: KernelStatus.Launched
           };
 
           observer.next(
@@ -146,7 +146,7 @@ export function launchKernelObservable(
             })
           );
           observer.next(
-            actions.setExecutionState({ kernelStatus: "launched", kernelRef })
+            actions.setExecutionState({ kernelStatus: KernelStatus.Launched, kernelRef })
           );
           observer.complete();
         }
@@ -429,7 +429,7 @@ export const killKernelEpic = (
             // Inform about the state
             of(
               actions.setExecutionState({
-                kernelStatus: "shutting down",
+                kernelStatus: KernelStatus.ShuttingDown,
                 kernelRef
               })
             )

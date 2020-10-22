@@ -195,6 +195,13 @@ describe("acquireKernelInfo", () => {
       },
       {
         payload: {
+          kernelRef: "fakeKernelRef",
+          kernelStatus: "launched"
+        },
+        type: "SET_EXECUTION_STATE"
+      },
+      {
+        payload: {
           contentRef: "fakeContentRef",
           kernelInfo: stateModule.makeKernelspec()
         },
@@ -371,6 +378,13 @@ describe("acquireKernelInfo", () => {
           },
           kernelRef: "fakeKernelRef"
         }
+      },
+      {
+        payload: {
+          kernelRef: "fakeKernelRef",
+          kernelStatus: "launched"
+        },
+        type: "SET_EXECUTION_STATE"
       }
     ]);
 
@@ -407,7 +421,7 @@ describe("watchExecutionStateEpic", () => {
       () => done()
     );
   });
-  
+
   test("on kernel error returns executeFailed action", done => {
     const sent = new Subject();
     const received = new Subject();
@@ -437,11 +451,11 @@ describe("watchExecutionStateEpic", () => {
             type: actionsModule.EXECUTE_FAILED,
             error: true,
             payload: {
-              code:"EXEC_WEBSOCKET_ERROR",
+              code: "EXEC_WEBSOCKET_ERROR",
               contentRef: "fakeContentRef",
               error: new Error(
                 "The WebSocket connection has unexpectedly disconnected."
-                )
+              )
             }
           }
         ]);

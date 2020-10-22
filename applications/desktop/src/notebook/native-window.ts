@@ -4,6 +4,7 @@ import path from "path";
 import { Store } from "redux";
 import { combineLatest, EMPTY, Observable, of } from "rxjs";
 import { debounceTime, distinctUntilChanged, map, mergeMap, switchMap } from "rxjs/operators";
+import { KernelStatus } from "@nteract/types";
 
 const HOME = remote.app.getPath("home");
 
@@ -99,7 +100,7 @@ export function createTitleFeed(
     (state: AppState, kernelRef: KernelRef) => {
       const kernel = selectors.kernel(state, { kernelRef });
       if (!kernel) {
-        return "not connected";
+        return KernelStatus.NotConnected;
       } else {
         return kernel.status;
       }

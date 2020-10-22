@@ -25,7 +25,7 @@ import {
 
 import * as actions from "@nteract/actions";
 import * as selectors from "@nteract/selectors";
-import { AppState, ContentRef, KernelInfo, KernelRef } from "@nteract/types";
+import { AppState, ContentRef, KernelInfo, KernelRef, KernelStatus } from "@nteract/types";
 import { createKernelRef, errors } from "@nteract/types";
 
 const path = require("path");
@@ -67,13 +67,13 @@ export const watchExecutionStateEpic = (
           catchError((error: Error) => {
             return of(
               actions.executeFailed({
-                  error: new Error(
+                error: new Error(
                   "The WebSocket connection has unexpectedly disconnected."
-                  ),
-                  code: errors.EXEC_WEBSOCKET_ERROR,
-                  contentRef: (action as actions.NewKernelAction).payload.contentRef  
+                ),
+                code: errors.EXEC_WEBSOCKET_ERROR,
+                contentRef: (action as actions.NewKernelAction).payload.contentRef
               })
-          );
+            );
           })
         )
     )
@@ -139,7 +139,8 @@ export function acquireKernelInfo(
           actions.setKernelInfo({
             kernelRef,
             info
-          })
+          }),
+          actions.setExecutionState({ kernelStatus: KernelStatus.Launched, kernelRef })
         ];
 
         if (kernelSpecName) {

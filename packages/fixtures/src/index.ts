@@ -2,7 +2,7 @@
 
 import { appendCellToNotebook, emptyCodeCell, emptyMarkdownCell, emptyNotebook, ImmutableNotebook, JSONObject, monocellNotebook } from "@nteract/commutable";
 import { core } from "@nteract/reducers";
-import { AppState, createContentRef, createKernelRef, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDocumentRecord, makeEntitiesRecord, makeKernelsRecord, makeNotebookContentRecord, makeRemoteKernelRecord, makeStateRecord } from "@nteract/types";
+import { AppState, createContentRef, createKernelRef, KernelStatus, makeAppRecord, makeCommsRecord, makeContentsRecord, makeDocumentRecord, makeEntitiesRecord, makeKernelsRecord, makeNotebookContentRecord, makeRemoteKernelRecord, makeStateRecord } from "@nteract/types";
 import * as Immutable from "immutable";
 import { combineReducers, createStore, Store } from "redux";
 import { Subject } from "rxjs";
@@ -107,7 +107,7 @@ export const mockAppState = (config: JSONObject): AppState => {
             [kernelRef]: makeRemoteKernelRecord({
               sessionId: "aSessionId",
               channels,
-              status: "not connected"
+              status: KernelStatus.NotConnected
             })
           })
         })

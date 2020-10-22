@@ -24,6 +24,9 @@ import {
   message,
   status
 } from "../src/messages";
+import {
+  KernelStatus
+} from "@nteract/types";
 
 describe("createMessage", () => {
   it("makes a msg", () => {
@@ -264,10 +267,10 @@ describe("convertOutputMessageToNotebookFormat", () => {
 describe("outputs", () => {
   it("extracts outputs as nbformattable contents", () => {
     const hacking = of(
-      status("busy"),
+      status(KernelStatus.Busy),
       displayData({ data: { "text/plain": "woo" } }),
       displayData({ data: { "text/plain": "hoo" } }),
-      status("idle")
+      status(KernelStatus.Idle)
     );
 
     return hacking
@@ -295,8 +298,8 @@ describe("outputs", () => {
 describe("payloads", () => {
   it("extracts payloads from execute_reply messages", () => {
     return of(
-      status("idle"),
-      status("busy"),
+      status(KernelStatus.Idle),
+      status(KernelStatus.Busy),
       executeReply({ payload: [{ c: "d" }] }),
       executeReply({ payload: [{ a: "b" }, { g: "6" }] }),
       executeReply({ status: "ok" }),
@@ -317,9 +320,9 @@ describe("payloads", () => {
 describe("executionCounts", () => {
   it("extracts all execution counts from a session", () => {
     return of(
-      status("starting"),
-      status("idle"),
-      status("busy"),
+      status(KernelStatus.Starting),
+      status(KernelStatus.Idle),
+      status(KernelStatus.Busy),
       executeInput({
         code: "display('woo')\ndisplay('hoo')",
         execution_count: 0
@@ -330,7 +333,7 @@ describe("executionCounts", () => {
         code: "",
         execution_count: 1
       }),
-      status("idle")
+      status(KernelStatus.Idle)
     )
       .pipe(executionCounts(), toArray())
       .toPromise()
@@ -340,20 +343,20 @@ describe("executionCounts", () => {
   });
   it("extracts all execution counts from a session", () => {
     return of(
-      status("starting"),
-      status("idle"),
-      status("busy"),
+      status(KernelStatus.Starting),
+      status(KernelStatus.Idle),
+      status(KernelStatus.Busy),
       executeReply({
-        status: "idle",
+        status: KernelStatus.Idle,
         execution_count: 0
       }),
       displayData({ data: { "text/plain": "woo" } }),
       displayData({ data: { "text/plain": "hoo" } }),
       executeReply({
-        status: "idle",
+        status: KernelStatus.Idle,
         execution_count: 1
       }),
-      status("idle")
+      status(KernelStatus.Idle)
     )
       .pipe(executionCounts(), toArray())
       .toPromise()
@@ -366,17 +369,17 @@ describe("executionCounts", () => {
 describe("kernelStatuses", () => {
   it("extracts all the execution states from status messages", () => {
     return of(
-      status("starting"),
-      status("idle"),
-      status("busy"),
+      status(KernelStatus.Starting),
+      status(KernelStatus.Idle),
+      status(KernelStatus.Busy),
       displayData({ data: { "text/plain": "woo" } }),
       displayData({ data: { "text/plain": "hoo" } }),
-      status("idle")
+      status(KernelStatus.Idle)
     )
       .pipe(kernelStatuses(), toArray())
       .toPromise()
       .then(arr => {
-        expect(arr).toEqual(["starting", "idle", "busy", "idle"]);
+        expect(arr).toEqual([KernelStatus.Starting, KernelStatus.Idle, KernelStatus.Busy, KernelStatus.Idle]);
       });
   });
 });

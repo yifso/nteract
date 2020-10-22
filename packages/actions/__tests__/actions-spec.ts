@@ -1,4 +1,4 @@
-import { createContentRef, createKernelRef } from "@nteract/types";
+import { createContentRef, createKernelRef, KernelStatus } from "@nteract/types";
 import * as actionTypes from "../src";
 
 const actions = actionTypes;
@@ -183,10 +183,10 @@ describe("setExecutionState", () => {
   test("creates a SET_EXECUTION_STATE action", () => {
     const kernelRef = createKernelRef();
     expect(
-      actions.setExecutionState({ kernelStatus: "idle", kernelRef })
+      actions.setExecutionState({ kernelStatus: KernelStatus.Idle, kernelRef })
     ).toEqual({
       type: actionTypes.SET_EXECUTION_STATE,
-      payload: { kernelStatus: "idle", kernelRef }
+      payload: { kernelStatus: KernelStatus.Idle, kernelRef }
     });
   });
 });
