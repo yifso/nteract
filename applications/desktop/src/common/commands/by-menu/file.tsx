@@ -168,40 +168,25 @@ export const ExportPDF: DesktopCommand<ReqContent> = {
     const basename = path.basename(notebookName, ".ipynb");
     const basepath = path.join(path.dirname(notebookName), basename);
     const pdfPath = `${basepath}.pdf`;
-    const model = selectors.notebookModel(state, props);
-
-    // TODO: we should not be modifying the document to print PDFs
-    //       and we especially shouldn't be relying on all these actions to
-    //       run through before we print...
-    const unexpandedCells = selectors.notebook.hiddenCellIds(model);
-    yield* unexpandedCells.map(
-      id => actions.toggleOutputExpansion({ id, ...props }),
-    );
-
-    let data: any;
 
     try {
-      data = await promisify(remote.getCurrentWindow().webContents.printToPDF)(
-        { printBackground: true },
-      );
+      const data = await remote.getCurrentWindow().webContents.printToPDF({ printBackground: false });
+      await promisify(fs.writeFile)(pdfPath, data);
+      yield sendNotification.create({
+        title: "PDF exported successfully!",
+        message: <FilePathMessage filepath={pdfPath} />,
+        level: "success",
+        action: {
+          label: "Open",
+          callback: () => shell.openItem(pdfPath),
+        },
+      });
+    } catch (error) {
+      yield sendNotification.create({
+        title: "Unexpected error during PDF export",
+        message: error,
+        level: "error"
+      });
     }
-    finally {
-      // Restore the modified cells to their unexpanded state.
-      yield* unexpandedCells.map(
-        id => actions.toggleOutputExpansion({ id, ...props }),
-      );
-    }
-
-    await promisify(fs.writeFile)(pdfPath, data);
-
-    yield sendNotification.create({
-      title: "PDF exported",
-      message: <FilePathMessage filepath={pdfPath}/>,
-      level: "success",
-      action: {
-        label: "Open",
-        callback: () => shell.openItem(pdfPath),
-      },
-    });
   },
 };
