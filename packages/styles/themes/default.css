@@ -149,4 +149,34 @@
     background-color: var(--theme-cell-prompt-bg, white);
     color: var(--theme-cell-prompt-fg, black);
   }
+
+  .nteract-cell-gutter {
+    display: none;
+  }
+
+  * {
+    box-shadow: none !important;
+    scrollbar-width: none;
+  }
+
+  body {
+    overflow: visible !important;
+  }
+
+  .notifications-wrapper {
+    display: none;
+  }
+
+  .nteract-cell-outputs {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .toolbar {
+    display: none !important;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
