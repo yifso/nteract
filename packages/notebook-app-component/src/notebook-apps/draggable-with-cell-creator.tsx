@@ -21,6 +21,7 @@ import HijackScroll from "../decorators/hijack-scroll";
 import KeyboardShortcuts from "../decorators/kbd-shortcuts";
 import UndoableCellDelete from "../decorators/undoable/undoable-cell-delete";
 import EditorLoader from "../decorators/editor-loader";
+import CellBanner from "../decorators/cell-banner";
 
 interface ComponentProps {
   contentRef: ContentRef;
@@ -35,6 +36,7 @@ const decorate = (
   const Cell = () => (
     <DraggableCell id={id} contentRef={contentRef}>
       <HijackScroll id={id} contentRef={contentRef}>
+        <CellBanner id={id} contentRef={contentRef} />
         <UndoableCellDelete id={id} contentRef={contentRef}>
           {children}
         </UndoableCellDelete>
