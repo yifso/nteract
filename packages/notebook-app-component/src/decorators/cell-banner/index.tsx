@@ -15,7 +15,6 @@ interface StateProps {
     tags: Immutable.Set<string>;
 }
 
-
 type Props = ComponentProps & StateProps;
 
 const Banner = styled.div`
@@ -52,7 +51,7 @@ const makeMapStateToProps = (
 
         if (model && model.type === "notebook") {
             const cellMap = selectors.notebook.cellMap(model);
-            const cell = cellMap.get(ownProps.id);
+            const cell = cellMap.get(id);
             if (cell) {
                 tags = cell.getIn(["metadata", "tags"]);
             }
