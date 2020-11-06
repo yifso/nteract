@@ -88,9 +88,9 @@ describe("KeyboardShortcuts", () => {
     map.keydown({
       key: "Enter",
       ctrlKey: false,
-      metaKey: true,
+      metaKey: false,
       shiftKey: true,
-      preventDefault: () => {}
+      preventDefault: () => { }
     });
     // Should execute the currently focused cell
     expect(executeFocusedCell).toBeCalled();
@@ -124,9 +124,9 @@ describe("KeyboardShortcuts", () => {
     map.keydown({
       key: "Enter",
       ctrlKey: false,
-      metaKey: true,
+      metaKey: false,
       shiftKey: true,
-      preventDefault: () => {}
+      preventDefault: () => { }
     });
     // Should execute the currently focused cell
     expect(executeFocusedCell).toBeCalled();
