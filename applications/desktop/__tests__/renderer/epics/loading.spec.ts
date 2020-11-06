@@ -91,7 +91,7 @@ describe("newNotebookEpicNamed", () => {
       .toPromise();
     const filepath =
       process.platform === "win32"
-        ? "\\home\\whatever2\\some.ipynb"
+        ? `${path.parse(process.cwd()).root}home\\whatever2\\some.ipynb`
         : "/home/whatever2/some.ipynb";
 
     expect(responseActions).toEqual([
