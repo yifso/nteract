@@ -89,7 +89,7 @@ describe("newNotebookEpicNamed", () => {
     const responseActions = await newNotebookEpic(action$)
       .pipe(toArray())
       .toPromise();
-    const filepath = 
+    const filepath =
       process.platform === "win32"
         ? `${path.parse(process.cwd()).root}home\\whatever2\\some.ipynb`
         : "/home/whatever2/some.ipynb";
