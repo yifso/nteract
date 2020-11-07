@@ -1,7 +1,7 @@
 import { BrowserWindow } from "electron";
 import { of } from "rxjs";
-import { deregisterWindow, registerWindow } from "../../myths/window-registry";
-import { WindowingBackend, WindowProps } from "../../types";
+import { forgetWindow, rememberWindow } from "../../myths/window-registry";
+import { WindowingBackend, WindowProps, WindowRef } from "../../types";
 
 
 export const electronBackend: WindowingBackend<BrowserWindow> = {
@@ -20,11 +20,11 @@ export const electronBackend: WindowingBackend<BrowserWindow> = {
       window.show();
     });
 
-    return of(registerWindow.create({ id, window }));
+    return of(rememberWindow.create({ id, window }));
   },
 
-  closeWindow: (id: string, window?: BrowserWindow) => {
+  closeWindow: (id: WindowRef, window?: BrowserWindow) => {
     window?.close();
-    return of(deregisterWindow.create(id));
+    return of(forgetWindow.create(id));
   }
 }

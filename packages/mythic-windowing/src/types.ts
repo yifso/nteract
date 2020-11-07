@@ -5,20 +5,21 @@ import { Observable } from "rxjs";
 
 
 export type Window = BrowserWindow;
+export type WindowRef = string;
 export type Windowing = MythicPackage<"windowing", WindowingState>;
 
 export interface WindowingState {
   backend: WindowingBackend<Window>;
-  windows: Immutable.Map<string, Window>;
+  windows: Immutable.Map<WindowRef, Window>;
 }
 
 export interface WindowingBackend<WINDOW> {
   showWindow: (props: WindowProps) => Observable<MythicAction>;
-  closeWindow: (id: string, window?: WINDOW) => Observable<MythicAction>;
+  closeWindow: (id: WindowRef, window?: WINDOW) => Observable<MythicAction>;
 }
 
 export interface WindowProps {
-  id: string;
+  id: WindowRef;
   kind?: "normal" | "splash";
   width: number;
   height: number;

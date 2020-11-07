@@ -1,5 +1,5 @@
 import { windowing } from "../package";
-import { WindowProps } from "../types";
+import { WindowProps, WindowRef } from "../types";
 
 
 export const showWindow =
@@ -11,7 +11,7 @@ export const showWindow =
   });
 
 export const closeWindow =
-  windowing.createMyth("closeWindow")<string>({
+  windowing.createMyth("closeWindow")<WindowRef>({
     thenDispatch: [
       (action, state) =>
         state.backend.closeWindow(

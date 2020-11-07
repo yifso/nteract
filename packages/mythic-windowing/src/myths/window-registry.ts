@@ -1,5 +1,5 @@
 import { windowing } from "../package";
-import { Window, WindowingBackend } from "../types";
+import { Window, WindowingBackend, WindowRef } from "../types";
 
 
 export const setWindowingBackend =
@@ -8,14 +8,14 @@ export const setWindowingBackend =
       state.set("backend", action.payload),
   });
 
-export const registerWindow =
-  windowing.createMyth("registerWindow")<{ id: string; window: Window }>({
+export const rememberWindow =
+  windowing.createMyth("rememberWindow")<{ id: WindowRef; window: Window }>({
     reduce: (state, action) =>
       state.setIn(["windows", action.payload.id], action.payload.window),
   });
 
-export const deregisterWindow =
-  windowing.createMyth("deregisterWindow")<string>({
+export const forgetWindow =
+  windowing.createMyth("forgetWindow")<WindowRef>({
     reduce: (state, action) =>
       state.deleteIn(["windows", action.payload]),
   });
