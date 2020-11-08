@@ -39,6 +39,8 @@ import {
   errors
 } from "@nteract/types";
 
+const EXECUTE_CANCEL_ALL = "all";
+
 /**
  * Observe all the reactions to running code for cell with id.
  *
@@ -145,6 +147,11 @@ export function executeCellStream(
       )
     ),
 
+    cellMessages.pipe(
+      ofMessageType("error"),
+      map(() => actions.executeCanceled({ contentRef, id: EXECUTE_CANCEL_ALL }))
+    ),
+
     // clear_output display message
     cellMessages.pipe(
       ofMessageType("clear_output") as any,
@@ -220,7 +227,8 @@ export function createExecuteCellStream(
           ofType(actions.EXECUTE_CANCELED, actions.DELETE_CELL),
           filter(
             (action: ExecuteStreamActions) =>
-              (action as PerCellStopStopExecutionActions).payload.id === id
+              (action as PerCellStopStopExecutionActions).payload.id === id ||
+              (action as PerCellStopStopExecutionActions).payload.id === EXECUTE_CANCEL_ALL
           )
         ),
         action$.pipe(
