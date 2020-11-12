@@ -1,6 +1,6 @@
 import { actions, createKernelRef, selectors } from "@nteract/core";
 import { sendNotification } from "@nteract/mythic-notifications";
-import { app, dialog, remote, shell } from "electron";
+import { app, dialog, remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import React from "react";
@@ -178,7 +178,7 @@ export const ExportPDF: DesktopCommand<ReqContent> = {
         level: "success",
         action: {
           label: "Open",
-          callback: () => shell.openItem(pdfPath),
+          file: pdfPath,
         },
       });
     } catch (error) {

@@ -1,5 +1,5 @@
-import { BrowserWindow } from "electron";
-import { of } from "rxjs";
+import { BrowserWindow, shell } from "electron";
+import { EMPTY, of } from "rxjs";
 import { forgetWindow, rememberWindow } from "../../myths/window-registry";
 import { WindowingBackend, WindowProps, WindowRef } from "../../types";
 
@@ -26,5 +26,10 @@ export const electronBackend: WindowingBackend<BrowserWindow> = {
   closeWindow: (id: WindowRef, window?: BrowserWindow) => {
     window?.close();
     return of(forgetWindow.create(id));
+  },
+
+  openExternalUrl: (url: string) => {
+    shell.openExternal(url).then();
+    return EMPTY;
   }
 }

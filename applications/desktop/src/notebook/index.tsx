@@ -25,6 +25,7 @@ import DataExplorer from "@nteract/data-explorer";
 import WidgetDisplay from "@nteract/jupyter-widgets";
 import * as MathJax from "@nteract/mathjax";
 import { allConfigOptionDefinitions } from "@nteract/mythic-configuration";
+import { electronBackend, setWindowingBackend } from "@nteract/mythic-windowing";
 import NotebookApp from "@nteract/notebook-app-component";
 import { Media } from "@nteract/outputs";
 
@@ -166,6 +167,8 @@ declare global {
   }
 }
 window.store = store;
+
+store.dispatch(setWindowingBackend.create(electronBackend));
 
 initNativeHandlers(contentRef, store);
 initMenuHandlers(contentRef, store);

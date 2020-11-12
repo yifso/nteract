@@ -1,7 +1,7 @@
 import { RecordOf } from "immutable";
 import { ComponentClass } from "react";
 import { ConnectedComponent } from "react-redux";
-import { Action, Reducer } from "redux";
+import { Action, Dispatch, Reducer } from "redux";
 import { Epic } from "redux-observable";
 import { Observable } from "rxjs";
 import { Diff } from "utility-types";
@@ -26,6 +26,8 @@ export type ConnectedComponentProps<
   ADDITIONAL_PROPS,
 > = {
   [key in MYTH_NAME]: (payload: MYTH_PROPS) => void;
+} & {
+  dispatch: Dispatch;
 } & ADDITIONAL_PROPS;
 
 export interface Myth<
