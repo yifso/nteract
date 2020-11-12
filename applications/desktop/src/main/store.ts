@@ -1,13 +1,16 @@
 import { Kernelspecs, middlewares as coreMiddlewares } from "@nteract/core";
 import { configuration } from "@nteract/mythic-configuration";
+import { windowing } from "@nteract/mythic-windowing";
 import { makeConfigureStore } from "@nteract/myths";
 import { AnyAction } from "redux";
 import { QUITTING_STATE_NOT_STARTED, QuittingState } from "./actions";
 import { MainStateProps } from "./reducers";
 
+
 export const configureStore = makeConfigureStore<MainStateProps>()({
   packages: [
     configuration,
+    windowing,
   ],
   reducers: {
     kernelSpecs: (state: Kernelspecs = {}, action: AnyAction) =>

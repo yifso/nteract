@@ -1,4 +1,5 @@
 import { ConfigurationOption, defineConfigOption, setConfigFile } from "@nteract/mythic-configuration";
+import { closeWindow, electronBackend, setWindowingBackend, showWindow } from "@nteract/mythic-windowing";
 import { KernelspecInfo, Kernelspecs } from "@nteract/types";
 import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, Tray } from "electron";
 import initContextMenu from "electron-context-menu";
@@ -74,7 +75,7 @@ ipc.on("show-message-box", async (event: IpcMainEvent, arg: any) => {
 app.on("ready", initAutoUpdater);
 
 const electronReady$ = new Observable((observer) => {
-  (app as any).on("ready", (launchInfo: Object) => observer.next(launchInfo));
+  (app as any).on("ready", (launchInfo: object) => observer.next(launchInfo));
 });
 const windowReady$ = fromEvent(ipc, "react-ready");
 
@@ -103,52 +104,31 @@ const kernelSpecsPromise = prepJupyterObservable
     return initializeKernelSpecs(specs);
   });
 
-/**
- * Creates an Rx.Subscriber that will create a splash page onNext and close the
- * splash page onComplete.
- * @return {Rx.Subscriber} Splash Window subscriber
- */
-export function createSplashSubscriber() {
-  let win: BrowserWindow;
-
-  return Subscriber.create(
-    () => {
-      win = new BrowserWindow({
-        width: 565,
-        height: 233,
-        useContentSize: true,
-        title: "loading",
-        frame: false,
-        show: false,
-      });
-
-      const index = join(__dirname, "..", "static", "splash.html");
-      win.loadURL(`file://${index}`);
-      win.once("ready-to-show", () => {
-        win.show();
-      });
-    },
-    (err) => {
-      console.error(err);
-    },
-    () => {
-      // Close the splash page when completed
-      if (win) {
-        win.close();
-      }
-    }
-  );
-}
-
 const appAndKernelSpecsReady = zip(
   fullAppReady$,
   windowReady$,
-  kernelSpecsPromise
+  kernelSpecsPromise,
 );
+
+store.dispatch(setWindowingBackend.create(electronBackend));
 
 electronReady$
   .pipe(takeUntil(appAndKernelSpecsReady))
-  .subscribe(createSplashSubscriber());
+  .subscribe(
+    () => store.dispatch(
+      showWindow.create({
+        id: "splash",
+        kind: "splash",
+        width: 565,
+        height: 233,
+        path: join(__dirname, "..", "static", "splash.html"),
+      })
+    ),
+    (err) => console.error(err),
+    () => store.dispatch(
+      closeWindow.create("splash")
+    ),
+  );
 
 app.on("before-quit", (e) => {
   // We use Electron's before-quit to give us a hook to into full app quit events,
