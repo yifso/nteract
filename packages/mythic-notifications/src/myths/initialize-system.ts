@@ -1,4 +1,3 @@
-import React from "react";
 import { notifications } from "../package";
 import { NotificationSystem } from "../types";
 
