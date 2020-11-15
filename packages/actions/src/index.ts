@@ -14,4 +14,4 @@ export * from "./actionTypes/kernel_lifecycle";
 export * from "./actionTypes/kernel_misc";
 export * from "./actionTypes/kernelspecs";
 
-export { Action, ErrorAction } from "./utils";
+export { Action, ErrorAction, makeActionFunction } from "./utils";

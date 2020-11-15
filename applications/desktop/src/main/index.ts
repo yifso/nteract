@@ -1,21 +1,18 @@
 import { ConfigurationOption, defineConfigOption, setConfigFile } from "@nteract/mythic-configuration";
 import { closeWindow, electronBackend, setWindowingBackend, showWindow } from "@nteract/mythic-windowing";
-import { KernelspecInfo, Kernelspecs } from "@nteract/types";
-import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, Tray } from "electron";
+import { KernelspecInfo } from "@nteract/types";
+import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, nativeTheme, Tray } from "electron";
 import initContextMenu from "electron-context-menu";
 import * as log from "electron-log";
 import { existsSync } from "fs";
-import { mkdirpObservable } from "fs-observable";
-import * as jupyterPaths from "jupyter-paths";
-import * as kernelspecs from "kernelspecs";
 import { join, resolve } from "path";
-import { forkJoin, fromEvent, Observable, Subscriber, zip } from "rxjs";
-import { buffer, first, mergeMap, skipUntil, takeUntil } from "rxjs/operators";
+import { fromEvent, Observable, Subscriber, zip } from "rxjs";
+import { buffer, first, last, skipUntil, takeUntil } from "rxjs/operators";
 import yargs from "yargs/yargs";
-import { QUITTING_STATE_NOT_STARTED, QUITTING_STATE_QUITTING, setKernelSpecs, setQuittingState } from "./actions";
+import { QUITTING_STATE_NOT_STARTED, QUITTING_STATE_QUITTING, setQuittingState } from "./actions";
 import { initAutoUpdater } from "./auto-updater";
 import { defaultKernel } from "./config-options";
-import initializeKernelSpecs from "./kernel-specs";
+import { bestKernelObservable, kernelSpecs$ } from "./kernel-specs";
 import { launch, launchNewNotebook } from "./launch";
 import { loadFullMenu, loadTrayMenu } from "./menu";
 import prepareEnv from "./prepare-env";
@@ -25,7 +22,7 @@ import configureStore from "./store";
 //        electron@11. Need to figure out how to get a version of zmq that
 //        complies with the new requirements for native modules.
 //        See also: https://github.com/electron/electron/issues/18397
-app.allowRendererProcessReuse = false
+app.allowRendererProcessReuse = false;
 
 const store = configureStore(undefined);
 
@@ -72,6 +69,10 @@ ipc.on("show-message-box", async (event: IpcMainEvent, arg: any) => {
   event.sender.send("show-message-box-response", response);
 });
 
+ipc.on("kernel_specs_request", event => {
+  event.reply("kernel_specs_reply", kernelSpecs$.pipe(last()));
+});
+
 app.on("ready", initAutoUpdater);
 
 const electronReady$ = new Observable((observer) => {
@@ -85,35 +86,16 @@ const jupyterConfigDir = join(app.getPath("home"), ".jupyter");
 const nteractConfigFilename = join(jupyterConfigDir, "nteract.json");
 
 store.dispatch(setConfigFile(nteractConfigFilename));
-
-const prepJupyterObservable = prepareEnv.pipe(
-  mergeMap(() =>
-    // Create all the directories we need in parallel
-    forkJoin(
-      // Ensure the runtime Dir is setup for kernels
-      mkdirpObservable(jupyterPaths.runtimeDir()),
-      // The config directory is taken care of by the configuration myths
-    )
-  ),
-);
-
-const kernelSpecsPromise = prepJupyterObservable
-  .toPromise()
-  .then(() => kernelspecs.findAll())
-  .then((specs: Kernelspecs) => {
-    return initializeKernelSpecs(specs);
-  });
-
-const appAndKernelSpecsReady = zip(
-  fullAppReady$,
-  windowReady$,
-  kernelSpecsPromise,
-);
-
 store.dispatch(setWindowingBackend.create(electronBackend));
 
+const appAndKernelSpecsReady$ = zip(
+  fullAppReady$,
+  windowReady$,
+  kernelSpecs$,
+);
+
 electronReady$
-  .pipe(takeUntil(appAndKernelSpecsReady))
+  .pipe(takeUntil(appAndKernelSpecsReady$))
   .subscribe(
     () => store.dispatch(
       showWindow.create({
@@ -121,13 +103,13 @@ electronReady$
         kind: "splash",
         width: 565,
         height: 233,
-        path: join(__dirname, "..", "static", "splash.html"),
+        path: join(__dirname, "..", "static", "splash.html")
       })
     ),
     (err) => console.error(err),
     () => store.dispatch(
       closeWindow.create("splash")
-    ),
+    )
   );
 
 app.on("before-quit", (e) => {
@@ -160,7 +142,7 @@ const windowAllClosed = new Observable((observer) => {
   app.on("window-all-closed", (event: Event) => observer.next(event));
 });
 
-windowAllClosed.pipe(skipUntil(appAndKernelSpecsReady)).subscribe(() => {
+windowAllClosed.pipe(skipUntil(appAndKernelSpecsReady$)).subscribe(() => {
   // On macOS:
   // - If user manually closed the last window, we want to keep the app and
   //   menu bar active.
@@ -188,7 +170,7 @@ const openFile$ = new Observable(
     const handler = (event: Event, filename: string) => {
       observer.next({
         event,
-        filename,
+        filename
       });
     };
     app.on(eventName, handler);
@@ -199,7 +181,7 @@ const openFile$ = new Observable(
 
 function openFileFromEvent({
   event,
-  filename,
+  filename
 }: {
   event: Event;
   filename: string;
@@ -214,34 +196,21 @@ function openFileFromEvent({
 openFile$
   .pipe(buffer(fullAppReady$), first())
   .subscribe((buffer: Array<{ filename: string; event: Event }>) => {
-    // Form an array of open-file events from before app-ready // Should only be the first
+    // Form an array of open-file events from before app-ready
+    // Should only be the first
     // Now we can choose whether to open the default notebook
     // based on if arguments went through argv or through open-file events
 
-    const cliLaunchNewNotebook = (filepath: string | null) => {
-      kernelSpecsPromise.then((specs: Kernelspecs) => {
-        let kernel: string = defaultKernel(store.getState());
-        const passedKernel = argv.kernel as string;
-
-        if (passedKernel && passedKernel in specs) {
-          kernel = passedKernel;
-        } else if (!kernel || !(kernel in specs)) {
-          const specList = Object.keys(specs);
-          specList.sort();
-          kernel = specList[0];
-        }
-
-        if (kernel && specs[kernel]) {
-          launchNewNotebook(filepath, specs[kernel]);
-        } else {
-          log.error(`can't find kernel "${kernel}" in:`, specs);
-        }
-      });
-    };
+    const bestKernel$ =
+      bestKernelObservable(
+        argv.kernel as string,
+        defaultKernel(store.getState()),
+      );
 
     if (notebooks.length <= 0 && buffer.length <= 0) {
-      log.info("launching an empty notebook by default");
-      cliLaunchNewNotebook(null);
+      bestKernel$.subscribe(
+        spec => launchNewNotebook(null, spec),
+      );
     } else {
       notebooks.forEach((f) => {
         if (existsSync(resolve(f))) {
@@ -253,7 +222,9 @@ openFile$
           }
         } else {
           log.info(`notebook ${f} not found, launching as empty notebook`);
-          cliLaunchNewNotebook(f);
+          bestKernel$.subscribe(
+            spec => launchNewNotebook(f, spec),
+          );
         }
       });
     }
@@ -261,26 +232,23 @@ openFile$
   });
 
 // All open file events after app is ready
-openFile$.pipe(skipUntil(fullAppReady$)).subscribe(openFileFromEvent);
-let tray = null;
+openFile$
+  .pipe(skipUntil(fullAppReady$))
+  .subscribe(openFileFromEvent);
+
 fullAppReady$.subscribe(() => {
   // Setup right-click context menu for all BrowserWindows
   initContextMenu();
+});
 
-  kernelSpecsPromise
-    .then((kernelSpecs) => {
-      if (Object.keys(kernelSpecs).length !== 0) {
-        store.dispatch(setKernelSpecs(kernelSpecs));
-      }
-      const menu = loadFullMenu();
-      Menu.setApplicationMenu(menu);
-      const logo = process.platform === "win32" ? "logoWhite" : "logoTemplate";
-      const trayImage = join(__dirname, "..", "static", `${logo}.png`);
-      tray = new Tray(trayImage);
-      const trayMenu = loadTrayMenu();
-      tray.setContextMenu(trayMenu);
-    })
-    .catch((err) => {
-      console.error("Unexpected error when fetching kernelspecs: ", err);
-    });
+appAndKernelSpecsReady$.subscribe(() => {
+  const logo = (
+    nativeTheme.shouldUseDarkColors ||
+    process.platform === "darwin" // Macs support logo templates and selecting the right color automatically
+  ) ? "logoTemplate" : "logoWhite";
+
+  const tray = new Tray(join(__dirname, "..", "static", `${logo}.png`));
+
+  Menu.setApplicationMenu(loadFullMenu());
+  tray.setContextMenu(loadTrayMenu());
 });
