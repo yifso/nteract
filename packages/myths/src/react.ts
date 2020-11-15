@@ -28,7 +28,11 @@ export const makeCreateConnectedComponent =
       (componentName, cls, makeState) => {
         const component = connect(
           makeState ?? null,
-          { [myth.name]: myth.create },
+          (dispatch) => ({
+            [myth.name]:
+              (props: typeof myth.props) => dispatch(myth.create(props)),
+            dispatch,
+          }),
         )(cls as any);
         component.displayName = componentName;
         return component;

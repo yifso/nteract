@@ -1,6 +1,8 @@
 import { manifest as examplesManifest } from "@nteract/examples";
 import { allConfigOptions, HasPrivateConfigurationState } from "@nteract/mythic-configuration";
-import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions, shell } from "electron";
+import { openExternalUrl } from "@nteract/mythic-windowing";
+import { MythicAction } from "@nteract/myths";
+import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions } from "electron";
 import sortBy from "lodash.sortby";
 import { Store } from "redux";
 import { accelerators } from "../common/accelerators";
@@ -66,7 +68,7 @@ const isEnabled = <PROPS>(command: ActionCommand<any, PROPS>) =>
   || !!BrowserWindow.getFocusedWindow();
 
 function buildMenuTemplate(
-  store: Store<MainStateRecord, MainAction>,
+  store: Store<MainStateRecord, MainAction | MythicAction>,
   structure: MenuDefinition,
 ) {
   const kernelspecs = sortBy(store.getState().kernelSpecs ?? {}, "spec.display_name");
@@ -99,7 +101,7 @@ function buildMenuTemplate(
 
     url: (label: string, url: string) => ({
       label: processString(label),
-      click: () => shell.openExternal(processString(url)),
+      click: () => store.dispatch(openExternalUrl.create(processString(url))),
     }),
 
     command: (label: string, options: MenuitemOptions, command: Command) =>

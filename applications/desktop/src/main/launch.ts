@@ -1,5 +1,6 @@
+import { openExternalUrl } from "@nteract/mythic-windowing";
 import { KernelspecInfo } from "@nteract/types";
-import { BrowserWindow, Menu, shell } from "electron";
+import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { loadFullMenu } from "./menu";
 
@@ -10,7 +11,7 @@ let launchIpynb: (path: string) => void;
 export function deferURL(event: Event, url: string) {
   event.preventDefault();
   if (!url.startsWith("file:")) {
-    shell.openExternal(url);
+    global.store.dispatch(openExternalUrl.create(url));
   } else if (url.endsWith(".ipynb")) {
     launchIpynb(url);
   }

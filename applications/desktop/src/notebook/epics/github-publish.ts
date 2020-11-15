@@ -1,6 +1,5 @@
 import { actions, selectors } from "@nteract/core";
 import { sendNotification } from "@nteract/mythic-notifications";
-import { shell } from "electron";
 
 import * as path from "path";
 import { ofType, StateObservable } from "redux-observable";
@@ -141,8 +140,7 @@ export const publishEpic = (
                 level: "success",
                 action: {
                   label: "Open",
-                  callback: () =>
-                    shell.openExternal(`https://nbviewer.jupyter.org/${xhr.response.id}`),
+                  url: `https://nbviewer.jupyter.org/${xhr.response.id}`,
                 },
               }),
             )

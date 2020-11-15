@@ -1,7 +1,11 @@
-import { Callout, Intent, Spinner, Toaster } from "@blueprintjs/core";
-import React from "react";
+import { Callout, Classes, Intent, Spinner, Toaster } from "@blueprintjs/core";
+import { openExternalFile, openExternalUrl } from "@nteract/mythic-windowing";
+import { MythicComponent } from "@nteract/myths";
+import React, { RefObject } from "react";
+import { Dispatch } from "redux";
 import styled from "styled-components";
-import { NotificationMessage, NotificationSystem } from "../types";
+import { initializeSystem } from "../myths/initialize-system";
+import { NotificationAction, NotificationMessage, NotificationSystem } from "../types";
 
 const FloatRight = styled.div`
   float: right;
@@ -12,8 +16,26 @@ const calloutStyle = {
   background: "transparent",
 };
 
+const callbackOf = (action: NotificationAction, dispatch: Dispatch) => {
+  if ("callback" in action) {
+    return action.callback;
+  }
+
+  if ("dispatch" in action) {
+    return () => dispatch(action.dispatch);
+  }
+
+  if ("url" in action) {
+    return () => dispatch(openExternalUrl.create(action.url));
+  }
+
+  if ("file" in action) {
+    return () => dispatch(openExternalFile.create(action.file));
+  }
+}
+
 export const blueprintjsNotificationSystem =
-  (toaster: Toaster): NotificationSystem => ({
+  (toaster: Toaster, dispatch: Dispatch): NotificationSystem => ({
     addNotification: (msg: NotificationMessage) => {
       const intent = {
         "in-progress": Intent.PRIMARY,
@@ -45,7 +67,7 @@ export const blueprintjsNotificationSystem =
           ? {
               icon: msg.action.icon ?? "arrow-right",
               text: msg.action.label,
-              onClick: msg.action.callback,
+              onClick: callbackOf(msg.action, dispatch),
             }
           : undefined,
         timeout: msg.action || msg.level === "in-progress"
@@ -54,3 +76,44 @@ export const blueprintjsNotificationSystem =
       }, msg.key);
     },
   });
+
+const DoNotPrint =
+  styled.div`
+    @media print {
+      display: none;
+    }
+  `;
+
+export const NotificationRoot =
+  initializeSystem.createConnectedComponent(
+    "NotificationRoot",
+    class extends MythicComponent<
+      typeof initializeSystem,
+      { darkTheme?: boolean }
+      > {
+      toaster?: RefObject<Toaster>;
+
+      postConstructor(): void {
+        this.toaster = React.createRef();
+      }
+
+      componentDidMount(): void {
+        this.props.initializeSystem(
+          blueprintjsNotificationSystem(this.toaster!.current!, this.props.dispatch)
+        );
+      }
+
+      render(): JSX.Element {
+        return (
+          <DoNotPrint>
+            <Toaster
+              ref={this.toaster}
+              position={"top-right"}
+              className={this.props.darkTheme ? Classes.DARK : undefined}
+              usePortal={false}   // needed for the theme class to bubble down
+            />
+          </DoNotPrint>
+        );
+      }
+    },
+  );

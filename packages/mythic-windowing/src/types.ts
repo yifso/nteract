@@ -16,6 +16,7 @@ export interface WindowingState {
 export interface WindowingBackend<WINDOW> {
   showWindow: (props: WindowProps) => Observable<MythicAction>;
   closeWindow: (id: WindowRef, window?: WINDOW) => Observable<MythicAction>;
+  openExternalUrl: (url: string) => Observable<MythicAction>;
 }
 
 export interface WindowProps {

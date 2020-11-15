@@ -1,4 +1,13 @@
 import { IconName } from "@blueprintjs/core";
+import { MythicAction } from "@nteract/myths";
+
+
+export type NotificationAction =
+  | { callback: () => void }
+  | { dispatch: MythicAction }
+  | { url: string }
+  | { file: string }
+  ;
 
 export interface NotificationMessage {
   key?: string;
@@ -6,10 +15,9 @@ export interface NotificationMessage {
   title?: string;
   message: string | JSX.Element;
   level: "error" | "warning" | "info" | "success" | "in-progress";
-  action?: {
+  action?: NotificationAction & {
     icon?: IconName;
     label: string;
-    callback: () => void;
   };
 }
 
