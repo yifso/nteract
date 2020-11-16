@@ -2,7 +2,8 @@ import { HasPrivateConfigurationState } from "@nteract/mythic-configuration";
 import { Kernelspecs } from "@nteract/types";
 import { RecordOf } from "immutable";
 
-import { QuittingState, SetKernelSpecsAction, SetQuittingStateAction } from "./actions";
+import { QuittingState, SetQuittingStateAction } from "./actions";
+import { SetKernelspecs } from "./kernel-specs";
 
 export interface MainStateProps extends HasPrivateConfigurationState {
   kernelSpecs: Kernelspecs;
@@ -12,5 +13,6 @@ export interface MainStateProps extends HasPrivateConfigurationState {
 export type MainStateRecord = RecordOf<MainStateProps>;
 
 export type MainAction =
-  | SetKernelSpecsAction
-  | SetQuittingStateAction;
+  | SetKernelspecs
+  | SetQuittingStateAction
+  ;

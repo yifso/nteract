@@ -4,6 +4,7 @@ import { windowing } from "@nteract/mythic-windowing";
 import { makeConfigureStore } from "@nteract/myths";
 import { AnyAction } from "redux";
 import { QUITTING_STATE_NOT_STARTED, QuittingState } from "./actions";
+import { SET_KERNELSPECS } from "./kernel-specs";
 import { MainStateProps } from "./reducers";
 
 
@@ -14,7 +15,7 @@ export const configureStore = makeConfigureStore<MainStateProps>()({
   ],
   reducers: {
     kernelSpecs: (state: Kernelspecs = {}, action: AnyAction) =>
-      action.type === "SET_KERNELSPECS" ? action.payload.kernelSpecs : state,
+      action.type === SET_KERNELSPECS ? action.payload.kernelSpecs : state,
     quittingState: (
       state: QuittingState = QUITTING_STATE_NOT_STARTED, action: AnyAction
     ) =>
