@@ -129,7 +129,7 @@ describe("kernels reducers", () => {
       error: new Error("test")
     });
     const state = kernels(originalState, action) as KernelsRecordProps;
-    expect(state.byRef.getIn([kernelRef, "status"])).toBe("failed to kill");
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Error);
   });
   test("SET_EXECUTION_STATE sets kernel status", () => {
     const kernelRef = createKernelRef();
@@ -157,7 +157,7 @@ describe("kernels reducers", () => {
       kernelSpecName: "python2"
     });
     const state = kernels(originalState, action) as KernelsRecordProps;
-    expect(state.byRef.getIn([kernelRef, "status"])).toBe("launching");
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Starting);
   });
   test("LAUNCH_KERNEL_BY_NAME sets kernel status", () => {
     const kernelRef = createKernelRef();
@@ -171,6 +171,6 @@ describe("kernels reducers", () => {
       kernelSpecName: "python2"
     });
     const state = kernels(originalState, action) as KernelsRecordProps;
-    expect(state.byRef.getIn([kernelRef, "status"])).toBe("launching");
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Starting);
   });
 });

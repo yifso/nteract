@@ -31,7 +31,7 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       typedAction = action as actionTypes.KillKernelFailed;
       return state.setIn(
         [typedAction.payload.kernelRef, "status"],
-        "failed to kill"
+        KernelStatus.Idle
       );
     case actionTypes.RESTART_KERNEL:
       typedAction = action as actionTypes.RestartKernel;
@@ -44,7 +44,7 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       return state.set(
         typedAction.payload.kernelRef,
         makeKernelNotStartedRecord({
-          status: "launching",
+          status: KernelStatus.Starting,
           kernelSpecName: typedAction.payload.kernelSpec.name
         })
       );
@@ -53,7 +53,7 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       return state.set(
         typedAction.payload.kernelRef,
         makeKernelNotStartedRecord({
-          status: "launching",
+          status: KernelStatus.Starting,
           kernelSpecName: typedAction.payload.kernelSpecName
         })
       );

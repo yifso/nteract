@@ -55,7 +55,9 @@ export enum KernelStatus {
   /** 0mq-based kernel is launched. */
   Launched = "launched",
   /** 0mq-based kernel is killed. */
-  Killed = "killed"
+  Killed = "killed",
+  /** Kernel is in an failed or error state. */
+  Error = "error"
 }
 
 export interface LocalKernelProps {
