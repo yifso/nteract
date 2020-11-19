@@ -19,7 +19,7 @@
   "dependencies": {
     "@nteract/messaging": "^7.0.12",
     "@nteract/outputs": "^3.0.9",
-    "codemirror": "5.58.2",
+    "codemirror": "5.58.3",
     "rxjs": "^6.3.3"
   },
   "peerDependencies": {
