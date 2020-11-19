@@ -31,7 +31,7 @@ const byRef = (state = Map(), action: Action): Map<unknown, unknown> => {
       typedAction = action as actionTypes.KillKernelFailed;
       return state.setIn(
         [typedAction.payload.kernelRef, "status"],
-        KernelStatus.Idle
+        KernelStatus.Error
       );
     case actionTypes.RESTART_KERNEL:
       typedAction = action as actionTypes.RestartKernel;

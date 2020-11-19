@@ -129,7 +129,7 @@ describe("kernels reducers", () => {
       error: new Error("test")
     });
     const state = kernels(originalState, action) as KernelsRecordProps;
-    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Idle);
+    expect(state.byRef.getIn([kernelRef, "status"])).toBe(KernelStatus.Error);
   });
   test("SET_EXECUTION_STATE sets kernel status", () => {
     const kernelRef = createKernelRef();
