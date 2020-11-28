@@ -62,6 +62,7 @@ import {
 
 export interface CodeCell {
   cell_type: "code";
+  id?: string;
   metadata: JSONObject;
   execution_count: ExecutionCount;
   source: MultiLineString;
@@ -70,12 +71,14 @@ export interface CodeCell {
 
 export interface MarkdownCell {
   cell_type: "markdown";
+  id?: string;
   metadata: JSONObject;
   source: MultiLineString;
 }
 
 export interface RawCell {
   cell_type: "raw";
+  id?: string;
   metadata: JSONObject;
   source: MultiLineString;
 }
@@ -160,6 +163,10 @@ function createImmutableCell(cell: Cell): ImmutableCell {
   }
 }
 
+function hasCellId(notebook: NotebookV4 | NotebookRecordParams) {
+  return notebook.nbformat === 4 && notebook.nbformat_minor >= 5;
+}
+
 export function fromJS(
   notebook: NotebookV4
 ): Record<NotebookRecordParams> & Readonly<NotebookRecordParams> {
@@ -178,8 +185,18 @@ export function fromJS(
     cellMap: ImmutableMap<CellId, ImmutableCell>().asMutable()
   };
 
+  // Obtain the cell id if we're on a notebook version 4.5 or greater
+  const shouldUseId = hasCellId(notebook);
+
   const cellStructure = notebook.cells.reduce(
-    (cellStruct, cell) => appendCell(cellStruct, createImmutableCell(cell)),
+    (cellStruct, cell) =>
+      appendCell(
+        cellStruct,
+        createImmutableCell(cell),
+        // Pass in the cell id if it exists, otherwise
+        // use undefined and let nteract generate a cell id
+        shouldUseId ? cell.id : undefined
+      ),
     starterCellStructure
   );
 
@@ -303,6 +320,7 @@ export function toJS(immnb: ImmutableNotebook): NotebookV4 {
     [key: string]: ImmutableCell;
   } = plainNotebook.cellMap.toObject();
 
+  const shouldUseCellId = hasCellId(plainNotebook);
   const cells = plainCellOrder
     .filter(
       (cellId: string) =>
@@ -313,7 +331,17 @@ export function toJS(immnb: ImmutableNotebook): NotebookV4 {
           "deleting"
         ])
     )
-    .map((cellId: string) => cellToJS(plainCellMap[cellId]));
+    .map((cellId: string) => {
+      const cell = cellToJS(plainCellMap[cellId]);
+
+      // if this notebook has cell ids, ensure
+      // that the id is included in the cell output
+      if (shouldUseCellId) {
+        cell["id"] = cellId;
+      }
+
+      return cell;
+    });
 
   return {
     cells,
