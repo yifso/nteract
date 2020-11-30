@@ -1,3 +1,36 @@
+# Changelog
+
+## Latest release
+
+For the **latest release** information, visit the [GitHub release page](https://github.com/nteract/nteract/releases).
+
+## Release history (2019-12-16 to Present)
+
+See [changelogs](https://github.com/nteract/nteract/tree/main/changelogs) folder for change history from 2019-12-16 to
+present release.
+
+**Note:** nteract has evolved from a monorepo into multiple individual packages and
+several applications such as desktop, jupyter-extension and web.
+As a result, the changelogs can be found in individual packages
+that have been split out from the monorepo, the
+[GitHub release page](https://github.com/nteract/nteract/releases),
+and the [changelogs](https://github.com/nteract/nteract/tree/main/changelogs) folder.
+
+## Releases from 2018-12 to 2019-12
+
+These releases can be found on [GitHub release pages](https://github.com/nteract/nteract/releases).
+
+An individual release can be found by using the following link format and substituting
+the desired release version, `{TAG}`:
+
+https://github.com/nteract/nteract/releases/tag/{TAG}
+
+For example, the link to the v0.23.1 release would be:
+
+https://github.com/nteract/nteract/releases/tag/v0.23.1
+
+## Releases prior to 2018-12-18
+
 ## nteract v0.11.7 - Blacksmith Blackwell
 
 * No more pesky kernel shutdown error when no kernel available
