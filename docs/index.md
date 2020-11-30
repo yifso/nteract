@@ -10,6 +10,12 @@ nteract is an ecosystem of React components, JavaScript packages, and applicatio
 2. Use our React components to build your own interactive notebook application.
 3. Use [commuter](https://github.com/nteract/commuter) to host notebooks.
 
+### Project Documentation
+- [Hydrogen](https://nteract.gitbooks.io/hydrogen/content/)
+- [papermill](https://papermill.readthedocs.io/)
+- [scrapbook](https://scrapbook.readthedocs.io/)
+- [testbook](https://testbook.readthedocs.io/)
+
 ### Helpful Links
 1. [nteract GitHub monorepo](https://github.com/nteract/nteract)
 2. [nteract Slack community](https://slack.nteract.io/)
