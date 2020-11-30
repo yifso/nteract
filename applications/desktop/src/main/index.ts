@@ -69,9 +69,11 @@ ipc.on("show-message-box", async (event: IpcMainEvent, arg: any) => {
   event.sender.send("show-message-box-response", response);
 });
 
-ipc.on("kernel_specs_request", event => {
-  event.reply("kernel_specs_reply", kernelSpecs$.pipe(last()));
-});
+ipc.on("kernel_specs_request", event =>
+  kernelSpecs$
+    .pipe(last())
+    .subscribe(specs => event.reply("kernel_specs_reply", specs))
+);
 
 app.on("ready", initAutoUpdater);
 
