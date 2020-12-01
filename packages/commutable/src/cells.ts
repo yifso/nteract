@@ -13,6 +13,7 @@ import {
 
 export interface CodeCellParams {
   cell_type: "code";
+  id?: string;
   // Sadly untyped and widely unspecced
   metadata: ImmutableMap<string, any>;
   execution_count: ExecutionCount;
@@ -45,6 +46,7 @@ export type ImmutableCodeCell = RecordOf<CodeCellParams>;
 
 export interface MarkdownCellParams {
   cell_type: "markdown";
+  id?: string;
   source: string;
   metadata: ImmutableMap<string, any>;
 }
@@ -66,6 +68,7 @@ export type ImmutableMarkdownCell = RecordOf<MarkdownCellParams>;
 /* RawCell Record Boilerplate */
 
 export interface RawCellParams {
+  id?: string;
   cell_type: "raw";
   source: string;
   metadata: ImmutableMap<string, any>;
