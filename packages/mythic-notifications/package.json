@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^3.7.0",
-    "@nteract/mythic-windowing": "^0.1.1",
     "@nteract/myths": "^0.2.5"
   },
   "peerDependencies": {

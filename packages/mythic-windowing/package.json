@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "@nteract/myths": "^0.2.5",
-    "electron": "7.3.2",
     "file-url": "^3.0.0"
+  },
+  "peerDependencies": {
+    "electron": "7.3.2"
   },
   "author": "nteract contributers",
   "license": "BSD-3-Clause"

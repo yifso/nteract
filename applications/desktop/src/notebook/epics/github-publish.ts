@@ -1,5 +1,6 @@
 import { actions, selectors } from "@nteract/core";
 import { sendNotification } from "@nteract/mythic-notifications";
+import { openExternalUrl } from "@nteract/mythic-windowing";
 
 import * as path from "path";
 import { ofType, StateObservable } from "redux-observable";
@@ -140,7 +141,7 @@ export const publishEpic = (
                 level: "success",
                 action: {
                   label: "Open",
-                  url: `https://nbviewer.jupyter.org/${xhr.response.id}`,
+                  callback: () => window.store.dispatch(openExternalUrl.create(`https://nbviewer.jupyter.org/${xhr.response.id}`)),
                 },
               }),
             )
