@@ -1,5 +1,6 @@
 import { actions, createKernelRef, selectors } from "@nteract/core";
 import { sendNotification } from "@nteract/mythic-notifications";
+import { openExternalFile } from "@nteract/mythic-windowing";
 import { app, dialog, remote } from "electron";
 import * as fs from "fs";
 import * as path from "path";
@@ -178,7 +179,7 @@ export const ExportPDF: DesktopCommand<ReqContent> = {
         level: "success",
         action: {
           label: "Open",
-          file: pdfPath,
+          callback: () => store.dispatch(openExternalFile.create(pdfPath)),
         },
       });
     } catch (error) {

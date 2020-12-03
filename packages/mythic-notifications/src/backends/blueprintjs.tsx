@@ -1,5 +1,4 @@
 import { Callout, Classes, Intent, Spinner, Toaster } from "@blueprintjs/core";
-import { openExternalFile, openExternalUrl } from "@nteract/mythic-windowing";
 import { MythicComponent } from "@nteract/myths";
 import React, { RefObject } from "react";
 import { Dispatch } from "redux";
@@ -23,14 +22,6 @@ const callbackOf = (action: NotificationAction, dispatch: Dispatch) => {
 
   if ("dispatch" in action) {
     return () => dispatch(action.dispatch);
-  }
-
-  if ("url" in action) {
-    return () => dispatch(openExternalUrl.create(action.url));
-  }
-
-  if ("file" in action) {
-    return () => dispatch(openExternalFile.create(action.file));
   }
 }
 
