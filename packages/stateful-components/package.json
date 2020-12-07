@@ -24,7 +24,7 @@
     "@nteract/fixtures": "^2.3.14",
     "@nteract/markdown": "4.5.2",
     "@nteract/mythic-configuration": "^1.0.6",
-    "@nteract/outputs": "^3.0.9",
+    "@nteract/outputs": "^3.0.11",
     "@nteract/presentational-components": "^3.4.6",
     "immutable": "^4.0.0-rc.12",
     "redux": "^4.0.4"

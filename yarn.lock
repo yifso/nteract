@@ -3252,21 +3252,12 @@
   resolved "https://registry.yarnpkg.com/@nteract/logos/-/logos-1.0.0.tgz#e17ca29f41a5282fe32fa5e4e69a5a3a9839d378"
   integrity sha512-6f675p3gzs7ZMAovzfOx+QOMNu1TGVT2aV5lPOwnPxJCM/APLpDRFcSoURwLA26CROlTTDEe10XweFzJgQ+VEQ==
 
-"@nteract/markdown@4.5.2":
+"@nteract/markdown@4.5.2", "@nteract/markdown@^4.5.2":
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.5.2.tgz#a1eaa58961a26219a1e1f7beaef42d41ef06e864"
   integrity sha512-qf7kbNzYohwj0dKI0qDY8dOv4kubj6lN3KcM5Xaev433q+4iTSKIgtD6ffCC4Jryq3AqN957V1YsY9ZwBZ1GUQ==
   dependencies:
     "@nteract/mathjax" "^4.0.11"
-    "@nteract/presentational-components" "^3.3.11"
-    react-markdown "^4.0.0"
-
-"@nteract/markdown@^4.3.10-alpha.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.4.0.tgz#01b00ba7938c9620bb4962b215745979e451bcca"
-  integrity sha512-Xd8sxPmW42HW2Nq0pz2XrFBARt4wmgA0IbLQ23pg7FRMzpt2Ed4EjfuJkcm9ylTreAt1NJcljIpN47vzBUIehQ==
-  dependencies:
-    "@nteract/mathjax" "^4.0.7"
     "@nteract/presentational-components" "^3.3.11"
     react-markdown "^4.0.0"
 
@@ -3279,7 +3270,7 @@
     react "^16.13.0"
     react-dom "^16.13.0"
 
-"@nteract/mathjax@^4.0.11", "@nteract/mathjax@^4.0.7":
+"@nteract/mathjax@^4.0.11":
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.11.tgz#48c66fa0d26bd9caa54d231e2562bf690aeba785"
   integrity sha512-W+MIjPAA/CFaXJIubSod/ANK6iNpRR21mGFh0Z7Dde7fHLEM2gwCjqdzbxjvCMl82zRMGFPNuZ1bMyX4JArO2g==
@@ -3311,15 +3302,15 @@
   resolved "https://registry.yarnpkg.com/@nteract/octicons/-/octicons-2.0.0.tgz#eccd5de8bc0ef4d1bb4154b791db80f4f6bac995"
   integrity sha512-wQHZMgYJHnZw/ozCeG/cwfUPiQDpmkmF8G57quKpWCMbBBLEN1tUhjRzcZ9IdJyZsiu0dxenjDhOs5+m5DHYGA==
 
-"@nteract/outputs@^3.0.9":
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/@nteract/outputs/-/outputs-3.0.9.tgz#038dfbf12c5a8f40e56798896b4fd94195a7674c"
-  integrity sha512-WacLktT53d4aa8AbF4v3pAPaGHuyKEYalcFO1p4waGkzRpzWJu8GBSLOFwkCN+Kpa7SwCQfEpNiYLSUKMEtIdw==
+"@nteract/outputs@^3.0.11":
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/@nteract/outputs/-/outputs-3.0.11.tgz#d49067d397612878c1a4069a896a11ad163c66fe"
+  integrity sha512-LeT9ViBf+fTPSubZ9dMe7128kg0rl1jIG54V0n2GiU5RuYnUz21FU0IOaLMPUfFMO1VyVEOW5jDc3PAQx5/Kwg==
   dependencies:
-    "@nteract/markdown" "^4.3.10-alpha.0"
-    "@nteract/mathjax" "^4.0.7"
+    "@nteract/markdown" "^4.5.2"
+    "@nteract/mathjax" "^4.0.11"
     ansi-to-react "^6.0.5"
-    react-json-tree "^0.11.0"
+    react-json-tree "^0.12.1"
 
 "@nteract/reducers@^4.0.0":
   version "4.0.0"
@@ -5329,14 +5320,6 @@ babel-preset-jest@^26.0.0:
     babel-plugin-jest-hoist "^26.5.0"
     babel-preset-current-node-syntax "^0.1.3"
 
-babel-runtime@^6.6.1:
-  version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
-  integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
-  dependencies:
-    core-js "^2.4.0"
-    regenerator-runtime "^0.11.0"
-
 backbone@1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.2.3.tgz#c22cfd07fc86ebbeae61d18929ed115e999d65b9"
@@ -6729,11 +6712,6 @@ core-js-pure@^3.0.0:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.6.5.tgz#c79e75f5e38dbc85a662d91eea52b8256d53b813"
   integrity sha512-lacdXOimsiD0QyNf9BC/mxivNJ/ybBGJXQFKzRekp1WTHoVUWsUHEn+2T8GJAzzIhyOuXA+gOxCVN3l+5PLPUA==
-
-core-js@^2.4.0:
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
-  integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
 core-js@^3.6.4, core-js@^3.6.5:
   version "3.6.5"
@@ -11981,7 +11959,7 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
-lodash.curry@^4.0.1:
+lodash.curry@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.curry/-/lodash.curry-4.1.1.tgz#248e36072ede906501d75966200a86dab8b23170"
   integrity sha1-JI42By7ekGUB11lmIAqG2riyMXA=
@@ -12001,7 +11979,7 @@ lodash.flattendeep@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
-lodash.flow@^3.3.0:
+lodash.flow@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/lodash.flow/-/lodash.flow-3.5.0.tgz#87bf40292b8cf83e4e8ce1a3ae4209e20071675a"
   integrity sha1-h79AKSuM+D5OjOGjrkIJ4gBxZ1o=
@@ -14437,7 +14415,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@15.7.2, prop-types@^15, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -14547,7 +14525,7 @@ pupa@^2.0.1:
   dependencies:
     escape-goat "^2.0.0"
 
-pure-color@^1.2.0:
+pure-color@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/pure-color/-/pure-color-1.3.0.tgz#1fe064fb0ac851f0de61320a8bf796836422f33e"
   integrity sha1-H+Bk+wrIUfDeYTIKi/eWg2Qi8z4=
@@ -14686,15 +14664,15 @@ react-annotation@3.0.0-beta.4:
     prop-types "^15"
     viz-annotation "0.0.5"
 
-react-base16-styling@^0.5.1:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/react-base16-styling/-/react-base16-styling-0.5.3.tgz#3858f24e9c4dd8cbd3f702f3f74d581ca2917269"
-  integrity sha1-OFjyTpxN2MvT9wLz901YHKKRcmk=
+react-base16-styling@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-base16-styling/-/react-base16-styling-0.7.0.tgz#0c9653e14f1f08dc81ad066cd31e9cfec89c80ea"
+  integrity sha512-lTa/VSFdU6BOAj+FryOe7OTZ0OBP8GXPOnCS0QnZi7G3zhssWgIgwl0eUL77onXx/WqKPFndB3ZeC77QC/l4Dw==
   dependencies:
     base16 "^1.0.0"
-    lodash.curry "^4.0.1"
-    lodash.flow "^3.3.0"
-    pure-color "^1.2.0"
+    lodash.curry "^4.1.1"
+    lodash.flow "^3.5.0"
+    pure-color "^1.3.0"
 
 react-color@^2.14.1:
   version "2.18.1"
@@ -14858,14 +14836,13 @@ react-is@16.13.1, react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-json-tree@^0.11.0:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.11.2.tgz#af70199fcbc265699ade2aec492465c51608f95e"
-  integrity sha512-aYhUPj1y5jR3ZQ+G3N7aL8FbTyO03iLwnVvvEikLcNFqNTyabdljo9xDftZndUBFyyyL0aK3qGO9+8EilILHUw==
+react-json-tree@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.12.1.tgz#123ac8a2c722857d2cb1a5e0c948b0943576ef1a"
+  integrity sha512-j6fkRY7ha9XMv1HPVakRCsvyFwHGR5AZuwO8naBBeZXnZbbLor5tpcUxS/8XD01+D1v7ZN5p+7LU+9V1uyASiQ==
   dependencies:
-    babel-runtime "^6.6.1"
-    prop-types "^15.5.8"
-    react-base16-styling "^0.5.1"
+    prop-types "^15.7.2"
+    react-base16-styling "^0.7.0"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
@@ -15361,11 +15338,6 @@ regenerate@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.1.tgz#cad92ad8e6b591773485fbe05a485caf4f457e6f"
   integrity sha512-j2+C8+NtXQgEKWk49MMP5P/u2GhnahTtVkRIHr5R5lVRlbKvmQ+oS+A5aLKWp2ma5VkT8sh6v+v4hbH0YHR66A==
-
-regenerator-runtime@^0.11.0:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
-  integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
 regenerator-runtime@^0.13.0, regenerator-runtime@^0.13.4:
   version "0.13.5"
