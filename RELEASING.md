@@ -8,9 +8,14 @@ Production releases of nteract's npm packages, desktop app, and Jupyter extensio
 
 ## Release Process for Packages (dev)
 
-lerna will be used to publish packages in the dev channel on a weekly cadence. To publish nteract's npm packages to the dev channel, you must complete the following steps.
+lerna will be used to publish packages in the dev channel on a weekly cadence.
+To publish nteract's npm packages to the dev channel, you must complete the 
+following steps.
 
-1. Ensure that you are on the master branch with the latest changes synced.
+**Note: Prior to starting these steps, make sure that the `origin` remote is set to the
+nteract/nteract repo; otherwise step 4 will fail.**
+
+1. Ensure that you are on the main branch with the latest changes synced.
 2. Create a new branch with the `release/yyyymmdd` naming convention.
    - Note: Before continuing, you will need to push this branch to `origin` using `git push origin HEAD`. This is because `lerna` expects the branch to be exist in the remote before it can push tags.
 3. Run `yarn clean && yarn && yarn build:all:ci` and validate that the project builds successfully.
@@ -18,13 +23,13 @@ lerna will be used to publish packages in the dev channel on a weekly cadence. T
 4. Run the `npx lerna publish --dist-tag=prerelease` command in the root of the nteract repo.
    - Use the `pre` version tags for each release. These are the version tags that end with `alpha.x`.
 5. Follow the prompts to increment the versions of each package as appropriate.
-   - Note that lerna will provide an output that lists the newly published versions of each package. Copy this as it will be relevant in later steps.
+   - Note that lerna will provide an output that lists the newly published versions of each package. Copy this as it will be relevant in later steps (changelog and PR).
 6. Create a new Markdown file in the `changelogs` directory that captures the changes in this release.
    - The filename for this Markdown file should follow the `YYYY-MM-DD.md` naming convention.
    - The contents of the file should be based on the `changelogs/changelog_template.md` template file.
 7. Commit the changes with the new markdown file.
-8. Open a PR against master from your `release/yyyymmdd` branch. In the description of the PR, include the versions of the published npm packages that the `lerna publish` command provides.
-9. Merge the PR into master.
+8. Open a PR against main from your `release/yyyymmdd` branch. In the description of the PR, include the versions of the published npm packages that the `lerna publish` command provides.
+9. Merge the PR into main.
 
 ## Release Process for Packages (production)
 
