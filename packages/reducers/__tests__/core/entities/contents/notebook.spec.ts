@@ -11,7 +11,7 @@ import {
   makeStreamOutput,
 } from "@nteract/commutable";
 import * as Immutable from "immutable";
-import uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 
 import * as actions from "@nteract/actions";
 import { fixtureCommutable } from "@nteract/fixtures";
@@ -656,9 +656,9 @@ describe("setLanguageInfo", () => {
 
 describe("copyCell", () => {
   test("copies a cell", () => {
-    const firstId = uuid();
-    const secondId = uuid();
-    const thirdId = uuid();
+    const firstId = uuidv4();
+    const secondId = uuidv4();
+    const thirdId = uuidv4();
 
     const originalState = makeDocumentRecord({
       notebook: Immutable.fromJS({
@@ -692,9 +692,9 @@ describe("copyCell", () => {
 
 describe("cutCell", () => {
   test("cuts a cell", () => {
-    const firstId = uuid();
-    const secondId = uuid();
-    const thirdId = uuid();
+    const firstId = uuidv4();
+    const secondId = uuidv4();
+    const thirdId = uuidv4();
 
     const originalState = makeDocumentRecord({
       notebook: Immutable.fromJS({
@@ -718,9 +718,9 @@ describe("cutCell", () => {
 
 describe("pasteCell", () => {
   test("pastes a cell", () => {
-    const firstId = uuid();
-    const secondId = uuid();
-    const thirdId = uuid();
+    const firstId = uuidv4();
+    const secondId = uuidv4();
+    const thirdId = uuidv4();
 
     const originalState = makeDocumentRecord({
       notebook: Immutable.fromJS({
@@ -1145,7 +1145,7 @@ describe("interruptKernelSuccessful", () => {
 });
 
 describe("unhideAll", () => {
-  const cellOrder = [uuid(), uuid(), uuid(), uuid()];
+  const cellOrder = [uuidv4(), uuidv4(), uuidv4(), uuidv4()];
   let initialState = Immutable.Map();
 
   beforeEach(() => {
