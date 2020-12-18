@@ -324,25 +324,39 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
     // Apply new model to the editor when the language is changed.
     const model = this.editor.getModel();
     if (model && language && model.getModeId() !== language) {
-      const newUri = DocumentUri.createCellUri(contentRef, id, language);
-      if (!monaco.editor.getModel(newUri)) {
-        // Save the cursor position before we set new model.
-        const position = this.editor.getPosition();
 
-        // Set new model targeting the changed language.
-        this.editor.setModel(monaco.editor.createModel(value, language, newUri));
-        this.addEditorTopMargin();
+        // Get a reference to the current editor
+        const editor = this.editor;
 
-        // Restore cursor position to new model.
-        if (position) {
-          this.editor.setPosition(position);
-        }
-
-        // Dispose of the old model in a seperate event. We cannot dispose of the model within the
+        // We need to set the model in a separate event because the `language` prop update happens before the
+        // internal editor receives an update to the cursor position when invoking language magics. Additionally,
+        // we need to dispose of the old model in a separate event. We cannot dispose of the model within the
         // componentDidUpdate method or else the editor will throw an exception. Zero in the timeout field
         // means execute immediately but in a seperate next event.
-        setTimeout(() => model.dispose(), 0);
-      }
+        setTimeout(() => {
+          const newUri = DocumentUri.createCellUri(contentRef, id, language);
+          if (!monaco.editor.getModel(newUri)) {
+            // Save the cursor position before we set new model.
+            const position = editor.getPosition();
+
+            // Set new model targeting the changed language.
+            editor.setModel(monaco.editor.createModel(value, language, newUri));
+            this.addEditorTopMargin();
+
+            // Restore cursor position to new model.
+            if (position) {
+              editor.setPosition(position);
+            }
+
+            // Set focus
+            if (editorFocused && !editor.hasTextFocus()) {
+              editor.focus();
+            }
+
+            // Dispose the old model
+            model.dispose()
+          }
+        }, 0);
     }
     
     if (theme) {
