@@ -137,9 +137,20 @@ class CompletionItemProvider
       matches = results.metadata._jupyter_types_experimental;
     }
 
+    // retrieve the text that is currently typed out which is used to determine completion
+    const startPos = model.getPositionAt(results.cursor_start);
+    const endPos = model.getPositionAt(results.cursor_end);
+    const context = model.getValueInRange(
+      {
+        startLineNumber: startPos.lineNumber,
+        startColumn: startPos.column,
+        endLineNumber: endPos.lineNumber,
+        endColumn: endPos.column
+      });
+
     return matches.map((match: CompletionMatch, index: number) => {
       if (typeof match === "string") {
-        const text = this.sanitizeText(match);
+        const text = this.sanitizeText(match, context);
         const filtered = this.getFilterText(text);
         return {
           kind: this.adaptToMonacoCompletionItemKind(unknownJupyterKind),
@@ -177,7 +188,7 @@ class CompletionItemProvider
           }
         }
 
-        const text = this.sanitizeText(match.text);
+        const text = this.sanitizeText(match.text, context);
         const filtered = this.getFilterText(text);
         const insert = this.getInsertText(text, percentCount);
         return {
@@ -203,17 +214,29 @@ class CompletionItemProvider
   }
 
   /**
-   * Remove everything before a dot. Jupyter completion results like to include all characters before
-   * the trigger character. For example, if user types "myarray.", we expect the completion results to
+   * Check if the completion already includes the current context, and remove it if so.
+   * 
+   * For example, we want to remove everything before a dot. Jupyter completion results like to include
+   * all characters before the trigger character. If user types "myarray.", we expect the completion results to
    * show "append", "pop", etc. but for the actual case, it will show "myarray.append", "myarray.pop",
    * etc. so we are going to sanitize the text.
+   * 
+   * Additionally, we want to make sure paths are handled in the same way. Instead of showing "some/path" we
+   * should only show "path". For paths with white space, the kernel returns ""some/path with spaces"" which
+   * we want to change to ""path with spaces"".
+   * 
    * @param text Text of Jupyter completion item
    */
-  private sanitizeText(text: string) {
-    const index = text.lastIndexOf(".");
-    return index > -1 && index < text.length - 1
-      ? text.substring(index + 1)
-      : text;
+  private sanitizeText(text: string, context?: string) {
+    if (!context) {
+      return text;
+    }
+    // if we have whitespace within a path, we should just return quotes around that
+    if (text.startsWith('"') && text.endsWith('"') && text.length > 2 && text.substr(1).startsWith(context)) {
+      return `"${text.substr(context.length+1)}`;
+    }
+    // otherwise just try to remove the context
+    return text.startsWith(context)? text.substr(context.length) : text;
   }
 
   /**
