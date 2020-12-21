@@ -228,7 +228,8 @@ class CompletionItemProvider
    * @param text Text of Jupyter completion item
    */
   private sanitizeText(text: string, context?: string) {
-    if (!context) {
+    // make sure that we only do this when the context is considered complete (ie. there is a "." or "/")
+    if (!context || (!context.endsWith(".") && !context.endsWith("/"))) {
       return text;
     }
     // if we have whitespace within a path, we should just return quotes around that
