@@ -151,11 +151,12 @@ class CompletionItemProvider
     return matches.map((match: CompletionMatch, index: number) => {
       if (typeof match === "string") {
         const text = this.sanitizeText(match, context);
+        const inserted = this.getInsertText(text, context);
         const filtered = this.getFilterText(text);
         return {
           kind: this.adaptToMonacoCompletionItemKind(unknownJupyterKind),
           label: text,
-          insertText: text,
+          insertText: inserted,
           filterText: filtered,
           sortText: this.getSortText(index),
         } as monaco.languages.CompletionItem;
@@ -190,11 +191,11 @@ class CompletionItemProvider
 
         const text = this.sanitizeText(match.text, context);
         const filtered = this.getFilterText(text);
-        const insert = this.getInsertText(text, percentCount);
+        const inserted = this.getInsertText(text, context, percentCount);
         return {
           kind: this.adaptToMonacoCompletionItemKind(match.type),
           label: text,
-          insertText: percentCount > 0 ? insert : text,
+          insertText: inserted,
           filterText: filtered,
           sortText: this.getSortText(index),
         } as monaco.languages.CompletionItem;
@@ -214,30 +215,36 @@ class CompletionItemProvider
   }
 
   /**
-   * Check if the completion already includes the current context, and remove it if so.
+   * Removes problematic prefixes based on the context.
    * 
-   * For example, we want to remove everything before a dot. Jupyter completion results like to include
-   * all characters before the trigger character. If user types "myarray.", we expect the completion results to
-   * show "append", "pop", etc. but for the actual case, it will show "myarray.append", "myarray.pop",
-   * etc. so we are going to sanitize the text.
+   * Instead of showing "some/path" we should only show "path". For paths with white space, the kernel returns
+   * ""some/path with spaces"" which we want to change to ""path with spaces"".
    * 
-   * Additionally, we want to make sure paths are handled in the same way. Instead of showing "some/path" we
-   * should only show "path". For paths with white space, the kernel returns ""some/path with spaces"" which
-   * we want to change to ""path with spaces"".
+   * Additionally, typing "[]." should not suggest ".append" since this results in "[]..append".
    * 
    * @param text Text of Jupyter completion item
    */
-  private sanitizeText(text: string, context?: string) {
-    // make sure that we only do this when the context is considered complete (ie. there is a "." or "/")
-    if (!context || (!context.endsWith(".") && !context.endsWith("/"))) {
-      return text;
-    }
-    // if we have whitespace within a path, we should just return quotes around that
-    if (text.startsWith('"') && text.endsWith('"') && text.length > 2 && text.substr(1).startsWith(context)) {
+  private sanitizeText(text: string, context: string) {
+    // If we have whitespace within a path, we should just return quotes around that
+    if (context.includes("/") && text.startsWith('"') && text.endsWith('"') && text.length > 2 && text.substr(1).startsWith(context)) {
       return `"${text.substr(context.length+1)}`;
     }
-    // otherwise just try to remove the context
-    return text.startsWith(context)? text.substr(context.length) : text;
+    
+    // Display the most specific item in the path
+    if (context.includes("/") && text.startsWith(context)) {
+      const toRemove = context.substr(0, context.lastIndexOf("/") + 1);
+      return text.substr(toRemove.length);
+    }
+
+    // Handle "." after paths, since those might contain "." as well. Note that we deal with this somewhat
+    // generically, but also take a somewhat conservative approach by ensuring that the completion starts with the
+    // current context to ensure that we aren't applying this when we shouldn't
+    if (context.endsWith(".") && text.startsWith(context)) {
+      const toRemove = context.substr(0, context.lastIndexOf(".") + 1);
+      return text.substr(toRemove.length);
+    }
+
+    return text;
   }
 
   /**
@@ -251,11 +258,23 @@ class CompletionItemProvider
 
   /**
    * Get insertion text handling what to insert for the magics case depending on what
-   * has already been typed.
+   * has already been typed. Also handles an edge case for file paths with "." in the name.
    * @param text Text of Jupyter completion item.
    * @param percentCount Number of percent characters to remove
    */
-  private getInsertText(text: string, percentCount: number) {
+  private getInsertText(text: string, context: string, percentCount: number = 0) {
+    // There is an edge case for folders that have "." in the name. The default range for replacements is determined
+    // by the "current word" but that doesn't allow "." in the string, so if you autocomplete "some." for a string
+    // like "some.folder.name" you end up with "some.some.folder.name".
+    if (text.endsWith("/") && text.includes(".") && context.endsWith(".")) {
+      // The text in our sanitization step has already been filtered to only include the most specific path but
+      // our context includes the full thing, so we need to determine the substring in the most specific path.
+      // This is then used to figure out what we should actually insert.
+      // example: context = "a/path/to/some." and text = "some.folder.name" should produce "folder.name"
+      const completionContext = context.substr(context.lastIndexOf("/") + 1);
+      text = text.substr(completionContext.length);
+    }
+
     for (let i = 0; i < percentCount; i++) {
       text = text.replace("%", "");
     }
