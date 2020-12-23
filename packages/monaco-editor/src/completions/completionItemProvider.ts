@@ -272,7 +272,9 @@ class CompletionItemProvider
       // This is then used to figure out what we should actually insert.
       // example: context = "a/path/to/some." and text = "some.folder.name" should produce "folder.name"
       const completionContext = context.substr(context.lastIndexOf("/") + 1);
-      text = text.substr(completionContext.length);
+      if (text.startsWith(completionContext)) {
+        text = text.substr(completionContext.length);
+      }
     }
 
     for (let i = 0; i < percentCount; i++) {
