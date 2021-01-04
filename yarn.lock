@@ -3160,10 +3160,29 @@
     immutable "^4.0.0-rc.12"
     rx-jupyter "^5.5.9"
 
+"@nteract/actions@^7.0.6":
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@nteract/actions/-/actions-7.0.6.tgz#45bbabbbeb0dc62e0f3c3a7103116e34c0331da7"
+  integrity sha512-USeVWkdz7ofk5GHD8dYj8f7JBOaoBr0fmsGG8yOCfGM0zxg4D+Kzxa/AE1XP/rP3oTGS54EfFidzwjTeP8x4eQ==
+  dependencies:
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/messaging" "^7.0.14"
+    "@nteract/types" "^7.1.4"
+    immutable "^4.0.0-rc.12"
+    rx-jupyter "^5.5.16"
+
 "@nteract/any-vega@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@nteract/any-vega/-/any-vega-1.0.1.tgz#d790774bdc453bc5af663455747637a2100f634a"
   integrity sha512-RjECjm2bdQpEHuhpWyIjAg8dA8t5iWGDmx2VuStBhVSffciNrCn0WxhJiK5TSkyuBgk4rB4eAOspJ8UnfjOAyA==
+
+"@nteract/commutable@^7.2.12", "@nteract/commutable@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@nteract/commutable/-/commutable-7.4.0.tgz#b52bb420f54c2532bac9ffec6df6713cc4b747f2"
+  integrity sha512-W9RjPxNP1Eh1N68AMxCGqCb7bEOfi/MQid7j8a+nZywhKF/hQm/Ww88DHf9/u581lje9wHwLL5HtwLVF6d/fOg==
+  dependencies:
+    immutable "^4.0.0-rc.12"
+    uuid "^8.0.0"
 
 "@nteract/core@^14.0.0":
   version "14.0.0"
@@ -3176,6 +3195,19 @@
     "@nteract/reducers" "^4.0.0"
     "@nteract/selectors" "^2.8.10"
     "@nteract/types" "^6.0.7"
+    redux-logger "^3.0.6"
+
+"@nteract/core@^15.0.0":
+  version "15.1.4"
+  resolved "https://registry.yarnpkg.com/@nteract/core/-/core-15.1.4.tgz#6f60db48a993277c7060081044446013af21e3b8"
+  integrity sha512-T+78F2gr6eV+3Y6r9JK4fbPcVfr4QFRq2jgkBCPPKg+sJnT+rd1GVaResRXol5lCDxcwQbSBAKymNC5pV9zcdw==
+  dependencies:
+    "@nteract/actions" "^7.0.6"
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/epics" "^5.0.6"
+    "@nteract/reducers" "^5.1.4"
+    "@nteract/selectors" "^3.1.4"
+    "@nteract/types" "^7.1.4"
     redux-logger "^3.0.6"
 
 "@nteract/data-explorer@^8.0.0":
@@ -3226,6 +3258,24 @@
     redux "^4.0.1"
     redux-observable "^2.0.0-alpha.0"
     rx-jupyter "^5.5.9"
+    rxjs "^6.3.3"
+
+"@nteract/epics@^5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@nteract/epics/-/epics-5.0.6.tgz#1d938e4efa945a72639dd2c21a0e2d6607d0a68f"
+  integrity sha512-XQYYfEGBqvtXhRVLej9Io+VQGhNX/hh6GRBaGrdy/SNNgPQo8gFgS4fWfJhckAvh8nrXTwpA13k6VxlTRVJsdw==
+  dependencies:
+    "@nteract/actions" "^7.0.6"
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/messaging" "^7.0.14"
+    "@nteract/mythic-configuration" "^1.0.6"
+    "@nteract/mythic-notifications" "^0.2.6"
+    "@nteract/selectors" "^3.1.4"
+    "@nteract/types" "^7.1.4"
+    file-saver "^2.0.0"
+    redux "^4.0.1"
+    redux-observable "^2.0.0-alpha.0"
+    rx-jupyter "^5.5.16"
     rxjs "^6.3.3"
 
 "@nteract/examples@3.2.0":
@@ -3279,6 +3329,25 @@
     react "^16.13.0"
     react-dom "^16.13.0"
 
+"@nteract/messaging@^7.0.0", "@nteract/messaging@^7.0.14", "@nteract/messaging@^7.0.6", "@nteract/messaging@^7.0.7":
+  version "7.0.14"
+  resolved "https://registry.yarnpkg.com/@nteract/messaging/-/messaging-7.0.14.tgz#12c27a53f215b6414be66cd0e431f6843fc97328"
+  integrity sha512-Iw6VV/sUYt5apagyA+KHimXP57N5gI7NOZ2WicMjVOzMv313fzgXDt0SIpnKG+TtBUmSFfWZNNdGcXhaNaAmRA==
+  dependencies:
+    "@nteract/types" "^7.1.4"
+    "@types/uuid" "^8.0.0"
+    lodash.clonedeep "^4.5.0"
+    rxjs "^6.6.0"
+    uuid "^8.0.0"
+
+"@nteract/mythic-configuration@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@nteract/mythic-configuration/-/mythic-configuration-1.0.6.tgz#55404c330e1251a902e22b5ce026d81dad6aee68"
+  integrity sha512-RR8ypVxu2piICdnSkHTP9VZleDxckQeJy5v7otvQKTb4UNKEdb/QPOcg1wAGJtaBrdJNjoLvKdvgmjEdS7H8FQ==
+  dependencies:
+    "@nteract/myths" "^0.2.6"
+    fs-observable "^4.1.14"
+
 "@nteract/mythic-notifications@^0.1.9":
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/@nteract/mythic-notifications/-/mythic-notifications-0.1.9.tgz#e1be44b4abfff866e507a8e032a0e2ce92fb8a15"
@@ -3287,10 +3356,28 @@
     "@blueprintjs/core" "^3.7.0"
     "@nteract/myths" "^0.1.9"
 
+"@nteract/mythic-notifications@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@nteract/mythic-notifications/-/mythic-notifications-0.2.6.tgz#eb5af4b8193c5cf401c9ab3d09adae881ef31800"
+  integrity sha512-16RBPWnVzqCn1+01Alho8aYRmHlbayRBiOpVCdHaqxCpux6HC88yr5Sx6TWwkE/GluYVo++q4oTeJifK0qYrdQ==
+  dependencies:
+    "@blueprintjs/core" "^3.7.0"
+    "@nteract/myths" "^0.2.6"
+
 "@nteract/myths@^0.1.9":
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/@nteract/myths/-/myths-0.1.9.tgz#5a65a504a0d4bcc098c2f57a9dc4b8963430a55a"
   integrity sha512-aPLUamd0kTnzy+8usMsGs+kgMfxfx2QNvDuxd5+ko+9DKuyMJx8quNuqphlxaLXNGiJrnfNi5krXaAyNEil3Sw==
+  dependencies:
+    react-redux "^6.0.0"
+    redux "^4.0.0"
+    redux-observable "^2.0.0-alpha.0"
+    rxjs "^6.3.3"
+
+"@nteract/myths@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@nteract/myths/-/myths-0.2.6.tgz#515c55249cd97e9a57a1c5d3590cd66b8fcda6c3"
+  integrity sha512-rDAXjdSYSCLvW1xB8C7yRLf2lASgKDN0fVH9uzsE27Suxdm22OFX/F1k4/A2M+rCP9EbLrfPEB/YNBmR3/AGsA==
   dependencies:
     react-redux "^6.0.0"
     redux "^4.0.0"
@@ -3312,6 +3399,18 @@
     ansi-to-react "^6.0.5"
     react-json-tree "^0.12.1"
 
+"@nteract/presentational-components@^3.3.11", "@nteract/presentational-components@^3.3.7":
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/@nteract/presentational-components/-/presentational-components-3.4.6.tgz#08891fc2ae96c02b2e5c660f09d8e497ed66a2a6"
+  integrity sha512-dPRCoOD58e+IniERiFxiWtUWjO23qdRdtwC3lGvOlSVcE3SACXhbgF3tyrhE6lDQSqlN8cIpj7gBlw2pSL5zBw==
+  dependencies:
+    "@blueprintjs/core" "^3.7.0"
+    "@blueprintjs/select" "^3.2.0"
+    classnames "^2.2.6"
+    re-resizable "^6.5.0"
+    react-syntax-highlighter "^12.0.0"
+    react-toggle "^4.1.1"
+
 "@nteract/reducers@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@nteract/reducers/-/reducers-4.0.0.tgz#25e50cee37556e690680f4b06b4b2835a607a49a"
@@ -3320,6 +3419,21 @@
     "@nteract/actions" "^6.0.0"
     "@nteract/commutable" "^7.2.12"
     "@nteract/types" "^6.0.7"
+    escape-carriage "^1.3.0"
+    immutable "^4.0.0-rc.12"
+    lodash.has "^4.5.2"
+    redux "^4.0.1"
+    redux-immutable "^4.0.0"
+    uuid "^8.0.0"
+
+"@nteract/reducers@^5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@nteract/reducers/-/reducers-5.1.4.tgz#375cbc38b83ace59c48be9389c3d7c5ea0e181af"
+  integrity sha512-jf8PO0Q7sBrSXrw/EilQD/5c/dsV4vEdHFRvROq+o3zJ+YGglr7g+8b6Z6NgyJBzxy0JbDGPXqRr3EUZbwTcDg==
+  dependencies:
+    "@nteract/actions" "^7.0.6"
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/types" "^7.1.4"
     escape-carriage "^1.3.0"
     immutable "^4.0.0-rc.12"
     lodash.has "^4.5.2"
@@ -3337,6 +3451,17 @@
     immutable "^4.0.0-rc.12"
     reselect "^4.0.0"
     rx-jupyter "^5.5.9"
+
+"@nteract/selectors@^3.1.4":
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/@nteract/selectors/-/selectors-3.1.4.tgz#4634530cade918221e2dd5bebb97ae65d0317cf6"
+  integrity sha512-9kTOSOZBM2pbzs0bpG9t0XvAa++Pgyyqhyo7eN1TN0ZPUQQ9JzzTzFP74Up9j5FFDkuM5myd4zFoYZc9M22oNw==
+  dependencies:
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/types" "^7.1.4"
+    immutable "^4.0.0-rc.12"
+    reselect "^4.0.0"
+    rx-jupyter "^5.5.16"
 
 "@nteract/transform-geojson@^5.1.13":
   version "5.1.13"
@@ -3383,6 +3508,16 @@
     "@nteract/commutable" "^7.2.12"
     immutable "^4.0.0-rc.12"
     rxjs "^6.3.3"
+    uuid "^8.0.0"
+
+"@nteract/types@^7.1.4":
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/@nteract/types/-/types-7.1.4.tgz#078bb26fd936b170a65296282e5675c29413e129"
+  integrity sha512-DLIhrFsuOyo6DcGdMqFgTNVJSLwVG1dZc3HDQIfJk7CH5YUP+jlubSXZSr7gbyywAdu3/u4KtrRyaVXm3jxgVw==
+  dependencies:
+    "@nteract/commutable" "^7.4.0"
+    immutable "^4.0.0-rc.12"
+    rxjs "^6.6.0"
     uuid "^8.0.0"
 
 "@octokit/auth-token@^2.4.0":
@@ -3742,10 +3877,10 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
   integrity sha512-1UzDldn9GfYYEsWWnn/P4wkTlkZDH7lDb0wBMGbtIQc9zXEQq7FlKBdZUn6OBqD8sKZZ2RQO2mAjGpXiDGoRmQ==
 
-"@types/codemirror@^0.0.102":
-  version "0.0.102"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.102.tgz#56049f14a85e170fc5b71bd76517089ca74a4036"
-  integrity sha512-WZZW8VL8BAzzAZWkiYnM5VsYz1qWYieRqHPPtC/BB015QXd3LPXtBlbRYA8lauKgM10qWYeLH8p5LsIn2SLXfA==
+"@types/codemirror@^0.0.103":
+  version "0.0.103"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.103.tgz#2ad656c4412c818beab4dd9214f3c8b48aa2a642"
+  integrity sha512-dYQTrIcZal0pnYz/ODjpJB+yadKJhGHywylAlHKjE8VSzGiw2A+6S+hD6jfyXw02ToFR9DO52X+O1pvHn31sbg==
   dependencies:
     "@types/tern" "*"
 
@@ -6276,10 +6411,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@5.58.3:
-  version "5.58.3"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.3.tgz#3f0689854ecfbed5d4479a98b96148b2c3b79796"
-  integrity sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
+codemirror@5.59.1:
+  version "5.59.1"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.1.tgz#cd6465555a87f8a2243eb41ffb460c777e15212c"
+  integrity sha512-d0SSW/PCCD4LoSCBPdnP0BzmZB1v3emomCUtVlIWgZHJ06yVeBOvBtOH7vYz707pfAvEeWbO9aP6akh8vl1V3w==
 
 collapse-white-space@^1.0.2:
   version "1.0.6"
@@ -15840,6 +15975,19 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   integrity sha1-6Eg5bwV9Ij8kOGkkYY4laUFh7Ec=
   dependencies:
     aproba "^1.1.1"
+
+rx-jupyter@^5.5.16, rx-jupyter@^5.5.9:
+  version "5.5.16"
+  resolved "https://registry.yarnpkg.com/rx-jupyter/-/rx-jupyter-5.5.16.tgz#aa8812017c2d1d9ce047bb6f5d65b8aab76822b0"
+  integrity sha512-H90x950siBlcTiZGm5wQqFkZpPsO09ZSwNaQ1Yi62vmaF3ex1T1Is4+urtJQLV1pZ+ipMBcC17WFCDwABCTPcQ==
+  dependencies:
+    "@nteract/commutable" "^7.4.0"
+    "@nteract/messaging" "^7.0.14"
+    "@types/ungap__url-search-params" "^0.1.0"
+    "@ungap/url-search-params" "^0.2.0"
+    js-cookie "^2.2.0"
+    rxjs "^6.6.0"
+    url-join "^4.0.0"
 
 rxjs@^6.3.1, rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.5, rxjs@^6.6.0:
   version "6.6.0"
