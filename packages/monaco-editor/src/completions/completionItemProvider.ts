@@ -225,21 +225,28 @@ class CompletionItemProvider
    * @param text Text of Jupyter completion item
    */
   private sanitizeText(text: string, context: string) {
-    // If we have whitespace within a path, we should just return quotes around that
-    if (context.includes("/") && text.startsWith('"') && text.endsWith('"') && text.length > 2 && text.substr(1).startsWith(context)) {
-      return `"${text.substr(context.length+1)}`;
-    }
-    
-    // Display the most specific item in the path
-    if (context.includes("/") && text.startsWith(context)) {
-      const toRemove = context.substr(0, context.lastIndexOf("/") + 1);
-      return text.substr(toRemove.length);
+    // Assumption: if the current context contains a "/" then we're currently typing a path
+    const isPathCompletion = context.includes("/");
+    if (isPathCompletion) {
+      // If we have whitespace within a path, the completion for it is a string wrapped in double quotes
+      // We should return only the last part of the path, wrapped in double quotes
+      const completionIsPathWithWhitespace = text.startsWith('"') && text.endsWith('"') && text.length > 2; // sanity check: not empty string
+      if (completionIsPathWithWhitespace && text.substr(1).startsWith(context)) { // sanity check: the context is part of the suggested path
+        return `"${text.substr(context.length+1)}`;
+      }
+
+      // Otherwise, display the most specific item in the path
+      if (text.startsWith(context)) { // sanity check: the context is part of the suggested path
+        const toRemove = context.substr(0, context.lastIndexOf("/") + 1);
+        return text.substr(toRemove.length);
+      }
     }
 
     // Handle "." after paths, since those might contain "." as well. Note that we deal with this somewhat
     // generically, but also take a somewhat conservative approach by ensuring that the completion starts with the
     // current context to ensure that we aren't applying this when we shouldn't
-    if (context.endsWith(".") && text.startsWith(context)) {
+    const isMemberCompletion = context.endsWith(".");
+    if (isMemberCompletion && text.startsWith(context)) {
       const toRemove = context.substr(0, context.lastIndexOf(".") + 1);
       return text.substr(toRemove.length);
     }
@@ -266,14 +273,17 @@ class CompletionItemProvider
     // There is an edge case for folders that have "." in the name. The default range for replacements is determined
     // by the "current word" but that doesn't allow "." in the string, so if you autocomplete "some." for a string
     // like "some.folder.name" you end up with "some.some.folder.name".
-    if (text.endsWith("/") && text.includes(".") && context.endsWith(".")) {
+    const isPathCompletion = context.includes("/");
+    const isPathWithPeriodInName = isPathCompletion && text.includes(".") && context.includes(".");
+    if (isPathWithPeriodInName) {
       // The text in our sanitization step has already been filtered to only include the most specific path but
       // our context includes the full thing, so we need to determine the substring in the most specific path.
       // This is then used to figure out what we should actually insert.
-      // example: context = "a/path/to/some." and text = "some.folder.name" should produce "folder.name"
+      // example 1: context = "a/path/to/some." and text = "some.folder.name" should produce "folder.name"
+      // example 2: context = "a/path/to/some.fo" and text = "some.folder.name" should still produce "folder.name"
       const completionContext = context.substr(context.lastIndexOf("/") + 1);
-      if (text.startsWith(completionContext)) {
-        text = text.substr(completionContext.length);
+      if (text.startsWith(completionContext)) { // sanity check: the paths match
+        return text.substr(completionContext.lastIndexOf(".") + 1);
       }
     }
 
