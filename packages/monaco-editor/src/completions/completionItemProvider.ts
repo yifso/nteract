@@ -152,7 +152,7 @@ class CompletionItemProvider
       if (typeof match === "string") {
         const text = this.sanitizeText(match, context);
         const inserted = this.getInsertText(text, context);
-        const filtered = this.getFilterText(text);
+        const filtered = this.getFilterText(text, context);
         return {
           kind: this.adaptToMonacoCompletionItemKind(unknownJupyterKind),
           label: text,
@@ -190,7 +190,7 @@ class CompletionItemProvider
         }
 
         const text = this.sanitizeText(match.text, context);
-        const filtered = this.getFilterText(text);
+        const filtered = this.getFilterText(text, context);
         const inserted = this.getInsertText(text, context, percentCount);
         return {
           kind: this.adaptToMonacoCompletionItemKind(match.type),
@@ -232,7 +232,8 @@ class CompletionItemProvider
       // We should return only the last part of the path, wrapped in double quotes
       const completionIsPathWithWhitespace = text.startsWith('"') && text.endsWith('"') && text.length > 2; // sanity check: not empty string
       if (completionIsPathWithWhitespace && text.substr(1).startsWith(context)) { // sanity check: the context is part of the suggested path
-        return `"${text.substr(context.length+1)}`;
+        const toRemove = context.substr(0, context.lastIndexOf("/") + 1);
+        return `"${text.substr(toRemove.length+1)}`;
       }
 
       // Otherwise, display the most specific item in the path
@@ -257,9 +258,20 @@ class CompletionItemProvider
   /**
    * Remove magics all % characters as Monaco doesn't like them for the filtering text.
    * Without this, completion won't show magics match items.
+   * 
+   * Also remove quotes from the filter of a path wrapped in quotes to make sure we have
+   * a smooth auto-complete experience.
+   * 
    * @param text Text of Jupyter completion item.
    */
-  private getFilterText(text: string) {
+  private getFilterText(text: string, context: string) {
+    const isPathCompletion = context.includes("/");
+    if (isPathCompletion) {
+      const completionIsPathWithWhitespace = text.startsWith('"') && text.endsWith('"') && text.length > 2; // sanity check: not empty string
+      if (completionIsPathWithWhitespace && text.substr(1).startsWith(context)) { // sanity check: the context is part of the suggested path
+        return text.substr(1, text.length-1);
+      }
+    }
     return text.replace(/%/g, "");
   }
 
