@@ -180,8 +180,9 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 #### Bug Fixes
 
-- Hide Monaco parameter widget when mouse moves into another editor cell ([#5301](https://github.com/nteract/nteract/pull/5301)).
+- Hide Monaco parameter widget when mouse moves into another editor cell ([#5301](https://github.com/nteract/nteract/pull/5301))
 - Fix cursor position issue when invoking language cell magics in Monaco editor ([#5405](https://github.com/nteract/nteract/pull/5405))
+- Fix issues with handling of kernel completions ([#5407](https://github.com/nteract/nteract/pull/5407))
 
 ### @nteract/mythic-configuration ([publish-version-here])
 
