@@ -317,6 +317,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       this.props.cursorPositionHandler(this.editor, this.props);
     }
 
+    // Handle custom commands
+    if (this.editor && this.props.commandHandler) {
+      this.props.commandHandler(this.editor);
+    }
+
     // Ensures that the source contents of the editor (value) is consistent with the state of the editor
     if (this.editor.getValue() !== this.props.value) {
       this.editor.setValue(this.props.value);
