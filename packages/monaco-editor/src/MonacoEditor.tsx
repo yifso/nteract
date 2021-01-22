@@ -75,6 +75,7 @@ export interface IMonacoConfiguration {
   shortcutsOptions?: IMonacoShortCutProps;
   shortcutsHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoShortCutProps) => void;
   cursorPositionHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoProps) => void;
+  commandHandler?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 
 /**
@@ -224,6 +225,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         this.props.shortcutsHandler(this.editor, this.props.shortcutsOptions);
       }
 
+      // Handle custom commands
+      if (this.editor && this.props.commandHandler) {
+        this.props.commandHandler(this.editor);
+      }
+
       this.toggleEditorOptions(!!this.props.editorFocused);
 
       if (this.props.editorFocused) {
@@ -309,6 +315,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
 
     if(this.props.cursorPositionHandler){
       this.props.cursorPositionHandler(this.editor, this.props);
+    }
+
+    // Handle custom commands
+    if (this.editor && this.props.commandHandler) {
+      this.props.commandHandler(this.editor);
     }
 
     // Ensures that the source contents of the editor (value) is consistent with the state of the editor

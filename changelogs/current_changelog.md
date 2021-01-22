@@ -176,7 +176,7 @@ Provide a bulleted list of breaking changes and a reference to the PR(s) contain
 
 #### New Features
 
-Provide a bulleted list of new features or improvements and a reference to the PR(s) containing these changes.
+- Add support to register custom commands using the command handler ([#5418](https://github.com/nteract/nteract/pull/5418))
 
 #### Bug Fixes
 
