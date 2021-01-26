@@ -1,6 +1,6 @@
 {
   "name": "@nteract/mythic-windowing",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.4",
   "description": "A windowing system based on electron and the myths redux framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@nteract/myths": "^0.2.8-alpha.0",
+    "@nteract/myths": "^0.2.8",
     "file-url": "^3.0.0"
   },
   "peerDependencies": {
