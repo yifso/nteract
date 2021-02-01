@@ -3252,7 +3252,16 @@
   resolved "https://registry.yarnpkg.com/@nteract/logos/-/logos-1.0.0.tgz#e17ca29f41a5282fe32fa5e4e69a5a3a9839d378"
   integrity sha512-6f675p3gzs7ZMAovzfOx+QOMNu1TGVT2aV5lPOwnPxJCM/APLpDRFcSoURwLA26CROlTTDEe10XweFzJgQ+VEQ==
 
-"@nteract/markdown@4.5.2", "@nteract/markdown@^4.5.2":
+"@nteract/markdown@4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.6.0.tgz#b3032a7c6528c7b7b422f136f01e883d2550f004"
+  integrity sha512-DIeUYSRsFlHlIJ+bz/w1ln/KKtwqr9LsYZ+Uj/2t7mlmYxeEW0JRBa/E51QqCVdEepjAlpg2XqfqNgjkZiFfvw==
+  dependencies:
+    "@nteract/mathjax" "^4.0.11"
+    "@nteract/presentational-components" "^3.3.11"
+    react-markdown "^4.0.0"
+
+"@nteract/markdown@^4.5.2":
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/@nteract/markdown/-/markdown-4.5.2.tgz#a1eaa58961a26219a1e1f7beaef42d41ef06e864"
   integrity sha512-qf7kbNzYohwj0dKI0qDY8dOv4kubj6lN3KcM5Xaev433q+4iTSKIgtD6ffCC4Jryq3AqN957V1YsY9ZwBZ1GUQ==
@@ -3742,10 +3751,10 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
   integrity sha512-1UzDldn9GfYYEsWWnn/P4wkTlkZDH7lDb0wBMGbtIQc9zXEQq7FlKBdZUn6OBqD8sKZZ2RQO2mAjGpXiDGoRmQ==
 
-"@types/codemirror@^0.0.102":
-  version "0.0.102"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.102.tgz#56049f14a85e170fc5b71bd76517089ca74a4036"
-  integrity sha512-WZZW8VL8BAzzAZWkiYnM5VsYz1qWYieRqHPPtC/BB015QXd3LPXtBlbRYA8lauKgM10qWYeLH8p5LsIn2SLXfA==
+"@types/codemirror@^0.0.107":
+  version "0.0.107"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.107.tgz#2800d142f489a1137414df30665633bbfbf4abaa"
+  integrity sha512-F3Uh8xBmZWeMckWPVrcG5TBQIr/rZM7dQfx8D0pHCb372MIWFBwc5mjLBpYPcxGpmgNM/p6bl619XwyzBUQTrQ==
   dependencies:
     "@types/tern" "*"
 
@@ -4037,10 +4046,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@types/numeral@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@types/numeral/-/numeral-0.0.28.tgz#e43928f0bda10b169b6f7ecf99e3ddf836b8ebe4"
-  integrity sha512-Sjsy10w6XFHDktJJdXzBJmoondAKW+LcGpRFH+9+zXEDj0cOH8BxJuZA9vUDSMAzU1YRJlsPKmZEEiTYDlICLw==
+"@types/numeral@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/numeral/-/numeral-0.0.30.tgz#887c51ceedcd544302a9a6c42a374bac12c0eee2"
+  integrity sha512-3ulaJGbiwUZBAdinX1XV0xeoSI5E6ugtKFwg7Yp7j4SQ/qZ6PmLVJazEPDFZgJ56qA7oSUa2kKVPfg4gjbDkMA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -6276,10 +6285,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@5.58.3:
-  version "5.58.3"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.3.tgz#3f0689854ecfbed5d4479a98b96148b2c3b79796"
-  integrity sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
+codemirror@5.59.2:
+  version "5.59.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.2.tgz#ee674d3a4a8d241af38d52afc482625ba7393922"
+  integrity sha512-/D5PcsKyzthtSy2NNKCyJi3b+htRkoKv3idswR/tR6UAvMNKA7SrmyZy6fOONJxSRs1JlUWEDAbxqfdArbK8iA==
 
 collapse-white-space@^1.0.2:
   version "1.0.6"
