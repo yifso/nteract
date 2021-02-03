@@ -3270,10 +3270,10 @@
     "@nteract/presentational-components" "^3.3.11"
     react-markdown "^4.0.0"
 
-"@nteract/mathjax@4.0.14":
-  version "4.0.14"
-  resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.14.tgz#44df3a513611a3a33a5e7d5bfc75d2dbddf6e86b"
-  integrity sha512-tqa2w3ePUPQEhZDUmC1CHPUBKgYhOWCj3rtH+PpqpNOvVM+2PGRUXwE4l9IG6+QU2hXehhbL8gJFfVRra3GySQ==
+"@nteract/mathjax@4.0.15":
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/@nteract/mathjax/-/mathjax-4.0.15.tgz#be7db0112eea599a8e5f24d2e0a848ad3798c02c"
+  integrity sha512-KxfV8fYhHC60H8VvRf3wKFYActUmq9q8VsBGyzyLvirdQaAvTGW1+87Skiq8LyG9bDKbR3nOJvtAbORoWgCW3Q==
   dependencies:
     load-script "^1.0.0"
     react "^16.13.0"
