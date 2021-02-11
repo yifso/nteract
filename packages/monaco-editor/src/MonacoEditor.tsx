@@ -78,6 +78,7 @@ export interface IMonacoConfiguration {
   shortcutsHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoShortCutProps) => void;
   cursorPositionHandler?: (editor: monaco.editor.IStandaloneCodeEditor, settings?: IMonacoProps) => void;
   commandHandler?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+  onDidCreateEditor?: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 
 /**
@@ -222,6 +223,11 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         // Apply custom settings from configuration
         ...this.props.options,
       });
+
+      // Handle on create events
+      if (this.props.onDidCreateEditor) {
+        this.props.onDidCreateEditor(this.editor);
+      }
 
       this.addEditorTopMargin();
 
