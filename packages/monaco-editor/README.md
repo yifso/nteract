@@ -50,7 +50,7 @@ Important callbacks:
 * `onChange: (value: string, event?: any) => void` - Contents of the editor are changed.
 * `onFocusChange: (focus: boolean) => void` - The Editor Component loses or gains focus
 * `onCursorPositionChange: (selection: monaco.ISelection | null) => void` - Cursor position changes
-
+* `onDidCreateEditor: (editor: monaco.editor.IStandaloneCodeEditor) => void;` - Editor was created.
 
 ### Completions
 The package also adds the capability to retrieve code-completion items from a connected Jupyter kernel. Completions are language-specific token recommendations when the user attempts to type or enumerate the attributes of a class/object (usually with a `dot` operator and the `tab` completion key). While we provide a default completion provider that works with the Jupyter kernel, we also support custom completion providers that users might want to register with their own language service.
@@ -61,7 +61,10 @@ The completion behavior is controlled by the following props:
 * `enableCompletion` - Boolean flag to enable/disable the behavior entirely
 * `shouldRegisterDefaultCompletion` - Boolean flag to enable/disable the default completion provider
 * `onRegisterCompletionProvider?: (languageId: string) => void` - Custom completion provider implementation for a Monaco Editor supported language.
-* `onRegisterDocumentFormattingEditProvider?: (languageId: string) => void` - Custom document formatting provider implementation for a Monaco Editor supported language.
+
+### Formatting
+The following prop also enables code formatting:
+* `onRegisterDocumentFormattingEditProvider?: (languageId: string) => void` - Custom formatting provider implementation for a Monaco Editor supported language.
 
 ### Performance Tip
 
