@@ -177,6 +177,8 @@ Provide a bulleted list of breaking changes and a reference to the PR(s) contain
 #### New Features
 
 - Add support to register custom commands using the command handler ([#5418](https://github.com/nteract/nteract/pull/5418))
+- Add support to register custom editor formatting providers ([#5444](https://github.com/nteract/nteract/pull/5444))
+- Add support to listen on editor created event ([#5444](https://github.com/nteract/nteract/pull/5444))
 
 #### Bug Fixes
 
