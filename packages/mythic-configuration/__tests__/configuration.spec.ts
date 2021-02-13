@@ -120,7 +120,7 @@ describe("configuration", () => {
     });
 
     test("in non-node environment index.ts exports an implementation that throws exceptions [https://github.com/nteract/nteract/issues/5445]", () => {
-      jest.resetModules();  
+      jest.resetModules();
       jest.mock("../src/backends/filesystem", () => {
         throw new Error("Can't resolve 'fs' in '.../node_modules/mkdirp'");
       });
