@@ -1,5 +1,5 @@
 import { actions, ContentRef, createKernelRef, KernelspecInfo, selectors } from "@nteract/core";
-import { setConfigFile } from "@nteract/mythic-configuration";
+import { setConfigFile } from "@nteract/mythic-configuration/backends/filesystem";
 import { Event, ipcRenderer as ipc, remote } from "electron";
 import * as path from "path";
 import { NewNotebook } from "../common/commands";

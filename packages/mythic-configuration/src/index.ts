@@ -124,34 +124,3 @@ export const allDeprecations = () => {
     changeTo,
   })));
 }
-
-// Export the filesystem backend's function for loading config. This export will
-// fail in the browser since it does not have the transitively depended 'fs'
-// package, so guard against that for our dear browser-bound friends.
-export const setConfigFile = (function () {
-  // Try to return the actually requested function (works on node & electron)
-  try {
-    // This import fails in the browser due to fs-observable dependencies.
-    // Attempt the import using a non-literal string to gently dissuade webpack
-    // and similar creatures from pre-processing the `require` (which fails in a
-    // non-catchable way).
-    const fsBackendPath = "./backends/filesystem";
-    const fsBackend = require(fsBackendPath);
-
-    // Some browsers define 'require', and maybe they will return something
-    // falsy instead of throwing so let's make sure that's not happening.
-    if (fsBackend === undefined || fsBackend.setConfigFile === undefined) {
-      throw new Error(`Looked for 'setConfigFile' but couldn't find it on imported mythic-configuration/backends/filesystem: ${JSON.stringify(fsBackend)}`);
-    }
-
-    return fsBackend.setConfigFile;
-  } catch (requireErr) {
-    // Ono the import failed! Not a showstopper for browser users. Return a
-    // version of the function that yells if you use it.
-    return (filename: string) => {
-      const err = Error("Failed to load mythic-configuration's filesystem backend. You're probably running in a browser, but this only works in a node runtime!");
-      err.stack += "\nCaused by " + requireErr.stack;
-      throw err;
-    }
-  }
-})();

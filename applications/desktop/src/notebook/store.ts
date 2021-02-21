@@ -2,13 +2,14 @@ import { middlewares as coreMiddlewares, reducers } from "@nteract/core";
 import { configuration } from "@nteract/mythic-configuration";
 import { notifications } from "@nteract/mythic-notifications";
 import { windowing } from "@nteract/mythic-windowing";
-import { makeConfigureStore } from "@nteract/myths";
+import { makeConfigureStore, MythicAction } from "@nteract/myths";
+import { Store } from "redux";
 import epics from "./epics";
 import { LocalContentProvider } from "./local-content-provider";
 import { handleDesktopNotebook } from "./reducers";
 import { DesktopNotebookAppState } from "./state";
 
-export const configureStore = makeConfigureStore<DesktopNotebookAppState>()({
+export const configureStore : (initialState?: DesktopNotebookAppState) => Store<DesktopNotebookAppState, MythicAction> = makeConfigureStore<DesktopNotebookAppState>()({
   packages: [
     configuration,
     notifications,

@@ -111,25 +111,4 @@ describe("configuration", () => {
       })
     );
   });
-
-  describe('setConfigFile', () => {
-    test("in node environment index.ts exports the implementation from backends/filesystem", () => {
-      const indexVersion = require("../src").setConfigFile;
-      const fsBackendVersion = require("../src/backends/filesystem").setConfigFile;
-      expect(indexVersion).toBe(fsBackendVersion);
-    });
-
-    test("in non-node environment index.ts exports an implementation that throws exceptions [https://github.com/nteract/nteract/issues/5445]", () => {
-      jest.resetModules();
-      jest.mock("../src/backends/filesystem", () => {
-        throw new Error("Can't resolve 'fs' in '.../node_modules/mkdirp'");
-      });
-      const indexVersion = require("../src").setConfigFile;
-      expect(() => indexVersion("/any/path/will/throw")).toThrow("Failed to load mythic-configuration");
-    });
-
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-  });
 });
