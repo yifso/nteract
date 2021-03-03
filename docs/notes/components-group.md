@@ -1,85 +1,29 @@
 # Components
 
 **Table of contents**
+- [/stateful-components](#/stateful-components)
+  - [Using /stateful-components](#Using-/stateful-components)
+  - [Extending notebook UI](#Extending-notebook-UI)
+  - [Styling UIs](#Styling-UIs)
+  - [Examples](#Examples-of-/stateful-components)
 - /notebook-app-component
 - /presentational-components
-- /stateful-components
 - /styles
-
-## /notebook-app-component
-A monolithic notebook app, in a component
-
-### Installation
-```
-npm install --save @nteract/notebook-app-component
-```
-
-### Usage
-
-This component is not for the faint of heart. It requires you to setup the redux store used by the other nteract apps. You can check out desktop or jupyter extension for examples.
-
-```jsx
-import NotebookApp from "@nteract/notebook-app-component";
-
-<NotebookApp
-  // The desktop app always keeps the same contentRef in a
-  // browser window
-  contentRef={contentRef}
-/>
-```
-
-## /presentational-components
-This package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
-
-### Installation
-
-```
-$ yarn add @nteract/presentational-components
-```
-
-```
-$ npm install --save @nteract/presentational-components
-```
-
-### Usage
-
-The Redux reducer below shows how we can leverage the components within this package to display a cell with an input and output.
-
-```javascript
-import {
-  Cell,
-  Input,
-  Prompt,
-  Source,
-  Outputs
-} from "@nteract/presentational-components";
-
-export default () => {
-  return (
-    <Cell isSelected>
-      <Input>
-        <Prompt counter={2} />
-        <Source language="python">{`print("Hello World")`}</Source>
-      </Input>
-      <Outputs>
-        <pre>Hello World</pre>
-      </Outputs>
-    </Cell>
-  );
-};
-```
 
 ## /stateful-components
 
 The @nteract/stateful-components package exports a set of React components that are connected to the Redux and an unconnected set of components.
 
-### Using stateful-components with the nteract core SDK
+### Using /stateful-components
 
 If you're building a notebook-based application using the nteract core SDK, you can use the connected components to render different components within a notebook, such as Cells and Outputs using the data that is stored in the Redux store.
 
 These connected components are designed to work with the Redux state model that the nteract core SDK uses. In short, it expects that certain properties are stored in particular locations within the Redux subtree.
 
-To use the connected components, you can import each of the components from the `@nteract/stateful-components` package as needed.
+**Example:**
+To use the connected components, import each of the components from the `@nteract/stateful-components` package as needed.
+
+In the example below, the connected `CodeCell` component expects to receive a `contentRef` and an `id`. The `conntetRef` is a unique ID to refer to the model of a particular notebook in the nteract core Redux state. The `id` is the cell ID that references the cell as it is stored in the nteract core Redux state.
 
 ```
 import { CodeCell } from "@nteract/stateful-components";
@@ -91,17 +35,18 @@ class MyApp extends React.Component {
 }
 ```
 
-As you can see from the example above, the connected `CodeCell` component expects to receive a `contentRef` and an `id`. The `conntetRef` is a unique ID that is used to refer to the model of a particular notebook in the nteract core Redux state. The `id` is the cell ID that references the cell as it is stored in the nteract core Redux state.
+All the connected components expect either a `contentRef` or a `id`. These two pieces of information  resolve the correct data from the Redux state and pass it to the component.
 
-All the connected components expect either a `contentRef` or a `id`. These two pieces of information are used to resolve the correct data from the Redux state and pass it to the component.
+### Extending notebook UI
 
-### Extending your notebook UI with @nteract/stateful-components
-
-This suite of React components provides several points of extensibility for the UI. This document covers them here.
+This suite of React components provides several points of extensibility for the UI.
 
 #### Extending Editors
 
-nteract ships with the CodeMirror editor in its desktop and Jupyter extensions. However, you might want to use an alternative editor in your own notebook based UI. To add your own editor to the nteract UI, create a React component that encompasses the editor.
+nteract ships with the CodeMirror editor in its desktop and Jupyter extensions. However, alternative editors are available for use in your own notebook based UI. 
+
+**Example:**
+To add your own editor to the nteract UI, create a React component that encompasses the editor.
 
 ```
 class MyCoolEditor extends React.Component {
@@ -115,7 +60,7 @@ class MyCoolEditor extends React.Component {
 }
 ```
 
-The `editorType` default prop is important here. The `editorType` is used to select between different types of editors.
+The `editorType` default prop is important as `editorType` selects between different types of editors.
 
 ```
 import { Editor } from "@nteract/stateful-components"
@@ -132,13 +77,14 @@ class Editor extends React.Component {
 }
 ```
 
-The `Editor` stateful component take a `cellId` and a `contentRef`, extracts the relevant state properties from the state, and passes them to the child editors.
+The `Editor` stateful component takes a `cellId` and a `contentRef`, extracts the relevant state properties from the state, and passes them to the child editors.
 
 #### Extending Cells
 
-The @nteract/stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. How do you go about adding your own set of cells?
+The @nteract/stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. 
 
-You can override the children of the `Cells` component and render your own custom `Cell` components for each cell_type. For example, to override the default `MarkdownCell`, you can do the following.
+**Example:**
+To add your own set of cells, override the children of the `Cells` component and render your own custom `Cell` components for each cell_type. To override the default `MarkdownCell`, see the following code.
 
 ```js
 import { Cells, CodeCell, RawCell } from "@nteract/stateful-components";
@@ -168,13 +114,16 @@ class MyCells extends React.Component {
 }
 ```
 
-Similar to the pattern for creating configurable editors, configurable cells require that a `cell_type` prop exist on the child component that matches the `cell_type` the component is intended to render.
+This pattern is similar to creating configurable editors. Configurable cells require a `cell_type` prop on the child component that matches the intended rendering `cell_type` from the component.
 
 #### Name-slot based child composition patterns
 
-We've all been in that situation where we were generally happy with something but wanted one small thing changed. The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract, but what if we wanted to override only particular components.
+The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract. 
 
-The @nteract/stateful-components package has support for name slot-based component overrides. For example, let's say you want to override just the `Prompt` component within a CodeCell. You can do this by defining your own `Prompt` component.
+**Example:**
+To override particular components only, the @nteract/stateful-components package supports  name slot-based component overrides. 
+
+To override just the `Prompt` component within a CodeCell, define your own `Prompt` component. The code below is an example of this process.
 
 ```js
 class MyPrompt extends React.Component {
@@ -186,7 +135,7 @@ class MyPrompt extends React.Component {
 }
 ```
 
-Then passing that `Prompt` component as a named child to the `CodeCell` component exported by nteract.
+Pass the `Prompt` component as a named child to the nteract exported `CodeCell` component.
 
 ```js
 import { CodeCell } from "@nteract/stateful-components";
@@ -200,7 +149,7 @@ class MyCodeCell extends React.Component {
 }
 ```
 
-Overrides are currently enabled for the following parent and child components.
+The following table of parent and child components show currently enabled overrides.
 
 | Parent Component | Child Component |
 | ---------------- | --------------- |
@@ -212,17 +161,20 @@ Overrides are currently enabled for the following parent and child components.
 | MarkdownCell     | editor          |
 | RawCell          | editor          |
 
-### Styling UIs built with @nteract/stateful-components
+### Styling UIs
 
-NOTE: Styling support for @nteract/stateful-component is in-progress.
+> NOTE: Styling support for @nteract/stateful-component is in-progress.
 
-nteract's stateful components are unstyled by default. That's right -- a beautiful blank canvas for you to paint your own experience to.
+In nteract, stateful components are unstyled by default. This helps for you to configure your experience to your own preferences.
 
-You can style stateful components using either CSS-in-JS modules like styled-components or via stylesheets.
+Style stateful components using either CSS-in-JS modules like styled-components or via stylesheets.
 
 #### Styling with styled-components
 
-To style individual components with `styled-components` you can import them individually and style them as needed.
+The code examples below show two methods of styling.
+
+**Example:**
+To style individual components, import `styled-components` as needed.
 
 ```
 import { CodeCell } from "@nteract/stateful-components";
@@ -233,7 +185,7 @@ const StyledCodeCell = styled(CodeCell)`
 `
 ```
 
-Alternativelly, you can style the pre-built `Notebook` component with styled-components and use class names to target individual components.
+Alternativelly, style the pre-built `Notebook` component with styled-components. Use class names to target individual components.
 
 ```
 import { Notebook } from "@nteract/stateful-components"
@@ -247,20 +199,22 @@ const StyledNotebook = styled(Notebook)`
 
 #### Styling with stylesheets
 
-To style with stylesheets, you can use element and combinator-based CSS selectors to desire styled elements as you wish.
+To style with stylesheets, use element and combinator-based CSS selectors to desire styled elements to your configurations.
 
-The following table outlines each stateful component, its CSS classname, and other CSS classes that can be conditionally applied to it.
+The following table outlines each stateful component, CSS classname, and other conditional applications of CSS classes.
 
 | Component | Class Name | Other Class Names |
-| Prompt | | `.nteract-prompt-component` | |
+| --- | --- | --- |
+| Prompt | `.nteract-prompt-component` | |
 | Output | `.nteract-output-component` | `.hidden .expanded` |
 
-### @nteract/stateful-components Examples
+### Examples of /stateful-components
 
-This document showcases how the `@nteract/stateful-components` package can be used to build different notebook interfaces. Before reading this document, you might want to take a look at [the overview](./overview.md) and the [extensibility](./extensibility.md) documents.
+This section showcases how the `/stateful-components` package builds different notebook interfaces. 
 
-#### How do I render a notebook without any customizations?
+#### How to render a notebook without customizations
 
+**Example:**
 To import the standard layout of the notebook, use the `Notebook` default export from the `@nteract/stateful-components` package.
 
 ```js
@@ -279,8 +233,9 @@ class MyApp extends React.Component {
 }
 ```
 
-#### How do I override the default editors in the Notebook component?
+#### How to override default editors in the Notebook component
 
+**Example:**
 Create a React component and override the `editor` child property in each cell component.
 
 ```js
@@ -321,8 +276,9 @@ class MyNotebook extends React.Component {
 }
 ```
 
-#### How do I disable editing of markdown cells in my notebook application?
+#### How to disable editing of markdown cells in a notebook application
 
+**Example:**
 Create a React component and override the `editor` child property in the `MarkdownCell` component.
 
 ```js
@@ -353,8 +309,9 @@ class MyNotebook extends React.Component {
 }
 ```
 
-#### How do I override the Output display in code cells?
+#### How to override the Output display in code cells
 
+**Example:**
 Create a React component and override the `outputs` property in the `CodeCell` component.
 
 ```js
@@ -379,6 +336,69 @@ class MyNotebook extends React.Component {
     );
   }
 }
+```
+
+## /notebook-app-component
+A monolithic notebook app, in a component
+
+### Installation
+```
+npm install --save @nteract/notebook-app-component
+```
+
+### Usage
+
+This component is complex. It requires you to setup the redux store used by the other nteract apps. Review desktop or Jupyter extensions for examples.
+
+```jsx
+import NotebookApp from "@nteract/notebook-app-component";
+
+<NotebookApp
+  // The desktop app always keeps the same contentRef in a
+  // browser window
+  contentRef={contentRef}
+/>
+```
+
+## /presentational-components
+This package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
+
+### Installation
+
+```
+$ yarn add @nteract/presentational-components
+```
+
+```
+$ npm install --save @nteract/presentational-components
+```
+
+### Usage
+
+The Redux reducer below shows how to leverage components within this package to display a cell with an input and output.
+
+```javascript
+import {
+  Cell,
+  Input,
+  Prompt,
+  Source,
+  Outputs
+} from "@nteract/presentational-components";
+
+export default () => {
+  return (
+    <Cell isSelected>
+      <Input>
+        <Prompt counter={2} />
+        <Source language="python">{`print("Hello World")`}</Source>
+      </Input>
+      <Outputs>
+        <pre>Hello World</pre>
+      </Outputs>
+    </Cell>
+  );
+};
 ```
 
 ## /styles
