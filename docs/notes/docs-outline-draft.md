@@ -38,6 +38,11 @@
 >    example
 >    explanation
 
+SDK
+What are/is ___?
+What do/does ___ do?
+**Examples:**
+
 ## Software Development Kit Groups
 - Core
     - /actions

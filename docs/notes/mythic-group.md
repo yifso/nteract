@@ -11,8 +11,10 @@
 
 ### Usage
 
-Initialize the package by including the `configuration` package. Per default it will save the configuration in memory.
-If you would like to use a config file, you can dispatch a `setConfigFile` action:
+Initialize the package by including the `configuration` package. Memory saves the configuration by default.
+
+**Example:**
+To use a config file, dispatch a `setConfigFile` action following the code below.
 
 ```javascript
 import { configuration } from "@nteract/mythic-configuration";
@@ -25,9 +27,9 @@ export const configureStore = makeConfigureStore({
 store.dispatch(setConfigFile("/etc/app.conf"));
 ```
 
-The package will use that file to save any configuration options. The file is also watched and loaded when it changes.
+The package saves any configuration options to that file and tracks it. Any additional options load as the file changes.
 
-After this initialisation, you can then work with configuration options:
+Configuration options are available after initialization.
 
 ```javascript
 export const {
@@ -49,7 +51,10 @@ const currentValue = tabSize(store.getState());
 store.dispatch(setTabSize(2));
 ```
 
-To get an object from all config options with a common prefix, use `createConfigCollection`:
+**Example:**
+To get an object from all config options with a common prefix, use `createConfigCollection`.
+
+
 ```javascript
 const codeMirrorConfig = createConfigCollection({
   key: "codeMirror",
@@ -65,7 +70,9 @@ const options = allConfigOptions();
 const optionsWithCurrentValues = allConfigOptions(store.getState());
 ```
 
-In case you want to change the key of a config option, you can deprecate the old key:
+**Example:**
+In order to change the key of a config option, deprecate the old key with the following code.
+
 ```javascript
 createDeprecatedConfigOption({
   key: "cursorBlinkRate",
@@ -75,7 +82,7 @@ createDeprecatedConfigOption({
 });
 ```
 
-This will change the old key to the new key, unless the new key already has a value.
+This changes the old key to the new key, unless the new key already has a value.
 
 ### API
 
@@ -262,19 +269,14 @@ TBD
 
 ## /myths
 
-**This is a pre-alpha level package; interfaces are not stable yet!**
-
-The `myths` framework allows for integrating sets of closely related actions, reducers and epics. Myths allow
-close relationships where DRY and dependencies are minimized. Therefore, Myths provide for a structured way
-to avoid boilerplate.
+The `myths` framework allows for integrating sets of closely related actions, reducers and epics. Myths allow close relationships where DRY and dependencies are minimized. Myths provide structured way to avoid boilerplate code.
 
 Myths build on top of the [Redux](https://react-redux.js.org/) and
-[RxJS](https://redux.js.org/) libraries that are used elsewhere in the nteract core SDK.
-As a refresher, Redux helps you maintain application state. In Redux, actions and reducers provide
-predictable state management. The state may only be changed by dispatching an action to a reducer.
-In [Redux-Observable](https://redux-observable.js.org/), an epic
-is a function that takes in a stream of actions and returns
-a stream of actions.
+[RxJS](https://redux.js.org/) libraries.
+
+Redux helps to maintain the application state. In Redux, actions and reducers provide predictable state management. The state changesd only when dispatching an action to a reducer.
+
+In [Redux-Observable](https://redux-observable.js.org/), an epic is a function that takes in a stream of actions and returns a stream of actions.
 
 ### Installation
 
@@ -290,8 +292,9 @@ $ npm install --save myths
 
 #### MythicPackage
 
-First, create a `MythicPackage` with a name, a type for its private state, and the initial state.
-As an example, the following creates a `MythicPackage` named `"iCanAdd"` which uses the `number`
+Create a `MythicPackage` with a name, a type for its private state, and the initial state.
+
+The example below creates a `MythicPackage` named `"iCanAdd"` which uses the `number`
 type for its private state `sum` and an initial state of `sum` as `0`:
 
 ```typescript
@@ -308,9 +311,9 @@ export const iCanAdd = createMythicPackage("iCanAdd")<
 
 #### Myth
 
-Next, you can the use the `MythicPackage` to create a `Myth` with a name, a type for its payload, and optionally a reducer
-operating on its package's private state. In this example, the `MythicPackage` named `iCanAdd` creates a `Myth`
-named `"addToSum"`:
+Next, use the `MythicPackage` to create a `Myth` with a name, a type for its payload, and optionally a reducer operating on its package's private state.
+
+In example below, the `MythicPackage` named `iCanAdd` creates a `Myth` named `"addToSum"`.
 
 ```typescript
 export const addToSum =
@@ -324,7 +327,7 @@ A package can have any number of myths.
 
 #### Action
 
-To create an action based on a myth, use its `create` function. You can then dispatch this action normally:
+To create an action based on a myth, use its `create` function and dispatch this action normally.
 
 ```typescript
 store.dispatch(addToSum.create(8));
@@ -332,7 +335,7 @@ store.dispatch(addToSum.create(8));
 
 #### Store
 
-You get a store from a set of mythic packages, which has all the appropriate reducers and epics already in place:
+A set of mythic packages yields a store. This store has all the appropriate reducers and epics in place.
 
 ```typescript
 type NonPrivateState = { foo: string };
@@ -344,9 +347,9 @@ const configureStore = makeConfigureStore<NonPrivateState>()({
 export const store = configureStore({ foo: "bar" });
 ```
 
-### Epics: their definition
+### Definition of epics
 
-Epics can be defined using two different shorthand methods:
+Define epics using two different shorthand methods.
 
 ```typescript
 export const addToSum =
@@ -374,11 +377,12 @@ export const addToSum =
   });
 ```
 
-The first method uses `thenDispatch: []` to define actions which should be dispatched when actions of the defined type
-are dispatched, and the second method uses `andAlso: []` to generate actions based on a custom predicate.
-Since the type being defined is not available for reference yet, it is passed as third argument to the dispatch function.
+The first method uses `thenDispatch: []` to define actions. which should be dispatched when actions of the defined type are dispatched. The second method uses `andAlso: []` to generate actions based on a custom predicate.
+
+Defining the type means the type is not available for reference yet. The type passes as the third argument to the dispatch function.
  
 ### Testing
 
-To test the actions of a mythic package, you can use the `testMarbles(...)` method. Note that this only tests the epics,
-without evaluating reducers.
+To test the actions of a mythic package, use the `testMarbles(...)` method. 
+
+> NOTE: This only tests the epics without evaluating reducers.
