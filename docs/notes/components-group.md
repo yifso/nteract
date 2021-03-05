@@ -35,7 +35,7 @@ class MyApp extends React.Component {
 }
 ```
 
-All the connected components expect either a `contentRef` or a `id`. These two pieces of information  resolve the correct data from the Redux state and pass it to the component.
+All the connected components expect either a `contentRef` or a `id`. These two pieces of information resolve the correct data from the Redux state and pass it to the component.
 
 ### Extending notebook UI
 
@@ -118,10 +118,10 @@ This pattern is similar to creating configurable editors. Configurable cells req
 
 #### Name-slot based child composition patterns
 
-The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract. 
+The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract.
 
 **Example:**
-To override particular components only, the @nteract/stateful-components package supports  name slot-based component overrides. 
+To override particular components only, the @nteract/stateful-components package supports name slot-based component overrides. 
 
 To override just the `Prompt` component within a CodeCell, define your own `Prompt` component. The code below is an example of this process.
 
@@ -361,6 +361,7 @@ import NotebookApp from "@nteract/notebook-app-component";
 ```
 
 ## /presentational-components
+
 This package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
 
 ### Installation

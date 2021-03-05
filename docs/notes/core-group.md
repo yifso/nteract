@@ -216,8 +216,7 @@ In the past, Jupyter added a
 [custom messaging](https://jupyter-client.readthedocs.io/en/stable/messaging.html#custom-messages)
 system for developers to add their own objects with Front-end and Kernel-side components, and allowed them to communicate with each other.  
 
-To do this, IPython adds a notion of a `Comm`. This exists on both Front-end and Kernel-side components and communicates in either direction. Comm messages are an arbitrary data exchange format built on top of the
-Jupyter Messaging Protocol.
+To do this, IPython adds a notion of a `Comm`. This exists on both Front-end and Kernel-side components and communicates in either direction. Comm messages are an arbitrary data exchange format built on top of the [Jupyter Messaging Protocol](https://jupyter-client.readthedocs.io/en/stable/messaging.html).
 
 Comm messages are one-way communications for updating comm state,
 synchronizing widget state, or requesting actions of a comm's counterpart.
@@ -302,7 +301,14 @@ This epic subscribes to messages coming in from a kernel when launched. If one o
 
 #### sendInputReplyEpic
 
-This epic processes sending response to `stdin` requests sent by the kernel. It listens to dispatched `SEND_INPUT_REPLY` actions when a user provides a response to a `stdin` request in the UI.
+This epic responds to `stdin` kernel requests. This epic listens and processes `SEND_INPUT_REPLY` actions when a user responds to a `stdin` prompt in the UI.
+
+**Example:**
+The Python code below is an example of this activity in a Python kernel. For the `sendInputReplyEpic`, this epic processes user input to the kernel.
+
+```python
+message = input("Type a message:")
+```
 
 ### Kernel epics
 - [ ] *missing information*
