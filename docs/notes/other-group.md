@@ -5,7 +5,7 @@
 - /fixtures
 
 ## /connected-components
-This package contains React components for rendering navigation menus and modals in nteract applications. To see this package in action, you can view the source code for the [nteract-on-Jupyter](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension) application.
+This package contains React components for rendering navigation menus and modals in nteract applications. Find examples of the package in  the source code for the [nteract-on-Jupyter](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension) application.
 
 ### Installation
 
@@ -19,7 +19,7 @@ $ npm install --save @nteract/connected-components
 
 ### Usage
 
-The example below shows we can use the `ModalController` component within this package to render an about modal.
+The example below shows to use the `ModalController` component within this package to render an about modal.
 
 ```javascript
 import { ModalController, MODAL_TYPES } from "@nteract/connected-components";
@@ -45,7 +45,7 @@ $ npm install --save @nteract/fixtures
 
 ### Usage
 
-The example below shows how we can use this package to create a Redux store for a notebook with two code cells.
+The example below shows how to use this package to create a Redux store for a notebook with two code cells.
 
 ```javascript
 import { fixtureStore } from "@nteract/fixtures";

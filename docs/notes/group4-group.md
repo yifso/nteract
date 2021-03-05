@@ -5,7 +5,7 @@
 - /rx-binder
 
 ## /host-cache
-This package contains a provider component that allows you to connect to a Binder instance and access its context in all child components. To see this package in action, you can view the source for the [nteract play application](https://github.com/nteract/play).
+This package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).
 
 ### Installation
 
@@ -19,7 +19,7 @@ $ npm install --save @nteract/host-cache
 
 ### Usage
 
-The example below shows how we can use the `Host` component within this package to connect to a Binder instance and display information about the connection.
+The example below shows how to use the `Host` component within this package to connect to a Binder instance and display information about the connection.
 
 ```javascript
 import { Host } from "@mybinder/host-cache";
@@ -54,7 +54,9 @@ export default () => {
 
 ## /rx-binder
 
-This package provides a set of functions for connecting to a remote instance provided by [Binder](https://mybinder.org/). This package will allow you to connect to a remote compute instance from your nteract application to execute code. To see this package in action, you can view the source code for the [nteract play app](https://github.com/nteract/play).
+This package provides a set of functions for connecting to a remote instance provided by [Binder](https://mybinder.org/). This package allows you to connect to a remote compute instance from your nteract application to execute code. 
+
+See an example of this package in the source code for the [nteract play app](https://github.com/nteract/play).
 
 ### Installation
 
