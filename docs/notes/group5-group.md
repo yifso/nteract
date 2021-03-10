@@ -1,9 +1,12 @@
 # Group 5 (name tentative)
 
 **Table of contents**
-- /commutable
-- /messaging
-- /rx-jupyter
+- [/commutable](#/commutable)
+  - [Notebook format](#/Notebook-format)
+  - [/commutable in-memory format](#/commutable-in-memory-format)
+  - [Examples](#Examples-of-/commutable)
+- [/messaging](#messaging)
+- [/rx-jupyter](/rx-jupyter)
 
 ## /commutable
 @nteract/commutable is a package for creating an in-memory immutable representation of a Jupyter notebook.
@@ -15,7 +18,7 @@ This package follows the principles below. Tom MacWright's [outline for practica
 - A list of states composes the history. The past is on one end and the present is on the other. The index backs up into 'undo states'.
 - Modifying a notebook document discards any future states.
 
-@nteract/commutable guilds on top of the [ImmutableJS](https://immutable-js.github.io/immutable-js/) library.
+@nteract/commutable builds on top of the [ImmutableJS](https://immutable-js.github.io/immutable-js/) library.
 
 ### Notebook format
 
@@ -23,7 +26,9 @@ Jupyter notebooks serialize into files with ipynb extensions. These files are JS
 
 The top-level properties in the notebook have the following schema.
 
-```
+**Example:**
+
+```json
 {
   "metadata" : {
     "kernel_info": {
@@ -47,7 +52,7 @@ The top-level properties in the notebook have the following schema.
 
 The `cells` properties contain a list of cells in the notebook. The fundamental structure for a cell uses the format below.
 
-```
+```json
 {
   "cell_type" : "type",
   "metadata" : {},
@@ -57,11 +62,13 @@ The `cells` properties contain a list of cells in the notebook. The fundamental 
 
 For examples of serialized Jupyter notebooks, view the [raw JSON for an example notebook](https://raw.githubusercontent.com/nteract/examples/master/python/intro.ipynb).
 
-### /commutable In-Memory Format
+### /commutable in-memory format
 
 The /commutable package converts the serialized representation into an immutable in-memory representation. The structure of the in-memory representation is different as the design is for easier in-memory format use when developing interactive notebook UIs. The interface for a notebooks is in the example below.
 
-```
+**Example:**
+
+```js
 export interface NotebookRecordParams {
   cellOrder: ImmutableList<CellId>;
   cellMap: ImmutableMap<CellId, ImmutableCell>;
@@ -78,7 +85,7 @@ export interface NotebookRecordParams {
 - `nbformat`, `nbformat_minor`: The version of the nbformat that this notebook follows.
 - `metadata`: Top-level metadata stored in the notebook.
 
-This package includes strongly-typed interfaces and creators for each cell type that exists in the Jupyter nbformat specification: code cells, markdown cells, and raw cells. For more information on this, view the examples for this package.
+This Jupyter specification outlines three different cell types: code cells, Markdown cells, and raw cells. The /commutable package provides type interfaces and functions. These help create data objects to match the specifications of cell types.
 
 #### Transient nteract data
 
@@ -90,14 +97,15 @@ Users opening a notebook in nteract, working with the notebook altering its meta
 
 All support actions are in [this package's API docs](https://packages.nteract.io/modules/commutable.html).
 
-### Examples
+### Examples of /commutable
 
 #### Creating a notebook in-memory model
 
-**Example:**
 To create an in-memory model of a notebook, pass a string containing the serialized contents of the notebook to the `fromJS` function.
 
 In the example below, `notebookString` loads from a Jupyter server via the Jupyter Contents API. A filesystem API retrieves it from disk and loads it from a cloud storage provider with their API or anywhere else. The `notebookString` converts to the in-memory model when following the nbformat.
+
+**Example:**
 
 ```js
 import { fromJS } from "@nteract/commutable";
@@ -109,6 +117,8 @@ const immutableNotebook = fromJS(notebookString);
 #### Create a code cell
 
 To create a code cell, use the `makeCodeCell` function in the commutable API.
+
+**Example:**
 
 ```js
 import { makeCodeCell } from "@nteract/commutable";
@@ -125,20 +135,11 @@ const codeCell = makeCodeCell({
 
 This package contains type definitions and helper functions for interacting with the [Jupyter Messaging Protocol](https://jupyter-client.readthedocs.io/en/stable/messaging.html). These functions create different types of request and response messages.
 
-### Installation
-
-```
-$ yarn add @nteract/messaging
-```
-
-```
-$ npm install --save @nteract/messaging
-```
-
-### Usage
+### Example
 
 The example below shows how to use the `createMessage` function in this package to create an [inspect_request](https://jupyter-client.readthedocs.io/en/stable/messaging.html#introspection) Jupyter message.
 
+**Example:**
 ```javascript
 import { createMessage } from "@nteract/messaging";
 
@@ -170,20 +171,11 @@ Optional coverage:
 - [ ] nbconvert
 - [ ] spec.yaml `/api/spec.yaml`
 
-### Installation
-
-```
-$ yarn add rx-jupyter
-```
-
-```
-$ npm install --save rx-jupyter
-```
-
-### Usage
+### Example
 
 The example below shows how to use this package to get the version of the Jupyter server API the endpoint is running.
 
+**Example:**
 ```javascript
 import jupyter from "rx-jupyter";
 import { of } from "rxjs";

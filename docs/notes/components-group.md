@@ -6,9 +6,9 @@
   - [Extending notebook UI](#Extending-notebook-UI)
   - [Styling UIs](#Styling-UIs)
   - [Examples](#Examples-of-/stateful-components)
-- /notebook-app-component
-- /presentational-components
-- /styles
+- [/notebook-app-component](#/notebook-app-component)
+- [/presentational-components](#/presentation-components)
+- [/styles](#/styles)
 
 ## /stateful-components
 
@@ -25,7 +25,7 @@ To use the connected components, import each of the components from the `@nterac
 
 In the example below, the connected `CodeCell` component expects to receive a `contentRef` and an `id`. The `conntetRef` is a unique ID to refer to the model of a particular notebook in the nteract core Redux state. The `id` is the cell ID that references the cell as it is stored in the nteract core Redux state.
 
-```
+```js
 import { CodeCell } from "@nteract/stateful-components";
 
 class MyApp extends React.Component {
@@ -43,12 +43,12 @@ This suite of React components provides several points of extensibility for the 
 
 #### Extending Editors
 
-nteract ships with the CodeMirror editor in its desktop and Jupyter extensions. However, alternative editors are available for use in your own notebook based UI. 
+nteract ships with the CodeMirror and Monaco editors in its desktop and Jupyter extensions. However, alternative editors are available for use in your own notebook based UI. 
 
 **Example:**
 To add your own editor to the nteract UI, create a React component that encompasses the editor.
 
-```
+```js
 class MyCoolEditor extends React.Component {
     static defaultProps = {
         editorType = "myeditor"
@@ -62,7 +62,7 @@ class MyCoolEditor extends React.Component {
 
 The `editorType` default prop is important as `editorType` selects between different types of editors.
 
-```
+```js
 import { Editor } from "@nteract/stateful-components"
 import CodeMirrorEditor from "@nteract/editor"
 import MyCoolEditor from "./my-cool-editor";
@@ -176,7 +176,7 @@ The code examples below show two methods of styling.
 **Example:**
 To style individual components, import `styled-components` as needed.
 
-```
+```js
 import { CodeCell } from "@nteract/stateful-components";
 import styled from "styled-components";
 
@@ -187,7 +187,7 @@ const StyledCodeCell = styled(CodeCell)`
 
 Alternativelly, style the pre-built `Notebook` component with styled-components. Use class names to target individual components.
 
-```
+```js
 import { Notebook } from "@nteract/stateful-components"
 
 const StyledNotebook = styled(Notebook)`
@@ -339,16 +339,13 @@ class MyNotebook extends React.Component {
 ```
 
 ## /notebook-app-component
-A monolithic notebook app, in a component
+The notebook-app-component is a standardaized implementation of a Jupyter notebook UI. In it is a single component. That component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
 
-### Installation
-```
-npm install --save @nteract/notebook-app-component
-```
+### Example
 
-### Usage
+This component is complex. It requires you to setup the Redux store used by the other nteract apps. Review desktop or Jupyter extensions for examples.
 
-This component is complex. It requires you to setup the redux store used by the other nteract apps. Review desktop or Jupyter extensions for examples.
+**Example:**
 
 ```jsx
 import NotebookApp from "@nteract/notebook-app-component";
@@ -364,19 +361,11 @@ import NotebookApp from "@nteract/notebook-app-component";
 
 This package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
 
-### Installation
-
-```
-$ yarn add @nteract/presentational-components
-```
-
-```
-$ npm install --save @nteract/presentational-components
-```
-
-### Usage
+### Example
 
 The Redux reducer below shows how to leverage components within this package to display a cell with an input and output.
+
+**Example:**
 
 ```javascript
 import {

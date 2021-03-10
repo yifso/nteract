@@ -7,16 +7,17 @@
   - [Action creators](#Action-creators)
   - [Support action API](#Support-action-API)
   - [Examples](#Examples-of-/actions)
-- /core
+- [/core](#/core)
   - [Key principles](#Key-principles)
-- /epics
+- [/epics](#/epics)
   - [Comm epics](#Comm-epics)
   - [Contents epics](#Contents-epics)
   - [Execution epics](#Execution-epics)
   - [Kernel epics](#Kernel-epics)
-- /reducers
-- /selectors
-- /types
+    - [Examples](#Examples-of-Kernel-epics)
+- [/reducers](#/reducers)
+- [/selectors](#/selectors)
+- [/types](#/types)
 
 ## /actions
 
@@ -38,9 +39,10 @@ In an nteract-based UI, every event maps to an action. Reducers and epics implem
 
 Action creators are functions that take a specific set of parameters and return an action.  
 
-In the example below is an ExecuteCell action with the following schema.
+**Example:**
+The code below contains an ExecuteCell action with the following schema.
 
-```
+```javascript
 {
     type: "EXECUTE_CELL";
     payload: {
@@ -50,9 +52,9 @@ In the example below is an ExecuteCell action with the following schema.
 }
 ```
 
-The action creator for this action looks like this.
+This code block shows the action creator for this action.
 
-```js
+```javascript
 function executeCell({ contentRef, cellId }) {
     return {
        type: "EXECUTE_CELL";
@@ -72,7 +74,7 @@ All support actions for this package are in the [API docs for @nteract/actions](
 
 ### Examples of /actions
 
-#### Using @nteract/actions in reducers
+#### Using /actions in reducers
 
 The `@nteract/actions` package expose a type interface for each action and a constant for each action type. See how these exported properties work in the example below.  
 
@@ -202,9 +204,7 @@ The `@nteract/core` package is heavily dependent Redux and RxJS. These two techn
 ## /epics
 Epics are functions that take a stream of Redux actions as inputs and return a stream of Redux actions as outputs. Learn about epics in the [documentation for redux-observable](https://redux-observable.js.org/docs/basics/Epics.html).
 
-The nteract core SDK exports a set of epics. Register these in the middleware of your Redux store. When registered, these epics are "active" and run when certain actions occur. To remove the functionality of a particular epic, unregister it from your Redux store.
-
-Documentation on each of the epics is listed under the `@nteract/epics` tab by category.
+The nteract core SDK exports a set of epics. Register these in the middleware of your Redux store. When registered, these epics are active and run when certain actions occur. To remove the functionality of a particular epic, unregister it from your Redux store.
 
 ### Comm epics
 
@@ -311,13 +311,257 @@ message = input("Type a message:")
 ```
 
 ### Kernel epics
-- [ ] *missing information*
+These epics activate after launching kernel actions. This is helpful [lorem ipsum]
+
+#### Examples of Kernel epics
+The following code samples show how this epic acts in response to kernel contexts.
+
+**Example:**
+The code below sets the execution state after launching a kernel.
+
+```javascript
+export const watchExecutionStateEpic = (
+  action$: Observable<
+    actions.NewKernelAction | actions.KillKernelSuccessful
+  >
+) =>
+  action$.pipe(
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    switchMap(
+      (action: actions.NewKernelAction | actions.KillKernelSuccessful) =>
+        (action as actions.NewKernelAction).payload.kernel.channels.pipe(
+          filter((msg: JupyterMessage) => msg.header.msg_type === "status"),
+          map((msg: JupyterMessage) =>
+            actions.setExecutionState({
+              kernelStatus: msg.content.execution_state,
+              kernelRef: (action as actions.NewKernelAction).payload.kernelRef
+            })
+          ),
+          takeUntil(
+            action$.pipe(
+              ofType(actions.KILL_KERNEL_SUCCESSFUL),
+              filter(
+                (
+                  killAction:
+                    | actions.KillKernelSuccessful
+                    | actions.NewKernelAction
+                ) => killAction.payload.kernelRef === action.payload.kernelRef
+              )
+            )
+          ),
+          catchError((error: Error) => {
+            return of(
+              actions.executeFailed({
+                error: new Error(
+                  "The WebSocket connection has unexpectedly disconnected."
+                ),
+                code: errors.EXEC_WEBSOCKET_ERROR,
+                contentRef: (action as actions.NewKernelAction).payload.contentRef
+              })
+            );
+          })
+        )
+    )
+  );
+```
+
+**Example:**
+Below is a code example showing how to get information about a newly launched kernel.
+
+```javascript
+export const acquireKernelInfoEpic = (
+  action$: Observable<actions.NewKernelAction>,
+  state$: StateObservable<AppState>
+) =>
+  action$.pipe(
+    ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+    switchMap((action: actions.NewKernelAction) => {
+      const {
+        payload: {
+          kernel: { channels, kernelSpecName },
+          kernelRef,
+          contentRef
+        }
+      } = action;
+      return acquireKernelInfo(
+        channels,
+        kernelRef,
+        contentRef,
+        state$.value,
+        kernelSpecName
+      );
+    })
+  );
+```
+
+**Example:**
+The code below shows the kernel epic handling notebook content. It is similar to the desktop loading.js version.
+
+```javascript
+export const launchKernelWhenNotebookSetEpic = (
+  action$: Observable<actions.FetchContentFulfilled>,
+  state$: any
+) =>
+  action$.pipe(
+    ofType(actions.FETCH_CONTENT_FULFILLED),
+    mergeMap((action: actions.FetchContentFulfilled) => {
+      const state: AppState = state$.value;
+
+      const contentRef = action.payload.contentRef;
+
+      const content = selectors.content(state, { contentRef });
+
+      if (
+        !content ||
+        content.type !== "notebook" ||
+        content.model.type !== "notebook"
+      ) {
+        // This epic only handles notebook content
+        return EMPTY;
+      }
+
+      /**
+       * Avoid relaunching kernels for notebooks that have already
+       * launched their content.
+       */
+      if (content.model.kernelRef) {
+        const kernel = selectors.kernel(state, {
+          kernelRef: content.model.kernelRef
+        });
+        if (kernel && kernel.channels) {
+          return EMPTY;
+        }
+      }
+      const filepath = content.filepath;
+      const notebook = content.model.notebook;
+
+      const { cwd, kernelSpecName } = extractNewKernel(filepath, notebook);
+
+      return of(
+        actions.launchKernelByName({
+          kernelSpecName,
+          cwd,
+          kernelRef: action.payload.kernelRef,
+          selectNextKernel: true,
+          contentRef: action.payload.contentRef
+        })
+      );
+    })
+  );
+```
+
+**Example:**
+This epic in the example below restarts a Jupyter kernel in a local scenario. In this case, a restart requires killing the existing kernel process and starting a new one.
+
+```javascript
+export const restartKernelEpic = (
+  action$: Observable<actions.RestartKernel | actions.NewKernelAction>,
+  state$: any
+) =>
+  action$.pipe(
+    ofType(actions.RESTART_KERNEL),
+    concatMap((action: actions.RestartKernel | actions.NewKernelAction) => {
+      const state = state$.value;
+
+      const oldKernelRef = selectors.kernelRefByContentRef(state$.value, {
+        contentRef: action.payload.contentRef
+      });
+
+      if (!oldKernelRef) {
+        return of(
+          sendNotification.create({
+            title: "Failure to Restart",
+            message: "Unable to restart kernel, please select a new kernel.",
+            level: "error"
+          })
+        );
+      }
+
+      const oldKernel = selectors.kernel(state, { kernelRef: oldKernelRef });
+
+      if (oldKernel && oldKernel.type === "websocket") {
+        return EMPTY;
+      }
+
+      if (!oldKernelRef || !oldKernel) {
+        return of(
+          sendNotification.create({
+            title: "Failure to Restart",
+            message: "Unable to restart kernel, please select a new kernel.",
+            level: "error"
+          })
+        );
+      }
+
+      const newKernelRef = createKernelRef();
+      const initiatingContentRef = action.payload.contentRef;
+      const successNotification = sendNotification.create({
+        title: "Kernel Restarting...",
+        message: `Kernel ${oldKernel.kernelSpecName ||
+          "unknown"} is restarting.`,
+        level: "success"
+      });
+
+      const kill = actions.killKernel({
+        restarting: true,
+        kernelRef: oldKernelRef
+      });
+
+      const relaunch = actions.launchKernelByName({
+        kernelSpecName: oldKernel.kernelSpecName ?? undefined,
+        cwd: oldKernel.cwd,
+        kernelRef: newKernelRef,
+        selectNextKernel: true,
+        contentRef: initiatingContentRef
+      });
+
+      const awaitKernelReady = action$.pipe(
+        ofType(actions.LAUNCH_KERNEL_SUCCESSFUL),
+        filter(
+          (action: actions.NewKernelAction | actions.RestartKernel) =>
+            action.payload.kernelRef === newKernelRef
+        ),
+        take(1),
+        timeout(60000), // If kernel doesn't come up within this interval we will abort follow-on actions.
+        concatMap(() => {
+          const restartSuccess = actions.restartKernelSuccessful({
+            kernelRef: newKernelRef,
+            contentRef: initiatingContentRef
+          });
+
+          if (
+            (action as actions.RestartKernel).payload.outputHandling ===
+            "Run All"
+          ) {
+            return of(
+              restartSuccess,
+              actions.executeAllCells({ contentRef: initiatingContentRef })
+            );
+          } else {
+            return of(restartSuccess);
+          }
+        }),
+        catchError(error => {
+          return of(
+            actions.restartKernelFailed({
+              error,
+              kernelRef: newKernelRef,
+              contentRef: initiatingContentRef
+            })
+          );
+        })
+      );
+
+      return merge(of(kill, relaunch, successNotification), awaitKernelReady);
+    })
+  );
+```
 
 ## /reducers
-- [ ] *missing information*
+The package contains a set of Redux reducers for nteract applications. They describe the change in the application's state when the store receives actions.
 
-### Usage
-The example below shows how to use the functions to set the `isSaving` property on a notebook state.
+### Example
+The code below shows how to use the functions to set the `isSaving` property on a notebook state.
 
 ```javascript
 import * as reducers from "@nteract/reducers";
@@ -333,10 +577,12 @@ export default () => {
 ```
 
 ## /selectors
-- [ ] *missing information*
+This package provides a set of seletors and functions for you to extract important information from the state of your nteract application. View the AppState type to see a full set of data stored in the application state. For reference, this package extracts that information.
 
-### Usage
+### Example
+The code below is an example of using the package.
 
+**Example:**
 ```javascript
 import { modalType, currentTheme } from "@nteract/selectors";
 
@@ -360,7 +606,6 @@ console.log(`Rendering ${currentModal} modal using ${theme} theme.`);
 ```
 
 ## /types
-- [ ] *missing information*
-This package contains a collection of type definitions throughout nteract. Use these types when interacting with kernelspecs, notebooks, and hosts.
+This package contains a collection of type definitions throughout nteract. Use these types when interacting with kernelspecs, notebooks, and hosts. View the complete list on the [Package types](https://packages.nteract.io/modules/types.html) page of the nteract website.
 
 
