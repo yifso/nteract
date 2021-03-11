@@ -1,25 +1,17 @@
 # Group 4 (name tentative)
 
 **Table of contents**
-- /host-cache
-- /rx-binder
+- [/host-cache](#/host-cache)
+- [/rx-binder](#/rx-binder)
 
 ## /host-cache
 This package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).
 
-### Installation
-
-```
-$ yarn add @nteract/host-cache
-```
-
-```
-$ npm install --save @nteract/host-cache
-```
-
-### Usage
+### Example
 
 The example below shows how to use the `Host` component within this package to connect to a Binder instance and display information about the connection.
+
+**Example:**
 
 ```javascript
 import { Host } from "@mybinder/host-cache";
@@ -58,17 +50,10 @@ This package provides a set of functions for connecting to a remote instance pro
 
 See an example of this package in the source code for the [nteract play app](https://github.com/nteract/play).
 
-### Installation
+### Example
+The following code sample [lorem ipsum]
 
-```
-$ yarn add rx-binder
-```
-
-```
-$ npm install --save rx-binder
-```
-
-### Usage
+**Example:**
 
 ```javascript
 const { binder } = require("rx-binder");

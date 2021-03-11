@@ -1,4 +1,4 @@
-# Group 5 (name tentative)
+# Jupyter Protocol and Specification
 
 **Table of contents**
 - [/commutable](#/commutable)
@@ -153,23 +153,6 @@ const message = createMessage("inspect_request", {
 ## /rx-jupyter
 
 This package is a [ReactiveX](http://reactivex.io/) wrapper around the [Jupyter Server API](http://jupyter-api.surge.sh/). **rx-jupyter** helps query local and remote Jupyter Server instances using Jupyter's Services APIs. Also, **rx-jupyter** integrates responses seamlessly with [RxJS](https://rxjs-dev.firebaseapp.com/)'s functional tooling.
-
-### Roadmap
-
-Primary coverage of the [Jupyter Server API]:
-
-- [x] Contents
-  - [x] Checkpoints
-- [x] Kernels
-- [x] Kernelspecs
-- [x] Sessions
-- [x] Terminals
-
-Optional coverage:
-
-- [ ] Config
-- [ ] nbconvert
-- [ ] spec.yaml `/api/spec.yaml`
 
 ### Example
 

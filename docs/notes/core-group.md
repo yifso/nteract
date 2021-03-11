@@ -311,7 +311,7 @@ message = input("Type a message:")
 ```
 
 ### Kernel epics
-These epics activate after launching kernel actions. This is helpful [lorem ipsum]
+These epics activate after launching kernel actions. This is helpful for managing actions such as launching, restarting, and shutting down kernels. These epics allow users to confirm kernels and connect to them for code.
 
 #### Examples of Kernel epics
 The following code samples show how this epic acts in response to kernel contexts.
@@ -395,7 +395,7 @@ export const acquireKernelInfoEpic = (
 ```
 
 **Example:**
-The code below shows the kernel epic handling notebook content. It is similar to the desktop loading.js version.
+The code below shows the kernel epic handling notebook content. This epic supports launching a kernel via the Jupyter server.
 
 ```javascript
 export const launchKernelWhenNotebookSetEpic = (
