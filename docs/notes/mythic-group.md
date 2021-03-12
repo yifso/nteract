@@ -1,15 +1,31 @@
 # Mythic
 
 **Table of contents**
-- /mythic-configuration
-- /mythic-multiselect
-- /mythic-notifications
-- /mythic-windowing
-- /myths
+- [/mythic-configuration](#/mythic-configuration)
+  - [Examples](#Examples-of-/mythic-configuration)
+  - [API](#/API-for-/mythic-configuration)
+- [/mythic-multiselect](#/mythic-multiselect)
+  - [Examples](#/Examples-of-/mythic-multiselect)
+  - [API](#/API-for-/mythic-multiselect)
+- [/mythic-notifications](#/mythic-notifications)
+  - [Examples](#/Examples-of-/mythic-notifications)
+  - [API](#/API-for-/mythic-notifications)
+- [/mythic-windowing](#/mythic-windowing)
+  - [Examples](#/Examples-of-/mythic-windowing)
+  - [API](#/API-for-/mythic-windowing)
+- [/myths](#/myths)
+  - [Examples](#/Examples-of-/myths)
+    - [MythicPackage](#/MythicPackage)
+    - [Myth](#/Myth)
+    - [Action](#/Action)
+    - [Store](#/Store)
+  - [Definition of epics](#/Definition-of-epics)
+  - [Testing](#Testing)
 
 ## /mythic-configuration
+The /mythic-configuration package is for [insert text here]
 
-### Usage
+### Examples of /mythic-configuration
 
 Initialize the package by including the `configuration` package. Memory saves the configuration by default.
 
@@ -31,6 +47,8 @@ The package saves any configuration options to that file and tracks it. Any addi
 
 Configuration options are available after initialization.
 
+**Example:**
+
 ```javascript
 export const {
   selector: tabSize,
@@ -51,9 +69,9 @@ const currentValue = tabSize(store.getState());
 store.dispatch(setTabSize(2));
 ```
 
-**Example:**
 To get an object from all config options with a common prefix, use `createConfigCollection`.
 
+**Example:**
 
 ```javascript
 const codeMirrorConfig = createConfigCollection({
@@ -70,8 +88,9 @@ const options = allConfigOptions();
 const optionsWithCurrentValues = allConfigOptions(store.getState());
 ```
 
+In order to change the key of a config option, deprecate the old key with the following code. This changes the old key to the new key, unless the new key already has a value.
+
 **Example:**
-In order to change the key of a config option, deprecate the old key with the following code.
 
 ```javascript
 createDeprecatedConfigOption({
@@ -82,9 +101,10 @@ createDeprecatedConfigOption({
 });
 ```
 
-This changes the old key to the new key, unless the new key already has a value.
+### API for /mythic-configuration
+The API for this package is [insert text here]
 
-### API
+**Example:**
 
 ```typescript
 import { RootState } from "@nteract/myths";
@@ -116,19 +136,11 @@ export type HasPrivateConfigurationState =
 ## /mythic-multiselect
 This package implements a simple method of keeping track of multiple selected cells using the `myths` framework.
 
-### Installation
-
-```
-$ yarn add @nteract/mythic-multiselect
-```
-
-```
-$ npm install --save @nteract/mythic-multiselect
-```
-
-### Usage
+### Examples of /mythic-multiselect
 
 Initialize the package by including the `notifications` package in your store and rendering the `<NotificationsRoot/>`:
+
+**Example:**
 
 ```javascript
 import {
@@ -146,7 +158,8 @@ store.dispatch(
 );
 ```
 
-### API
+### API for /mythic-multiselect
+[insert text here]
 
 ```typescript
 ```
@@ -154,19 +167,11 @@ store.dispatch(
 ## /mythic-notifications
 This package implements a notification system based on `blueprintjs`, using the `myths` framework.
 
-### Installation
-
-```
-$ yarn add @nteract/mythic-notifications
-```
-
-```
-$ npm install --save @nteract/mythic-notifications
-```
-
-### Usage
+### Examples of /mythic-notifications
 
 Initialize the package by including the `notifications` package in your store and rendering the `<NotificationsRoot/>`:
+
+**Example:**
 
 ```javascript
 import { notifications, NotificationRoot } from "@nteract/mythic-notifications";
@@ -195,7 +200,7 @@ store.dispatch(sendNotification.create({
 }));
 ```
 
-### API
+### API for /mythic-notifications
 
 ```typescript
 import { IconName } from "@blueprintjs/core";
@@ -217,19 +222,11 @@ export interface NotificationMessage {
 ## /mythic-windowing
 This package implements a windowing system based on `electron`, using the `myths` framework.
 
-### Installation
-
-```
-$ yarn add @nteract/mythic-windowing
-```
-
-```
-$ npm install --save @nteract/mythic-windowing
-```
-
-### Usage
+### Examples of /mythic-windowing
 
 Initialize the package by including the `windowing` package in your store:
+
+**Example:**
 
 ```javascript
 import { windowing, setWindowingBackend, electronBackend } from "@nteract/mythic-windowing";
@@ -263,9 +260,9 @@ electronReady$
   );
 ```
 
-### API
+### API for /mythic-windowing
 
-TBD
+[insert text here]
 
 ## /myths
 
@@ -278,17 +275,8 @@ Redux helps to maintain the application state. In Redux, actions and reducers pr
 
 In [Redux-Observable](https://redux-observable.js.org/), an epic is a function that takes in a stream of actions and returns a stream of actions.
 
-### Installation
-
-```
-$ yarn add myths
-```
-
-```
-$ npm install --save myths
-```
-
-### Usage
+### Examples of /myths
+[insert text here]
 
 #### MythicPackage
 
@@ -296,6 +284,8 @@ Create a `MythicPackage` with a name, a type for its private state, and the init
 
 The example below creates a `MythicPackage` named `"iCanAdd"` which uses the `number`
 type for its private state `sum` and an initial state of `sum` as `0`:
+
+**Example:**
 
 ```typescript
 export const iCanAdd = createMythicPackage("iCanAdd")<
@@ -315,6 +305,8 @@ Next, use the `MythicPackage` to create a `Myth` with a name, a type for its pay
 
 In example below, the `MythicPackage` named `iCanAdd` creates a `Myth` named `"addToSum"`.
 
+**Example:**
+
 ```typescript
 export const addToSum =
   iCanAdd.createMyth("addToSum")<number>({
@@ -329,6 +321,8 @@ A package can have any number of myths.
 
 To create an action based on a myth, use its `create` function and dispatch this action normally.
 
+**Example:**
+
 ```typescript
 store.dispatch(addToSum.create(8));
 ```
@@ -336,6 +330,8 @@ store.dispatch(addToSum.create(8));
 #### Store
 
 A set of mythic packages yields a store. This store has all the appropriate reducers and epics in place.
+
+**Example:**
 
 ```typescript
 type NonPrivateState = { foo: string };
@@ -350,6 +346,8 @@ export const store = configureStore({ foo: "bar" });
 ### Definition of epics
 
 Define epics using two different shorthand methods.
+
+**Example:**
 
 ```typescript
 export const addToSum =

@@ -1,25 +1,24 @@
 # Editors
 
 **Table of contents**
-- /editor
-- /monaco-editor
+- [/editor](#/editor)
+  - [Examples](#/Examples-of-/editor)
+- [/monaco-editor](#/monaco-editor)
+  - [Examples](#/Examples-of-/monaco-editor)
+  - [Documentation](#Documentation)
+    - [Editor](#Editor)
+    - [Completions](#Completions)
+    - [Formatting](#Formatting)
+    - [Performance tip](#Performance-tip)
 
 ## /editor
 This package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
 
-### Installation
-
-```
-$ yarn add @nteract/editor
-```
-
-```
-$ npm install --save @nteract/editor
-```
-
-### Usage
+### Examples of /editor
 
 The example below shows how to use this package to create a simple code editor component.
+
+**Example:**
 
 ```javascript
 import CodeMirrorEditor from "@nteract/editor";
@@ -53,19 +52,11 @@ import CodeMirrorEditor from "@nteract/editor";
 
 This package implements a React component with a Monaco-based code editor. To see this package in action,  view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
 
-### Installation
-
-```
-$ yarn add @nteract/monaco-editor
-```
-
-```
-$ npm install --save @nteract/monaco-editor
-```
-
-### Usage
+### Examples of /monaco-editor
 
 The example below shows how to use this package to render an editor for plain-text content.
+
+**Example:**
 
 ```javascript
 import MonacoEditor from "@nteract/monaco-editor";
@@ -121,7 +112,7 @@ The props below controll completion behavior.
 The following prop also enables code formatting.
 * `onRegisterDocumentFormattingEditProvider?: (languageId: string) => void` - Custom formatting provider implementation for a Monaco Editor supported language.
 
-#### Performance Tip
+#### Performance tip
 
 Enable completions in your app when you use this package on a [`Web worker`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) separate from the UI thread. This provides a performance boost and ensures that the app doesn't stall UI updates when the editor is waiting for Jupyter Kernel completions. 
 
