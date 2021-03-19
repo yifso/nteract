@@ -1,14 +1,11 @@
 # Jupyter Protocol and Specification
 
 **Table of contents**
-- [/commutable](#/commutable)
-  - [Notebook format](#/Notebook-format)
-  - [/commutable in-memory format](#/commutable-in-memory-format)
-  - [Examples](#Examples-of-/commutable)
-- [/messaging](#messaging)
-- [/rx-jupyter](/rx-jupyter)
+
+[TOC]   
 
 ## /commutable
+
 @nteract/commutable is a package for creating an in-memory immutable representation of a Jupyter notebook.
 
 This package follows the principles below. Tom MacWright's [outline for practical undo](http://www.macwright.org/2015/05/18/practical-undo.html) offers the fundamental ideas below.
@@ -140,6 +137,7 @@ This package contains type definitions and helper functions for interacting with
 The example below shows how to use the `createMessage` function in this package to create an [inspect_request](https://jupyter-client.readthedocs.io/en/stable/messaging.html#introspection) Jupyter message.
 
 **Example:**
+
 ```javascript
 import { createMessage } from "@nteract/messaging";
 
@@ -159,6 +157,7 @@ This package is a [ReactiveX](http://reactivex.io/) wrapper around the [Jupyter 
 The example below shows how to use this package to get the version of the Jupyter server API the endpoint is running.
 
 **Example:**
+
 ```javascript
 import jupyter from "rx-jupyter";
 import { of } from "rxjs";

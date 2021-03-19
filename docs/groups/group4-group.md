@@ -1,10 +1,11 @@
 # Group 4 (name tentative)
 
 **Table of contents**
-- [/host-cache](#/host-cache)
-- [/rx-binder](#/rx-binder)
+
+[TOC]  
 
 ## /host-cache
+
 This package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).
 
 ### Example
@@ -51,7 +52,8 @@ This package provides a set of functions for connecting to a remote instance pro
 See an example of this package in the source code for the [nteract play app](https://github.com/nteract/play).
 
 ### Example
-The following code sample [lorem ipsum]
+
+The following code sample [insert text here]
 
 **Example:**
 

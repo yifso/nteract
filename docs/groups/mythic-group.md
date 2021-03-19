@@ -1,28 +1,11 @@
 # Mythic
 
 **Table of contents**
-- [/mythic-configuration](#/mythic-configuration)
-  - [Examples](#Examples-of-/mythic-configuration)
-  - [API](#/API-for-/mythic-configuration)
-- [/mythic-multiselect](#/mythic-multiselect)
-  - [Examples](#/Examples-of-/mythic-multiselect)
-  - [API](#/API-for-/mythic-multiselect)
-- [/mythic-notifications](#/mythic-notifications)
-  - [Examples](#/Examples-of-/mythic-notifications)
-  - [API](#/API-for-/mythic-notifications)
-- [/mythic-windowing](#/mythic-windowing)
-  - [Examples](#/Examples-of-/mythic-windowing)
-  - [API](#/API-for-/mythic-windowing)
-- [/myths](#/myths)
-  - [Examples](#/Examples-of-/myths)
-    - [MythicPackage](#/MythicPackage)
-    - [Myth](#/Myth)
-    - [Action](#/Action)
-    - [Store](#/Store)
-  - [Definition of epics](#/Definition-of-epics)
-  - [Testing](#Testing)
+
+[TOC]  
 
 ## /mythic-configuration
+
 The /mythic-configuration package is for [insert text here]
 
 ### Examples of /mythic-configuration
@@ -30,6 +13,7 @@ The /mythic-configuration package is for [insert text here]
 Initialize the package by including the `configuration` package. Memory saves the configuration by default.
 
 **Example:**
+
 To use a config file, dispatch a `setConfigFile` action following the code below.
 
 ```javascript
@@ -102,6 +86,7 @@ createDeprecatedConfigOption({
 ```
 
 ### API for /mythic-configuration
+
 The API for this package is [insert text here]
 
 **Example:**
@@ -134,6 +119,7 @@ export type HasPrivateConfigurationState =
 ```
 
 ## /mythic-multiselect
+
 This package implements a simple method of keeping track of multiple selected cells using the `myths` framework.
 
 ### Examples of /mythic-multiselect
@@ -159,12 +145,14 @@ store.dispatch(
 ```
 
 ### API for /mythic-multiselect
+
 [insert text here]
 
 ```typescript
 ```
 
 ## /mythic-notifications
+
 This package implements a notification system based on `blueprintjs`, using the `myths` framework.
 
 ### Examples of /mythic-notifications
@@ -220,6 +208,7 @@ export interface NotificationMessage {
 ```
 
 ## /mythic-windowing
+
 This package implements a windowing system based on `electron`, using the `myths` framework.
 
 ### Examples of /mythic-windowing

@@ -1,10 +1,11 @@
 # Other (name tentative)
 
 **Table of contents**
-- [/connected-components](#/connected-components)
-- [/fixtures](#/fixtures)
+
+[TOC]  
 
 ## /connected-components
+
 This package contains React components for rendering navigation menus and modals in nteract applications. Find examples of the package in  the source code for the [nteract-on-Jupyter](https://github.com/nteract/nteract/tree/master/applications/jupyter-extension) application.
 
 ### Example

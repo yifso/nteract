@@ -1,23 +1,8 @@
 # Core
 
-**Table of contents**
-- [/actions](#/actions)
-  - [What are actions?](#What-are-actions?)
-  - [What do actions do?](#What-do-actions-do?)
-  - [Action creators](#Action-creators)
-  - [Support action API](#Support-action-API)
-  - [Examples](#Examples-of-/actions)
-- [/core](#/core)
-  - [Key principles](#Key-principles)
-- [/epics](#/epics)
-  - [Comm epics](#Comm-epics)
-  - [Contents epics](#Contents-epics)
-  - [Execution epics](#Execution-epics)
-  - [Kernel epics](#Kernel-epics)
-    - [Examples](#Examples-of-Kernel-epics)
-- [/reducers](#/reducers)
-- [/selectors](#/selectors)
-- [/types](#/types)
+**Table of contents**  
+
+[TOC]  
 
 ## /actions
 
@@ -32,6 +17,7 @@ Actions are plain JavaScript objects with a well-defined schema. They are part o
 In an nteract-based UI, every event maps to an action. Reducers and epics implement related functionalities after picking up these actions.  
 
 **Examples of actions:**
+
 - Adding a new cell to a notebook
 - Setting the Jupyter host the nteract-based application connects to
 
@@ -40,6 +26,7 @@ In an nteract-based UI, every event maps to an action. Reducers and epics implem
 Action creators are functions that take a specific set of parameters and return an action.  
 
 **Example:**
+
 The code below contains an ExecuteCell action with the following schema.
 
 ```javascript
@@ -79,6 +66,7 @@ All support actions for this package are in the [API docs for @nteract/actions](
 The `@nteract/actions` package expose a type interface for each action and a constant for each action type. See how these exported properties work in the example below.  
 
 **Example:**
+
  `Save`, `SaveFulfilled`, and `SaveFailed` are type interfaces for the action. `SAVE`, `SAVE_FULFILLED`, and `SAVE_FAILED` are constant type definitions.
 
 ```js
@@ -106,6 +94,7 @@ export default function myReducer(
 Use `@nteract/actions` in conjunction with the `react-redux` package to dispatch actions from React components.  
 
 **Example:**
+
 To add a button to your user interface that closes the notebook when clicked, follow the implementation below.
 
 ```js
@@ -138,6 +127,7 @@ export default connect(null, mapDispatchToProps)(CloseButton)
 [Epics](https://redux-observable.js.org/docs/basics/Epics.html) are functions that take streams of Redux actions as inputs and return streams of Redux actions as outputs. To listen to actions dispatched from nteract-based applications and dispatch your own events, use `@nteract/actions` in your custom epics.
 
 **Example:**
+
 The code below shows the `CloseNotebook` action and maps it to a custom action.
 
 ```js
@@ -178,6 +168,7 @@ import { selectors } from "@nteract/core"; // For selectors
 You can also import individually exported elements from `@nteract/core`.  
 
 **Example:**
+
 To use the `createContentRef` function from the `@nteract/types` package, use the code below to import it from the core package.
 
 ```js
@@ -304,6 +295,7 @@ This epic subscribes to messages coming in from a kernel when launched. If one o
 This epic responds to `stdin` kernel requests. This epic listens and processes `SEND_INPUT_REPLY` actions when a user responds to a `stdin` prompt in the UI.
 
 **Example:**
+
 The Python code below is an example of this activity in a Python kernel. For the `sendInputReplyEpic`, this epic processes user input to the kernel.
 
 ```python
@@ -311,12 +303,15 @@ message = input("Type a message:")
 ```
 
 ### Kernel epics
+
 These epics activate after launching kernel actions. This is helpful for managing actions such as launching, restarting, and shutting down kernels. These epics allow users to confirm kernels and connect to them for code.
 
 #### Examples of Kernel epics
+
 The following code samples show how this epic acts in response to kernel contexts.
 
 **Example:**
+
 The code below sets the execution state after launching a kernel.
 
 ```javascript
@@ -366,6 +361,7 @@ export const watchExecutionStateEpic = (
 ```
 
 **Example:**
+
 Below is a code example showing how to get information about a newly launched kernel.
 
 ```javascript
@@ -395,6 +391,7 @@ export const acquireKernelInfoEpic = (
 ```
 
 **Example:**
+
 The code below shows the kernel epic handling notebook content. This epic supports launching a kernel via the Jupyter server.
 
 ```javascript
@@ -451,6 +448,7 @@ export const launchKernelWhenNotebookSetEpic = (
 ```
 
 **Example:**
+
 This epic in the example below restarts a Jupyter kernel in a local scenario. In this case, a restart requires killing the existing kernel process and starting a new one.
 
 ```javascript
@@ -558,9 +556,11 @@ export const restartKernelEpic = (
 ```
 
 ## /reducers
+
 The package contains a set of Redux reducers for nteract applications. They describe the change in the application's state when the store receives actions.
 
 ### Example
+
 The code below shows how to use the functions to set the `isSaving` property on a notebook state.
 
 ```javascript
@@ -577,12 +577,15 @@ export default () => {
 ```
 
 ## /selectors
+
 This package provides a set of seletors and functions for you to extract important information from the state of your nteract application. View the AppState type to see a full set of data stored in the application state. For reference, this package extracts that information.
 
 ### Example
+
 The code below is an example of using the package.
 
 **Example:**
+
 ```javascript
 import { modalType, currentTheme } from "@nteract/selectors";
 
@@ -606,6 +609,7 @@ console.log(`Rendering ${currentModal} modal using ${theme} theme.`);
 ```
 
 ## /types
+
 This package contains a collection of type definitions throughout nteract. Use these types when interacting with kernelspecs, notebooks, and hosts. View the complete list on the [Package types](https://packages.nteract.io/modules/types.html) page of the nteract website.
 
 

@@ -1,14 +1,8 @@
 # Components
 
 **Table of contents**
-- [/stateful-components](#/stateful-components)
-  - [Using /stateful-components](#Using-/stateful-components)
-  - [Extending notebook UI](#Extending-notebook-UI)
-  - [Styling UIs](#Styling-UIs)
-  - [Examples](#Examples-of-/stateful-components)
-- [/notebook-app-component](#/notebook-app-component)
-- [/presentational-components](#/presentation-components)
-- [/styles](#/styles)
+
+[TOC]  
 
 ## /stateful-components
 
@@ -21,6 +15,7 @@ If you're building a notebook-based application using the nteract core SDK, you 
 These connected components are designed to work with the Redux state model that the nteract core SDK uses. In short, it expects that certain properties are stored in particular locations within the Redux subtree.
 
 **Example:**
+
 To use the connected components, import each of the components from the `@nteract/stateful-components` package as needed.
 
 In the example below, the connected `CodeCell` component expects to receive a `contentRef` and an `id`. The `conntetRef` is a unique ID to refer to the model of a particular notebook in the nteract core Redux state. The `id` is the cell ID that references the cell as it is stored in the nteract core Redux state.
@@ -46,6 +41,7 @@ This suite of React components provides several points of extensibility for the 
 nteract ships with the CodeMirror and Monaco editors in its desktop and Jupyter extensions. However, alternative editors are available for use in your own notebook based UI. 
 
 **Example:**
+
 To add your own editor to the nteract UI, create a React component that encompasses the editor.
 
 ```js
@@ -84,6 +80,7 @@ The `Editor` stateful component takes a `cellId` and a `contentRef`, extracts th
 The @nteract/stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. 
 
 **Example:**
+
 To add your own set of cells, override the children of the `Cells` component and render your own custom `Cell` components for each cell_type. To override the default `MarkdownCell`, see the following code.
 
 ```js
@@ -121,6 +118,7 @@ This pattern is similar to creating configurable editors. Configurable cells req
 The "Extending Cells" pattern provides a strategy for overriding the entire default implementation for cells exported by nteract.
 
 **Example:**
+
 To override particular components only, the @nteract/stateful-components package supports name slot-based component overrides. 
 
 To override just the `Prompt` component within a CodeCell, define your own `Prompt` component. The code below is an example of this process.
@@ -174,6 +172,7 @@ Style stateful components using either CSS-in-JS modules like styled-components 
 The code examples below show two methods of styling.
 
 **Example:**
+
 To style individual components, import `styled-components` as needed.
 
 ```js
@@ -215,6 +214,7 @@ This section showcases how the `/stateful-components` package builds different n
 #### How to render a notebook without customizations
 
 **Example:**
+
 To import the standard layout of the notebook, use the `Notebook` default export from the `@nteract/stateful-components` package.
 
 ```js
@@ -236,6 +236,7 @@ class MyApp extends React.Component {
 #### How to override default editors in the Notebook component
 
 **Example:**
+
 Create a React component and override the `editor` child property in each cell component.
 
 ```js
@@ -279,6 +280,7 @@ class MyNotebook extends React.Component {
 #### How to disable editing of markdown cells in a notebook application
 
 **Example:**
+
 Create a React component and override the `editor` child property in the `MarkdownCell` component.
 
 ```js
@@ -312,6 +314,7 @@ class MyNotebook extends React.Component {
 #### How to override the Output display in code cells
 
 **Example:**
+
 Create a React component and override the `outputs` property in the `CodeCell` component.
 
 ```js
@@ -339,6 +342,7 @@ class MyNotebook extends React.Component {
 ```
 
 ## /notebook-app-component
+
 The notebook-app-component is a standardaized implementation of a Jupyter notebook UI. In it is a single component. That component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
 
 ### Example

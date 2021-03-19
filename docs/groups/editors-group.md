@@ -1,17 +1,11 @@
 # Editors
 
 **Table of contents**
-- [/editor](#/editor)
-  - [Examples](#/Examples-of-/editor)
-- [/monaco-editor](#/monaco-editor)
-  - [Examples](#/Examples-of-/monaco-editor)
-  - [Documentation](#Documentation)
-    - [Editor](#Editor)
-    - [Completions](#Completions)
-    - [Formatting](#Formatting)
-    - [Performance tip](#Performance-tip)
+
+[TOC]  
 
 ## /editor
+
 This package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
 
 ### Examples of /editor
@@ -77,6 +71,7 @@ export default () => {
 ### Documentation
 
 #### Editor
+
 The `monaco-editor` package provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component. It also fetches code tab-completion items when running a notebook connected to a Jupyter kernel. To work well with the semantics of a notebook, the package requires the following props as presented in the `IMonacoProps` interface:
 
 * `id` - A unique identifier for the editor instance. In the notebook context, since every cell is tied to a single instance of the editor, `id` refers to the unique ID of the cell.
@@ -95,6 +90,7 @@ Important callbacks:
 * `onDidCreateEditor: (editor: monaco.editor.IStandaloneCodeEditor) => void;` - Created editor.
 
 #### Completions
+
 The package also adds the capability to retrieve code-completion items from a connected Jupyter kernel. Completions are language-specific token recommendations when the user attempts to type or enumerate the attributes of a class/object.  A `dot` operator and the `tab` completion key are common. 
 
 nteract has a default completion provider that works with the Jupyter kernel. nteract also supports custom completion providers that users can register with their own language service.
@@ -102,6 +98,7 @@ nteract has a default completion provider that works with the Jupyter kernel. nt
 ![jupyter completions](https://i.stack.imgur.com/rcieN.png)
 
 **Example::**
+
 The props below controll completion behavior.
 
 * `enableCompletion` - Boolean flag to enable/disable the behavior entirely.
@@ -109,6 +106,7 @@ The props below controll completion behavior.
 * `onRegisterCompletionProvider?: (languageId: string) => void` - Custom completion provider implementation for a Monaco Editor supported language.
 
 #### Formatting
+
 The following prop also enables code formatting.
 * `onRegisterDocumentFormattingEditProvider?: (languageId: string) => void` - Custom formatting provider implementation for a Monaco Editor supported language.
 
@@ -119,6 +117,7 @@ Enable completions in your app when you use this package on a [`Web worker`](htt
 nteract uses the [Monaco Editor Web pack plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) to register and use the Monaco `editor` worker. Check out the Monaco Editor [docs](https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-esm.md) for more information on configuring the package and setting up other web workers.
 
 **Example:**
+
 To improving window resizing performance, see the example below.
 
 Recalculating the width of the container of this component happens on resizing the browser window. The code below shows css overrides for better performance:
