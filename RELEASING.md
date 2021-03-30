@@ -50,7 +50,7 @@ You'll also need to publish the monorepo documentation. To do this, you'll need 
 
 1. Ensure that `mkdocs` is installed by running `pip install mkdocs`.
 2. Ensure that the [mkdocs-monorepo-plugin](https://spotify.github.io/mkdocs-monorepo-plugin/) is installed by running `pip install mkdocs-monorepo-plugin`.
-3. Finally, ensure that you have the `gitbook` theme for `mkdocs` installed. This is the theme that we use to style mkdocs. You can install it by running `pip install mkdocs-gitbook`.
+3. Finally, ensure that you have the `material` theme for `mkdocs` installed. This is the theme that we use to style mkdocs. You can install it by running `pip install mkdocs-material`.
 4. Run `mkdocs build` to generate the documentation site to a new `site` directory.
 5. Run `now site/ --prod --name docs` to deploy the documentation directory.
 
