@@ -27,4 +27,5 @@ markdown_extensions:
 plugins:
   - monorepo
 
-theme: material
+theme:
+  - name: material
