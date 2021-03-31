@@ -28,4 +28,4 @@ plugins:
   - monorepo
 
 theme:
-  - name: material
+  name: material
