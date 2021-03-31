@@ -16,16 +16,18 @@ nav:
       - "Editors": "./groups/editors-group.md"
       - "Jupyter": "./groups/jupyter-group.md"
       - "group4": "./groups/group4-group.md"
-      - "other": "./groups/other-group.md"
 
 markdown_extensions:
   - toc:
       permalink: True
       anchorlink: True
       toc_depth: "2-3"
+  - pymdownx.highlight
+  - pymdownx.superfences
 
 plugins:
   - monorepo
 
 theme:
   name: material
+  
