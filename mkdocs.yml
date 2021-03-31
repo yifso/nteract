@@ -27,5 +27,4 @@ markdown_extensions:
 plugins:
   - monorepo
 
-theme:
-  name: gitbook
+theme: material
