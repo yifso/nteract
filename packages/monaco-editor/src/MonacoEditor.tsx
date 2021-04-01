@@ -147,7 +147,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       const expectedLines = this.props.numberOfLines || model.getLineCount();
       // The find & replace menu takes up 2 lines, that is why 2 line is set as the minimum number of lines
       const finalizedLines = Math.max(expectedLines, 1) + 1;
-      const lineHeight = this.editor.getConfiguration().lineHeight;
+      const lineHeight = this.editor.getOption(monaco.editor.EditorOption.lineHeight);
       const contentHeight = finalizedLines * lineHeight;
 
       if (this.contentHeight !== contentHeight) {
@@ -187,14 +187,14 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
 
       // Create Monaco editor backed by a Monaco model.
       this.editor = monaco.editor.create(this.editorContainerRef.current, {
-        autoIndent: true,
+        autoIndent: "advanced",
         // Allow editor pop up widgets such as context menus, signature help, hover tips to be able to be
         // displayed outside of the editor. Without this, the pop up widgets can be clipped.
         fixedOverflowWidgets: true,
         find: {
           addExtraSpaceOnTop: false, // pops the editor out of alignment if turned on
           seedSearchStringFromSelection: true, // default is true
-          autoFindInSelection: false // default is false
+          autoFindInSelection: "never" // default is false
         },
         language: this.props.language,
         lineNumbers: this.props.lineNumbers ? "on" : "off",
@@ -491,7 +491,7 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   private toggleEditorOptions(isActive: boolean) {
     if (this.editor) {
       this.editor.updateOptions({
-        matchBrackets: isActive,
+        matchBrackets: isActive ? "always" : "never",
         occurrencesHighlight: isActive,
         renderIndentGuides: isActive
       });
