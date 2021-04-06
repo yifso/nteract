@@ -1,4 +1,4 @@
-# Group 4 (name tentative)
+# Binder
 
 **Table of contents**
 

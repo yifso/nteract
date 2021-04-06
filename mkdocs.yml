@@ -15,7 +15,13 @@ nav:
       - "Mythic": "./groups/mythic-group.md"
       - "Editors": "./groups/editors-group.md"
       - "Jupyter": "./groups/jupyter-group.md"
-      - "group4": "./groups/group4-group.md"
+      - "Binder": "./groups/binder-group.md"
+  - Project Resources:
+      - "Data Explorer": "https://data-explorer.nteract.io"
+      - "Semiotic": "https://semiotic.nteract.io"
+      - "papermill": "https://papermill.readthedocs.io/en/latest/#"
+      - "testbook": "https://testbook.readthedocs.io/en/latest/"
+      - "Scrapbook": "https://scrapbook.readthedocs.io/en/latest/"
 
 markdown_extensions:
   - toc:
