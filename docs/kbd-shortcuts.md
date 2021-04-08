@@ -49,52 +49,53 @@ The syntax is the following:
 ```
 No restart is required &mdash; nteract should pick up the change and display the new keyboard shortcuts in the menu when the config file is saved.
 
-**Supported commands:**
-* About
-* BringAllToFront
-* ChangeCellToCode
-* ChangeCellToText
-* ClearAll
-* ClearRecentDocuments
-* Close
-* Copy
-* CopyCell
-* Cut
-* CutCell
-* DeleteCell
-* DevTools
-* ExportPDF
-* Fullscreen
-* Hide
-* HideOthers
-* InstallShellCommand
-* InterruptKernel
-* KillKernel
-* Launch
-* LaunchNewNotebook
-* Minimize
-* NewCodeCellAbove
-* NewCodeCellBelow
-* NewKernel
-* NewNotebook
-* NewRawCellBelow
-* NewTextCellBelow
-* Open
-* Paste
-* PasteCell
-* PublishGist
-* Quit
-* Reload
-* RestartAndClearAll
-* RestartAndRunAll
-* RestartKernel
-* RunAll
-* RunAllBelow
-* Save
-* SaveAs
-* SelectAll
-* Unhide
-* UnhideAll
-* ZoomIn
-* ZoomOut
-* ZoomReset
+| **Supported commands:**| 
+| --- |
+| About |
+| BringAllToFront |
+| ChangeCellToCode |
+| ChangeCellToText |
+| ClearAll |
+| ClearRecentDocuments |
+| Close |
+| Copy |
+| CopyCell |
+| Cut |
+| CutCell |
+| DeleteCell |
+| DevTools |
+| ExportPDF |
+| Fullscreen |
+| Hide |
+| HideOthers |
+| InstallShellCommand |
+| InterruptKernel |
+| KillKernel |
+| Launch |
+| LaunchNewNotebook |
+| Minimize |
+| NewCodeCellAbove |
+| NewCodeCellBelow |
+| NewKernel |
+| NewNotebook |
+| NewRawCellBelow |
+| NewTextCellBelow |
+| Open |
+| Paste |
+| PasteCell |
+| PublishGist |
+| Quit |
+| Reload |
+| RestartAndClearAll |
+| RestartAndRunAll |
+| RestartKernel |
+| RunAll |
+| RunAllBelow |
+| Save |
+| SaveAs |
+| SelectAll |
+| Unhide |
+| UnhideAll |
+| ZoomIn |
+| ZoomOut |
+| ZoomReset |
