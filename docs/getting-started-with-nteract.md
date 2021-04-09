@@ -98,7 +98,7 @@ With nteract, render media such as images and maps directly within the notebook.
 
 The steps below demonstrate installing a dependency.
 
-`Navigate to File > Open Example Notebook > python > Gallery of Plotly Plots.`
+**Navigate to `File > Open Example Notebook > python > Gallery of Plotly Plots.`**
 
 ![A screenshot of a Plotly visualization rendered within nteract](https://cldup.com/KUFuj4P5_L.png)
 
@@ -108,7 +108,7 @@ The nteract Data Explorer is a built-in tool for visualizing pandas DataFrames w
 
 View an example of the Data Explorer process in nteract. 
 
-`Navigate to File > Open Example Notebook > python > Try the Data Explorer.`
+**Navigate to `File > Open Example Notebook > python > Try the Data Explorer.`**
 
 > NOTE: By default, the Data Explorer renders the data in a rich, paginated table.
 
@@ -126,4 +126,4 @@ nteract creates opportunities for you to create all varieties of exciting and co
 
 Find more example notebooks and features in nteract in the menubar.
 
-`Selecting File > Open Example Notebook`
+**Select `File > Open Example Notebook`**

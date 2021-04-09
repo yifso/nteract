@@ -2,21 +2,25 @@
 <img src="https://cloud.githubusercontent.com/assets/836375/15271096/98e4c102-19fe-11e6-999a-a74ffe6e2000.gif" alt="nteract animated logo"/>
 </p>
 
+# Introduction
+
 nteract is an ecosystem of React components, JavaScript packages, and applications built on top of the Jupyter specification that enhances interactive computing and data science workflows.
 
-### What can I do with nteract?
+## What can I do with nteract?
 
-1. Use [papermill](https://github.com/nteract/papermill) to parameterize and execute notebooks.
-2. Use our React components to build your own interactive notebook application.
-3. Use [commuter](https://github.com/nteract/commuter) to host notebooks.
+- Parameterize and execute notebooks with [papermill](https://github.com/nteract/papermill).
+- Build your own interactive notebook application our React components.
+- Host notebooks with [commuter](https://github.com/nteract/commuter).
 
-### Project Documentation
-- [Hydrogen](https://nteract.gitbooks.io/hydrogen/content/)
-- [papermill](https://papermill.readthedocs.io/)
-- [scrapbook](https://scrapbook.readthedocs.io/)
-- [testbook](https://testbook.readthedocs.io/)
+### Additional Documentation
+| Project | Description |
+| --- | --- |
+| [Hydrogen](https://nteract.gitbooks.io/hydrogen/content/) | Interactive coding environment. |
+| [papermill](https://papermill.readthedocs.io/) | Tool for parameterizing and executing Jupyter Notebooks. |
+| [scrapbook](https://scrapbook.readthedocs.io/) | Scraping library. |
+| [testbook](https://testbook.readthedocs.io/) | Unit testing framework for testing code in Jupyter Notebooks. |
 
 ### Helpful Links
-1. [nteract GitHub monorepo](https://github.com/nteract/nteract)
-2. [nteract Slack community](https://slack.nteract.io/)
-3. [nteract Blog](https://blog.nteract.io)
+- [nteract GitHub monorepo](https://github.com/nteract/nteract)
+- [nteract Slack community](https://slack.nteract.io/)
+- [nteract Blog](https://blog.nteract.io)

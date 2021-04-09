@@ -17,9 +17,9 @@ $ python3 -m pip install pandas requests matplotlib seaborn
 
 After installation, open the example notebook in the menu bar.
 
-`File > Open Example Notebook > python > Glean the Download Statistics for nteract Desktop`
+**`File > Open Example Notebook > python > Glean the Download Statistics for nteract Desktop`**
 
-Navigate to `Cell > Run All` to execute all the cells in this notebook.
+**Navigate to `Cell > Run All`** to execute all the cells in this notebook.
 
 This notebook uses the GitHub API to fetch download statistics for OS-specific versions of the nteract desktop. It renders the number of downloads per release. If you Scroll to the last cell in the notebook to see the following example.
 
@@ -41,7 +41,7 @@ $ python3 -m pip install plotly
 
 Navigate to the selection below in the menubar.
 
-`File > Open Example Notebook > python > Gallery of Plotly Plots`
+**`File > Open Example Notebook > python > Gallery of Plotly Plots`**
 
 This notebook defines a `plotize` function that takes the data and layout of a visualization and renders it inline using the Plotly transform.
 
@@ -57,7 +57,7 @@ The Data Explorer example below uses one of the example notebooks.
 
 Navigate to the following selection in the menubar.
 
-`File > Open Example Notebook > python > Try the Data Explorer`
+**`File > Open Example Notebook > python > Try the Data Explorer`**
 
 The last cell of the notebook shows a data frame rendered within the Data Explorer. Several visualization formats for the data are on the right. From top to bottom, view the data in tabular format, a bar plot, a scatter plot, an area plot, a network diagram, a hierarchy diagram, and a line plot.
 
