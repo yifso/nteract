@@ -21,11 +21,11 @@ After installation, open the example notebook in the menu bar.
 
 **Navigate to `Cell > Run All`** to execute all the cells in this notebook.
 
-This notebook uses the GitHub API to fetch download statistics for OS-specific versions of the nteract desktop. It renders the number of downloads per release. If you Scroll to the last cell in the notebook to see the following example.
+This notebook uses the GitHub API to fetch download statistics for OS-specific versions of the nteract desktop. It renders the number of downloads per release. Scroll to the last cell in the notebook to see the following example.
 
 ![A Matptlotlib visualization within an nteract notebook](https://cldup.com/M-dPmjYXgL.png)
 
-The plot renders as a static image. Save the image to locally or export this notebook as a PDF with this image inline.
+The plot renders as a static image. Save the image locally or export this notebook as a PDF with this image inline.
 
 ### Visualizing with Plotly
 
@@ -67,7 +67,7 @@ Each visualization type gives you the options to modify the category, filters, c
 
 #### Which visualization option should I use?
 
-nteract has many available visualization options. The table below help with selecting one that works best with your project.
+nteract has many available visualization options. Use the table below to help you with selecting an option that best fits your project needs.
 
 | Visualization option | Project goals |
 | ---- | ---- |

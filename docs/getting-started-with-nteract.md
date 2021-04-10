@@ -4,13 +4,13 @@ This user guide prepares you for setting up the basics of the nteract notebook a
 
 ## Setting up the nteract desktop application
 
-Download the desktop application on your machine for the fastest way to get started with nteract. Find the installer for your operating system on the [nteract homepage](https://nteract.io/desktop). Once downloaded and installed , launch nteract from the install directory. 
+Download the desktop application on your machine for the fastest way to get started with nteract. Find the installer for your operating system on the [nteract homepage](https://nteract.io/desktop). Once downloaded and installed, launch nteract from the install directory. 
 
 > NOTE: This guide uses the nteract desktop application as the reference point.
 
 ### Setting up using Snap
 
-[Snapcraft](https://snapcraft.io) is compatible with all the major Linux distros. Learn more about Snaps from [the Getting started documentation](https://snapcraft.io/docs/getting-started), and download it for your distro from [the install page](https://snapcraft.io/docs/installing-snapd).
+[Snapcraft](https://snapcraft.io) is compatible with all the major Linux distros. Learn more about Snaps from the [Getting started documentation](https://snapcraft.io/docs/getting-started), and download it for your distro from the [install page](https://snapcraft.io/docs/installing-snapd).
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/nteract)
 

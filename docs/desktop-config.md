@@ -21,9 +21,9 @@ The nteract desktop application supports the configuration options in the table 
 
 | Config Option      | Example                                  | Description                                                                                   |
 | ------------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
-| "theme"            | `"theme": "dark"`                        | Sets the default theme of the nteract desktop app, can be `light` or `dark`. Default is light |
-| "autoSaveInterval" | `"autoSaveInterval": "1000"`             | How often to save the notebook document in milliseconds. Set to 0 to disable autoSave.        |
-| "codeMirror"       | `"codeMirror": { "lineNumbers" : true }` | A set of options for configuring the CodeMirror editor in the nteract desktop app             |
+| `"theme" `           | `"theme": "dark"`                        | Sets the default theme of the nteract desktop app, either `"light"` (default) or `"dark"` |
+| `"autoSaveInterval"` | `"autoSaveInterval": 1000`             | Frequency for saving notebook document in milliseconds, set to `0` to disable autoSave        |
+| `"codeMirror"`       | `"codeMirror": { "lineNumbers" : true }` | Set of options for configuring the CodeMirror editor in the nteract desktop app             |
 
 ## Example configurations
 
