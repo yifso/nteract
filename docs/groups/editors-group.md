@@ -1,5 +1,7 @@
 # Editors
 
+The **Editors** group of SDK packages is a set of supported editors in nteract applications. These render within cell components and provide additional functionality such as *autocomplete* as well as *advanced syntax highlighting*.
+
 **Table of contents**
 
 [TOC]  

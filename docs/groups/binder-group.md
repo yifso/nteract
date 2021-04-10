@@ -1,5 +1,7 @@
 # Binder
 
+The **Binder** group contains the SDK packages for working with [Binder](https://mybinder.org) specifications. This group supports users and Binder APIs providing features such as connecting to notebooks, notebook servers, as well as notebook instances.
+
 **Table of contents**
 
 [TOC]  
