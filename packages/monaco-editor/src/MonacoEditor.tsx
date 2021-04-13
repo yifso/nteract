@@ -381,9 +381,12 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
         }, 0);
     }
     
+    const monacoUpdateOptions: monaco.editor.IEditorOptions & monaco.editor.IGlobalEditorOptions = { readOnly: this.props.readOnly };
     if (theme) {
-      monaco.editor.setTheme(theme);
+      monacoUpdateOptions.theme = theme;
     }
+
+    this.editor.updateOptions(monacoUpdateOptions);
 
     // In the multi-tabs scenario, when the notebook is hidden by setting "display:none",
     // Any state update propagated here would cause a UI re-layout, monaco-editor will then recalculate
