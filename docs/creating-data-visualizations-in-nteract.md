@@ -7,12 +7,12 @@ Data visualizations are a great way to communicate large amounts of information 
 Matplotlib is one of the most popular plotting tools in the open source ecosystem. A variety of academic and industry contexts use the Python library and it is a great starting point for anyone looking to dive into data visualization.
 
 The nteract example notebook below demonstrates getting started with Matplotlib.
-Install the required dependencies for this example notebook before continuing. Python setup, Installing the dependencies varies depending on your Python setup.
+Install the required dependencies for this example notebook before continuing. For [Python](https://www.python.org/downloads/) setup, install the dependencies according to your use case.
 
-The example below of the necessary dependency installations refer to a global Python3 installation.
+The example below of the necessary dependency installations refer to a global Python installation.
 
 ```
-$ python3 -m pip install pandas requests matplotlib seaborn
+$ python -m pip install pandas requests matplotlib seaborn
 ```
 
 After installation, open the example notebook in the menu bar.

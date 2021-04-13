@@ -57,7 +57,6 @@ nteract recognizes changes and displays new keyboard shortcuts in the menu after
 
 | **Supported commands:**| 
 | --- |
-| About |
 | BringAllToFront |
 | ChangeCellToCode |
 | ChangeCellToText |
