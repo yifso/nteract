@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nteract/myths": "^0.2.9",
-    "file-url": "^3.0.0"
+    "file-url": "^4.0.0"
   },
   "peerDependencies": {
     "electron": "7.3.2"
