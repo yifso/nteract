@@ -1,5 +1,5 @@
 import { ConfigurationOption, defineConfigOption } from "@nteract/mythic-configuration";
-import { setConfigFile } from "@nteract/mythic-configuration/lib/backends/filesystem";
+import { setConfigFile } from "@nteract/mythic-configuration/src/backends/filesystem";
 import { closeWindow, electronBackend, setWindowingBackend, showWindow } from "@nteract/mythic-windowing";
 import { KernelspecInfo } from "@nteract/types";
 import { app, BrowserWindow, dialog, Event, ipcMain as ipc, IpcMainEvent, Menu, nativeTheme, Tray } from "electron";
