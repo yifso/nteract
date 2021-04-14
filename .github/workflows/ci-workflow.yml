@@ -30,22 +30,3 @@ jobs:
       - name: Run tests
         run: yarn test
   
-  validate_dev_setup:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x]
-    
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: yarn
-      - name: Run destkop build
-        run: yarn build:desktop
-      - name: Run `yarn start`
-        run: yarn start
