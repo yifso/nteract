@@ -35,25 +35,6 @@ nteract/nteract repo; otherwise step 4 will fail.**
 
 The release process for production packages is the same as the release process for dev packages. However, use `npx lerna publish` in Step #4 to publish the packages to the release channel.
 
-### Publishing Updated Documentation
-
-After the release, you'll need to publish the latest version of the documentation sites. To publish the documentation site for the npm packages you will need to do the following.
-
-1. Ensure that you are added to the nteract team on now. You will need permissions in order to deploy the changes.
-2. Navigate to the root of the nteract repo directory.
-3. Run the `yarn package:docs:deploy` command. This will deploy a new instance of the site.
-4. Run the `yarn package:docs:promote` command. This will map the `packages.nteract.io` domain tothe newly deployed instance.
-
-To publish the documentation site for the components, you will need to do the same steps as above. However, use the `yarn docs:deploy` and `yarn docs:promote` command respectively.
-
-You'll also need to publish the monorepo documentation. To do this, you'll need to have the appropriate [mkdocs](https://www.mkdocs.org/) dependencies.
-
-1. Ensure that `mkdocs` is installed by running `pip install mkdocs`.
-2. Ensure that the [mkdocs-monorepo-plugin](https://spotify.github.io/mkdocs-monorepo-plugin/) is installed by running `pip install mkdocs-monorepo-plugin`.
-3. Finally, ensure that you have the `material` theme for `mkdocs` installed. This is the theme that we use to style mkdocs. You can install it by running `pip install mkdocs-material`.
-4. Run `mkdocs build` to generate the documentation site to a new `site` directory.
-5. Run `now site/ --prod --name docs` to deploy the documentation directory.
-
 ## Release Process for Snap
 
 Snap for nteract Desktop App is created and published using following steps: 
