@@ -19,16 +19,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install dependencies
-      run: yarn install --force
+      run: yarn install
+
     - name: Lint packages
       run: yarn run test:lint
-    - name: Build all packages
-      run: yarn run build:all:ci
-    - name: Run tests
-      run: yarn test
+
+  #  - name: Build all packages
+  #    run: yarn run build:all:ci
+
+  #  - name: Run tests
+  #    run: yarn test
   
