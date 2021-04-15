@@ -1,6 +1,6 @@
 # nteract Desktop App Keyboard Shortcuts
 
-The nteract desktop app provides the following keyboard shortcuts for common actions:
+The nteract desktop app provides keyboard shortcuts for common actions. See the table below for reference.
 
 | Action                           | Shortcut                                        |
 | -------------------------------- | ----------------------------------------------- |
@@ -36,9 +36,12 @@ The nteract desktop app provides the following keyboard shortcuts for common act
 
 ## Customizing Keyboard Shortcuts
 
-Some keyboard shortcuts are customizable by changing the nteract config file. The config file is located in the Jupyter directory (e.g. `~/.jupyter`) and called `nteract.json`.
+Customize some keyboard shortcuts by changing the nteract config file. The config file `nteract.json` is in the Jupyter directory (e.g. `~/.jupyter`).
 
-The syntax is the following:
+**Example:**
+
+The code sample below shows the syntax.
+
 ```json
 {
   "keyboardShortcuts": {
@@ -47,54 +50,57 @@ The syntax is the following:
   }
 }
 ```
-No restart is required &mdash; nteract should pick up the change and display the new keyboard shortcuts in the menu when the config file is saved.
 
-**Supported commands:**
-* About
-* BringAllToFront
-* ChangeCellToCode
-* ChangeCellToText
-* ClearAll
-* ClearRecentDocuments
-* Close
-* Copy
-* CopyCell
-* Cut
-* CutCell
-* DeleteCell
-* DevTools
-* ExportPDF
-* Fullscreen
-* Hide
-* HideOthers
-* InstallShellCommand
-* InterruptKernel
-* KillKernel
-* Launch
-* LaunchNewNotebook
-* Minimize
-* NewCodeCellAbove
-* NewCodeCellBelow
-* NewKernel
-* NewNotebook
-* NewRawCellBelow
-* NewTextCellBelow
-* Open
-* Paste
-* PasteCell
-* PublishGist
-* Quit
-* Reload
-* RestartAndClearAll
-* RestartAndRunAll
-* RestartKernel
-* RunAll
-* RunAllBelow
-* Save
-* SaveAs
-* SelectAll
-* Unhide
-* UnhideAll
-* ZoomIn
-* ZoomOut
-* ZoomReset
+nteract recognizes changes and displays new keyboard shortcuts in the menu after saving the config file. 
+
+> NOTE: No restart is required for updates.
+
+| **Supported commands:**| 
+| --- |
+| BringAllToFront |
+| ChangeCellToCode |
+| ChangeCellToText |
+| ClearAll |
+| ClearRecentDocuments |
+| Close |
+| Copy |
+| CopyCell |
+| Cut |
+| CutCell |
+| DeleteCell |
+| DevTools |
+| ExportPDF |
+| Fullscreen |
+| Hide |
+| HideOthers |
+| InstallShellCommand |
+| InterruptKernel |
+| KillKernel |
+| Launch |
+| LaunchNewNotebook |
+| Minimize |
+| NewCodeCellAbove |
+| NewCodeCellBelow |
+| NewKernel |
+| NewNotebook |
+| NewRawCellBelow |
+| NewTextCellBelow |
+| Open |
+| Paste |
+| PasteCell |
+| PublishGist |
+| Quit |
+| Reload |
+| RestartAndClearAll |
+| RestartAndRunAll |
+| RestartKernel |
+| RunAll |
+| RunAllBelow |
+| Save |
+| SaveAs |
+| SelectAll |
+| Unhide |
+| UnhideAll |
+| ZoomIn |
+| ZoomOut |
+| ZoomReset |

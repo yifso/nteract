@@ -1,6 +1,6 @@
 # Configuring the nteract desktop app
 
-The nteract desktop app can be configured using an JSON-based `nteract.json` file. The `nteract.json` file should be stored in the Jupyter config directory. To find the location of the Jupyter config directory on your system, run the `jupyter --paths` command.
+The nteract desktop app cconfigurations use a JSON-based `nteract.json` file. Place the `nteract.json` file in the Jupyter config directory. To find the location of the Jupyter config directory on your system, run the `jupyter --paths` command.
 
 ```
 $ jupyter --paths
@@ -9,7 +9,7 @@ $ jupyter --paths
     /etc/jupyter
 ```
 
-Create the JSON file like so:
+Create the JSON file with the code below.
 
 ```
 $ touch /Users/me/.jupyter/nteract.json
@@ -17,17 +17,17 @@ $ touch /Users/me/.jupyter/nteract.json
 
 ## Configurable options
 
-The nteract desktop application supports the following configuration options.
+The nteract desktop application supports the configuration options in the table below.
 
 | Config Option      | Example                                  | Description                                                                                   |
 | ------------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
-| "theme"            | `"theme": "dark"`                        | Sets the default theme of the nteract desktop app, can be `light` or `dark`. Default is light |
-| "autoSaveInterval" | `"autoSaveInterval": "1000"`             | How often to save the notebook document in milliseconds. Set to 0 to disable autoSave.        |
-| "codeMirror"       | `"codeMirror": { "lineNumbers" : true }` | A set of options for configuring the CodeMirror editor in the nteract desktop app             |
+| `"theme" `           | `"theme": "dark"`                        | Sets the default theme of the nteract desktop app, either `"light"` (default) or `"dark"` |
+| `"autoSaveInterval"` | `"autoSaveInterval": 1000`             | Frequency for saving notebook document in milliseconds, set to `0` to disable autoSave        |
+| `"codeMirror"`       | `"codeMirror": { "lineNumbers" : true }` | Set of options for configuring the CodeMirror editor in the nteract desktop app             |
 
 ## Example configurations
 
-This is an example of an `nteract.json` file that sets the default theme to the `dark` theme and disables auto-save.
+The code below displays an `nteract.json` file that sets the default theme to the `dark` theme and disables auto-save.
 
 ```
 {
@@ -36,7 +36,7 @@ This is an example of an `nteract.json` file that sets the default theme to the 
 }
 ```
 
-Here's another example of a configuration that customizes the CodeMirror editor in the nteract desktop app.
+This configuration example customizes the CodeMirror editor in the nteract desktop app.
 
 ```
 {
