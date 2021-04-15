@@ -18,17 +18,17 @@ jobs:
         node-version: [12.x, 14.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: yarn
-      - name: Lint packages
-        run: yarn run test:lint
-      - name: Build all packages
-        run: yarn run build:all:ci
-      - name: Run tests
-        run: yarn test
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: yarn
+    - name: Lint packages
+      run: yarn run test:lint
+    - name: Build all packages
+      run: yarn run build:all:ci
+    - name: Run tests
+      run: yarn test
   
