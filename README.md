@@ -6,7 +6,6 @@
 <a href="https://codecov.io/github/nteract/nteract?branch=master"><img src="https://codecov.io/github/nteract/nteract/coverage.svg?branch=master" alt="code coverage"/></a>
 <a href="https://lerna.js.org/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="maintained with lerna"/></a>
 <a href="https://github.com/nteract/nteract/actions/workflows/ci-workflow.yml"><img src="https://github.com/nteract/nteract/actions/workflows/ci-workflow.yml/badge.svg" alt="github action ci"></a>
-<a href="https://circleci.com/gh/nteract/nteract/tree/master"><img src="https://circleci.com/gh/nteract/nteract/tree/master.svg?style=shield" alt="circleci status"/></a>
 <a href="https://docs.nteract.io"><img src="https://img.shields.io/badge/docs-nteract-blue.svg" alt="nteract docs"/></a>
 </p>
 
