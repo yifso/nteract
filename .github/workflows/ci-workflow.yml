@@ -29,8 +29,8 @@ jobs:
     - name: Lint packages
       run: yarn run test:lint
 
-  #  - name: Build all packages
-  #    run: yarn run build:all:ci
+    - name: Build all packages
+      run: yarn run build:all:ci
 
     - name: Run tests
       run: yarn test
