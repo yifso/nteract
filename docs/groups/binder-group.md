@@ -6,6 +6,8 @@ The **Binder** group contains the SDK packages for working with [Binder](https:/
 
 [TOC]  
 
+---
+
 ## /host-cache
 
 This package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).

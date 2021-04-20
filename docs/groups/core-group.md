@@ -6,6 +6,8 @@ The **Core** group represents the set of SDK packages for describing and modifyi
 
 [TOC]  
 
+---
+
 ## /actions
 
 The `@nteract/actions` package is part of the nteract core SDK. This package most often works in conjuction with the `@nteract/selectors` and `@nteract/epics` packages in the core SDK.

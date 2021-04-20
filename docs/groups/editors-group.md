@@ -6,6 +6,8 @@ The **Editors** group of SDK packages is a set of supported editors in nteract a
 
 [TOC]  
 
+---
+
 ## /editor
 
 This package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
@@ -86,6 +88,7 @@ nteract provides the minimum required props to instantiate the component and als
 `options` - Specify a list of supported [EditorOptions](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html) as key-value pairs when instantiating the component.
 
 Important callbacks:
+
 * `onChange: (value: string, event?: any) => void` - Contents of the editor are changed.
 * `onFocusChange: (focus: boolean) => void` - The Editor Component loses or gains focus.
 * `onCursorPositionChange: (selection: monaco.ISelection | null) => void` - Cursor position changes.

@@ -6,6 +6,8 @@ The **Jupyter** group contains the SDK packages for working with Jupyter specifi
 
 [TOC]   
 
+---
+
 ## /commutable
 
 @nteract/commutable is a package for creating an in-memory immutable representation of a Jupyter notebook.

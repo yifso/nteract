@@ -6,6 +6,8 @@ The **Components** group is the set of SDK packages for displaying and styling n
 
 [TOC]  
 
+---
+
 ## /stateful-components
 
 The @nteract/stateful-components package exports a set of React components that are connected to the Redux and an unconnected set of components.

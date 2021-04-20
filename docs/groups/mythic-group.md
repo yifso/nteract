@@ -6,6 +6,8 @@ The Mythic group contains an abstraction for writing individual pieces of busine
 
 [TOC]  
 
+---
+
 ## /mythic-configuration
 
 The /mythic-configuration package is for [insert text here]
