@@ -134,7 +134,7 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(monaco-editor|@jupyter-widgets)/)"
+      "node_modules/(?!(monaco-editor|@jupyter-widgets|file-url)/)"
     ]
   },
   "lint-staged": {
