@@ -1,6 +1,6 @@
 # Mythic
 
-The Mythic group contains an abstraction for writing individual pieces of business logic into packages. These packages are Myths and contain definitions for Redux actions, reducersm and epics.
+The Mythic group contains an abstraction for writing individual pieces of business logic into packages. These packages are Myths and contain definitions for Redux actions, reducers, and epics.
 
 **Table of contents**
 
