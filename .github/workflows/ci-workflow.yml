@@ -25,6 +25,8 @@ jobs:
 
     - name: Install dependencies
       run: yarn
+      env:
+        USE_HARD_LINKS: false
 
     - name: Lint packages
       run: yarn run test:lint
