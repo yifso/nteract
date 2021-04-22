@@ -42,7 +42,7 @@ monaco.editor.defineTheme(DarkThemeName, customMonacoDarkTheme);
 /**
  * The custom high contrast light theme with customized background
  */
-export const HCLightThemeName = "nteract-hclight";
+export const HCLightThemeName = "nteract-hc-light";
 
 /**
  * Default monaco theme for light high contrast mode
