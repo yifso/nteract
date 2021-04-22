@@ -10,7 +10,7 @@ The Mythic group contains an abstraction for writing individual pieces of busine
 
 ## /mythic-configuration
 
-The /mythic-configuration package is for [insert text here]
+The /mythic-configuration package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 ### Examples of /mythic-configuration
 
@@ -91,7 +91,7 @@ createDeprecatedConfigOption({
 
 ### API for /mythic-configuration
 
-The API for this package is [insert text here]
+The API for this package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 **Example:**
 
@@ -150,10 +150,7 @@ store.dispatch(
 
 ### API for /mythic-multiselect
 
-[insert text here]
-
-```typescript
-```
+This content is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 ## /mythic-notifications
 
@@ -255,7 +252,7 @@ electronReady$
 
 ### API for /mythic-windowing
 
-[insert text here]
+This content is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 ## /myths
 
@@ -269,7 +266,8 @@ Redux helps to maintain the application state. In Redux, actions and reducers pr
 In [Redux-Observable](https://redux-observable.js.org/), an epic is a function that takes in a stream of actions and returns a stream of actions.
 
 ### Examples of /myths
-[insert text here]
+
+This content is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 #### MythicPackage
 

@@ -57,7 +57,7 @@ See an example of this package in the source code for the [nteract play app](htt
 
 ### Example
 
-The following code sample [insert text here]
+This content is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 **Example:**
 
