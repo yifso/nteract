@@ -9,30 +9,41 @@
 <a href="https://docs.nteract.io"><img src="https://img.shields.io/badge/docs-nteract-blue.svg" alt="nteract docs"/></a>
 </p>
 
-nteract is an open-source organization committed to creating fantastic interactive computing experiences that allow people to collaborate with ease.
+nteract is an open-source organization committed to creating fantastic
+interactive computing experiences that allow people to collaborate with ease.
 
-We build SDKs, applications, and libraries that help you and your team make the most of interactive (particularly Jupyter) notebooks and REPLs.
+We build SDKs, applications, and libraries that help you and your team make
+the most of interactive (particularly Jupyter) notebooks and REPLs.
 
-To learn more about the nteract open source organization and the rest of our projects, please visit [our website](https://nteract.io/).
+To learn more about the nteract open source organization and the rest of our
+projects, please visit [our website](https://nteract.io/).
 
 ## What's in this repo?
 
-This repo is a monorepo. It contains the code for the nteract core SDK and nteract's desktop and web applications. It also contains the documentation for the SDK and the applications. Here's a quick guide to the contents of the monorepo.
+This repo is a monorepo. It contains the code for the nteract core SDK and
+nteract's desktop and web applications. It also contains the documentation for
+the SDK and the applications. Here's a quick guide to the contents of the 
+monorepo.
 
-| Folder                         | Description                                                                                                                                                                                          |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| applications/desktop           | This folder contains the source code for the nteract desktop application. The desktop application is a cross-platform app built using [Electron](https://electronjs.org/).                           |
-| applications/jupyter-extension | This folder contains the source code the nteract Jupyter extension. This extension can be installed alongside Jupyter classic and JupyterLab in your Jupyter deployments or personal Jupyter server. |
-| changelogs                     | This folder contains the changelogs for each release of the nteract core SDK and applications.                                                                                                       |
-| packages                       | This folder contains the JavaScript packages that are part of the nteract core SDK.                                                                                                                  |
+| Folder                         | Description |
+| ------------------------------ | ----------- |
+| applications/desktop           | Source code for the nteract desktop application. The desktop application is a cross-platform app built using [Electron](https://electronjs.org/). |
+| applications/jupyter-extension | Source code the nteract Jupyter extension. This extension can be installed alongside Jupyter classic and JupyterLab in your Jupyter deployments or personal Jupyter server. |
+| packages                       | JavaScript packages that are part of the nteract core SDK. |
+| changelogs                     | Changelogs for each release of the nteract core SDK and applications. |
 
 ## How do I contribute to this repo?
 
-If you are interested in contributing to nteract, please read the [contribution guidelines](./CONTRIBUTING.md) for information on how to set up your nteract repo for development, how to write tests and validate changes, how to update documentation, and how to submit your code changes for review on GitHub.
+If you are interested in contributing to nteract, please read the
+[contribution guidelines](./CONTRIBUTING.md) for information on how to set up
+your nteract repo for development, how to write tests and validate changes,
+how to update documentation, and how to submit your code changes for review on
+GitHub.
 
 ## How do I use the nteract core SDK?
 
-If you are a developer who wants to build an nteract-based notebook application, check out the following documentation resources for more info.
+If you are a developer who wants to build an nteract-based notebook application,
+check out the following documentation resources for more info.
 
 | Link                                                    | What's in it?                                                                                                                                                           |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -40,17 +51,26 @@ If you are a developer who wants to build an nteract-based notebook application,
 | [packages.nteract.io](https://packages.nteract.io/)     | This page contains the API documentation for packages in our core SDK. Bookmark this and use it as a reference when building your nteract-based UI.                     |
 | [components.nteract.io](https://components.nteract.io/) | This page contains the documentation for our suite of composable React components. It contains code samples that you can reference when building your nteract-based UI. |
 
-Our documentation is living. We are always making changes and adding more content. If you have feedback about the documentation, please open an issue in this repo. If you are interested in submitting a change to our documentation page, please review the [contribution guidelines](./CONTRIBUTING.md) and submit a pull request.
+Our documentation is living. We are always making changes and adding more
+content. If you have feedback about the documentation, please open an issue
+in this repo. If you are interested in submitting a change to our documentation
+page, please review the [contribution guidelines](./CONTRIBUTING.md) and
+submit a pull request.
 
 ## How do I use the nteract desktop application?
 
-To get started with the nteract desktop app, head over to the [nteract homepage](https://nteract.io/) to download the application for your operating system.
+To get started with the nteract desktop app, head over to the
+[nteract homepage](https://nteract.io/) to download the application for your
+operating system.
 
-Once you've download the app, head over to our [documentation page](https://docs.nteract.io/) for tutorials and guides on using the app for your data analysis and science workflows.
+Once you've download the app, head over to our
+[documentation page](https://docs.nteract.io/) for tutorials and guides on
+using the app for your data analysis and science workflows.
 
 ## Supporting nteract
 
-nteract is a non-profit open-source organization fiscally sponsored by [NumFOCUS](https://numfocus.org/). **If you are interested in supporting development on nteract, please consider [making a recurring donation](https://numfocus.salsalabs.org/donate-to-nteract/index.html).**
+nteract is a non-profit open-source organization fiscally sponsored by
+[NumFOCUS](https://numfocus.org/). **If you are interested in supporting development on nteract, please consider [making a recurring donation](https://numfocus.salsalabs.org/donate-to-nteract/index.html).**
 
 Development on nteract is also supported by the following organizations.
 
