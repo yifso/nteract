@@ -1,8 +1,12 @@
 # Jupyter Protocol and Specification
 
+The **Jupyter** group contains the SDK packages for working with Jupyter specifications. These include notebook formatting, messaging specifications, as well as server APIs. The packages in this group relate to core concepts within Jupyter.
+
 **Table of contents**
 
 [TOC]   
+
+---
 
 ## /commutable
 

@@ -1,8 +1,12 @@
 # Editors
 
+The **Editors** group of SDK packages is a set of supported editors in nteract applications. These render within cell components and provide additional functionality such as *autocomplete* as well as *advanced syntax highlighting*.
+
 **Table of contents**
 
 [TOC]  
+
+---
 
 ## /editor
 
@@ -84,6 +88,7 @@ nteract provides the minimum required props to instantiate the component and als
 `options` - Specify a list of supported [EditorOptions](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditoroptions.html) as key-value pairs when instantiating the component.
 
 Important callbacks:
+
 * `onChange: (value: string, event?: any) => void` - Contents of the editor are changed.
 * `onFocusChange: (focus: boolean) => void` - The Editor Component loses or gains focus.
 * `onCursorPositionChange: (selection: monaco.ISelection | null) => void` - Cursor position changes.

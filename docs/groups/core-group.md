@@ -1,8 +1,12 @@
 # Core
 
+The **Core** group represents the set of SDK packages for describing and modifying data in nteract. These basics consist of defining notebook data elements.
+
 **Table of contents**  
 
 [TOC]  
+
+---
 
 ## /actions
 

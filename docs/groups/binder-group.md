@@ -1,8 +1,12 @@
 # Binder
 
+The **Binder** group contains the SDK packages for working with [Binder](https://mybinder.org) specifications. This group allows developers to leverage Binder APIs to provide features such as connecting to notebooks, notebook servers, as well as notebook instances.
+
 **Table of contents**
 
 [TOC]  
+
+---
 
 ## /host-cache
 
@@ -53,7 +57,7 @@ See an example of this package in the source code for the [nteract play app](htt
 
 ### Example
 
-The following code sample [insert text here]
+This content is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 **Example:**
 

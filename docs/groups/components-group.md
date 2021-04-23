@@ -1,8 +1,12 @@
 # Components
 
+The **Components** group is the set of SDK packages for displaying and styling notebooks. This group provides the tools for manipulating visual notebook elements.
+
 **Table of contents**
 
 [TOC]  
+
+---
 
 ## /stateful-components
 
@@ -399,14 +403,13 @@ export default () => {
 
 The /styles package is a collection of basic CSS styles. These are helpful for bootstrapping the UI of the page. The following table contains each of the .CSS files within the package.
 
-| .CSS file | Description |
-| --- | --- |
-| `app.css` |   |
-| `cell-menu.css` |   |
-| `command-palette.css` |   |
-| `editor-overrides.css` |   |
-| `global-variables.css` |   |
-| `sidebar.css` |   |
-| `toggle-switch.css` |   |
-| `toolbar.css` |   |
-
+| .CSS file |
+| --- |
+| `app.css` |
+| `cell-menu.css` |
+| `command-palette.css` |
+| `editor-overrides.css` |
+| `global-variables.css` |
+| `sidebar.css` |
+| `toggle-switch.css` |
+| `toolbar.css` |
