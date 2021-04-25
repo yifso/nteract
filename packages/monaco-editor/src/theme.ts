@@ -3,7 +3,7 @@ import * as monaco from "monaco-editor";
 /**
  * The default light theme with customized background
  */
-export const LightThemeName = "vs-light";
+export const LightThemeName = "nteract-light";
 
 /**
  * Default monaco theme for light theme
@@ -24,7 +24,7 @@ monaco.editor.defineTheme(LightThemeName, customMonacoLightTheme);
 /**
  * The default dark theme with customized background
  */
-export const DarkThemeName = "vs-dark";
+export const DarkThemeName = "nteract-dark";
 
 /**
  * Default monaco theme for dark theme
@@ -42,7 +42,7 @@ monaco.editor.defineTheme(DarkThemeName, customMonacoDarkTheme);
 /**
  * The custom high contrast light theme with customized background
  */
-export const HCLightThemeName = "hc-light";
+export const HCLightThemeName = "nteract-hc-light";
 
 /**
  * Default monaco theme for light high contrast mode
