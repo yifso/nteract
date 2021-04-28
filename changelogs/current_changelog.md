@@ -25,6 +25,7 @@ Provide a bulleted list of new features or improvements and a reference to the P
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
 - Fixed mythic-configuration, allowing it to be imported in a browser setting ([Issue #5445](https://github.com/nteract/nteract/issues/5445))
+- Upgraded react-syntax-highlighter v^12.0.0 -> v^13.0.0 ([PR#5523](https://github.com/nteract/nteract/pull/5523))
 
 ## Core SDK Packages
 
