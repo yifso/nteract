@@ -10,13 +10,13 @@ The **Components** group is the set of SDK packages for displaying and styling n
 
 ## /stateful-components
 
-The @nteract/stateful-components package exports a set of React components that are connected to the Redux and an unconnected set of components.
+The /stateful-components package exports a set of React components that are connected to the Redux and an unconnected set of components.
 
 ### Using /stateful-components
 
-If you're building a notebook-based application using the nteract core SDK, you can use the connected components to render different components within a notebook, such as Cells and Outputs using the data that is stored in the Redux store.
+Use the connected components to render different components within a notebook while building a notebook-based application using the nteract Core SDK. These components include Cells and Outputs using the data stored in the Redux store.
 
-These connected components are designed to work with the Redux state model that the nteract core SDK uses. In short, it expects that certain properties are stored in particular locations within the Redux subtree.
+These connected components work with the Redux state model that the nteract Core SDK uses. Specific locations within the Redux subtree store these expected properties.
 
 **Example:**
 
@@ -34,7 +34,7 @@ class MyApp extends React.Component {
 }
 ```
 
-All the connected components expect either a `contentRef` or a `id`. These two pieces of information resolve the correct data from the Redux state and pass it to the component.
+All the connected components expect either a `contentRef` or an `id`. These two pieces of information resolve the correct data from the Redux state and pass it to the component.
 
 ### Extending notebook UI
 
@@ -42,7 +42,7 @@ This suite of React components provides several points of extensibility for the 
 
 #### Extending Editors
 
-nteract ships with the CodeMirror and Monaco editors in its desktop app and Jupyter extensions. However, alternative editors are available for use in your own notebook based UI. 
+nteract ships with the CodeMirror and Monaco editors in its desktop app and Jupyter extensions. However, alternative editors are available for use in your own notebook-based UI. 
 
 **Example:**
 
@@ -81,7 +81,7 @@ The `Editor` stateful component takes a `cellId` and a `contentRef`, extracts th
 
 #### Extending Cells
 
-The @nteract/stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. 
+The /stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. 
 
 **Example:**
 
@@ -123,7 +123,7 @@ The "Extending Cells" pattern provides a strategy for overriding the entire defa
 
 **Example:**
 
-To override particular components only, the @nteract/stateful-components package supports name slot-based component overrides. 
+To override particular components only, the /stateful-components package supports name slot-based component overrides. 
 
 To override just the `Prompt` component within a CodeCell, define your own `Prompt` component. The code below is an example of this process.
 
@@ -165,7 +165,7 @@ The following table of parent and child components show currently enabled overri
 
 ### Styling UIs
 
-> NOTE: Styling support for @nteract/stateful-component is in-progress.
+> NOTE: Styling support for /stateful-component is in-progress.
 
 In nteract, stateful components are unstyled by default. This gives you the ability to configure your UI experience to your own preferences.
 
@@ -202,7 +202,7 @@ const StyledNotebook = styled(Notebook)`
 
 #### Styling with stylesheets
 
-To style with stylesheets, use element and combinator-based CSS selectors to desire styled elements to your configurations.
+To style with stylesheets, use element and combinator-based CSS selectors to your configurations of styled elements.
 
 The following table outlines each stateful component, CSS classname, and other conditional applications of CSS classes.
 
@@ -347,7 +347,7 @@ class MyNotebook extends React.Component {
 
 ## /notebook-app-component
 
-The notebook-app-component standardizes the implementation of a Jupyter notebook UI. This single-purpose component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
+The /notebook-app-component standardizes the implementation of a Jupyter notebook UI. This single-purpose component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
 
 ### Example
 
@@ -355,7 +355,7 @@ This complex component requires you to setup the Redux store that the other nter
 
 **Example:**
 
-```jsx
+```js
 import NotebookApp from "@nteract/notebook-app-component";
 
 <NotebookApp
