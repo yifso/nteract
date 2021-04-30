@@ -4,12 +4,12 @@
 
 # Introduction
 
-nteract is an ecosystem of React components, JavaScript packages, and applications built on top of the Jupyter specification that enhances interactive computing and data science workflows.
+nteract is an ecosystem of React components, JavaScript packages, and applications built on top of the Jupyter specification. Together they enhance interactive computing and data science workflows.
 
 ## What can I do with nteract?
 
 - Parameterize and execute notebooks with [papermill](https://github.com/nteract/papermill).
-- Build your own interactive notebook application our React components.
+- Build your own interactive notebook application with our React components.
 - Host notebooks with [commuter](https://github.com/nteract/commuter).
 
 ### Additional Documentation
