@@ -67,7 +67,7 @@ All support actions for this package are in the [API docs for @nteract/actions](
 
 #### Using /actions in reducers
 
-The `@nteract/actions` package expose a type interface for each action and a constant for each action type. See how these exported properties work in the example below.  
+The `@nteract/actions` package exposes a type interface for each action and a constant for each action type. See how these exported properties work in the example below.  
 
 **Example:**
 
@@ -151,7 +151,7 @@ const mapCloseNotebook = action$ =>
 
 ## /core
 
-@nteract/core on its own encapsulates the five other nteract packages.  
+On its own, /core encapsulates the five other nteract packages.  
 
 - `@nteract/actions`
 - `@nteract/epics`
@@ -183,18 +183,13 @@ import { createContentRef } from "@nteract/core";
 
 The `@nteract/core` package is heavily dependent Redux and RxJS. These two technologies power nteract. Each module exported from the core package works with the other by design.  
 
-1. The client-side state model is one of the key principles behind nteract. This client-side model makes it easy to manage the state of the nteract client and to synchronize it with a back-end system. Learn more about the state in the `@nteract/types` package documentation.
-2. nteract clients dispatch Redux actions. The `actions` module exports function creators and type definitions for these actions.
-  - **Example:**
-    To focus a particular cell in a notebook, dispatch a `FocusCell` action.
-3. Reducers are functions that make immutable changes to the state. Reducers take a base state and an action as inputs. Depending on the action, the functions copy and modify the base state in a particular way.
-  - **Example:**
-    A `FocusCell` action updates the `cellFocused` property for a particular content model in the state.
-4. Epics bring RxJS and Redux together. They allow developers to implement functions that listen to actions and dispatch async requests or execute side-effects.
-  - **Example:**
-    Epics exported from the `epics` module handle cell execution targeting a Jupyter kernel and content fetching from a Jupyter server.
-5. The state model has useful properties such as indicating the currently focused cell or the filepath of a content. The `selectors` module exports a set of selectors. These are functions that take an input state and return a particular state property.
-
+| Property | Description | Additional Information |
+| --- | --- | --- |
+| Client-side state model | Supports managing the state of the nteract client, synchronizes with a back-end system | See `@nteract/types` package documentation |
+| Redux actions from nteract clients | `actions` module exports function creators and type definitions | **Example:** To focus a particular cell in a notebook, dispatch a `FocusCell` action |
+| Reducers | Make immutable changes to state, take base state and action as inputs, copy and modify base state depending on action | **Example:** A `FocusCell` action updates the `cellFocused` property for a particular content model in the state |
+| Epics | Conjunction of RxJS and Redux, allow developers to implement functions that listen to actions, dispatch async requests, execute side-effects | **Example:** Epics exported from the `epics` module handle cell execution targeting a Jupyter kernel and content fetching from a Jupyter server |
+| State-model properties | Indicates currently focused cell or filepath of content | `selectors` module exports a set of selectors, take an input state and return a particular state property |
 
 ## /epics
 Epics are functions that take a stream of Redux actions as inputs and return a stream of Redux actions as outputs. Learn about epics in the [documentation for redux-observable](https://redux-observable.js.org/docs/basics/Epics.html).
@@ -215,7 +210,7 @@ To do this, IPython adds a notion of a `Comm`. This exists on both Front-end and
 
 Comm messages are one-way communications for updating comm state,
 synchronizing widget state, or requesting actions of a comm's counterpart.
-In requesting actions, it works as a kernel-side request to front-end or front-end request to kernel-side.
+In requesting actions, comm messages work as a kernel-side request to front-end or front-end request to kernel-side.
 
 #### commListenEpic
 
