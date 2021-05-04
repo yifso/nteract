@@ -66,9 +66,11 @@ const codeMirrorConfig = createConfigCollection({
   key: "codeMirror",
 });
 ```
-Now `codeMirrorConfig()` will give you e.g. with above option `{tabSize: 4}`, with default values properly handled. 
 
-You can also get all options:
+The  `codeMirrorConfig()` provides an above option `{tabSize: 4}`, with proper default values. 
+
+All options are available with the code below.
+
 ```javascript
 import { allConfigOptions } from "@nteract/mythic-configuration";
 
@@ -261,7 +263,7 @@ The `myths` framework allows for integrating sets of closely related actions, re
 Myths build on top of the [Redux](https://react-redux.js.org/) and
 [RxJS](https://redux.js.org/) libraries.
 
-Redux helps to maintain the application state. In Redux, actions and reducers provide predictable state management. The state changesd only when dispatching an action to a reducer.
+Redux helps to maintain the application state. In Redux, actions and reducers provide predictable state management. The state changes only when dispatching an action to a reducer.
 
 In [Redux-Observable](https://redux-observable.js.org/), an epic is a function that takes in a stream of actions and returns a stream of actions.
 
@@ -366,7 +368,7 @@ export const addToSum =
   });
 ```
 
-The first method uses `thenDispatch: []` to define actions. which should be dispatched when actions of the defined type are dispatched. The second method uses `andAlso: []` to generate actions based on a custom predicate.
+The first method uses `thenDispatch: []` to define actions. These dispatch at the same time as defined type actions. The second method uses `andAlso: []` to generate actions based on a custom predicate.
 
 Defining the type means the type is not available for reference yet. The type passes as the third argument to the dispatch function.
  
