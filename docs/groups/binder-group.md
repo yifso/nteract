@@ -10,7 +10,7 @@ The **Binder** group contains the SDK packages for working with [Binder](https:/
 
 ## /host-cache
 
-This package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).
+The `@nteract/host-cache` package contains a provider component for you to connect to a Binder instance and access its context in all child components. Examples of this package are in the source for the [nteract play application](https://github.com/nteract/play).
 
 ### Example
 
@@ -51,7 +51,7 @@ export default () => {
 
 ## /rx-binder
 
-This package provides a set of functions for connecting to a remote instance provided by [Binder](https://mybinder.org/). This package allows you to connect to a remote compute instance from your nteract application to execute code. 
+The `@nteract/rx-binder` package provides a set of functions for connecting to a remote instance provided by [Binder](https://mybinder.org/). This package allows you to connect to a remote compute instance from your nteract application to execute code. 
 
 See an example of this package in the source code for the [nteract play app](https://github.com/nteract/play).
 

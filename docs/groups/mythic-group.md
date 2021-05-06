@@ -10,7 +10,7 @@ The Mythic group contains an abstraction for writing individual pieces of busine
 
 ## /mythic-configuration
 
-The /mythic-configuration package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
+The `@nteract/mythic-configuration` package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 ### Examples of /mythic-configuration
 
@@ -93,7 +93,7 @@ createDeprecatedConfigOption({
 
 ### API for /mythic-configuration
 
-The API for this package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
+The API for the `@nteract/mythic-configuration` package is still in development. For more information, reach out to the community on [GitHub](https://github.com/nteract).
 
 **Example:**
 
@@ -126,7 +126,7 @@ export type HasPrivateConfigurationState =
 
 ## /mythic-multiselect
 
-This package implements a simple method of keeping track of multiple selected cells using the `myths` framework.
+The `@nteract/mythic-multiselect` package implements a simple method of keeping track of multiple selected cells using the `myths` framework.
 
 ### Examples of /mythic-multiselect
 
@@ -156,7 +156,7 @@ This content is still in development. For more information, reach out to the com
 
 ## /mythic-notifications
 
-This package implements a notification system based on `blueprintjs`, using the `myths` framework.
+The `@nteract/mythic-notifications` package implements a notification system based on `blueprintjs`, using the `myths` framework.
 
 ### Examples of /mythic-notifications
 
@@ -212,7 +212,7 @@ export interface NotificationMessage {
 
 ## /mythic-windowing
 
-This package implements a windowing system based on `electron`, using the `myths` framework.
+The `@nteract/mythic-windowing` package implements a windowing system based on `electron`, using the `myths` framework.
 
 ### Examples of /mythic-windowing
 

@@ -10,7 +10,7 @@ The **Components** group is the set of SDK packages for displaying and styling n
 
 ## /stateful-components
 
-The /stateful-components package exports a set of React components that are connected to the Redux and an unconnected set of components.
+The `@nteract/stateful-components` package exports a set of React components that are connected to the Redux and an unconnected set of components.
 
 ### Using /stateful-components
 
@@ -81,7 +81,7 @@ The `Editor` stateful component takes a `cellId` and a `contentRef`, extracts th
 
 #### Extending Cells
 
-The /stateful-components package ships with a default set of implementations for different types of cells: markdown, code, and raw. 
+The package ships with a default set of implementations for different types of cells: Markdown, code, and raw. 
 
 **Example:**
 
@@ -347,7 +347,7 @@ class MyNotebook extends React.Component {
 
 ## /notebook-app-component
 
-The /notebook-app-component standardizes the implementation of a Jupyter notebook UI. This single-purpose component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
+The `@nteract/notebook-app-component` package standardizes the implementation of a Jupyter notebook UI. This single-purpose component renders a notebook UI with code cells, Markdown cells, cell prompts, and code cell outputs. This UI implementation helps to streamline apps. This sample implementation also helps developers extend their work.
 
 ### Example
 
@@ -367,7 +367,7 @@ import NotebookApp from "@nteract/notebook-app-component";
 
 ## /presentational-components
 
-This package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
+The `@nteract/presentational-components` package contains React components for rendering inputs, outputs, cells, and other key UI elements within nteract applications.
 
 ### Example
 
@@ -401,7 +401,7 @@ export default () => {
 
 ## /styles
 
-The /styles package is a collection of basic CSS styles. These are helpful for bootstrapping the UI of the page. The following table contains each of the .CSS files within the package.
+The `@nteract/styles` package is a collection of basic CSS styles. These are helpful for bootstrapping the UI of the page. The following table contains each of the .CSS files within the package.
 
 | .CSS file |
 | --- |

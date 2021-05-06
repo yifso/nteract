@@ -10,7 +10,7 @@ The **Editors** group of SDK packages is a set of supported editors in nteract a
 
 ## /editor
 
-This package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
+Th `@nteract/editor` package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
 
 ### Examples of /editor
 
@@ -48,7 +48,7 @@ import CodeMirrorEditor from "@nteract/editor";
 
 ## /monaco-editor
 
-This package implements a React component with a Monaco-based code editor. To see this package in action, view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
+The `@nteract/monaco-editor` package implements a React component with a Monaco-based code editor. To see this package in action, view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
 
 ### Examples of /monaco-editor
 
@@ -76,7 +76,7 @@ export default () => {
 
 #### Editor
 
-The `monaco-editor` package provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component. It also fetches code tab-completion items when running a notebook connected to a Jupyter kernel. To coordinate with notebook semantics, the package requires the following props in the `IMonacoProps` interface:
+The `@nteract/monaco-editor` package provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component. It also fetches code tab-completion items when running a notebook connected to a Jupyter kernel. To coordinate with notebook semantics, the package requires the following props in the `IMonacoProps` interface:
 
 * `id` - A unique identifier for the editor instance. In the notebook context, since every cell is tied to a single instance of the editor, `id` refers to the unique ID of the cell.
 * `contentRef` - A unique identifier for the editor's host application. In the notebook context, `contentRef` provides a reference to the container element for the main notebook app component.

@@ -181,7 +181,7 @@ import { createContentRef } from "@nteract/core";
 
 ### Key principles
 
-The `@nteract/core` package is heavily dependent Redux and RxJS. These two technologies power nteract. Each module exported from the core package works with the other by design.  
+The `@nteract/core` package is depends on Redux and RxJS to power nteract. Each module exported from the core package works with the other by design.  
 
 | Property | Description | Additional Information |
 | --- | --- | --- |
@@ -556,7 +556,7 @@ export const restartKernelEpic = (
 
 ## /reducers
 
-The package contains a set of Redux reducers for nteract applications. They describe the change in the application's state when the store receives actions.
+The `@nteract/reducers` package contains a set of Redux reducers for nteract applications. They describe the change in the application's state when the store receives actions.
 
 ### Example
 
@@ -577,7 +577,7 @@ export default () => {
 
 ## /selectors
 
-This package provides a set of seletors and functions for you to extract important information from the state of your nteract application. View the AppState type to see a full set of data stored in the application state. For reference, this package extracts that information.
+The `@nteract/selectors` package provides a set of seletors and functions for you to extract important information from the state of your nteract application. View the AppState type to see a full set of data stored in the application state. For reference, this package extracts that information.
 
 ### Example
 
@@ -609,6 +609,6 @@ console.log(`Rendering ${currentModal} modal using ${theme} theme.`);
 
 ## /types
 
-This package contains a collection of type definitions throughout nteract. Use these types when interacting with kernelspecs, notebooks, and hosts. View the complete list on the [Package types](https://packages.nteract.io/modules/types.html) page of the nteract website.
+The `@nteract/types` package contains a collection of type definitions throughout nteract. Use these types when interacting with kernelspecs, notebooks, and hosts. View the complete list on the [Package types](https://packages.nteract.io/modules/types.html) page of the nteract website.
 
 
