@@ -10,20 +10,20 @@ The **Jupyter** group contains the SDK packages for working with Jupyter specifi
 
 ## /commutable
 
-@nteract/commutable is a package for creating an in-memory immutable representation of a Jupyter notebook.
+The `@nteract/commutable` package is for creating an in-memory immutable representation of a Jupyter notebook.
 
 This package follows the principles below. Tom MacWright's [outline for practical undo](http://www.macwright.org/2015/05/18/practical-undo.html) offers the fundamental ideas below.
 
 - A notebook document is immutable. The notebook document's representation is never mutated in-place.
 - Operations form the changes to a notebook document. They take a previous version and return a new version of the notebook without modifying the old version.
-- A list of states composes the history. The past is on one end and the present is on the other. The index backs up into 'undo states'.
+- A list of states composes the history. The past is on one end and the present is on the other. The index backs up into "undo states."
 - Modifying a notebook document discards any future states.
 
-@nteract/commutable builds on top of the [ImmutableJS](https://immutable-js.github.io/immutable-js/) library.
+The package builds on top of the [ImmutableJS](https://immutable-js.github.io/immutable-js/) library.
 
 ### Notebook format
 
-Jupyter notebooks serialize into files with ipynb extensions. These files are JSON-based and follow a schema. The definition of the schema is in the [nbformat specification](https://nbformat.readthedocs.io/en/latest/).
+Jupyter notebooks serialize into files with `.ipynb` extensions. These files are JSON-based and follow a schema. The definition of the schema is in the [nbformat specification](https://nbformat.readthedocs.io/en/latest/).
 
 The top-level properties in the notebook have the following schema.
 
@@ -65,7 +65,7 @@ For examples of serialized Jupyter notebooks, view the [raw JSON for an example 
 
 ### /commutable in-memory format
 
-The /commutable package converts the serialized representation into an immutable in-memory representation. The structure of the in-memory representation is different as the design is for easier in-memory format use when developing interactive notebook UIs. The interface for a notebooks is in the example below.
+The `@nteract/commutable` package converts the serialized representation into an immutable in-memory representation. The structure of the in-memory representation is different as the design is for easier in-memory format use when developing interactive notebook UIs. The interface for a notebooks is in the example below.
 
 **Example:**
 
@@ -134,7 +134,7 @@ const codeCell = makeCodeCell({
 
 ## /messaging
 
-This package contains type definitions and helper functions for interacting with the [Jupyter Messaging Protocol](https://jupyter-client.readthedocs.io/en/stable/messaging.html). These functions create different types of request and response messages.
+The `@nteract/messaging` package contains type definitions and helper functions for interacting with the [Jupyter Messaging Protocol](https://jupyter-client.readthedocs.io/en/stable/messaging.html). These functions create different types of request and response messages.
 
 ### Example
 
@@ -154,7 +154,7 @@ const message = createMessage("inspect_request", {
 
 ## /rx-jupyter
 
-This package is a [ReactiveX](http://reactivex.io/) wrapper around the [Jupyter Server API](http://jupyter-api.surge.sh/). **rx-jupyter** helps query local and remote Jupyter Server instances using Jupyter's Services APIs. Also, **rx-jupyter** integrates responses seamlessly with [RxJS](https://rxjs-dev.firebaseapp.com/)'s functional tooling.
+The `@nteract/rx-jupyter` package is a [ReactiveX](http://reactivex.io/) wrapper around the [Jupyter Server API](http://jupyter-api.surge.sh/). **rx-jupyter** helps query local and remote Jupyter Server instances using Jupyter's Services APIs. Also, **rx-jupyter** integrates responses seamlessly with [RxJS](https://rxjs-dev.firebaseapp.com/)'s functional tooling.
 
 ### Example
 

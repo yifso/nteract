@@ -10,7 +10,7 @@ The **Editors** group of SDK packages is a set of supported editors in nteract a
 
 ## /editor
 
-This package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
+Th `@nteract/editor` package contains components for rendering CodeMirror editors in our nteract applications. To see this package in action, view the source code for the [nteract play application](https://github.com/nteract/play).
 
 ### Examples of /editor
 
@@ -48,7 +48,7 @@ import CodeMirrorEditor from "@nteract/editor";
 
 ## /monaco-editor
 
-This package implements a React component with a Monaco-based code editor. To see this package in action,  view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
+The `@nteract/monaco-editor` package implements a React component with a Monaco-based code editor. To see this package in action, view the source code for rendering text files in the [nteract-on-Jupyter application](https://github.com/nteract/nteract/blob/master/applications/jupyter-extension/nteract_on_jupyter/app/contents/file/text-file.js).
 
 ### Examples of /monaco-editor
 
@@ -76,12 +76,12 @@ export default () => {
 
 #### Editor
 
-The `monaco-editor` package provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component. It also fetches code tab-completion items when running a notebook connected to a Jupyter kernel. To work well with the semantics of a notebook, the package requires the following props as presented in the `IMonacoProps` interface:
+The `@nteract/monaco-editor` package provides the core functionality to render [Monaco Editor](https://microsoft.github.io/monaco-editor/) as a React component. It also fetches code tab-completion items when running a notebook connected to a Jupyter kernel. To coordinate with notebook semantics, the package requires the following props in the `IMonacoProps` interface:
 
 * `id` - A unique identifier for the editor instance. In the notebook context, since every cell is tied to a single instance of the editor, `id` refers to the unique ID of the cell.
 * `contentRef` - A unique identifier for the editor's host application. In the notebook context, `contentRef` provides a reference to the container element for the main notebook app component.
-* `theme` - Theme to be used for rendering the component ([docs](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.idiffeditorconstructionoptions.html#theme))
-* `language` - Valid language ID of a supported language (eg: `python`, `typescript`, `plaintext` etc.) Check out this Monaco Editor [playground](https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-custom-languages) to add support for a language not yet supported out of the box.
+* `theme` - Theme for rendering the component ([docs](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.idiffeditorconstructionoptions.html#theme))
+* `language` - Valid language ID of a supported language (eg: `python`, `typescript`, `plaintext` etc.) Refer to the [Monaco Editor playground](https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-custom-languages) to add support for a language not yet supported.
 
 nteract provides the minimum required props to instantiate the component and also support for a host of optional properties and handlers. See the code below for optional properties.
 
@@ -98,7 +98,7 @@ Important callbacks:
 
 The package also adds the capability to retrieve code-completion items from a connected Jupyter kernel. Completions are language-specific token recommendations when the user attempts to type or enumerate the attributes of a class/object.  A `dot` operator and the `tab` completion key are common. 
 
-nteract has a default completion provider that works with the Jupyter kernel. nteract also supports custom completion providers that users can register with their own language service.
+nteract has a default completion provider that works with the Jupyter kernel. nteract also supports custom completion providers for users registering their own language service.
 
 ![jupyter completions](https://i.stack.imgur.com/rcieN.png)
 
@@ -119,13 +119,13 @@ The following prop also enables code formatting.
 
 Enable completions in your app when you use this package on a [`Web worker`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) separate from the UI thread. This provides a performance boost and ensures that the app doesn't stall UI updates when the editor is waiting for Jupyter Kernel completions. 
 
-nteract uses the [Monaco Editor Web pack plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) to register and use the Monaco `editor` worker. Check out the Monaco Editor [docs](https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-esm.md) for more information on configuring the package and setting up other web workers.
+nteract uses the [Monaco Editor Web pack plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) to register and use the Monaco `editor` worker. View the [Monaco Editor docs](https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-esm.md) for more information on configuring the package and setting up other web workers.
 
 **Example:**
 
 To improving window resizing performance, see the example below.
 
-Recalculating the width of the container of this component happens on resizing the browser window. The code below shows css overrides for better performance:
+Resizing the browser window recalculates the width of the container of this component. The code below shows CSS overrides for better performance.
 
 ```css
 .monaco-container .monaco-editor {
