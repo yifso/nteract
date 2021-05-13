@@ -86,8 +86,6 @@ export interface HeadingCell {
 
 export interface CodeCell {
   cell_type: "code";
-  language: string;
-  collapsed: boolean;
   metadata: JSONObject;
   input: MultiLineString;
   prompt_number: number;

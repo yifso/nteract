@@ -792,20 +792,27 @@ describe("changeCellType", () => {
 });
 
 describe("toggleOutputExpansion", () => {
-  test("toggles value of collapsed property", () => {
+  test("toggles value of scrolled property", () => {
     const originalState = monocellDocument.updateIn(
       ["notebook", "cellMap"],
       (cells) =>
-        cells.map((value) => value.setIn(["metadata", "collapsed"], true))
+        cells.map((value) => value.setIn(["metadata", "scrolled"], true))
     );
     const id = originalState.getIn(["notebook", "cellOrder"]).first();
-    const state = reducers(
+    const state2 = reducers(
       originalState,
       actions.toggleOutputExpansion({ id })
     );
+    const state3 = reducers(
+      state2,
+      actions.toggleOutputExpansion({ id })
+    );
     expect(
-      state.getIn(["notebook", "cellMap", id, "metadata", "collapsed"])
+      state2.getIn(["notebook", "cellMap", id, "metadata", "scrolled"])
     ).toBe(false);
+    expect(
+      state3.getIn(["notebook", "cellMap", id, "metadata", "scrolled"])
+    ).toBe(true);
   });
 });
 describe("appendOutput", () => {

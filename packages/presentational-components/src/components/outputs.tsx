@@ -28,7 +28,6 @@ const OutputWrapper = styled.div.attrs<OutputWrapperProps>((props) => ({
   word-wrap: break-word;
   overflow-y: hidden;
   outline: none;
-  /* When expanded, this is overtaken to 100% */
   text-overflow: ellipsis;
 
   &:empty {
