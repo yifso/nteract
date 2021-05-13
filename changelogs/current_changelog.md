@@ -10,6 +10,8 @@
 
 Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
 
+- Now using "scrolled" metadata property instead of "collapsed" to denote whether a cell output is within a scrolled div or not, in order to align with standard [ipynb format](https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json). "collapsed" metadata property is no longer being set for new cells (used to be set to true). ([#5538](https://github.com/nteract/nteract/pull/5538))
+
 #### New Features
 
 - Upgraded electron v5.0.13 → v7.3.2 ([Changelog](https://github.com/electron/electron/releases)) ([PR#5115](https://github.com/nteract/nteract/pull/5115))
