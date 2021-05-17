@@ -56,8 +56,9 @@ export const makeMapStateToProps = (
           cell.cell_type === "code" &&
           cell.getIn(["metadata", "jupyter", "outputs_hidden"]);
         expanded =
+          // TODO: Revisit when implementing "auto" scrolled mode.
           cell.cell_type === "code" &&
-          cell.getIn(["metadata", "collapsed"]) === false;
+          cell.getIn(["metadata", "scrolled"]) === false;
       }
     }
 
