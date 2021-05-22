@@ -57,7 +57,7 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 #### Bug Fixes
 
-- Monaco autocompletion should return suggestion content after the last dot ([#5545](https://github.com/nteract/nteract/pull/5545))
+- Monaco autocompletion should return suggestion content after the last dot - issue #5545 ([#5546](https://github.com/nteract/nteract/pull/5546))
 
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
