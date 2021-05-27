@@ -67,15 +67,16 @@ export class Outputs extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.updateAutoScroll();
+    this.updateComputedScrolledValue();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    this.updateAutoScroll();
+    this.updateComputedScrolledValue();
   }
 
-  updateAutoScroll() {
+  updateComputedScrolledValue() {
     if (this.props.scrolledValue !== "auto") {
+      // Case when scrolledValue is true or false is already handled in getDerivedStateFromProps() for efficiency.
       return;
     }
     const wrapperDiv = this.wrapperRef.current;
