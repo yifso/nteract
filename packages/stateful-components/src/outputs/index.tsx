@@ -93,7 +93,7 @@ export class Outputs extends React.PureComponent<Props, State> {
   }
 
   autoScrollShouldScroll(heightOfOutputs: number) {
-    return heightOfOutputs > AUTO_SCROLL_HEIGHT_THRESHOLD;
+    return heightOfOutputs >= AUTO_SCROLL_HEIGHT_THRESHOLD;
   }
 }
 
