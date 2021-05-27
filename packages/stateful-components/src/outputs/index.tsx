@@ -87,7 +87,7 @@ export class Outputs extends React.PureComponent<Props, State> {
     // "scrollHeight is a measurement of the height of an element's content, including content not visible on the screen due to overflow"
     const heightOfOutputs = wrapperDiv.scrollHeight;
     const shouldScroll = this.autoScrollShouldScroll(heightOfOutputs);
-    if (shouldScroll != null && shouldScroll !== this.state.computedScrolledValue) {
+    if (shouldScroll !== this.state.computedScrolledValue) {
       this.setState({ computedScrolledValue: shouldScroll })
     }
   }
