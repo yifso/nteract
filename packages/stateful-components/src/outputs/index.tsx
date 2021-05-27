@@ -24,7 +24,7 @@ interface StateProps {
 type Props = ComponentProps & StateProps;
 
 interface State {
-  computedScrolledValue: boolean;
+  scrolledValueForAutoScroll: boolean;
 }
 
 export class Outputs extends React.PureComponent<Props, State> {
@@ -32,23 +32,13 @@ export class Outputs extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { computedScrolledValue: props.scrolledValue === "auto" ? false : props.scrolledValue };
+    this.state = { scrolledValueForAutoScroll: false };
     this.wrapperRef = React.createRef();
   }
 
-  static getDerivedStateFromProps(props: Props, state: State) : Partial<State> | null {
-    if (props.scrolledValue === true || props.scrolledValue === false) {
-      // When scrolled value is explicitly true or false, then computed scroll value will be identical to original scroll value.
-      return { computedScrolledValue: props.scrolledValue };
-    } else {
-      // When scrolled value is "auto", then computed scrolled value will be set in componentDidMount and componentDidUpdate since it depends on the height of the rendered output. Don't update it here.
-      return null
-    }
-  }
-
   render() {
-    const { outputs, children, hidden } = this.props;
-    const { computedScrolledValue } = this.state;
+    const { outputs, children, hidden, scrolledValue } = this.props;
+    const computedScrolledValue: boolean = scrolledValue == "auto" ? this.state.scrolledValueForAutoScroll : scrolledValue;
     const expanded = !computedScrolledValue;
     return (
       <div
@@ -67,16 +57,15 @@ export class Outputs extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.updateComputedScrolledValue();
+    this.updateScrolledValueForAutoScroll();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    this.updateComputedScrolledValue();
+    this.updateScrolledValueForAutoScroll();
   }
 
-  updateComputedScrolledValue() {
+  updateScrolledValueForAutoScroll() {
     if (this.props.scrolledValue !== "auto") {
-      // Case when scrolledValue is true or false is already handled in getDerivedStateFromProps() for efficiency.
       return;
     }
     const wrapperDiv = this.wrapperRef.current;
@@ -87,8 +76,8 @@ export class Outputs extends React.PureComponent<Props, State> {
     // "scrollHeight is a measurement of the height of an element's content, including content not visible on the screen due to overflow"
     const heightOfOutputs = wrapperDiv.scrollHeight;
     const shouldScroll = this.autoScrollShouldScroll(heightOfOutputs);
-    if (shouldScroll !== this.state.computedScrolledValue) {
-      this.setState({ computedScrolledValue: shouldScroll })
+    if (shouldScroll !== this.state.scrolledValueForAutoScroll) {
+      this.setState({ scrolledValueForAutoScroll: shouldScroll })
     }
   }
 
