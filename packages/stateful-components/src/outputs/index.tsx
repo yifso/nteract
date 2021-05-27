@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import { AppState, ContentRef, selectors } from "@nteract/core";
 import { Output } from "@nteract/outputs";
 
+const AUTO_SCROLL_HEIGHT_THRESHOLD = 1800;
+
+type ScrolledValue = boolean | "auto";
+
 interface ComponentProps {
   id: string;
   contentRef: ContentRef;
@@ -13,18 +17,45 @@ interface ComponentProps {
 
 interface StateProps {
   hidden: boolean;
-  expanded: boolean;
+  scrolledValue: ScrolledValue;
   outputs: Immutable.List<any>;
 }
 
-export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
+type Props = ComponentProps & StateProps;
+
+interface State {
+  computedScrolledValue: boolean;
+}
+
+export class Outputs extends React.PureComponent<Props, State> {
+  private readonly wrapperRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { computedScrolledValue: props.scrolledValue === "auto" ? false : props.scrolledValue };
+    this.wrapperRef = React.createRef();
+  }
+
+  static getDerivedStateFromProps(props: Props, state: State) : Partial<State> | null {
+    if (props.scrolledValue === true || props.scrolledValue === false) {
+      // When scrolled value is explicitly true or false, then computed scroll value will be identical to original scroll value.
+      return { computedScrolledValue: props.scrolledValue };
+    } else {
+      // When scrolled value is "auto", then computed scrolled value will be set in componentDidMount and componentDidUpdate. Don't update it here.
+      return null
+    }
+  }
+
   render() {
-    const { outputs, children, hidden, expanded } = this.props;
+    const { outputs, children, hidden } = this.props;
+    const { computedScrolledValue } = this.state;
+    const expanded = !computedScrolledValue;
     return (
       <div
         className={`nteract-cell-outputs ${hidden ? "hidden" : ""} ${
           expanded ? "expanded" : ""
         }`}
+        ref={this.wrapperRef}
       >
         {outputs.map((output, index) => (
           <Output output={output} key={index}>
@@ -33,6 +64,35 @@ export class Outputs extends React.PureComponent<ComponentProps & StateProps> {
         ))}
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.updateAutoScroll();
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    this.updateAutoScroll();
+  }
+
+  updateAutoScroll() {
+    if (this.props.scrolledValue !== "auto") {
+      return;
+    }
+    const wrapperDiv = this.wrapperRef.current;
+    if (!wrapperDiv) {
+      return;
+    }
+    // Using scrollHeight instead of offsetHeight to avoid adding another wrapper div.
+    // "scrollHeight is a measurement of the height of an element's content, including content not visible on the screen due to overflow"
+    const heightOfOutputs = wrapperDiv.scrollHeight;
+    const shouldScroll = this.autoScrollShouldScroll(heightOfOutputs);
+    if (shouldScroll != null && shouldScroll !== this.state.computedScrolledValue) {
+      this.setState({ computedScrolledValue: shouldScroll })
+    }
+  }
+
+  autoScrollShouldScroll(heightOfOutputs: number) {
+    return heightOfOutputs > AUTO_SCROLL_HEIGHT_THRESHOLD;
   }
 }
 
@@ -43,7 +103,7 @@ export const makeMapStateToProps = (
   const mapStateToProps = (state: AppState): StateProps => {
     let outputs = Immutable.List();
     let hidden = false;
-    let expanded = false;
+    let scrolledValue: ScrolledValue = "auto";
 
     const { contentRef, id } = ownProps;
     const model = selectors.model(state, { contentRef });
@@ -55,14 +115,18 @@ export const makeMapStateToProps = (
         hidden =
           cell.cell_type === "code" &&
           cell.getIn(["metadata", "jupyter", "outputs_hidden"]);
-        expanded =
-          // TODO: Revisit when implementing "auto" scrolled mode.
-          cell.cell_type === "code" &&
-          cell.getIn(["metadata", "scrolled"]) === false;
+        if (cell.cell_type === "code") {
+          const rawScrolledValue = cell.getIn(["metadata", "scrolled"]);
+          if (rawScrolledValue === true || rawScrolledValue === false) {
+            scrolledValue = rawScrolledValue;
+          } else {
+            scrolledValue = "auto";
+          }
+        }
       }
     }
 
-    return { outputs, hidden, expanded };
+    return { outputs, hidden, scrolledValue };
   };
   return mapStateToProps;
 };

@@ -11,6 +11,7 @@
 Provide a bulleted list of breaking changes and a reference to the PR(s) containing those changes.
 
 - Now using "scrolled" metadata property instead of "collapsed" to denote whether a cell output is within a scrolled div or not, in order to align with standard [ipynb format](https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json). "collapsed" metadata property is no longer being set for new cells (used to be set to true). ([#5538](https://github.com/nteract/nteract/pull/5538))
+- Added support for scrolled:"auto" for outputs (see "scrolled" property in [ipynb format schema](https://github.com/jupyter/nbformat/blob/master/nbformat/v4/nbformat.v4.schema.json)), replicating behavior in classic Jupyter Notebook. When this mode is set for a cell (or when "scrolled" is not defined, as "auto" is the default), then a cell's output will show up as if scrolling was enabled if and only if its output's height exceeds a certain tall threshold (currently 1800px). The scrolling can still be set manually by setting scrolled to true or false, or in the nteract UI by using the "Extended Output" toggle.
 
 #### New Features
 
