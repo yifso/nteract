@@ -41,7 +41,7 @@ export class Outputs extends React.PureComponent<Props, State> {
       // When scrolled value is explicitly true or false, then computed scroll value will be identical to original scroll value.
       return { computedScrolledValue: props.scrolledValue };
     } else {
-      // When scrolled value is "auto", then computed scrolled value will be set in componentDidMount and componentDidUpdate. Don't update it here.
+      // When scrolled value is "auto", then computed scrolled value will be set in componentDidMount and componentDidUpdate since it depends on the height of the rendered output. Don't update it here.
       return null
     }
   }
