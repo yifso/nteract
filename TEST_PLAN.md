@@ -12,6 +12,10 @@ $ yarn dist:all
 
 If possible, run through this test plan on the different supported operating systems: Windows, macOS, and Linux.
 
+| ℹ Note
+|---
+| It's not possible to build the Mac version of nteract from a Windows, so using `yarn dist:all` won't work. To test only on Windows, run `yarn dist` instead.
+
 ## Scenario 1: Opening and editing an existing notebook
 
 1. Open an existing notebook using the File > Open window.
@@ -25,6 +29,7 @@ If possible, run through this test plan on the different supported operating sys
 
 1. Toggle the output and input visibility of a notebook and verify that it works.
 2. Toggle whether or not an output is expanded and verify that it works.
+  - Here's an example of a cell to use to try this: `print('a\n'*1000)`
 3. Toggle the theme of the notebook and verify that it is changed.
 4. Toggle the Editor Type between CodeMirror and Monaco and verify that it changes.
 5. Close the nteract desktop app.
