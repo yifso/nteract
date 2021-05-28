@@ -8,7 +8,7 @@ $ yarn dist:all
 
 | ℹ Note
 |---
-| If you run into a JavaScript heap out of memory error, you might need to temporarily increase the heap size by within the NODE_OPTIONS variable. For example, on Windows this can be achieved by running `set NODE_OPTIONS=--max_old_space_size=8172`
+| If you run into a JavaScript heap out of memory error, you might need to temporarily increase the heap size by within the NODE_OPTIONS variable. For example, on Windows this can be achieved by running `set NODE_OPTIONS=--max_old_space_size=8172` in Command Prompt before running the yarn command.
 
 If possible, run through this test plan on the different supported operating systems: Windows, macOS, and Linux.
 
