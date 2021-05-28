@@ -29,7 +29,7 @@ If possible, run through this test plan on the different supported operating sys
 
 1. Toggle the output and input visibility of a notebook and verify that it works.
 2. Toggle whether or not an output is expanded and verify that it works.
-  - Here's an example of a cell to use to try this: `print('a\n'*1000)`
+    - Here's an example of a cell to use to try this: `print('a\n'*1000)`
 3. Toggle the theme of the notebook and verify that it is changed.
 4. Toggle the Editor Type between CodeMirror and Monaco and verify that it changes.
 5. Close the nteract desktop app.
