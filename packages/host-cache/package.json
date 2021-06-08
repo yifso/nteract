@@ -25,6 +25,6 @@
   "dependencies": {
     "rx-binder": "^4.0.14",
     "rx-jupyter": "^5.5.20",
-    "rxjs": "^6.3.3"
+    "rxjs": "^7.1.0"
   }
 }
