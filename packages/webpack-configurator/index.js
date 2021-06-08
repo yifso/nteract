@@ -1,9 +1,6 @@
 // Since this has to be loaded at the stage of use by webpack and won't be
 // transpiled, all types use flow's "comment style".
 
-// From https://github.com/ReactiveX/rxjs/blob/01a09789a0a9484c368b7bd6ed37f94d25490a00/doc/pipeable-operators.md#build-and-treeshaking
-const rxAliases = require("rxjs/_esm5/path-mapping")();
-
 const { aliases } = require("./aliases");
 
 // We don't transpile packages in node_modules, unless it's _our_ package
@@ -17,8 +14,6 @@ function mergeDefaultAliases(originalAlias /*: ?Aliases */) /*: Aliases */ {
     ...originalAlias,
     // Alias nteract packages
     ...aliases,
-    // Alias RxJS modules
-    ...rxAliases,
   };
 }
 
