@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "lib": ["esnext", "dom", "ESNext.AsyncIterable"]
   },
   "include": ["src"],
   "references": [
