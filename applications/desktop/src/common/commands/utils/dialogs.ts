@@ -11,11 +11,11 @@ interface SaveDialogOptions {
   defaultPath?: string;
 }
 
-export function showSaveAsDialog(): Promise<string> {
+export function showSaveAsDialog(): Promise<string | undefined> {
   return new Promise((resolve, _reject) => {
     const options: SaveDialogOptions = {
       title: "Save Notebook",
-      filters: [{ name: "Notebooks", extensions: ["ipynb"] }]
+      filters: [{ name: "Notebooks", extensions: ["ipynb"] }],
     };
 
     // In Electron, we want an object we can merge into dialog opts, falling
@@ -43,9 +43,9 @@ export function promptUserAboutNewKernel(
   store: DesktopStore,
   filepath: string
 ): Promise<void> {
-  return new Promise(resolve => {
-    remote.dialog.showMessageBox(
-      {
+  return new Promise((resolve) => {
+    remote.dialog
+      .showMessageBox({
         type: "question",
         buttons: ["Launch New Kernel", "Don't Launch New Kernel"],
         title: "New Kernel Needs to Be Launched",
@@ -54,10 +54,9 @@ export function promptUserAboutNewKernel(
         detail:
           "The kernel executing your code thinks your notebook is still in " +
           "the old location. Would you like to launch a new kernel to match " +
-          "it with the new location of the notebook?"
-      }
-    ).then(
-      ({ response: index }) => {
+          "it with the new location of the notebook?",
+      })
+      .then(({ response: index }) => {
         if (index === 0) {
           const state = store.getState();
           const oldKernelRef = selectors.kernelRefByContentRef(state, ownProps);
@@ -77,12 +76,11 @@ export function promptUserAboutNewKernel(
               cwd: documentDirectoryFor(filepath),
               kernelRef: createKernelRef(),
               selectNextKernel: true,
-              contentRef: ownProps.contentRef
+              contentRef: ownProps.contentRef,
             })
           );
         }
         resolve();
-      }
-    );
+      });
   });
 }
