@@ -28,7 +28,7 @@ export const list = (serverConfig: ServerConfig) =>
 export const get = (serverConfig: ServerConfig, id: string) =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernels/${id}`, {
-      cache: false
+      cache: false,
     })
   );
 
@@ -45,10 +45,10 @@ export const start = (serverConfig: ServerConfig, name: string, path: string) =>
   ajax(
     createAJAXSettings(serverConfig, "/api/kernels", {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: "POST",
-      body: { path, name }
+      body: { path, name },
     })
   );
 
@@ -76,7 +76,7 @@ export const kill = (serverConfig: ServerConfig, id: string) =>
 export const interrupt = (serverConfig: ServerConfig, id: string) =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernels/${id}/interrupt`, {
-      method: "POST"
+      method: "POST",
     })
   );
 
@@ -91,7 +91,7 @@ export const interrupt = (serverConfig: ServerConfig, id: string) =>
 export const restart = (serverConfig: ServerConfig, id: string) =>
   ajax(
     createAJAXSettings(serverConfig, `/api/kernels/${id}/restart`, {
-      method: "POST"
+      method: "POST",
     })
   );
 
@@ -147,7 +147,8 @@ export const connect = (
   const wsSubject = webSocket<JupyterMessage>({
     url: formWebSocketURL(serverConfig, kernelID, sessionID),
     protocol: serverConfig.wsProtocol,
-    closeObserver: serverConfig.closeObserver
+    // @ts-ignore
+    closeObserver: serverConfig.closeObserver,
   });
 
   // Create a subject that does some of the handling inline for the session
@@ -161,7 +162,7 @@ export const connect = (
             header: {
               ...message.header,
               session: sessionID ?? message.header.session,
-            }
+            },
           };
 
           wsSubject.next(sessionizedMessage);

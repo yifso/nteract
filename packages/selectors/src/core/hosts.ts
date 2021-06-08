@@ -2,7 +2,7 @@ import {
   AppState,
   JupyterHostRecord,
   ServerConfig,
-  HostRef
+  HostRef,
 } from "@nteract/types";
 
 import { createSelector } from "reselect";
@@ -23,7 +23,8 @@ export const serverConfig = (host: JupyterHostRecord): ServerConfig => {
     token: host.token ? host.token : undefined,
     ajaxOptions: host.ajaxOptions ? host.ajaxOptions : undefined,
     wsProtocol: host.wsProtocol ? host.wsProtocol : undefined,
-    closeObserver: host.closeObserver ? host.closeObserver : undefined
+    // @ts-ignore
+    closeObserver: host.closeObserver,
   };
 };
 
@@ -36,15 +37,12 @@ export const currentHost = (state: AppState) => state.app.host;
  * Returns the type of host the nteract application is currently connected
  * to. This is set to "jupyter" by default.
  */
-export const currentHostType = createSelector(
-  [currentHost],
-  host => {
-    if (host && host.type) {
-      return host.type;
-    }
-    return null;
+export const currentHostType = createSelector([currentHost], (host) => {
+  if (host && host.type) {
+    return host.type;
   }
-);
+  return null;
+});
 
 /**
  * Returns true if the host we are currently connected to is a Jupyter
@@ -52,7 +50,7 @@ export const currentHostType = createSelector(
  */
 export const isCurrentHostJupyter = createSelector(
   currentHostType,
-  hostType => hostType === "jupyter"
+  (hostType) => hostType === "jupyter"
 );
 
 /**
