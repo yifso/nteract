@@ -28,14 +28,28 @@ export const createAJAXSettings = (
     url = parsed.href;
   }
 
+  const {
+    ajaxOptions,
+    // We no longer need the endpoint property so we're plucking it off here
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    endpoint,
+    ...remainingServerConfig
+  } = serverConfig;
+
   // Use the server config provided token if available before trying cookies
   const xsrfToken = serverConfig.xsrfToken || Cookies.get("_xsrf");
-  const headers = {
-    ...(xsrfToken && { "X-XSRFToken": xsrfToken }),
-    ...(serverConfig.token && {
-      Authorization: `token ${serverConfig.token}`
-    })
-  };
+
+  const headers = Object.assign(
+    {} as { [name: string]: string },
+    opts.headers,
+    ajaxOptions?.headers as {}
+  );
+  if (xsrfToken) {
+    headers["X-XSRFToken"] = xsrfToken;
+  }
+  if (serverConfig.token) {
+    headers["Authorization"] = `token ${serverConfig.token}`;
+  }
 
   // Merge in our typical settings for responseType, allow setting additional
   // options like the method
@@ -43,17 +57,13 @@ export const createAJAXSettings = (
     url,
     responseType: "json",
     createXHR: () => new XMLHttpRequest(),
-    ...serverConfig,
-    ...serverConfig.ajaxOptions,
+    ...remainingServerConfig,
+    ...ajaxOptions,
     ...opts,
     // Make sure we merge in the auth headers with user given headers
-    headers: {
-      ...headers,
-      ...opts.headers,
-      ...(serverConfig.ajaxOptions && serverConfig.ajaxOptions.headers)
-    }
+    headers,
   };
-  delete settings.endpoint;
+
   delete settings.cache;
   return settings;
 };
