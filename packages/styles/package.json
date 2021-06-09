@@ -17,7 +17,9 @@
     "command-palette.css",
     "toolbar.css"
   ],
-  "scripts": {},
+  "scripts": {
+    "release": "semantic-release -e semantic-release-monorepo"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -27,5 +29,16 @@
     "✨"
   ],
   "author": "Kyle Kelley <rgbkrk@gmail.com>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "release": {
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      "@semantic-release/npm"
+    ]
+  }
 }
