@@ -1,7 +1,6 @@
 const path = require("path");
 
 const configurator = require("@nteract/webpack-configurator");
-const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const webpack = require("webpack");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
@@ -13,11 +12,10 @@ const plugins = [
   new webpack.IgnorePlugin(
     /^((fs)|(path)|(os)|(crypto)|(source-map-support))$/,
     /vs\/language\/typescript\/lib/
-  )
+  ),
 ];
 
 if (isProd) {
-  plugins.push(new LodashModuleReplacementPlugin());
 } else {
   plugins.push(new webpack.HotModuleReplacementPlugin());
 }
@@ -27,7 +25,7 @@ module.exports = {
   mode: isProd ? "production" : "development",
   devtool: isProd ? "hidden-source-map" : "cheap-eval-source-map",
   entry: {
-    app: "./app/index.tsx"
+    app: "./app/index.tsx",
   },
   devServer: isProd
     ? {}
@@ -35,34 +33,34 @@ module.exports = {
         writeToDisk: true,
         publicPath: "/nteract/static/dist/",
         hot: true,
-        headers: { "Access-Control-Allow-Origin": "*" }
+        headers: { "Access-Control-Allow-Origin": "*" },
       },
   target: "web",
   output: isProd
     ? {
-        chunkFilename: "[name]-[chunkhash].bundle.js"
+        chunkFilename: "[name]-[chunkhash].bundle.js",
       }
     : {
         chunkFilename: "[name].bundle.js",
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
         publicPath: "/nteract/static/dist/",
       },
   node: {
-    fs: "empty"
+    fs: "empty",
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(jpg|png|gif)$/,
-        use: "file-loader"
+        use: "file-loader",
       },
       {
         test: /\.ttf$/,
-        use: ["file-loader"]
+        use: ["file-loader"],
       },
       {
         test: /\.tsx?$/,
@@ -72,18 +70,18 @@ module.exports = {
             options: {
               transpileOnly: true,
               compilerOptions: {
-                noEmit: false
-              }
-            }
-          }
-        ]
-      }
-    ]
+                noEmit: false,
+              },
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     mainFields: ["nteractDesktop", "module", "main"],
     extensions: [".ts", ".tsx", ".js"],
-    alias: configurator.mergeDefaultAliases()
+    alias: configurator.mergeDefaultAliases(),
   },
-  plugins
+  plugins,
 };
