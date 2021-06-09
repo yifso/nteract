@@ -85,7 +85,7 @@
     "preset": "ts-jest",
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.base.json",
+        "tsconfig": "tsconfig.base.json",
         "isolatedModules": true
       }
     },
@@ -235,7 +235,7 @@
     "spawn-rx": "^3.0.0",
     "spawnteract": "^5.0.0",
     "style-loader": "^2.0.0",
-    "ts-jest": "^27.0.3",
+    "ts-jest": "^26.0.0",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tslint-config-prettier": "^1.18.0",
@@ -250,7 +250,7 @@
     "unified": "^9.0.0",
     "unist-builder": "^2.0.0",
     "webfontloader": "^1.6.28",
-    "webpack": "^4.28.3",
+    "webpack": "^5.38.1",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "3.11.0",
     "webpack-merge": "^5.0.0",
