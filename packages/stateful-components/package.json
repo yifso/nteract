@@ -8,7 +8,7 @@
     "nteract"
   ],
   "scripts": {
-    "release": "semantic-release -e semantic-release-monorepo"
+    "release": "semantic-release -e semantic-release-monorepo --tag-format='@nteract/stateful-components@${version}'"
   },
   "author": "Safia Abdalla <safia@microsoft.com>",
   "homepage": "https://github.com/nteract/nteract/tree/master/packages/stateful-components#readme",

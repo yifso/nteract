@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "nteractDesktop": "src/index.ts",
   "scripts": {
-    "release": "semantic-release -e semantic-release-monorepo"
+    "release": "semantic-release -e semantic-release-monorepo --tag-format='@nteract/commutable@${version}'"
   },
   
   "keywords": [
