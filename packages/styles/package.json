@@ -18,7 +18,7 @@
     "toolbar.css"
   ],
   "scripts": {
-    "release": "semantic-release -e semantic-release-monorepo"
+    "release": "semantic-release -e semantic-release-monorepo --tag-format='@nteract/styles@${version}'"
   },
   "publishConfig": {
     "access": "public"

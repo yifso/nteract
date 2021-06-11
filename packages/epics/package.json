@@ -28,7 +28,7 @@
     "url": "git+https://github.com/nteract/nteract.git"
   },
   "scripts": {
-    "release": "semantic-release -e semantic-release-monorepo"
+    "release": "semantic-release -e semantic-release-monorepo --tag-format='@nteract/epics@${version}'"
   },
   "bugs": {
     "url": "https://github.com/nteract/nteract/issues"
