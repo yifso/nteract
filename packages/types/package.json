@@ -35,7 +35,7 @@
           "assets": [
             "package.json"
           ],
-          "message": "release: ${nextRelease.version}"
+          "message": "chore(release): ${nextRelease.version}"
         }
       ]
     ]
