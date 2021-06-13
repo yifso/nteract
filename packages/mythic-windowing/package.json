@@ -32,7 +32,16 @@
           "preset": "conventionalcommits"
         }
       ],
-      "@semantic-release/npm"
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ],
+          "message": "release: ${nextRelease.version}"
+        }
+      ]
     ]
   }
 }
