@@ -1,6 +1,6 @@
 {
   "name": "@nteract/editor",
-  "version": "10.1.10",
+  "version": "10.1.11",
   "description": "The editor that lives inside cells in nteract",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,7 +8,6 @@
   "scripts": {
     "release": "semantic-release -e semantic-release-monorepo --tag-format='@nteract/editor@${version}'"
   },
-  
   "keywords": [
     "nteract",
     "editor",
