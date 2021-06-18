@@ -32,6 +32,50 @@
           "preset": "conventionalcommits"
         }
       ],
+      ["@semantic-release/release-notes-generator", {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "header": "Release Notes",
+          "types": [
+            {"type": "feat", "section": "Features"},
+            {"type": "fix", "section": "Bug Fixes"},
+            {"type": "chore", "hidden": true},
+            {"type": "docs", "hidden": true},
+            {"type": "style", "hidden": true},
+            {"type": "refactor", "hidden": true},
+            {"type": "perf", "hidden": true},
+            {"type": "test", "hidden": true}
+          ]
+        },
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        }
+      }],
+      ["@semantic-release/release-notes-generator", {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "header": "Release Notes",
+          "types": [
+            {"type": "feat", "section": "Features"},
+            {"type": "fix", "section": "Bug Fixes"},
+            {"type": "chore", "hidden": true},
+            {"type": "docs", "hidden": true},
+            {"type": "style", "hidden": true},
+            {"type": "refactor", "hidden": true},
+            {"type": "perf", "hidden": true},
+            {"type": "test", "hidden": true}
+          ]
+        },
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        }
+      }],
       "@semantic-release/npm",
       [
         "@semantic-release/git",
