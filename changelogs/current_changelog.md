@@ -321,6 +321,8 @@ Provide a bulleted list of new features or improvements and a reference to the P
 
 #### Bug Fixes
 
+-Inappropriate initial scroll on opening a notebook in firefox. Updating the index file of the notebook-app-component/src/decorators/hijack-scroll to use a pony fill function for scroll in old browsers. ([Issue#5576](https://github.com/nteract/nteract/issues/5576)) ([PR#5577](https://github.com/nteract/nteract/pull/5577/files))
+
 Provide a bulleted list of bug fixes and a reference to the PR(s) containing the changes.
 
 ### @nteract/presentational-components ([publish-version-here])
