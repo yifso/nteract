@@ -99,6 +99,14 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
   private blurEditorWidgetListener?: monaco.IDisposable;
   private mouseMoveListener?: monaco.IDisposable;
 
+  private frameId: number | null = null;
+  private requestAnimationFrame = window.requestAnimationFrame || ((callback: FrameRequestCallback) => {
+    callback(performance.now());
+    return 1;
+  });
+  private cancelAnimationFrame = window.cancelAnimationFrame || ((_timerId: number) => { });
+
+
   constructor(props: IMonacoProps) {
     super(props);
     this.calculateHeight = this.calculateHeight.bind(this);
@@ -151,9 +159,18 @@ export default class MonacoEditor extends React.Component<IMonacoProps> {
       const contentHeight = finalizedLines * lineHeight;
 
       if (this.contentHeight !== contentHeight) {
-        this.editorContainerRef.current.style.height = contentHeight + "px";
-        this.editor.layout();
-        this.contentHeight = contentHeight;
+        if (this.frameId !== null) {
+          this.cancelAnimationFrame(this.frameId);
+        }
+
+        this.frameId = this.requestAnimationFrame(() => {
+          this.frameId = null;
+          if (this.editor && this.editorContainerRef && this.editorContainerRef.current) {
+            this.editor.layout({ width: this.editor.getLayoutInfo().width, height: contentHeight });
+            this.editorContainerRef.current.style.height = contentHeight + "px";
+            this.contentHeight = contentHeight;
+          }
+        });
       }
     }
   }
